@@ -1,6 +1,6 @@
-import { Props } from 'react'
+import { ComponentType } from 'react'
 
 declare module '*.mdx' {
-  let MDXComponent: (props: Props) => JSX.Element
+  const MDXComponent: ComponentType
   export default MDXComponent
 }

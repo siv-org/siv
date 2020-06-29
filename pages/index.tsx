@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import Intro from './intro.md'
+import Intro from './intro.mdx'
 
 export const Home = (): JSX.Element => (
   <div className="container">
