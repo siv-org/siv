@@ -2,13 +2,11 @@
 
 ## Fast — Private — Verifiable
 
-### Welcome.
+The COVID-19 pandemic has already taken 100,000 American lives. As states attempt re-opening, it’s becoming more and more clear we face unprecedented challenges with safe and reliable voting.
 
-It is nearly the end of June 2020. We are now months into a pandemic, which has already taken over 100,000 lives in the US alone.
+Last minute election crises in Wisconsin. Six hour waiting lines in Georgia. 600,000 voters in Kentucky forced to share a single polling location. Dozens of other states with cancelled or postponed primaries.
 
-One consequence has been widespread issues with reliable voting. Last minute election crises in Wisconsin. Six hour waiting lines in Georgia. 600,000 voters in Kentucky forced to share a single polling location. Dozens of other states with cancelled or postponed primaries.
-
-Election officials and political advocates have rushed to provide safe alternatives. Especially Vote by Mail. This is encouraging.
+Election officials and political advocates have rushed to provide safe alternatives. Especially Vote by Mail.
 
 But we can do better. Despite vast demand, there's only modest discussion towards digital voting. Most [mainstream coverage](https://www.newyorker.com/tech/annals-of-technology/why-you-cant-just-vote-on-your-phone-during-the-pandemic) discourages it. Too many people have been led to believe that internet voting is impossibly insecure.
 
@@ -40,14 +38,15 @@ That's what [secureinternetvoting.org](https://secureinternetvoting.org) is for.
 
 ### Our design goals:
 
-1. **Easy** to use.
-2. Widely accessible from **any smartphone or desktop**.
-3. **Quick** process from beginning to end.
-4. Implements & explains **Voter Verifiability**. You can _personally_ audit that your vote was recorded & tallied correctly.
-5. Implements & explains **Vote Privacy**. _No one_, not even the election administrator, can see how you voted. This is _provable anonymity_, based on math, which we strive to explain as clearly as possible.
-6. Enforces an **auditable Voter Registration** process. Only legitimate voters can vote, and only once. Everyone can see _who_ voted, but not _how_ anyone voted.
+1. Widely accessible from **any smartphone or desktop**. No installs necessary, just click a link.
+2. **Quick** process from beginning to end.
+3. You can **personally verify** that your vote counted.
+4. **Provable anonymity**: _No one_, not even election administrators, can see how you voted.
+5. **Auditable voter registration**: Only legitimate voters can vote, and only once. Everyone can see _who_ voted, but not _how_ anyone votes.
 
 This work is built upon decades of research and hard work by uncountable contributors, in academia, industry, and the public sector.
+
+And it’s ready to be used right now, if only your elected officials will allow it.
 
 We offer this in a collaborative spirit, and appreciate all questions, feedback, and suggestions.
 
