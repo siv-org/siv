@@ -33,6 +33,8 @@
     "trailingComma": "all"
   },
   "dependencies": {
+    "@mdx-js/loader": "^1.6.6",
+    "@next/mdx": "^9.4.4",
     "next": "latest",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
