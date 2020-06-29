@@ -1,3 +1,4 @@
-# build folders
+# build files
 node_modules
 .next
+.DS_Store
