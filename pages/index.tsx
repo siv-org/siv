@@ -10,6 +10,12 @@ export const Home = (): JSX.Element => (
 
     <main>
       <Intro />
+
+      <br />
+
+      <a href="./Overview.png" target="_blank">
+        <img src="./Overview.png" width="100%" />
+      </a>
     </main>
 
     <style jsx global>{`
