@@ -4147,6 +4147,13 @@ eslint-plugin-react@^7.20.1:
     resolve "^1.17.0"
     string.prototype.matchall "^4.0.2"
 
+eslint-plugin-sort-destructure-keys@^1.3.5:
+  version "1.3.5"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-sort-destructure-keys/-/eslint-plugin-sort-destructure-keys-1.3.5.tgz#c6f45c3e58d4435564025a6ca5f4a838010800fd"
+  integrity sha512-JmVpidhDsLwZsmRDV7Tf/vZgOAOEQGkLtwToSvX5mD8fuWYS/xkgMRBsalW1fGlc8CgJJwnzropt4oMQ7YCHLg==
+  dependencies:
+    natural-compare-lite "^1.4.0"
+
 eslint-plugin-typescript-sort-keys@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-typescript-sort-keys/-/eslint-plugin-typescript-sort-keys-1.2.0.tgz#e6e43e212c2bdf45303a560817a7e654ae4b54de"
@@ -6703,7 +6710,7 @@ native-url@0.3.1:
   dependencies:
     querystring "^0.2.0"
 
-natural-compare-lite@~1.4.0:
+natural-compare-lite@^1.4.0, natural-compare-lite@~1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/natural-compare-lite/-/natural-compare-lite-1.4.0.tgz#17b09581988979fddafe0201e931ba933c96cbb4"
   integrity sha1-F7CVgZiJef3a/gIB6TG6kzyWy7Q=

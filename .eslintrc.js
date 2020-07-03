@@ -19,7 +19,7 @@ module.exports = {
     ecmaVersion: 2018,
     sourceType: 'module',
   },
-  plugins: ['react', '@typescript-eslint', 'typescript-sort-keys'],
+  plugins: ['react', '@typescript-eslint', 'typescript-sort-keys', 'sort-destructure-keys'],
   settings: {
     react: {
       version: 'detect',
@@ -28,5 +28,6 @@ module.exports = {
   rules: {
     'react/react-in-jsx-scope': 0, // Handled by Next.js
     '@typescript-eslint/explicit-module-boundary-types': 0, // Verbose
+    'sort-destructure-keys/sort-destructure-keys': 2, // style
   },
 }
