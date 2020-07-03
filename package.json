@@ -39,6 +39,7 @@
     }
   },
   "dependencies": {
+    "@ant-design/icons": "^4.2.1",
     "@mdx-js/loader": "^1.6.6",
     "@nandorojo/swr-firestore": "^0.9.0",
     "@next/mdx": "^9.4.4",

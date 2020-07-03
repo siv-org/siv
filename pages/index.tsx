@@ -1,6 +1,7 @@
 import Head from 'next/head'
 
 import Intro from '../src/intro.mdx'
+import Protocol from '../src/protocol'
 import ViewCounter from '../src/view-counter'
 
 export const Home = (): JSX.Element => (
@@ -21,9 +22,7 @@ export const Home = (): JSX.Element => (
 
       <br />
 
-      <a href="./Overview.png" target="_blank">
-        <img src="./Overview.png" width="100%" />
-      </a>
+      <Protocol />
     </main>
   </div>
 )
