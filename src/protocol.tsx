@@ -3,9 +3,9 @@ import { DownloadOutlined } from '@ant-design/icons'
 import styles from './protocol.module.css'
 
 type Filename = string
-type Width = number
+type MaxWidth = number
 
-type Line = Record<string, string> | { image: [Filename, Width] }
+type Line = Record<string, string> | { image: [Filename, MaxWidth] }
 
 const editable_steps: Line[][] = [
   // Header
@@ -50,6 +50,13 @@ for voters to seal their votes in Step 2.`,
 
   // Pre-C
   [{ step_name: 'Pre-Step C: Ballot Finalized' }, { example: '' }, { image: ['pre-c-ballot.png', 400] }],
+
+  // Step 1
+  [
+    { step_name: 'Step 1: Invitation to Vote' },
+    { description: 'Voting authority sends individualized email to all voters.' },
+    { image: ['step-1-invitation.png', 533] },
+  ],
 ]
 
 const image_steps = [
@@ -57,7 +64,7 @@ const image_steps = [
   // 'pre-a-voter-registration',
   // 'pre-b-shufflers-registered',
   // 'pre-c-ballot-finalized',
-  'step-1',
+  // 'step-1',
   'step-2a',
   'step-2b',
   'step-2c',
@@ -91,9 +98,9 @@ export default function Protocol(): JSX.Element {
               // Special handling for images
               if (type === 'image') {
                 const filename = line.image[0]
-                const width = line.image[1]
+                const maxWidth = line.image[1]
 
-                return <img key={lineIndex} src={`./overview/${filename}`} width={width} />
+                return <img key={lineIndex} src={`./overview/${filename}`} style={{ maxWidth, width: '100%' }} />
               }
 
               // Otherwise it's text
