@@ -1,4 +1,5 @@
 import Head from 'next/head'
+
 import Intro from '../src/intro.mdx'
 import ViewCounter from '../src/view-counter'
 

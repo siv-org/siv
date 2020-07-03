@@ -1,10 +1,11 @@
-import { AppProps } from 'next/app'
-
-import React from 'react'
 import 'firebase/firestore'
 import 'firebase/auth'
-import { Fuego, FuegoProvider } from '@nandorojo/swr-firestore'
+
 import '../src/global.css'
+
+import { Fuego, FuegoProvider } from '@nandorojo/swr-firestore'
+import { AppProps } from 'next/app'
+import React from 'react'
 
 const fuego = new Fuego({
   apiKey: 'AIzaSyD_B-jUzVeuYJTQafPKMmVlD4ddvNFxnfs',
