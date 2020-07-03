@@ -24,10 +24,28 @@ const preA: Step = [
   { image: ['pre-a-voter-list.png', 450] },
 ]
 
+const preB: Step = [
+  { section_name: 'Pre-Step B: Shufflers Registered' },
+  {
+    description: `Shufflers — to ensure the privacy of the vote — need to be
+  enrolled ahead of time.`,
+  },
+  {
+    details: `Requirements:
+1. They will need their phone or computer to be online and running a
+special SIV Shuffling program when the voting period closes.
+2. To enroll, they need to generate a private key, and share the
+corresponding public key with the voting authority.
+
+Their job will be explained in Step 5, but their public keys are needed
+for voters to seal their votes in Step 2.`,
+  },
+]
+
 const steps = [
   // 'header',
   // 'pre-a-voter-registration',
-  'pre-b-shufflers-registered',
+  // 'pre-b-shufflers-registered',
   'pre-c-ballot-finalized',
   'step-1',
   'step-2a',
@@ -55,7 +73,7 @@ export default function Protocol(): JSX.Element {
       </a>
 
       <div className={styles.protocol}>
-        {[header, preA].map((step, stepIndex) => (
+        {[header, preA, preB].map((step, stepIndex) => (
           <div className={styles.step} key={stepIndex}>
             {step.map((line, lineIndex) => {
               const type = Object.keys(line)[0]
