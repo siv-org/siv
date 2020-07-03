@@ -47,13 +47,16 @@ Their job will be explained in Step 5, but their public keys are needed
 for voters to seal their votes in Step 2.`,
     },
   ],
+
+  // Pre-C
+  [{ step_name: 'Pre-Step C: Ballot Finalized' }, { example: '' }, { image: ['pre-c-ballot.png', 400] }],
 ]
 
 const image_steps = [
   // 'header',
   // 'pre-a-voter-registration',
   // 'pre-b-shufflers-registered',
-  'pre-c-ballot-finalized',
+  // 'pre-c-ballot-finalized',
   'step-1',
   'step-2a',
   'step-2b',
