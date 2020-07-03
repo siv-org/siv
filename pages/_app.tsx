@@ -4,6 +4,7 @@ import React from 'react'
 import 'firebase/firestore'
 import 'firebase/auth'
 import { Fuego, FuegoProvider } from '@nandorojo/swr-firestore'
+import '../src/global.css'
 
 const fuego = new Fuego({
   apiKey: 'AIzaSyD_B-jUzVeuYJTQafPKMmVlD4ddvNFxnfs',
