@@ -15,5 +15,5 @@
     "jsx": "preserve"
   },
   "exclude": ["node_modules", ".next", "out"],
-  "include": ["types/*.d.ts", "**/*.ts", "**/*.tsx", "**/*.mdx"]
+  "include": ["**/*.ts", "**/*.tsx", "**/*.mdx"]
 }
