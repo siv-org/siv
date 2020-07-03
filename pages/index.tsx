@@ -8,7 +8,7 @@ export const Home = (): JSX.Element => (
   <div className="container">
     <Head>
       <title>SIV: Secure Internet Voting</title>
-      <link rel="icon" href="/favicon.ico" />
+      <link href="/favicon.ico" rel="icon" />
     </Head>
 
     <main>

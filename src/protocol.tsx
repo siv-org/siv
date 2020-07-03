@@ -4,7 +4,7 @@ export default function Protocol(): JSX.Element {
   return (
     <>
       <hr style={{ width: '100%' }} />
-      <a href="./Overview.png" target="_blank" style={{ margin: '2rem 0 3rem' }}>
+      <a href="./Overview.png" style={{ margin: '2rem 0 3rem' }} target="_blank">
         <DownloadOutlined />
         &nbsp;Download single image
       </a>
