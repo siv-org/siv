@@ -1,6 +1,6 @@
 import Head from 'next/head'
-import Intro from './intro.mdx'
-import ViewCounter from '../components/view-counter'
+import Intro from '../src/intro.mdx'
+import ViewCounter from '../src/view-counter'
 
 export const Home = (): JSX.Element => (
   <div className="container">
