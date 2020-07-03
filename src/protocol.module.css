@@ -1,0 +1,21 @@
+.protocol {
+  background-color: #e5eafd;
+  padding: 33px;
+}
+
+.title {
+  font-size: 21px;
+  font-weight: 700;
+  margin-bottom: 0;
+  text-align: left;
+}
+
+.subtitle {
+  font-size: 16px;
+  font-weight: 700;
+  margin-top: 3px;
+}
+
+.p {
+  font-size: 16px;
+}
