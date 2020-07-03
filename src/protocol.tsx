@@ -2,36 +2,42 @@ import { DownloadOutlined } from '@ant-design/icons'
 
 import styles from './protocol.module.css'
 
-type Line = Record<string, string> | { image: [string, number] }
-type Step = Line[]
+type Filename = string
+type Width = number
 
-const header: Step = [
-  { title: 'Secure Internet Voting (SIV) Protocol Overview' },
-  { subtitle: 'Fast, Private, Verifiable' },
-  {
-    p: `Voting Method with mathematically provable privacy & vote verifiability.
+type Line = Record<string, string> | { image: [Filename, Width] }
+
+const editable_steps: Line[][] = [
+  // Header
+  [
+    { title: 'Secure Internet Voting (SIV) Protocol Overview' },
+    { subtitle: 'Fast, Private, Verifiable' },
+    {
+      p: `Voting Method with mathematically provable privacy & vote verifiability.
 All over the internet, no installs necessary.`,
-  },
-]
+    },
+  ],
 
-const preA: Step = [
-  { section_name: 'Pre-Step A: Voter Registration Period' },
-  {
-    description: `Voting authority collects list of all valid voters,
+  // Pre-A
+  [
+    { step_name: 'Pre-Step A: Voter Registration Period' },
+    {
+      description: `Voting authority collects list of all valid voters,
   using the usual methods (in person, DMV, etc).`,
-  },
-  { example: '1 million eligible San Francisco voters' },
-  { image: ['pre-a-voter-list.png', 450] },
-]
+    },
+    { example: '1 million eligible San Francisco voters' },
+    { image: ['pre-a-voter-list.png', 450] },
+  ],
 
-const preB: Step = [
-  { section_name: 'Pre-Step B: Shufflers Registered' },
-  {
-    description: `Shufflers — to ensure the privacy of the vote — need to be
+  // Pre-B
+  [
+    { step_name: 'Pre-Step B: Shufflers Registered' },
+    {
+      description: `Shufflers — to ensure the privacy of the vote — need to be
   enrolled ahead of time.`,
-  },
-  {
-    details: `Requirements:
+    },
+    {
+      details: `Requirements:
 1. They will need their phone or computer to be online and running a
 special SIV Shuffling program when the voting period closes.
 2. To enroll, they need to generate a private key, and share the
@@ -39,10 +45,11 @@ corresponding public key with the voting authority.
 
 Their job will be explained in Step 5, but their public keys are needed
 for voters to seal their votes in Step 2.`,
-  },
+    },
+  ],
 ]
 
-const steps = [
+const image_steps = [
   // 'header',
   // 'pre-a-voter-registration',
   // 'pre-b-shufflers-registered',
@@ -73,18 +80,20 @@ export default function Protocol(): JSX.Element {
       </a>
 
       <div className={styles.protocol}>
-        {[header, preA, preB].map((step, stepIndex) => (
+        {editable_steps.map((step, stepIndex) => (
           <div className={styles.step} key={stepIndex}>
             {step.map((line, lineIndex) => {
               const type = Object.keys(line)[0]
 
+              // Special handling for images
               if (type === 'image') {
                 const filename = line.image[0]
                 const width = line.image[1]
 
-                return <img src={`./overview/${filename}`} width={width} />
+                return <img key={lineIndex} src={`./overview/${filename}`} width={width} />
               }
 
+              // Otherwise it's text
               const text = Object.values(line)[0] as string
 
               return (
@@ -105,7 +114,9 @@ export default function Protocol(): JSX.Element {
           </div>
         ))}
       </div>
-      {steps.map((filename) => (
+
+      {/* Our static images (converting away from) */}
+      {image_steps.map((filename) => (
         <div key={filename} style={{ backgroundColor: '#e5eafd', paddingBottom: '2rem' }}>
           <img src={`./overview/${filename}.png`} width="100%" />
         </div>
