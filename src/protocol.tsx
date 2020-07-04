@@ -249,13 +249,66 @@ This entire step can still be completed in just a few minutes.
 The only requirement is that shufflers are online (connected to the internet), and running the open-source SIV shuffling software, to automatically handle their part.`,
     },
   ],
+
+  // Step 6
+  [
+    { step_name: 'Step 6: Unsealing Stage' },
+    {
+      html: `<p class="${styles.description}">Then ${green(
+        semibold('95% of shufflers'),
+      )} can sign off that they're ready for the final ${purple(semibold('shuffled list'))} to be ${blue(
+        semibold('Unsealed'),
+      )}.</p>`,
+    },
+    '',
+    { image: ['step-6-threshold-key.png', 470] },
+    { html: blue(semibold('Unlocks the vote contents of the final list only, but not Vote Tokens.')) },
+    '',
+    '',
+    '',
+    '',
+    {
+      html: `
+        <code>${blue(`
+        1. {<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vote_for_mayor: ‘london_breed’,<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;verification_note: ‘Auto-generated: 76cbd63fa94eba743d5’,<br />
+          &nbsp;&nbsp;&nbsp;}<br />
+          <br />
+        2. {<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vote_for_mayor: ‘mark_leno’,<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;verification_note: ‘Auto-generated: 6705b9b9443d077cf7’,<br />
+          &nbsp;&nbsp;&nbsp;}<br />
+          <br />
+        3. {<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vote_for_mayor: ‘london_breed’,<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;verification_note: ‘quick_brown_fox’,<br />
+          &nbsp;&nbsp;&nbsp;}<br />
+          <br />
+          ...<br />
+          <br />
+        300,000. {<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vote_for_mayor: ‘london_breed’,<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;verification_note: ‘Auto-generated: 76cbd63fa94eba743d5’,<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+        `)}</code>
+      `,
+    },
+    '',
+    '',
+    {
+      p: `Now, anyone can tally the final vote count themselves.
+
+Any voter can Search (Ctrl+F) to find their personal vote via the Verification Note line, to see it was entered correctly.`,
+    },
+  ],
 ]
 
 const image_steps = [
   // 'step-3',
   // 'step-4',
   // 'step-5',
-  'step-6',
+  // 'step-6',
   'step-fin',
 ]
 
