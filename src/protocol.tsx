@@ -1,6 +1,7 @@
 import { DownloadOutlined } from '@ant-design/icons'
 
 import styles from './protocol.module.css'
+import signed_receipt from './signed_receipt'
 
 type Filename = string
 type MaxWidth = number
@@ -141,6 +142,32 @@ const editable_steps: Line[][] = [
     '',
     { html: `This step is completed by using a ${green('SIV Sealing Tool')}:` },
     { image: ['step-2g-tool-options.png', 462] },
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    {
+      html: `The ${green(
+        'SIV Sealing Tool',
+      )} can also give you a downloadable signed receipt, allowing 3rd-parties to audit everything worked as intended.<br />
+      ${light(
+        `This is optional, and provides even more assurance. It can prevent false-claims of improper results.<br />
+        (Voter claims the system screwed up their vote, but receipt proves otherwise.)`,
+      )}`,
+    },
+    {
+      html: `
+        <div style="margin: 3rem;">
+          <p style="font-size: 14px"><em>Example:</em></p>
+          <code style="max-width: 100%; word-break: break-all; font-size: 11px; opacity: 0.7">${signed_receipt
+            .replace(/\t/g, '&nbsp;&nbsp;')
+            .replace(/\n/g, '<br />')}
+        </code>
+        </div>
+      `,
+    },
   ],
 ]
 
@@ -157,7 +184,7 @@ const image_steps = [
   // 'step-2e',
   // 'step-2f',
   // 'step-2g',
-  'step-2h',
+  // 'step-2h',
   'step-3',
   'step-4',
   'step-5',
