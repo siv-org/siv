@@ -5,7 +5,10 @@ import styles from './protocol.module.css'
 type Filename = string
 type MaxWidth = number
 
-type Line = Record<string, string> | { image: [Filename, MaxWidth] } | ''
+type ImageLine = { image: [Filename, MaxWidth] }
+type Subsection = { subsection: { header: string; list: string[] } }
+
+type Line = Record<string, string> | Subsection | ImageLine | ''
 
 const blueHex = '#1332fe'
 const redHex = '#d0021b'
@@ -16,6 +19,10 @@ const blue = colorize(blueHex)
 const red = colorize(redHex)
 const purple = colorize(purpleHex)
 
+const semibold = (text: string) => `<span style="font-weight: 600;">${text}</span>`
+const light = (text: string) => `<span style="font-size: 12px; opacity: 0.65;">${text}</span>`
+const em = (text: string) => `<em>${text}</em>`
+
 const editable_steps: Line[][] = [
   // Header
   [
@@ -23,7 +30,7 @@ const editable_steps: Line[][] = [
     { subtitle: 'Fast, Private, Verifiable' },
     {
       p: `Voting Method with mathematically provable privacy & vote verifiability.
-All over the internet, no installs necessary.`,
+        All over the internet, no installs necessary.`,
     },
   ],
 
@@ -47,13 +54,13 @@ All over the internet, no installs necessary.`,
     },
     {
       details: `Requirements:
-1. They will need their phone or computer to be online and running a
-special SIV Shuffling program when the voting period closes.
-2. To enroll, they need to generate a private key, and share the
-corresponding public key with the voting authority.
+        1. They will need their phone or computer to be online and running a
+          special SIV Shuffling program when the voting period closes.
+        2. To enroll, they need to generate a private key, and share the
+          corresponding public key with the voting authority.
 
-Their job will be explained in Step 5, but their public keys are needed
-for voters to seal their votes in Step 2.`,
+        Their job will be explained in Step 5, but their public keys are needed
+        for voters to seal their votes in Step 2.`,
     },
   ],
 
@@ -87,10 +94,14 @@ for voters to seal their votes in Step 2.`,
     '',
     { html: `This example results in a plaintext ${blue('marked, unsealed ballot')} like:` },
     {
-      html: `<code style="color: ${blueHex};">{<br />
-&nbsp;&nbsp;vote_for_mayor: ‘london_breed’,<br />
-&nbsp;&nbsp;verification_note: ‘Auto-generated: 76cbd63fa94eba743d5’,<br />
-}</code>`,
+      html: `
+        <code style="color: ${blueHex};">
+          {<br />
+          &nbsp;&nbsp;vote_for_mayor: ‘london_breed’,<br />
+          &nbsp;&nbsp;verification_note: ‘Auto-generated: 76cbd63fa94eba743d5’,<br />
+          }
+        </code>
+      `,
     },
     '',
     '',
@@ -102,6 +113,28 @@ for voters to seal their votes in Step 2.`,
     },
     {
       html: `<code style="color: ${purpleHex}; max-width: 100%; word-break: break-all; font-size: 14px;"><span style="color: ${redHex};">d58e6fab72</span>TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZWxpdC4gSW50ZWdlciBuZWMgY29tbW9kbyBtYWduY…gdGluY</code>`,
+    },
+    '',
+    {
+      subsection: {
+        header: 'Sealed Ballots',
+        list: [
+          `${semibold('can be safely shared')}, without revealing any content of vote.<br />
+          ${light('The encryption acts like a sealed envelope.')}`,
+
+          `can ${semibold('only be unlocked by special key')}— explained in final step.`,
+
+          `${semibold(
+            `${em('does')} reveal the Vote Token`,
+          )} used to sign it. This verifies that the ballot came from a valid voter, and can only be used once.<br />
+          ${light('You can think of this like signing the outside of the sealed envelope.')}`,
+
+          `Because it reveals your Vote Token, it’s ${semibold(
+            'important not to show your sealed ballot to anyone before you submit it',
+          )}. Otherwise they can take your Vote Token to quickly vote in your place before you.<br />
+          ${light('If this happens, the Voting Authority can invalidate the Vote Token and generate a new one.')}`,
+        ],
+      },
     },
   ],
 ]
@@ -117,7 +150,7 @@ const image_steps = [
   // 'step-2c',
   // 'step-2d',
   // 'step-2e',
-  'step-2f',
+  // 'step-2f',
   'step-2g',
   'step-2h',
   'step-3',
@@ -149,15 +182,36 @@ export default function Protocol(): JSX.Element {
 
               // Special handling for images
               if (type === 'image') {
-                const filename = line.image[0]
-                const maxWidth = line.image[1]
+                const filename = (line as ImageLine).image[0]
+                const maxWidth = (line as ImageLine).image[1]
 
                 return <img key={lineIndex} src={`./overview/${filename}`} style={{ maxWidth, width: '100%' }} />
+              }
+
+              // Specially handling for subsections
+              if (type === 'subsection') {
+                const { header, list } = (line as Subsection).subsection
+                return (
+                  <div style={{ margin: '3rem' }}>
+                    <p style={{ fontSize: 14, fontWeight: 700 }}>{header}:</p>
+                    <ul style={{ fontSize: 7, paddingInlineStart: 13 }}>
+                      {list.map((item, listIndex) => (
+                        <li key={listIndex} style={{ marginBottom: 15 }}>
+                          <span
+                            dangerouslySetInnerHTML={{ __html: item }}
+                            style={{ fontSize: 14, position: 'relative', top: 2 }}
+                          />
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )
               }
 
               // Otherwise it's text
               const text = Object.values(line)[0] as string
 
+              // Special handling to embed html
               if (type === 'html') {
                 return <p dangerouslySetInnerHTML={{ __html: text }} />
               }
