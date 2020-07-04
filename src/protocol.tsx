@@ -304,13 +304,7 @@ Any voter can Search (Ctrl+F) to find their personal vote via the Verification N
   ],
 ]
 
-const image_steps = [
-  // 'step-3',
-  // 'step-4',
-  // 'step-5',
-  // 'step-6',
-  'step-fin',
-]
+const image_steps = ['step-fin']
 
 export default function Protocol(): JSX.Element {
   return (
