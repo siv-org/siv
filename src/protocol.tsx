@@ -221,12 +221,40 @@ const editable_steps: Line[][] = [
       This also allows anyone to pick a random sample of voters and be able to conduct independent audits of the vote’s validity — with the voter’s permission — by checking the final results against individual vote receipts.`,
     },
   ],
+
+  // Step 5
+  [
+    { step_name: 'Step 5: Verifiable Shuffle' },
+    {
+      html: `<p class="${
+        styles.description
+      }">Encrypted votes are verifiable shuffled by a pool of 3rd-party shufflers. This protects voters’ privacy by removing the ${red(
+        semibold('Vote Tokens'),
+      )}, while still mathematically proven to preserve the ${purple(semibold('sealed vote contents'))}.</p>`,
+    },
+    '',
+    '',
+    { image: ['step-5-shuffle.png', 490] },
+    '',
+    '',
+    '',
+    {
+      html: `Multiple people can shuffle, like multiple people shuffling a deck of cards.<br />
+      ${red(`Privacy is ensured by ${em('at least one')} honest shuffler.`)}`,
+    },
+    {
+      details: `Thus, greater trust is ensured by more shufflers.
+This entire step can still be completed in just a few minutes.
+
+The only requirement is that shufflers are online (connected to the internet), and running the open-source SIV shuffling software, to automatically handle their part.`,
+    },
+  ],
 ]
 
 const image_steps = [
   // 'step-3',
   // 'step-4',
-  'step-5',
+  // 'step-5',
   'step-6',
   'step-fin',
 ]
