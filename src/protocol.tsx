@@ -25,6 +25,7 @@ const green = colorize(greenHex)
 const semibold = (text: string) => `<span style="font-weight: 600;">${text}</span>`
 const light = (text: string) => `<span style="font-size: 12px; opacity: 0.65;">${text}</span>`
 const em = (text: string) => `<em>${text}</em>`
+const bold = (text: string) => `<strong>${text}</strong>`
 
 const editable_steps: Line[][] = [
   // Header
@@ -169,11 +170,30 @@ const editable_steps: Line[][] = [
       `,
     },
   ],
+
+  // Step 3
+  [
+    { step_name: 'Step 3: Submit Sealed Ballot' },
+    {
+      html: `<span class="${styles.description}">Voter submits the sealed ballot to Voting Authority.</span><br />
+    ${light('The SIV Tool can do this for the Voter automatically.')}`,
+    },
+    { html: `The sealed ballot is added to a public list of ${bold('all')} Sealed Ballots.` },
+    '',
+    {
+      html: `<code style="max-width: 100%; word-break: break-all; font-size: 14px;">
+        1. <span style="color: ${redHex};">d58e6fab72</span><span style="color: ${purpleHex};">TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZWxpdC4gSW50ZWdlciBuZWMgY29tbW9kbyBtYW…gdGluY</span><br />
+        <br />
+        …<br />
+        <br />
+        300,000. <span style="color: ${redHex};">fe34fe7f10</span><span style="color: ${purpleHex};">WU0ZTAwMzZmZmI4ODhkMTY1NDAyOTk0MjY2N2QwZD gKYWJmN2ZhMDczZDgzZmQxMTExNmRiNWJjMDU2YTc3ZDEKZDUzNmzRiYWF…MTAyOW</span><br />
+      </code>`,
+    },
+  ],
 ]
 
 const image_steps = [
-  //
-  'step-3',
+  // 'step-3',
   'step-4',
   'step-5',
   'step-6',
