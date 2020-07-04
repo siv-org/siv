@@ -13,11 +13,13 @@ type Line = Record<string, string> | Subsection | ImageLine | ''
 const blueHex = '#1332fe'
 const redHex = '#d0021b'
 const purpleHex = '#9013fe'
+const greenHex = '#417505'
 
 const colorize = (color: string) => (text: string) => `<span style="color: ${color}; font-weight: 600;">${text}</span>`
 const blue = colorize(blueHex)
 const red = colorize(redHex)
 const purple = colorize(purpleHex)
+const green = colorize(greenHex)
 
 const semibold = (text: string) => `<span style="font-weight: 600;">${text}</span>`
 const light = (text: string) => `<span style="font-size: 12px; opacity: 0.65;">${text}</span>`
@@ -136,6 +138,9 @@ const editable_steps: Line[][] = [
         ],
       },
     },
+    '',
+    { html: `This step is completed by using a ${green('SIV Sealing Tool')}:` },
+    { image: ['step-2g-tool-options.png', 462] },
   ],
 ]
 
@@ -151,7 +156,7 @@ const image_steps = [
   // 'step-2d',
   // 'step-2e',
   // 'step-2f',
-  'step-2g',
+  // 'step-2g',
   'step-2h',
   'step-3',
   'step-4',
