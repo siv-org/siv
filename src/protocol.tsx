@@ -7,6 +7,8 @@ type MaxWidth = number
 
 type Line = Record<string, string> | { image: [Filename, MaxWidth] } | ''
 
+const blue = (text: string) => `<span style="color: blue; font-weight: 600;">${text}</span>`
+
 const editable_steps: Line[][] = [
   // Header
   [
@@ -73,6 +75,16 @@ for voters to seal their votes in Step 2.`,
     '',
     { p: 'At the end, there\'s a "Verification Note" field — a freeform textbox.' },
     { image: ['step-2c-verification-note.png', 400] },
+    '',
+    '',
+    '',
+    { html: `This example results in a plaintext ${blue('marked, unsealed ballot')} like:` },
+    {
+      html: `<code style="color: blue;">{<br />
+&nbsp;&nbsp;vote_for_mayor: ‘london_breed’,<br />
+&nbsp;&nbsp;verification_note: ‘Auto-generated: 76cbd63fa94eba743d5’,<br />
+}</code>`,
+    },
   ],
 ]
 
@@ -85,7 +97,7 @@ const image_steps = [
   // 'step-2a',
   // 'step-2b',
   // 'step-2c',
-  'step-2d',
+  // 'step-2d',
   'step-2e',
   'step-2f',
   'step-2g',
@@ -127,6 +139,10 @@ export default function Protocol(): JSX.Element {
 
               // Otherwise it's text
               const text = Object.values(line)[0] as string
+
+              if (type === 'html') {
+                return <p dangerouslySetInnerHTML={{ __html: text }} />
+              }
 
               return (
                 <p className={styles[type]} key={lineIndex}>
