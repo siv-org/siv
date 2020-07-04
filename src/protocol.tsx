@@ -7,7 +7,14 @@ type MaxWidth = number
 
 type Line = Record<string, string> | { image: [Filename, MaxWidth] } | ''
 
-const blue = (text: string) => `<span style="color: blue; font-weight: 600;">${text}</span>`
+const blueHex = '#1332fe'
+const redHex = '#d0021b'
+const purpleHex = '#9013fe'
+
+const colorize = (color: string) => (text: string) => `<span style="color: ${color}; font-weight: 600;">${text}</span>`
+const blue = colorize(blueHex)
+const red = colorize(redHex)
+const purple = colorize(purpleHex)
 
 const editable_steps: Line[][] = [
   // Header
@@ -80,10 +87,21 @@ for voters to seal their votes in Step 2.`,
     '',
     { html: `This example results in a plaintext ${blue('marked, unsealed ballot')} like:` },
     {
-      html: `<code style="color: blue;">{<br />
+      html: `<code style="color: ${blueHex};">{<br />
 &nbsp;&nbsp;vote_for_mayor: ‘london_breed’,<br />
 &nbsp;&nbsp;verification_note: ‘Auto-generated: 76cbd63fa94eba743d5’,<br />
 }</code>`,
+    },
+    '',
+    '',
+    '',
+    {
+      html: `Then their ${blue('marked ballot')} can be automatically sealed, using their ${red(
+        'Vote Token',
+      )}, resulting in an encrypted ${purple('sealed ballot')} like:`,
+    },
+    {
+      html: `<code style="color: ${purpleHex}; max-width: 100%; word-break: break-all; font-size: 14px;"><span style="color: ${redHex};">d58e6fab72</span>TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZWxpdC4gSW50ZWdlciBuZWMgY29tbW9kbyBtYWduY…gdGluY</code>`,
     },
   ],
 ]
@@ -98,7 +116,7 @@ const image_steps = [
   // 'step-2b',
   // 'step-2c',
   // 'step-2d',
-  'step-2e',
+  // 'step-2e',
   'step-2f',
   'step-2g',
   'step-2h',
