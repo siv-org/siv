@@ -193,11 +193,39 @@ const editable_steps: Line[][] = [
       </code>`,
     },
   ],
+
+  // Step 4
+  [
+    { step_name: 'Step 4: Voting Period Closes' },
+    { p: 'Deadline listed in initial email from Step 1.' },
+    { description: 'Election Authority reveals the names of everyone who submitted a valid Vote Token.' },
+    {
+      html: `${light(
+        `Who voted, but not ${em('how')} anyone voted (which they coudn’t reveal even if they wanted to).`,
+      )}`,
+    },
+    '',
+    {
+      html: `<code style="max-width: 100%; word-break: break-all; font-size: 14px;">
+        1. ${red('d58e6fab72')} = John T. Elson<br />
+        <br />
+        …<br />
+        <br />
+        300,000. ${red('fe34fe7f10')} = Casey Hohl<br />
+      </code>`,
+    },
+    '',
+    {
+      details: `This creates greater trust by showing who the voters are. The public can see that they’re real valid voters. Not people voting multiple times, or "dead people", or foreigners, etc., as skeptics worry about.
+
+      This also allows anyone to pick a random sample of voters and be able to conduct independent audits of the vote’s validity — with the voter’s permission — by checking the final results against individual vote receipts.`,
+    },
+  ],
 ]
 
 const image_steps = [
   // 'step-3',
-  'step-4',
+  // 'step-4',
   'step-5',
   'step-6',
   'step-fin',
