@@ -11,16 +11,11 @@ type Subsection = { subsection: { header: string; list: string[] } }
 
 type Line = Record<string, string> | Subsection | ImageLine | ''
 
-const blueHex = '#1332fe'
-const redHex = '#d0021b'
-const purpleHex = '#9013fe'
-const greenHex = '#417505'
-
-const colorize = (color: string) => (text: string) => `<span style="color: ${color}; font-weight: 600;">${text}</span>`
-const blue = colorize(blueHex)
-const red = colorize(redHex)
-const purple = colorize(purpleHex)
-const green = colorize(greenHex)
+const colorize = (color: string) => (text: string) => `<span style="color: ${color};">${text}</span>`
+const blue = colorize('#1332fe')
+const red = colorize('#d0021b')
+const purple = colorize('#9013fe')
+const green = colorize('#417505')
 
 const semibold = (text: string) => `<span style="font-weight: 600;">${text}</span>`
 const light = (text: string) => `<span style="font-size: 12px; opacity: 0.65;">${text}</span>`
@@ -96,27 +91,31 @@ const editable_steps: Line[][] = [
     '',
     '',
     '',
-    { html: `This example results in a plaintext ${blue('marked, unsealed ballot')} like:` },
+    { html: `This example results in a plaintext ${blue(semibold('marked, unsealed ballot'))} like:` },
     {
       html: `
-        <code style="color: ${blueHex};">
-          {<br />
+        <code>${blue(
+          `{<br />
           &nbsp;&nbsp;vote_for_mayor: ‘london_breed’,<br />
           &nbsp;&nbsp;verification_note: ‘Auto-generated: 76cbd63fa94eba743d5’,<br />
-          }
-        </code>
+          }`,
+        )}</code>
       `,
     },
     '',
     '',
     '',
     {
-      html: `Then their ${blue('marked ballot')} can be automatically sealed, using their ${red(
-        'Vote Token',
-      )}, resulting in an encrypted ${purple('sealed ballot')} like:`,
+      html: `Then their ${blue(semibold('marked ballot'))} can be automatically sealed, using their ${red(
+        semibold('Vote Token'),
+      )}, resulting in an encrypted ${purple(semibold('sealed ballot'))} like:`,
     },
     {
-      html: `<code style="color: ${purpleHex}; max-width: 100%; word-break: break-all; font-size: 14px;"><span style="color: ${redHex};">d58e6fab72</span>TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZWxpdC4gSW50ZWdlciBuZWMgY29tbW9kbyBtYWduY…gdGluY</code>`,
+      html: `<code style="max-width: 100%; word-break: break-all; font-size: 14px;">
+        ${red('d58e6fab72')}${purple(
+        'TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZWxpdC4gSW50ZWdlciBuZWMgY29tbW9kbyBtYWduY…gdGluY',
+      )}
+      </code>`,
     },
     '',
     {
@@ -141,7 +140,7 @@ const editable_steps: Line[][] = [
       },
     },
     '',
-    { html: `This step is completed by using a ${green('SIV Sealing Tool')}:` },
+    { html: `This step is completed by using a ${green(semibold('SIV Sealing Tool'))}:` },
     { image: ['step-2g-tool-options.png', 462] },
     '',
     '',
@@ -151,7 +150,7 @@ const editable_steps: Line[][] = [
     '',
     {
       html: `The ${green(
-        'SIV Sealing Tool',
+        semibold('SIV Sealing Tool'),
       )} can also give you a downloadable signed receipt, allowing 3rd-parties to audit everything worked as intended.<br />
       ${light(
         `This is optional, and provides even more assurance. It can prevent false-claims of improper results.<br />
@@ -182,11 +181,15 @@ const editable_steps: Line[][] = [
     '',
     {
       html: `<code style="max-width: 100%; word-break: break-all; font-size: 14px;">
-        1. <span style="color: ${redHex};">d58e6fab72</span><span style="color: ${purpleHex};">TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZWxpdC4gSW50ZWdlciBuZWMgY29tbW9kbyBtYW…gdGluY</span><br />
+        1. ${red('d58e6fab72')}${purple(
+        'TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZWxpdC4gSW50ZWdlciBuZWMgY29tbW9kbyBtYW…gdGluY',
+      )}<br />
         <br />
         …<br />
         <br />
-        300,000. <span style="color: ${redHex};">fe34fe7f10</span><span style="color: ${purpleHex};">WU0ZTAwMzZmZmI4ODhkMTY1NDAyOTk0MjY2N2QwZD gKYWJmN2ZhMDczZDgzZmQxMTExNmRiNWJjMDU2YTc3ZDEKZDUzNmzRiYWF…MTAyOW</span><br />
+        300,000. ${red('fe34fe7f10')}${purple(
+        'WU0ZTAwMzZmZmI4ODhkMTY1NDAyOTk0MjY2N2QwZD gKYWJmN2ZhMDczZDgzZmQxMTExNmRiNWJjMDU2YTc3ZDEKZDUzNmzRiYWF…MTAyOW',
+      )}<br />
       </code>`,
     },
   ],
