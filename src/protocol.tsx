@@ -5,7 +5,7 @@ import styles from './protocol.module.css'
 type Filename = string
 type MaxWidth = number
 
-type Line = Record<string, string> | { image: [Filename, MaxWidth] }
+type Line = Record<string, string> | { image: [Filename, MaxWidth] } | ''
 
 const editable_steps: Line[][] = [
   // Header
@@ -57,6 +57,23 @@ for voters to seal their votes in Step 2.`,
     { description: 'Voting authority sends individualized email to all voters.' },
     { image: ['step-1-invitation.png', 533] },
   ],
+
+  // Step 2
+  [
+    { step_name: 'Step 2: Craft Your Sealed Ballot' },
+    {
+      description: `Voter fills out their ballot, signing & encrypted (sealing) with their
+    Vote Token.`,
+    },
+    '',
+    { p: 'Voter sees a GUI to make it easy to fill out their ballot:' },
+    { image: ['step-2a-gui.png', 400] },
+    '',
+    { details: 'There can be multiple questions, as many as the election requires.' },
+    '',
+    { p: 'At the end, there\'s a "Verification Note" field — a freeform textbox.' },
+    { image: ['step-2c-verification-note.png', 400] },
+  ],
 ]
 
 const image_steps = [
@@ -65,9 +82,9 @@ const image_steps = [
   // 'pre-b-shufflers-registered',
   // 'pre-c-ballot-finalized',
   // 'step-1',
-  'step-2a',
-  'step-2b',
-  'step-2c',
+  // 'step-2a',
+  // 'step-2b',
+  // 'step-2c',
   'step-2d',
   'step-2e',
   'step-2f',
@@ -93,6 +110,11 @@ export default function Protocol(): JSX.Element {
         {editable_steps.map((step, stepIndex) => (
           <div className={styles.step} key={stepIndex}>
             {step.map((line, lineIndex) => {
+              // Special handling for breaks
+              if (line === '') {
+                return <br />
+              }
+
               const type = Object.keys(line)[0]
 
               // Special handling for images
