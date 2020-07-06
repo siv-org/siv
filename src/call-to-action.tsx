@@ -1,7 +1,10 @@
 import { BoxProps, Button, Paper, TextField, TextFieldProps } from '@material-ui/core'
 import { firestore } from 'firebase'
+import { useState } from 'react'
 
 export default function CallToAction(): JSX.Element {
+  const [saved, setSaved] = useState(false)
+
   return (
     <Paper
       elevation={5}
@@ -26,48 +29,67 @@ export default function CallToAction(): JSX.Element {
         }
       `}</style>
       <form autoComplete="off">
-        <Row style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Field id="name" label="Your Name" style={{ flex: 1, marginRight: 30 }} />
-          <Field label="ZIP" style={{ maxWidth: 80 }} />
+        <Row>
+          <Field id="name" label="Your Name" s={setSaved} style={{ flex: 1, marginRight: 30 }} />
+          <Field label="ZIP" s={setSaved} style={{ maxWidth: 80 }} />
         </Row>
         <Row>
-          <Field fullWidth label="Email" />
+          <Field fullWidth label="Email" s={setSaved} />
         </Row>
         <Row>
-          <Field fullWidth label="Comment" multiline rows={4} />
+          <Field fullWidth label="Comment" multiline rows={4} s={setSaved} />
         </Row>
-        <Button
-          color="primary"
-          onClick={() => {
-            const fields: Record<string, string | Date> = { created_at: new Date().toString() }
+        <Row style={{ justifyContent: 'flex-end' }}>
+          {saved && <p style={{ margin: 0, opacity: 0.7, width: 60 }}>Saved.</p>}
+          <Button
+            color="primary"
+            disabled={saved}
+            onClick={() => {
+              const fields: Record<string, string | Date> = { created_at: new Date().toString() }
 
-            ;['name', 'zip', 'email', 'comment'].forEach((id) => {
-              fields[id] = (document.getElementById(id) as HTMLInputElement).value
-            })
+              // Get data from input fields
+              ;['name', 'zip', 'email', 'comment'].forEach((id) => {
+                fields[id] = (document.getElementById(id) as HTMLInputElement).value
+              })
 
-            firestore()
-              .collection('endorsers')
-              .doc(new Date().toISOString() + ' ' + String(Math.random()))
-              .set(fields)
-          }}
-          style={{ float: 'right', marginBottom: 30 }}
-          variant="contained"
-        >
-          Submit
-        </Button>
+              firestore()
+                .collection('endorsers')
+                .doc(new Date().toISOString() + ' ' + String(Math.random()).slice(2, 7))
+                .set(fields)
+                .then(() => setSaved(true))
+            }}
+            variant="contained"
+          >
+            Submit
+          </Button>
+        </Row>
       </form>
     </Paper>
   )
 }
 
-const Row = (props: BoxProps) => <div style={{ margin: '1.5rem 0', ...props.style }} {...props} />
+const Row = (props: BoxProps) => (
+  <div
+    {...props}
+    style={{
+      alignItems: 'center',
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      margin: '1.5rem 0',
+      ...props.style,
+    }}
+  />
+)
 
-const Field = (props: TextFieldProps) => (
+// DRY-up TextField
+const Field = (props: TextFieldProps & { s: (saved: boolean) => void }) => (
   <TextField
     id={props.id || (props.label as string).toLowerCase()}
     size="small"
     variant="outlined"
     {...props}
+    onChange={() => props.s(false)}
     style={{ backgroundColor: '#fff8', ...props.style }}
   />
 )
