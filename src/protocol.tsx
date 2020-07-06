@@ -315,7 +315,7 @@ export default function Protocol(): JSX.Element {
             {step.map((line, lineIndex) => {
               // Special handling for breaks
               if (line === '') {
-                return <br />
+                return <br key={lineIndex} />
               }
 
               const type = Object.keys(line)[0]
@@ -332,7 +332,7 @@ export default function Protocol(): JSX.Element {
               if (type === 'subsection') {
                 const { header, list } = (line as Subsection).subsection
                 return (
-                  <div style={{ margin: '3rem' }}>
+                  <div key={lineIndex} style={{ margin: '3rem' }}>
                     <p style={{ fontSize: 14, fontWeight: 700 }}>{header}:</p>
                     <ul style={{ fontSize: 7, paddingInlineStart: 13 }}>
                       {list.map((item, listIndex) => (
@@ -353,7 +353,7 @@ export default function Protocol(): JSX.Element {
 
               // Special handling to embed html
               if (type === 'html') {
-                return <p dangerouslySetInnerHTML={{ __html: text }} />
+                return <p dangerouslySetInnerHTML={{ __html: text }} key={lineIndex} />
               }
 
               return (
