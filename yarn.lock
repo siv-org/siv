@@ -1844,10 +1844,10 @@
   resolved "https://registry.yarnpkg.com/@mdx-js/util/-/util-1.6.6.tgz#9c70eb7e7e4abc1083c8edf7151d35a19e442c00"
   integrity sha512-PKTHVgMHnK5p+kcMWWNnZuoR7O19VmHiOujmVcyN50hya7qIdDb5vvsYC+dwLxApEXiABhLozq0dlIwFeS3yjg==
 
-"@nandorojo/swr-firestore@^0.9.0":
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/@nandorojo/swr-firestore/-/swr-firestore-0.9.0.tgz#affd59e43ed6eee9cc2c9aa0e30fd97202a6849e"
-  integrity sha512-D59+R3VkzPG9gJ3nZLwQUvhM8527F1v0CDwozqRkQrKlc7iCPfu/nrxyfeqM56AB0ih32w5zoOSi8rCTa3cotA==
+"@nandorojo/swr-firestore@^0.10.0":
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/@nandorojo/swr-firestore/-/swr-firestore-0.10.0.tgz#f3b480eba7a5eb613eaff593fb49acaba750f323"
+  integrity sha512-jv45G9DyhZi34ANgdx2jmVo9kfcycJGtTVvgmeodfjjS5YaGPs9Qa+Ww4N1ZZUuUc8x1/vjBpPcvJCI31+Fheg==
   dependencies:
     "@expo/results" "^1.0.0"
     lodash "^4.17.15"
