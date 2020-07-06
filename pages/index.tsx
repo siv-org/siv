@@ -1,5 +1,7 @@
+import CssBaseline from '@material-ui/core/CssBaseline'
 import Head from 'next/head'
 
+import CallToAction from '../src/call-to-action'
 import Intro from '../src/intro.mdx'
 import Protocol from '../src/protocol'
 import ViewCounter from '../src/view-counter'
@@ -9,7 +11,9 @@ export const Home = (): JSX.Element => (
     <Head>
       <title>SIV: Secure Internet Voting</title>
       <link href="/favicon.ico" rel="icon" />
+      <meta content="minimum-scale=1, initial-scale=1, width=device-width" name="viewport" />
     </Head>
+    <CssBaseline />
 
     <main>
       <h1>SIV: Secure Internet Voting</h1>
@@ -20,7 +24,7 @@ export const Home = (): JSX.Element => (
 
       <Intro />
 
-      <br />
+      <CallToAction />
 
       <Protocol />
     </main>
