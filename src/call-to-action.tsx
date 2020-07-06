@@ -5,6 +5,9 @@ import { useState } from 'react'
 export default function CallToAction(): JSX.Element {
   const [saved, setSaved] = useState(false)
 
+  // We'll reset 'saved' state if they try to edit the textfields again
+  const onChange = () => setSaved(false)
+
   return (
     <Paper
       elevation={5}
@@ -30,14 +33,14 @@ export default function CallToAction(): JSX.Element {
       `}</style>
       <form autoComplete="off">
         <Row>
-          <Field id="name" label="Your Name" s={setSaved} style={{ flex: 1, marginRight: 30 }} />
-          <Field label="ZIP" s={setSaved} style={{ maxWidth: 80 }} />
+          <Field id="name" label="Your Name" {...{ onChange }} style={{ flex: 1, marginRight: 30 }} />
+          <Field label="ZIP" {...{ onChange }} style={{ maxWidth: 80 }} />
         </Row>
         <Row>
-          <Field fullWidth label="Email" s={setSaved} />
+          <Field fullWidth label="Email" {...{ onChange }} />
         </Row>
         <Row>
-          <Field fullWidth label="Comment" multiline rows={4} s={setSaved} />
+          <Field fullWidth label="Comment" multiline rows={4} {...{ onChange }} />
         </Row>
         <Row style={{ justifyContent: 'flex-end' }}>
           {saved && <p style={{ margin: 0, opacity: 0.7, width: 60 }}>Saved.</p>}
@@ -83,13 +86,12 @@ const Row = (props: BoxProps) => (
 )
 
 // DRY-up TextField
-const Field = (props: TextFieldProps & { s: (saved: boolean) => void }) => (
+const Field = (props: TextFieldProps) => (
   <TextField
     id={props.id || (props.label as string).toLowerCase()}
     size="small"
     variant="outlined"
     {...props}
-    onChange={() => props.s(false)}
     style={{ backgroundColor: '#fff8', ...props.style }}
   />
 )
