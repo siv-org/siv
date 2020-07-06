@@ -8,7 +8,7 @@ export default function CallToAction(): JSX.Element {
       style={{
         backgroundColor: 'rgb(220, 235, 245)',
         border: '1px solid rgba(0, 11, 128, 0.1)',
-        margin: '2rem 2rem',
+        margin: '2rem 0.5rem',
         padding: '0 2rem',
       }}
     >
@@ -20,9 +20,14 @@ export default function CallToAction(): JSX.Element {
         We’ll send them a message so they know more of their constituents are interested.
       </p>
 
-      <form>
+      <style global jsx>{`
+        .MuiInputLabel-shrink {
+          background-color: rgb(235, 246, 254);
+        }
+      `}</style>
+      <form autoComplete="off">
         <Row style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Field label="Name" style={{ flex: 1, marginRight: 30 }} />
+          <Field id="name" label="Your Name" style={{ flex: 1, marginRight: 30 }} />
           <Field label="ZIP" style={{ maxWidth: 80 }} />
         </Row>
         <Row>
@@ -59,7 +64,7 @@ const Row = (props: BoxProps) => <div style={{ margin: '1.5rem 0', ...props.styl
 
 const Field = (props: TextFieldProps) => (
   <TextField
-    id={(props.label as string).toLowerCase()}
+    id={props.id || (props.label as string).toLowerCase()}
     size="small"
     variant="outlined"
     {...props}
