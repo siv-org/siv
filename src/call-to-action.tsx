@@ -1,5 +1,5 @@
 import { BoxProps, Button, Paper, TextField, TextFieldProps } from '@material-ui/core'
-import { firestore } from 'firebase'
+import { firestore } from 'firebase/app'
 import { useState } from 'react'
 
 export default function CallToAction(): JSX.Element {

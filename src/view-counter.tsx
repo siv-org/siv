@@ -1,5 +1,5 @@
 import { useDocument } from '@nandorojo/swr-firestore'
-import { firestore } from 'firebase'
+import { firestore } from 'firebase/app'
 import { useState } from 'react'
 
 type Pageviews = { views: number | firestore.FieldValue }
