@@ -37,6 +37,7 @@
   font-size: 15px;
   font-weight: 700;
   margin-top: 10px;
+  max-width: 450px;
 }
 
 .example {

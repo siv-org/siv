@@ -37,8 +37,7 @@ const editable_steps: Line[][] = [
   [
     { step_name: 'Pre-Step A: Voter Registration Period' },
     {
-      description: `Voting authority collects list of all valid voters,
-  using the usual methods (in person, DMV, etc).`,
+      description: `Voting authority collects list of all valid voters, using the usual methods (in person, DMV, etc).`,
     },
     { example: '1 million eligible San Francisco voters' },
     { image: ['pre-a-voter-list.png', 450] },
@@ -48,18 +47,14 @@ const editable_steps: Line[][] = [
   [
     { step_name: 'Pre-Step B: Shufflers Registered' },
     {
-      description: `Shufflers — to ensure the privacy of the vote — need to be
-  enrolled ahead of time.`,
+      description: `Shufflers — to ensure the privacy of the vote — need to be enrolled ahead of time.`,
     },
     {
       details: `Requirements:
-        1. They will need their phone or computer to be online and running a
-          special SIV Shuffling program when the voting period closes.
-        2. To enroll, they need to generate a private key, and share the
-          corresponding public key with the voting authority.
+        1. They will need their phone or computer to be online and running a special SIV Shuffling program when the voting period closes.
+        2. To enroll, they need to generate a private key, and share the corresponding public key with the voting authority.
 
-        Their job will be explained in Step 5, but their public keys are needed
-        for voters to seal their votes in Step 2.`,
+        Their job will be explained in Step 5, but their public keys are needed for voters to seal their votes in Step 2.`,
     },
   ],
 
@@ -77,8 +72,7 @@ const editable_steps: Line[][] = [
   [
     { step_name: 'Step 2: Craft Your Sealed Ballot' },
     {
-      description: `Voter fills out their ballot, signing & encrypted (sealing) with their
-    Vote Token.`,
+      description: `Voter fills out their ballot, signing & encrypted (sealing) with their Vote Token.`,
     },
     '',
     { p: 'Voter sees a GUI to make it easy to fill out their ballot:' },
@@ -113,7 +107,7 @@ const editable_steps: Line[][] = [
     {
       html: `<code style="max-width: 100%; word-break: break-all; font-size: 14px;">
         ${red('d58e6fab72')}${purple(
-        'TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZWxpdC4gSW50ZWdlciBuZWMgY29tbW9kbyBtYWduY…gdGluY',
+        'TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZWxpdC4gSW50ZWdlciBuZWMgY29tbWbyBtYWduY…gdGluY',
       )}
       </code>`,
     },
@@ -182,13 +176,13 @@ const editable_steps: Line[][] = [
     {
       html: `<code style="max-width: 100%; word-break: break-all; font-size: 14px;">
         1. ${red('d58e6fab72')}${purple(
-        'TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZWxpdC4gSW50ZWdlciBuZWMgY29tbW9kbyBtYW…gdGluY',
+        'TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZWxpdC4gSW50ZWdlciBuZWMg29tb9kbyBtYW…gdGluY',
       )}<br />
         <br />
         …<br />
         <br />
         300,000. ${red('fe34fe7f10')}${purple(
-        'WU0ZTAwMzZmZmI4ODhkMTY1NDAyOTk0MjY2N2QwZD gKYWJmN2ZhMDczZDgzZmQxMTExNmRiNWJjMDU2YTc3ZDEKZDUzNmzRiYWF…MTAyOW',
+        'WU0ZTAwMzZmZmI4ODhkMTY1NDAyOTk0MjY2N2QwZD gKYWJmN2ZhMDczZDgzZmQxMTExNmRiJjMDU2YTc3ZDEKZDUzNmzRiYWF…MTAyOW',
       )}<br />
       </code>`,
     },
