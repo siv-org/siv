@@ -1,4 +1,4 @@
-# NextJS Typescript Boilerplate
+# SIV Demo
 
 ## How to use
 
