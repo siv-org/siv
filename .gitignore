@@ -3,3 +3,4 @@ node_modules
 .next
 .DS_Store
 yarn-error.log
+.env.local

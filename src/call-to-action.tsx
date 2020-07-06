@@ -55,11 +55,27 @@ export default function CallToAction(): JSX.Element {
                 fields[id] = (document.getElementById(id) as HTMLInputElement).value
               })
 
+              // Store submission in Firestore
               firestore()
                 .collection('endorsers')
                 .doc(new Date().toISOString() + ' ' + String(Math.random()).slice(2, 7))
                 .set(fields)
-                .then(() => setSaved(true))
+                .then(() => {
+                  setSaved(true)
+
+                  // Notify via Pushover
+                  fetch('/api/pushover', {
+                    body: JSON.stringify({
+                      message: `${fields.email}\n\n${fields.comment}`,
+                      title: `SIV: ${fields.name} (${fields.zip})`,
+                    }),
+                    headers: {
+                      Accept: 'application/json',
+                      'Content-Type': 'application/json',
+                    },
+                    method: 'POST',
+                  })
+                })
             }}
             variant="contained"
           >
