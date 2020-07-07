@@ -2,7 +2,7 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 import Head from 'next/head'
 
 import CallToAction from '../src/call-to-action'
-import Intro from '../src/intro.mdx'
+import CollapsibleIntro from '../src/collapsible-intro'
 import PageviewCounter from '../src/pageview-counter'
 import Protocol from '../src/protocol'
 
@@ -22,7 +22,7 @@ export const Home = (): JSX.Element => (
 
       <PageviewCounter />
 
-      <Intro />
+      <CollapsibleIntro />
 
       <CallToAction />
 
