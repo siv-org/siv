@@ -4,7 +4,7 @@ import { useState } from 'react'
 
 type Pageviews = { views: number | firestore.FieldValue }
 
-export default function ViewCounter(): JSX.Element {
+export default function PageviewCounter(): JSX.Element {
   const { data, error, update } = useDocument<Pageviews>(`meta/pageviews`, { listen: true })
   const [incremented, setIncremented] = useState(false)
 

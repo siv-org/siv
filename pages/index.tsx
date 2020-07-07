@@ -3,8 +3,8 @@ import Head from 'next/head'
 
 import CallToAction from '../src/call-to-action'
 import Intro from '../src/intro.mdx'
+import PageviewCounter from '../src/pageview-counter'
 import Protocol from '../src/protocol'
-import ViewCounter from '../src/view-counter'
 
 export const Home = (): JSX.Element => (
   <div className="container">
@@ -20,7 +20,7 @@ export const Home = (): JSX.Element => (
 
       <h2>Fast — Private — Verifiable</h2>
 
-      <ViewCounter />
+      <PageviewCounter />
 
       <Intro />
 
