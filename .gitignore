@@ -3,4 +3,8 @@ node_modules
 .next
 .DS_Store
 yarn-error.log
+
+# Environment Variables
 .env.local
+
+TODO.md
