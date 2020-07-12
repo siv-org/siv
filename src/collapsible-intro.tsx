@@ -1,43 +1,53 @@
+import { useState } from 'react'
+
 import Intro from '../src/intro.mdx'
 
 export default function CollapsibleIntro(): JSX.Element {
+  const [collapsed, setCollapsed] = useState(true)
+
   return (
     <>
-      <div className="collapsible">
+      <div
+        style={{
+          height: collapsed ? 380 : 'initial',
+          overflow: 'hidden',
+          position: 'relative',
+        }}
+      >
         <Intro />
 
         {/* Fade to white */}
-        <div className="fade-to-white">
-          <p>Expand full intro</p>
-        </div>
+        {collapsed && (
+          <div
+            className="fade-to-white"
+            style={{
+              background: 'linear-gradient(#fff5, #fff)',
+              bottom: 0,
+              display: 'flex',
+              height: 100,
+              justifyContent: 'center',
+              position: 'absolute',
+              width: '100%',
+            }}
+          >
+            <p
+              onClick={() => setCollapsed(!collapsed)}
+              style={{
+                alignSelf: 'center',
+                backgroundColor: '#f0f6fa',
+                border: '1px solid #0005',
+                borderRadius: 20,
+                color: '#0009',
+                cursor: 'pointer',
+                textAlign: 'center',
+                width: 130,
+              }}
+            >
+              Read full intro
+            </p>
+          </div>
+        )}
       </div>
-      <style jsx>{`
-        .collapsible {
-          height: 380px;
-          overflow: hidden;
-          position: relative;
-        }
-
-        .fade-to-white {
-          position: absolute;
-          bottom: 0;
-          height: 100px;
-          //   border: 1px solid green;
-          width: 100%;
-          background: linear-gradient(#fff5, #fff);
-          display: flex;
-          justify-content: center;
-        }
-
-        .fade-to-white p {
-          align-self: center;
-          text-align: center;
-          background-color: #fff;
-          border: 1px solid #ccc;
-          width: 130px;
-          border-radius: 20px;
-        }
-      `}</style>
     </>
   )
 }
