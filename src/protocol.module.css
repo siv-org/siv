@@ -12,6 +12,11 @@
   margin: 0;
 }
 
+.prepContainer {
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
 .expanded {
   padding: 0 15px;
 }

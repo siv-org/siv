@@ -1,14 +1,6 @@
 import styles from './protocol.module.css'
 import signed_receipt from './signed_receipt'
 
-type Filename = string
-type MaxWidth = number
-
-export type ImageLine = { image: [Filename, MaxWidth] }
-export type Subsection = { subsection: { header: string; list: string[] } }
-
-type Line = Record<string, string> | Subsection | ImageLine | ''
-
 const colorize = (color: string) => (text: string) => `<span style="color: ${color};">${text}</span>`
 const blue = colorize('#1332fe')
 const red = colorize('#d0021b')
@@ -30,10 +22,20 @@ export const header = [
   },
 ]
 
-const steps: { name: string; rest: Line[] }[] = [
+type Filename = string
+type MaxWidth = number
+
+export type ImageLine = { image: [Filename, MaxWidth] }
+export type Subsection = { subsection: { header: string; list: string[] } }
+
+export type Line = Record<string, string> | Subsection | ImageLine | ''
+
+export type Step = { name: string; rest: Line[] }
+
+export const prepSteps: Step[] = [
   // Pre-A
   {
-    name: 'Pre-Step A: Voter Registration Period',
+    name: 'A: Voter Registration Period',
     rest: [
       {
         description: `Voting authority collects list of all valid voters, using the usual methods (in person, DMV, etc).`,
@@ -45,7 +47,7 @@ const steps: { name: string; rest: Line[] }[] = [
 
   // Pre-B
   {
-    name: 'Pre-Step B: Shufflers Registered',
+    name: 'B: Shufflers Registered',
     rest: [
       {
         description: `Shufflers — to ensure the privacy of the vote — need to be enrolled ahead of time.`,
@@ -62,10 +64,12 @@ const steps: { name: string; rest: Line[] }[] = [
 
   // Pre-C
   {
-    name: 'Pre-Step C: Ballot Finalized',
+    name: 'C: Ballot Finalized',
     rest: [{ example: '' }, { image: ['pre-c-ballot.png', 400] }],
   },
+]
 
+const steps: Step[] = [
   // Step 1
   {
     name: 'Step 1: Invitation to Vote',
