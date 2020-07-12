@@ -72,10 +72,9 @@ function renderLine(line: Line, lineIndex: number) {
 
   // Special handling for images
   if (type === 'image') {
-    const filename = (line as ImageLine).image[0]
-    const maxWidth = (line as ImageLine).image[1]
+    const { image, maxWidth } = line as ImageLine
 
-    return <img key={lineIndex} src={`./overview/${filename}`} style={{ maxWidth, width: '100%' }} />
+    return <img key={lineIndex} src={`./overview/${image}`} style={{ maxWidth, width: '100%' }} />
   }
 
   // Specially handling for subsections

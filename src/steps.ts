@@ -22,10 +22,7 @@ export const header = [
   },
 ]
 
-type Filename = string
-type MaxWidth = number
-
-export type ImageLine = { image: [Filename, MaxWidth] }
+export type ImageLine = { image: string; maxWidth: number }
 export type Subsection = { subsection: { header: string; list: string[] } }
 
 export type Line = Record<string, string> | Subsection | ImageLine | ''
@@ -41,7 +38,7 @@ export const prepSteps: Step[] = [
         description: `Voting authority collects list of all valid voters, using the usual methods (in person, DMV, etc).`,
       },
       { example: '1 million eligible San Francisco voters' },
-      { image: ['pre-a-voter-list.png', 450] },
+      { image: 'pre-a-voter-list.png', maxWidth: 450 },
     ],
   },
 
@@ -65,7 +62,7 @@ export const prepSteps: Step[] = [
   // Pre-C
   {
     name: 'C: Ballot Finalized',
-    rest: [{ example: '' }, { image: ['pre-c-ballot.png', 400] }],
+    rest: [{ example: '' }, { image: 'pre-c-ballot.png', maxWidth: 400 }],
   },
 ]
 
@@ -75,7 +72,7 @@ const steps: Step[] = [
     name: 'Step 1: Invitation to Vote',
     rest: [
       { description: 'Voting authority sends individualized email to all voters.' },
-      { image: ['step-1-invitation.png', 533] },
+      { image: 'step-1-invitation.png', maxWidth: 533 },
     ],
   },
 
@@ -88,12 +85,12 @@ const steps: Step[] = [
       },
       '',
       { p: 'Voter sees a GUI to make it easy to fill out their ballot:' },
-      { image: ['step-2a-gui.png', 400] },
+      { image: 'step-2a-gui.png', maxWidth: 400 },
       '',
       { details: 'There can be multiple questions, as many as the election requires.' },
       '',
       { p: 'At the end, there\'s a "Verification Note" field — a freeform textbox.' },
-      { image: ['step-2c-verification-note.png', 400] },
+      { image: 'step-2c-verification-note.png', maxWidth: 400 },
       '',
       '',
       '',
@@ -147,7 +144,7 @@ const steps: Step[] = [
       },
       '',
       { html: `This step is completed by using a ${green(semibold('SIV Sealing Tool'))}:` },
-      { image: ['step-2g-tool-options.png', 462] },
+      { image: 'step-2g-tool-options.png', maxWidth: 462 },
       '',
       '',
       '',
@@ -246,7 +243,7 @@ const steps: Step[] = [
       },
       '',
       '',
-      { image: ['step-5-shuffle.png', 490] },
+      { image: 'step-5-shuffle.png', maxWidth: 490 },
       '',
       '',
       '',
@@ -275,7 +272,7 @@ const steps: Step[] = [
         )}.</p>`,
       },
       '',
-      { image: ['step-6-threshold-key.png', 470] },
+      { image: 'step-6-threshold-key.png', maxWidth: 470 },
       { html: blue(semibold('Unlocks the vote contents of the final list only, but not Vote Tokens.')) },
       '',
       '',
