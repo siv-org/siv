@@ -8,6 +8,7 @@ export default function CollapsibleIntro(): JSX.Element {
   return (
     <>
       <div
+        className={`collapsible ${collapsed ? 'collapsed' : ''}`}
         style={{
           height: collapsed ? 380 : 'initial',
           overflow: 'hidden',
@@ -19,9 +20,8 @@ export default function CollapsibleIntro(): JSX.Element {
         {/* Fade to white */}
         {collapsed && (
           <div
-            className="fade-to-white"
             style={{
-              background: 'linear-gradient(#fff5, #fff)',
+              background: 'linear-gradient(#fcfcfc55, #fcfcfc)',
               bottom: 0,
               display: 'flex',
               height: 100,
@@ -35,18 +35,31 @@ export default function CollapsibleIntro(): JSX.Element {
               style={{
                 alignSelf: 'center',
                 backgroundColor: '#f0f6fa',
-                border: '1px solid #0005',
+                border: '1px solid #0004',
                 borderRadius: 20,
-                color: '#0009',
+                color: '#042c47aa',
                 cursor: 'pointer',
+                fontWeight: 600,
+                padding: '3px 0px',
                 textAlign: 'center',
-                width: 130,
+                width: 145,
               }}
             >
-              Read full intro
+              Show Full Intro
             </p>
           </div>
         )}
+        <style jsx>{`
+          @media only screen and (max-width: 524px) {
+            .collapsible.collapsed {
+              height: 400px !important;
+            }
+          }
+
+          p:hover {
+            border-color: #0e4468 !important;
+          }
+        `}</style>
       </div>
     </>
   )
