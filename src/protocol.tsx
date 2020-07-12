@@ -298,8 +298,6 @@ Any voter can Search (Ctrl+F) to find their personal vote via the Verification N
   ],
 ]
 
-const image_steps = ['step-fin']
-
 export default function Protocol(): JSX.Element {
   return (
     <>
@@ -375,12 +373,10 @@ export default function Protocol(): JSX.Element {
         ))}
       </div>
 
-      {/* Our static images (converting away from) */}
-      {image_steps.map((filename) => (
-        <div key={filename} style={{ backgroundColor: '#e5eafd', paddingBottom: '2rem' }}>
-          <img src={`./overview/${filename}.png`} width="100%" />
-        </div>
-      ))}
+      {/* Fin step */}
+      <div style={{ backgroundColor: '#e5eafd', paddingBottom: '2rem' }}>
+        <img src={`./overview/step-fin.png`} width="100%" />
+      </div>
     </>
   )
 }
