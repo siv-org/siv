@@ -1,8 +1,19 @@
 /* Container for whole protocol */
 .protocol {
   background-color: #e5eafd;
-  padding: 33px;
+  padding: 10px 14px;
   width: 100%;
+}
+
+.name {
+  color: #000c;
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.expanded {
+  padding: 0 15px;
 }
 
 /* Now we define individual line types */
@@ -20,12 +31,6 @@
 
 .p {
   font-size: 15px;
-}
-
-.step_name {
-  font-size: 19px;
-  font-weight: 700;
-  margin-bottom: 0;
 }
 
 .description {
