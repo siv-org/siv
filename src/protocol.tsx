@@ -1,7 +1,9 @@
 import { DownloadOutlined } from '@ant-design/icons'
+import { Accordion, AccordionSummary as Summary } from '@material-ui/core'
+import { ExpandMore } from '@material-ui/icons'
 
 import styles from './protocol.module.css'
-import steps, { ImageLine, Subsection } from './steps'
+import steps, { ImageLine, Subsection, header } from './steps'
 
 export default function Protocol(): JSX.Element {
   return (
@@ -12,9 +14,23 @@ export default function Protocol(): JSX.Element {
         &nbsp;Download single image
       </a>
 
+      {/* Header */}
       <div className={styles.protocol}>
+        {header.map((line, lineIndex) => {
+          const type = Object.keys(line)[0]
+          const text = Object.values(line)[0] as string
+
+          return (
+            <p className={styles[type]} key={lineIndex}>
+              {text}
+            </p>
+          )
+        })}
+
+        {/* All the other steps */}
         {steps.map((step, stepIndex) => (
-          <div className={styles.step} key={stepIndex}>
+          <Accordion key={stepIndex}>
+            <Summary expandIcon={<ExpandMore />}>{step[0].step_name}</Summary>
             {step.map((line, lineIndex) => {
               // Special handling for breaks
               if (line === '') {
@@ -74,7 +90,7 @@ export default function Protocol(): JSX.Element {
                 </p>
               )
             })}
-          </div>
+          </Accordion>
         ))}
       </div>
 

@@ -20,17 +20,17 @@ const light = (text: string) => `<span style="font-size: 12px; opacity: 0.65;">$
 const em = (text: string) => `<em>${text}</em>`
 const bold = (text: string) => `<strong>${text}</strong>`
 
-const steps: Line[][] = [
-  // Header
-  [
-    { title: 'Secure Internet Voting (SIV) Protocol Overview' },
-    { subtitle: 'Fast, Private, Verifiable' },
-    {
-      p: `Voting Method with mathematically provable privacy & vote verifiability.
+// Header
+export const header = [
+  { title: 'Secure Internet Voting (SIV) Protocol Overview' },
+  { subtitle: 'Fast, Private, Verifiable' },
+  {
+    p: `Voting Method with mathematically provable privacy & vote verifiability.
         All over the internet, no installs necessary.`,
-    },
-  ],
+  },
+]
 
+const steps: Line[][] = [
   // Pre-A
   [
     { step_name: 'Pre-Step A: Voter Registration Period' },
