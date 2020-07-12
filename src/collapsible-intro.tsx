@@ -36,7 +36,7 @@ export default function CollapsibleIntro(): JSX.Element {
                 alignSelf: 'center',
                 backgroundColor: '#f0f6fa',
                 border: '1px solid #0004',
-                borderRadius: 20,
+                borderRadius: 10,
                 color: '#042c47aa',
                 cursor: 'pointer',
                 fontWeight: 600,
