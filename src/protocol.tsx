@@ -77,7 +77,7 @@ export default function Protocol(): JSX.Element {
 
                 // Special handling to embed html
                 if (type === 'html') {
-                  return <p dangerouslySetInnerHTML={{ __html: text }} key={lineIndex} />
+                  return <div dangerouslySetInnerHTML={{ __html: text }} key={lineIndex} />
                 }
 
                 return (

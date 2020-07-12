@@ -166,7 +166,7 @@ const steps: { name: string; rest: Line[] }[] = [
             <code style="max-width: 100%; word-break: break-all; font-size: 11px; opacity: 0.7">${signed_receipt
               .replace(/\t/g, '&nbsp;&nbsp;')
               .replace(/\n/g, '<br />')}
-          </code>
+            </code>
           </div>
         `,
       },
