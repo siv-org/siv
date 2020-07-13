@@ -1,4 +1,3 @@
-import CssBaseline from '@material-ui/core/CssBaseline'
 import Head from 'next/head'
 
 import CallToAction from '../src/call-to-action'
@@ -13,7 +12,6 @@ export const Home = (): JSX.Element => (
       <link href="/favicon.ico" rel="icon" />
       <meta content="minimum-scale=1, initial-scale=1, width=device-width" name="viewport" />
     </Head>
-    <CssBaseline />
 
     <main>
       <h1>SIV: Secure Internet Voting</h1>
