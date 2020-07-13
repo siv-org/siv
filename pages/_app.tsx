@@ -1,7 +1,6 @@
 import 'firebase/firestore'
 import 'firebase/auth'
 
-import '../src/css-baseline.css'
 import '../src/global.css'
 
 import { Fuego, FuegoProvider } from '@nandorojo/swr-firestore'
