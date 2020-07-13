@@ -1,8 +1,8 @@
 import Head from 'next/head'
 
 import CallToAction from '../src/call-to-action'
-import CollapsibleIntro from '../src/collapsible-intro'
 import Demo from '../src/demo'
+import CollapsibleIntro from '../src/intro/collapsible-intro'
 import PageviewCounter from '../src/pageviews'
 
 export const Home = (): JSX.Element => (

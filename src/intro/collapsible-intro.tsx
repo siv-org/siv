@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import Intro from '../src/intro.mdx'
+import Intro from './intro.mdx'
 
 export default function CollapsibleIntro(): JSX.Element {
   const [collapsed, setCollapsed] = useState(true)
