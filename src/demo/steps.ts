@@ -218,11 +218,11 @@ const steps: Step[] = [
       '',
       {
         html: `<code style="max-width: 100%; word-break: break-all; font-size: 14px;">
-            1. ${red('d58e6fab72')} = John T. Elson<br />
+            1. ${red('d58e6fab72')} = Green, Erik<br />
             <br />
             …<br />
             <br />
-            300,000. ${red('fe34fe7f10')} = Casey Hohl<br />
+            300,000. ${red('fe34fe7f10')} = Swift, Savannah<br />
           </code>`,
       },
       '',
