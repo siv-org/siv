@@ -1,4 +1,5 @@
 import Ballot from './ballot'
+import Invitation from './invitation'
 import styles from './protocol.module.css'
 import signed_receipt from './signed_receipt'
 import VoterList from './voter-list'
@@ -74,10 +75,7 @@ const steps: Step[] = [
   // Step 1
   {
     name: 'Step 1: Invitation to Vote',
-    rest: [
-      { description: 'Voting authority sends individualized email to all voters.' },
-      { image: 'step-1-invitation.png', maxWidth: 533 },
-    ],
+    rest: [{ description: 'Voting authority sends individualized email to all voters.' }, { react: Invitation }],
   },
 
   // Step 2
