@@ -1,7 +1,7 @@
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core'
 import { range } from 'lodash'
 
-const names = ['Elissa Schuster', 'Brad Hauck', 'Aditya Barton', 'Erik Green', 'Savannah Swift']
+const names = ['Barton, Aditya', 'Green, Erik', 'Hauck, Brad', 'Schuster, Elissa', 'Swift, Savannah']
 
 export default function VoterList(): JSX.Element {
   return (
