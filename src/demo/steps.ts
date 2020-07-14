@@ -41,7 +41,6 @@ export const prepSteps: Step[] = [
       },
       { example: '' },
       { react: VoterList },
-      // { image: 'pre-a-voter-list.png', maxWidth: 450 },
     ],
   },
 

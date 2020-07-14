@@ -97,7 +97,7 @@ function renderLine(line: Line, lineIndex: number) {
   // Special handing for react nodes
   if (type === 'react') {
     const Element = (line as ReactLine).react
-    return <Element />
+    return <Element key={lineIndex} />
   }
 
   // Otherwise it's text

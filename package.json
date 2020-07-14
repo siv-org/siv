@@ -58,7 +58,6 @@
     "@mdx-js/loader": "^1.6.6",
     "@nandorojo/swr-firestore": "^0.10.0",
     "@next/mdx": "^9.4.4",
-    "faker": "^4.1.0",
     "firebase": "^7.15.5",
     "lodash": "^4.17.19",
     "next": "latest",
@@ -67,7 +66,6 @@
   },
   "devDependencies": {
     "@testing-library/react": "^10.0.1",
-    "@types/faker": "^4.1.12",
     "@types/jest": "^25.1.4",
     "@types/lodash": "^4.14.157",
     "@types/node": "^13.9.5",

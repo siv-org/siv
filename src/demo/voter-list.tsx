@@ -1,6 +1,7 @@
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core'
-import faker from 'faker/locale/en_US'
 import { range } from 'lodash'
+
+const names = ['Elissa Schuster', 'Brad Hauck', 'Aditya Barton', 'Erik Green', 'Savannah Swift']
 
 export default function VoterList(): JSX.Element {
   return (
@@ -8,41 +9,39 @@ export default function VoterList(): JSX.Element {
       <TableContainer component={Paper}>
         <Table size="small">
           <TableHead>
-            <TableRow>{['Name', 'Date of Birth', 'Mailing Address', 'Email Address'].map(HeaderCell)}</TableRow>
+            <TableRow>
+              {['Name', 'Date of Birth', 'Mailing Address', 'Email Address'].map((text: string, index: number) => (
+                <TableCell
+                  align={index === 0 ? 'left' : 'center'}
+                  colSpan={index === 1 ? 6 : 1}
+                  key={index}
+                  style={{ backgroundColor: '#e6eafB', fontSize: 11, fontWeight: 'bold', lineHeight: '15px' }}
+                >
+                  {text}
+                </TableCell>
+              ))}
+            </TableRow>
           </TableHead>
-          <TableBody>{range(5).map(randomPersonRow)}</TableBody>
+          <TableBody>
+            {names.map((name: string, index: number) => (
+              <TableRow key={index}>
+                <TableCell colSpan={6} style={{ fontSize: 12 }}>
+                  {name}
+                </TableCell>
+                {range(3).map((col) => (
+                  <TableCell align="center" key={col}>
+                    ...
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableBody>
         </Table>
       </TableContainer>
-      <br />
+      <div style={{ height: 25, marginTop: 13, position: 'relative' }}>
+        <img src="./overview/pre-a-arrow.png" style={{ position: 'absolute', right: 36, width: 20 }} />
+      </div>
+      <p style={{ color: '#4154af', fontWeight: 'bold', textAlign: 'right' }}>New requirement</p>
     </>
-  )
-}
-
-function HeaderCell(text: string, index: number) {
-  return (
-    <TableCell
-      align={index === 0 ? 'left' : 'center'}
-      colSpan={index === 1 ? 6 : 1}
-      key={text}
-      style={{ backgroundColor: '#E6EAFB', fontSize: 11, fontWeight: 'bold', lineHeight: '15px' }}
-    >
-      {text}
-    </TableCell>
-  )
-}
-
-function randomPersonRow(row: number) {
-  return (
-    <TableRow key={row}>
-      {/* <TableCell style={{ fontSize: 12 }}>{row + 1}</TableCell> */}
-      <TableCell colSpan={6} style={{ fontSize: 12 }}>
-        {faker.name.firstName()} {faker.name.lastName()}
-      </TableCell>
-      {range(3).map((col) => (
-        <TableCell align="center" key={col}>
-          ...
-        </TableCell>
-      ))}
-    </TableRow>
   )
 }
