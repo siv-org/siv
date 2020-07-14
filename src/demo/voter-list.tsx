@@ -38,8 +38,14 @@ export default function VoterList(): JSX.Element {
           </TableBody>
         </Table>
       </TableContainer>
+      <style global jsx>{`
+        .MuiTableCell-sizeSmall {
+          padding: 6px 10px !important;
+        }
+      `}</style>
+
       <div style={{ height: 25, marginTop: 13, position: 'relative' }}>
-        <img src="./overview/pre-a-arrow.png" style={{ position: 'absolute', right: 36, width: 20 }} />
+        <img src="./overview/pre-a-arrow.png" style={{ position: 'absolute', right: '11%', width: 20 }} />
       </div>
       <p style={{ color: '#4154af', fontWeight: 'bold', textAlign: 'right' }}>New requirement</p>
     </>
