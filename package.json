@@ -46,7 +46,10 @@
     "rules": {
       "declaration-colon-newline-after": null,
       "value-list-comma-newline-after": null
-    }
+    },
+    "ignoreFiles": [
+      "**/*.tsx"
+    ]
   },
   "dependencies": {
     "@ant-design/icons": "^4.2.1",
