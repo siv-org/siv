@@ -67,7 +67,11 @@ export const prepSteps: Step[] = [
   // Pre-C
   {
     name: 'C: Ballot Finalized',
-    rest: [{ example: '' }, { react: Ballot }],
+    rest: [
+      { example: '' },
+      { react: Ballot },
+      { details: 'There can be multiple questions, as many as the election requires.' },
+    ],
   },
 ]
 
@@ -88,8 +92,6 @@ const steps: Step[] = [
       '',
       { p: 'Voter sees a GUI to make it easy to fill out their ballot:' },
       { image: 'step-2a-gui.png', maxWidth: 400 },
-      '',
-      { details: 'There can be multiple questions, as many as the election requires.' },
       '',
       { p: 'At the end, there\'s a "Verification Note" field — a freeform textbox.' },
       { image: 'step-2c-verification-note.png', maxWidth: 400 },
