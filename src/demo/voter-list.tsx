@@ -15,7 +15,7 @@ export default function VoterList(): JSX.Element {
                   align={index === 0 ? 'left' : 'center'}
                   colSpan={index === 1 ? 6 : 1}
                   key={index}
-                  style={{ backgroundColor: '#e6eafB', fontSize: 11, fontWeight: 'bold', lineHeight: '15px' }}
+                  style={{ backgroundColor: '#e6eafb', fontSize: 11, fontWeight: 'bold', lineHeight: '15px' }}
                 >
                   {text}
                 </TableCell>

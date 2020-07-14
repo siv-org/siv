@@ -1,3 +1,4 @@
+import Ballot from './ballot'
 import styles from './protocol.module.css'
 import signed_receipt from './signed_receipt'
 import VoterList from './voter-list'
@@ -65,7 +66,7 @@ export const prepSteps: Step[] = [
   // Pre-C
   {
     name: 'C: Ballot Finalized',
-    rest: [{ example: '' }, { image: 'pre-c-ballot.png', maxWidth: 400 }],
+    rest: [{ example: '' }, { react: Ballot }],
   },
 ]
 
