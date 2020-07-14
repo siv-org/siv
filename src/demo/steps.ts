@@ -41,6 +41,7 @@ export const prepSteps: Step[] = [
       },
       { example: '' },
       { react: VoterList },
+      { p: 'Individuals voters must opt-in to SIV by registering their email address with their Voting Authority.' },
     ],
   },
 
