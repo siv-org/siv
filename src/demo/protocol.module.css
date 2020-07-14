@@ -1,15 +1,15 @@
 /* Container for whole protocol */
 .protocol {
-  background-color: #e5eafd;
-  padding: 10px 14px;
   width: 100%;
+  padding: 10px 14px;
+  background-color: #e5eafd;
 }
 
 .name {
+  margin: 0;
   color: #000c;
   font-size: 16px;
   font-weight: 700;
-  margin: 0;
 }
 
 .prepContainer {
@@ -23,15 +23,15 @@
 
 /* Now we define individual line types */
 .title {
+  margin-bottom: 0;
   font-size: 21px;
   font-weight: 700;
-  margin-bottom: 0;
 }
 
 .subtitle {
+  margin-top: 3px;
   font-size: 16px;
   font-weight: 700;
-  margin-top: 3px;
 }
 
 .p {
@@ -39,10 +39,10 @@
 }
 
 .description {
+  max-width: 450px;
+  margin-top: 10px;
   font-size: 15px;
   font-weight: 700;
-  margin-top: 10px;
-  max-width: 450px;
 }
 
 .example {

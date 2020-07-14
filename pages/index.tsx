@@ -1,9 +1,9 @@
 import Head from 'next/head'
 
 import CallToAction from '../src/call-to-action'
-import CollapsibleIntro from '../src/collapsible-intro'
-import PageviewCounter from '../src/pageview-counter'
-import Protocol from '../src/protocol'
+import Demo from '../src/demo'
+import CollapsibleIntro from '../src/intro/collapsible-intro'
+import PageviewCounter from '../src/pageviews'
 
 export const Home = (): JSX.Element => (
   <div className="container">
@@ -24,7 +24,7 @@ export const Home = (): JSX.Element => (
 
       <CallToAction />
 
-      <Protocol />
+      <Demo />
     </main>
   </div>
 )
