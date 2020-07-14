@@ -9,7 +9,7 @@ export const Home = (): JSX.Element => (
   <div className="container">
     <Head>
       <title>SIV: Secure Internet Voting</title>
-      <link href="/favicon.ico" rel="icon" />
+      <link href="/favicon.png" rel="icon" />
       <meta content="minimum-scale=1, initial-scale=1, width=device-width" name="viewport" />
     </Head>
 
