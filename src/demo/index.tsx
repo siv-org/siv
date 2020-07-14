@@ -3,7 +3,7 @@ import { Accordion, AccordionSummary as Summary } from '@material-ui/core'
 import { ExpandMore } from '@material-ui/icons'
 
 import styles from './protocol.module.css'
-import steps, { ImageLine, Line, Step, Subsection, header, prepSteps } from './steps'
+import steps, { ImageLine, Line, ReactLine, Step, Subsection, header, prepSteps } from './steps'
 
 export default function Protocol(): JSX.Element {
   return (
@@ -77,7 +77,7 @@ function renderLine(line: Line, lineIndex: number) {
     return <img key={lineIndex} src={`./overview/${image}`} style={{ maxWidth, width: '100%' }} />
   }
 
-  // Specially handling for subsections
+  // Special handling for subsections
   if (type === 'subsection') {
     const { header, list } = (line as Subsection).subsection
     return (
@@ -92,6 +92,12 @@ function renderLine(line: Line, lineIndex: number) {
         </ul>
       </div>
     )
+  }
+
+  // Special handing for react nodes
+  if (type === 'react') {
+    const Element = (line as ReactLine).react
+    return <Element />
   }
 
   // Otherwise it's text

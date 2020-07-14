@@ -1,5 +1,6 @@
 import styles from './protocol.module.css'
 import signed_receipt from './signed_receipt'
+import VoterList from './voter-list'
 
 const colorize = (color: string) => (text: string) => `<span style="color: ${color};">${text}</span>`
 const blue = colorize('#1332fe')
@@ -24,8 +25,9 @@ export const header = [
 
 export type ImageLine = { image: string; maxWidth: number }
 export type Subsection = { subsection: { header: string; list: string[] } }
+export type ReactLine = { react: () => JSX.Element }
 
-export type Line = Record<string, string> | Subsection | ImageLine | ''
+export type Line = Record<string, string> | ImageLine | Subsection | ReactLine | ''
 
 export type Step = { name: string; rest: Line[] }
 
@@ -37,8 +39,9 @@ export const prepSteps: Step[] = [
       {
         description: `Voting authority collects list of all valid voters, using the usual methods (in person, DMV, etc).`,
       },
-      { example: '1 million eligible San Francisco voters' },
-      { image: 'pre-a-voter-list.png', maxWidth: 450 },
+      { example: '' },
+      { react: VoterList },
+      // { image: 'pre-a-voter-list.png', maxWidth: 450 },
     ],
   },
 
