@@ -1,9 +1,9 @@
-import { createContext, useMemo, useReducer } from 'react'
+import { useContext as _useContext, createContext, useMemo, useReducer } from 'react'
 
 const initState = { vote_for_mayor: 'London Breed' }
 type State = Record<string, string>
 
-export const Context = createContext<{ dispatch: (payload: State) => void; state: State }>({
+const Context = createContext<{ dispatch: (payload: State) => void; state: State }>({
   dispatch: (payload: State) => void payload,
   state: initState,
 })
@@ -14,3 +14,5 @@ export default function ContextProvider({ children }: { children: JSX.Element })
 
   return <Context.Provider value={memoized}>{children}</Context.Provider>
 }
+
+export const useContext = () => _useContext(Context)

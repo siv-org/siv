@@ -1,19 +1,20 @@
-import { useContext } from 'react'
-
-import { Context } from '../context'
+import { useContext } from '../context'
 
 export default function Plaintext(): JSX.Element {
-  const { state } = useContext(Context)
+  const { state } = useContext()
 
-  return (
-    <code style={{ color: 'blue', left: '15%', position: 'relative' }}>
-      {'{'}
-      <br />
-      &nbsp;&nbsp;vote_for_mayor: &apos;{state.vote_for_mayor}&apos;,
-      <br />
-      &nbsp;&nbsp;secret_id: &apos;76cbd63fa94e&apos;
-      <br />
-      {'}'}
-    </code>
-  )
+  return <PrintJSON obj={state} />
 }
+
+const PrintJSON = ({ obj }: { obj: Record<string, string> }) => (
+  <div style={{ color: 'blue', fontFamily: 'monospace', left: '12%', marginTop: 15, position: 'relative' }}>
+    {'{'}
+    <br />
+    {Object.keys(obj).map((key) => (
+      <p key={key} style={{ margin: '0 15px' }}>
+        {key}: &apos;{obj[key]}&apos;,
+      </p>
+    ))}
+    {'}'}
+  </div>
+)

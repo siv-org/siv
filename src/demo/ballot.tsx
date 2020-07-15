@@ -1,11 +1,10 @@
 import { FormControlLabel, Paper, Radio, RadioGroup } from '@material-ui/core'
-import { useContext } from 'react'
 
-import { Context } from '../context'
+import { useContext } from '../context'
 
 export default function BallotWrapper(enabled?: boolean) {
   return function Ballot(): JSX.Element {
-    const { dispatch, state } = useContext(Context)
+    const { dispatch, state } = useContext()
 
     return (
       <Paper elevation={3} style={{ marginBottom: 30, padding: '0.5rem 1.5rem' }}>

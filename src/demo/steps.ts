@@ -2,6 +2,7 @@ import Ballot from './ballot'
 import Invitation from './invitation'
 import Plaintext from './plaintext'
 import styles from './protocol.module.css'
+import SecretID from './secret-id'
 import signed_receipt from './signed_receipt'
 import VoterList from './voter-list'
 
@@ -94,10 +95,9 @@ const steps: Step[] = [
       { p: 'Voter sees a GUI to make it easy to fill out their ballot:' },
       { react: Ballot(true) },
       '',
-      { p: 'At the end, there\'s a "Verification Note" field — a freeform textbox.' },
-      { image: 'step-2c-verification-note.png', maxWidth: 400 },
+      { html: `At the end, there's a special ${em('Secret ID')} section.` },
       '',
-      '',
+      { react: SecretID },
       '',
       { html: `This example results in a plaintext ${blue(semibold('marked, unsealed ballot'))} like:` },
       { react: Plaintext },
