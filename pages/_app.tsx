@@ -5,7 +5,8 @@ import '../src/global.css'
 
 import { Fuego, FuegoProvider } from '@nandorojo/swr-firestore'
 import { AppProps } from 'next/app'
-import React from 'react'
+
+import ContextProvider from '../src/context'
 
 const fuego = new Fuego({
   apiKey: 'AIzaSyD_B-jUzVeuYJTQafPKMmVlD4ddvNFxnfs',
@@ -20,7 +21,9 @@ const fuego = new Fuego({
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <FuegoProvider fuego={fuego}>
-      <Component {...pageProps} />
+      <ContextProvider>
+        <Component {...pageProps} />
+      </ContextProvider>
     </FuegoProvider>
   )
 }

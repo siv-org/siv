@@ -1,5 +1,6 @@
 import Ballot from './ballot'
 import Invitation from './invitation'
+import Plaintext from './plaintext'
 import styles from './protocol.module.css'
 import signed_receipt from './signed_receipt'
 import VoterList from './voter-list'
@@ -69,7 +70,7 @@ export const prepSteps: Step[] = [
     name: 'C: Ballot Finalized',
     rest: [
       { example: '' },
-      { react: Ballot },
+      { react: Ballot() },
       { details: 'There can be multiple questions, as many as the election requires.' },
     ],
   },
@@ -91,7 +92,7 @@ const steps: Step[] = [
       },
       '',
       { p: 'Voter sees a GUI to make it easy to fill out their ballot:' },
-      { image: 'step-2a-gui.png', maxWidth: 400 },
+      { react: Ballot(true) },
       '',
       { p: 'At the end, there\'s a "Verification Note" field — a freeform textbox.' },
       { image: 'step-2c-verification-note.png', maxWidth: 400 },
@@ -99,16 +100,7 @@ const steps: Step[] = [
       '',
       '',
       { html: `This example results in a plaintext ${blue(semibold('marked, unsealed ballot'))} like:` },
-      {
-        html: `
-          <code>${blue(
-            `{<br />
-            &nbsp;&nbsp;vote_for_mayor: ‘london_breed’,<br />
-            &nbsp;&nbsp;verification_note: ‘Auto-generated: 76cbd63fa94eba743d5’,<br />
-            }`,
-          )}</code>
-        `,
-      },
+      { react: Plaintext },
       '',
       '',
       '',
