@@ -2,6 +2,7 @@ import Ballot from './ballot'
 import Invitation from './invitation'
 import Plaintext from './plaintext'
 import styles from './protocol.module.css'
+import Sealed from './sealed'
 import SecretID from './secret-id'
 import signed_receipt from './signed_receipt'
 import VoterList from './voter-list'
@@ -105,18 +106,11 @@ const steps: Step[] = [
       '',
       '',
       {
-        html: `Then their ${blue(semibold('marked ballot'))} can be automatically sealed, using their ${red(
-          semibold('Vote Token'),
-        )}, resulting in an encrypted ${purple(semibold('sealed ballot'))} like:`,
+        html: `Then their ${blue(semibold('marked ballot'))} can be sealed, resulting in an encrypted ${purple(
+          semibold('sealed ballot'),
+        )} like:`,
       },
-      {
-        html: `<code style="max-width: 100%; word-break: break-all; font-size: 14px;">
-          ${red('d58e6fab72')}${purple(
-          'TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZWxpdC4gSW50ZWdlciBuZWMgY29tbWbyBtYWduY…gdGluY',
-        )}
-        </code>`,
-      },
-      '',
+      { react: Sealed },
       {
         subsection: {
           header: 'Sealed Ballots',
@@ -125,16 +119,6 @@ const steps: Step[] = [
             ${light('The encryption acts like a sealed envelope.')}`,
 
             `can ${semibold('only be unlocked by special key')}— explained in final step.`,
-
-            `${semibold(
-              `${em('does')} reveal the Vote Token`,
-            )} used to sign it. This verifies that the ballot came from a valid voter, and can only be used once.<br />
-            ${light('You can think of this like signing the outside of the sealed envelope.')}`,
-
-            `Because it reveals your Vote Token, it’s ${semibold(
-              'important not to show your sealed ballot to anyone before you submit it',
-            )}. Otherwise they can take your Vote Token to quickly vote in your place before you.<br />
-            ${light('If this happens, the Voting Authority can invalidate the Vote Token and generate a new one.')}`,
           ],
         },
       },

@@ -21,7 +21,7 @@ export default function VoterList(): JSX.Element {
         <p>Voting for our next SF Mayor is now open.</p>
         <p>Votes accepted for the next 14 days.</p>
         <p>
-          Click here to cast your vote: <br />
+          Click here to securely cast your vote: <br />
           <a style={{ cursor: 'pointer' }}>
             www.sfgov.org/2020election?id=
             <Highlight>d58e6fab72</Highlight>
