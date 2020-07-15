@@ -1,10 +1,11 @@
 import { Button, Paper, TextField } from '@material-ui/core'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import { useContext } from '../context'
 
 export default function SecretID(): JSX.Element {
   const { dispatch, state } = useContext()
+  const { width } = useWindowDimensions()
 
   const generate = () => {
     dispatch({ secret: generateSecretID() })
@@ -35,7 +36,7 @@ export default function SecretID(): JSX.Element {
             variant="outlined"
           />
           <Button color="primary" onClick={generate}>
-            Regenerate
+            {width < 450 ? 'Regen' : 'Regenerate'}
           </Button>
         </div>
         <p>
@@ -58,4 +59,23 @@ export function generateSecretID() {
   const hex = Number(integer).toString(16)
   const id = `${hex.slice(0, 4)} ${hex.slice(4, 8)} ${hex.slice(8, 12)}`
   return id
+}
+
+const getWindowDimensions = () => ({ height: window.innerHeight, width: window.innerWidth })
+
+// Helper function to get window dimensions
+function useWindowDimensions() {
+  const [windowDimensions, setWindowDimensions] = useState({ height: 0, width: 0 })
+
+  useEffect(() => {
+    function handleResize() {
+      setWindowDimensions(getWindowDimensions())
+    }
+
+    handleResize()
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  return windowDimensions
 }
