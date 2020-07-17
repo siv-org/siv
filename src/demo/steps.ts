@@ -4,7 +4,7 @@ import Plaintext from './plaintext'
 import styles from './protocol.module.css'
 import Sealed from './sealed'
 import SecretID from './secret-id'
-import signed_receipt from './signed_receipt'
+import SignedReceipt from './signed-receipt'
 import VoterList from './voter-list'
 
 const colorize = (color: string) => (text: string) => `<span style="color: ${color};">${text}</span>`
@@ -137,17 +137,7 @@ const steps: Step[] = [
           (Voter claims the system screwed up their vote, but receipt proves otherwise.)`,
         )}`,
       },
-      {
-        html: `
-          <div style="margin: 3rem;">
-            <p style="font-size: 14px"><em>Example:</em></p>
-            <code style="max-width: 100%; word-break: break-all; font-size: 11px; opacity: 0.7">${signed_receipt
-              .replace(/\t/g, '&nbsp;&nbsp;')
-              .replace(/\n/g, '<br />')}
-            </code>
-          </div>
-        `,
-      },
+      { react: SignedReceipt },
     ],
   },
 
