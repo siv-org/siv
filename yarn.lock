@@ -1737,6 +1737,11 @@
   resolved "https://registry.yarnpkg.com/@types/eslint-visitor-keys/-/eslint-visitor-keys-1.0.0.tgz#1ee30d79544ca84d68d4b3cdb0af4f205663dd2d"
   integrity sha512-OCutwjDZ4aFS6PB1UZ988C4YgwlBHJd6wCeQqaLdmadZ/7e+w79+hbMUFC1QXDNCmdyoRfAFdm0RypzwR+Qpag==
 
+"@types/jsbn@^1.2.29":
+  version "1.2.29"
+  resolved "https://registry.yarnpkg.com/@types/jsbn/-/jsbn-1.2.29.tgz#28229bc0262c704a1506c3ed69a7d7e115bd7832"
+  integrity sha512-2dVz9LTEGWVj9Ov9zaDnpvqHFV+W4bXtU0EUEGAzWfdRNO3dlUuosdHpENI6/oQW+Kejn0hAjk6P/czs9h/hvg==
+
 "@types/json-schema@^7.0.3", "@types/json-schema@^7.0.4":
   version "7.0.5"
   resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.5.tgz#dcce4430e64b443ba8945f0290fb564ad5bac6dd"
@@ -5199,6 +5204,11 @@ js-yaml@^3.13.1:
   dependencies:
     argparse "^1.0.7"
     esprima "^4.0.0"
+
+jsbn@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/jsbn/-/jsbn-1.1.0.tgz#b01307cb29b618a1ed26ec79e911f803c4da0040"
+  integrity sha1-sBMHyym2GKHtJux56RH4A8TaAEA=
 
 jsesc@^2.5.1:
   version "2.5.2"
