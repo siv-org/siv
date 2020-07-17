@@ -56,3 +56,10 @@ export const bigCipher = (o: { [P in keyof Cipher_Text]: string | number }) => m
 
 /** Converts public_key with string or number values to BigIntegers */
 export const bigPubKey = (o: { [P in keyof Public_Key]: string | number }) => mapValues(o, big)
+
+export const stringify = (object: Cipher_Text) => objToString(mapValues(object, (v) => v.toString()))
+
+const objToString = (obj: Record<string, string>) =>
+  `{ ${Object.keys(obj)
+    .map((key) => `${key}: ${obj[key]}`)
+    .join(', ')} }`

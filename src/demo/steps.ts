@@ -90,7 +90,7 @@ const steps: Step[] = [
     name: 'Step 2: Craft Your Sealed Ballot',
     rest: [
       {
-        description: `Voter fills out their ballot, signing & encrypted (sealing) with their Vote Token.`,
+        description: `Voter fills out their ballot & encrypts it.`,
       },
       '',
       { p: 'Voter sees a GUI to make it easy to fill out their ballot:' },

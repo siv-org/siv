@@ -1,4 +1,4 @@
-const Alphabet = ' ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
+const Alphabet = '0123456789 ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
 
 const AlphabetToIndex: { [index: string]: number } = Alphabet.reduce(
   (memo, letter, index) => ({
@@ -19,7 +19,7 @@ export function encode(text: string) {
     return index
   })
   const binary = indices.map((i) => i.toString(2))
-  const padded = binary.map((i) => i.padStart(5, '0'))
+  const padded = binary.map((i) => i.padStart(6, '0'))
   const encoded = Number.parseInt(padded.join(''), 2)
   return encoded
 }
@@ -27,9 +27,9 @@ export function encode(text: string) {
 export function decode(encoded: number) {
   const binaryString = encoded.toString(2)
   const { length } = binaryString
-  const targetLength = Math.ceil(length / 5) * 5
+  const targetLength = Math.ceil(length / 6) * 6
   const padded = binaryString.padStart(targetLength, '0')
-  const chunks = padded.match(/.{1,5}/g) as RegExpMatchArray
+  const chunks = padded.match(/.{1,6}/g) as RegExpMatchArray
   const indices = chunks.map((c) => Number.parseInt(c, 2))
   const letters = indices.map((i) => Alphabet[i])
   const decoded = letters.join('')

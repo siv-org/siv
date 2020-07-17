@@ -7,7 +7,7 @@ export default function Plaintext(): JSX.Element {
 }
 
 export const PrintJSON = ({ color = 'black', obj }: { color?: string; obj: Record<string, string> }) => (
-  <div style={{ fontFamily: 'monospace', left: '12%', marginTop: 15, position: 'relative' }}>
+  <div style={{ fontFamily: 'monospace', marginTop: 15, padding: '0 6%' }}>
     {'{'}
     <br />
     {Object.keys(obj).map((key) => (
