@@ -81,7 +81,7 @@ function renderLine(line: Line, lineIndex: number) {
   if (type === 'subsection') {
     const { header, list } = (line as Subsection).subsection
     return (
-      <div key={lineIndex} style={{ margin: '3rem' }}>
+      <div key={lineIndex} style={{ padding: '2rem 6%' }}>
         <p style={{ fontSize: 14, fontWeight: 700 }}>{header}:</p>
         <ul style={{ fontSize: 7, paddingInlineStart: 13 }}>
           {list.map((item, listIndex) => (
