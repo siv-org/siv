@@ -251,22 +251,21 @@ const steps: Step[] = [
       '',
       '',
       {
-        html: `Unlocks the ${blue(
-          semibold('vote contents'),
-        )} of the final list only, not Vote Tokens. Preserves privacy.`,
+        html: `Unlocks the ${blue(semibold('vote contents'))} of the final list only, not Vote Tokens. ${em(
+          'Preserves privacy.',
+        )}`,
       },
       '',
       '',
       '',
       { react: Unlocked },
       '',
-      '',
-      '',
+      { details: `Anyone can tally the final vote count themselves.` },
       {
-        p: `Now, anyone can tally the final vote count themselves.
-
-    Any voter can Search (Ctrl+F) to find their personal vote via the Verification Note line, to see it was entered correctly.`,
+        p: `Any voter can Search (Ctrl+F) to find their individual vote, via their Secret Identifier, and see that their vote was counted correctly.`,
       },
+      '',
+      '',
     ],
   },
 ]
