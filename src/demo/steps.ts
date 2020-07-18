@@ -44,12 +44,15 @@ export const prepSteps: Step[] = [
     name: 'A: Voter Registration Period',
     rest: [
       {
-        description: `Voting authority collects list of all valid voters, using the usual methods (in person, DMV, etc).`,
+        description: `Election administrator collects list of all valid voters, using the usual methods (in person, DMV, etc).`,
       },
-      { details: "For this demo, let's pretend you're a voter named 'Adam Barton'." },
+      { html: light("For this demo, we'll pretend you're a voter named 'Adam Barton'.") },
       { example: '' },
       { react: VoterList },
-      { p: 'Individuals voters must opt-in to SIV by registering their email address with their Voting Authority.' },
+      {
+        p:
+          'Individuals voters must opt-in to SIV by registering their email address with their election administrator.',
+      },
     ],
   },
 
@@ -63,7 +66,7 @@ export const prepSteps: Step[] = [
       {
         details: `Requirements:
           1. They will need their phone or computer to be online and running a special SIV Shuffling program when the voting period closes.
-          2. To enroll, they need to generate a private key, and share the corresponding public key with the voting authority.
+          2. To enroll, they need to generate a private key, and share the corresponding public key with the election admin.
 
           Their job will be explained in Step 5, but their public keys are needed for voters to seal their votes in Step 2.`,
       },
@@ -85,7 +88,7 @@ const steps: Step[] = [
   // Step 1
   {
     name: 'Step 1: Invitation to Vote',
-    rest: [{ description: 'Voting authority sends individualized email to all voters.' }, { react: Invitation }],
+    rest: [{ description: 'Election administrator sends individualized email to all voters.' }, { react: Invitation }],
   },
 
   // Step 2
@@ -141,25 +144,23 @@ const steps: Step[] = [
     name: 'Step 3: Submit Encrypted Ballot',
     rest: [
       {
-        description:
-          'The Voter submits their encrypted ballot to the Voting Authority, along with their unique Vote Token.',
+        description: 'The voter sends their encrypted ballot + unique Vote Token to the election administrator.',
       },
       {
-        html: `Voting authority confirms the ${red(
+        html: `Election admin confirms the ${red(
           semibold('Vote Token'),
         )} matches an eligible voter, and hasn't already been used.`,
       },
       '',
       { react: YourSubmittedBallot },
       {
-        details:
-          'If it passes, the Voting Authority adds the encrypted ballot to a public list of all ballots received so far.',
+        details: 'If it passes, the admin adds the ballot to a public list of all ballots received so far.',
       },
       '',
       { react: SubmittedBallots },
       '',
       {
-        html: `The Voting Authority has no way to know how a voter voted. Still, they can send voters an email confirmation that their encrypted ballot has been received and accepted.<br />
+        html: `The election administrator has no way to know how a voter voted. Still, they can send voters an email confirmation that their encrypted ballot has been received and accepted.<br />
         ${light(
           `This lets the voter know their job is done. It also alerts the voter in case someone else somehow gained access to their vote token. And it serves as a written receipt that the vote was accepted, to allow for auditing.`,
         )}`,
@@ -172,7 +173,7 @@ const steps: Step[] = [
   {
     name: 'Step 4: Voting Period Closes',
     rest: [
-      { description: 'Election Authority reveals the names of everyone who submitted a valid Vote Token.' },
+      { description: 'Election administrator reveals the names of everyone who submitted a valid Vote Token.' },
       {
         html: `${light(
           `Who voted, but not ${em('how')} anyone voted (which they couldn’t reveal even if they wanted to).`,
@@ -181,11 +182,15 @@ const steps: Step[] = [
       '',
       { react: WhoVoted },
       '',
+      '',
       {
-        details: `This creates greater trust by showing who the voters are. The public can see they’re real valid voters. Not people voting multiple times, or "dead people", or foreigners, etc., as skeptics worry about.
-
-          This also helps watchdogs pick a random sample of voters to conduct independent audits of the vote’s validity. With individual voters' permission, they can check reported results against voter receipts.`,
+        html: `This creates greater trust by showing who the voters are. The public can see they’re real valid voters. Not people voting multiple times, or "dead people", or foreigners, etc., as skeptics worry about.<br />
+        <br />
+        ${light(
+          `This also helps watchdogs pick a random sample of voters to conduct independent audits of the vote’s validity. With individual voters' permission, they can check reported results against voter receipts.`,
+        )}`,
       },
+      '',
     ],
   },
 

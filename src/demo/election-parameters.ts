@@ -11,7 +11,7 @@ export const decryption_key = '170121057240471299'
 export const candidates = ['Angela Alioto', 'London Breed', 'Mark Leno', 'Jane Kim']
 
 export const voters = [
-  'Barton, Adam',
+  'Barton, Adam (you)',
   'Green, Erik',
   'Hauck, Brad',
   'Schuster, Elissa',
