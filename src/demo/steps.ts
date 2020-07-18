@@ -157,6 +157,13 @@ const steps: Step[] = [
       '',
       { react: SubmittedBallots },
       '',
+      {
+        html: `The Voting Authority has no way to know how a voter voted. Still, they can send voters an email confirmation that their encrypted ballot has been received and accepted.<br />
+        ${light(
+          `This lets the voter know their job is done. It also alerts the voter in case someone else somehow gained access to their vote token. And it serves as a written receipt that the vote was accepted, to allow for auditing.`,
+        )}`,
+      },
+      '',
     ],
   },
 
