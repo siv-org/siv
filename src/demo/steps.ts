@@ -102,23 +102,23 @@ const steps: Step[] = [
       '',
       { react: SecretID },
       '',
-      { html: `This example results in a plaintext ${blue(semibold('marked, unsealed ballot'))} like:` },
+      { html: `This example results in a ${blue(semibold('plaintext ballot'))} like:` },
       { react: Plaintext },
       '',
       '',
       '',
       {
-        html: `Then their ${blue(semibold('marked ballot'))} can be sealed, resulting in an encrypted ${purple(
-          semibold('sealed ballot'),
+        html: `Then the ${blue(semibold('plaintext ballot'))} can be sealed, resulting in an ${purple(
+          semibold('encrypted ballot'),
         )} like:`,
       },
       { react: Sealed },
       {
         subsection: {
-          header: 'Sealed Ballots',
+          header: 'Encrypted Ballots',
           list: [
             `${semibold('can be safely shared')}, without revealing any content of vote.<br />
-            ${light('The encryption acts like a sealed envelope.')}`,
+            ${light('The encryption acts like a locked safe.')}`,
 
             `can ${semibold('only be unlocked by special key')}— explained in final step.`,
           ],
@@ -131,8 +131,8 @@ const steps: Step[] = [
       '',
       '',
       {
-        html: `You can download an encryption receipt, allowing you or 3rd-party auditors to later verify that everything worked as intended.<br />
-        ${light(`This is optional, and can disprove claims of improper results.`)}`,
+        html: `You can download an Encryption Receipt, allowing you or 3rd-party auditors to verify that everything worked as intended.<br />
+        ${light(`This is optional. It helps prove or disprove claims of improper results.`)}`,
       },
       { react: EncryptionReceipt },
     ],
