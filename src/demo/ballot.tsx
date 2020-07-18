@@ -1,6 +1,7 @@
 import { FormControlLabel, Paper, Radio, RadioGroup } from '@material-ui/core'
 
 import { useContext } from '../context'
+import { candidates } from './election-parameters'
 
 export default function BallotWrapper(enabled?: boolean) {
   return function Ballot(): JSX.Element {
@@ -16,14 +17,14 @@ export default function BallotWrapper(enabled?: boolean) {
             padding: '5px 13px',
           }}
         >
-          Who should become the next Mayor of San Francisco?
+          Who should be the next Mayor of San Francisco?
         </p>
         <RadioGroup
           onChange={(event) => dispatch({ vote_for_mayor: event.target.value })}
           style={{ paddingLeft: '1.5rem' }}
           value={enabled ? state.plaintext.vote_for_mayor : ''}
         >
-          {['Angela Alioto', 'London Breed', 'Mark Leno', 'Jane Kim'].map((name) => (
+          {candidates.map((name) => (
             <FormControlLabel control={<Radio color="primary" />} key={name} label={name} value={name} />
           ))}
         </RadioGroup>

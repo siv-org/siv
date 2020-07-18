@@ -1,5 +1,7 @@
 import { Paper } from '@material-ui/core'
 
+import { voters } from './election-parameters'
+
 const redHex = '#e53739'
 
 const VoteToken = ({ s }: { s?: boolean }) => (
@@ -15,7 +17,7 @@ export default function VoterList(): JSX.Element {
       <Paper elevation={3} style={{ marginBottom: 30, padding: '0.5rem 1.5rem' }}>
         <p>
           From: <b>elections@sfgov.org</b> <br />
-          To: <b>david@future.vote</b> <br />
+          To: <b>you@email.com</b> <br />
           Subject: <b>Your Ballot for SF Mayor</b>
         </p>
         <p>Voting for our next SF Mayor is now open.</p>
@@ -24,7 +26,7 @@ export default function VoterList(): JSX.Element {
           Click here to securely cast your vote: <br />
           <a style={{ cursor: 'pointer' }}>
             www.sfgov.org/2020election?id=
-            <Highlight>d58e6fab72</Highlight>
+            <Highlight>{voters[0].token}</Highlight>
           </a>
         </p>
         <p>

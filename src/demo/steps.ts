@@ -1,10 +1,11 @@
+import SubmittedBallots from './all-submitted-ballots'
 import Ballot from './ballot'
+import EncryptionReceipt from './encryption-receipt'
 import Invitation from './invitation'
 import Plaintext from './plaintext'
 import styles from './protocol.module.css'
 import Sealed from './sealed'
 import SecretID from './secret-id'
-import SignedReceipt from './signed-receipt'
 import VoterList from './voter-list'
 
 const colorize = (color: string) => (text: string) => `<span style="color: ${color};">${text}</span>`
@@ -44,6 +45,7 @@ export const prepSteps: Step[] = [
       {
         description: `Voting authority collects list of all valid voters, using the usual methods (in person, DMV, etc).`,
       },
+      { details: "For this demo, let's pretend you're a voter named 'Adam Barton'." },
       { example: '' },
       { react: VoterList },
       { p: 'Individuals voters must opt-in to SIV by registering their email address with their Voting Authority.' },
@@ -129,15 +131,10 @@ const steps: Step[] = [
       '',
       '',
       {
-        html: `The ${green(
-          semibold('SIV Sealing Tool'),
-        )} can also give you a downloadable signed receipt, allowing 3rd-parties to audit everything worked as intended.<br />
-        ${light(
-          `This is optional, and provides even more assurance. It can prevent false-claims of improper results.<br />
-          (Voter claims the system screwed up their vote, but receipt proves otherwise.)`,
-        )}`,
+        html: `You can download an encryption receipt, allowing you or 3rd-party auditors to later verify that everything worked as intended.<br />
+        ${light(`This is optional, and can disprove claims of improper results.`)}`,
       },
-      { react: SignedReceipt },
+      { react: EncryptionReceipt },
     ],
   },
 
@@ -146,24 +143,16 @@ const steps: Step[] = [
     name: 'Step 3: Submit Sealed Ballot',
     rest: [
       {
-        html: `<span class="${styles.description}">Voter submits the sealed ballot to Voting Authority.</span><br />
-      ${light('The SIV Tool can do this for the Voter automatically.')}`,
+        description: 'Voter submits the sealed ballot to Voting Authority.',
       },
-      { html: `The sealed ballot is added to a public list of ${bold('all')} Sealed Ballots.` },
-      '',
       {
-        html: `<code style="max-width: 100%; word-break: break-all; font-size: 14px;">
-          1. ${red('d58e6fab72')}${purple(
-          'TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZWxpdC4gSW50ZWdlciBuZWMg29tb9kbyBtYW…gdGluY',
-        )}<br />
-          <br />
-          …<br />
-          <br />
-          300,000. ${red('fe34fe7f10')}${purple(
-          'WU0ZTAwMzZmZmI4ODhkMTY1NDAyOTk0MjY2N2QwZD gKYWJmN2ZhMDczZDgzZmQxMTExNmRiJjMDU2YTc3ZDEKZDUzNmzRiYWF…MTAyOW',
-        )}<br />
-        </code>`,
+        html: `Voting authority confirms the ${red(
+          semibold('Vote Token'),
+        )} is valid, and then adds your sealed ballot to a public list of ${bold('all')} Sealed Ballots.`,
       },
+      '',
+      { react: SubmittedBallots },
+      '',
     ],
   },
 

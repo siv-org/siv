@@ -1,7 +1,7 @@
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core'
 import { range } from 'lodash'
 
-const names = ['Barton, Aditya', 'Green, Erik', 'Hauck, Brad', 'Schuster, Elissa', 'Swift, Savannah']
+import { voters } from './election-parameters'
 
 export default function VoterList(): JSX.Element {
   return (
@@ -23,7 +23,7 @@ export default function VoterList(): JSX.Element {
             </TableRow>
           </TableHead>
           <TableBody>
-            {names.map((name: string, index: number) => (
+            {voters.map(({ name }: { name: string }, index: number) => (
               <TableRow key={index}>
                 <TableCell colSpan={6} style={{ fontSize: 12 }}>
                   {name}
