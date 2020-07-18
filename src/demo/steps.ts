@@ -50,8 +50,7 @@ export const prepSteps: Step[] = [
       { example: '' },
       { react: VoterList },
       {
-        p:
-          'Individuals voters must opt-in to SIV by registering their email address with their election administrator.',
+        p: 'Individuals voters must opt-in to SIV by registering an email address with their election administrator.',
       },
     ],
   },
@@ -88,7 +87,10 @@ const steps: Step[] = [
   // Step 1
   {
     name: 'Step 1: Invitation to Vote',
-    rest: [{ description: 'Election administrator sends individualized email to all voters.' }, { react: Invitation }],
+    rest: [
+      { description: 'Election administrator sends individualized email to all enrolled voters.' },
+      { react: Invitation },
+    ],
   },
 
   // Step 2
