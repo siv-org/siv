@@ -213,7 +213,7 @@ const steps: Step[] = [
           styles.description
         }">Encrypted votes are verifiably shuffled by a pool of 3rd-party shufflers. This protects voters’ privacy by removing the ${red(
           semibold('Vote Tokens'),
-        )}, while still mathematically proven to preserve the ${purple(semibold('sealed vote contents'))}.</p>`,
+        )}, while still mathematically proven to preserve the ${purple(semibold('encrypted vote contents'))}.</p>`,
       },
       '',
       '',
@@ -229,25 +229,31 @@ const steps: Step[] = [
         details: `Thus, greater trust is ensured by more shufflers.
     This entire step can still be completed in just a few minutes.
 
-    The only requirement is that shufflers are online (connected to the internet), and running the open-source SIV shuffling software, to automatically handle their part.`,
+    The only requirement is that shufflers are online and running the SIV shuffling software. This software automatically handles their parts, and can even be run from a browser tab. No installs necessary.`,
       },
     ],
   },
 
   // Step 6
   {
-    name: 'Step 6: Unsealing Stage',
+    name: 'Step 6: Unlocking Stage',
     rest: [
       {
-        html: `<p class="${styles.description}">Then ${green(
-          semibold('95% of shufflers'),
+        html: `<p class="${styles.description}">Then a ${green(
+          semibold('quorum of shufflers'),
         )} can sign off that they're ready for the final ${purple(semibold('shuffled list'))} to be ${blue(
-          semibold('Unsealed'),
+          semibold('Unlocked'),
         )}.</p>`,
       },
       '',
       { image: 'step-6-threshold-key.png', maxWidth: 470 },
-      { html: blue(semibold('Unlocks the vote contents of the final list only, but not Vote Tokens.')) },
+      '',
+      '',
+      {
+        html: `Unlocks the ${blue(
+          semibold('vote contents'),
+        )} of the final list only, not Vote Tokens. Preserves privacy.`,
+      },
       '',
       '',
       '',
