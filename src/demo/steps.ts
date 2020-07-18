@@ -6,6 +6,7 @@ import Plaintext from './plaintext'
 import styles from './protocol.module.css'
 import Sealed from './sealed'
 import SecretID from './secret-id'
+import Unlocked from './unlocked'
 import VoterList from './voter-list'
 import WhoVoted from './who-voted'
 import YourSubmittedBallot from './your-submitted-ballot'
@@ -257,34 +258,8 @@ const steps: Step[] = [
       '',
       '',
       '',
+      { react: Unlocked },
       '',
-      {
-        html: `
-            <code>${blue(`
-            1. {<br />
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vote_for_mayor: ‘london_breed’,<br />
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;verification_note: ‘Auto-generated: 76cbd63fa94eba743d5’,<br />
-              &nbsp;&nbsp;&nbsp;}<br />
-              <br />
-            2. {<br />
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vote_for_mayor: ‘mark_leno’,<br />
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;verification_note: ‘Auto-generated: 6705b9b9443d077cf7’,<br />
-              &nbsp;&nbsp;&nbsp;}<br />
-              <br />
-            3. {<br />
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vote_for_mayor: ‘london_breed’,<br />
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;verification_note: ‘quick_brown_fox’,<br />
-              &nbsp;&nbsp;&nbsp;}<br />
-              <br />
-              ...<br />
-              <br />
-            300,000. {<br />
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vote_for_mayor: ‘london_breed’,<br />
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;verification_note: ‘Auto-generated: 76cbd63fa94eba743d5’,<br />
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
-            `)}</code>
-          `,
-      },
       '',
       '',
       {
