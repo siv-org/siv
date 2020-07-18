@@ -7,6 +7,7 @@ import styles from './protocol.module.css'
 import Sealed from './sealed'
 import SecretID from './secret-id'
 import VoterList from './voter-list'
+import WhoVoted from './who-voted'
 import YourSubmittedBallot from './your-submitted-ballot'
 
 const colorize = (color: string) => (text: string) => `<span style="color: ${color};">${text}</span>`
@@ -171,7 +172,6 @@ const steps: Step[] = [
   {
     name: 'Step 4: Voting Period Closes',
     rest: [
-      { p: 'Deadline listed in initial email from Step 1.' },
       { description: 'Election Authority reveals the names of everyone who submitted a valid Vote Token.' },
       {
         html: `${light(
@@ -179,20 +179,12 @@ const steps: Step[] = [
         )}`,
       },
       '',
-      {
-        html: `<code style="max-width: 100%; word-break: break-all; font-size: 14px;">
-            1. ${red('d58e6fab72')} = Green, Erik<br />
-            <br />
-            …<br />
-            <br />
-            300,000. ${red('fe34fe7f10')} = Swift, Savannah<br />
-          </code>`,
-      },
+      { react: WhoVoted },
       '',
       {
-        details: `This creates greater trust by showing who the voters are. The public can see that they’re real valid voters. Not people voting multiple times, or "dead people", or foreigners, etc., as skeptics worry about.
+        details: `This creates greater trust by showing who the voters are. The public can see they’re real valid voters. Not people voting multiple times, or "dead people", or foreigners, etc., as skeptics worry about.
 
-          This also allows anyone to pick a random sample of voters and be able to conduct independent audits of the vote’s validity — with the voter’s permission — by checking the final results against individual vote receipts.`,
+          This also helps watchdogs pick a random sample of voters to conduct independent audits of the vote’s validity. With individual voters' permission, they can check reported results against voter receipts.`,
       },
     ],
   },
