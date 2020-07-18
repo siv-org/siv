@@ -32,7 +32,7 @@ export default function SecretID(): JSX.Element {
             label=""
             size="small"
             style={{ backgroundColor: '#fff8' }}
-            value={state.secret}
+            value={state.plaintext.secret}
             variant="outlined"
           />
           <Button color="primary" onClick={generate}>

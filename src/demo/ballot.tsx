@@ -21,7 +21,7 @@ export default function BallotWrapper(enabled?: boolean) {
         <RadioGroup
           onChange={(event) => dispatch({ vote_for_mayor: event.target.value })}
           style={{ paddingLeft: '1.5rem' }}
-          value={enabled ? state.vote_for_mayor : ''}
+          value={enabled ? state.plaintext.vote_for_mayor : ''}
         >
           {['Angela Alioto', 'London Breed', 'Mark Leno', 'Jane Kim'].map((name) => (
             <FormControlLabel control={<Radio color="primary" />} key={name} label={name} value={name} />

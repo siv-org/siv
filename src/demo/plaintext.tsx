@@ -3,7 +3,7 @@ import { useContext } from '../context'
 export default function Plaintext(): JSX.Element {
   const { state } = useContext()
 
-  return <PrintJSON color="blue" obj={state} />
+  return <PrintJSON color="blue" obj={state.plaintext} />
 }
 
 export const PrintJSON = ({ color = 'black', obj }: { color?: string; obj: Record<string, string> }) => (

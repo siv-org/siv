@@ -31,15 +31,11 @@ This is an S/MIME signed message
 ------714A286D976BF3E58D9D671E37CBCF7C
 
 Marked ballot:
-{ 
-  ${Object.keys(state)
-    .map((key) => `${key}: '${state[key]}'`)
-    .join(',\n  ')}
-}
+${objToMultilineString(state.plaintext)}
 
 Sealed at ${new Date().toString()} into:
 
-d58e6fab72TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZWxpdC4gSW50ZWdlciBuZWMgY29tbW9kbyBtYWduYS4gRnVzY2Ugdml0YWUgY29tbW9kbyBudWxsYS4gU2VkIGEgY3Vyc3V
+${objToMultilineString(state.encrypted)}
 
 ------714A286D976BF3E58D9D671E37CBCF7C
 Content-Type: application/x-pkcs7-signature; name="smime.p7s"
@@ -54,4 +50,12 @@ MIIB6gYJKoZIhvcNAQcCoIIB2zCCAdcCAQExCzAJBgUrDgMCGgUAMAsGCSqGSIb3DQEHATGCAbYwggGy
       )}
     </div>
   )
+}
+
+function objToMultilineString(obj: Record<string, string>) {
+  return `{
+  ${Object.keys(obj)
+    .map((key) => `${key}: '${obj[key]}'`)
+    .join(',\n  ')}
+}`
 }
