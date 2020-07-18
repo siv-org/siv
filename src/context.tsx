@@ -7,7 +7,7 @@ import pickRandomInteger from './crypto/pick-random-integer'
 import { public_key } from './crypto/sample-key'
 import { big, stringify } from './crypto/types'
 
-const initState = { encrypted: {}, plaintext: { vote_for_mayor: 'London Breed' } }
+const initState = { encrypted: {}, plaintext: { secret: '', vote_for_mayor: 'London Breed' } }
 type Map = Record<string, string>
 type State = { encrypted: Map; plaintext: Map }
 
