@@ -7,6 +7,7 @@ import styles from './protocol.module.css'
 import Sealed from './sealed'
 import SecretID from './secret-id'
 import VoterList from './voter-list'
+import YourSubmittedBallot from './your-submitted-ballot'
 
 const colorize = (color: string) => (text: string) => `<span style="color: ${color};">${text}</span>`
 const blue = colorize('#1332fe')
@@ -17,7 +18,6 @@ const green = colorize('#417505')
 const semibold = (text: string) => `<span style="font-weight: 600;">${text}</span>`
 const light = (text: string) => `<span style="font-size: 12px; opacity: 0.65;">${text}</span>`
 const em = (text: string) => `<em>${text}</em>`
-const bold = (text: string) => `<strong>${text}</strong>`
 
 // Header
 export const header = [
@@ -89,7 +89,7 @@ const steps: Step[] = [
 
   // Step 2
   {
-    name: 'Step 2: Craft Your Sealed Ballot',
+    name: 'Step 2: Mark & Encrypt Your Ballot',
     rest: [
       {
         description: `Voter fills out their ballot & encrypts it.`,
@@ -124,11 +124,8 @@ const steps: Step[] = [
           ],
         },
       },
-      '',
       // { html: `This step is completed by using a ${green(semibold('SIV Sealing Tool'))}:` },
       // { image: 'step-2g-tool-options.png', maxWidth: 462 },
-      '',
-      '',
       '',
       {
         html: `You can download an Encryption Receipt, allowing you or 3rd-party auditors to verify that everything worked as intended.<br />
@@ -140,15 +137,22 @@ const steps: Step[] = [
 
   // Step 3
   {
-    name: 'Step 3: Submit Sealed Ballot',
+    name: 'Step 3: Submit Encrypted Ballot',
     rest: [
       {
-        description: 'Voter submits the sealed ballot to Voting Authority.',
+        description:
+          'The Voter submits their encrypted ballot to the Voting Authority, along with their unique Vote Token.',
       },
       {
         html: `Voting authority confirms the ${red(
           semibold('Vote Token'),
-        )} is valid, and then adds your sealed ballot to a public list of ${bold('all')} Sealed Ballots.`,
+        )} matches an eligible voter, and hasn't already been used.`,
+      },
+      '',
+      { react: YourSubmittedBallot },
+      {
+        details:
+          'If it passes, the Voting Authority adds the encrypted ballot to a public list of all ballots received so far.',
       },
       '',
       { react: SubmittedBallots },
