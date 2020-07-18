@@ -8,7 +8,7 @@ export default function SignedReceipt(): JSX.Element {
   const [visible, setVisible] = useState(false)
 
   return (
-    <div style={{ overflowWrap: 'break-word', padding: '2rem 6%' }}>
+    <div style={{ margin: '15px 0', overflowWrap: 'break-word' }}>
       <a onClick={() => setVisible(!visible)} style={{ cursor: 'pointer', fontSize: 14 }}>
         {visible ? 'Hide' : 'Show'} example
       </a>
@@ -32,12 +32,12 @@ This is an S/MIME signed message
 
 Marked ballot:
 { 
-  vote_for_mayor: ‘london_breed’,
-  verification_note: ‘Auto-generated: 76cbd63fa94eba743d5’,
+  ${Object.keys(state)
+    .map((key) => `${key}: '${state[key]}'`)
+    .join(',\n  ')}
 }
 
-
-Sealed at Mon Jun 08 2020 23:21:58 GMT-0700 (PDT) into:
+Sealed at ${new Date().toString()} into:
 
 d58e6fab72TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZWxpdC4gSW50ZWdlciBuZWMgY29tbW9kbyBtYWduYS4gRnVzY2Ugdml0YWUgY29tbW9kbyBudWxsYS4gU2VkIGEgY3Vyc3V
 
