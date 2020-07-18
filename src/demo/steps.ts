@@ -136,6 +136,14 @@ const steps: Step[] = [
         ${light(`This is optional. It helps prove or disprove claims of improper results.`)}`,
       },
       { react: EncryptionReceipt },
+      '',
+      {
+        html: `For extra security, this encryption step can be completed while offline (e.g. in airplane mode) and in a sandboxed incognito tab. <br />
+        ${light(
+          `This protects against the voting software itself being malicious, ensuring it can't possibly store any private vote information.`,
+        )}`,
+      },
+      '',
     ],
   },
 
@@ -160,7 +168,7 @@ const steps: Step[] = [
       { react: SubmittedBallots },
       '',
       {
-        html: `The election administrator has no way to know how a voter voted. Still, they can send voters an email confirmation that their encrypted ballot has been received and accepted.<br />
+        html: `The election administrator has no way to know how a voter voted. Still, they can email voters a confirmation that their encrypted ballot has been received and accepted.<br />
         ${light(
           `This lets the voter know their job is done. It also alerts the voter in case someone else somehow gained access to their vote token. And it serves as a written receipt that the vote was accepted, to allow for auditing.`,
         )}`,
@@ -201,7 +209,7 @@ const steps: Step[] = [
       {
         html: `<p class="${
           styles.description
-        }">Encrypted votes are verifiable shuffled by a pool of 3rd-party shufflers. This protects voters’ privacy by removing the ${red(
+        }">Encrypted votes are verifiably shuffled by a pool of 3rd-party shufflers. This protects voters’ privacy by removing the ${red(
           semibold('Vote Tokens'),
         )}, while still mathematically proven to preserve the ${purple(semibold('sealed vote contents'))}.</p>`,
       },
