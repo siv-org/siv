@@ -17,7 +17,7 @@ export default function BallotWrapper(enabled?: boolean) {
             padding: '5px 13px',
           }}
         >
-          Who should be the next Mayor of Springfield?
+          Who should be the next Mayor?
         </p>
         <RadioGroup
           onChange={(event) => dispatch({ vote_for_mayor: event.target.value })}
