@@ -3,7 +3,7 @@ import Head from 'next/head'
 import { AboveFold } from './AboveFold'
 
 export const PandaDogfish = (): JSX.Element => (
-  <div className="container">
+  <>
     <Head>
       <title>SIV: Secure Internet Voting</title>
       <link href="/favicon.png" rel="icon" />
@@ -13,5 +13,5 @@ export const PandaDogfish = (): JSX.Element => (
     <main>
       <AboveFold />
     </main>
-  </div>
+  </>
 )

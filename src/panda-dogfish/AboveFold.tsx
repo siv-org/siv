@@ -1,10 +1,9 @@
+import { Button } from './Button'
+import { JumboBlue } from './JumboBlue'
+
 export const AboveFold = (): JSX.Element => (
-  <div style={{ background: 'lightgreen', minHeight: '100vh' }}>
-    <h1>Fast. Private. Verifiable</h1>
-    <style jsx>{`
-      h1 {
-        margin: 0;
-      }
-    `}</style>
-  </div>
+  <JumboBlue>
+    <h1 style={{ margin: 0, padding: 17 }}>Fast. Private. Verifiable</h1>
+    <Button href="mailto:contact@secureinternetvoting.org">Contact Us</Button>
+  </JumboBlue>
 )
