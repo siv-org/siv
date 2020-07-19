@@ -3,6 +3,7 @@ import Head from 'next/head'
 import { AboveFold } from './AboveFold'
 import { JumboVoteImage } from './JumboVoteImage'
 import { NowPossible } from './NowPossible'
+import { SIVFeatures } from './SIVFeatures'
 import { WeCanDoBetter } from './WeCanDoBetter'
 import { WhereAreWe } from './WhereAreWe'
 
@@ -20,6 +21,7 @@ export const PandaDogfish = (): JSX.Element => (
       <WeCanDoBetter />
       <NowPossible />
       <JumboVoteImage />
+      <SIVFeatures />
     </main>
   </>
 )
