@@ -1,6 +1,7 @@
 import Head from 'next/head'
 
 import { AboveFold } from './AboveFold'
+import { WhereAreWe } from './WhereAreWe'
 
 export const PandaDogfish = (): JSX.Element => (
   <>
@@ -12,6 +13,7 @@ export const PandaDogfish = (): JSX.Element => (
 
     <main>
       <AboveFold />
+      <WhereAreWe />
     </main>
   </>
 )
