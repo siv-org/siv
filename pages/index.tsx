@@ -10,6 +10,7 @@ export const Home = (): JSX.Element => (
     <Head>
       <title>SIV: Secure Internet Voting</title>
       <link href="/favicon.png" rel="icon" />
+      <link href="/onepager.css" rel="stylesheet" />
       <meta content="minimum-scale=1, initial-scale=1, width=device-width" name="viewport" />
     </Head>
 
