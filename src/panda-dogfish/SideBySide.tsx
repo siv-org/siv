@@ -1,17 +1,20 @@
 export const SideBySide = ({
   flipped,
   graphic,
+  graphicCaption,
   headline,
   text,
 }: {
   flipped?: boolean
   graphic: string
-  headline: string
+  graphicCaption?: string
+  headline: string | JSX.Element
   text: string
 }) => (
   <div className="container">
     <div>
       <img src={`panda-dogfish/${graphic}`} />
+      <caption>{graphicCaption}</caption>
     </div>
     <div className="text-col">
       <h4>{headline}</h4>
@@ -31,6 +34,12 @@ export const SideBySide = ({
 
       img {
         max-width: 100%;
+      }
+
+      caption {
+        display: block;
+        font-size: 14px;
+        color: #555;
       }
 
       .text-col {
