@@ -34,6 +34,7 @@ export const SideBySide = ({
 
       img {
         max-width: 100%;
+        filter: brightness(85%);
       }
 
       caption {
