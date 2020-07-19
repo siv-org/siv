@@ -16,16 +16,16 @@ export default function VoterList(): JSX.Element {
     <>
       <Paper elevation={3} style={{ marginBottom: 30, padding: '0.5rem 1.5rem' }}>
         <p>
-          From: <b>elections@sfgov.org</b> <br />
+          From: <b>elections@local.gov</b> <br />
           To: <b>you@email.com</b> <br />
-          Subject: <b>Your Ballot for SF Mayor</b>
+          Subject: <b>Your Ballot for Mayor</b>
         </p>
-        <p>Voting for our next SF Mayor is now open.</p>
+        <p>Voting for our next Mayor is now open.</p>
         <p>Votes accepted for the next 14 days.</p>
         <p>
           Click here to securely cast your vote: <br />
           <a style={{ cursor: 'pointer' }}>
-            www.sfgov.org/2020election?id=
+            www.local.gov/2020election?id=
             <Highlight>{voters[0].token}</Highlight>
           </a>
         </p>
