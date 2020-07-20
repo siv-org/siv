@@ -1,7 +1,8 @@
-import { Button, TextField } from '@material-ui/core'
+import { TextField } from '@material-ui/core'
 import { firestore } from 'firebase/app'
 import { useState } from 'react'
 
+import { OnClickButton } from './Button'
 import { consultation_link } from './ForGovernments'
 
 const email = 'questions@secureinternetvoting.org'
@@ -24,8 +25,7 @@ export const Footer = (): JSX.Element => {
             style={{ flex: 1, marginRight: 10, maxWidth: 250 }}
             variant="outlined"
           />
-          <Button
-            color="primary"
+          <OnClickButton
             disabled={saved}
             onClick={() => {
               const fields = {
@@ -55,10 +55,10 @@ export const Footer = (): JSX.Element => {
                   })
                 })
             }}
-            variant="outlined"
+            style={{ margin: 0, padding: '8px 17px' }}
           >
             {saved ? 'Done!' : 'Sign Up'}
-          </Button>
+          </OnClickButton>
         </div>
       </div>
       <div className="column right-aligned">

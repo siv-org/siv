@@ -1,8 +1,10 @@
 const darkBlue = '#002868'
 
-import { BoxProps, Button, TextField, TextFieldProps } from '@material-ui/core'
+import { BoxProps, TextField, TextFieldProps } from '@material-ui/core'
 import { firestore } from 'firebase/app'
 import { useState } from 'react'
+
+import { OnClickButton } from './Button'
 
 export function LetYourGovtKnow(): JSX.Element {
   const [saved, setSaved] = useState(false)
@@ -32,9 +34,8 @@ export function LetYourGovtKnow(): JSX.Element {
           <Field fullWidth multiline label="Message" rows={4} {...{ onChange }} />
         </Row>
         <Row style={{ justifyContent: 'flex-end' }}>
-          {saved && <p style={{ margin: 0, opacity: 0.7, width: 60 }}>Saved.</p>}
-          <Button
-            color="primary"
+          {saved && <p style={{ margin: 0, opacity: 0.7, width: 60 }}>Done.</p>}
+          <OnClickButton
             disabled={saved}
             onClick={() => {
               const fields: Record<string, string | Date> = { created_at: new Date().toString() }
@@ -66,10 +67,9 @@ export function LetYourGovtKnow(): JSX.Element {
                   })
                 })
             }}
-            variant="outlined"
           >
             Send
-          </Button>
+          </OnClickButton>
         </Row>
       </form>
 
