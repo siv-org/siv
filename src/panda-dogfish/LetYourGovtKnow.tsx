@@ -11,14 +11,16 @@ export function LetYourGovtKnow(): JSX.Element {
   const onChange = () => setSaved(false)
 
   return (
-    <div style={{ padding: '2rem' }}>
-      <h3 style={{ color: darkBlue, margin: '1.5rem 0' }}>
-        Let your government officials know you want them to investigate Secure Internet Voting
-      </h3>
+    <div className="container">
+      <div className="column">
+        <h3 style={{ color: darkBlue, margin: '1.5rem 0' }}>
+          Let your government officials know you want them to investigate Secure Internet Voting
+        </h3>
 
-      <p>We’ll send them a message so they know more of their constituents are interested.</p>
+        <p>We’ll send them a message so they know more of their constituents are interested.</p>
+      </div>
 
-      <form autoComplete="off">
+      <form autoComplete="off" className="column">
         <Row>
           <Field id="name" label="Your Name" {...{ onChange }} style={{ flex: 1, marginRight: 30 }} />
           <Field label="ZIP" {...{ onChange }} style={{ maxWidth: 80 }} />
@@ -70,6 +72,33 @@ export function LetYourGovtKnow(): JSX.Element {
           </Button>
         </Row>
       </form>
+
+      <style jsx>{`
+        .container {
+          padding: 3rem;
+          display: flex;
+        }
+
+        .column {
+          flex: 1;
+        }
+
+        .column:first-child {
+          margin-right: 9%;
+        }
+
+        /* Small screens: reduce horiz padding */
+        @media (max-width: 750px) {
+          .container {
+            padding: 17px 6vw;
+            flex-direction: column;
+          }
+
+          .column:first-child {
+            margin: 0;
+          }
+        }
+      `}</style>
     </div>
   )
 }
