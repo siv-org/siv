@@ -67,6 +67,7 @@ export function LetYourGovtKnow(): JSX.Element {
                   })
                 })
             }}
+            style={{ marginRight: 0 }}
           >
             Send
           </OnClickButton>
