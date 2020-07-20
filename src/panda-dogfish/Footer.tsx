@@ -64,7 +64,7 @@ export const Footer = (): JSX.Element => {
       <div className="column right-aligned">
         <h3>SIV</h3>
         <p>
-          <a className="styled-link" href="/">
+          <a className="styled-link" href="/#protocol">
             Study Protocol
           </a>
           <br />
