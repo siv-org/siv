@@ -14,7 +14,7 @@ export const SideBySide = ({
   <div className="container">
     <div>
       <img src={`panda-dogfish/${graphic}`} />
-      <caption>{graphicCaption}</caption>
+      <p className="caption">{graphicCaption}</p>
     </div>
     <div className="text-col">
       <h4>{headline}</h4>
@@ -37,10 +37,12 @@ export const SideBySide = ({
         filter: brightness(85%);
       }
 
-      caption {
+      .caption {
+        color: #555;
         display: block;
         font-size: 14px;
-        color: #555;
+        text-align: center;
+        margin-top: 5px;
       }
 
       .text-col {
