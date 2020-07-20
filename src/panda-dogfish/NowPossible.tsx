@@ -4,6 +4,7 @@ import { SideBySide } from './SideBySide'
 export const NowPossible = (): JSX.Element => (
   <Section>
     <SideBySide
+      noDarkFilter
       graphic="hello-phone.jpg"
       headline={
         <>

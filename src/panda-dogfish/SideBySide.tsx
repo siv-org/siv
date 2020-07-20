@@ -6,6 +6,7 @@ export const SideBySide = ({
   graphic,
   graphicCaption,
   headline,
+  noDarkFilter,
   smallHeadline,
   text,
 }: {
@@ -14,12 +15,13 @@ export const SideBySide = ({
   graphic: string
   graphicCaption?: string
   headline: string | JSX.Element
+  noDarkFilter?: boolean
   smallHeadline?: boolean
   text: string
 }) => (
   <div className="container">
     <div>
-      <img src={`panda-dogfish/${graphic}`} />
+      <img className={noDarkFilter ? 'no-dark-filter' : ''} src={`panda-dogfish/${graphic}`} />
       <p className="caption">{graphicCaption}</p>
     </div>
     <div className="text-col">
@@ -55,6 +57,10 @@ export const SideBySide = ({
       img {
         max-width: 100%;
         filter: brightness(85%);
+      }
+
+      img.no-dark-filter {
+        filter: none;
       }
 
       .caption {
