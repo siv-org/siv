@@ -43,6 +43,13 @@ export const PandaDogfish = (): JSX.Element => (
       h1 {
         font-size: calc(3.6vw + 1rem);
       }
+
+      /* wider bg gradient for large screens */
+      @media (orientation: portrait) {
+        h1 {
+          font-size: calc(3.6vh + 1rem);
+        }
+      }
     `}</style>
   </>
 )
