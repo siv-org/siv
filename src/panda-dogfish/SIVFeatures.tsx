@@ -15,10 +15,10 @@ export const SIVFeatures = (): JSX.Element => (
       <Feature headline="Verifiable" text="You can personally verify that your vote counted." />
     </Row>
     <Row>
-      <Feature headline="Widely Accessible" text="Works with any smartphone or desktop." />
+      <Feature headline="Widely accessible" text="Works with any smartphone or desktop." />
       <Feature headline="Auditable registration" text="Only legitimate voters can vote, and only once." />
       <Feature
-        headline="Quick Results"
+        headline="Quick results"
         text="Don’t wait on postal mail delays. SIV ballots can be submitted in seconds."
       />
     </Row>
