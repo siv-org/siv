@@ -9,13 +9,13 @@ export const BuiltUpon = (): JSX.Element => (
     <p>And ready to be used right now, if only our elected officials will allow it.</p>
 
     <style jsx>{`
-      h2 {
-        padding: 17px;
-        text-align: center;
-      }
-
-      p {
-        text-align: center;
+      @media (min-width: 750px) {
+        h2,
+        p {
+          padding: 17px;
+          text-align: center;
+          width: 100%;
+        }
       }
     `}</style>
   </JumboBlue>

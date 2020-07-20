@@ -20,13 +20,12 @@ export const WeCanDoBetter = (): JSX.Element => (
     <style jsx>{`
       h2 {
         margin: 0;
-        padding: 17px;
+        width: 100%;
+        padding-bottom: 30px;
       }
 
       p {
-        text-align: center;
         font-size: calc(0.72vw + 1rem);
-        line-height: 1.6;
       }
 
       a {
@@ -36,6 +35,13 @@ export const WeCanDoBetter = (): JSX.Element => (
 
       a:hover {
         text-decoration: underline;
+      }
+
+      @media (min-width: 750px) {
+        h2,
+        p {
+          text-align: center;
+        }
       }
     `}</style>
   </JumboBlue>
