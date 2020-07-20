@@ -91,6 +91,10 @@ export const Footer = (): JSX.Element => {
           text-align: right;
         }
 
+        a {
+          color: #000;
+        }
+
         a.styled-link {
           text-decoration: none;
           font-weight: bold;
