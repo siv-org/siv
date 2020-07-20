@@ -3,12 +3,14 @@ export const SideBySide = ({
   graphic,
   graphicCaption,
   headline,
+  smallHeadline,
   text,
 }: {
   flipped?: boolean
   graphic: string
   graphicCaption?: string
   headline: string | JSX.Element
+  smallHeadline?: boolean
   text: string
 }) => (
   <div className="container">
@@ -17,8 +19,17 @@ export const SideBySide = ({
       <p className="caption">{graphicCaption}</p>
     </div>
     <div className="text-col">
-      <h4>{headline}</h4>
-      <h3>{text}</h3>
+      {smallHeadline ? (
+        <>
+          <h4>{headline}</h4>
+          <h3>{text}</h3>
+        </>
+      ) : (
+        <>
+          <h3>{headline}</h3>
+          <h4>{text}</h4>
+        </>
+      )}
     </div>
 
     <style jsx>{`
@@ -51,7 +62,7 @@ export const SideBySide = ({
 
       /* Large screens: top align text */
       @media (min-width: 700px) {
-        h4 {
+        .text-col > *:first-child {
           margin-top: 0;
         }
       }

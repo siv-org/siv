@@ -8,7 +8,7 @@ export const ForGovernments = (): JSX.Element => (
       flipped
       graphic="make-us-think-again.jpg"
       headline="The US spends over $500M/yr to run elections"
-      text="Digital approaches can dramatically reduce election costs and offer a far better process for everyone involved. For citizens, for election officials, and for the many volunteers who make free & fair elections possible."
+      text="Digital approaches can dramatically reduce election costs and offer a far better process for everyone involved."
     />
 
     <Button

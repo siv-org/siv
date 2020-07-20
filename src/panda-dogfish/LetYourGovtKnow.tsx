@@ -27,7 +27,7 @@ export function LetYourGovtKnow(): JSX.Element {
           <Field fullWidth label="Email" {...{ onChange }} />
         </Row>
         <Row>
-          <Field fullWidth label="Message" multiline rows={4} {...{ onChange }} />
+          <Field fullWidth multiline label="Message" rows={4} {...{ onChange }} />
         </Row>
         <Row style={{ justifyContent: 'flex-end' }}>
           {saved && <p style={{ margin: 0, opacity: 0.7, width: 60 }}>Saved.</p>}

@@ -30,6 +30,6 @@ module.exports = {
     '@typescript-eslint/explicit-module-boundary-types': 0, // Verbose
     'sort-destructure-keys/sort-destructure-keys': 2, // style
     'sort-keys-fix/sort-keys-fix': 2, // style
-    'react/jsx-sort-props': 2, // style
+    'react/jsx-sort-props': [2, { shorthandFirst: true }], // style
   },
 }
