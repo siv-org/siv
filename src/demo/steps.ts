@@ -58,15 +58,15 @@ export const prepSteps: Step[] = [
 
   // Pre-B
   {
-    name: 'B: Shufflers Registered',
+    name: 'B: Trustees Registered',
     rest: [
       {
-        description: `Shufflers — who ensure the privacy of the vote — need to be enrolled ahead of time.`,
+        description: `Trustees — who ensure the privacy of the vote — need to be enrolled ahead of time.`,
       },
       {
         details: `Requirements:
 
-          1. They will need their phone or computer online and with a special SIV Shuffling program open when the voting period closes.
+          1. They will need their phone or computer online with the SIV Shuffling program open when the voting period closes.
 
           2. To enroll, they need to generate a private key, and take part in a Threshold Key generation process with the election admin to create the corresponding public key.
 
@@ -221,7 +221,7 @@ const steps: Step[] = [
       {
         html: `<p class="${
           styles.description
-        }">Encrypted votes are verifiably shuffled by a pool of 3rd-party shufflers. This protects voters’ privacy by removing the ${red(
+        }">Encrypted votes are verifiably shuffled by a pool of 3rd-party Trustees. This protects voters’ privacy by removing the ${red(
           semibold('Vote Tokens'),
         )}, while still mathematically proven to preserve the ${purple(semibold('encrypted vote contents'))}.</p>`,
       },
@@ -233,13 +233,13 @@ const steps: Step[] = [
       '',
       {
         html: `Multiple people can shuffle, like multiple people shuffling a deck of cards.<br />
-          ${red(`Privacy is ensured by ${em('at least one')} honest shuffler.`)}`,
+          ${red(`Privacy is ensured by ${em('at least one')} honest Trustee.`)}`,
       },
       {
-        details: `Thus, greater trust is ensured by more shufflers.
+        details: `Thus, greater trust is ensured by more Trustees.
     This entire step can still be completed in just a few minutes.
 
-    The only requirement is that shufflers are online and running the SIV shuffling software. This software automatically handles their parts, and can even be run from a browser tab. No installs necessary.`,
+    The only requirement is that Trustees are online and running the SIV shuffling software. This software automatically handles their parts, and can even be run from a browser tab. No installs necessary.`,
       },
     ],
   },
@@ -250,7 +250,7 @@ const steps: Step[] = [
     rest: [
       {
         html: `<p class="${styles.description}">Then a ${green(
-          semibold('quorum of shufflers'),
+          semibold('quorum of Trustees'),
         )} can sign off that they're ready for the final ${purple(semibold('shuffled list'))} to be ${blue(
           semibold('Unlocked'),
         )}.</p>`,
