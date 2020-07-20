@@ -1,31 +1,53 @@
 import { Button } from './Button'
+import { Section } from './Section'
 
 const darkBlue = '#002868'
 
 export const SIVFeatures = (): JSX.Element => (
-  <div style={{ padding: '6.6vmax 17px', textAlign: 'center' }}>
+  <Section>
     <h2>Secure Internet Voting</h2>
-    <Feature
-      headline="Easy to use"
-      text="You can vote from your phone. It takes one minute. You don’t have to install anything."
-    />
-    <Feature headline="Private" text="No one, not even election administrators, can see how you voted." />
-    <Feature headline="Verifiable" text="You can personally verify that your vote counted." />
-    <Feature headline="Widely Accessible" text="Works with any smartphone or desktop." />
-    <Feature headline="Auditable registration" text="Only legitimate voters can vote, and only once." />
-    <Feature
-      headline="Quick results"
-      text="Don’t wait on postal mail delays. SIV ballots can be submitted and tallied in seconds."
-    />
-    <Button href="/#protocol">Study SIV Protocol</Button>
+    <Row>
+      <Feature
+        headline="Easy to use"
+        text="You can vote from your phone. It takes one minute. You don’t have to install anything."
+      />
+      <Feature headline="Private" text="No one, not even election administrators, can see how you voted." />
+      <Feature headline="Verifiable" text="You can personally verify that your vote counted." />
+    </Row>
+    <Row>
+      <Feature headline="Widely Accessible" text="Works with any smartphone or desktop." />
+      <Feature headline="Auditable registration" text="Only legitimate voters can vote, and only once." />
+      <Feature
+        headline="Quick results"
+        text="Don’t wait on postal mail delays. SIV ballots can be submitted and tallied in seconds."
+      />
+    </Row>
+    <div className="center-button">
+      <Button href="/#protocol">Study SIV Protocol</Button>
+    </div>
 
     <style jsx>{`
       h2 {
-        text-align: center;
         color: ${darkBlue};
+        margin-bottom: 4rem;
+      }
+
+      h2,
+      .center-button {
+        text-align: center;
+      }
+
+      .center-button {
+        margin-bottom: 30px;
+      }
+
+      @media (max-width: 620px) {
+        h2 {
+          text-align: left;
+        }
       }
     `}</style>
-  </div>
+  </Section>
 )
 
 const Feature = ({ headline, text }: { headline: string | JSX.Element; text: string }) => (
@@ -36,6 +58,8 @@ const Feature = ({ headline, text }: { headline: string | JSX.Element; text: str
     <style jsx>{`
       .container {
         padding: 17px;
+        flex: 1;
+        text-align: center;
       }
 
       h4 {
@@ -43,9 +67,31 @@ const Feature = ({ headline, text }: { headline: string | JSX.Element; text: str
         color: ${darkBlue};
       }
 
-      h4,
-      p {
-        text-align: center;
+      @media (max-width: 620px) {
+        .container {
+          text-align: left;
+          padding: 17px 0;
+        }
+      }
+    `}</style>
+  </div>
+)
+
+const Row = ({ children }: { children: JSX.Element[] }) => (
+  <div>
+    {children}
+
+    <style jsx>{`
+      div {
+        display: flex;
+        margin-bottom: 90px;
+      }
+
+      @media (max-width: 620px) {
+        div {
+          flex-direction: column;
+          margin-bottom: 0;
+        }
       }
     `}</style>
   </div>

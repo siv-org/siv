@@ -3,7 +3,7 @@ export const Section = ({ children }: { children: JSX.Element[] }): JSX.Element 
     {children}
     <style jsx>{`
       .section {
-        padding: 17px;
+        padding: 3rem 17px;
       }
 
       /* Small screens: reduce horiz padding */

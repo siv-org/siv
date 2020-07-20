@@ -1,5 +1,6 @@
 body {
   font-family: 'proxima-nova', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
 h1 {
@@ -21,6 +22,7 @@ h4 {
 
 p {
   font-size: calc(0.24vw + 1rem);
+  line-height: 1.6;
 }
 
 @media (orientation: portrait) {
