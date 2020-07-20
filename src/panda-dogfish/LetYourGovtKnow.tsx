@@ -11,8 +11,8 @@ export function LetYourGovtKnow(): JSX.Element {
   const onChange = () => setSaved(false)
 
   return (
-    <div style={{ padding: '0 2rem' }}>
-      <h3 style={{ margin: '1.5rem 0' }}>
+    <div style={{ padding: '2rem' }}>
+      <h3 style={{ color: darkBlue, margin: '1.5rem 0' }}>
         Let your government officials know you want them to investigate Secure Internet Voting
       </h3>
 

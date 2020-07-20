@@ -3,6 +3,7 @@ import Head from 'next/head'
 import { AboveFold } from './AboveFold'
 import { BlueDivider } from './BlueDivider'
 import { BuiltUpon } from './BuiltUpon'
+import { Footer } from './Footer'
 import { ForGovernments } from './ForGovernments'
 import { JumboVoteImage } from './JumboVoteImage'
 import { LetYourGovtKnow } from './LetYourGovtKnow'
@@ -30,6 +31,8 @@ export const PandaDogfish = (): JSX.Element => (
       <ForGovernments />
       <BuiltUpon />
       <LetYourGovtKnow />
+      <BlueDivider />
+      <Footer />
     </main>
   </>
 )
