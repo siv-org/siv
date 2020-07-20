@@ -17,12 +17,7 @@ export const SIVFeatures = (): JSX.Element => (
       headline="Quick results"
       text="Don’t wait on postal mail delays. SIV ballots can be submitted and tallied in seconds."
     />
-    <br />
-    <br />
     <Button href="/#protocol">Study SIV Protocol</Button>
-    <br />
-    <br />
-    <br />
 
     <style jsx>{`
       h2 {
