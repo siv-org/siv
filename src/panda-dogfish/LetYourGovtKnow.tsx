@@ -16,7 +16,7 @@ export function LetYourGovtKnow(): JSX.Element {
     <div className="container">
       <div className="column">
         <h3 style={{ color: darkBlue, margin: '1.5rem 0' }}>
-          Let your government officials know you want them to investigate Secure Internet Voting
+          Let your government officials know you want Secure Internet Voting
         </h3>
 
         <p>We’ll send them a message so they know more of their constituents are interested.</p>
