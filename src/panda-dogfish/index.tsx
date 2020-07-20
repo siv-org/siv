@@ -5,6 +5,7 @@ import { BlueDivider } from './BlueDivider'
 import { BuiltUpon } from './BuiltUpon'
 import { ForGovernments } from './ForGovernments'
 import { JumboVoteImage } from './JumboVoteImage'
+import { LetYourGovtKnow } from './LetYourGovtKnow'
 import { NowPossible } from './NowPossible'
 import { SIVFeatures } from './SIVFeatures'
 import { WeCanDoBetter } from './WeCanDoBetter'
@@ -28,6 +29,7 @@ export const PandaDogfish = (): JSX.Element => (
       <BlueDivider />
       <ForGovernments />
       <BuiltUpon />
+      <LetYourGovtKnow />
     </main>
   </>
 )
