@@ -17,7 +17,7 @@ export const NowPossible = (): JSX.Element => (
       graphic="david-at-wef.jpg"
       graphicCaption="David Ernst, SIV Founder, speaking @ World Economic Forum on Democracy"
       headline="Now Practical"
-      text="For the last four years, our organization has been piloting digital democracy demos with thousands of citizens, from all different backgrounds, geographies, and world views. We've seen firsthand what's possible."
+      text="For the last four years, our organization has been piloting digital democracy demos with thousands of citizens, from all different backgrounds, geographies, and world views."
     />
   </Section>
 )

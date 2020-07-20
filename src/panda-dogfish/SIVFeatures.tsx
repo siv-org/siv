@@ -17,7 +17,10 @@ export const SIVFeatures = (): JSX.Element => (
     <Row>
       <Feature headline="Widely Accessible" text="Works with any smartphone or desktop." />
       <Feature headline="Auditable registration" text="Only legitimate voters can vote, and only once." />
-      <Feature headline="Quick" text="Don’t wait on postal mail delays. SIV ballots can be submitted in seconds." />
+      <Feature
+        headline="Quick Results"
+        text="Don’t wait on postal mail delays. SIV ballots can be submitted in seconds."
+      />
     </Row>
     <div className="center-button">
       <Button href="/#protocol">Study SIV Protocol</Button>
