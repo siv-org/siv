@@ -79,9 +79,16 @@ export const prepSteps: Step[] = [
   {
     name: 'C: Ballot Finalized',
     rest: [
+      { p: 'The official ballot needs to be finalized, as with traditional paper elections.' },
       { example: '' },
       { react: Ballot() },
       { details: 'There can be multiple questions, as many as the election requires.' },
+      {
+        html: light(
+          'SIV is 100% compatible with — and makes it easier to adopt — voting methods meant to improve upon the Choose-Only-One system, such as Ranked Choice Voting, Approval Voting, and Score Voting.',
+        ),
+      },
+      '',
     ],
   },
 ]
