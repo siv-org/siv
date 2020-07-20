@@ -9,6 +9,10 @@ export const BuiltUpon = (): JSX.Element => (
     <p>And ready to be used right now, if only our elected officials will allow it.</p>
 
     <style jsx>{`
+      p {
+        font-size: calc(0.72vw + 1rem);
+      }
+
       @media (min-width: 750px) {
         h2,
         p {
