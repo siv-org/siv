@@ -1,5 +1,5 @@
 export const JumboVoteImage = (): JSX.Element => (
-  <div style={{ minHeight: '100vh', position: 'relative' }}>
+  <div style={{ minHeight: '35vh', position: 'relative' }}>
     <div
       style={{
         bottom: 0,
