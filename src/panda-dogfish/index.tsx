@@ -39,6 +39,10 @@ export const PandaDogfish = (): JSX.Element => (
       body {
         font-family: 'proxima-nova', 'Helvetica Neue', Helvetica, Arial, sans-serif;
       }
+
+      h1 {
+        font-size: calc(3.6vw + 1rem);
+      }
     `}</style>
   </>
 )
