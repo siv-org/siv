@@ -4,25 +4,24 @@ import { useState } from 'react'
 
 import { consultation_link } from './ForGovernments'
 
-const email = 'contact@secureinternetvoting.org'
+const email = 'questions@secureinternetvoting.org'
 
 export const Footer = (): JSX.Element => {
   const [saved, setSaved] = useState(false)
 
   return (
-    <div style={{ padding: '6.6vmax 17px' }}>
-      <div>
-        <h3>Democracy Knowledge & News</h3>
-        <p>Sign up with your email address to receive occasional updates.</p>
+    <div className="container">
+      <div className="column">
+        <h3 style={{ fontWeight: 400 }}>Democracy Knowledge & News</h3>
+        <p>Sign up with your email to receive occasional updates.</p>
 
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <div style={{ display: 'flex', marginTop: 24 }}>
           <TextField
             id="newsletter-signup-field"
-            inputProps={{ style: { fontFamily: 'monospace', fontSize: 15 } }}
             label="Email Address"
             onChange={() => setSaved(false)}
             size="small"
-            style={{ backgroundColor: '#fff8', flex: 1, marginRight: 10 }}
+            style={{ flex: 1, marginRight: 10, maxWidth: 250 }}
             variant="outlined"
           />
           <Button
@@ -62,19 +61,62 @@ export const Footer = (): JSX.Element => {
           </Button>
         </div>
       </div>
-
-      <div>
+      <div className="column right-aligned">
         <h3>SIV</h3>
         <p>
-          <a href={consultation_link}>For Governments</a>
-        </p>
-        <p>
-          <a href="/">Study Protocol</a>
+          <a className="styled-link" href="/">
+            Study Protocol
+          </a>
+          <br />
+          <a className="styled-link" href={consultation_link}>
+            For Governments
+          </a>
         </p>
         <p>
           <a href={`mailto:${email}`}>{email}</a>
         </p>
       </div>
+      <style jsx>{`
+        .container {
+          padding: 3rem;
+          display: flex;
+          justify-content: space-between;
+        }
+
+        .column:first-child {
+          margin-right: 15%;
+        }
+
+        .right-aligned {
+          text-align: right;
+        }
+
+        a.styled-link {
+          text-decoration: none;
+          font-weight: bold;
+        }
+
+        a.styled-link:hover {
+          text-decoration: underline;
+        }
+
+        /* Small screens: reduce horiz padding */
+        @media (max-width: 750px) {
+          .container {
+            padding: 17px 6vw;
+            flex-direction: column;
+          }
+
+          .column:first-child {
+            margin: 0;
+            margin-bottom: 3rem;
+          }
+
+          .right-aligned {
+            text-align: left;
+          }
+        }
+      `}</style>
     </div>
   )
 }
