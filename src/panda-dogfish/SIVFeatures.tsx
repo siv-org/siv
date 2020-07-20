@@ -67,6 +67,13 @@ const Feature = ({ headline, text }: { headline: string | JSX.Element; text: str
         color: ${darkBlue};
       }
 
+      /* Ensure headlines stay on one line */
+      @media (max-width: 776px) and (min-width: 620px) {
+        h4 {
+          font-size: calc(1.4vw + 0.4rem);
+        }
+      }
+
       @media (max-width: 620px) {
         .container {
           text-align: left;
