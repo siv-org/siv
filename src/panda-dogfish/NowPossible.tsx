@@ -1,7 +1,8 @@
+import { Section } from './Section'
 import { SideBySide } from './SideBySide'
 
 export const NowPossible = (): JSX.Element => (
-  <div style={{ padding: '6.6vmax 17px' }}>
+  <Section>
     <SideBySide
       graphic="hello-phone.jpg"
       headline={
@@ -18,5 +19,5 @@ export const NowPossible = (): JSX.Element => (
       headline="Now Practical"
       text="For the last four years, our organization has been piloting digital democracy demos with thousands of citizens, from all different backgrounds, geographies, and world views. We've seen firsthand what's possible."
     />
-  </div>
+  </Section>
 )

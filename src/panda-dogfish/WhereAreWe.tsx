@@ -1,7 +1,8 @@
+import { Section } from './Section'
 import { SideBySide } from './SideBySide'
 
 export const WhereAreWe = (): JSX.Element => (
-  <div style={{ padding: '6.6vmax 17px' }}>
+  <Section>
     <SideBySide
       graphic="voting.jpg"
       headline="Unusual Times"
@@ -18,5 +19,5 @@ export const WhereAreWe = (): JSX.Element => (
       headline="Search for Alternatives"
       text="Election officials and political advocates have rushed to provide safe alternatives. Especially Vote by Mail."
     />
-  </div>
+  </Section>
 )

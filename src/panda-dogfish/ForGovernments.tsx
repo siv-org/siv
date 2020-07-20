@@ -1,8 +1,9 @@
 import { Button } from './Button'
+import { Section } from './Section'
 import { SideBySide } from './SideBySide'
 
 export const ForGovernments = (): JSX.Element => (
-  <div style={{ padding: '6.6vmax 17px' }}>
+  <Section>
     <SideBySide
       flipped
       graphic="make-us-think-again.jpg"
@@ -22,5 +23,5 @@ export const ForGovernments = (): JSX.Element => (
       headline="A New Option"
       text="SIV is an addition to existing approaches, not a replacement. Any voter who prefers traditional methods can stick with them."
     />
-  </div>
+  </Section>
 )

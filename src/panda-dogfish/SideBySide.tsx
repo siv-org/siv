@@ -23,7 +23,7 @@ export const SideBySide = ({
 
     <style jsx>{`
       .container {
-        padding: 17px;
+        padding: 6vmax 17px;
         display: flex;
         flex-direction: ${flipped ? `row-reverse` : 'row'};
       }
@@ -49,14 +49,18 @@ export const SideBySide = ({
         margin-${flipped ? `right` : 'left'}: 9%;
       }
 
-      h4 {
-        margin-top: 0;
+      /* Large screens: top align text */
+      @media (min-width: 470px) {
+        h4 {
+          margin-top: 0;
+        }
       }
 
-      /* show vertically for smaller screens */
+      /* Small screens: show vertically */
       @media (max-width: 470px) {
         .container {
           flex-direction: column;
+          padding: 6.6vmax 0;
         }
 
         .text-col {
