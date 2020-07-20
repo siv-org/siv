@@ -27,7 +27,7 @@ export const header = [
   { subtitle: 'Fast, Private, Verifiable' },
   {
     p: `Voting Method with mathematically provable privacy & vote verifiability.
-        All over the internet, no installs necessary.`,
+        No installs necessary.`,
   },
 ]
 

@@ -25,6 +25,8 @@ export const Home = (): JSX.Element => (
 
       <CallToAction />
 
+      <hr style={{ marginBottom: '2rem', width: '100%' }} />
+
       <Demo />
     </main>
   </div>

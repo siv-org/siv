@@ -1,4 +1,3 @@
-import { DownloadOutlined } from '@ant-design/icons'
 import { Accordion, AccordionSummary as Summary } from '@material-ui/core'
 import { ExpandMore } from '@material-ui/icons'
 
@@ -8,12 +7,6 @@ import steps, { ImageLine, Line, ReactLine, Step, Subsection, header, prepSteps 
 export default function Protocol(): JSX.Element {
   return (
     <>
-      <hr style={{ width: '100%' }} />
-      <a href="./Overview.png" style={{ margin: '2rem 0 3rem' }} target="_blank">
-        <DownloadOutlined />
-        &nbsp;Download single image
-      </a>
-
       {/* Header */}
       <div className={styles.protocol}>
         <a id="protocol" />
