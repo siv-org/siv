@@ -63,8 +63,8 @@ export default function VoterList(): JSX.Element {
       </p>
       <p>
         Admins can even send Vote Tokens via traditional postal mail. This makes it easy for jurisdictions already
-        offering Vote by Mail to begin accepting returned ballots online, gaining the powerful Speed, Verification,
-        &amp; Privacy features of SIV.
+        offering Vote by Mail to begin accepting returned ballots online, gaining the powerful Speed, Privacy, &
+        Verification features of SIV.
       </p>
     </>
   )
