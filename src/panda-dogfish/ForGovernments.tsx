@@ -1,22 +1,20 @@
-import { Button } from './Button'
 import { Section } from './Section'
 import { SideBySide } from './SideBySide'
+
+export const consultation_link = 'mailto:contact@secureinternetvoting.org?subject=Schedule Consultation&body=Hi, \n\nI work for a government and would like to find a time to talk about adopting Secure Internet Voting.'
+  .replace(/ /g, '%20')
+  .replace(/\n/g, '%0A')
+  .replace(/,/g, '%2C')
 
 export const ForGovernments = (): JSX.Element => (
   <Section>
     <SideBySide
       flipped
+      button={{ href: consultation_link, text: 'Schedule Consultation' }}
       graphic="make-us-think-again.jpg"
       headline="The US spends over $500M/yr to run elections"
-      text="Digital approaches can dramatically reduce election costs and offer a far better process for everyone involved."
+      text="Digital approaches can dramatically reduce election costs, while offering a far better process for everyone involved."
     />
-
-    <Button
-      href="mailto:contact@secureinternetvoting.org?subject=Schedule%20a%20Consultation&body=Hi%2C%20%0A%0AI%20work%20for%20a%20government%20and%20would%20like%20to%20find%20a%20time%20to%20talk%20about%20adopting%20Secure%20Internet%20Voting.%20"
-      style={{ marginBottom: 30, marginLeft: '3%' }}
-    >
-      Schedule Consultation
-    </Button>
 
     <SideBySide
       graphic="i-voted-on-phone.png"

@@ -1,4 +1,7 @@
+import { Button } from './Button'
+
 export const SideBySide = ({
+  button,
   flipped,
   graphic,
   graphicCaption,
@@ -6,6 +9,7 @@ export const SideBySide = ({
   smallHeadline,
   text,
 }: {
+  button?: { href: string; text: string }
   flipped?: boolean
   graphic: string
   graphicCaption?: string
@@ -28,6 +32,11 @@ export const SideBySide = ({
         <>
           <h3>{headline}</h3>
           <h4>{text}</h4>
+          {button && (
+            <div style={{ textAlign: 'center' }}>
+              <Button href={button.href}>{button.text}</Button>
+            </div>
+          )}
         </>
       )}
     </div>

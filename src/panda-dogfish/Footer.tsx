@@ -2,6 +2,8 @@ import { Button, TextField } from '@material-ui/core'
 import { firestore } from 'firebase/app'
 import { useState } from 'react'
 
+import { consultation_link } from './ForGovernments'
+
 const email = 'contact@secureinternetvoting.org'
 
 export const Footer = (): JSX.Element => {
@@ -64,9 +66,7 @@ export const Footer = (): JSX.Element => {
       <div>
         <h3>SIV</h3>
         <p>
-          <a href="mailto:contact@secureinternetvoting.org?subject=Schedule%20a%20Consultation&body=Hi%2C%20%0A%0AI%20work%20for%20a%20government%20and%20would%20like%20to%20find%20a%20time%20to%20talk%20about%20adopting%20Secure%20Internet%20Voting.%20">
-            For Governments
-          </a>
+          <a href={consultation_link}>For Governments</a>
         </p>
         <p>
           <a href="/">Study Protocol</a>
