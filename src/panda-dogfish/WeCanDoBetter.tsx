@@ -25,6 +25,8 @@ export const WeCanDoBetter = (): JSX.Element => (
 
       p {
         text-align: center;
+        font-size: calc(0.72vw + 1rem);
+        line-height: 1.6;
       }
 
       a {

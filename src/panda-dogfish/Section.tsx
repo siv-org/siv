@@ -9,7 +9,7 @@ export const Section = ({ children }: { children: JSX.Element[] }): JSX.Element 
       /* Small screens: reduce horiz padding */
       @media (max-width: 470px) {
         .section {
-          padding: 0 6vw;
+          padding: 17px 6vw;
         }
       }
     `}</style>

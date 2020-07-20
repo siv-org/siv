@@ -1,0 +1,46 @@
+body {
+  font-family: 'proxima-nova', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+h1 {
+  font-size: calc(3.6vw + 1rem);
+}
+
+h2 {
+  font-size: calc(2.16vw + 1rem);
+}
+
+h3 {
+  font-size: calc(1.44vw + 1rem);
+  line-height: 1.2376;
+}
+
+h4 {
+  font-size: calc(0.6vw + 1rem);
+}
+
+p {
+  font-size: calc(0.24vw + 1rem);
+}
+
+@media (orientation: portrait) {
+  h1 {
+    font-size: calc(3.6vh + 1rem);
+  }
+
+  h2 {
+    font-size: calc(2.16vh + 1rem);
+  }
+
+  h3 {
+    font-size: calc(1.44vh + 1rem);
+  }
+
+  h4 {
+    font-size: calc(0.6vh + 1rem);
+  }
+
+  p {
+    font-size: calc(0.24vh + 1rem);
+  }
+}

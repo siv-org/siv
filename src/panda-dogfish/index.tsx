@@ -17,6 +17,7 @@ export const PandaDogfish = (): JSX.Element => (
     <Head>
       <title>SIV: Secure Internet Voting</title>
       <link href="/favicon.png" rel="icon" />
+      <link href="/panda-dogfish/typography.css" rel="stylesheet" />
       <meta content="minimum-scale=1, initial-scale=1, width=device-width" name="viewport" />
     </Head>
 
@@ -34,22 +35,5 @@ export const PandaDogfish = (): JSX.Element => (
       <BlueDivider />
       <Footer />
     </main>
-
-    <style global jsx>{`
-      body {
-        font-family: 'proxima-nova', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      }
-
-      h1 {
-        font-size: calc(3.6vw + 1rem);
-      }
-
-      /* wider bg gradient for large screens */
-      @media (orientation: portrait) {
-        h1 {
-          font-size: calc(3.6vh + 1rem);
-        }
-      }
-    `}</style>
   </>
 )
