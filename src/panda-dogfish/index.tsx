@@ -34,5 +34,11 @@ export const PandaDogfish = (): JSX.Element => (
       <BlueDivider />
       <Footer />
     </main>
+
+    <style global jsx>{`
+      body {
+        font-family: 'proxima-nova', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      }
+    `}</style>
   </>
 )
