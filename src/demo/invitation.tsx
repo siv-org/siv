@@ -37,8 +37,7 @@ export default function VoterList(): JSX.Element {
         </p>
       </Paper>
       <p>
-        The point of this step is to get each voter their {<VoteToken />}, highlighted in <Highlight>red</Highlight> in
-        the email link.
+        The point of this step is to get each voter their {<VoteToken />}, highlighted in <Highlight>red</Highlight>.
       </p>
       <div>
         <p style={{ fontWeight: 'bold' }}>Key Properties of {<VoteToken s />}</p>
@@ -58,13 +57,13 @@ export default function VoterList(): JSX.Element {
         </ul>
       </div>
       <br />
-      <p style={{ fontSize: 13 }}>
-        For this demo, we present an easy distribution channel — a simple email. But election administrators could
-        easily use other options, including 2-factor methods like SMS, TOTP, or IP address geolocation.
+      <p>
+        Here we present an easy distribution channel — a simple email. But election administrators could easily use
+        other options, including 2-factor methods with SMS, TOTP, or IP address geolocation.
       </p>
-      <p style={{ fontSize: 11 }}>
-        Election admins can even send Vote Tokens via traditional postal mail. This makes it easy for jurisdictions
-        already offering Vote by Mail to begin accepting returned ballots online, gaining the powerful Verification
+      <p>
+        Admins can even send Vote Tokens via traditional postal mail. This makes it easy for jurisdictions already
+        offering Vote by Mail to begin accepting returned ballots online, gaining the powerful Speed, Verification,
         &amp; Privacy features of SIV.
       </p>
     </>

@@ -89,7 +89,7 @@ const steps: Step[] = [
   {
     name: 'Step 1: Invitation to Vote',
     rest: [
-      { description: 'Election administrator sends individualized email to all enrolled voters.' },
+      { description: 'Election administrator sends individualized invitations to all enrolled voters.' },
       { react: Invitation },
     ],
   },
