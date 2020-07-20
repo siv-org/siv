@@ -50,14 +50,14 @@ export const SideBySide = ({
       }
 
       /* Large screens: top align text */
-      @media (min-width: 470px) {
+      @media (min-width: 700px) {
         h4 {
           margin-top: 0;
         }
       }
 
       /* Small screens: show vertically */
-      @media (max-width: 470px) {
+      @media (max-width: 700px) {
         .container {
           flex-direction: column;
           padding: 6.6vmax 0;
