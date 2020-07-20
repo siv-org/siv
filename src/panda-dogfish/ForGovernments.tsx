@@ -11,9 +11,9 @@ export const ForGovernments = (): JSX.Element => (
     <SideBySide
       flipped
       button={{ href: consultation_link, text: 'Schedule Consultation' }}
-      graphic="make-us-think-again.jpg"
+      graphic="voting-machines.jpg"
       headline="The US spends over $500M/yr to run elections"
-      text="Digital approaches can dramatically reduce election costs, while offering a far better process for everyone involved."
+      text="SIV can dramatically reduce election costs, while offering a far better process for everyone involved."
     />
 
     <SideBySide
