@@ -52,6 +52,17 @@ export const SideBySide = ({
       h4 {
         margin-top: 0;
       }
+
+      /* show vertically for smaller screens */
+      @media (max-width: 470px) {
+        .container {
+          flex-direction: column;
+        }
+
+        .text-col {
+          margin: 0;
+        }
+      }
     `}</style>
   </div>
 )
