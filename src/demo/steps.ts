@@ -61,14 +61,16 @@ export const prepSteps: Step[] = [
     name: 'B: Shufflers Registered',
     rest: [
       {
-        description: `Shufflers — to ensure the privacy of the vote — need to be enrolled ahead of time.`,
+        description: `Shufflers — who ensure the privacy of the vote — need to be enrolled ahead of time.`,
       },
       {
         details: `Requirements:
-          1. They will need their phone or computer to be online and running a special SIV Shuffling program when the voting period closes.
-          2. To enroll, they need to generate a private key, and share the corresponding public key with the election admin.
 
-          Their job will be explained in Step 5, but their public keys are needed for voters to seal their votes in Step 2.`,
+          1. They will need their phone or computer online and with a special SIV Shuffling program open when the voting period closes.
+
+          2. To enroll, they need to generate a private key, and take part in a Threshold Key generation process with the election admin to create the corresponding public key.
+
+          Their Shuffling job is explained in Step 5, but their public keys are needed ahead-of-time for voters to encrypt their votes in Step 2.`,
       },
     ],
   },
