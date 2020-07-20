@@ -5,6 +5,7 @@ import { BlueDivider } from './BlueDivider'
 import { BuiltUpon } from './BuiltUpon'
 import { Footer } from './Footer'
 import { ForGovernments } from './ForGovernments'
+import { HeaderBar } from './HeaderBar'
 import { JumboVoteImage } from './JumboVoteImage'
 import { LetYourGovtKnow } from './LetYourGovtKnow'
 import { NowPossible } from './NowPossible'
@@ -22,6 +23,7 @@ export const PandaDogfish = (): JSX.Element => (
     </Head>
 
     <main>
+      <HeaderBar />
       <AboveFold />
       <WhereAreWe />
       <WeCanDoBetter />
