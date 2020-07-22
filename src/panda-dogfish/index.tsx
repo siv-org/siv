@@ -6,7 +6,6 @@ import { BuiltUpon } from './BuiltUpon'
 import { Footer } from './Footer'
 import { ForGovernments } from './ForGovernments'
 import { HeaderBar } from './HeaderBar'
-import { JumboVoteImage } from './JumboVoteImage'
 import { LetYourGovtKnow } from './LetYourGovtKnow'
 import { NowPossible } from './NowPossible'
 import { SIVFeatures } from './SIVFeatures'
@@ -28,7 +27,7 @@ export const PandaDogfish = (): JSX.Element => (
       <WhereAreWe />
       <WeCanDoBetter />
       <NowPossible />
-      <JumboVoteImage />
+      <BlueDivider />
       <SIVFeatures />
       <BlueDivider />
       <ForGovernments />
