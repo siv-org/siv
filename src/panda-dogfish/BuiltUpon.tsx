@@ -6,7 +6,6 @@ export const BuiltUpon = (): JSX.Element => (
       Built upon decades of research and hard work by uncountable contributors, in academia, industry, and the public
       sector.
     </h2>
-    <p>And ready to be used right now, if only our elected officials will allow it.</p>
 
     <style jsx>{`
       p {
