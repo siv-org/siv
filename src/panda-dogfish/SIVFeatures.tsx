@@ -23,7 +23,7 @@ export const SIVFeatures = (): JSX.Element => (
       />
     </Row>
     <div className="center-button">
-      <Button href="/protocol">Study SIV Protocol</Button>
+      <Button href="/protocol">SIV Protocol Details</Button>
     </div>
 
     <style jsx>{`
