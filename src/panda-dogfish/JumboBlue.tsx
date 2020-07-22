@@ -11,7 +11,7 @@ export const JumboBlue = ({ children }: { children: JSX.Element[] }): JSX.Elemen
         display: flex;
         flex-direction: column;
         justify-content: center;
-        min-height: 100vh;
+        min-height: 99vh;
         padding: 10vmax 7vw;
       }
 
