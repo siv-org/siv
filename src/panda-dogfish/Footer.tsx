@@ -1,5 +1,6 @@
 import { TextField } from '@material-ui/core'
 import { firestore } from 'firebase/app'
+import Link from 'next/link'
 import { useState } from 'react'
 
 import { OnClickButton } from './Button'
@@ -64,9 +65,9 @@ export const Footer = (): JSX.Element => {
       <div className="column right-aligned">
         <h3>SIV</h3>
         <p>
-          <a className="styled-link" href="/protocol">
-            Study Protocol
-          </a>
+          <Link href="/protocol">
+            <a className="styled-link">Study Protocol</a>
+          </Link>
           <br />
           <a className="styled-link" href={consultation_link}>
             For Governments
