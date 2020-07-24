@@ -17,7 +17,7 @@ export const LandingPage = (): JSX.Element => (
     <Head>
       <title>SIV: Secure Internet Voting</title>
       <link href="/favicon.png" rel="icon" />
-      <link href="/panda-dogfish/typography.css" rel="stylesheet" />
+      <link href="/landing-page/typography.css" rel="stylesheet" />
       <meta content="minimum-scale=1, initial-scale=1, width=device-width" name="viewport" />
     </Head>
 

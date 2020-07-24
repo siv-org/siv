@@ -21,7 +21,7 @@ export const SideBySide = ({
 }) => (
   <div className="container">
     <div>
-      <img className={noDarkFilter ? 'no-dark-filter' : ''} src={`panda-dogfish/${graphic}`} />
+      <img className={noDarkFilter ? 'no-dark-filter' : ''} src={`landing-page/${graphic}`} />
       <p className="caption">{graphicCaption}</p>
     </div>
     <div className="text-col">
