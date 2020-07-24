@@ -1,6 +1,6 @@
 import Head from 'next/head'
 
-import Demo from '../src/demo'
+import Protocol from '../src/protocol'
 
 const ProtocolPage = (): JSX.Element => (
   <>
@@ -14,7 +14,7 @@ const ProtocolPage = (): JSX.Element => (
 
     <div className="container">
       <main>
-        <Demo />
+        <Protocol />
       </main>
     </div>
   </>

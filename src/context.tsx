@@ -5,7 +5,7 @@ import { encode } from './crypto/encode'
 import encrypt from './crypto/encrypt'
 import pickRandomInteger from './crypto/pick-random-integer'
 import { Big, big } from './crypto/types'
-import { candidates, public_key } from './demo/election-parameters'
+import { candidates, public_key } from './protocol/election-parameters'
 
 const initState = {
   encrypted: {},
