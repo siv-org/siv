@@ -1,7 +1,7 @@
 import { Paper } from '@material-ui/core'
 
 import { useContext } from '../context'
-import pickRandomInteger from '../crypto/pick-random-integer'
+import pickRandomInteger from './crypto/pick-random-integer'
 import { voters } from './election-parameters'
 import { public_key } from './election-parameters'
 

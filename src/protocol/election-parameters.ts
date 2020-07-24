@@ -1,4 +1,4 @@
-import { Public_Key, bigPubKey } from '../crypto/types'
+import { Public_Key, bigPubKey } from './crypto/types'
 
 export const public_key: Public_Key = bigPubKey({
   generator: '2',

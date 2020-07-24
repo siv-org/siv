@@ -3,7 +3,7 @@ import { map } from 'lodash'
 import { useState } from 'react'
 
 import { useContext } from '../context'
-import { encode } from '../crypto/encode'
+import { encode } from './crypto/encode'
 import { public_key } from './election-parameters'
 
 export default function SignedReceipt(): JSX.Element {
