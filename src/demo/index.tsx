@@ -37,7 +37,7 @@ export default function Protocol(): JSX.Element {
 
       {/* Fin step */}
       <div style={{ backgroundColor: '#e5eafd', paddingBottom: '2rem' }}>
-        <img src={`./overview/step-fin.png`} width="100%" />
+        <img src={`./protocol/step-fin.png`} width="100%" />
       </div>
     </>
   )
@@ -68,7 +68,7 @@ function renderLine(line: Line, lineIndex: number) {
   if (type === 'image') {
     const { image, maxWidth } = line as ImageLine
 
-    return <img key={lineIndex} src={`./overview/${image}`} style={{ maxWidth, width: '100%' }} />
+    return <img key={lineIndex} src={`./protocol/${image}`} style={{ maxWidth, width: '100%' }} />
   }
 
   // Special handling for subsections

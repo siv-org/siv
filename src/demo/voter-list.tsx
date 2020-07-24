@@ -45,7 +45,7 @@ export default function VoterList(): JSX.Element {
       `}</style>
 
       <div style={{ height: 25, marginTop: 13, position: 'relative' }}>
-        <img src="./overview/pre-a-arrow.png" style={{ position: 'absolute', right: '11%', width: 20 }} />
+        <img src="./protocol/pre-a-arrow.png" style={{ position: 'absolute', right: '11%', width: 20 }} />
       </div>
       <p style={{ color: '#4154af', fontWeight: 'bold', textAlign: 'right' }}>New requirement</p>
     </>
