@@ -1,5 +1,4 @@
 body {
-  margin: 0;
   background-color: #fcfcfc;
   color: #222;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans,
@@ -10,17 +9,10 @@ body {
   line-height: 1.43;
 }
 
-.container {
-  display: flex;
-  min-height: 100vh;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
 main {
   display: flex;
   max-width: 600px;
+  min-height: 100vh;
   flex: 1;
   flex-direction: column;
   align-items: center;

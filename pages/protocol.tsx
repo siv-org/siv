@@ -7,16 +7,14 @@ const ProtocolPage = (): JSX.Element => (
     <Head>
       <title>SIV: Protocol</title>
       <link href="/favicon.png" rel="icon" />
-      <link href="/onepager.css" rel="stylesheet" />
+      <link href="/protocol.css" rel="stylesheet" />
 
       <meta content="minimum-scale=1, initial-scale=1, width=device-width" name="viewport" />
     </Head>
 
-    <div className="container">
-      <main>
-        <Protocol />
-      </main>
-    </div>
+    <main>
+      <Protocol />
+    </main>
   </>
 )
 
