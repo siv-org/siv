@@ -1,1 +1,1 @@
-export { PandaDogfish as default } from '../src/panda-dogfish'
+export { LandingPage as default } from '../src/landing-page'

@@ -12,7 +12,7 @@ import { SIVFeatures } from './SIVFeatures'
 import { WeCanDoBetter } from './WeCanDoBetter'
 import { WhereAreWe } from './WhereAreWe'
 
-export const PandaDogfish = (): JSX.Element => (
+export const LandingPage = (): JSX.Element => (
   <>
     <Head>
       <title>SIV: Secure Internet Voting</title>
