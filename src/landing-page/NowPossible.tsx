@@ -12,7 +12,7 @@ export const NowPossible = (): JSX.Element => (
           Fast, private, and <em>verifiable</em> internet voting is now possible.
         </>
       }
-      text="Thanks to tremendous technology & cryptographic breakthroughs."
+      text="Thanks to tremendous breakthroughs in technology & cryptography."
     />
     <SideBySide
       flipped
