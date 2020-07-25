@@ -4,7 +4,7 @@ export const WeCanDoBetter = (): JSX.Element => (
   <JumboBlue>
     <h2>WE CAN DO BETTER</h2>
     <p>
-      Despite vast demand, there&apos;s only modest discussion towards implementing <b>internet voting</b>. <br />
+      Despite vast desire, there&apos;s only modest discussion towards implementing <b>internet voting</b>. <br />
       Elections demand a high bar. The legitimacy of our citizen-led government is at stake.
     </p>
 
