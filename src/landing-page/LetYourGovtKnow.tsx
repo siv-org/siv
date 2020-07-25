@@ -6,11 +6,16 @@ import { useState } from 'react'
 
 import { OnClickButton } from './Button'
 
-export function LetYourGovtKnow(): JSX.Element {
+export function LetYourGovtKnow({ idKey }: { idKey: string }): JSX.Element {
   const [saved, setSaved] = useState(false)
 
   // We'll reset 'saved' state if they try to edit the textfields again
   const onChange = () => setSaved(false)
+
+  // Differentiate this form among multiple instances on the page
+  const toID = (field: string) => `${field}-${idKey}`
+
+  const fieldProps = { onChange, toID }
 
   return (
     <div className="container">
@@ -24,25 +29,25 @@ export function LetYourGovtKnow(): JSX.Element {
 
       <form autoComplete="off" className="column">
         <Row>
-          <Field id="name" label="Your Name" {...{ onChange }} style={{ flex: 1, marginRight: 30 }} />
-          <Field label="ZIP" {...{ onChange }} style={{ maxWidth: 80 }} />
+          <Field id="name" label="Your Name" {...fieldProps} style={{ flex: 1, marginRight: 30 }} />
+          <Field label="ZIP" {...fieldProps} style={{ maxWidth: 80 }} />
         </Row>
         <Row>
-          <Field fullWidth label="Email" {...{ onChange }} />
+          <Field fullWidth label="Email" {...fieldProps} />
         </Row>
         <Row>
-          <Field fullWidth multiline label="Message" rows={4} {...{ onChange }} />
+          <Field fullWidth multiline label="Message" rows={4} {...fieldProps} />
         </Row>
         <Row style={{ justifyContent: 'flex-end' }}>
           {saved && <p style={{ margin: 0, opacity: 0.7, width: 60 }}>Done.</p>}
           <OnClickButton
             disabled={saved}
             onClick={() => {
-              const fields: Record<string, string | Date> = { created_at: new Date().toString() }
+              const fields: Record<string, string | Date> = { created_at: new Date().toString(), idKey }
 
               // Get data from input fields
-              ;['name', 'zip', 'email', 'message'].forEach((id) => {
-                fields[id] = (document.getElementById(id) as HTMLInputElement).value
+              ;['name', 'zip', 'email', 'message'].forEach((field) => {
+                fields[field] = (document.getElementById(toID(field)) as HTMLInputElement).value
               })
 
               // Store submission in Firestore
@@ -56,7 +61,7 @@ export function LetYourGovtKnow(): JSX.Element {
                   // Notify via Pushover
                   fetch('/api/pushover', {
                     body: JSON.stringify({
-                      message: `${fields.email}\n\n${fields.message}`,
+                      message: `${fields.email}\nCTA #${idKey}\n\n${fields.message}`,
                       title: `SIV: ${fields.name} (${fields.zip})`,
                     }),
                     headers: {
@@ -119,12 +124,12 @@ const Row = (props: BoxProps) => (
 )
 
 // DRY-up TextField
-const Field = (props: TextFieldProps) => (
+const Field = (props: TextFieldProps & { toID: (f: string) => string }) => (
   <TextField
-    id={props.id || (props.label as string).toLowerCase()}
     size="small"
     variant="outlined"
     {...props}
+    id={props.toID(props.id || (props.label as string).toLowerCase())}
     style={{ ...props.style }}
   />
 )
