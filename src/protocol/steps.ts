@@ -37,11 +37,12 @@ export type ReactLine = { react: () => JSX.Element }
 
 export type Line = Record<string, string> | ImageLine | Subsection | ReactLine | ''
 
-export type Step = { name: string; rest: Line[] }
+export type Step = { defaultExpanded?: boolean; name: string; rest: Line[] }
 
 export const prepSteps: Step[] = [
   // Pre-A
   {
+    defaultExpanded: false,
     name: 'A: Voter Registration Period',
     rest: [
       {
@@ -58,6 +59,7 @@ export const prepSteps: Step[] = [
 
   // Pre-B
   {
+    defaultExpanded: false,
     name: 'B: Trustees Registered',
     rest: [
       {
@@ -77,6 +79,7 @@ export const prepSteps: Step[] = [
 
   // Pre-C
   {
+    defaultExpanded: false,
     name: 'C: Ballot Finalized',
     rest: [
       { p: 'The official ballot needs to be finalized, as with traditional paper elections.' },

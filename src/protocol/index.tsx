@@ -24,7 +24,7 @@ export default function Protocol(): JSX.Element {
         </div>
 
         {/* Prep steps */}
-        <Accordion>
+        <Accordion defaultExpanded>
           <Summary expandIcon={<ExpandMore />}>
             <p className={styles.name}>Prep Steps</p>
           </Summary>
@@ -44,9 +44,9 @@ export default function Protocol(): JSX.Element {
 }
 
 // Wrap individual step in an Accordion
-function renderStep({ name, rest }: Step, stepIndex: number) {
+function renderStep({ defaultExpanded = true, name, rest }: Step, stepIndex: number) {
   return (
-    <Accordion key={stepIndex}>
+    <Accordion defaultExpanded={defaultExpanded} key={stepIndex}>
       <Summary expandIcon={<ExpandMore />}>
         <p className={styles.name}>{name}</p>
       </Summary>
