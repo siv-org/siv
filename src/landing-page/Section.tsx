@@ -12,6 +12,13 @@ export const Section = ({ children }: { children: JSX.Element[] }): JSX.Element 
           padding: 17px 6vw;
         }
       }
+
+      /* Large screens: increase horiz padding */
+      @media (min-width: 1050px) {
+        .section {
+          padding: 3rem 5rem;
+        }
+      }
     `}</style>
   </div>
 )

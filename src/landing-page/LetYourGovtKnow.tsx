@@ -93,7 +93,7 @@ export function LetYourGovtKnow({ idKey }: { idKey: string }): JSX.Element {
           margin-right: 9%;
         }
 
-        /* Small screens: reduce horiz padding */
+        /* Small screens: single column */
         @media (max-width: 750px) {
           .container {
             padding: 17px 6vw;
@@ -102,6 +102,13 @@ export function LetYourGovtKnow({ idKey }: { idKey: string }): JSX.Element {
 
           .column:first-child {
             margin: 0;
+          }
+        }
+
+        /* Large screens: increase horiz padding */
+        @media (min-width: 1050px) {
+          .container {
+            padding: 3rem 5rem;
           }
         }
       `}</style>
