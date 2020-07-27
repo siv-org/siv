@@ -1,15 +1,14 @@
-import { Accordion, AccordionSummary as Summary } from '@material-ui/core'
-import { ExpandMore } from '@material-ui/icons'
-
 import styles from './protocol.module.css'
 import steps, { ImageLine, Line, ReactLine, Step, Subsection, header, prepSteps } from './steps'
 
 export default function Protocol(): JSX.Element {
   return (
-    <div style={{ backgroundColor: '#e5eafd', paddingBottom: '2rem' }}>
+    <div
+      id="protocol"
+      style={{ backgroundColor: '#e5eafd', height: '100vh', overflowY: 'scroll', paddingBottom: '2rem' }}
+    >
       {/* Header */}
       <div className={styles.protocol}>
-        <a id="protocol" />
         <div style={{ padding: '10px 16px' }}>
           {header.map((line, lineIndex) => {
             const type = Object.keys(line)[0]
@@ -24,12 +23,10 @@ export default function Protocol(): JSX.Element {
         </div>
 
         {/* Prep steps */}
-        <Accordion defaultExpanded>
-          <Summary expandIcon={<ExpandMore />}>
-            <p className={styles.name}>Prep Steps</p>
-          </Summary>
-          <div className={styles.prepContainer}>{prepSteps.map(renderStep)}</div>
-        </Accordion>
+        <div>
+          <p className={styles.name}>Prep Steps</p>
+          <div>{prepSteps.map(renderStep)}</div>
+        </div>
 
         {/* Main steps */}
         {steps.map(renderStep)}
@@ -44,14 +41,12 @@ export default function Protocol(): JSX.Element {
 }
 
 // Wrap individual step in an Accordion
-function renderStep({ defaultExpanded = true, name, rest }: Step, stepIndex: number) {
+function renderStep({ name, rest }: Step, stepIndex: number) {
   return (
-    <Accordion defaultExpanded={defaultExpanded} key={stepIndex}>
-      <Summary expandIcon={<ExpandMore />}>
-        <p className={styles.name}>{name}</p>
-      </Summary>
+    <div key={stepIndex} style={{ margin: '3rem 0' }}>
+      <p className={styles.name}>{name}</p>
       <div className={styles.expanded}>{rest.map(renderLine)}</div>
-    </Accordion>
+    </div>
   )
 }
 

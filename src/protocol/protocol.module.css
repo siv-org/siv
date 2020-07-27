@@ -6,15 +6,11 @@
 }
 
 .name {
+  padding-left: 1rem;
   margin: 0;
   color: #000c;
   font-size: 16px;
   font-weight: 700;
-}
-
-.prepContainer {
-  padding: 15px;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 
 .expanded {

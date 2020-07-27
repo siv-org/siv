@@ -14,7 +14,7 @@ const Highlight = (props: { children: string }) => (
 export default function VoterList(): JSX.Element {
   return (
     <>
-      <Paper elevation={3} style={{ marginBottom: 30, padding: '0.5rem 1.5rem' }}>
+      <Paper elevation={3} style={{ marginBottom: 30, padding: '0.5rem 1.5rem', position: 'relative' }}>
         <img
           src="/protocol/step-1-invitation-icon.png"
           style={{ opacity: 0.5, position: 'absolute', right: 25, width: 40 }}
