@@ -5,7 +5,7 @@ import { Invitation, InvitationExplanation } from './Invitation'
 import Plaintext from './plaintext'
 import Sealed from './sealed'
 import SecretID from './secret-id'
-// import Unlocked from './unlocked'
+import Unlocked from './unlocked'
 import VoterList from './voter-list'
 import WhoVoted from './who-voted'
 import YourSubmittedBallot from './your-submitted-ballot'
@@ -14,7 +14,7 @@ const colorize = (color: string) => (text: string) => `<span style="color: ${col
 const blue = colorize('#1332fe')
 const red = colorize('#d0021b')
 const purple = colorize('#9013fe')
-// const green = colorize('#417505')
+const green = colorize('#417505')
 
 const semibold = (text: string) => `<span style="font-weight: 600;">${text}</span>`
 const light = (text: string) => `<span style="font-size: 12px; opacity: 0.65;">${text}</span>`
@@ -281,35 +281,42 @@ export const steps: Step[] = [
     ],
   },
 
-  // // Step 6
-  // {
-  //   name: 'Step 6: Unlocking Stage',
-  //   rest: [
-  //     {
-  //       html: `<p class="${styles.description}">Then a ${green(
-  //         semibold('quorum of Trustees'),
-  //       )} can sign off that they're ready for the final ${purple(semibold('shuffled list'))} to be ${blue(
-  //         semibold('Unlocked'),
-  //       )}.</p>`,
-  //     },
-  //     '',
-  //     { image: 'step-6-threshold-key.png', maxWidth: 470 },
-  //     '',
-  //     '',
-  //     {
-  //       html: `Unlocks the ${blue(semibold('vote contents'))} of the final list only, not Vote Tokens. ${em(
-  //         'Preserves privacy.',
-  //       )}`,
-  //     },
-  //     '',
-  //     '',
-  //     '',
-  //     { react: Unlocked },
-  //     '',
-  //     { details: `Anyone can tally the final vote count themselves.` },
-  //     {
-  //       p: `Any voter can Search (Ctrl+F) to find their individual vote, via their Secret Identifier, and see that their vote was counted correctly.`,
-  //     },
-  //   ],
-  // },
+  // Step 6
+  {
+    name: 'Step 6: Unlocking Stage',
+    then: [
+      {
+        left: [
+          {
+            html: `<p style="font-size: 15px; font-weight: 700;">Then a ${green(
+              semibold('quorum of Trustees'),
+            )} can sign off that they're ready for the final ${purple(semibold('shuffled list'))} to be ${blue(
+              semibold('Unlocked'),
+            )}.</p>`,
+          },
+          '',
+        ],
+        right: ['', '', '', { image: 'step-6-threshold-key.png', maxWidth: 470 }, '', ''],
+      },
+      {
+        left: [
+          {
+            html: `Unlocks the ${blue(semibold('vote contents'))} of the final list only, not Vote Tokens. ${em(
+              'Preserves privacy.',
+            )}`,
+          },
+          '',
+          '',
+          {
+            p: `Any voter can Search (Ctrl+F) to find their individual vote, via their Secret Identifier, and see that their vote was counted correctly.`,
+          },
+          '',
+          '',
+          '',
+          { details: `Anyone can tally the final vote count themselves.` },
+        ],
+        right: [{ react: Unlocked }, ''],
+      },
+    ],
+  },
 ]
