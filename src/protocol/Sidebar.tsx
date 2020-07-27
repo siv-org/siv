@@ -14,6 +14,7 @@ export const Sidebar = () => {
           <p key={step}>{step}</p>
         ) : (
           <a
+            className={state.yOffset.current === step.name ? 'current' : ''}
             key={step.name}
             onClick={() => {
               const $Protocol = document.getElementById('protocol') as HTMLElement
@@ -29,7 +30,7 @@ export const Sidebar = () => {
       <style jsx>{`
         div {
           min-width: 190px;
-          padding: 0px 15px;
+          padding: 0px 13px;
           background-color: #e5eafd;
           border-right: 1px solid rgba(0, 0, 0, 0.3);
         }
@@ -41,7 +42,9 @@ export const Sidebar = () => {
 
         a {
           display: block;
-          margin: 10px 0;
+          padding: 3px 3px;
+          border-radius: 5px;
+          margin: 4px 0;
           font-weight: 500;
           cursor: pointer;
           color: rgba(0, 0, 0, 0.6);
@@ -50,7 +53,12 @@ export const Sidebar = () => {
 
         a:hover {
           color: rgba(0, 0, 0, 0.9);
+          background-color: rgba(0, 0, 0, 0.04);
           text-decoration: none;
+        }
+
+        a.current {
+          background-color: rgba(11, 11, 73, 0.2);
         }
 
         /* Hide for small screens */
