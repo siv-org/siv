@@ -1,3 +1,5 @@
+import Link from 'next/link'
+
 import { useScrollContext } from '../scroll-context'
 import { steps } from './steps'
 
@@ -6,7 +8,9 @@ export const Sidebar = () => {
 
   return (
     <div>
-      <h2>SIV</h2>
+      <Link href="/">
+        <h2>SIV</h2>
+      </Link>
       <h3>Contents</h3>
 
       {steps.map((step) =>
@@ -33,6 +37,21 @@ export const Sidebar = () => {
           padding: 0px 13px;
           background-color: #e5eafd;
           border-right: 1px solid rgba(0, 0, 0, 0.3);
+        }
+
+        h2 {
+          cursor: pointer;
+          width: 43px;
+          color: rgba(0, 0, 0, 0.75);
+          transition: 0.05s opacity linear;
+        }
+
+        h2:hover {
+          color: rgba(0, 0, 0, 0.95);
+        }
+
+        h3 {
+          opacity: 0.75;
         }
 
         p {
