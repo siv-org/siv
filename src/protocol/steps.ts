@@ -33,9 +33,9 @@ export const steps: (Step | Milestone)[] = [
   // Milestone
   'Before the Election',
 
-  // Pre-A
+  // Pre-req
   {
-    name: 'Prep A: Voter Registration Period',
+    name: 'Voter Registration',
     subheader: `Election administrator collects list of all valid voters, using the usual methods (in person, DMV, etc).`,
     then: [
       {
@@ -54,30 +54,9 @@ export const steps: (Step | Milestone)[] = [
     ],
   },
 
-  // Pre-B
+  // Pre-req
   {
-    name: 'Prep B: Trustees Registered',
-    subheader: `Trustees — who ensure the privacy of the vote — are enrolled ahead of time.`,
-    then: [
-      {
-        left: [
-          {
-            details: `Requirements:
-
-          1. They will need their phone or computer online with the SIV Shuffling program open when the voting period closes.
-
-          2. To enroll, they need to generate a private key, and take part in a Threshold Key generation process with the election admin to create the corresponding public key.
-
-          Their Shuffling job is explained in Step 5, but their public keys are needed ahead-of-time for voters to encrypt their votes in Step 2.`,
-          },
-        ],
-      },
-    ],
-  },
-
-  // Pre-C
-  {
-    name: 'Prep C: Ballot Finalized',
+    name: 'Ballot Finalized',
     subheader: 'The official ballot is finalized, as with traditional paper elections.',
     then: [
       {
@@ -91,6 +70,27 @@ export const steps: (Step | Milestone)[] = [
           '',
         ],
         right: [{ react: Ballot() }],
+      },
+    ],
+  },
+
+  // Pre-req
+  {
+    name: 'Trustee Registration',
+    subheader: `Trustees — who ensure the privacy of the vote — are enrolled ahead of time.`,
+    then: [
+      {
+        left: [
+          {
+            details: `Requirements:
+
+          1. They will need their phone or computer online with the SIV Shuffling program open when the voting period closes.
+
+          2. To enroll, they need to generate a private key, and take part in a Threshold Key generation process with the election admin to create the corresponding public key.
+
+          Their Shuffling job is explained in Step 4, but their public keys are needed ahead-of-time for voters to encrypt their votes in Step 2.`,
+          },
+        ],
       },
     ],
   },
@@ -224,9 +224,9 @@ export const steps: (Step | Milestone)[] = [
   // Milestone
   'Voting Period Closes',
 
-  // Step 4
+  // Step
   {
-    name: 'Step 4: Voters Identified',
+    name: 'Voters Identified',
     subheader: 'Election administrator reveals the names of everyone who submitted a valid Vote Token.',
     then: [
       {
@@ -257,9 +257,9 @@ export const steps: (Step | Milestone)[] = [
     ],
   },
 
-  // Step 5
+  // Step 4
   {
-    name: 'Step 5: Verifiable Shuffle',
+    name: 'Step 4: Verifiable Shuffle',
     then: [
       {
         left: [
@@ -284,14 +284,14 @@ export const steps: (Step | Milestone)[] = [
             The only requirement is that Trustees are online and running the SIV shuffling software. This software automatically handles their parts.`,
           },
         ],
-        right: ['', '', { image: 'step-5-shuffle.png', maxWidth: 490 }],
+        right: ['', '', { image: 'step-4-shuffle.png', maxWidth: 490 }],
       },
     ],
   },
 
-  // Step 6
+  // Step 5
   {
-    name: 'Step 6: Unlocking Stage',
+    name: 'Step 5: Votes Unlocked & Tallied',
     then: [
       {
         left: [
@@ -304,7 +304,7 @@ export const steps: (Step | Milestone)[] = [
           },
           '',
         ],
-        right: ['', '', '', { image: 'step-6-threshold-key.png', maxWidth: 470 }, '', ''],
+        right: ['', '', '', { image: 'step-5-threshold-key.png', maxWidth: 470 }, '', ''],
       },
       {
         left: [
