@@ -1,25 +1,25 @@
 // import SubmittedBallots from './all-submitted-ballots'
 import Ballot from './ballot'
-// import EncryptionReceipt from './encryption-receipt'
+import EncryptionReceipt from './encryption-receipt'
 import { Invitation, InvitationExplanation } from './Invitation'
-// import Plaintext from './plaintext'
+import Plaintext from './plaintext'
 // import styles from './protocol.module.css'
-// import Sealed from './sealed'
-// import SecretID from './secret-id'
+import Sealed from './sealed'
+import SecretID from './secret-id'
 // import Unlocked from './unlocked'
 import VoterList from './voter-list'
 // import WhoVoted from './who-voted'
 // import YourSubmittedBallot from './your-submitted-ballot'
 
-// const colorize = (color: string) => (text: string) => `<span style="color: ${color};">${text}</span>`
-// const blue = colorize('#1332fe')
+const colorize = (color: string) => (text: string) => `<span style="color: ${color};">${text}</span>`
+const blue = colorize('#1332fe')
 // const red = colorize('#d0021b')
-// const purple = colorize('#9013fe')
+const purple = colorize('#9013fe')
 // const green = colorize('#417505')
 
-// const semibold = (text: string) => `<span style="font-weight: 600;">${text}</span>`
+const semibold = (text: string) => `<span style="font-weight: 600;">${text}</span>`
 const light = (text: string) => `<span style="font-size: 12px; opacity: 0.65;">${text}</span>`
-// const em = (text: string) => `<em>${text}</em>`
+const em = (text: string) => `<em>${text}</em>`
 
 export type ImageLine = { image: string; maxWidth: number }
 export type Subsection = { subsection: { header: string; list: string[] } }
@@ -27,63 +27,69 @@ export type ReactLine = { react: () => JSX.Element }
 
 export type Line = Record<string, string> | ImageLine | Subsection | ReactLine | ''
 
-export type Step = { name: string; subheader: string; then: { left: Line[]; right?: Line[] } }
+export type Step = { name: string; subheader: string; then: { left: Line[]; right?: Line[] }[] }
 
 export const prepSteps: Step[] = [
   // Pre-A
   {
     name: 'Prep A: Voter Registration Period',
     subheader: `Election administrator collects list of all valid voters, using the usual methods (in person, DMV, etc).`,
-    then: {
-      left: [
-        {
-          p:
-            'Individuals voters should opt-in to SIV by registering an email address with their election administrator.',
-        },
-      ],
-      right: [
-        { html: light("For this demo, we'll pretend you're a voter named 'Adam Barton'.") },
-        '',
-        { react: VoterList },
-      ],
-    },
+    then: [
+      {
+        left: [
+          {
+            p:
+              'Individuals voters should opt-in to SIV by registering an email address with their election administrator.',
+          },
+        ],
+        right: [
+          { html: light("For this demo, we'll pretend you're a voter named 'Adam Barton'.") },
+          '',
+          { react: VoterList },
+        ],
+      },
+    ],
   },
 
   // Pre-B
   {
     name: 'Prep B: Trustees Registered',
     subheader: `Trustees — who ensure the privacy of the vote — are enrolled ahead of time.`,
-    then: {
-      left: [
-        {
-          details: `Requirements:
+    then: [
+      {
+        left: [
+          {
+            details: `Requirements:
 
           1. They will need their phone or computer online with the SIV Shuffling program open when the voting period closes.
 
           2. To enroll, they need to generate a private key, and take part in a Threshold Key generation process with the election admin to create the corresponding public key.
 
           Their Shuffling job is explained in Step 5, but their public keys are needed ahead-of-time for voters to encrypt their votes in Step 2.`,
-        },
-      ],
-    },
+          },
+        ],
+      },
+    ],
   },
 
   // Pre-C
   {
     name: 'Prep C: Ballot Finalized',
     subheader: 'The official ballot is finalized, as with traditional paper elections.',
-    then: {
-      left: [
-        { details: 'There can be multiple questions, as many as the election requires.' },
-        {
-          html: light(
-            'SIV is 100% compatible with — and makes it easier to adopt — voting methods meant to improve upon the Choose-Only-One system, such as Ranked Choice Voting, Approval Voting, and Score Voting.',
-          ),
-        },
-        '',
-      ],
-      right: [{ react: Ballot() }],
-    },
+    then: [
+      {
+        left: [
+          { details: 'There can be multiple questions, as many as the election requires.' },
+          {
+            html: light(
+              'SIV is 100% compatible with — and makes it easier to adopt — voting methods meant to improve upon the Choose-Only-One system, such as Ranked Choice Voting, Approval Voting, and Score Voting.',
+            ),
+          },
+          '',
+        ],
+        right: [{ react: Ballot() }],
+      },
+    ],
   },
 ]
 
@@ -92,67 +98,86 @@ export const steps: Step[] = [
   {
     name: 'Step 1: Invitation to Vote',
     subheader: 'Election administrator sends individualized invitations to all enrolled voters.',
-    then: {
-      left: [{ react: InvitationExplanation }],
-      right: [{ react: Invitation }],
-    },
+    then: [
+      {
+        left: [{ react: InvitationExplanation }],
+        right: [{ react: Invitation }],
+      },
+    ],
   },
 
-  // // Step 2
-  // {
-  //   name: 'Step 2: Mark & Encrypt Your Ballot',
-  //   rest: [
-  //     {
-  //       description: `Voter fills out their ballot & encrypts it.`,
-  //     },
-  //     '',
-  //     { p: 'Voter sees a GUI to make it easy to fill out their ballot:' },
-  //     { react: Ballot(true) },
-  //     '',
-  //     { html: `At the end, there's a special ${em('Secret ID')} section.` },
-  //     '',
-  //     { react: SecretID },
-  //     '',
-  //     { html: `This example results in a ${blue(semibold('plaintext ballot'))} like:` },
-  //     { react: Plaintext },
-  //     '',
-  //     '',
-  //     '',
-  //     {
-  //       html: `Then the ${blue(semibold('plaintext ballot'))} can be sealed, resulting in an ${purple(
-  //         semibold('encrypted ballot'),
-  //       )} like:`,
-  //     },
-  //     { react: Sealed },
-  //     {
-  //       subsection: {
-  //         header: 'Encrypted Ballots',
-  //         list: [
-  //           `${semibold('can be safely shared')}, without revealing any content of vote.<br />
-  //           ${light('The encryption acts like a locked safe.')}`,
+  // Step 2
+  {
+    name: 'Step 2: Mark & Encrypt Your Ballot',
+    subheader: `Voter fills out their ballot & encrypts it.`,
+    then: [
+      {
+        left: [{ p: 'Voter sees a GUI to make it easy to fill out their ballot:' }],
+        right: [{ react: Ballot(true) }],
+      },
+      {
+        left: [{ html: `At the end, there's a special ${em('Secret ID')} section.` }],
+        right: [{ react: SecretID }],
+      },
+      {
+        left: [{ html: `This example results in a ${blue(semibold('plaintext ballot'))} like:` }],
+        right: ['', { react: Plaintext }],
+      },
+      { left: ['', ''] },
+      {
+        left: [
+          {
+            html: `Then the ${blue(semibold('plaintext ballot'))} can be sealed, resulting in an ${purple(
+              semibold('encrypted ballot'),
+            )} like:`,
+          },
+        ],
+        right: ['', { react: Sealed }],
+      },
+      {
+        left: [
+          {
+            subsection: {
+              header: 'Encrypted Ballots',
+              list: [
+                `${semibold('can be safely shared')}, without revealing any content of vote.<br />
+                  ${light('The encryption acts like a locked safe.')}`,
 
-  //           `can ${semibold('only be unlocked by special key')}— explained in final step.`,
-  //         ],
-  //       },
-  //     },
-  //     // { html: `This step is completed by using a ${green(semibold('SIV Sealing Tool'))}:` },
-  //     // { image: 'step-2g-tool-options.png', maxWidth: 462 },
-  //     '',
-  //     {
-  //       html: `You can download an Encryption Receipt, allowing you or 3rd-party auditors to verify that everything worked as intended.<br />
-  //       ${light(`This is optional. It helps prove or disprove claims of improper results.`)}`,
-  //     },
-  //     { react: EncryptionReceipt },
-  //     '',
-  //     {
-  //       html: `For extra security, this encryption step can be completed while offline (e.g. in airplane mode) and in a sandboxed incognito tab. <br />
-  //       ${light(
-  //         `This protects against the voting software itself being malicious, ensuring it can't possibly store any private vote information.`,
-  //       )}`,
-  //     },
-  //     '',
-  //   ],
-  // },
+                `can ${semibold('only be unlocked by special key')}— explained in final step.`,
+              ],
+            },
+          },
+          '',
+          '',
+        ],
+      },
+      // { html: `This step is completed by using a ${green(semibold('SIV Sealing Tool'))}:` },
+      // { image: 'step-2g-tool-options.png', maxWidth: 462 },
+      {
+        left: [
+          {
+            html: `You can download an Encryption Receipt, allowing you or 3rd-party auditors to verify that everything worked as intended.<br />
+          ${light(`This is optional. It helps prove or disprove claims of improper results.`)}`,
+          },
+          '',
+          '',
+          '',
+        ],
+        right: ['', { react: EncryptionReceipt }],
+      },
+
+      {
+        left: [
+          {
+            html: `For extra security, this encryption step can be completed while offline (e.g. in airplane mode) and in a sandboxed incognito tab. <br />
+          ${light(
+            `This protects against the voting software itself being malicious, ensuring it can't possibly store any private vote information.`,
+          )}`,
+          },
+        ],
+      },
+    ],
+  },
 
   // // Step 3
   // {

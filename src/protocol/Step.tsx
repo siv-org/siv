@@ -5,10 +5,13 @@ export const Step = ({ name, subheader, then }: StepObj, stepIndex: number) => (
   <div key={stepIndex} style={{ background: 'white', padding: '3rem 15px' }}>
     <p className="step-name">{name}</p>
     <p className="subheader">{subheader}</p>
-    <div className="columns">
-      <div className="left">{then.left.map(Line)}</div>
-      <div className="right">{then.right?.map(Line)}</div>
-    </div>
+    {then.map(({ left, right }, index) => (
+      <div className="columns" key={index}>
+        <div className="left">{left.map(Line)}</div>
+        <div className="right">{right?.map(Line)}</div>
+      </div>
+    ))}
+
     <style jsx>{`
       .step-name {
         margin: 0;
@@ -21,7 +24,7 @@ export const Step = ({ name, subheader, then }: StepObj, stepIndex: number) => (
         margin-top: 10px;
         font-size: 15px;
         font-weight: 700;
-        max-width: calc(50vw - 110px);
+        max-width: calc(48vw - 140px);
       }
 
       .columns {
