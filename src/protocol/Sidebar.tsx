@@ -2,6 +2,7 @@ import steps from './steps'
 
 export const Sidebar = () => (
   <div>
+    <h2>SIV</h2>
     <h3>Contents</h3>
     <a>Prep Steps</a>
 
@@ -12,7 +13,7 @@ export const Sidebar = () => (
     <style jsx>{`
       div {
         min-width: 190px;
-        padding: 30px 15px;
+        padding: 0px 15px;
         background-color: #e5eafd;
         border-right: 1px solid rgba(0, 0, 0, 0.3);
       }

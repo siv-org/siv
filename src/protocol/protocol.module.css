@@ -1,10 +1,3 @@
-/* Container for whole protocol */
-.protocol {
-  width: 100%;
-  padding: 10px 14px;
-  background-color: #e5eafd;
-}
-
 .name {
   padding-left: 1rem;
   margin: 0;

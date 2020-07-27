@@ -276,8 +276,6 @@ const steps: Step[] = [
       {
         p: `Any voter can Search (Ctrl+F) to find their individual vote, via their Secret Identifier, and see that their vote was counted correctly.`,
       },
-      '',
-      '',
     ],
   },
 ]

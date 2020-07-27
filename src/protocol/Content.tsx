@@ -3,12 +3,9 @@ import steps, { ImageLine, Line, ReactLine, Step, Subsection, header, prepSteps 
 
 export default function Protocol(): JSX.Element {
   return (
-    <div
-      id="protocol"
-      style={{ backgroundColor: '#e5eafd', height: '100vh', overflowY: 'scroll', paddingBottom: '2rem' }}
-    >
+    <div id="protocol" style={{ backgroundColor: '#e5eafd', height: '100vh', overflowY: 'scroll' }}>
       {/* Header */}
-      <div className={styles.protocol}>
+      <div>
         <div style={{ padding: '10px 16px' }}>
           {header.map((line, lineIndex) => {
             const type = Object.keys(line)[0]
@@ -23,7 +20,7 @@ export default function Protocol(): JSX.Element {
         </div>
 
         {/* Prep steps */}
-        <div>
+        <div style={{ background: 'white', paddingTop: '2rem' }}>
           <p className={styles.name}>Prep Steps</p>
           <div>{prepSteps.map(renderStep)}</div>
         </div>
@@ -43,7 +40,7 @@ export default function Protocol(): JSX.Element {
 // Wrap individual step in an Accordion
 function renderStep({ name, rest }: Step, stepIndex: number) {
   return (
-    <div key={stepIndex} style={{ margin: '3rem 0' }}>
+    <div key={stepIndex} style={{ background: 'white', padding: '3rem 0' }}>
       <p className={styles.name}>{name}</p>
       <div className={styles.expanded}>{rest.map(renderLine)}</div>
     </div>
