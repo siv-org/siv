@@ -4,7 +4,7 @@ import { Step as StepObj } from './steps'
 export const Step = ({ leftFirst = false, name, subheader, then }: StepObj, stepIndex: number) => (
   <div key={stepIndex} style={{ background: 'white', padding: '3rem 15px' }}>
     <p className="step-name">{name}</p>
-    <p className="subheader">{subheader}</p>
+    {subheader && <p className="subheader">{subheader}</p>}
     {then.map(({ left, right }, index) => (
       <div className={`columns ${leftFirst ? 'leftFirst' : ''}`} key={index}>
         <div className="left">{left.map(Line)}</div>

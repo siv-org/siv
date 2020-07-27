@@ -3,7 +3,6 @@ import Ballot from './ballot'
 import EncryptionReceipt from './encryption-receipt'
 import { Invitation, InvitationExplanation } from './Invitation'
 import Plaintext from './plaintext'
-// import styles from './protocol.module.css'
 import Sealed from './sealed'
 import SecretID from './secret-id'
 // import Unlocked from './unlocked'
@@ -27,7 +26,7 @@ export type ReactLine = { react: () => JSX.Element }
 
 export type Line = Record<string, string> | ImageLine | Subsection | ReactLine | ''
 
-export type Step = { leftFirst?: boolean; name: string; subheader: string; then: { left: Line[]; right?: Line[] }[] }
+export type Step = { leftFirst?: boolean; name: string; subheader?: string; then: { left: Line[]; right?: Line[] }[] }
 
 export const prepSteps: Step[] = [
   // Pre-A
@@ -250,35 +249,37 @@ export const steps: Step[] = [
     ],
   },
 
-  // // Step 5
-  // {
-  //   name: 'Step 5: Verifiable Shuffle',
-  //   rest: [
-  //     {
-  //       html: `<p class="${
-  //         styles.description
-  //       }">Encrypted votes are verifiably shuffled by a pool of 3rd-party Trustees. This protects voters’ privacy by removing the ${red(
-  //         semibold('Vote Tokens'),
-  //       )}, while still mathematically proven to preserve the ${purple(semibold('encrypted vote contents'))}.</p>`,
-  //     },
-  //     '',
-  //     '',
-  //     { image: 'step-5-shuffle.png', maxWidth: 490 },
-  //     '',
-  //     '',
-  //     '',
-  //     {
-  //       html: `Multiple people can shuffle, like multiple people shuffling a deck of cards.<br />
-  //         ${red(`Privacy is ensured by ${em('at least one')} honest Trustee.`)}`,
-  //     },
-  //     {
-  //       details: `Thus, greater trust is ensured by more Trustees.
-  //   This entire step can still be completed in just a few minutes.
+  // Step 5
+  {
+    name: 'Step 5: Verifiable Shuffle',
+    then: [
+      {
+        left: [
+          {
+            html: `<p style="font-size: 15px; font-weight: 700;">Encrypted votes are verifiably shuffled by a pool of 3rd-party Trustees. This protects voters’ privacy by removing the ${red(
+              semibold('Vote Tokens'),
+            )}, while still mathematically proven to preserve the ${purple(semibold('encrypted vote contents'))}.</p>`,
+          },
+          '',
+          '',
+          {
+            html: `Multiple people can shuffle, like multiple people shuffling a deck of cards.<br />
+            ${red(`Privacy is ensured by ${em('at least one')} honest Trustee.`)}`,
+          },
+          {
+            details: `Thus, greater trust is ensured by more Trustees.
 
-  //   The only requirement is that Trustees are online and running the SIV shuffling software. This software automatically handles their parts, and can even be run from a browser tab. No installs necessary.`,
-  //     },
-  //   ],
-  // },
+
+            This entire step can still be completed in just a few minutes.
+
+
+            The only requirement is that Trustees are online and running the SIV shuffling software. This software automatically handles their parts.`,
+          },
+        ],
+        right: ['', '', { image: 'step-5-shuffle.png', maxWidth: 490 }],
+      },
+    ],
+  },
 
   // // Step 6
   // {
