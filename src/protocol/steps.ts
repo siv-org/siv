@@ -1,4 +1,4 @@
-// import SubmittedBallots from './all-submitted-ballots'
+import SubmittedBallots from './all-submitted-ballots'
 import Ballot from './ballot'
 import EncryptionReceipt from './encryption-receipt'
 import { Invitation, InvitationExplanation } from './Invitation'
@@ -9,11 +9,11 @@ import SecretID from './secret-id'
 // import Unlocked from './unlocked'
 import VoterList from './voter-list'
 // import WhoVoted from './who-voted'
-// import YourSubmittedBallot from './your-submitted-ballot'
+import YourSubmittedBallot from './your-submitted-ballot'
 
 const colorize = (color: string) => (text: string) => `<span style="color: ${color};">${text}</span>`
 const blue = colorize('#1332fe')
-// const red = colorize('#d0021b')
+const red = colorize('#d0021b')
 const purple = colorize('#9013fe')
 // const green = colorize('#417505')
 
@@ -180,35 +180,42 @@ export const steps: Step[] = [
     ],
   },
 
-  // // Step 3
-  // {
-  //   name: 'Step 3: Submit Encrypted Ballot',
-  //   rest: [
-  //     {
-  //       description: 'The voter sends their encrypted ballot + unique Vote Token to the election administrator.',
-  //     },
-  //     {
-  //       html: `Election admin confirms the ${red(
-  //         semibold('Vote Token'),
-  //       )} matches an eligible voter, and hasn't already been used.`,
-  //     },
-  //     '',
-  //     { react: YourSubmittedBallot },
-  //     {
-  //       details: 'If it passes, the admin adds the ballot to a public list of all ballots received so far.',
-  //     },
-  //     '',
-  //     { react: SubmittedBallots },
-  //     '',
-  //     {
-  //       html: `The election administrator has no way to know how a voter voted. Still, they can email voters a confirmation that their encrypted ballot has been received and accepted.<br />
-  //       ${light(
-  //         `This lets the voter know their job is done. It also alerts the voter in case someone else somehow gained access to their vote token. And it serves as a written receipt that the vote was accepted, to allow for auditing.`,
-  //       )}`,
-  //     },
-  //     '',
-  //   ],
-  // },
+  // Step 3
+  {
+    leftFirst: true,
+    name: 'Step 3: Submit Encrypted Ballot',
+    subheader: 'The voter sends their encrypted ballot + unique Vote Token to the election administrator.',
+    then: [
+      {
+        left: [
+          {
+            html: `Election admin confirms the ${red(
+              semibold('Vote Token'),
+            )} matches an eligible voter, and hasn't already been used.`,
+          },
+        ],
+        right: ['', '', { react: YourSubmittedBallot }, '', '', '', ''],
+      },
+      {
+        left: [
+          {
+            details: 'If it passes, the admin adds the ballot to a public list of all ballots received so far.',
+          },
+        ],
+        right: ['', { react: SubmittedBallots }, '', ''],
+      },
+      {
+        left: [
+          {
+            html: `The election administrator has no way to know how a voter voted. Still, they can email voters a confirmation that their encrypted ballot has been received and accepted.<br />
+            ${light(
+              `This lets the voter know their job is done. It also alerts the voter in case someone else somehow gained access to their vote token. And it serves as a written receipt that the vote was accepted, to allow for auditing.`,
+            )}`,
+          },
+        ],
+      },
+    ],
+  },
 
   // // Step 4
   // {
