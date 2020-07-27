@@ -6,29 +6,12 @@
   font-weight: 700;
 }
 
-.expanded {
-  padding: 0 15px;
-}
-
 /* Now we define individual line types */
-.title {
-  margin-bottom: 0;
-  font-size: 21px;
-  font-weight: 700;
-}
-
-.subtitle {
-  margin-top: 3px;
-  font-size: 16px;
-  font-weight: 700;
-}
-
 .p {
   font-size: 15px;
 }
 
 .description {
-  max-width: 450px;
   margin-top: 10px;
   font-size: 15px;
   font-weight: 700;

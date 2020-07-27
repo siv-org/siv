@@ -21,29 +21,18 @@ const semibold = (text: string) => `<span style="font-weight: 600;">${text}</spa
 const light = (text: string) => `<span style="font-size: 12px; opacity: 0.65;">${text}</span>`
 const em = (text: string) => `<em>${text}</em>`
 
-// Header
-export const header = [
-  { title: 'Secure Internet Voting (SIV) Protocol Overview' },
-  { subtitle: 'Fast, Private, Verifiable' },
-  {
-    p: `Voting Method with mathematically provable privacy & vote verifiability.
-        No installs necessary.`,
-  },
-]
-
 export type ImageLine = { image: string; maxWidth: number }
 export type Subsection = { subsection: { header: string; list: string[] } }
 export type ReactLine = { react: () => JSX.Element }
 
 export type Line = Record<string, string> | ImageLine | Subsection | ReactLine | ''
 
-export type Step = { defaultExpanded?: boolean; name: string; rest: Line[] }
+export type Step = { name: string; rest: Line[] }
 
 export const prepSteps: Step[] = [
   // Pre-A
   {
-    defaultExpanded: false,
-    name: 'A: Voter Registration Period',
+    name: 'Prep A: Voter Registration Period',
     rest: [
       {
         description: `Election administrator collects list of all valid voters, using the usual methods (in person, DMV, etc).`,
@@ -59,8 +48,7 @@ export const prepSteps: Step[] = [
 
   // Pre-B
   {
-    defaultExpanded: false,
-    name: 'B: Trustees Registered',
+    name: 'Prep B: Trustees Registered',
     rest: [
       {
         description: `Trustees — who ensure the privacy of the vote — need to be enrolled ahead of time.`,
@@ -79,8 +67,7 @@ export const prepSteps: Step[] = [
 
   // Pre-C
   {
-    defaultExpanded: false,
-    name: 'C: Ballot Finalized',
+    name: 'Prep C: Ballot Finalized',
     rest: [
       { p: 'The official ballot needs to be finalized, as with traditional paper elections.' },
       { example: '' },

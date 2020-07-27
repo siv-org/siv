@@ -1,6 +1,6 @@
 import Head from 'next/head'
 
-import Protocol from './Content'
+import { Content } from './Content'
 import { Sidebar } from './Sidebar'
 
 export const ProtocolPage = (): JSX.Element => (
@@ -14,7 +14,7 @@ export const ProtocolPage = (): JSX.Element => (
 
     <div className="columns">
       <Sidebar />
-      <Protocol />
+      <Content />
     </div>
 
     <style jsx>{`
