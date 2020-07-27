@@ -4,11 +4,8 @@ export const Sidebar = () => (
   <div>
     <h2>SIV</h2>
     <h3>Contents</h3>
-    <a>Prep Steps</a>
 
-    {steps.map((step) => (
-      <a key={step.name}>{step.name}</a>
-    ))}
+    {steps.map((step) => (typeof step === 'string' ? <p key={step}>{step}</p> : <a key={step.name}>{step.name}</a>))}
 
     <style jsx>{`
       div {

@@ -27,8 +27,12 @@ export type ReactLine = { react: () => JSX.Element }
 export type Line = Record<string, string> | ImageLine | Subsection | ReactLine | ''
 
 export type Step = { leftFirst?: boolean; name: string; subheader?: string; then: { left: Line[]; right?: Line[] }[] }
+type Milestone = string
 
-export const prepSteps: Step[] = [
+export const steps: (Step | Milestone)[] = [
+  // Milestone
+  'Before the Election',
+
   // Pre-A
   {
     name: 'Prep A: Voter Registration Period',
@@ -90,9 +94,10 @@ export const prepSteps: Step[] = [
       },
     ],
   },
-]
 
-export const steps: Step[] = [
+  // Milestone
+  'Voting Begins',
+
   // Step 1
   {
     name: 'Step 1: Invitation to Vote',
@@ -216,9 +221,12 @@ export const steps: Step[] = [
     ],
   },
 
+  // Milestone
+  'Voting Period Closes',
+
   // Step 4
   {
-    name: 'Step 4: Voting Period Closes',
+    name: 'Step 4: Voters Identified',
     subheader: 'Election administrator reveals the names of everyone who submitted a valid Vote Token.',
     then: [
       {
