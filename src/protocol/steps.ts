@@ -27,7 +27,7 @@ export type ReactLine = { react: () => JSX.Element }
 
 export type Line = Record<string, string> | ImageLine | Subsection | ReactLine | ''
 
-export type Step = { name: string; subheader: string; then: { left: Line[]; right?: Line[] }[] }
+export type Step = { leftFirst?: boolean; name: string; subheader: string; then: { left: Line[]; right?: Line[] }[] }
 
 export const prepSteps: Step[] = [
   // Pre-A
@@ -108,6 +108,7 @@ export const steps: Step[] = [
 
   // Step 2
   {
+    leftFirst: true,
     name: 'Step 2: Mark & Encrypt Your Ballot',
     subheader: `Voter fills out their ballot & encrypts it.`,
     then: [
@@ -159,15 +160,15 @@ export const steps: Step[] = [
             html: `You can download an Encryption Receipt, allowing you or 3rd-party auditors to verify that everything worked as intended.<br />
           ${light(`This is optional. It helps prove or disprove claims of improper results.`)}`,
           },
-          '',
-          '',
-          '',
         ],
         right: ['', { react: EncryptionReceipt }],
       },
 
       {
         left: [
+          '',
+          '',
+          '',
           {
             html: `For extra security, this encryption step can be completed while offline (e.g. in airplane mode) and in a sandboxed incognito tab. <br />
           ${light(
