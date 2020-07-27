@@ -1,9 +1,9 @@
 import styles from './protocol.module.css'
 import { Step } from './Step'
-import steps, { prepSteps } from './steps'
+import { prepSteps, steps } from './steps'
 
 export const Content = () => (
-  <div id="protocol" style={{ backgroundColor: '#e5eafd', height: '100vh', overflowY: 'scroll' }}>
+  <div id="protocol" style={{ backgroundColor: '#e5eafd', flex: 1, height: '100vh', overflowY: 'scroll' }}>
     {/* Header */}
     <div>
       <div style={{ padding: '10px 16px' }}>

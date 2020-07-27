@@ -1,4 +1,4 @@
-import steps from './steps'
+import { steps } from './steps'
 
 export const Sidebar = () => (
   <div>
