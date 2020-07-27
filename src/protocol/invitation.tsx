@@ -15,6 +15,10 @@ export default function VoterList(): JSX.Element {
   return (
     <>
       <Paper elevation={3} style={{ marginBottom: 30, padding: '0.5rem 1.5rem' }}>
+        <img
+          src="/protocol/step-1-invitation-icon.png"
+          style={{ opacity: 0.5, position: 'absolute', right: 25, width: 40 }}
+        />
         <p>
           From: <b>elections@local.gov</b> <br />
           To: <b>you@email.com</b> <br />
