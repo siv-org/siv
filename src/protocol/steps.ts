@@ -8,7 +8,7 @@ import Sealed from './sealed'
 import SecretID from './secret-id'
 // import Unlocked from './unlocked'
 import VoterList from './voter-list'
-// import WhoVoted from './who-voted'
+import WhoVoted from './who-voted'
 import YourSubmittedBallot from './your-submitted-ballot'
 
 const colorize = (color: string) => (text: string) => `<span style="color: ${color};">${text}</span>`
@@ -217,30 +217,38 @@ export const steps: Step[] = [
     ],
   },
 
-  // // Step 4
-  // {
-  //   name: 'Step 4: Voting Period Closes',
-  //   rest: [
-  //     { description: 'Election administrator reveals the names of everyone who submitted a valid Vote Token.' },
-  //     {
-  //       html: `${light(
-  //         `Who voted, but not ${em('how')} anyone voted (which they couldn’t reveal even if they wanted to).`,
-  //       )}`,
-  //     },
-  //     '',
-  //     { react: WhoVoted },
-  //     '',
-  //     '',
-  //     {
-  //       html: `This creates greater trust by showing who the voters are. The public can see they’re real valid voters. Not people voting multiple times, or "dead people", or foreigners, etc., as skeptics worry about.<br />
-  //       <br />
-  //       ${light(
-  //         `This also helps watchdogs pick a random sample of voters to conduct independent audits of the vote’s validity. With individual voters' permission, they can check reported results against voter receipts.`,
-  //       )}`,
-  //     },
-  //     '',
-  //   ],
-  // },
+  // Step 4
+  {
+    name: 'Step 4: Voting Period Closes',
+    subheader: 'Election administrator reveals the names of everyone who submitted a valid Vote Token.',
+    then: [
+      {
+        left: [
+          '',
+          {
+            html: `This creates greater trust by showing who the voters are. The public can see they’re real valid voters. Not people voting multiple times, or "dead people", or foreigners, etc., as skeptics worry about.<br />
+        <br />
+        ${light(
+          `This also helps watchdogs pick a random sample of voters to conduct independent audits of the vote’s validity. With individual voters' permission, they can check reported results against voter receipts.`,
+        )}`,
+          },
+          '',
+        ],
+        right: [
+          '',
+          {
+            html: `${light(
+              `Who voted, but not ${em('how')} anyone voted (which they couldn’t reveal even if they wanted to).`,
+            )}`,
+          },
+          '',
+          { react: WhoVoted },
+          '',
+          '',
+        ],
+      },
+    ],
+  },
 
   // // Step 5
   // {
