@@ -21,7 +21,7 @@ export const Step = ({ name, subheader, then }: StepObj, stepIndex: number) => (
         margin-top: 10px;
         font-size: 15px;
         font-weight: 700;
-        max-width: 600px;
+        max-width: calc(50vw - 110px);
       }
 
       .columns {
@@ -37,14 +37,34 @@ export const Step = ({ name, subheader, then }: StepObj, stepIndex: number) => (
         margin-right: 30px;
       }
 
+      .right {
+        position: relative;
+        bottom: 40px;
+      }
+
+      /* Sidebar disappears */
+      @media (max-width: 1030px) {
+        .subheader {
+          max-width: 48vw;
+        }
+      }
+
       /* Single column for small screens */
       @media (max-width: 750px) {
+        .subheader {
+          max-width: 100vw;
+        }
+
         .columns {
           flex-direction: column-reverse;
         }
 
         .left {
           margin-right: 0;
+        }
+
+        .right {
+          bottom: 0;
         }
       }
     `}</style>

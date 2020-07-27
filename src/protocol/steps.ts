@@ -52,7 +52,7 @@ export const prepSteps: Step[] = [
   // Pre-B
   {
     name: 'Prep B: Trustees Registered',
-    subheader: `Trustees — who ensure the privacy of the vote — need to be enrolled ahead of time.`,
+    subheader: `Trustees — who ensure the privacy of the vote — are enrolled ahead of time.`,
     then: {
       left: [
         {
@@ -71,7 +71,7 @@ export const prepSteps: Step[] = [
   // Pre-C
   {
     name: 'Prep C: Ballot Finalized',
-    subheader: 'The official ballot needs to be finalized, as with traditional paper elections.',
+    subheader: 'The official ballot is finalized, as with traditional paper elections.',
     then: {
       left: [
         { details: 'There can be multiple questions, as many as the election requires.' },
