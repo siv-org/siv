@@ -1,5 +1,6 @@
 import { Paper } from '@material-ui/core'
 import { countBy, mapValues, orderBy } from 'lodash'
+import { useMemo } from 'react'
 
 import { useVoteContext } from '../vote-context'
 import { candidates, voters } from './election-parameters'
@@ -8,11 +9,17 @@ import { generateSecretID } from './secret-id'
 export default function Unlocked(): JSX.Element {
   const { state } = useVoteContext()
 
-  const votes = [
-    ...voters.slice(1).map(() => candidates[Math.floor(Math.random() * candidates.length)]),
-    state.plaintext.vote_for_mayor,
-  ]
-  const vote_counts = countBy(votes)
+  const randomCandidate = () => candidates[Math.floor(Math.random() * candidates.length)]
+
+  const votes = useMemo(
+    () => [
+      ...voters.slice(1).map(() => ({ secret: generateSecretID(), vote_for_mayor: randomCandidate() })),
+      state.plaintext,
+    ],
+    [voters],
+  )
+
+  const vote_counts = countBy(votes.map((v) => v.vote_for_mayor))
   const tuples = mapValues(vote_counts, (votes, name) => ({ name, votes }))
   const ordered = orderBy(tuples, 'votes', 'desc')
 
@@ -20,10 +27,9 @@ export default function Unlocked(): JSX.Element {
     <>
       <Paper elevation={3} style={{ overflowWrap: 'break-word', padding: 15 }}>
         <code>
-          {voters.slice(1).map((_, index) => (
-            <p key={index}>{`{ secret: '${generateSecretID()}', vote_for_mayor: '${votes[index]}' }'`}</p>
+          {votes.map(({ secret, vote_for_mayor }) => (
+            <p key={secret}>{`{ secret: '${secret}', vote_for_mayor: '${vote_for_mayor}' }'`}</p>
           ))}
-          <p>{`{ secret: '${state.plaintext.secret}', vote_for_mayor: '${state.plaintext.vote_for_mayor}' }`}</p>
         </code>
       </Paper>
       <Paper elevation={3} style={{ marginTop: 30, overflowWrap: 'break-word', padding: 15 }}>
