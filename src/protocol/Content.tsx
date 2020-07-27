@@ -17,7 +17,7 @@ export const Content = () => (
 
       {/* Prep steps */}
       <div style={{ background: 'white', paddingTop: '2rem' }}>
-        <p className={styles.name}>Prep Steps</p>
+        <h3 style={{ paddingLeft: '1rem' }}>Before the Election</h3>
         <div>{prepSteps.map(Step)}</div>
       </div>
 

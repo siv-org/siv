@@ -1,20 +1,7 @@
-.name {
-  padding-left: 1rem;
-  margin: 0;
-  color: #000c;
-  font-size: 16px;
-  font-weight: 700;
-}
-
 /* Now we define individual line types */
 .p {
+  margin-top: 0;
   font-size: 15px;
-}
-
-.description {
-  margin-top: 10px;
-  font-size: 15px;
-  font-weight: 700;
 }
 
 .example {
@@ -22,5 +9,6 @@
 }
 
 .details {
+  margin-top: 0;
   font-size: 14px;
 }

@@ -27,34 +27,34 @@ export type ReactLine = { react: () => JSX.Element }
 
 export type Line = Record<string, string> | ImageLine | Subsection | ReactLine | ''
 
-export type Step = { name: string; rest: { left: Line[]; right?: Line[] } }
+export type Step = { name: string; subheader: string; then: { left: Line[]; right?: Line[] } }
 
 export const prepSteps: Step[] = [
   // Pre-A
   {
     name: 'Prep A: Voter Registration Period',
-    rest: {
+    subheader: `Election administrator collects list of all valid voters, using the usual methods (in person, DMV, etc).`,
+    then: {
       left: [
         {
-          description: `Election administrator collects list of all valid voters, using the usual methods (in person, DMV, etc).`,
-        },
-        { html: light("For this demo, we'll pretend you're a voter named 'Adam Barton'.") },
-        {
-          p: 'Individuals voters must opt-in to SIV by registering an email address with their election administrator.',
+          p:
+            'Individuals voters should opt-in to SIV by registering an email address with their election administrator.',
         },
       ],
-      right: [{ example: '' }, { react: VoterList }],
+      right: [
+        { html: light("For this demo, we'll pretend you're a voter named 'Adam Barton'.") },
+        '',
+        { react: VoterList },
+      ],
     },
   },
 
   // Pre-B
   {
     name: 'Prep B: Trustees Registered',
-    rest: {
+    subheader: `Trustees — who ensure the privacy of the vote — need to be enrolled ahead of time.`,
+    then: {
       left: [
-        {
-          description: `Trustees — who ensure the privacy of the vote — need to be enrolled ahead of time.`,
-        },
         {
           details: `Requirements:
 
@@ -71,9 +71,9 @@ export const prepSteps: Step[] = [
   // Pre-C
   {
     name: 'Prep C: Ballot Finalized',
-    rest: {
+    subheader: 'The official ballot needs to be finalized, as with traditional paper elections.',
+    then: {
       left: [
-        { p: 'The official ballot needs to be finalized, as with traditional paper elections.' },
         { details: 'There can be multiple questions, as many as the election requires.' },
         {
           html: light(
@@ -91,11 +91,9 @@ export const steps: Step[] = [
   // Step 1
   {
     name: 'Step 1: Invitation to Vote',
-    rest: {
-      left: [
-        { description: 'Election administrator sends individualized invitations to all enrolled voters.' },
-        { react: InvitationExplanation },
-      ],
+    subheader: 'Election administrator sends individualized invitations to all enrolled voters.',
+    then: {
+      left: [{ react: InvitationExplanation }],
       right: [{ react: Invitation }],
     },
   },
