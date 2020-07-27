@@ -116,7 +116,7 @@ export const steps: (Step | Milestone)[] = [
   {
     leftFirst: true,
     name: 'Step 2: Mark & Encrypt Your Ballot',
-    subheader: `Voter fills out their ballot & encrypts it.`,
+    subheader: `Voter fills out their ballot, which gets immediately encrypted.`,
     then: [
       {
         left: [{ p: 'Voter sees a GUI to make it easy to fill out their ballot:' }],
