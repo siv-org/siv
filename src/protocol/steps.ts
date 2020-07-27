@@ -40,6 +40,8 @@ export const steps: (Step | Milestone)[] = [
     then: [
       {
         left: [
+          '',
+          '',
           {
             p:
               'Individuals voters should opt-in to SIV by registering an email address with their election administrator.',

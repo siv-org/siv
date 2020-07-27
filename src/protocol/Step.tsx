@@ -39,15 +39,12 @@ export const Step = ({ leftFirst = false, name, subheader, then }: StepType) => 
 
         .columns {
           display: flex;
+          justify-content: space-between;
         }
 
         .left,
         .right {
-          flex: 1;
-        }
-
-        .left {
-          margin-right: 30px;
+          width: calc(45vw - 140px);
         }
 
         .right {
@@ -59,6 +56,11 @@ export const Step = ({ leftFirst = false, name, subheader, then }: StepType) => 
         @media (max-width: 1030px) {
           .subheader {
             max-width: 48vw;
+          }
+
+          .left,
+          .right {
+            width: 45vw;
           }
         }
 
@@ -76,8 +78,9 @@ export const Step = ({ leftFirst = false, name, subheader, then }: StepType) => 
             flex-direction: column;
           }
 
-          .left {
-            margin-right: 0;
+          .left,
+          .right {
+            width: 100%;
           }
 
           .right {
