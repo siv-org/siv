@@ -1,5 +1,7 @@
 import Head from 'next/head'
 
+import { ScrollContextProvider } from '../scroll-context'
+import { VoteContextProvider } from '../vote-context'
 import { Content } from './Content'
 import { Sidebar } from './Sidebar'
 
@@ -12,10 +14,14 @@ export const ProtocolPage = (): JSX.Element => (
       <meta content="minimum-scale=1, initial-scale=1, width=device-width" name="viewport" />
     </Head>
 
-    <div className="columns">
-      <Sidebar />
-      <Content />
-    </div>
+    <VoteContextProvider>
+      <ScrollContextProvider>
+        <div className="columns">
+          <Sidebar />
+          <Content />
+        </div>
+      </ScrollContextProvider>
+    </VoteContextProvider>
 
     <style jsx>{`
       .columns {
