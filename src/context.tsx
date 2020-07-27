@@ -11,13 +11,16 @@ const initState = {
   encrypted: {},
   plaintext: { secret: '', vote_for_mayor: candidates[1] },
   randomizer: {},
+  yOffset: {},
 }
 
 type Map = Record<string, string>
-type State = { encrypted: Map; plaintext: Map; randomizer: Map }
+type State = { encrypted: Map; plaintext: Map; randomizer: Map; yOffset: Map }
 
-const Context = createContext<{ dispatch: (payload: Map) => void; state: State }>({
-  dispatch: (payload: Map) => void payload,
+type Payload = Map | { yOffset: Map }
+
+const Context = createContext<{ dispatch: (payload: Payload) => void; state: State }>({
+  dispatch: (payload: Payload) => void payload,
   state: initState,
 })
 
@@ -30,7 +33,13 @@ export default function ContextProvider({ children }: { children: JSX.Element })
 
 export const useContext = () => _useContext(Context)
 
-function reducer(prev: State, payload: Map) {
+function reducer(prev: State, payload: Payload) {
+  // Are we updating yOffset values?
+  if (payload.yOffset) {
+    return merge({ ...prev }, payload)
+  }
+
+  // Otherwise we must be updating vote plaintext
   const newState = merge({ ...prev }, { plaintext: payload })
 
   // Encrypt values
