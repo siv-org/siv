@@ -4,7 +4,10 @@ import { Step } from './Step'
 import { steps } from './steps'
 
 export const Content = () => (
-  <div id="protocol" style={{ backgroundColor: '#e5eafd', flex: 1, height: '100vh', overflowY: 'scroll' }}>
+  <div
+    id="protocol"
+    style={{ backgroundColor: '#e5eafd', flex: 1, height: '100vh', overflowY: 'scroll', scrollBehavior: 'smooth' }}
+  >
     {/* Header */}
     <div style={{ backgroundColor: 'white', padding: '10px 16px' }}>
       <p style={{ fontSize: 21, fontWeight: 700, marginBottom: 0 }}>Secure Internet Voting (SIV) Protocol Overview</p>
