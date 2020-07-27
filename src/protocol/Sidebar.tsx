@@ -34,6 +34,11 @@ export const Sidebar = () => {
           border-right: 1px solid rgba(0, 0, 0, 0.3);
         }
 
+        p {
+          opacity: 0.6;
+          cursor: default;
+        }
+
         a {
           display: block;
           margin: 10px 0;

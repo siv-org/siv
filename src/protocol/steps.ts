@@ -264,7 +264,7 @@ export const steps: (Step | Milestone)[] = [
       {
         left: [
           {
-            html: `<p style="font-size: 15px; font-weight: 700;">Encrypted votes are verifiably shuffled by a pool of 3rd-party Trustees. This protects voters’ privacy by removing the ${red(
+            html: `<p style="font-size: 15px; font-weight: 700;">Encrypted votes are verifiably shuffled by the Trustees. This protects voters’ privacy by removing the ${red(
               semibold('Vote Tokens'),
             )}, while still mathematically proven to preserve the ${purple(semibold('encrypted vote contents'))}.</p>`,
           },
