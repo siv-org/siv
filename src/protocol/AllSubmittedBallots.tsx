@@ -6,7 +6,7 @@ import pickRandomInteger from './crypto/pick-random-integer'
 import { voters } from './election-parameters'
 import { public_key } from './election-parameters'
 
-export default function AllSubmittedBallots(): JSX.Element {
+export function AllSubmittedBallots(): JSX.Element {
   const { state } = useVoteContext()
 
   // Only calculate dummy data once, instead of every re-render

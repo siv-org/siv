@@ -1,4 +1,4 @@
-import SubmittedBallots from './all-submitted-ballots'
+import { AllSubmittedBallots } from './AllSubmittedBallots'
 import Ballot from './ballot'
 import EncryptionReceipt from './encryption-receipt'
 import { Invitation, InvitationExplanation } from './Invitation'
@@ -208,7 +208,7 @@ export const steps: (Step | Milestone)[] = [
             details: 'If it passes, the admin adds the ballot to a public list of all ballots received so far.',
           },
         ],
-        right: ['', { react: SubmittedBallots }, '', ''],
+        right: ['', { react: AllSubmittedBallots }, '', ''],
       },
       {
         left: [
