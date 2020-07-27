@@ -1,4 +1,5 @@
 import { Paper } from '@material-ui/core'
+import { useMemo } from 'react'
 
 import { useVoteContext } from '../vote-context'
 import pickRandomInteger from './crypto/pick-random-integer'
@@ -7,18 +8,22 @@ import { public_key } from './election-parameters'
 
 export default function AllSubmittedBallots(): JSX.Element {
   const { state } = useVoteContext()
+
+  // Only calculate dummy data once, instead of every re-render
+  const votes = useMemo(
+    () =>
+      voters
+        .slice(1)
+        .map(({ token }) => ({ random: [...new Array(4)].map(() => pickRandomInteger(public_key.modulo)), token })),
+    [],
+  )
+
   return (
     <Paper elevation={3} style={{ overflowWrap: 'break-word', padding: 15 }}>
       <code>
-        {voters.slice(1).map(({ token }) => (
+        {votes.map(({ random, token }) => (
           <p key={token}>
-            {`{ token: '${token}', secret: '{ sealed_data: ${pickRandomInteger(
-              public_key.modulo,
-            )}, sealing_factor: ${pickRandomInteger(
-              public_key.modulo,
-            )} }', vote_for_mayor: '{ sealed_data: ${pickRandomInteger(
-              public_key.modulo,
-            )}, sealing_factor: ${pickRandomInteger(public_key.modulo)} }'`}
+            {`{ token: '${token}', secret: '{ sealed_data: ${random[0]}, sealing_factor: ${random[1]} }', vote_for_mayor: '{ sealed_data: ${random[2]}, sealing_factor: ${random[3]} }'`}
           </p>
         ))}
         <p>
