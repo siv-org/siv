@@ -12,9 +12,9 @@ export const candidates = ['Angela Alioto', 'London Breed', 'Mark Leno', 'Jane K
 
 export const voters = [
   'Barton, Adam (you)',
-  'Green, Erik',
-  'Hauck, Brad',
-  'Schuster, Elissa',
+  'Green, Elissa',
+  'Hauck, Erik',
+  'Schuster, Brad',
   'Swift, Savannah',
 ].map((name) => ({ name, token: generateToken() }))
 
