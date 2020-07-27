@@ -1,14 +1,14 @@
 import { useEffect } from 'react'
 
-import { useContext } from '../context'
+import { useScrollContext } from '../scroll-context'
 import { Line } from './Line'
 import { Step as StepType } from './steps'
 
 export const Step = ({ leftFirst = false, name, subheader, then }: StepType) => {
-  const { dispatch } = useContext()
+  const { dispatch } = useScrollContext()
 
   useEffect(() => {
-    dispatch({ yOffset: { [name]: String((document.getElementById(name) as HTMLElement).offsetTop) } })
+    dispatch({ [name]: String((document.getElementById(name) as HTMLElement).offsetTop) })
   }, [])
 
   return (

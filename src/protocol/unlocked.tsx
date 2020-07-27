@@ -1,12 +1,12 @@
 import { Paper } from '@material-ui/core'
 import { countBy, mapValues, orderBy } from 'lodash'
 
-import { useContext } from '../context'
+import { useVoteContext } from '../vote-context'
 import { candidates, voters } from './election-parameters'
 import { generateSecretID } from './secret-id'
 
 export default function Unlocked(): JSX.Element {
-  const { state } = useContext()
+  const { state } = useVoteContext()
 
   const votes = [
     ...voters.slice(1).map(() => candidates[Math.floor(Math.random() * candidates.length)]),

@@ -1,8 +1,8 @@
-import { useContext } from '../context'
+import { useScrollContext } from '../scroll-context'
 import { steps } from './steps'
 
 export const Sidebar = () => {
-  const { state } = useContext()
+  const { state } = useScrollContext()
 
   return (
     <div>
@@ -14,11 +14,11 @@ export const Sidebar = () => {
           <p key={step}>{step}</p>
         ) : (
           <a
-            className={state.yOffset.current === step.name ? 'current' : ''}
+            className={state.current === step.name ? 'current' : ''}
             key={step.name}
             onClick={() => {
               const $Protocol = document.getElementById('protocol') as HTMLElement
-              const offset = state.yOffset[step.name]
+              const offset = state[step.name]
               $Protocol.scrollTop = Number(offset)
             }}
           >

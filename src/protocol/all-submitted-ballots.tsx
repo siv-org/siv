@@ -1,12 +1,12 @@
 import { Paper } from '@material-ui/core'
 
-import { useContext } from '../context'
+import { useVoteContext } from '../vote-context'
 import pickRandomInteger from './crypto/pick-random-integer'
 import { voters } from './election-parameters'
 import { public_key } from './election-parameters'
 
 export default function AllSubmittedBallots(): JSX.Element {
-  const { state } = useContext()
+  const { state } = useVoteContext()
   return (
     <Paper elevation={3} style={{ overflowWrap: 'break-word', padding: 15 }}>
       <code>

@@ -1,10 +1,10 @@
 import { Button, Paper, TextField } from '@material-ui/core'
 import { useEffect, useState } from 'react'
 
-import { useContext } from '../context'
+import { useVoteContext } from '../vote-context'
 
 export default function SecretID(): JSX.Element {
-  const { dispatch, state } = useContext()
+  const { dispatch, state } = useVoteContext()
   const { width } = useWindowDimensions()
 
   const generate = () => {

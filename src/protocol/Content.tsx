@@ -1,4 +1,4 @@
-import { useContext } from '../context'
+import { useScrollContext } from '../scroll-context'
 import { Milestone } from './Milestone'
 import styles from './protocol.module.css'
 import { Step } from './Step'
@@ -7,7 +7,7 @@ import { steps } from './steps'
 export const Content = () => (
   <div
     id="protocol"
-    onScroll={saveScrollPosition(useContext())}
+    onScroll={saveScrollPosition(useScrollContext())}
     style={{ backgroundColor: '#e5eafd', flex: 1, height: '100vh', overflowY: 'scroll', scrollBehavior: 'smooth' }}
   >
     {/* Header */}
@@ -27,19 +27,19 @@ export const Content = () => (
   </div>
 )
 
-function saveScrollPosition({ dispatch, state }: ReturnType<typeof useContext>) {
+function saveScrollPosition({ dispatch, state }: ReturnType<typeof useScrollContext>) {
   return ({ currentTarget }: { currentTarget: HTMLElement }) => {
     const scrollPos = currentTarget.scrollTop
 
     // Find currently scrolled to step
     let current = ''
-    for (const step in state.yOffset) {
-      const yOffset = state.yOffset[step]
+    for (const step in state) {
+      const yOffset = state[step]
       if (typeof yOffset === 'string' && scrollPos >= Number(yOffset)) {
         current = step
       }
     }
 
-    dispatch({ yOffset: { current } })
+    dispatch({ current })
   }
 }

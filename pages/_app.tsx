@@ -2,15 +2,18 @@ import '../src/global.css'
 
 import { AppProps } from 'next/app'
 
-import ContextProvider from '../src/context'
 import { FirebaseProvider } from '../src/firebase'
+import { ScrollContextProvider } from '../src/scroll-context'
+import { VoteContextProvider } from '../src/vote-context'
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <FirebaseProvider>
-      <ContextProvider>
-        <Component {...pageProps} />
-      </ContextProvider>
+      <VoteContextProvider>
+        <ScrollContextProvider>
+          <Component {...pageProps} />
+        </ScrollContextProvider>
+      </VoteContextProvider>
     </FirebaseProvider>
   )
 }

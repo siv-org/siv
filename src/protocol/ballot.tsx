@@ -1,11 +1,11 @@
 import { FormControlLabel, Paper, Radio, RadioGroup } from '@material-ui/core'
 
-import { useContext } from '../context'
+import { useVoteContext } from '../vote-context'
 import { candidates } from './election-parameters'
 
 export default function BallotWrapper(enabled?: boolean) {
   return function Ballot(): JSX.Element {
-    const { dispatch, state } = useContext()
+    const { dispatch, state } = useVoteContext()
 
     return (
       <Paper elevation={3} style={{ marginBottom: 30, padding: '0.5rem 1.5rem' }}>

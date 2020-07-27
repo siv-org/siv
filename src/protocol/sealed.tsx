@@ -1,8 +1,8 @@
-import { useContext } from '../context'
+import { useVoteContext } from '../vote-context'
 import { PrintJSON } from './plaintext'
 
 export default function Sealed(): JSX.Element {
-  const { state } = useContext()
+  const { state } = useVoteContext()
 
   return (
     <div style={{ overflowWrap: 'break-word' }}>

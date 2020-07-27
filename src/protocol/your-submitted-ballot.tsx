@@ -1,8 +1,8 @@
-import { useContext } from '../context'
+import { useVoteContext } from '../vote-context'
 import { voters } from './election-parameters'
 
 export default function YourSubmittedBallot(): JSX.Element {
-  const { state } = useContext()
+  const { state } = useVoteContext()
 
   return (
     <code style={{ display: 'block', lineHeight: '16px', padding: '0 6%' }}>
