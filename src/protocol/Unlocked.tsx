@@ -6,7 +6,7 @@ import { useVoteContext } from '../vote-context'
 import { candidates, voters } from './election-parameters'
 import { generateSecretID } from './secret-id'
 
-export default function Unlocked(): JSX.Element {
+export function Unlocked(): JSX.Element {
   const { state } = useVoteContext()
 
   const randomCandidate = () => candidates[Math.floor(Math.random() * candidates.length)]
