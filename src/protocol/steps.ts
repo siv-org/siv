@@ -12,7 +12,7 @@ import YourSubmittedBallot from './your-submitted-ballot'
 
 const colorize = (color: string) => (text: string) => `<span style="color: ${color};">${text}</span>`
 const blue = colorize('#1332fe')
-const red = colorize('#d0021b')
+const orange = colorize('#e67e37')
 const purple = colorize('#9013fe')
 const green = colorize('#417505')
 
@@ -198,7 +198,7 @@ export const groupedSteps: Group[] = [
           {
             left: [
               {
-                html: `Election admin confirms the ${red(
+                html: `Election admin confirms the ${orange(
                   semibold('Vote Token'),
                 )} matches an eligible voter, and hasn't already been used.`,
               },
@@ -263,7 +263,7 @@ export const groupedSteps: Group[] = [
           {
             left: [
               {
-                html: `<p style="font-size: 15px; font-weight: 700;">Encrypted votes are verifiably shuffled by the Trustees. This protects voters’ privacy by removing the ${red(
+                html: `<p style="font-size: 15px; font-weight: 700;">Encrypted votes are verifiably shuffled by the Trustees. This protects voters’ privacy by removing the ${orange(
                   semibold('Vote Tokens'),
                 )}, while still mathematically proven to preserve the ${purple(
                   semibold('encrypted vote contents'),
@@ -273,7 +273,7 @@ export const groupedSteps: Group[] = [
               '',
               {
                 html: `Multiple people can shuffle, like multiple people shuffling a deck of cards.<br />
-            ${red(`Privacy is ensured by ${em('at least one')} honest Trustee.`)}`,
+            ${semibold(`Privacy is ensured by ${em('at least one')} honest Trustee.`)}`,
               },
               {
                 details: `Thus, greater trust is ensured by more Trustees.

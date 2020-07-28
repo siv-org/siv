@@ -2,7 +2,7 @@ import { Paper } from '@material-ui/core'
 
 import { voters } from './election-parameters'
 
-const redHex = '#e53739'
+const redHex = '#e67e37'
 
 const VoteToken = ({ s }: { s?: boolean }) => (
   <span style={{ color: redHex, fontWeight: 'bold' }}>Vote Token{s ? 's' : ''}</span>
@@ -43,7 +43,7 @@ export const Invitation = () => (
 export const InvitationExplanation = () => (
   <>
     <p>
-      The point of this step is to get each voter their {<VoteToken />}, highlighted in <Highlight>red</Highlight>.
+      The point of this step is to get each voter their {<VoteToken />}, highlighted in <Highlight>orange</Highlight>.
     </p>
     <div>
       <p style={{ fontWeight: 'bold' }}>Key Properties of {<VoteToken s />}</p>
