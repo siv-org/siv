@@ -40,6 +40,8 @@ function saveScrollPosition({ dispatch, state }: ReturnType<typeof useScrollCont
       }
     }
 
-    dispatch({ current })
+    if (current !== state.current) {
+      dispatch({ current })
+    }
   }
 }
