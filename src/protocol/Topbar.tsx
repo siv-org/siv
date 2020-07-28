@@ -10,7 +10,7 @@ export const Topbar = () => {
     <div>
       <label htmlFor="topbar-select">
         {state.current}
-        <CaretDownOutlined style={{ color: '#0006', left: 4, position: 'relative' }} />
+        <CaretDownOutlined style={{ color: '#0005', left: 4, position: 'relative' }} />
       </label>
       <select
         id="topbar-select"
@@ -40,7 +40,7 @@ export const Topbar = () => {
           border-bottom: 1px solid rgba(0, 0, 0, 0.2);
           display: flex;
           min-height: 45px;
-          padding-left: 15px;
+          padding-left: 30px;
           position: fixed;
           width: 100%;
           z-index: 100;

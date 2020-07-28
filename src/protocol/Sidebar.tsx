@@ -52,6 +52,7 @@ export const Sidebar = () => {
 
         h3 {
           opacity: 0.75;
+          font-size: 15px;
         }
 
         p {

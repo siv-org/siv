@@ -12,7 +12,7 @@ export const Step = ({ leftFirst = false, name, subheader, then }: StepType) => 
   }, [])
 
   return (
-    <div id={name} key={name} style={{ background: 'white', padding: '3rem 15px' }}>
+    <div id={name} key={name} style={{ background: 'white', padding: '3rem 30px' }}>
       <p className="step-name">{name}</p>
       {subheader && <p className="subheader">{subheader}</p>}
       {then.map(({ left, right }, index) => (

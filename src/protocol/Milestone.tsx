@@ -3,7 +3,8 @@ export const Milestone = (milestone: string) => (
     {milestone}
     <style jsx>{`
       h3 {
-        padding-left: 1rem;
+        background: #e5eafd;
+        padding: 1rem 30px;
       }
     `}</style>
   </h3>
