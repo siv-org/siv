@@ -8,7 +8,15 @@ export const Content = () => (
   <div
     id="protocol"
     onScroll={saveScrollPosition(useScrollContext())}
-    style={{ flex: 1, height: '100vh', overflowY: 'scroll' }}
+    style={{
+      bottom: 0,
+      height: '100vh',
+      left: 268,
+      overflowY: 'scroll',
+      position: 'absolute',
+      right: 0,
+      top: 0,
+    }}
   >
     {/* Header */}
     <div style={{ backgroundColor: 'white', padding: '10px 30px' }}>
@@ -26,7 +34,7 @@ export const Content = () => (
     ))}
 
     {/* Fin */}
-    <div style={{ textAlign: 'center' }}>
+    <div style={{ paddingBottom: 60, textAlign: 'center' }}>
       <img src={`./protocol/step-fin.png`} style={{ maxWidth: 600, width: '100%' }} />
     </div>
 
@@ -34,7 +42,9 @@ export const Content = () => (
       /* Add padding when Topbar is visible */
       @media (max-width: 1030px) {
         #protocol {
-          padding-top: 40px;
+          top: 45px !important;
+          left: 0 !important;
+          height: calc(100vh - 60px) !important;
         }
       }
     `}</style>

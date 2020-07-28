@@ -39,6 +39,9 @@ export const ProtocolPage = (): JSX.Element => (
         font-size: 0.875rem;
         letter-spacing: 0.01071em;
         line-height: 1.43;
+
+        max-width: 100%;
+        overflow: hidden;
       }
 
       a {
