@@ -3,12 +3,12 @@ import { useEffect, useState } from 'react'
 
 import { useVoteContext } from './vote-context'
 
-export default function SecretID(): JSX.Element {
+export function VerificationSecret(): JSX.Element {
   const { dispatch, state } = useVoteContext()
   const { width } = useWindowDimensions()
 
   const generate = () => {
-    dispatch({ secret: generateSecretID() })
+    dispatch({ secret: generateVerificationSecret() })
   }
 
   useEffect(generate, [])
@@ -24,7 +24,7 @@ export default function SecretID(): JSX.Element {
             padding: '5px 13px',
           }}
         >
-          Secret Identifier:
+          Verification Secret:
         </p>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <TextField
@@ -40,20 +40,19 @@ export default function SecretID(): JSX.Element {
           </Button>
         </div>
         <p>
-          <b>This Secret Identifier will be shown once votes are unlocked.</b> It allows you to easily verify your vote
-          was counted correctly, while protecting your privacy.
+          <b>This Verification Secret will be shown once votes are unlocked.</b> It allows you to easily verify your
+          vote was counted correctly, while protecting your privacy.
         </p>
         <p style={{ fontSize: 12 }}>
           This unique value was generated on your own device. Don&apos;t share it with anyone, or they&apos;ll be able
-          to see how you voted.
+          to see how you voted. Regenerate if needed.
         </p>
-        <p style={{ fontSize: 12 }}>You can regenerate a new one if needed.</p>
       </Paper>
     </>
   )
 }
 
-export function generateSecretID() {
+export function generateVerificationSecret() {
   const random = Math.random()
   const integer = String(random).slice(2)
   const hex = Number(integer).toString(16)

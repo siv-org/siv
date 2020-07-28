@@ -4,8 +4,8 @@ import EncryptionReceipt from './encryption-receipt'
 import { Invitation, InvitationExplanation } from './Invitation'
 import Plaintext from './plaintext'
 import Sealed from './sealed'
-import SecretID from './secret-id'
 import { Unlocked } from './Unlocked'
+import { VerificationSecret } from './VerificationSecret'
 import VoterList from './voter-list'
 import YourSubmittedBallot from './your-submitted-ballot'
 
@@ -124,8 +124,8 @@ export const groupedSteps: Group[] = [
             right: [{ react: Ballot(true) }],
           },
           {
-            left: [{ html: `At the end, there's a special ${em('Secret ID')} section.` }],
-            right: [{ react: SecretID }],
+            left: [{ html: `At the end, there's a special ${em('Verification Secret')} section.` }],
+            right: [{ react: VerificationSecret }],
           },
           {
             left: [{ html: `This example results in a ${blue(semibold('plaintext vote'))} like:` }],
@@ -305,7 +305,7 @@ export const groupedSteps: Group[] = [
               '',
               '',
               {
-                p: `Any voter can Search (Ctrl+F) to find their individual vote, via their Secret Identifier, and see that their vote was counted correctly.`,
+                p: `Any voter can Search (Ctrl+F) to find their individual vote, via their Verification Secret, and see that their vote was counted correctly.`,
               },
               '',
               '',
