@@ -1,6 +1,6 @@
 import { AllSubmittedBallots } from './AllSubmittedBallots'
 import Ballot from './ballot'
-import EncryptionReceipt from './encryption-receipt'
+import { EncryptionReceipt } from './EncryptionReceipt'
 import { Invitation, InvitationExplanation } from './Invitation'
 import Plaintext from './plaintext'
 import Sealed from './sealed'

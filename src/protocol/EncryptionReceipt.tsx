@@ -6,7 +6,7 @@ import { encode } from './crypto/encode'
 import { public_key } from './election-parameters'
 import { useVoteContext } from './vote-context'
 
-export default function SignedReceipt(): JSX.Element {
+export function EncryptionReceipt(): JSX.Element {
   const { state } = useVoteContext()
   const [visible, setVisible] = useState(false)
 
