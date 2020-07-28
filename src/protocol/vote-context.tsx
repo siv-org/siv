@@ -1,11 +1,11 @@
 import { map, mapValues, merge } from 'lodash'
 import { createContext, useContext, useMemo, useReducer } from 'react'
 
-import { encode } from './protocol/crypto/encode'
-import encrypt from './protocol/crypto/encrypt'
-import pickRandomInteger from './protocol/crypto/pick-random-integer'
-import { Big, big } from './protocol/crypto/types'
-import { candidates, public_key } from './protocol/election-parameters'
+import { encode } from './crypto/encode'
+import encrypt from './crypto/encrypt'
+import pickRandomInteger from './crypto/pick-random-integer'
+import { Big, big } from './crypto/types'
+import { candidates, public_key } from './election-parameters'
 
 const initState = {
   encrypted: {},

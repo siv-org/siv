@@ -2,9 +2,9 @@ import { Paper } from '@material-ui/core'
 import { map } from 'lodash'
 import { useState } from 'react'
 
-import { useVoteContext } from '../vote-context'
 import { encode } from './crypto/encode'
 import { public_key } from './election-parameters'
+import { useVoteContext } from './vote-context'
 
 export default function SignedReceipt(): JSX.Element {
   const { state } = useVoteContext()

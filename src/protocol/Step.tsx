@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 
-import { useScrollContext } from '../scroll-context'
 import { Line } from './Line'
+import { useScrollContext } from './scroll-context'
 import { Step as StepType } from './steps'
 
 export const Step = ({ leftFirst = false, name, subheader, then }: StepType) => {

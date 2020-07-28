@@ -1,7 +1,12 @@
 import { merge } from 'lodash'
 import { createContext, useContext, useMemo, useReducer } from 'react'
 
-const initState = {}
+import { Step, steps } from './steps'
+
+// Skip "Before Election" milestone
+const firstStep = (steps[1] as Step).name
+
+const initState = { current: firstStep }
 
 const reducer = (prev: State, payload: Payload) => merge({ ...prev }, payload)
 

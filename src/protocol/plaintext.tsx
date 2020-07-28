@@ -1,4 +1,4 @@
-import { useVoteContext } from '../vote-context'
+import { useVoteContext } from './vote-context'
 
 export default function Plaintext(): JSX.Element {
   const { state } = useVoteContext()

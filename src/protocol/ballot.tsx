@@ -1,7 +1,7 @@
 import { FormControlLabel, Paper, Radio, RadioGroup } from '@material-ui/core'
 
-import { useVoteContext } from '../vote-context'
 import { candidates } from './election-parameters'
+import { useVoteContext } from './vote-context'
 
 export default function BallotWrapper(enabled?: boolean) {
   return function Ballot(): JSX.Element {

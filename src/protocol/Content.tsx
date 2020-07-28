@@ -1,6 +1,6 @@
-import { useScrollContext } from '../scroll-context'
 import { Milestone } from './Milestone'
 import styles from './protocol.module.css'
+import { useScrollContext } from './scroll-context'
 import { Step } from './Step'
 import { steps } from './steps'
 
@@ -30,12 +30,15 @@ export const Content = () => (
 function saveScrollPosition({ dispatch, state }: ReturnType<typeof useScrollContext>) {
   return ({ currentTarget }: { currentTarget: HTMLElement }) => {
     const scrollPos = currentTarget.scrollTop
+    const { innerHeight } = window
 
     // Find currently scrolled to step
     let current = ''
     for (const step in state) {
       const yOffset = state[step]
-      if (typeof yOffset === 'string' && scrollPos >= Number(yOffset)) {
+
+      // Is screen's vertical midpoint past the step's start?
+      if (scrollPos + innerHeight / 2 >= Number(yOffset)) {
         current = step
       }
     }

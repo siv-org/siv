@@ -1,9 +1,9 @@
 import Head from 'next/head'
 
-import { ScrollContextProvider } from '../scroll-context'
-import { VoteContextProvider } from '../vote-context'
 import { Content } from './Content'
+import { ScrollContextProvider } from './scroll-context'
 import { Sidebar } from './Sidebar'
+import { VoteContextProvider } from './vote-context'
 
 export const ProtocolPage = (): JSX.Element => (
   <>

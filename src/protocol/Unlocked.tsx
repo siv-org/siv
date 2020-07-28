@@ -2,9 +2,9 @@ import { Paper } from '@material-ui/core'
 import { countBy, mapValues, orderBy } from 'lodash'
 import { useMemo } from 'react'
 
-import { useVoteContext } from '../vote-context'
 import { candidates, voters } from './election-parameters'
 import { generateSecretID } from './secret-id'
+import { useVoteContext } from './vote-context'
 
 export function Unlocked(): JSX.Element {
   const { state } = useVoteContext()
