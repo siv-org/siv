@@ -1,6 +1,6 @@
 import { CaretDownOutlined } from '@ant-design/icons'
 
-import { useScrollContext } from './scroll-context'
+import { useScrollContext } from './ScrollContext'
 import { groupedSteps } from './steps'
 
 export const Topbar = () => {

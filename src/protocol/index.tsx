@@ -1,7 +1,7 @@
 import Head from 'next/head'
 
 import { Content } from './Content'
-import { ScrollContextProvider } from './scroll-context'
+import { ScrollContextProvider } from './ScrollContext'
 import { Sidebar } from './Sidebar'
 import { Topbar } from './Topbar'
 import { VoteContextProvider } from './vote-context'

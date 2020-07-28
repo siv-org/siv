@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-import { useScrollContext } from './scroll-context'
+import { useScrollContext } from './ScrollContext'
 import { groupedSteps } from './steps'
 
 export const Sidebar = () => {

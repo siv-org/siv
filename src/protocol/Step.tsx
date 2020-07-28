@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 
 import { Line } from './Line'
-import { useScrollContext } from './scroll-context'
+import { useScrollContext } from './ScrollContext'
 import { Step as StepType } from './steps'
 import { useWindowDimensions } from './useWindowDimensions'
 

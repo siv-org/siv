@@ -1,6 +1,6 @@
 import { Milestone } from './Milestone'
 import styles from './protocol.module.css'
-import { useScrollContext } from './scroll-context'
+import { useScrollContext } from './ScrollContext'
 import { Step } from './Step'
 import { groupedSteps } from './steps'
 
