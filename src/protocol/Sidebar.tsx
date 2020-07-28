@@ -1,38 +1,39 @@
 import Link from 'next/link'
 
 import { useScrollContext } from './scroll-context'
-import { steps } from './steps'
+import { groupedSteps } from './steps'
 
 export const Sidebar = () => {
   const { state } = useScrollContext()
 
   return (
-    <div>
+    <div className="sidebar">
       <Link href="/">
         <h2>SIV</h2>
       </Link>
       <h3>Contents</h3>
 
-      {steps.map((step) =>
-        typeof step === 'string' ? (
-          <p key={step}>{step}</p>
-        ) : (
-          <a
-            className={state.current === step.name ? 'current' : ''}
-            key={step.name}
-            onClick={() => {
-              const $Protocol = document.getElementById('protocol') as HTMLElement
-              const offset = state[step.name]
-              $Protocol.scrollTop = Number(offset)
-            }}
-          >
-            {step.name}
-          </a>
-        ),
-      )}
+      {groupedSteps.map(({ group, steps }) => (
+        <div key={group}>
+          <p>{group}</p>
+          {steps.map((step) => (
+            <a
+              className={state.current === step.name ? 'current' : ''}
+              key={step.name}
+              onClick={() => {
+                const $Protocol = document.getElementById('protocol') as HTMLElement
+                const offset = state[step.name]
+                $Protocol.scrollTop = Number(offset)
+              }}
+            >
+              {step.name}
+            </a>
+          ))}
+        </div>
+      ))}
 
       <style jsx>{`
-        div {
+        .sidebar {
           min-width: 190px;
           padding: 0px 13px;
           background-color: #e5eafd;
@@ -83,7 +84,7 @@ export const Sidebar = () => {
 
         /* Hide for small screens */
         @media (max-width: 1030px) {
-          div {
+          .sidebar {
             display: none;
           }
         }

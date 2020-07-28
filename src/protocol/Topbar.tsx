@@ -1,7 +1,7 @@
 import { CaretDownOutlined } from '@ant-design/icons'
 
 import { useScrollContext } from './scroll-context'
-import { steps } from './steps'
+import { groupedSteps } from './steps'
 
 export const Topbar = () => {
   const { state } = useScrollContext()
@@ -20,17 +20,15 @@ export const Topbar = () => {
           $Protocol.scrollTop = Number(offset)
         }}
       >
-        {steps.map((step) =>
-          typeof step === 'string' ? (
-            <option disabled key={step}>
-              {step}
-            </option>
-          ) : (
-            <option key={step.name} value={step.name}>
-              {step.name}
-            </option>
-          ),
-        )}
+        {groupedSteps.map(({ group, steps }) => (
+          <optgroup key={group} label={group}>
+            {steps.map((step) => (
+              <option key={step.name} value={step.name}>
+                {step.name}
+              </option>
+            ))}
+          </optgroup>
+        ))}
       </select>
 
       <style jsx>{`

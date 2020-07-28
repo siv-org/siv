@@ -2,7 +2,7 @@ import { Milestone } from './Milestone'
 import styles from './protocol.module.css'
 import { useScrollContext } from './scroll-context'
 import { Step } from './Step'
-import { steps } from './steps'
+import { groupedSteps } from './steps'
 
 export const Content = () => (
   <div
@@ -18,7 +18,12 @@ export const Content = () => (
     </div>
 
     {/* Main steps */}
-    {steps.map((item) => (typeof item === 'string' ? Milestone(item) : Step(item)))}
+    {groupedSteps.map(({ group, steps }) => (
+      <>
+        {Milestone(group)}
+        {steps.map(Step)}
+      </>
+    ))}
 
     {/* Fin */}
     <div style={{ textAlign: 'center' }}>
