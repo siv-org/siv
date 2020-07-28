@@ -15,7 +15,7 @@ export const Invitation = () => (
   <Paper elevation={3} style={{ marginBottom: 30, padding: '0.5rem 1.5rem', position: 'relative' }}>
     <img
       src="/protocol/step-1-invitation-icon.png"
-      style={{ opacity: 0.5, position: 'absolute', right: 25, width: 40 }}
+      style={{ maxWidth: 35, opacity: 0.5, position: 'absolute', right: 'calc(1vw + 5px)', width: '7vw' }}
     />
     <p>
       From: <b>elections@local.gov</b> <br />
