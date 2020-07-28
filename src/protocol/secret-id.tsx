@@ -40,8 +40,8 @@ export default function SecretID(): JSX.Element {
           </Button>
         </div>
         <p>
-          <b>This Secret Identifier will be shown once ballots are unsealed.</b> It allows you to easily verify your
-          vote was counted correctly, while protecting your privacy.
+          <b>This Secret Identifier will be shown once votes are unlocked.</b> It allows you to easily verify your vote
+          was counted correctly, while protecting your privacy.
         </p>
         <p style={{ fontSize: 12 }}>
           This unique value was generated on your own device. Don&apos;t share it with anyone, or they&apos;ll be able

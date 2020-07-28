@@ -116,7 +116,7 @@ export const groupedSteps: Group[] = [
       // Step 2
       {
         leftFirst: true,
-        name: 'Step 2: Mark & Encrypt Your Ballot',
+        name: 'Step 2: Mark & Encrypt Your Vote',
         subheader: `Voter fills out their ballot, which gets immediately encrypted.`,
         then: [
           {
@@ -128,15 +128,15 @@ export const groupedSteps: Group[] = [
             right: [{ react: SecretID }],
           },
           {
-            left: [{ html: `This example results in a ${blue(semibold('plaintext ballot'))} like:` }],
+            left: [{ html: `This example results in a ${blue(semibold('plaintext vote'))} like:` }],
             right: ['', { react: Plaintext }],
           },
           { left: ['', ''] },
           {
             left: [
               {
-                html: `Then the ${blue(semibold('plaintext ballot'))} can be sealed, resulting in an ${purple(
-                  semibold('encrypted ballot'),
+                html: `Then the ${blue(semibold('plaintext vote'))} can be sealed, resulting in an ${purple(
+                  semibold('encrypted vote'),
                 )} like:`,
               },
             ],
@@ -146,7 +146,7 @@ export const groupedSteps: Group[] = [
             left: [
               {
                 subsection: {
-                  header: 'Encrypted Ballots',
+                  header: 'Encrypted Votes',
                   list: [
                     `${semibold('can be safely shared')}, without revealing any content of vote.<br />
                   ${light('The encryption acts like a locked safe.')}`,
@@ -190,8 +190,8 @@ export const groupedSteps: Group[] = [
       // Step 3
       {
         leftFirst: true,
-        name: 'Step 3: Submit Encrypted Ballot',
-        subheader: 'The voter sends their encrypted ballot + unique Vote Token to the election administrator.',
+        name: 'Step 3: Submit Encrypted Vote',
+        subheader: 'The voter sends their encrypted vote + unique Vote Token to the election administrator.',
         then: [
           {
             left: [
@@ -206,7 +206,7 @@ export const groupedSteps: Group[] = [
           {
             left: [
               {
-                details: 'If it passes, the admin adds the ballot to a public list of all ballots received so far.',
+                details: 'If it passes, the admin adds it to a public list of all votes received so far.',
               },
             ],
             right: ['', { react: AllSubmittedBallots }, '', ''],
@@ -214,7 +214,7 @@ export const groupedSteps: Group[] = [
           {
             left: [
               {
-                html: `The election administrator has no way to know how a voter voted. Still, they can email voters a confirmation that their encrypted ballot has been received and accepted.<br />
+                html: `The election administrator has no way to know how a voter voted. Still, they can email voters a confirmation that their encrypted vote has been received and accepted.<br />
             ${light(
               `This lets the voter know their job is done. It also alerts the voter in case someone else somehow gained access to their vote token. And it serves as a written receipt that the vote was accepted, to allow for auditing.`,
             )}`,
@@ -292,7 +292,7 @@ export const groupedSteps: Group[] = [
           {
             left: [
               {
-                html: `Unlocks the ${blue(semibold('vote contents'))} of the final list only, not Vote Tokens. ${em(
+                html: `Unlocks only the ${blue(semibold('vote contents'))} of the final list. ${em(
                   'Preserves privacy.',
                 )}`,
               },
