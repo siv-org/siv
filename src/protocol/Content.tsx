@@ -19,10 +19,10 @@ export const Content = () => (
 
     {/* Main steps */}
     {groupedSteps.map(({ group, steps }) => (
-      <>
+      <div key={group}>
         {Milestone(group)}
         {steps.map(Step)}
-      </>
+      </div>
     ))}
 
     {/* Fin */}
