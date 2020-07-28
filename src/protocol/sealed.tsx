@@ -1,4 +1,4 @@
-import { PrintJSON } from './plaintext'
+import { PrintJSON } from './Plaintext'
 import { useVoteContext } from './vote-context'
 
 export default function Sealed(): JSX.Element {

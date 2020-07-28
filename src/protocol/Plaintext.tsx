@@ -1,6 +1,6 @@
 import { useVoteContext } from './vote-context'
 
-export default function Plaintext(): JSX.Element {
+export function Plaintext(): JSX.Element {
   const { state } = useVoteContext()
 
   return <PrintJSON color="blue" obj={state.plaintext} />
