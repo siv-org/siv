@@ -231,30 +231,30 @@ export const groupedSteps: Group[] = [
   {
     group: 'Voting Period Closes',
     steps: [
-      // Step
-      {
-        name: 'Voters Identified',
-        subheader: 'Election administrator can generate a list of everyone who submitted a valid Vote Token.',
-        then: [
-          {
-            left: [
-              {
-                html: `${light(`Who voted, but not ${em('how')} anyone voted (which they don't know anyway).`)}`,
-              },
-              '',
-              {
-                html: `This creates greater trust by showing who the voters are. The public can see they’re real valid voters. Not people voting multiple times, or "dead people", or foreigners, etc., as skeptics worry about.<br />
-        <br />
-        ${light(
-          `This also helps watchdogs pick a random sample of voters to conduct independent audits of the vote’s validity. With individual voters' permission, they can check reported results against voter receipts.`,
-        )}`,
-              },
-              '',
-            ],
-            right: [{ react: WhoVoted }, '', ''],
-          },
-        ],
-      },
+      // // Step
+      // {
+      //   name: 'Voters Identified',
+      //   subheader: 'Election administrator can generate a list of everyone who submitted a valid Vote Token.',
+      //   then: [
+      //     {
+      //       left: [
+      //         {
+      //           html: `${light(`Who voted, but not ${em('how')} anyone voted (which they don't know anyway).`)}`,
+      //         },
+      //         '',
+      //         {
+      //           html: `This creates greater trust by showing who the voters are. The public can see they’re real valid voters. Not people voting multiple times, or "dead people", or foreigners, etc., as skeptics worry about.<br />
+      //   <br />
+      //   ${light(
+      //     `This also helps watchdogs pick a random sample of voters to conduct independent audits of the vote’s validity. With individual voters' permission, they can check reported results against voter receipts.`,
+      //   )}`,
+      //         },
+      //         '',
+      //       ],
+      //       right: [{ react: WhoVoted }, '', ''],
+      //     },
+      //   ],
+      // },
 
       // Step 4
       {
