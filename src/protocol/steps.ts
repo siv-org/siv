@@ -229,7 +229,7 @@ export const steps: (Step | Milestone)[] = [
   // Step
   {
     name: 'Voters Identified',
-    subheader: 'Election administrator reveals the names of everyone who submitted a valid Vote Token.',
+    subheader: 'Election administrator can generate a list of everyone who submitted a valid Vote Token.',
     then: [
       {
         left: [
