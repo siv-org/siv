@@ -38,13 +38,13 @@ export const Topbar = () => {
           border-bottom: 1px solid rgba(0, 0, 0, 0.2);
           display: flex;
           min-height: 45px;
-          padding-left: 30px;
           position: fixed;
           width: 100%;
           z-index: 100;
         }
 
         label {
+          padding-left: 30px;
           font-size: 16px;
           font-weight: 500;
           opacity: 0.8;
@@ -60,6 +60,8 @@ export const Topbar = () => {
           position: absolute;
           padding: 10px 5px;
           border: none;
+          width: 100%;
+          max-width: 330px;
         }
 
         select:focus {
