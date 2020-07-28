@@ -233,6 +233,9 @@ export const steps: (Step | Milestone)[] = [
     then: [
       {
         left: [
+          {
+            html: `${light(`Who voted, but not ${em('how')} anyone voted (which they don't know anyway).`)}`,
+          },
           '',
           {
             html: `This creates greater trust by showing who the voters are. The public can see they’re real valid voters. Not people voting multiple times, or "dead people", or foreigners, etc., as skeptics worry about.<br />
@@ -243,18 +246,7 @@ export const steps: (Step | Milestone)[] = [
           },
           '',
         ],
-        right: [
-          '',
-          {
-            html: `${light(
-              `Who voted, but not ${em('how')} anyone voted (which they couldn’t reveal even if they wanted to).`,
-            )}`,
-          },
-          '',
-          { react: WhoVoted },
-          '',
-          '',
-        ],
+        right: [{ react: WhoVoted }, '', ''],
       },
     ],
   },

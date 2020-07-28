@@ -12,9 +12,11 @@ export default function SignedReceipt(): JSX.Element {
 
   return (
     <div style={{ margin: '15px 0', overflowWrap: 'break-word' }}>
-      <a onClick={() => setVisible(!visible)} style={{ cursor: 'pointer', fontSize: 14 }}>
-        {visible ? 'Hide' : 'Show'} Encryption Receipt
-      </a>
+      <div style={{ textAlign: 'center' }}>
+        <a onClick={() => setVisible(!visible)} style={{ cursor: 'pointer', fontSize: 14 }}>
+          {visible ? 'Hide' : 'Show'} Encryption Receipt
+        </a>
+      </div>
       {visible && (
         <Paper elevation={3} style={{ marginTop: 15, padding: '0 1rem' }}>
           <code

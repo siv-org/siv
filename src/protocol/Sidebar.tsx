@@ -61,7 +61,7 @@ export const Sidebar = () => {
 
         a {
           display: block;
-          padding: 3px 3px;
+          padding: 3px 5px;
           border-radius: 5px;
           margin: 4px 0;
           font-weight: 500;
