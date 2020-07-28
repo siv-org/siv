@@ -36,19 +36,20 @@ export const Sidebar = () => {
         .sidebar {
           min-width: 190px;
           padding: 0px 13px;
-          background-color: #e5eafd;
+          background: linear-gradient(90deg, #010b26 0%, #072054 100%);
           border-right: 1px solid rgba(0, 0, 0, 0.3);
+          color: #fffb;
         }
 
         h2 {
           cursor: pointer;
           width: 43px;
-          color: rgba(0, 0, 0, 0.75);
-          transition: 0.05s opacity linear;
+          color: #fffb;
+          transition: 0.05s color linear;
         }
 
         h2:hover {
-          color: rgba(0, 0, 0, 0.95);
+          color: #fffffff8;
         }
 
         h3 {
@@ -63,23 +64,23 @@ export const Sidebar = () => {
 
         a {
           display: block;
-          padding: 3px 5px;
+          padding: 3px 8px;
           border-radius: 5px;
           margin: 4px 0;
           font-weight: 500;
           cursor: pointer;
-          color: rgba(0, 0, 0, 0.6);
+          color: #fffa;
           transition: 0.05s color linear;
         }
 
         a:hover {
-          color: rgba(0, 0, 0, 0.9);
-          background-color: rgba(0, 0, 0, 0.04);
+          color: #fffe;
+          background-color: #ffffff18;
           text-decoration: none;
         }
 
         a.current {
-          background-color: rgba(11, 11, 73, 0.2);
+          background-color: #ffffff28;
         }
 
         /* Hide for small screens */
