@@ -1,6 +1,7 @@
 import { Button, Paper, TextField } from '@material-ui/core'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
+import { useWindowDimensions } from './useWindowDimensions'
 import { useVoteContext } from './vote-context'
 
 export function VerificationSecret(): JSX.Element {
@@ -58,23 +59,4 @@ export function generateVerificationSecret() {
   const hex = Number(integer).toString(16)
   const id = `${hex.slice(0, 4)} ${hex.slice(4, 8)} ${hex.slice(8, 12)}`
   return id
-}
-
-const getWindowDimensions = () => ({ height: window.innerHeight, width: window.innerWidth })
-
-// Helper function to get window dimensions
-function useWindowDimensions() {
-  const [windowDimensions, setWindowDimensions] = useState({ height: 0, width: 0 })
-
-  useEffect(() => {
-    function handleResize() {
-      setWindowDimensions(getWindowDimensions())
-    }
-
-    handleResize()
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
-
-  return windowDimensions
 }

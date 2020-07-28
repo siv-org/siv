@@ -3,13 +3,15 @@ import { useEffect } from 'react'
 import { Line } from './Line'
 import { useScrollContext } from './scroll-context'
 import { Step as StepType } from './steps'
+import { useWindowDimensions } from './useWindowDimensions'
 
 export const Step = ({ leftFirst = false, name, subheader, then }: StepType) => {
   const { dispatch } = useScrollContext()
+  const { height, width } = useWindowDimensions()
 
   useEffect(() => {
     dispatch({ [name]: String((document.getElementById(name) as HTMLElement).offsetTop) })
-  }, [])
+  }, [height, width])
 
   return (
     <div id={name} key={name} style={{ background: 'white', padding: '3rem 30px' }}>
