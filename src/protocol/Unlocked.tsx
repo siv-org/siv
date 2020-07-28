@@ -31,8 +31,7 @@ export function Unlocked(): JSX.Element {
             <p key={secret}>{`{ secret: '${secret}', vote_for_mayor: '${vote_for_mayor}' }'`}</p>
           ))}
         </code>
-      </Paper>
-      <Paper elevation={3} style={{ marginTop: 30, overflowWrap: 'break-word', padding: 15 }}>
+        <br />
         <b>Final results:</b>
         <ol>
           {ordered.map(({ name, votes }) => (

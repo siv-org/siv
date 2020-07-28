@@ -7,14 +7,12 @@ import Sealed from './sealed'
 import SecretID from './secret-id'
 import { Unlocked } from './Unlocked'
 import VoterList from './voter-list'
-import WhoVoted from './who-voted'
 import YourSubmittedBallot from './your-submitted-ballot'
 
 const colorize = (color: string) => (text: string) => `<span style="color: ${color};">${text}</span>`
 const blue = colorize('#1332fe')
 const orange = colorize('#e67e37')
 const purple = colorize('#9013fe')
-const green = colorize('#417505')
 
 const semibold = (text: string) => `<span style="font-weight: 600;">${text}</span>`
 const light = (text: string) => `<span style="font-size: 12px; opacity: 0.65;">${text}</span>`
@@ -26,7 +24,7 @@ export type ReactLine = { react: () => JSX.Element }
 
 export type Line = Record<string, string> | ImageLine | Subsection | ReactLine | ''
 
-export type Step = { leftFirst?: boolean; name: string; subheader?: string; then: { left: Line[]; right?: Line[] }[] }
+export type Step = { leftFirst?: boolean; name: string; subheader: string; then: { left: Line[]; right?: Line[] }[] }
 
 type Group = { group: string; steps: Step[] }
 
@@ -259,16 +257,11 @@ export const groupedSteps: Group[] = [
       // Step 4
       {
         name: 'Step 4: Verifiable Shuffle',
+        subheader:
+          'Encrypted votes are verifiably shuffled by the Trustees. This protects voters’ privacy by removing the Vote Tokens, while still mathematically proven to preserve the encrypted vote contents.',
         then: [
           {
             left: [
-              {
-                html: `<p style="font-size: 15px; font-weight: 700;">Encrypted votes are verifiably shuffled by the Trustees. This protects voters’ privacy by removing the ${orange(
-                  semibold('Vote Tokens'),
-                )}, while still mathematically proven to preserve the ${purple(
-                  semibold('encrypted vote contents'),
-                )}.</p>`,
-              },
               '',
               '',
               {
@@ -293,20 +286,9 @@ export const groupedSteps: Group[] = [
       // Step 5
       {
         name: 'Step 5: Votes Unlocked & Tallied',
+        subheader:
+          "Then a quorum of Trustees can sign off that they're ready for the final shuffled list to be Unlocked.",
         then: [
-          {
-            left: [
-              {
-                html: `<p style="font-size: 15px; font-weight: 700;">Then a ${green(
-                  semibold('quorum of Trustees'),
-                )} can sign off that they're ready for the final ${purple(semibold('shuffled list'))} to be ${blue(
-                  semibold('Unlocked'),
-                )}.</p>`,
-              },
-              '',
-            ],
-            right: ['', '', '', { image: 'step-5-threshold-key.png', maxWidth: 470 }, '', ''],
-          },
           {
             left: [
               {
@@ -314,6 +296,12 @@ export const groupedSteps: Group[] = [
                   'Preserves privacy.',
                 )}`,
               },
+              '',
+            ],
+            right: ['', { image: 'step-5-threshold-key.png', maxWidth: 470 }, '', ''],
+          },
+          {
+            left: [
               '',
               '',
               {
