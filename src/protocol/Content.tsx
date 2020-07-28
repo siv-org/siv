@@ -8,7 +8,13 @@ export const Content = () => (
   <div
     id="protocol"
     onScroll={saveScrollPosition(useScrollContext())}
-    style={{ backgroundColor: '#e5eafd', flex: 1, height: '100vh', overflowY: 'scroll', scrollBehavior: 'smooth' }}
+    style={{
+      backgroundColor: '#e5eafd',
+      flex: 1,
+      height: '100vh',
+      overflowY: 'scroll',
+      scrollBehavior: 'smooth',
+    }}
   >
     {/* Header */}
     <div style={{ backgroundColor: 'white', padding: '10px 16px' }}>
@@ -24,6 +30,15 @@ export const Content = () => (
     <div style={{ textAlign: 'center' }}>
       <img src={`./protocol/step-fin.png`} style={{ maxWidth: 600, width: '100%' }} />
     </div>
+
+    <style jsx>{`
+      /* Add padding when Topbar is visible */
+      @media (max-width: 1030px) {
+        #protocol {
+          padding-top: 40px;
+        }
+      }
+    `}</style>
   </div>
 )
 
@@ -33,7 +48,7 @@ function saveScrollPosition({ dispatch, state }: ReturnType<typeof useScrollCont
     const { innerHeight } = window
 
     // Find currently scrolled to step
-    let current = ''
+    let current = 'Voter Registration'
     for (const step in state) {
       const yOffset = state[step]
 

@@ -14,7 +14,7 @@ const Context = createContext<{ dispatch: (payload: Payload) => void; state: Sta
   state: initState,
 })
 
-export function ScrollContextProvider({ children }: { children: JSX.Element }) {
+export function ScrollContextProvider({ children }: { children: JSX.Element[] }) {
   const [state, dispatch] = useReducer(reducer, initState)
   const memoized = useMemo(() => ({ dispatch, state }), [dispatch, state])
 

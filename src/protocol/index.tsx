@@ -3,6 +3,7 @@ import Head from 'next/head'
 import { Content } from './Content'
 import { ScrollContextProvider } from './scroll-context'
 import { Sidebar } from './Sidebar'
+import { Topbar } from './Topbar'
 import { VoteContextProvider } from './vote-context'
 
 export const ProtocolPage = (): JSX.Element => (
@@ -16,6 +17,7 @@ export const ProtocolPage = (): JSX.Element => (
 
     <VoteContextProvider>
       <ScrollContextProvider>
+        <Topbar />
         <div className="columns">
           <Sidebar />
           <Content />
