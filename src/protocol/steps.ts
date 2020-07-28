@@ -1,5 +1,5 @@
 import { AllSubmittedBallots } from './AllSubmittedBallots'
-import Ballot from './ballot'
+import { Ballot } from './Ballot'
 import { EncryptionReceipt } from './EncryptionReceipt'
 import { Invitation, InvitationExplanation } from './Invitation'
 import Plaintext from './plaintext'
