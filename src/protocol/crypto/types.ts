@@ -1,5 +1,5 @@
 import { BigInteger as Big } from 'jsbn'
-import { mapValues } from 'lodash'
+import { reduce } from 'lodash'
 
 export { BigInteger as Big } from 'jsbn'
 
@@ -33,7 +33,7 @@ Big.prototype.lessThan = function (x: Big) {
 }
 
 /** Smartly converts numbers or strings of numbers into Big */
-export function big(input: number | string | Big): Big {
+export function big(input: number | Big | string, radix = 10): Big {
   // Is input already a Big?
   if (input instanceof Big) {
     return input
@@ -45,14 +45,12 @@ export function big(input: number | string | Big): Big {
 
   // Is input a string of a number?
   if (typeof input === 'string' && (Number.isInteger(Number(input)) || Number(input) === Infinity)) {
-    return new Big(input)
+    return new Big(input, radix)
   }
 
   throw new TypeError(`${input} is not a number or string of an integer`)
 }
 
-/** Converts cipher with string or number values to BigIntegers */
-export const bigCipher = (o: { [P in keyof Cipher_Text]: string | number }) => mapValues(o, big)
-
 /** Converts public_key with string or number values to BigIntegers */
-export const bigPubKey = (o: { [P in keyof Public_Key]: string | number }) => mapValues(o, big)
+export const bigPubKey = (obj: { [P in keyof Public_Key]: string | number }) =>
+  reduce(obj, (memo, value, key) => ({ ...memo, [key]: big(value) }), {}) as Public_Key

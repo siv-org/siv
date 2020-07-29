@@ -1,3 +1,5 @@
+import { big } from './types'
+
 const Alphabet = '0123456789 ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
 
 const AlphabetToIndex: { [index: string]: number } = Alphabet.reduce(
@@ -20,12 +22,16 @@ export function encode(text: string) {
   })
   const binary = indices.map((i) => i.toString(2))
   const padded = binary.map((i) => i.padStart(6, '0'))
-  const encoded = Number.parseInt(padded.join(''), 2)
+  const encoded = big(padded.join(''), 2).toString()
   return encoded
 }
 
-export function decode(encoded: number) {
-  const binaryString = encoded.toString(2)
+export function decode(encoded: string) {
+  if (!/^\d+$/.test(encoded)) {
+    throw new TypeError(`Only decodes integers >= 0, not ${encoded}`)
+  }
+
+  const binaryString = big(encoded).toString(2)
   const { length } = binaryString
   const targetLength = Math.ceil(length / 6) * 6
   const padded = binaryString.padStart(targetLength, '0')
