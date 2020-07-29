@@ -44,7 +44,7 @@ export const Content = () => (
         #protocol {
           top: 45px !important;
           left: 0 !important;
-          height: calc(100vh - 60px) !important;
+          height: calc(100vh - 45px) !important;
         }
       }
     `}</style>
