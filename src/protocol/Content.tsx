@@ -52,15 +52,18 @@ export const Content = () => (
 function saveScrollPosition({ dispatch, state }: ReturnType<typeof useScrollContext>) {
   return ({ currentTarget }: { currentTarget: HTMLElement }) => {
     const scrollPos = currentTarget.scrollTop
-    const { innerHeight } = window
+    const { innerHeight, innerWidth } = window
 
     // Find currently scrolled to step
     let current = 'Voter Registration'
     for (const step in state) {
       const yOffset = state[step]
 
-      // Is screen's vertical midpoint past the step's start?
-      if (scrollPos + innerHeight / 2 >= Number(yOffset)) {
+      // Did we scroll past the step?
+      // For sidebar, count when it passes midpoint.
+      // For topbar, when it crosses top.
+      const adjustment = innerWidth < 1030 ? 0 : innerHeight / 2
+      if (scrollPos + adjustment >= Number(yOffset)) {
         current = step
       }
     }

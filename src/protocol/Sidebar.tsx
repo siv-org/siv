@@ -23,7 +23,7 @@ export const Sidebar = () => {
               onClick={() => {
                 const $Protocol = document.getElementById('protocol') as HTMLElement
                 const offset = state[step.name]
-                $Protocol.scrollTop = Number(offset)
+                $Protocol.scrollTop = Number(offset) - 30
               }}
             >
               {step.name}

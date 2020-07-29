@@ -10,7 +10,7 @@ export const Step = ({ leftFirst = false, name, subheader, then }: StepType) => 
   const { height, width } = useWindowDimensions()
 
   useEffect(() => {
-    dispatch({ [name]: String((document.getElementById(name) as HTMLElement).offsetTop) })
+    dispatch({ [name]: String((document.getElementById(name) as HTMLElement).offsetTop + 72) })
   }, [height, width])
 
   return (
