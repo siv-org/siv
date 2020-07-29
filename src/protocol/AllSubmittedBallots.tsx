@@ -19,7 +19,7 @@ export function AllSubmittedBallots(): JSX.Element {
   )
 
   return (
-    <Paper elevation={3} style={{ overflowWrap: 'break-word', padding: 15 }}>
+    <Paper elevation={3} style={{ opacity: 0.7, overflowWrap: 'break-word', padding: 15 }}>
       <code>
         {votes.map(({ random, token }) => (
           <p key={token}>
