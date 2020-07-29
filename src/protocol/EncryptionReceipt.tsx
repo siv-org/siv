@@ -31,6 +31,10 @@ export function EncryptionReceipt(): JSX.Element {
             {`
 Encrypted @ ${new Date().toString()}
 
+Encryption Formula
+  sealed_data = encoded * (sealing_target ^ randomizer) % modulo
+  sealing_factor = (generator ^ randomizer) % modulo
+
 Public Key
   ${map(public_key, (v, k) => `${k}: ${v.toString()}`).join('\n  ')}
 
