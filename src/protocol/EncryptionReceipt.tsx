@@ -4,7 +4,7 @@ import { useState } from 'react'
 
 import { encode } from './crypto/encode'
 import { public_key } from './election-parameters'
-import { useVoteContext } from './vote-context'
+import { useVoteContext } from './VoteContext'
 
 export function EncryptionReceipt(): JSX.Element {
   const { state } = useVoteContext()

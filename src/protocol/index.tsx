@@ -4,7 +4,7 @@ import { Content } from './Content'
 import { ScrollContextProvider } from './ScrollContext'
 import { Sidebar } from './Sidebar'
 import { Topbar } from './Topbar'
-import { VoteContextProvider } from './vote-context'
+import { VoteContextProvider } from './VoteContext'
 
 export const ProtocolPage = (): JSX.Element => (
   <>

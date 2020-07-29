@@ -2,7 +2,7 @@ import { Button, Paper, TextField } from '@material-ui/core'
 import { useEffect } from 'react'
 
 import { useWindowDimensions } from './useWindowDimensions'
-import { useVoteContext } from './vote-context'
+import { useVoteContext } from './VoteContext'
 
 export function VerificationSecret(): JSX.Element {
   const { dispatch, state } = useVoteContext()

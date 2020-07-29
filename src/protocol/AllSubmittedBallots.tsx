@@ -4,7 +4,7 @@ import { useMemo } from 'react'
 import pickRandomInteger from './crypto/pick-random-integer'
 import { voters } from './election-parameters'
 import { public_key } from './election-parameters'
-import { useVoteContext } from './vote-context'
+import { useVoteContext } from './VoteContext'
 
 export function AllSubmittedBallots(): JSX.Element {
   const { state } = useVoteContext()

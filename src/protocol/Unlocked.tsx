@@ -4,7 +4,7 @@ import { useMemo } from 'react'
 
 import { candidates, voters } from './election-parameters'
 import { generateVerificationSecret } from './VerificationSecret'
-import { useVoteContext } from './vote-context'
+import { useVoteContext } from './VoteContext'
 
 export function Unlocked(): JSX.Element {
   const { state } = useVoteContext()
