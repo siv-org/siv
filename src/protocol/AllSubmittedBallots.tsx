@@ -26,10 +26,30 @@ export function AllSubmittedBallots(): JSX.Element {
             {`{ token: '${token}', secret: '{ sealed_data: ${random[0]}, sealing_factor: ${random[1]} }', vote_for_mayor: '{ sealed_data: ${random[2]}, sealing_factor: ${random[3]} }'`}
           </p>
         ))}
-        <p>
+        <p className="fade-in">
           {`{ token: '${voters[0].token}', secret: '${state.encrypted.secret}', vote_for_mayor: '${state.encrypted.vote_for_mayor}' }`}
         </p>
       </code>
+      <style jsx>{`
+        .fade-in {
+          opacity: 0;
+          animation: 4s infinite fadein;
+        }
+        @keyframes fadein {
+          0% {
+            opacity: 0;
+          }
+          25% {
+            opacity: 0;
+          }
+          40% {
+            opacity: 1;
+          }
+          100% {
+            opacity: 1;
+          }
+        }
+      `}</style>
     </Paper>
   )
 }
