@@ -6,7 +6,7 @@ import { Plaintext } from './Plaintext'
 import { Sealed } from './Sealed'
 import { Unlocked } from './Unlocked'
 import { VerificationSecret } from './VerificationSecret'
-import VoterList from './voter-list'
+import { VoterList } from './VoterList'
 import YourSubmittedBallot from './your-submitted-ballot'
 
 const colorize = (color: string) => (text: string) => `<span style="color: ${color};">${text}</span>`

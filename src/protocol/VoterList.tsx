@@ -3,7 +3,7 @@ import { range } from 'lodash'
 
 import { voters } from './election-parameters'
 
-export default function VoterList(): JSX.Element {
+export function VoterList(): JSX.Element {
   return (
     <>
       <TableContainer component={Paper}>
