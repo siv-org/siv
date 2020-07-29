@@ -23,7 +23,7 @@ export const Topbar = () => {
         {groupedSteps.map(({ group, steps }) => (
           <optgroup key={group} label={group}>
             {steps.map((step) => (
-              <option key={step.name} value={step.name}>
+              <option key={step.name} selected={state.current === step.name} value={step.name}>
                 {step.name}
               </option>
             ))}
