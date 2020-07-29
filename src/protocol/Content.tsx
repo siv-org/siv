@@ -10,7 +10,6 @@ export const Content = () => (
     onScroll={saveScrollPosition(useScrollContext())}
     style={{
       bottom: 0,
-      height: '100vh',
       left: 268,
       overflowY: 'scroll',
       position: 'absolute',
@@ -44,7 +43,6 @@ export const Content = () => (
         #protocol {
           top: 45px !important;
           left: 0 !important;
-          height: calc(100vh - 45px) !important;
         }
       }
     `}</style>
