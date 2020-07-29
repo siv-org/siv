@@ -258,7 +258,7 @@ export const groupedSteps: Group[] = [
       {
         name: 'Step 4: Verifiable Shuffle',
         subheader:
-          'Encrypted votes are verifiably shuffled by the Trustees. This protects voters’ privacy by removing the Vote Tokens, while still mathematically proven to preserve the encrypted vote contents.',
+          "Vote tokens are removed, then the encrypted votes are verifiably shuffled by the Trustees to protect voters' privacy.",
         then: [
           {
             left: [
