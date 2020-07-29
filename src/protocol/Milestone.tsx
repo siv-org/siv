@@ -3,7 +3,7 @@ export const Milestone = (milestone: string) => (
     {milestone}
     <style jsx>{`
       h3 {
-        background: #1c3c80;
+        background: #0a1c47;
         padding: 1rem 30px;
 
         color: #fffe;

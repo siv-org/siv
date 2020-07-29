@@ -37,7 +37,6 @@ export const Sidebar = () => {
           min-width: 190px;
           padding: 0px 13px;
           background: linear-gradient(90deg, #05112f 0%, #0a1c47 100%);
-          border-right: 1px solid rgba(0, 0, 0, 0.3);
           color: #fffb;
           height: 100vh;
         }
