@@ -6,7 +6,10 @@ export function YourSubmittedBallot(): JSX.Element {
 
   return (
     <code style={{ display: 'block', lineHeight: '16px', padding: '0 6%' }}>
-      {`{ token: '${voters[0].token}', secret: '${secret}', vote_for_mayor: '${vote_for_mayor}' }`}
+      {`{`} token: <span style={{ color: '#e67e37', fontWeight: 700 }}>&apos;{voters[0].token}&apos;</span>, secret:
+      &apos;{secret}
+      &apos;, vote_for_mayor: &apos;
+      {vote_for_mayor}&apos; {`}`}
     </code>
   )
 }
