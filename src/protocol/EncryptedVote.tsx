@@ -1,17 +1,18 @@
+import { omit } from 'lodash'
+
 import { useVoteContext } from './VoteContext'
 
-export function Plaintext(): JSX.Element {
+export function EncryptedVote(): JSX.Element {
   const { state } = useVoteContext()
 
   return (
     <>
       <div>
         {'{'}
-        <br />
-        {Object.keys(state.plaintext).map((key) => (
-          <p key={key}>
-            {key}: <span>&apos;{state.plaintext[key]}&apos;</span>,
-          </p>
+        {Object.keys(omit(state.encrypted, 'token')).map((key) => (
+          <pre key={key}>
+            {key}: <span>{state.encrypted[key]}</span>,
+          </pre>
         ))}
         {'}'}
       </div>
@@ -23,12 +24,13 @@ export function Plaintext(): JSX.Element {
           padding: 0 6%;
         }
 
-        p {
+        pre {
           margin: 0 15px;
+          tab-size: 2;
         }
 
         span {
-          color: blue;
+          color: #9013fe;
         }
       `}</style>
     </>

@@ -1,10 +1,10 @@
 import { AllSubmittedBallots } from './AllSubmittedBallots'
 import { Ballot } from './Ballot'
+import { EncryptedVote } from './EncryptedVote'
 import { EncryptionReceipt } from './EncryptionReceipt'
 import { Invitation, InvitationExplanation } from './Invitation'
 import { Plaintext } from './Plaintext'
 import { RemoveVoteTokens } from './RemoveVoteTokens'
-import { Sealed } from './Sealed'
 import { ShuffleVotes } from './ShuffleVotes'
 import { Unlocked } from './Unlocked'
 import { VerificationSecret } from './VerificationSecret'
@@ -141,17 +141,19 @@ export const groupedSteps: Group[] = [
                   semibold('encrypted vote'),
                 )} like:`,
               },
+            ],
+            right: ['', { react: EncryptedVote }],
+          },
+          {
+            left: [
               '',
               {
                 html: `Encrypted votes ${semibold('can be safely shared')}, without revealing the vote.<br />
                   ${light('The encryption acts like sealing it inside a locked safe.')}`,
               },
-              '',
-              '',
             ],
-            right: ['', { react: Sealed }],
           },
-          { left: ['', ''] },
+          { left: ['', '', '', ''] },
           // { html: `This step is completed by using a ${green(semibold('SIV Sealing Tool'))}:` },
           // { image: 'step-2g-tool-options.png', maxWidth: 462 },
           {

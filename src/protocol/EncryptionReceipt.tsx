@@ -9,17 +9,9 @@ export function EncryptionReceipt(): JSX.Element {
   const { state } = useVoteContext()
 
   return (
-    <div style={{ margin: '15px 0', overflowWrap: 'break-word' }}>
-      <Paper elevation={3} style={{ marginTop: 15, padding: '0 1rem' }}>
-        <code
-          style={{
-            fontSize: 11,
-            maxWidth: '100%',
-            opacity: 0.7,
-            whiteSpace: 'pre-wrap',
-            wordBreak: 'break-all',
-          }}
-        >
+    <>
+      <Paper elevation={3} style={{ padding: '0 1rem' }}>
+        <code>
           {`
 Encrypted @ ${new Date().toString()}
 
@@ -36,12 +28,22 @@ ${map(
   plaintext: ${state.plaintext[key]}
   encoded: ${encode(state.plaintext[key])}
   randomizer: ${state.randomizer[key]}
-  encrypted: ${state.encrypted[key]}
+  encrypted ${state.encrypted[key]?.slice(1, -1)}
 `,
 ).join('\n')}
 `}
         </code>
       </Paper>
-    </div>
+
+      <style jsx>{`
+        code {
+          font-size: 11px;
+          max-width: 100%;
+          opacity: 0.7;
+          white-space: pre-wrap;
+          tab-size: 4;
+        }
+      `}</style>
+    </>
   )
 }
