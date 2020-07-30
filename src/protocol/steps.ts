@@ -306,8 +306,6 @@ export const groupedSteps: Group[] = [
               '',
               '',
               '',
-              '',
-              '',
               {
                 html: `So, Trustee #1 then picks new Randomizer integers for each encrypted field, and ${purple(
                   em(semibold('Re-encrypts')),
@@ -320,27 +318,44 @@ export const groupedSteps: Group[] = [
                 )} the outside of the safes. The vote content is still safely locked within, and the Trustee still has no ability to see or modify what's inside.`,
               },
               '',
+              {
+                html: `${light(
+                  `SIV is built upon a modular exponential operation ("modPow", also called ElGamal) to enable this re-encryption. The math is equivalent to multiplying X^A * X^B, or X^(A+B), where A is the Voter's Randomizer and B is the Re-encrypter's. Because the encryption only needs these exponents to be randomly chosen integers, there is no impact to the underlying contents.`,
+                )}`,
+              },
+              '',
             ],
-            right: [{ react: Reencryption }],
+            right: ['', { react: Reencryption }],
           },
           {
             left: [
               '',
+              {
+                p: 'Now, the shuffled list is cryptographically mixed, with the original Vote Tokens unlinkable.',
+              },
+              { p: 'Only Trustee #1 can possibly know the exact way they shuffled.' },
+              {
+                p: 'Their shuffled + re-encrypted list is now published publicly.',
+              },
+              '',
+              '',
+            ],
+          },
+          {
+            left: [
+              {
+                p:
+                  'To get strong cryptographic privacy, we now have Trustee #2 repeat this same shuffle + re-encryption process, starting with the mixed list from Trustee #1.',
+              },
               '',
               {
-                html: `Multiple people can shuffle, like multiple people shuffling a deck of cards.<br />
-            ${semibold(`Privacy is ensured by ${em('at least one')} honest Trustee.`)}`,
+                p: `This way, all of our Trustees independently shuffle the encrypted votes, like multiple people shuffling a deck of cards, then handing it off to the next person.`,
               },
               {
-                details: `Thus, greater trust is ensured by more Trustees.
-
-
-            This entire step can still be completed in just a few minutes.
-
-
-            The only requirement is that Trustees are online and running the SIV shuffling software. This software automatically handles their parts.`,
+                p: `The overall privacy is ensured as long as at least one Trustee refuses to share their record of how they shuffled.`,
               },
             ],
+            right: ['', '', { image: 'step-4-shuffle.png', maxWidth: 490 }],
           },
         ],
       },
