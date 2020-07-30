@@ -86,11 +86,7 @@ export const groupedSteps: Group[] = [
           {
             left: [
               {
-                details: `Requirements:
-
-          1. They will need their phone or computer online with the SIV Shuffling program open when the voting period closes.
-
-          2. To enroll, they need to generate a private key, and take part in a Threshold Key generation process with the election admin to create the corresponding public key.
+                details: `To enroll, they need to generate a private key, and take part in a Threshold Key generation process with the election admin to create the corresponding public key.
 
           Their Shuffling job is explained in Step 4, but their public keys are needed ahead-of-time for voters to encrypt their votes in Step 2.`,
               },
