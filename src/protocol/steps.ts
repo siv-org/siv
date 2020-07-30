@@ -133,7 +133,7 @@ export const groupedSteps: Group[] = [
             left: [{ html: `This example results in a ${blue(semibold('plaintext vote'))} like:` }],
             right: ['', { react: Plaintext }],
           },
-          { left: ['', ''] },
+          { left: ['', '', ''] },
           {
             left: [
               {
@@ -141,26 +141,17 @@ export const groupedSteps: Group[] = [
                   semibold('encrypted vote'),
                 )} like:`,
               },
-            ],
-            right: ['', { react: Sealed }],
-          },
-          {
-            left: [
+              '',
               {
-                subsection: {
-                  header: 'Encrypted Votes',
-                  list: [
-                    `${semibold('can be safely shared')}, without revealing any content of vote.<br />
-                  ${light('The encryption acts like a locked safe.')}`,
-
-                    `can ${semibold('only be unlocked by special key')}— explained in final step.`,
-                  ],
-                },
+                html: `Encrypted votes ${semibold('can be safely shared')}, without revealing the vote.<br />
+                  ${light('The encryption acts like sealing it inside a locked safe.')}`,
               },
               '',
               '',
             ],
+            right: ['', { react: Sealed }],
           },
+          { left: ['', ''] },
           // { html: `This step is completed by using a ${green(semibold('SIV Sealing Tool'))}:` },
           // { image: 'step-2g-tool-options.png', maxWidth: 462 },
           {
