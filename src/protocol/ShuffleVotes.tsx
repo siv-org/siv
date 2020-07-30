@@ -15,9 +15,7 @@ export function ShuffleVotes(): JSX.Element {
     interval = setInterval(() => {
       setVotes(shuffle(votes))
     }, 2000)
-    return () => {
-      clearInterval(interval)
-    }
+    return () => clearInterval(interval)
   }, [])
 
   return (

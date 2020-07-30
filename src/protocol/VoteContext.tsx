@@ -8,7 +8,7 @@ import { Big, big } from './crypto/types'
 import { candidates, public_key, voters } from './election-parameters'
 
 const rand = () => pickRandomInteger(public_key.modulo)
-const randEncrypted = () => `{ sealed_data: ${rand()}, sealing_factor: ${rand()} }`
+export const randEncrypted = () => `{ sealed_data: ${rand()}, sealing_factor: ${rand()} }`
 
 const initState = {
   encrypted: { token: voters[0].token },
@@ -40,7 +40,7 @@ function reducer(prev: State, payload: Payload) {
 // Boilerplate to be easier to use
 
 type VoteMap = { [index: string]: string; secret: string; vote_for_mayor: string }
-type VoteWithToken = VoteMap & { token: string }
+export type VoteWithToken = VoteMap & { token: string }
 type State = {
   encrypted: Partial<VoteWithToken>
   otherSubmittedVotes: VoteWithToken[]

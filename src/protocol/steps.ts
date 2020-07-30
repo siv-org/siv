@@ -4,6 +4,7 @@ import { EncryptedVote } from './EncryptedVote'
 import { EncryptionReceipt } from './EncryptionReceipt'
 import { Invitation, InvitationExplanation } from './Invitation'
 import { Plaintext } from './Plaintext'
+import { Reencryption } from './Reencryption'
 import { RemoveVoteTokens } from './RemoveVoteTokens'
 import { ShuffleVotes } from './ShuffleVotes'
 import { Unlocked } from './Unlocked'
@@ -284,11 +285,43 @@ export const groupedSteps: Group[] = [
               '',
               '',
               {
-                html: `Then, the votes are shuffled by a Trustee.`,
+                html: `Trustee #1 then shuffles the votes.`,
               },
               '',
             ],
             right: [{ react: ShuffleVotes }],
+          },
+          {
+            left: [
+              '',
+              {
+                html: `Although this mixes up the votes, like spinning them inside a giant Bingo wheel, this alone isn't enough to properly anonymize them, because the encrypted data — the outsides of our locked safes — are still distinguishable. Any computer could quickly reconstruct the original list.`,
+              },
+              '',
+            ],
+          },
+          {
+            left: [
+              '',
+              '',
+              '',
+              '',
+              '',
+              '',
+              {
+                html: `So, Trustee #1 then picks new Randomizer integers for each encrypted field, and ${em(
+                  semibold('Re-encrypts'),
+                )} the votes.`,
+              },
+              '',
+              {
+                html: `This is like ${semibold(
+                  em('painting over'),
+                )} the outside of the safes. The vote content is still safely locked within, and the Trustee still has no ability to see or modify what's inside.`,
+              },
+              '',
+            ],
+            right: [{ react: Reencryption }],
           },
           {
             left: [
