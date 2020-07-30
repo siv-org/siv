@@ -7,7 +7,7 @@ import pickRandomInteger from './crypto/pick-random-integer'
 import { Big, big } from './crypto/types'
 import { candidates, public_key, voters } from './election-parameters'
 
-const rand = () => pickRandomInteger(public_key.modulo)
+const rand = () => pickRandomInteger(public_key.modulo).toString().padStart(public_key.modulo.toString().length, '0')
 export const randEncrypted = () => `{ sealed_data: ${rand()}, sealing_factor: ${rand()} }`
 
 const initState = {

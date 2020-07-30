@@ -309,9 +309,9 @@ export const groupedSteps: Group[] = [
               '',
               '',
               {
-                html: `So, Trustee #1 then picks new Randomizer integers for each encrypted field, and ${em(
-                  semibold('Re-encrypts'),
-                )} the votes.`,
+                html: `So, Trustee #1 then picks new Randomizer integers for each encrypted field, and ${purple(
+                  em(semibold('Re-encrypts')),
+                )} the shuffled votes.`,
               },
               '',
               {
