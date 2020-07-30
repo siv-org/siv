@@ -3,6 +3,7 @@ import { Ballot } from './Ballot'
 import { EncryptionReceipt } from './EncryptionReceipt'
 import { Invitation, InvitationExplanation } from './Invitation'
 import { Plaintext } from './Plaintext'
+import { RemoveVoteTokens } from './RemoveVoteTokens'
 import { Sealed } from './Sealed'
 import { Unlocked } from './Unlocked'
 import { VerificationSecret } from './VerificationSecret'
@@ -256,10 +257,30 @@ export const groupedSteps: Group[] = [
 
       // Step 4
       {
+        leftFirst: true,
         name: 'Step 4: Verifiable Shuffle',
-        subheader:
-          "Vote tokens are removed, then the encrypted votes are verifiably shuffled by the Trustees to protect voters' privacy.",
+        subheader: "Encrypted votes are shuffled by the Trustees for voters' privacy.",
         then: [
+          {
+            left: [
+              {
+                html: light("The goal of this step is to unlink voters' identities from the contents of their votes."),
+              },
+            ],
+          },
+          {
+            left: [
+              '',
+              '',
+              '',
+              '',
+              {
+                html: `First, the ${orange(semibold('Vote Tokens'))} are removed from the list of all encrypted votes.`,
+              },
+              '',
+            ],
+            right: [{ react: RemoveVoteTokens }],
+          },
           {
             left: [
               '',
@@ -278,7 +299,6 @@ export const groupedSteps: Group[] = [
             The only requirement is that Trustees are online and running the SIV shuffling software. This software automatically handles their parts.`,
               },
             ],
-            right: ['', '', { image: 'step-4-shuffle.png', maxWidth: 490 }],
           },
         ],
       },
