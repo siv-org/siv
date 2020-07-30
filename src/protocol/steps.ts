@@ -5,6 +5,7 @@ import { Invitation, InvitationExplanation } from './Invitation'
 import { Plaintext } from './Plaintext'
 import { RemoveVoteTokens } from './RemoveVoteTokens'
 import { Sealed } from './Sealed'
+import { ShuffleVotes } from './ShuffleVotes'
 import { Unlocked } from './Unlocked'
 import { VerificationSecret } from './VerificationSecret'
 import { VoterList } from './VoterList'
@@ -280,6 +281,19 @@ export const groupedSteps: Group[] = [
               '',
             ],
             right: [{ react: RemoveVoteTokens }],
+          },
+          {
+            left: [
+              '',
+              '',
+              '',
+              '',
+              {
+                html: `Then, the votes are shuffled by a Trustee.`,
+              },
+              '',
+            ],
+            right: [{ react: ShuffleVotes }],
           },
           {
             left: [
