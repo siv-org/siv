@@ -25,11 +25,11 @@ function reducer(prev: State, payload: Payload) {
   const newState = merge({ ...prev }, { plaintext: payload })
 
   // Encrypt values
-  const randomizer: Map = {}
+  const randomizer: Partial<VoteMap> = {}
   const encrypted = mapValues(newState.plaintext, (value, key) => {
     const random = pickRandomInteger(public_key.modulo)
     randomizer[key] = random.toString()
-    const cipher = encrypt(public_key, random, big(encode(value)))
+    const cipher = encrypt(public_key, random, big(encode(value as string)))
 
     return `{ \n${map(cipher, (value: Big, key) => `\t${key}: ${value.toString()}`).join(',\n')} \n}`
   })
@@ -39,15 +39,16 @@ function reducer(prev: State, payload: Payload) {
 
 // Boilerplate to be easier to use
 
-type Map = Record<string, string>
+type VoteMap = { [index: string]: string; secret: string; vote_for_mayor: string }
+type VoteWithToken = VoteMap & { token: string }
 type State = {
-  encrypted: Map
-  otherSubmittedVotes: { secret: string; token: string; vote_for_mayor: string }[]
-  plaintext: Map
-  randomizer: Map
+  encrypted: Partial<VoteWithToken>
+  otherSubmittedVotes: VoteWithToken[]
+  plaintext: Partial<VoteMap>
+  randomizer: Partial<VoteMap>
 }
 
-type Payload = Map | { yOffset: Map }
+type Payload = Partial<VoteMap>
 
 const Context = createContext<{ dispatch: (payload: Payload) => void; state: State }>({
   dispatch: (payload: Payload) => void payload,
