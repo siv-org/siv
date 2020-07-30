@@ -7,11 +7,16 @@ import pickRandomInteger from './crypto/pick-random-integer'
 import { Big, big } from './crypto/types'
 import { candidates, public_key, voters } from './election-parameters'
 
+const rand = () => pickRandomInteger(public_key.modulo)
+const randEncrypted = () => `{ sealed_data: ${rand()}, sealing_factor: ${rand()} }`
+
 const initState = {
-  encrypted: {},
-  otherSubmittedVotes: voters
-    .slice(1)
-    .map(({ token }) => ({ random: [...new Array(4)].map(() => pickRandomInteger(public_key.modulo)), token })),
+  encrypted: { token: voters[0].token },
+  otherSubmittedVotes: voters.slice(1).map(({ token }) => ({
+    secret: randEncrypted(),
+    token,
+    vote_for_mayor: randEncrypted(),
+  })),
   plaintext: { secret: '', vote_for_mayor: candidates[1] },
   randomizer: {},
 }
@@ -37,7 +42,7 @@ function reducer(prev: State, payload: Payload) {
 type Map = Record<string, string>
 type State = {
   encrypted: Map
-  otherSubmittedVotes: { random: Big[]; token: string }[]
+  otherSubmittedVotes: { secret: string; token: string; vote_for_mayor: string }[]
   plaintext: Map
   randomizer: Map
 }

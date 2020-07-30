@@ -288,6 +288,8 @@ export const groupedSteps: Group[] = [
               '',
               '',
               '',
+              '',
+              '',
               {
                 html: `Then, the votes are shuffled by a Trustee.`,
               },
