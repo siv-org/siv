@@ -15,7 +15,7 @@ But they also have large resources available to them. Current budgets range from
 
 In general, SIV can build upon any authentication system, including existing Vote by Mail or even In-Person Voting systems. Used this way, SIV can greatly improve the process for casting, returning, & tallying ballots. Compared to paper methods, SIV can be much faster, more accessible, entirely verifiable, provably private, and all with lower costs.
 
-Long term, there are much faster & cheaper digital options for Vote Token distribution. If desired, jurisdictions can move towards going entirely paperless over time.
+Long term, there are much faster & cheaper digital options for Vote Token distribution. Over time, jurisdictions can move towards going entirely paperless, if desired.
 
 But as a starting place, SIV can be easily implemented with exactly what Vote by Mail does: (1) Mail voters a sealed envelop to their address on file, and (2) Require them to send back a signature.
 
@@ -23,11 +23,11 @@ This can all take place well ahead of the election, entirely eliminating concern
 
 SIV also makes it much more practical to add additional authentication requirements, such as allowing voters to provide an email address or phone number ahead of time as an extra authentication factor.
 
-SIV can also make it easy to limit Vote Token distribution to specific IP address geolocations, so that Election Administrators can draw a geographic fence, and only allow Vote Tokens to be downloaded by devices within that area.
+SIV can also make it easy to limit Vote Token distribution to specific IP address geolocations. Election Administrators can draw a geographic fence, and restrict Vote Token downloads to devices within the jurisdiction.
 
 At the end of the day, the authentication process is up to Election Administrators.
 
-Election officials can always contact us to schedule a personalized consultation if they'd like advice on the best approach for their jurisdiction: contact@secureinternetvoting.org.`,
+Election officials can always contact us to schedule a personalized consultation if they'd like advice on the best approaches for their jurisdiction: contact@secureinternetvoting.org.`,
   },
 
   {
