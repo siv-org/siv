@@ -31,8 +31,17 @@ Election officials can always contact us to schedule a personalized consultation
   },
 
   {
+    q: 'What if voters are subject to phishing attacks?',
+    resp: `Yes, phishing attacks are a concern. The good news is there's a record of each and every step in SIV, to check if anything is wrong.
+
+Election Admins can & should send voters a confirmation email as soon as their vote is received, so if there is unauthorized access, the voter is quickly alerted to it.
+
+Vote tokens can be invalidated, including after they're used, so stolen Vote Tokens can be remedied. The invalidation is posted publicly, for auditability.`,
+  },
+
+  {
     q: "What if a voter's device is compromised? From malware, viruses, keyloggers, etc?",
-    resp: `Yes, this is definitely a concern, especially at massive scale.
+    resp: `Yes, malware is a concern, especially at massive scale.
 
 But some nice things to consider:
 
