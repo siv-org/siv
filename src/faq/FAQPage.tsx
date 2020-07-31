@@ -29,6 +29,10 @@ export const FAQPage = (): JSX.Element => (
         padding: 1rem;
       }
 
+      div {
+        margin-bottom: 3rem;
+      }
+
       p {
         white-space: pre-wrap;
       }
@@ -44,7 +48,6 @@ export const FAQPage = (): JSX.Element => (
         line-height: 1.43;
 
         max-width: 100%;
-        overflow: hidden;
       }
 
       a {
