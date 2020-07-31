@@ -23,7 +23,7 @@ export const FAQPage = (): JSX.Element => (
 
     <style jsx>{`
       main {
-        max-width: 800px;
+        max-width: 750px;
         width: 100%;
         margin: 2rem auto;
         padding: 1rem;

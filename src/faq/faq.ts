@@ -13,9 +13,9 @@ Government elections, on the other hand, have a much higher bar.
 
 But they also have large resources available to them. Current budgets range from $5 - $20 per voter, per election.
 
-In general, SIV can build upon any authentication system, including existing Vote by Mail or even In-Person Voting systems. Used this way, SIV can greatly improve the process for casting, returning, & tallying ballots. Compared to paper methods, SIV can be much faster, more accessible, entirely verifiable, provably private, and all with lower costs.
+In general, SIV can build upon any authentication system, including existing Mail or even In-Person systems. Used this way, SIV can greatly improve the process for casting, returning, & tallying ballots. Compared to paper methods, SIV can be much faster, more accessible, entirely verifiable, provably private, and all with lower costs.
 
-Long term, there are much faster & cheaper digital options for Vote Token distribution. Over time, jurisdictions can move towards going entirely paperless, if desired.
+Long term, there are much faster & cheaper digital options for Token distribution. Over time, jurisdictions can move towards going entirely paperless, if desired.
 
 But as a starting place, SIV can be easily implemented with exactly what Vote by Mail does: (1) Mail voters a sealed envelop to their address on file, and (2) Require them to send back a signature.
 
@@ -23,7 +23,7 @@ This can all take place well ahead of the election, entirely eliminating concern
 
 SIV also makes it much more practical to add additional authentication requirements, such as allowing voters to provide an email address or phone number ahead of time as an extra authentication factor.
 
-SIV can also enable limiting Vote Token distribution to specific IP address geolocations. Election Administrators can draw a geographic fence, and restrict Vote Token downloads to devices within the jurisdiction.
+SIV also enables limiting Token distribution to specific IP address geolocations. Election Administrators can draw a geographic fence, and restrict Vote Token downloads to devices within the jurisdiction.
 
 At the end of the day, the authentication process is up to Election Administrators.
 
@@ -66,9 +66,9 @@ But it's still a crime. It would be hard to hide attempts to purchase votes at a
 
 Both sides of the transaction would be committing a felony, punishable with up to $50k in fines and 2 years jail time, per vote. How much would a market pay for individual votes, anyway? Would it really be worth it for such massive downside risk if caught?
 
-Unfortunately, Vote by Mail is also easily vulnerable to Voter Coercion. And even In-Person Voting too, now that voters bring smartphones into the voting booth with them. The camera can discreetly record proof of how one voted.
+Unfortunately, Vote by Mail is also easily vulnerable to Voter Coercion. And even In-Person Voting too, now that voters bring smartphones into the voting booth with them. The camera can discreetly record proof of how one votes.
 
-Although preventing coercion is important to maintain free & fair elections, the lack of widespread evidence of it in the US, despite current feasibility, suggests we shouldn't worry about it for now, so long as it remains only theoretical.
+Although preventing coercion is important to maintain free & fair elections, the lack of widespread evidence of it in the US, despite current feasibility, suggests we shouldn't worry about it for now. So long as it remains only theoretical.
 
 Rather, let's recognize that SIV can greatly _strengthen_ election security, by offering very real benefits including multi-factor authentication, provable privacy, and end-to-end verifiability.`,
   },
