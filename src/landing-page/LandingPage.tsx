@@ -13,7 +13,7 @@ import { WeCanDoBetter } from './WeCanDoBetter'
 import { WhereAreWe } from './WhereAreWe'
 
 const title = `SIV: Secure Internet Voting`
-const card_image = `/preview.png`
+const card_image = `https://secureinternetvoting.org/preview.png`
 
 export const LandingPage = (): JSX.Element => (
   <>
