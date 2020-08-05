@@ -70,6 +70,6 @@ Unfortunately, Vote by Mail is also easily vulnerable to Voter Coercion. And eve
 
 Although preventing coercion is important to maintain free & fair elections, the lack of widespread evidence of it in the US, despite current feasibility, suggests we shouldn't worry about it for now. So long as it remains only theoretical.
 
-Rather, let's recognize that SIV can greatly *strengthen* election security, by offering very real benefits including multi-factor authentication, provable privacy, and end-to-end verifiability.`,
+Rather, SIV can greatly strengthen election security, by offering very real benefits including multi-factor authentication, provable privacy, and end-to-end verifiability.`,
   },
 ]
