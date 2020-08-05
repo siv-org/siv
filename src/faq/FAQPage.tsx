@@ -9,6 +9,7 @@ export const FAQPage = (): JSX.Element => (
       <link href="/favicon.png" rel="icon" />
 
       <meta content="minimum-scale=1, initial-scale=1, width=device-width" name="viewport" />
+      <meta content="/preview.png" property="og:image" />
     </Head>
 
     <main>

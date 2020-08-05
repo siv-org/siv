@@ -12,13 +12,17 @@ import { SIVFeatures } from './SIVFeatures'
 import { WeCanDoBetter } from './WeCanDoBetter'
 import { WhereAreWe } from './WhereAreWe'
 
+const title = `SIV: Secure Internet Voting`
+
 export const LandingPage = (): JSX.Element => (
   <>
     <Head>
-      <title>SIV: Secure Internet Voting</title>
+      <title>{title}</title>
       <link href="/favicon.png" rel="icon" />
       <link href="/landing-page/typography.css" rel="stylesheet" />
       <meta content="minimum-scale=1, initial-scale=1, width=device-width" name="viewport" />
+      <meta content="/preview.png" property="og:image" />
+      <meta content={title} property="og:title" />
     </Head>
 
     <main>
