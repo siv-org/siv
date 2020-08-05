@@ -1,4 +1,5 @@
 import { Paper } from '@material-ui/core'
+import Link from 'next/link'
 
 import { voters } from './election-parameters'
 
@@ -70,7 +71,14 @@ export const InvitationExplanation = () => (
     <p>
       Admins can even send Vote Tokens via traditional postal mail. This makes it easy for jurisdictions already
       offering Vote by Mail to begin accepting returned ballots online, gaining the powerful Speed, Privacy, &amp;
-      Verification features of SIV.
+      Verification features of SIV.{' '}
+      <em>
+        See{' '}
+        <Link href="/faq">
+          <a>How does SIV authenticate voters</a>
+        </Link>{' '}
+        for more.
+      </em>
     </p>
   </>
 )
