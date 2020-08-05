@@ -72,6 +72,10 @@ export const Footer = (): JSX.Element => {
           <a className="styled-link" href={consultation_link}>
             For Governments
           </a>
+          <br />
+          <Link href="/faq">
+            <a className="styled-link">Frequently Asked Questions</a>
+          </Link>
         </p>
         <p>
           <a href={`mailto:${email}`}>{email}</a>
