@@ -359,13 +359,12 @@ export const groupedSteps: Group[] = [
       // Step 5
       {
         name: 'Step 5: Votes Unlocked & Tallied',
-        subheader:
-          "Then a quorum of Trustees can sign off that they're ready for the final shuffled list to be Unlocked.",
+        subheader: 'Then a quorum of Trustees can work together to Unlock the final shuffled list.',
         then: [
           {
             left: [
               {
-                html: `Unlocks only the ${blue(semibold('vote contents'))} of the final list. ${em(
+                html: `Only unlocks the ${blue(semibold('vote contents'))} of the final list. ${em(
                   'Preserves privacy.',
                 )}`,
               },
