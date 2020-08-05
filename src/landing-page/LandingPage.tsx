@@ -13,6 +13,7 @@ import { WeCanDoBetter } from './WeCanDoBetter'
 import { WhereAreWe } from './WhereAreWe'
 
 const title = `SIV: Secure Internet Voting`
+const card_image = `/preview.png`
 
 export const LandingPage = (): JSX.Element => (
   <>
@@ -21,8 +22,12 @@ export const LandingPage = (): JSX.Element => (
       <link href="/favicon.png" rel="icon" />
       <link href="/landing-page/typography.css" rel="stylesheet" />
       <meta content="minimum-scale=1, initial-scale=1, width=device-width" name="viewport" />
-      <meta content="/preview.png" property="og:image" />
+      <meta content={card_image} property="og:image" />
       <meta content={title} property="og:title" />
+      <meta content="summary_large_image" name="twitter:card" />
+      <meta content="@dsernst" name="twitter:creator" />
+      <meta content={title} name="twitter:title" />
+      <meta content={card_image} name="twitter:image" />
     </Head>
 
     <main>
