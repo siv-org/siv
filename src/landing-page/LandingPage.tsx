@@ -24,8 +24,6 @@ export const LandingPage = (): JSX.Element => (
     <main>
       <HeaderBar />
       <AboveFold />
-      <LetYourGovtKnow idKey="1" />
-      <BlueDivider />
       <WhereAreWe />
       <WeCanDoBetter />
       <NowPossible />
