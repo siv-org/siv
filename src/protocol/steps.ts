@@ -387,7 +387,15 @@ export const groupedSteps: Group[] = [
               },
               '',
             ],
-            right: ['', { image: 'step-5-threshold-key.png', maxWidth: 470 }, '', ''],
+            right: [
+              '',
+              { html: "<b>Each Trustee's individual key can partially unlock the final votes.</b>" },
+              '',
+              { image: 'pre-c-key.png', maxWidth: 200 },
+              '',
+              '',
+              '',
+            ],
           },
           {
             left: [
