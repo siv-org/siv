@@ -2,6 +2,7 @@ const darkBlue = '#002868'
 
 import { BoxProps, TextField, TextFieldProps } from '@material-ui/core'
 import { firestore } from 'firebase/app'
+import { omit } from 'lodash'
 import { useState } from 'react'
 
 import { OnClickButton } from './Button'
@@ -133,10 +134,10 @@ const Row = (props: BoxProps) => (
 // DRY-up TextField
 const Field = (props: TextFieldProps & { toID: (f: string) => string }) => (
   <TextField
+    id={props.toID(props.id || (props.label as string).toLowerCase())}
     size="small"
     variant="outlined"
-    {...props}
-    id={props.toID(props.id || (props.label as string).toLowerCase())}
+    {...omit(props, 'toID')}
     style={{ ...props.style }}
   />
 )
