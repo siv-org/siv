@@ -8,13 +8,15 @@ export const Sidebar = () => {
 
   return (
     <div className="sidebar">
-      <Link href="/">
-        <h2>SIV</h2>
-      </Link>
+      <h2>
+        <Link href="/">
+          <a>SIV</a>
+        </Link>
+      </h2>
       <h3>Contents</h3>
 
       {groupedSteps.map(({ group, steps }) => (
-        <div key={group}>
+        <div className="steps" key={group}>
           <p>{group}</p>
           {steps.map((step) => (
             <a
@@ -41,15 +43,16 @@ export const Sidebar = () => {
           height: 100vh;
         }
 
-        h2 {
+        h2 a {
           cursor: pointer;
           width: 43px;
           color: #fffb;
           transition: 0.05s color linear;
         }
 
-        h2:hover {
+        h2 a:hover {
           color: #fffffff8;
+          text-decoration: none;
         }
 
         h3 {
@@ -62,7 +65,7 @@ export const Sidebar = () => {
           cursor: default;
         }
 
-        a {
+        .steps a {
           display: block;
           padding: 3px 8px;
           border-radius: 5px;
@@ -73,13 +76,13 @@ export const Sidebar = () => {
           transition: 0.05s color linear;
         }
 
-        a:hover {
+        .steps a:hover {
           color: #fffe;
           background-color: #ffffff18;
           text-decoration: none;
         }
 
-        a.current {
+        .steps a.current {
           background-color: #ffffff28;
         }
 
