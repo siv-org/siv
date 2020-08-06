@@ -88,12 +88,25 @@ export const groupedSteps: Group[] = [
               {
                 details: `As long as a single Trustee works honestly, the privacy of the vote is ensured. This is shown in detail in Step 4.
 
-                Even if there are no Trustees, or poorly chosen Trustees, the accuracy of the vote can still always be verified.
+                Even if the Trustees are poorly chosen, the accuracy of the vote can still always be verified.
 
                 To enroll, trustees need to generate a private key, and take part in a Threshold Key generation process with the election admin to create the corresponding public key.
 
-                Their main job is explained in Step 4, but their public keys are needed ahead-of-time for voters to encrypt their votes in Step 2.`,
+                Their main job is explained in Step 4, but this shared public key is needed ahead-of-time for voters to encrypt their votes in Step 2.`,
               },
+            ],
+            right: [
+              { html: '<b>Each Trustee contributes a share of the unlocking key.</b>' },
+              '',
+              { image: 'pre-c-key.png', maxWidth: 200 },
+              '',
+              '',
+              {
+                html: light(
+                  "The Trustees ought to have competing interests. A reasonable choice would be one Trustee selected by each candidate's political party, plus the election admin.",
+                ),
+              },
+              '',
             ],
           },
         ],
