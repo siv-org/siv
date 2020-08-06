@@ -57,7 +57,7 @@
     "@nandorojo/swr-firestore": "^0.10.0",
     "@next/mdx": "^9.4.4",
     "@types/jsbn": "^1.2.29",
-    "firebase": "^7.15.5",
+    "firebase": "^7.17.2",
     "jsbn": "^1.1.0",
     "lodash": "^4.17.19",
     "next": "latest",
