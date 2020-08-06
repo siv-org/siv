@@ -20,7 +20,7 @@ export const WhereAreWe = (): JSX.Element => (
       smallHeadline
       graphic="vote-by-mail.jpg"
       headline="Search for Alternatives"
-      text="Election officials and political advocates have rushed to provide safe alternatives. Especially Vote by Mail."
+      text="Election officials and political advocates have rushed to provide safe alternatives, especially Vote by Mail."
     />
   </Section>
 )

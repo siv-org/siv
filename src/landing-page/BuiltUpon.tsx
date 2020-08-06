@@ -3,7 +3,7 @@ import { JumboBlue } from './JumboBlue'
 export const BuiltUpon = (): JSX.Element => (
   <JumboBlue>
     <h2>
-      Built upon decades of research and hard work by uncountable contributors, in academia, industry, and the public
+      Built upon decades of research and hard work by uncountable contributors in academia, industry, and the public
       sector.
     </h2>
 
