@@ -13,6 +13,6 @@ const fuego = new Fuego({
   storageBucket: 'siv-demo.appspot.com',
 })
 
-export const FirebaseProvider = ({ children }: { children: JSX.Element }) => (
+export const FirebaseProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) => (
   <FuegoProvider fuego={fuego}>{children}</FuegoProvider>
 )
