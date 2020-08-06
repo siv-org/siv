@@ -81,14 +81,18 @@ export const groupedSteps: Group[] = [
       // Pre-req
       {
         name: 'Trustee Registration',
-        subheader: `Trustees — who ensure the privacy of the vote — are enrolled ahead of time.`,
+        subheader: `Trustees — who protect the privacy of the vote — are enrolled ahead of time.`,
         then: [
           {
             left: [
               {
-                details: `To enroll, they need to generate a private key, and take part in a Threshold Key generation process with the election admin to create the corresponding public key.
+                details: `As long as a single Trustee works honestly, the privacy of the vote is ensured. This is shown in detail in Step 4.
 
-          Their Shuffling job is explained in Step 4, but their public keys are needed ahead-of-time for voters to encrypt their votes in Step 2.`,
+                Even if there are no Trustees, or poorly chosen Trustees, the accuracy of the vote can still always be verified.
+
+                To enroll, trustees need to generate a private key, and take part in a Threshold Key generation process with the election admin to create the corresponding public key.
+
+                Their main job is explained in Step 4, but their public keys are needed ahead-of-time for voters to encrypt their votes in Step 2.`,
               },
             ],
           },
