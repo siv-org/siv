@@ -1,17 +1,20 @@
 import Head from 'next/head'
 
+import { BlueDivider } from '../landing-page/BlueDivider'
+import { Footer } from '../landing-page/Footer'
 import { faq } from './faq'
+import { HeaderBar } from './HeaderBar'
 
 export const FAQPage = (): JSX.Element => (
   <>
     <Head>
       <title>SIV: FAQ</title>
       <link href="/favicon.png" rel="icon" />
-
       <meta content="minimum-scale=1, initial-scale=1, width=device-width" name="viewport" />
       <meta content="/preview.png" property="og:image" />
     </Head>
 
+    <HeaderBar />
     <main>
       <h1>Frequently Asked Questions</h1>
       {faq.map(({ q, resp }, index) => (
@@ -21,6 +24,8 @@ export const FAQPage = (): JSX.Element => (
         </div>
       ))}
     </main>
+    <BlueDivider />
+    <Footer />
 
     <style jsx>{`
       main {
