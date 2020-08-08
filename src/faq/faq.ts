@@ -1,29 +1,17 @@
 export const faq: { q: string; resp?: string }[] = [
   {
     q: 'How does SIV authenticate voters?',
-    resp: `Different jurisdictions have different requirements and options available to them.
+    resp: `SIV offers a simple process entirely controlled by election officials, ensuring that only registered voters have the option to participate.
 
-It's easier to think of SIV as focused on the Casting & Tallying parts of a vote, after voters have already been authenticated.
+As the election approaches, Election Administrators send individualized Vote Tokens to registered voters, which they use to vote online. It's important that this process generates written records, for auditing.
 
-SIV isn't strict about how voters are authenticated, only requiring that Election Administrators send individualized Vote Tokens to voters in some way. It's also important that this process generates written records, for auditing.
+Long term, there are faster & cheaper digital options (email, text, etc) for Token distribution and jurisdictions can move quickly towards going entirely paperless, if desired.
 
-For many non-governmental elections, a simple email can suffice. Voters still gain the strong Privacy & Verifiability benefits of SIV.
-
-Government elections, on the other hand, have a much higher bar.
-
-But they also have large resources available to them. Current budgets range from $5 - $20 per voter, per election.
-
-In general, SIV can build upon any authentication system, including existing Mail or even In-Person protocols. Used this way, SIV can greatly improve the process for marking, submitting, & tallying ballots. Compared to paper methods, SIV can be much faster, more accessible, entirely verifiable, provably private, and all with lower costs.
-
-Long term, there are faster & cheaper digital options for Token distribution. Over time, jurisdictions can move towards going entirely paperless, if desired.
-
-But as a starting place, SIV can be easily implemented with exactly what Vote by Mail does: (1) Mail voters a sealed envelop to their address on file, and (2) Require them to send back a signature.
+As a starting place, SIV can be easily implemented with exactly what Vote by Mail does: (1) Mail voters a sealed envelope to their address on file, and (2) Require them to send back a signature.
 
 This can all take place well ahead of the election, entirely eliminating concerns about delays from overloaded postal systems, or other last minute scheduling issues.
 
-SIV also makes it much more practical to add additional authentication requirements, such as allowing voters to list an email address or phone number ahead of time as an extra auth factor.
-
-SIV also enables limiting Token distribution to specific IP address geolocations. Election Administrators can draw a geographic fence to restrict Vote Token downloads to devices within the jurisdiction.
+Additional authentication requirements can be set up, including requiring voters to list an email address or phone number ahead of time or restricting Vote Token downloads to devices within the jurisdiction.
 
 At the end of the day, the authentication process is up to Election Administrators.
 
