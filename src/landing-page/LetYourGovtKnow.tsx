@@ -137,7 +137,7 @@ const Field = (props: TextFieldProps & { toID: (f: string) => string }) => (
     id={props.toID(props.id || (props.label as string).toLowerCase())}
     size="small"
     variant="outlined"
-    {...omit(props, 'toID')}
+    {...omit(props, ['toID', 'id'])}
     style={{ ...props.style }}
   />
 )
