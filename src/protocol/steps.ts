@@ -1,5 +1,6 @@
 import { AllSubmittedBallots } from './AllSubmittedBallots'
 import { Ballot } from './Ballot'
+import { BallotDesigner } from './BallotDesigner'
 import { EncryptedVote } from './EncryptedVote'
 import { EncryptionReceipt } from './EncryptionReceipt'
 import { Invitation, InvitationExplanation } from './Invitation'
@@ -73,7 +74,7 @@ export const groupedSteps: Group[] = [
               },
               '',
             ],
-            right: [{ react: Ballot() }],
+            right: [{ react: BallotDesigner }],
           },
         ],
       },
@@ -137,7 +138,7 @@ export const groupedSteps: Group[] = [
         then: [
           {
             left: [{ p: 'Voter sees a GUI to make it easy to fill out their ballot:' }],
-            right: [{ react: Ballot(true) }],
+            right: [{ react: Ballot }],
           },
           {
             left: [{ html: `At the end, there's a special ${em('Verification Secret')} section.` }],
