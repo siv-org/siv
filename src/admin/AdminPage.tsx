@@ -13,8 +13,8 @@ export const AdminPage = (): JSX.Element => (
 
     <main>
       <h1>SIV Admin</h1>
-      <AddPeople type="voters" />
       <AddPeople type="trustees" />
+      <AddPeople disabled type="voters" />
     </main>
 
     <style jsx>{`

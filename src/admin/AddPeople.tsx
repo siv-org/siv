@@ -1,9 +1,10 @@
-export const AddPeople = ({ type }: { type: string }) => (
+export const AddPeople = ({ disabled, type }: { disabled?: boolean; type: string }) => (
   <>
     <p>Add {type} by email address, 1 per line:</p>
     <textarea />
     <div>
-      <input type="submit" value="Save" />
+      <input disabled={disabled} type="submit" value="Send Invitation" />
+      {disabled && <p>Waiting on Trustees to generate public key first</p>}
     </div>
     <style jsx>{`
       textarea {
