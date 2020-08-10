@@ -14,6 +14,7 @@ TODO:
 - [x] Admin GUI to add voters by email address
 - [x] Admin GUI to add Trustees by email address
 - [ ] Trustee page to take part in Distribute Key Gen
+  - [x] Simulated
 - [ ] Backend assigns vote tokens and emails invitation to voters
 - [ ] Voter interface to cast vote
 - [ ] Encrypt voters vote

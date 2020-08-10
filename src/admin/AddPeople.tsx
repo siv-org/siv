@@ -1,10 +1,26 @@
-export const AddPeople = ({ disabled, type }: { disabled?: boolean; type: string }) => (
+import { Dispatch, SetStateAction } from 'react'
+
+export const AddPeople = ({
+  disabled,
+  setPubKey,
+  type,
+}: {
+  disabled?: boolean
+  setPubKey?: Dispatch<SetStateAction<boolean>>
+  type: string
+}) => (
   <>
     <p>Add {type} by email address, 1 per line:</p>
-    <textarea />
+    <textarea disabled={disabled && type !== 'voters'} />
     <div>
-      <input disabled={disabled} type="submit" value="Send Invitation" />
-      {disabled && <p>Waiting on Trustees to generate public key first</p>}
+      <input disabled={disabled} onClick={() => setPubKey && setPubKey(true)} type="submit" value="Send Invitation" />
+      {disabled && (
+        <p>
+          {type === 'voters'
+            ? `Waiting on Trustees to generate public key first`
+            : `Trustees generated public key 23509282789382352`}
+        </p>
+      )}
     </div>
     <style jsx>{`
       textarea {
