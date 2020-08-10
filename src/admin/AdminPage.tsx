@@ -2,6 +2,7 @@ import Head from 'next/head'
 import { useState } from 'react'
 
 import { AddPeople } from './AddPeople'
+import { BallotDesigner } from './BallotDesigner'
 
 export const AdminPage = (): JSX.Element => {
   const [pubKey, setPubKey] = useState(false)
@@ -16,6 +17,7 @@ export const AdminPage = (): JSX.Element => {
 
       <main>
         <h1>SIV Admin</h1>
+        <BallotDesigner />
         <AddPeople disabled={pubKey} setPubKey={setPubKey} type="trustees" />
         <AddPeople disabled={!pubKey} type="voters" />
       </main>
