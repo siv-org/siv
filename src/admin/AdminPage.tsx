@@ -1,6 +1,6 @@
 import Head from 'next/head'
 
-import { AddVoters } from './AddVoters'
+import { AddPeople } from './AddPeople'
 
 export const AdminPage = (): JSX.Element => (
   <>
@@ -13,7 +13,8 @@ export const AdminPage = (): JSX.Element => (
 
     <main>
       <h1>SIV Admin</h1>
-      <AddVoters />
+      <AddPeople type="voters" />
+      <AddPeople type="trustees" />
     </main>
 
     <style jsx>{`

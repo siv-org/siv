@@ -1,8 +1,10 @@
-export const AddVoters = () => (
+export const AddPeople = ({ type }: { type: string }) => (
   <>
-    <p>Add voters by email address, 1 per line:</p>
+    <p>Add {type} by email address, 1 per line:</p>
     <textarea />
-    <input type="submit" value="Save" />
+    <div>
+      <input type="submit" value="Save" />
+    </div>
     <style jsx>{`
       textarea {
         width: 100%;
@@ -11,8 +13,11 @@ export const AddVoters = () => (
         padding: 8px;
       }
 
+      div {
+        text-align: right;
+      }
+
       input {
-        float: right;
         font-size: 20px;
       }
     `}</style>
