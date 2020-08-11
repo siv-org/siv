@@ -11,7 +11,9 @@ export const AddPeople = ({
 }) => (
   <>
     <p>Add {type} by email address, 1 per line:</p>
-    <textarea disabled={disabled && type !== 'voters'} />
+    <div className="textarea-wrapper">
+      <textarea disabled={disabled && type !== 'voters'} />
+    </div>
     <div>
       <input disabled={disabled} onClick={() => setPubKey && setPubKey(true)} type="submit" value="Send Invitation" />
       {disabled && (
@@ -26,8 +28,24 @@ export const AddPeople = ({
       textarea {
         width: 100%;
         height: 200px;
-        font-size: 20px;
-        padding: 8px;
+
+        background: url(http://i.imgur.com/2cOaJ.png);
+        background-attachment: local;
+        background-repeat: no-repeat;
+        padding-left: 35px;
+        padding-top: 10px;
+        border-color: #ccc;
+
+        font-size: 13px;
+        line-height: 16px;
+      }
+
+      .textarea-wrapper {
+        display: inline-block;
+        background-image: linear-gradient(#f1f1f1 50%, #f9f9f9 50%);
+        background-size: 100% 32px;
+        background-position: left 10px;
+        width: 100%;
       }
 
       div {
