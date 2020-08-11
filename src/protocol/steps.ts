@@ -8,6 +8,7 @@ import { Plaintext } from './Plaintext'
 import { Reencryption } from './Reencryption'
 import { RemoveVoteTokens } from './RemoveVoteTokens'
 import { ShuffleVotes } from './ShuffleVotes'
+import { SubmissionConfirmation } from './SubmissionConfirmation'
 import { Unlocked } from './Unlocked'
 import { VerificationSecret } from './VerificationSecret'
 import { VoterList } from './VoterList'
@@ -229,7 +230,9 @@ export const groupedSteps: Group[] = [
               `This lets the voter know their job is done. It also alerts the voter in case someone else somehow gained access to their vote token. And it serves as a written receipt that the vote was accepted, to allow for auditing.`,
             )}`,
               },
+              '',
             ],
+            right: [{ react: SubmissionConfirmation }],
           },
         ],
       },

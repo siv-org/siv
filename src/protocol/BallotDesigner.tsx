@@ -9,8 +9,7 @@ export const BallotDesigner = () => (
     'London Breed',
     'Mark Leno',
     'Jane Kim',
-  ]
-}]`}
+]}]`}
     />
 
     <style jsx>{`
