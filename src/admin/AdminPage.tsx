@@ -69,12 +69,6 @@ export const AdminPage = (): JSX.Element => {
           color: #0070f3;
           text-decoration: none;
         }
-
-        a:hover,
-        a:focus,
-        a:active {
-          text-decoration: underline;
-        }
       `}</style>
     </>
   )

@@ -1,3 +1,5 @@
+import { OnClickButton } from '../landing-page/Button'
+
 export const AddPeople = ({
   disabled,
   onClick = () => {},
@@ -13,12 +15,13 @@ export const AddPeople = ({
       <textarea disabled={disabled && type !== 'voters'} id={`${type}-input`} />
     </div>
     <div>
-      <input
+      <OnClickButton
         disabled={disabled}
         onClick={async () => (await checkPassword()) && onClick()}
-        type="submit"
-        value="Send Invitation"
-      />
+        style={{ padding: '8px 17px' }}
+      >
+        Send Invitation
+      </OnClickButton>
       {disabled && (
         <p>
           {type === 'voters'
@@ -53,10 +56,6 @@ export const AddPeople = ({
 
       div {
         text-align: right;
-      }
-
-      input {
-        font-size: 20px;
       }
     `}</style>
   </>
