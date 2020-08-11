@@ -45,7 +45,7 @@ export const AddPeople = ({
 
       .textarea-wrapper {
         display: inline-block;
-        background-image: linear-gradient(#f1f1f1 50%, #f9f9f9 50%);
+        background-image: linear-gradient(#f4f4f4 50%, #f9f9f9 50%);
         background-size: 100% 32px;
         background-position: left 10px;
         width: 100%;
