@@ -22,10 +22,12 @@ export const AdminPage = (): JSX.Element => {
         <AddPeople
           disabled={!pubKey}
           onClick={async () => {
+            const voters = (document.getElementById('voters-input') as HTMLInputElement).value.split('\n')
             // Call backend endpoint
             const { status } = await fetch('/api/invite-voters', {
               body: JSON.stringify({
                 password: localStorage.password,
+                voters,
               }),
               headers: {
                 Accept: 'application/json',

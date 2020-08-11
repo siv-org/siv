@@ -10,7 +10,7 @@ export const AddPeople = ({
   <>
     <p>Add {type} by email address, 1 per line:</p>
     <div className="textarea-wrapper">
-      <textarea disabled={disabled && type !== 'voters'} />
+      <textarea disabled={disabled && type !== 'voters'} id={`${type}-input`} />
     </div>
     <div>
       <input
