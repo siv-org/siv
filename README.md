@@ -16,7 +16,7 @@ TODO:
 - [ ] Trustee page to take part in Distribute Key Gen
   - [x] Simulated
 - [ ] Backend assigns vote tokens and emails invitation to voters
-- [ ] Voter interface to cast vote
+- [x] Voter interface to cast vote
 - [ ] Encrypt voters vote
 - [ ] Submit Voters vote
 - [ ] Admin endpoint to receive submitted votes & validate vote token
