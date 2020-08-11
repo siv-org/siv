@@ -1,25 +1,20 @@
 import Head from 'next/head'
-import { useState } from 'react'
 
-import { AddPeople } from './AddPeople'
-import { BallotDesigner } from './BallotDesigner'
+import { Question } from './Question'
 
-export const AdminPage = (): JSX.Element => {
-  const [pubKey, setPubKey] = useState(false)
+export const DemoElection = (): JSX.Element => {
   return (
     <>
       <Head>
-        <title>SIV:Admin</title>
+        <title>SIV: Demo Election</title>
         <link href="/favicon.png" rel="icon" />
         <meta content="minimum-scale=1, initial-scale=1, width=device-width" name="viewport" />
         <meta content="/preview.png" property="og:image" />
       </Head>
 
       <main>
-        <h1>SIV Admin</h1>
-        <BallotDesigner />
-        <AddPeople disabled={pubKey} setPubKey={setPubKey} type="trustees" />
-        <AddPeople disabled={!pubKey} type="voters" />
+        <h1>SIV Demo Election</h1>
+        <Question />
       </main>
 
       <style jsx>{`

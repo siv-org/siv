@@ -4,7 +4,7 @@ export const BallotDesigner = () => (
     <textarea disabled>
       {`[
   {
-    question: 'What is the best flavor of ice-cream?',
+    question: 'What is the best flavor of ice cream?',
     choices: [
       'Chocolate',
       'Cookie Dough',
