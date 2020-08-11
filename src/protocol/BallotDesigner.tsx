@@ -14,11 +14,12 @@ export const BallotDesigner = () => (
 
     <style jsx>{`
       textarea {
-        min-width: 400px;
-        height: 180px;
-        padding: 10px;
         font-size: 13px;
+        height: 180px;
+        max-width: 400px;
+        padding: 10px;
         resize: none;
+        width: 100%;
       }
     `}</style>
   </>
