@@ -1,8 +1,9 @@
 export const BallotDesigner = () => (
   <>
     <p>Enter ballot questions: </p>
-    <textarea disabled>
-      {`[
+    <textarea
+      disabled
+      value={`[
   {
     question: 'What is the best flavor of ice cream?',
     choices: [
@@ -15,7 +16,7 @@ export const BallotDesigner = () => (
     allow_write_in: true,
   }
 ]`}
-    </textarea>
+    />
 
     <style jsx>{`
       textarea {

@@ -19,7 +19,27 @@ export const AdminPage = (): JSX.Element => {
         <h1>SIV Admin</h1>
         <BallotDesigner />
         <AddPeople disabled={pubKey} onClick={() => setPubKey(true)} type="trustees" />
-        <AddPeople disabled={!pubKey} type="voters" />
+        <AddPeople
+          disabled={!pubKey}
+          onClick={async () => {
+            // Call backend endpoint
+            const { status } = await fetch('/api/invite-voters', {
+              body: JSON.stringify({
+                password: localStorage.password,
+              }),
+              headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+              },
+              method: 'POST',
+            })
+            if (status === 401) {
+              localStorage.removeItem('password')
+              alert('Invalid Password')
+            }
+          }}
+          type="voters"
+        />
       </main>
 
       <style jsx>{`
