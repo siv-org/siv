@@ -9,7 +9,7 @@ export const AdminPage = (): JSX.Element => {
   return (
     <>
       <Head>
-        <title>SIV:Admin</title>
+        <title>SIV: Admin</title>
         <link href="/favicon.png" rel="icon" />
         <meta content="minimum-scale=1, initial-scale=1, width=device-width" name="viewport" />
         <meta content="/preview.png" property="og:image" />
@@ -18,7 +18,7 @@ export const AdminPage = (): JSX.Element => {
       <main>
         <h1>SIV Admin</h1>
         <BallotDesigner />
-        <AddPeople disabled={pubKey} setPubKey={setPubKey} type="trustees" />
+        <AddPeople disabled={pubKey} onClick={() => setPubKey(true)} type="trustees" />
         <AddPeople disabled={!pubKey} type="voters" />
       </main>
 
