@@ -1,4 +1,4 @@
-import { Button, Paper, TextField } from '@material-ui/core'
+import { Button, NoSsr, Paper, TextField } from '@material-ui/core'
 import { useEffect } from 'react'
 
 import { useWindowDimensions } from './useWindowDimensions'
@@ -28,17 +28,19 @@ export function VerificationSecret(): JSX.Element {
           Verification Secret:
         </p>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <TextField
-            inputProps={{ style: { fontFamily: 'monospace', fontSize: 15 } }}
-            label=""
-            size="small"
-            style={{ backgroundColor: '#fff8' }}
-            value={state.plaintext.secret}
-            variant="outlined"
-          />
-          <Button color="primary" onClick={generate}>
-            {width < 450 ? 'Regen' : 'Regenerate'}
-          </Button>
+          <NoSsr>
+            <TextField
+              inputProps={{ style: { fontFamily: 'monospace', fontSize: 15 } }}
+              label=""
+              size="small"
+              style={{ backgroundColor: '#fff8' }}
+              value={state.plaintext.secret}
+              variant="outlined"
+            />
+            <Button color="primary" onClick={generate}>
+              {width < 450 ? 'Regen' : 'Regenerate'}
+            </Button>
+          </NoSsr>
         </div>
         <p>
           <b>This Verification Secret will be shown once votes are unlocked.</b> It allows you to easily verify your

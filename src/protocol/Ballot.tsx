@@ -1,4 +1,4 @@
-import { FormControlLabel, Paper, Radio, RadioGroup } from '@material-ui/core'
+import { FormControlLabel, NoSsr, Paper, Radio, RadioGroup } from '@material-ui/core'
 
 import { candidates } from './election-parameters'
 import { useVoteContext } from './VoteContext'
@@ -18,15 +18,17 @@ export const Ballot = (): JSX.Element => {
       >
         Who should be the next Mayor?
       </p>
-      <RadioGroup
-        onChange={(event) => dispatch({ vote_for_mayor: event.target.value })}
-        style={{ paddingLeft: '1.5rem' }}
-        value={state.plaintext.vote_for_mayor}
-      >
-        {candidates.map((name) => (
-          <FormControlLabel control={<Radio color="primary" />} key={name} label={name} value={name} />
-        ))}
-      </RadioGroup>
+      <NoSsr>
+        <RadioGroup
+          onChange={(event) => dispatch({ vote_for_mayor: event.target.value })}
+          style={{ paddingLeft: '1.5rem' }}
+          value={state.plaintext.vote_for_mayor}
+        >
+          {candidates.map((name) => (
+            <FormControlLabel control={<Radio color="primary" />} key={name} label={name} value={name} />
+          ))}
+        </RadioGroup>
+      </NoSsr>
     </Paper>
   )
 }

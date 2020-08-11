@@ -1,4 +1,4 @@
-import { TextField } from '@material-ui/core'
+import { NoSsr, TextField } from '@material-ui/core'
 import { firestore } from 'firebase/app'
 import Link from 'next/link'
 import { useState } from 'react'
@@ -18,14 +18,16 @@ export const Footer = (): JSX.Element => {
         <p>Sign up with your email to receive occasional updates.</p>
 
         <div style={{ display: 'flex', marginTop: 24 }}>
-          <TextField
-            id="newsletter-signup-field"
-            label="Email Address"
-            onChange={() => setSaved(false)}
-            size="small"
-            style={{ flex: 1, marginRight: 10, maxWidth: 250 }}
-            variant="outlined"
-          />
+          <NoSsr>
+            <TextField
+              id="newsletter-signup-field"
+              label="Email Address"
+              onChange={() => setSaved(false)}
+              size="small"
+              style={{ flex: 1, marginRight: 10, maxWidth: 250 }}
+              variant="outlined"
+            />
+          </NoSsr>
           <OnClickButton
             disabled={saved}
             onClick={() => {
