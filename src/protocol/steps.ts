@@ -288,7 +288,7 @@ export const groupedSteps: Group[] = [
               },
               '',
             ],
-            right: [{ react: RemoveVoteTokens }],
+            right: [{ react: RemoveVoteTokens }, '', '', ''],
           },
           {
             left: [
@@ -312,12 +312,13 @@ export const groupedSteps: Group[] = [
                 html: `Although this mixes up the votes, like spinning them inside a giant Bingo wheel, this alone isn't enough to properly anonymize them, because the encrypted data — the outsides of our locked safes — are still distinguishable. Any computer could quickly reconstruct the original list.`,
               },
               '',
+              '',
+              '',
+              '',
             ],
           },
           {
             left: [
-              '',
-              '',
               '',
               '',
               {
@@ -343,6 +344,7 @@ export const groupedSteps: Group[] = [
           },
           {
             left: [
+              '',
               '',
               {
                 p: 'Now, the shuffled list is cryptographically mixed, with the original Vote Tokens unlinkable.',

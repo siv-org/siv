@@ -1,13 +1,14 @@
-import { FormControlLabel, NoSsr, Paper, Radio, RadioGroup } from '@material-ui/core'
+import { FormControlLabel, NoSsr, Radio, RadioGroup } from '@material-ui/core'
 
 import { candidates } from './election-parameters'
+import { Paper } from './Paper'
 import { useVoteContext } from './VoteContext'
 
 export const Ballot = (): JSX.Element => {
   const { dispatch, state } = useVoteContext()
 
   return (
-    <Paper elevation={3} style={{ marginBottom: 30, padding: '0.5rem 1.5rem' }}>
+    <Paper marginBottom noFade>
       <p
         style={{
           backgroundColor: '#e6eafb',

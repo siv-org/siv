@@ -1,8 +1,8 @@
-import { Paper } from '@material-ui/core'
 import { countBy, mapValues, orderBy } from 'lodash'
 import { useMemo } from 'react'
 
 import { candidates, voters } from './election-parameters'
+import { Paper } from './Paper'
 import { generateVerificationSecret } from './VerificationSecret'
 import { useVoteContext } from './VoteContext'
 
@@ -25,7 +25,7 @@ export function Unlocked(): JSX.Element {
 
   return (
     <>
-      <Paper elevation={3} style={{ overflowWrap: 'break-word', padding: 15 }}>
+      <Paper noFade>
         <code>
           {votes.map(({ secret, vote_for_mayor }) => (
             <p key={secret}>{`{ secret: '${secret}', vote_for_mayor: '${vote_for_mayor}' }'`}</p>

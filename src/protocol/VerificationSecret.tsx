@@ -1,6 +1,7 @@
-import { Button, NoSsr, Paper, TextField } from '@material-ui/core'
+import { Button, NoSsr, TextField } from '@material-ui/core'
 import { useEffect } from 'react'
 
+import { Paper } from './Paper'
 import { useWindowDimensions } from './useWindowDimensions'
 import { useVoteContext } from './VoteContext'
 
@@ -16,7 +17,7 @@ export function VerificationSecret(): JSX.Element {
 
   return (
     <>
-      <Paper elevation={3} style={{ marginBottom: 30, padding: '0.5rem 1.5rem' }}>
+      <Paper marginBottom noFade>
         <p
           style={{
             backgroundColor: '#e6eafb',

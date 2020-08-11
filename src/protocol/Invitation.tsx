@@ -1,7 +1,7 @@
-import { Paper } from '@material-ui/core'
 import Link from 'next/link'
 
 import { voters } from './election-parameters'
+import { Paper } from './Paper'
 
 const redHex = '#e67e37'
 
@@ -13,7 +13,7 @@ const Highlight = (props: { children: string }) => (
 )
 
 export const Invitation = () => (
-  <Paper elevation={3} style={{ marginBottom: 30, padding: '0.5rem 1.5rem', position: 'relative' }}>
+  <Paper marginBottom noFade style={{ position: 'relative' }}>
     <img
       src="/protocol/step-1-invitation-icon.png"
       style={{ maxWidth: 35, opacity: 0.5, position: 'absolute', right: 'calc(1vw + 5px)', width: '7vw' }}

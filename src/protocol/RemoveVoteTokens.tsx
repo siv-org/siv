@@ -1,12 +1,11 @@
-import { Paper } from '@material-ui/core'
-
+import { Paper } from './Paper'
 import { useVoteContext } from './VoteContext'
 
 export function RemoveVoteTokens(): JSX.Element {
   const { state } = useVoteContext()
 
   return (
-    <Paper elevation={3} style={{ opacity: 0.7, overflowWrap: 'break-word', padding: 15 }}>
+    <Paper>
       <code>
         {[...state.otherSubmittedVotes, state.encrypted].map(({ secret, token, vote_for_mayor }) => (
           <p key={token}>

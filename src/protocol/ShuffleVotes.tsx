@@ -1,8 +1,8 @@
-import { Paper } from '@material-ui/core'
 import { shuffle } from 'lodash'
 import { useEffect, useState } from 'react'
 import FlipMove from 'react-flip-move'
 
+import { Paper } from './Paper'
 import { useVoteContext } from './VoteContext'
 
 let interval: ReturnType<typeof setInterval>
@@ -19,7 +19,7 @@ export function ShuffleVotes(): JSX.Element {
   }, [])
 
   return (
-    <Paper elevation={3} style={{ marginTop: 30, opacity: 0.7, overflowWrap: 'break-word', padding: 15 }}>
+    <Paper>
       <code>
         <FlipMove>
           {votes.map(({ secret, token, vote_for_mayor }) => (

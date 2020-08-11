@@ -1,4 +1,6 @@
-import { FormControlLabel, NoSsr, Paper, Radio, RadioGroup, TextField } from '@material-ui/core'
+import { FormControlLabel, NoSsr, Radio, RadioGroup, TextField } from '@material-ui/core'
+
+import { Paper } from '../protocol/Paper'
 
 const ballot = {
   allow_write_in: true,
@@ -9,7 +11,7 @@ const ballot = {
 export const Question = (): JSX.Element => {
   return (
     <NoSsr>
-      <Paper elevation={3} style={{ marginBottom: 30, padding: '0.5rem 1.5rem' }}>
+      <Paper noFade>
         <p
           style={{
             backgroundColor: '#e6eafb',

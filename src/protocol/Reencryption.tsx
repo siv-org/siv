@@ -1,6 +1,6 @@
-import { Paper } from '@material-ui/core'
 import { useEffect, useReducer } from 'react'
 
+import { Paper } from './Paper'
 import { VoteWithToken, randEncrypted, useVoteContext } from './VoteContext'
 
 let interval: ReturnType<typeof setInterval>
@@ -33,7 +33,7 @@ export function Reencryption(): JSX.Element {
   }, [])
 
   return (
-    <Paper elevation={3} style={{ marginTop: 30, opacity: 0.7, overflowWrap: 'break-word', padding: 15 }}>
+    <Paper>
       <code>
         {votes.map((vote, index) => (
           <p key={index}>

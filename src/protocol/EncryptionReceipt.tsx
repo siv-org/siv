@@ -1,8 +1,8 @@
-import { Paper } from '@material-ui/core'
 import { map } from 'lodash'
 
 import { encode } from './crypto/encode'
 import { public_key } from './election-parameters'
+import { Paper } from './Paper'
 import { useVoteContext } from './VoteContext'
 
 export function EncryptionReceipt(): JSX.Element {
@@ -10,7 +10,7 @@ export function EncryptionReceipt(): JSX.Element {
 
   return (
     <>
-      <Paper elevation={3} style={{ padding: '0 1rem' }}>
+      <Paper>
         <code>
           {`
 Encrypted @ ${new Date().toString()}
@@ -40,7 +40,6 @@ ${map(
         code {
           font-size: 11px;
           max-width: 100%;
-          opacity: 0.7;
           white-space: pre-wrap;
           tab-size: 4;
         }
