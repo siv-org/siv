@@ -1,12 +1,10 @@
-import { Dispatch, SetStateAction } from 'react'
-
 export const AddPeople = ({
   disabled,
-  setPubKey,
+  onClick = () => {},
   type,
 }: {
   disabled?: boolean
-  setPubKey?: Dispatch<SetStateAction<boolean>>
+  onClick?: () => void
   type: string
 }) => (
   <>
@@ -15,7 +13,12 @@ export const AddPeople = ({
       <textarea disabled={disabled && type !== 'voters'} />
     </div>
     <div>
-      <input disabled={disabled} onClick={() => setPubKey && setPubKey(true)} type="submit" value="Send Invitation" />
+      <input
+        disabled={disabled}
+        onClick={async () => (await checkPassword()) && onClick()}
+        type="submit"
+        value="Send Invitation"
+      />
       {disabled && (
         <p>
           {type === 'voters'
@@ -58,3 +61,11 @@ export const AddPeople = ({
     `}</style>
   </>
 )
+
+function checkPassword() {
+  if (!localStorage.password) {
+    localStorage.password = prompt('Password?')
+  }
+
+  return true
+}

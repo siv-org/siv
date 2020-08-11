@@ -31,5 +31,6 @@ module.exports = {
     'sort-destructure-keys/sort-destructure-keys': 2, // style
     'sort-keys-fix/sort-keys-fix': 2, // style
     'react/jsx-sort-props': [2, { shorthandFirst: true }], // style
+    '@typescript-eslint/no-empty-function': 0, // unnecessary
   },
 }
