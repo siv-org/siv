@@ -1,15 +1,17 @@
 import firebase from 'firebase-admin'
+import Mailgun from 'mailgun-js'
 import { NextApiRequest, NextApiResponse } from 'next'
 const {
   ADMIN_PASSWORD,
   FIREBASE_CLIENT_EMAIL,
   FIREBASE_PRIVATE_KEY,
   FIREBASE_PROJECT_ID,
+  MAILGUN_API_KEY,
   PUSHOVER_APP_TOKEN,
   PUSHOVER_USER_KEY,
 } = process.env
 
-// Set up firebase
+// Init firebase
 try {
   firebase.initializeApp({
     credential: firebase.credential.cert({
@@ -27,6 +29,9 @@ try {
     console.error('Firebase admin initialization error', error.stack)
   }
 }
+
+// Init mailgun
+const mailgun = Mailgun({ apiKey: MAILGUN_API_KEY as string, domain: 'secureinternetvoting.org' })
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   // 1. Check for password
@@ -50,7 +55,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   })
 
   // 4. Email each voter their token
-  // TODO
+  mailgun.messages().send({
+    from: 'SIV Admin <admin@secureinternetvoting.org>',
+    subject: 'Vote Invitation',
+    text: `${voters}\n\n${tokens}`,
+    to: 'admin@secureinternetvoting.org',
+  })
 
   // 5. Send Admin push notification
   await fetch('https://api.pushover.net/1/messages.json', {
