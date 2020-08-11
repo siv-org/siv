@@ -55,11 +55,24 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   })
 
   // 4. Email each voter their token
-  mailgun.messages().send({
-    from: 'SIV Admin <admin@secureinternetvoting.org>',
-    subject: 'Vote Invitation',
-    text: `${voters}\n\n${tokens}`,
-    to: 'admin@secureinternetvoting.org',
+  voters.slice(-1).forEach((voter: string, index: number) => {
+    const link = `www.secureinternetvoting.org/demo-election?id=${tokens[index]}`
+    mailgun.messages().send({
+      from: 'SIV Admin <admin@secureinternetvoting.org>',
+      html: `Voting for the Best Ice Cream is now open.
+
+Votes accepted for the next 24 hours.
+
+Click here to securely cast your vote:
+<a href="${link}">${link}</a>
+
+<em style="font-size:10px">This link is unique for you. Don't share it with anyone, or they'll be able to take your vote.</em>`.replace(
+        /\n/g,
+        '<br />',
+      ),
+      subject: 'Vote Invitation',
+      to: 'admin@secureinternetvoting.org',
+    })
   })
 
   // 5. Send Admin push notification

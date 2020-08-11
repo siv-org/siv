@@ -4,8 +4,10 @@ export const AddPeople = ({
   disabled,
   onClick = () => {},
   type,
+  message,
 }: {
   disabled?: boolean
+  message: string
   onClick?: () => void
   type: string
 }) => (
@@ -15,20 +17,14 @@ export const AddPeople = ({
       <textarea disabled={disabled && type !== 'voters'} id={`${type}-input`} />
     </div>
     <div>
+      {disabled && <span>{message}</span>}
       <OnClickButton
         disabled={disabled}
-        onClick={async () => (await checkPassword()) && onClick()}
-        style={{ padding: '8px 17px' }}
+        onClick={() => checkPassword() && onClick()}
+        style={{ marginRight: 0, padding: '8px 17px' }}
       >
         Send Invitation
       </OnClickButton>
-      {disabled && (
-        <p>
-          {type === 'voters'
-            ? `Waiting on Trustees to generate public key first`
-            : `Trustees generated public key 23509282789382352`}
-        </p>
-      )}
     </div>
     <style jsx>{`
       textarea {

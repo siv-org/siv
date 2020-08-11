@@ -6,6 +6,7 @@ import { BallotDesigner } from './BallotDesigner'
 
 export const AdminPage = (): JSX.Element => {
   const [pubKey, setPubKey] = useState(false)
+  const [sentVotersInvite, setSentVotersInvite] = useState(false)
   return (
     <>
       <Head>
@@ -18,9 +19,15 @@ export const AdminPage = (): JSX.Element => {
       <main>
         <h1>SIV Admin</h1>
         <BallotDesigner />
-        <AddPeople disabled={pubKey} onClick={() => setPubKey(true)} type="trustees" />
         <AddPeople
-          disabled={!pubKey}
+          disabled={pubKey}
+          message="Trustees generated public key 23509282789382352"
+          onClick={() => setPubKey(true)}
+          type="trustees"
+        />
+        <AddPeople
+          disabled={!pubKey || sentVotersInvite}
+          message={!pubKey ? 'Waiting on Trustees to generate public key' : 'Sent.'}
           onClick={async () => {
             const voters = (document.getElementById('voters-input') as HTMLInputElement).value.split('\n')
             // Call backend endpoint
@@ -38,6 +45,8 @@ export const AdminPage = (): JSX.Element => {
             if (status === 401) {
               localStorage.removeItem('password')
               alert('Invalid Password')
+            } else {
+              setSentVotersInvite(true)
             }
           }}
           type="voters"
