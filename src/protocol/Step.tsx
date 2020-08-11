@@ -57,12 +57,12 @@ export const Step = ({ leftFirst = false, name, subheader, then }: StepType) => 
         /* Sidebar disappears */
         @media (max-width: 1030px) {
           .subheader {
-            max-width: 48vw;
+            max-width: 43vw;
           }
 
           .left,
           .right {
-            width: 45vw;
+            width: 43vw;
           }
         }
 
