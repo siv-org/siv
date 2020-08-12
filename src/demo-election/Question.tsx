@@ -39,7 +39,7 @@ export const Question = ({
             <FormControlLabel control={<Radio color="primary" />} key={name} label={name} value={name} />
           ))}
           <FormControlLabel
-            control={<Radio color="primary" />}
+            control={<Radio color="primary" onClick={() => document.getElementById('other')?.focus()} />}
             label={
               <TextField
                 id="other"
