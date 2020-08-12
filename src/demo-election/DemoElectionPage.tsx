@@ -32,9 +32,10 @@ export const DemoElectionPage = (): JSX.Element => {
         <EncryptionReceipt
           state={{
             encrypted: {
-              best_icecream: `{ \n${map(encrypted, (value: Big, key) => `${key}: ${value.toString()}`).join(
-                ',\n\t ',
-              )} \n}`,
+              best_icecream: `{ \n${map(
+                encrypted,
+                (value: Big, key) => `${key}: ${value.toString().padStart(public_key.modulo.toString().length, '0')}`,
+              ).join(',\n\t ')} \n}`,
             },
             plaintext: { best_icecream: plaintext },
             randomizer: { best_icecream: random.toString() },
