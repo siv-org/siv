@@ -1,8 +1,12 @@
 import Head from 'next/head'
+import { useState } from 'react'
 
+import { EncryptionReceipt } from './EncryptionReceipt'
+import { Intro } from './Intro'
 import { Question } from './Question'
 
 export const DemoElection = (): JSX.Element => {
+  const [plaintext, setPlaintext] = useState('')
   return (
     <>
       <Head>
@@ -13,8 +17,16 @@ export const DemoElection = (): JSX.Element => {
       </Head>
 
       <main>
-        <h1>SIV Demo Election</h1>
-        <Question />
+        <h1>Demo Election</h1>
+        <Intro />
+        <Question plaintext={plaintext} setPlaintext={setPlaintext} />
+        <EncryptionReceipt
+          state={{
+            encrypted: { best_icecream: '1234', secret: '1235' },
+            plaintext: { best_icecream: plaintext, secret: 'foobar' },
+            randomizer: { best_icecream: '1234', secret: '1235' },
+          }}
+        />
       </main>
 
       <style jsx>{`

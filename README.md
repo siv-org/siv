@@ -19,6 +19,8 @@ TODO:
   - [x] Password protect
 - [x] Voter interface to cast vote
 - [ ] Encrypt voters vote
+  - [ ] Walk voters through extra private mode
+  - [ ] Health / Antivirus on browser checker
 - [ ] Submit Voters vote
 - [ ] Admin endpoint to receive submitted votes & validate vote token
 - [ ] Bulletin board of all valid received votes

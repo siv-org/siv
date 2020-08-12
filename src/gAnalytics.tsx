@@ -1,7 +1,9 @@
+import { NoSsr } from '@material-ui/core'
+
 const GA_ID = 'UA-84279342-7'
 
 export const GAnalytics = () => (
-  <>
+  <NoSsr>
     <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} />
     <script
       dangerouslySetInnerHTML={{
@@ -15,5 +17,5 @@ export const GAnalytics = () => (
           `,
       }}
     />
-  </>
+  </NoSsr>
 )
