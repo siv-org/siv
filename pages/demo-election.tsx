@@ -1,1 +1,1 @@
-export { DemoElection as default } from '../src/demo-election/DemoElection'
+export { DemoElectionPage as default } from '../src/demo-election/DemoElectionPage'

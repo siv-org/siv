@@ -5,7 +5,7 @@ import { encode } from '../protocol/crypto/encode'
 import { public_key } from '../protocol/election-parameters'
 import { Paper } from '../protocol/Paper'
 
-type Ballot = { [index: string]: string; best_icecream: string; secret: string }
+type Ballot = { [index: string]: string; best_icecream: string }
 export function EncryptionReceipt({
   state,
 }: {

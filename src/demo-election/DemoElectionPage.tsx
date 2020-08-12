@@ -1,12 +1,20 @@
+import { map } from 'lodash'
 import Head from 'next/head'
 import { useState } from 'react'
 
+import { encode } from '../protocol/crypto/encode'
+import encrypt from '../protocol/crypto/encrypt'
+import pickRandomInteger from '../protocol/crypto/pick-random-integer'
+import { Big, big } from '../protocol/crypto/types'
+import { public_key } from '../protocol/election-parameters'
 import { EncryptionReceipt } from './EncryptionReceipt'
 import { Intro } from './Intro'
 import { Question } from './Question'
 
-export const DemoElection = (): JSX.Element => {
+export const DemoElectionPage = (): JSX.Element => {
   const [plaintext, setPlaintext] = useState('')
+  const random = pickRandomInteger(public_key.modulo)
+  const encrypted = encrypt(public_key, random, big(encode(plaintext)))
   return (
     <>
       <Head>
@@ -15,16 +23,21 @@ export const DemoElection = (): JSX.Element => {
         <meta content="minimum-scale=1, initial-scale=1, width=device-width" name="viewport" />
         <meta content="/preview.png" property="og:image" />
       </Head>
-
+      {/*     const cipher = encrypt(public_key, random, big(encode(value as string)))
+       */}
       <main>
         <h1>Demo Election</h1>
         <Intro />
         <Question plaintext={plaintext} setPlaintext={setPlaintext} />
         <EncryptionReceipt
           state={{
-            encrypted: { best_icecream: '1234', secret: '1235' },
-            plaintext: { best_icecream: plaintext, secret: 'foobar' },
-            randomizer: { best_icecream: '1234', secret: '1235' },
+            encrypted: {
+              best_icecream: `{ \n${map(encrypted, (value: Big, key) => `\t${key}: ${value.toString()}`).join(
+                ',\n',
+              )} \n}`,
+            },
+            plaintext: { best_icecream: plaintext },
+            randomizer: { best_icecream: random.toString() },
           }}
         />
       </main>
