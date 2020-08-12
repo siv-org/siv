@@ -23,8 +23,7 @@ export const DemoElectionPage = (): JSX.Element => {
         <meta content="minimum-scale=1, initial-scale=1, width=device-width" name="viewport" />
         <meta content="/preview.png" property="og:image" />
       </Head>
-      {/*     const cipher = encrypt(public_key, random, big(encode(value as string)))
-       */}
+
       <main>
         <h1>Demo Election</h1>
         <Intro />

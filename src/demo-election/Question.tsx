@@ -17,6 +17,7 @@ export const Question = ({
   setPlaintext: (plaintext: string) => void
 }): JSX.Element => {
   const [other, setOther] = useState<string>()
+  const [error, setError] = useState(' ')
   return (
     <NoSsr>
       <Paper noFade>
@@ -39,12 +40,24 @@ export const Question = ({
             <FormControlLabel control={<Radio color="primary" />} key={name} label={name} value={name} />
           ))}
           <FormControlLabel
-            control={<Radio color="primary" onClick={() => document.getElementById('other')?.focus()} />}
+            control={
+              <Radio
+                color="primary"
+                onClick={() => document.getElementById('other')?.focus()}
+                style={{ bottom: 11, position: 'relative' }}
+              />
+            }
             label={
               <TextField
+                error={error !== ' '}
+                helperText={error}
                 id="other"
                 label="Other"
                 onChange={(event) => {
+                  setError(' ')
+                  if (event.target.value.length > 10) {
+                    return setError('Too many characters')
+                  }
                   setOther(event.target.value)
                   setPlaintext(event.target.value)
                 }}
