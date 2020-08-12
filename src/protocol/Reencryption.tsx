@@ -1,7 +1,7 @@
 import { useEffect, useReducer } from 'react'
 
 import { Paper } from './Paper'
-import { VoteWithToken, randEncrypted, useVoteContext } from './VoteContext'
+import { AuthedVote, randEncrypted, useVoteContext } from './VoteContext'
 
 let interval: ReturnType<typeof setInterval>
 
@@ -57,7 +57,7 @@ const HighlightDiff = ({
   counter: number
   field: string
   index: number
-  vote: Partial<VoteWithToken>
+  vote: Partial<AuthedVote>
 }) => {
   const { nextField, nextVote } = calcNext(counter === 0 ? 9 : counter - 1)
   return (

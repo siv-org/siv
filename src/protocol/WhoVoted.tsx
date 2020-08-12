@@ -4,8 +4,8 @@ import { Paper } from './Paper'
 export const WhoVoted = (): JSX.Element => (
   <Paper>
     <code>
-      {voters.map(({ name, token }) => (
-        <p key={token}>{`${token}: ${name}`}</p>
+      {voters.map(({ auth, name }) => (
+        <p key={auth}>{`${auth}: ${name}`}</p>
       ))}
     </code>
   </Paper>

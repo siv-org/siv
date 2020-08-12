@@ -9,7 +9,7 @@ export function EncryptedVote(): JSX.Element {
     <>
       <div>
         {'{'}
-        {Object.keys(omit(state.encrypted, 'token')).map((key) => (
+        {Object.keys(omit(state.encrypted, 'auth')).map((key) => (
           <pre key={key}>
             {key}: <span>{state.encrypted[key]}</span>,
           </pre>

@@ -16,12 +16,12 @@ export const voters = [
   'Hauck, Erik',
   'Schuster, Brad',
   'Swift, Savannah',
-].map((name) => ({ name, token: generateToken() }))
+].map((name) => ({ auth: generateAuthToken(), name }))
 
-function generateToken() {
+function generateAuthToken() {
   const random = Math.random()
   const integer = String(random).slice(2)
   const hex = Number(integer).toString(16)
-  const token = hex.slice(0, 10)
-  return token
+  const auth_token = hex.slice(0, 10)
+  return auth_token
 }

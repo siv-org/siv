@@ -11,10 +11,10 @@ const rand = () => pickRandomInteger(public_key.modulo).toString().padStart(publ
 export const randEncrypted = () => `{ encrypted: ${rand()}, unlock: ${rand()} }`
 
 const initState = {
-  encrypted: { token: voters[0].token },
-  otherSubmittedVotes: voters.slice(1).map(({ token }) => ({
+  encrypted: { auth: voters[0].auth },
+  otherSubmittedVotes: voters.slice(1).map(({ auth }) => ({
+    auth,
     mayor_vote: randEncrypted(),
-    token,
     verification: randEncrypted(),
   })),
   plaintext: { mayor_vote: candidates[1], verification: '' },
@@ -40,10 +40,10 @@ function reducer(prev: State, payload: Payload) {
 // Boilerplate to be easier to use
 
 type VoteMap = { [index: string]: string; mayor_vote: string; verification: string }
-export type VoteWithToken = VoteMap & { token: string }
+export type AuthedVote = VoteMap & { auth: string }
 type State = {
-  encrypted: Partial<VoteWithToken>
-  otherSubmittedVotes: VoteWithToken[]
+  encrypted: Partial<AuthedVote>
+  otherSubmittedVotes: AuthedVote[]
   plaintext: Partial<VoteMap>
   randomizer: Partial<VoteMap>
 }

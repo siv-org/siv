@@ -22,8 +22,8 @@ export function ShuffleVotes(): JSX.Element {
     <Paper>
       <code>
         <FlipMove>
-          {votes.map(({ mayor_vote, token, verification }) => (
-            <p key={token}>
+          {votes.map(({ auth, mayor_vote, verification }) => (
+            <p key={auth}>
               {`{`} mayor_vote: {mayor_vote}, verification: {verification} {'}'}
             </p>
           ))}

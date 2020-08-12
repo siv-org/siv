@@ -7,11 +7,11 @@ export function AllSubmittedBallots(): JSX.Element {
   return (
     <Paper>
       <code>
-        {state.otherSubmittedVotes.map(({ mayor_vote, token, verification }) => (
-          <p key={token}>{`{ token: '${token}', mayor_vote: ${mayor_vote}, verification: ${verification}`}</p>
+        {state.otherSubmittedVotes.map(({ auth, mayor_vote, verification }) => (
+          <p key={auth}>{`{ auth: '${auth}', mayor_vote: ${mayor_vote}, verification: ${verification}`}</p>
         ))}
         <p className="fade-in">
-          {`{ token: '${state.encrypted.token}', mayor_vote: ${state.encrypted.mayor_vote}, verification: ${state.encrypted.verification} }`}
+          {`{ auth: '${state.encrypted.auth}', mayor_vote: ${state.encrypted.mayor_vote}, verification: ${state.encrypted.verification} }`}
         </p>
       </code>
       <style jsx>{`

@@ -3,15 +3,15 @@ export const faq: { q: string; resp?: string }[] = [
     q: 'How does SIV authenticate voters?',
     resp: `SIV offers a simple process entirely controlled by election officials, ensuring that only registered voters have the option to participate.
 
-As the election approaches, Election Administrators send individualized Vote Tokens to registered voters, which they use to vote online. It's important that this process generates written records, for auditing.
+As the election approaches, Election Administrators send individualized Voter Auth Tokens to registered voters, which they use to vote online. It's important that this process generates written records, for auditing.
 
-Long term, there are faster & cheaper digital options (email, text, etc) for Token distribution and jurisdictions can move quickly towards going entirely paperless, if desired.
+Long term, there are faster & cheaper digital options (email, text, etc) for Auth Token distribution and jurisdictions can move quickly towards going entirely paperless, if desired.
 
 As a starting place, SIV can be easily implemented with exactly what Vote by Mail does: (1) Mail voters a sealed envelope to their address on file, and (2) Require them to send back a signature.
 
 This can all take place well ahead of the election, entirely eliminating concerns about delays from overloaded postal systems, or other last minute scheduling issues.
 
-Additional authentication requirements can be set up, including requiring voters to list an email address or phone number ahead of time or restricting Vote Token downloads to devices within the jurisdiction.
+Additional authentication requirements can be set up, including requiring voters to list an email address or phone number ahead of time or restricting Auth Token downloads to devices within the jurisdiction.
 
 At the end of the day, the authentication process is up to Election Administrators.
 
@@ -24,7 +24,7 @@ Election officials can always contact us to schedule a personalized consultation
 
 Election Admins can & should send voters a confirmation email as soon as their encrypted vote is received, so if there is unauthorized access, the voter is quickly alerted to it.
 
-Vote tokens can be invalidated, including after they're used, so stolen Vote Tokens can be remedied. The invalidation is posted publicly, for auditability.`,
+Voter Auth Tokens can be invalidated, including after they're used, so stolen Auth Tokens can be remedied. The invalidation is posted publicly, for auditability.`,
   },
 
   {
@@ -37,7 +37,7 @@ But some nice things to consider:
 
 2. Each step of the process can be inspected & verified, including by separate hardware. So you can quickly use a friend's phone to confirm your vote was encrypted correctly, or submitted correctly.
 
-3. If there is a problem, you can submit a request to the Election Admin to invalidate that vote token. We hope this option will only be necessary in rare cases, but it's always available.
+3. If there is a problem, you can submit a request to the Election Admin to invalidate that Auth Token. We hope this option will only be necessary in rare cases, but it's always available.
 
 Stepping back, we agree that malware is a serious concern. Not just for voting, but for everything in our increasingly digital world. And yet, for comparison, many people use credit cards, manage their bank accounts, and pay taxes online. Some people have even chosen to entrust over $300bn to cryptocurrency algorithms, secured by nothing more than a secret integer on their (or their custodian's) device, and with no reversibility.
 

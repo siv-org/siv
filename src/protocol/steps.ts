@@ -6,7 +6,7 @@ import { EncryptionReceipt } from './EncryptionReceipt'
 import { Invitation, InvitationExplanation } from './Invitation'
 import { Plaintext } from './Plaintext'
 import { Reencryption } from './Reencryption'
-import { RemoveVoteTokens } from './RemoveVoteTokens'
+import { RemoveAuthTokens } from './RemoveAuthTokens'
 import { ShuffleVotes } from './ShuffleVotes'
 import { SubmissionConfirmation } from './SubmissionConfirmation'
 import { Unlocked } from './Unlocked'
@@ -202,13 +202,13 @@ export const groupedSteps: Group[] = [
       {
         leftFirst: true,
         name: 'Step 3: Submit Encrypted Vote',
-        subheader: 'The voter sends their encrypted vote + unique Vote Token to the election administrator.',
+        subheader: 'The voter sends their encrypted vote + Auth Token to the election administrator.',
         then: [
           {
             left: [
               {
                 html: `Election admin confirms the ${orange(
-                  semibold('Vote Token'),
+                  semibold('Voter Auth Token'),
                 )} matches an eligible voter, and hasn't already been used.`,
               },
             ],
@@ -227,7 +227,7 @@ export const groupedSteps: Group[] = [
               {
                 html: `The election administrator has no way to know how a voter voted. Still, they can email voters a confirmation that their encrypted vote has been received and accepted.<br />
             ${light(
-              `This lets the voter know their job is done. It also alerts the voter in case someone else somehow gained access to their vote token. And it serves as a written receipt that the vote was accepted, to allow for auditing.`,
+              `This lets the voter know their job is done. It also alerts the voter in case someone else somehow gained access to their auth token. And it serves as a written receipt that the vote was accepted, to allow for auditing.`,
             )}`,
               },
               '',
@@ -245,7 +245,7 @@ export const groupedSteps: Group[] = [
       // // Step
       // {
       //   name: 'Voters Identified',
-      //   subheader: 'Election administrator can generate a list of everyone who submitted a valid Vote Token.',
+      //   subheader: 'Election administrator can generate a list of everyone who submitted a valid Auth Token.',
       //   then: [
       //     {
       //       left: [
@@ -287,11 +287,13 @@ export const groupedSteps: Group[] = [
               '',
               '',
               {
-                html: `First, the ${orange(semibold('Vote Tokens'))} are removed from the list of all encrypted votes.`,
+                html: `First, the ${orange(
+                  semibold('Voter Auth Tokens'),
+                )} are removed from the list of all encrypted votes.`,
               },
               '',
             ],
-            right: [{ react: RemoveVoteTokens }, '', '', ''],
+            right: [{ react: RemoveAuthTokens }, '', '', ''],
           },
           {
             left: [
@@ -350,7 +352,7 @@ export const groupedSteps: Group[] = [
               '',
               '',
               {
-                p: 'Now, the shuffled list is cryptographically mixed, with the original Vote Tokens unlinkable.',
+                p: 'Now, the shuffled list is cryptographically mixed, with the original Auth Tokens unlinkable.',
               },
               { p: 'Only Trustee #1 can possibly know the exact way they shuffled.' },
               {

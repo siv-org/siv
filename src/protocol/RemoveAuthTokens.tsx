@@ -1,15 +1,15 @@
 import { Paper } from './Paper'
 import { useVoteContext } from './VoteContext'
 
-export function RemoveVoteTokens(): JSX.Element {
+export function RemoveAuthTokens(): JSX.Element {
   const { state } = useVoteContext()
 
   return (
     <Paper>
       <code>
-        {[...state.otherSubmittedVotes, state.encrypted].map(({ mayor_vote, token, verification }) => (
-          <p key={token}>
-            {`{`} <span className="fade-out">token: &apos;{token}&apos;,</span> mayor_vote: {mayor_vote}, verification:{' '}
+        {[...state.otherSubmittedVotes, state.encrypted].map(({ auth, mayor_vote, verification }) => (
+          <p key={auth}>
+            {`{`} <span className="fade-out">auth: &apos;{auth}&apos;,</span> mayor_vote: {mayor_vote}, verification:{' '}
             {verification} {`}`}
           </p>
         ))}

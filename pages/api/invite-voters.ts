@@ -40,10 +40,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(401).end('Invalid Password.')
   }
 
-  // 2. Generate vote token for each voter
-  const tokens = voters.map(() => generateToken())
+  // 2. Generate auth token for each voter
+  const auth_tokens = voters.map(() => generateAuthToken())
 
-  // 3. Store the vote tokens in db
+  // 3. Store the vote auth_tokens in db
   voters.forEach((voter: string, index: number) => {
     firebase
       .firestore()
@@ -51,12 +51,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       .doc(Number(new Date()).toString())
       .collection('voters')
       .doc(voter)
-      .set({ email: voter, token: tokens[index] })
+      .set({ auth_token: auth_tokens[index], email: voter })
   })
 
-  // 4. Email each voter their token
+  // 4. Email each voter their auth token
   voters.slice(-1).forEach((voter: string, index: number) => {
-    const link = `www.secureinternetvoting.org/demo-election?id=${tokens[index]}`
+    const link = `www.secureinternetvoting.org/demo-election?auth=${auth_tokens[index]}`
     mailgun.messages().send({
       from: 'SIV Admin <admin@secureinternetvoting.org>',
       html: `Voting for the Best Ice Cream is now open.
@@ -78,7 +78,7 @@ Click here to securely cast your vote:
   // 5. Send Admin push notification
   await fetch('https://api.pushover.net/1/messages.json', {
     body: JSON.stringify({
-      message: 'foobar',
+      message: 'success',
       title: `Invited ${voters.length} voters`,
       token: PUSHOVER_APP_TOKEN,
       user: PUSHOVER_USER_KEY,
@@ -93,10 +93,10 @@ Click here to securely cast your vote:
   res.status(200).end('Success.')
 }
 
-function generateToken() {
+function generateAuthToken() {
   const random = Math.random()
   const integer = String(random).slice(2)
   const hex = Number(integer).toString(16)
-  const token = hex.slice(0, 10)
-  return token
+  const auth_token = hex.slice(0, 10)
+  return auth_token
 }
