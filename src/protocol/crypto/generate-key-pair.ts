@@ -13,9 +13,9 @@ function generate_key_pair(modulo: Big): [Big, Public_Key] {
 
   const secret = pick_random_integer(modulo)
 
-  const sealing_target = generator.modPow(secret, modulo)
+  const recipient = generator.modPow(secret, modulo)
 
-  return [secret, { generator, modulo, sealing_target }]
+  return [secret, { generator, modulo, recipient }]
 }
 
 export default generate_key_pair

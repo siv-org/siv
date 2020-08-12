@@ -16,7 +16,7 @@ export function EncryptionReceipt(): JSX.Element {
 Encrypted @ ${new Date().toString()}
 
 Encryption Formula
-  message = encoded * (recipient ^ randomizer) % modulo
+  encrypted = encoded * (recipient ^ randomizer) % modulo
   unlock = (generator ^ randomizer) % modulo
 
 Public Key

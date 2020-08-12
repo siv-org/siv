@@ -12,18 +12,18 @@ export default function shuffle(pub_key: Public_Key, cipher_texts: Cipher_Text[]
 
   // Now we'll re-encrypt each of them...
   const reencrypted = permuted.map((cipher) => {
-    const { message, unlock } = cipher
+    const { encrypted, unlock } = cipher
 
     // Generate a unique random re-encryption factor for each cipher
     const reencryption_factor = pick_random_integer(modulo)
 
-    const message_multiplier = recipient.modPow(reencryption_factor, modulo)
-    const new_message = message.multiply(message_multiplier).mod(modulo)
+    const encrypted_multiplier = recipient.modPow(reencryption_factor, modulo)
+    const new_encrypted = encrypted.multiply(encrypted_multiplier).mod(modulo)
 
     const unlock_multiplier = generator.modPow(reencryption_factor, modulo)
     const new_unlock = unlock.multiply(unlock_multiplier).mod(modulo)
 
-    return { message: new_message, unlock: new_unlock }
+    return { encrypted: new_encrypted, unlock: new_unlock }
   })
 
   return reencrypted
