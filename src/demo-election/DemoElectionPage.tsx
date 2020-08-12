@@ -10,6 +10,7 @@ import { public_key } from '../protocol/election-parameters'
 import { EncryptionReceipt } from './EncryptionReceipt'
 import { Intro } from './Intro'
 import { Question } from './Question'
+import { SubmitButton } from './SubmitButton'
 
 export const DemoElectionPage = (): JSX.Element => {
   const [plaintext, setPlaintext] = useState('')
@@ -28,6 +29,7 @@ export const DemoElectionPage = (): JSX.Element => {
         <h1>Demo Election</h1>
         <Intro />
         <Question plaintext={plaintext} setPlaintext={setPlaintext} />
+        <SubmitButton />
         <EncryptionReceipt
           state={{
             encrypted: {
