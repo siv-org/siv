@@ -1,6 +1,7 @@
 import { FormControlLabel, NoSsr, Radio, RadioGroup, TextField } from '@material-ui/core'
 import { useState } from 'react'
 
+import { encode } from '../protocol/crypto/encode'
 import { Paper } from '../protocol/Paper'
 
 const ballot = {
@@ -55,9 +56,17 @@ export const Question = ({
                 label="Other"
                 onChange={(event) => {
                   setError(' ')
+                  // Check for too many characters
                   if (event.target.value.length > 10) {
                     return setError('Too many characters')
                   }
+                  // Check for invalid characters
+                  try {
+                    encode(event.target.value)
+                  } catch {
+                    return setError('Invalid character')
+                  }
+                  // Passed checks
                   setOther(event.target.value)
                   setPlaintext(event.target.value)
                 }}

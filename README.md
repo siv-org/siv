@@ -19,7 +19,7 @@ TODO:
   - [x] Password protect
 - [x] Voter interface to cast vote
 - [x] Encrypt voters vote
-  - [ ] Error handling
+  - [x] Error handling
   - [ ] Walk voters through extra private mode
   - [ ] Health / Antivirus on browser checker
 - [ ] Submit Voters vote
