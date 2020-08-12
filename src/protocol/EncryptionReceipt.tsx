@@ -28,7 +28,7 @@ ${map(
   plaintext: ${state.plaintext[key]}
   encoded: ${encode(state.plaintext[key] as string)}
   randomizer: ${state.randomizer[key]}
-  encrypted ${state.encrypted[key]?.slice(1, -2)}
+  ${state.encrypted[key]?.slice(3, -2)}
 `,
 ).join('\n')}
 `}

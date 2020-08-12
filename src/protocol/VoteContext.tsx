@@ -31,7 +31,7 @@ function reducer(prev: State, payload: Payload) {
     randomizer[key] = random.toString()
     const cipher = encrypt(public_key, random, big(encode(value as string)))
 
-    return `{ \n${map(cipher, (value: Big, key) => `\t${key}: ${value.toString()}`).join(',\n')} \n}`
+    return `{ \n${map(cipher, (value: Big, key) => `${key}: ${value.toString()}`).join(',\n\t ')} \n}`
   })
 
   return merge(newState, { encrypted, randomizer })
