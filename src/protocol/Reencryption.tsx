@@ -8,7 +8,7 @@ let interval: ReturnType<typeof setInterval>
 export function Reencryption(): JSX.Element {
   const { state } = useVoteContext()
 
-  const init = { counter: 0, votes: [...state.otherSubmittedVotes, { ...state.encrypted }] }
+  const init = { counter: 0, votes: [...state.otherSubmittedVotes, state.otherSubmittedVotes[2]] }
 
   // Put mutation logic in reducer to access prev values
   const [{ counter, votes }, dispatch] = useReducer((prev: typeof init): typeof init => {
@@ -17,7 +17,7 @@ export function Reencryption(): JSX.Element {
 
     // Update only that field
     const newVotes = [...prev.votes]
-    newVotes[nextVote][nextField] = randEncrypted()
+    newVotes[nextVote] = { ...newVotes[nextVote], [nextField]: randEncrypted() }
 
     return {
       // Reset counter when it hits the end
