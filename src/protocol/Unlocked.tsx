@@ -13,13 +13,13 @@ export function Unlocked(): JSX.Element {
 
   const votes = useMemo(
     () => [
-      ...voters.slice(1).map(() => ({ secret: generateVerificationSecret(), vote_for_mayor: randomCandidate() })),
+      ...voters.slice(1).map(() => ({ mayor_vote: randomCandidate(), verification: generateVerificationSecret() })),
       state.plaintext,
     ],
     [voters],
   )
 
-  const vote_counts = countBy(votes.map((v) => v.vote_for_mayor))
+  const vote_counts = countBy(votes.map((v) => v.mayor_vote))
   const tuples = mapValues(vote_counts, (votes, name) => ({ name, votes }))
   const ordered = orderBy(tuples, 'votes', 'desc')
 
@@ -27,8 +27,8 @@ export function Unlocked(): JSX.Element {
     <>
       <Paper noFade>
         <code>
-          {votes.map(({ secret, vote_for_mayor }) => (
-            <p key={secret}>{`{ secret: '${secret}', vote_for_mayor: '${vote_for_mayor}' }'`}</p>
+          {votes.map(({ mayor_vote, verification }) => (
+            <p key={verification}>{`{ mayor_vote: '${mayor_vote}', verification: '${verification}' }`}</p>
           ))}
         </code>
         <br />

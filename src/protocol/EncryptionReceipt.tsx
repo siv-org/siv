@@ -22,14 +22,13 @@ Encryption Formula
 Public Key
   ${map(public_key, (v, k) => `${k}: ${v.toString()}`).join('\n  ')}
 
-
 ${map(
   state.plaintext,
   (_, key) => `${key}
   plaintext: ${state.plaintext[key]}
   encoded: ${encode(state.plaintext[key] as string)}
   randomizer: ${state.randomizer[key]}
-  encrypted ${state.encrypted[key]?.slice(1, -1)}
+  encrypted ${state.encrypted[key]?.slice(1, -2)}
 `,
 ).join('\n')}
 `}

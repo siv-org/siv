@@ -2,7 +2,7 @@ import { Paper } from './Paper'
 import { useVoteContext } from './VoteContext'
 
 export const SubmissionConfirmation = () => {
-  const { secret, token, vote_for_mayor } = useVoteContext().state.encrypted
+  const { mayor_vote, token, verification } = useVoteContext().state.encrypted
   return (
     <Paper marginBottom noFade style={{ position: 'relative' }}>
       <img
@@ -21,7 +21,7 @@ export const SubmissionConfirmation = () => {
       </p>
       <p>Here is the encrypted vote you submitted:</p>
       <code style={{ display: 'block', lineHeight: '16px', padding: '0 6%' }}>
-        {`{`} token: &apos;{token}&apos;, secret: {secret}, vote_for_mayor: {vote_for_mayor} {`}`}
+        {`{`} token: &apos;{token}&apos;, mayor_vote: {mayor_vote}, verification: {verification} {`}`}
       </code>
       <p>
         <i style={{ fontSize: 12 }}>

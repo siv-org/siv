@@ -7,11 +7,10 @@ export function RemoveVoteTokens(): JSX.Element {
   return (
     <Paper>
       <code>
-        {[...state.otherSubmittedVotes, state.encrypted].map(({ secret, token, vote_for_mayor }) => (
+        {[...state.otherSubmittedVotes, state.encrypted].map(({ mayor_vote, token, verification }) => (
           <p key={token}>
-            {`{`} <span className="fade-out">token: &apos;{token}&apos;,</span> secret: {secret}, vote_for_mayor:{' '}
-            {vote_for_mayor}
-            {`}`}
+            {`{`} <span className="fade-out">token: &apos;{token}&apos;,</span> mayor_vote: {mayor_vote}, verification:{' '}
+            {verification} {`}`}
           </p>
         ))}
       </code>

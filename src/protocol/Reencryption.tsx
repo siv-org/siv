@@ -38,8 +38,8 @@ export function Reencryption(): JSX.Element {
         {votes.map((vote, index) => (
           <p key={index}>
             {`{`}
-            <HighlightDiff {...{ counter, index, vote }} field="secret" />,
-            <HighlightDiff {...{ counter, index, vote }} field="vote_for_mayor" />
+            <HighlightDiff {...{ counter, index, vote }} field="mayor_vote" />,
+            <HighlightDiff {...{ counter, index, vote }} field="verification" />
             {' }'}
           </p>
         ))}
@@ -74,6 +74,6 @@ const HighlightDiff = ({
 }
 
 const calcNext = (counter: number) => ({
-  nextField: counter % 2 ? 'vote_for_mayor' : 'secret',
+  nextField: counter % 2 ? 'verification' : 'mayor_vote',
   nextVote: Math.floor(counter / 2),
 })

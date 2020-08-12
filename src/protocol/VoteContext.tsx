@@ -13,11 +13,11 @@ export const randEncrypted = () => `{ message: ${rand()}, unlock: ${rand()} }`
 const initState = {
   encrypted: { token: voters[0].token },
   otherSubmittedVotes: voters.slice(1).map(({ token }) => ({
-    secret: randEncrypted(),
+    mayor_vote: randEncrypted(),
     token,
-    vote_for_mayor: randEncrypted(),
+    verification: randEncrypted(),
   })),
-  plaintext: { secret: '', vote_for_mayor: candidates[1] },
+  plaintext: { mayor_vote: candidates[1], verification: '' },
   randomizer: {},
 }
 
@@ -39,7 +39,7 @@ function reducer(prev: State, payload: Payload) {
 
 // Boilerplate to be easier to use
 
-type VoteMap = { [index: string]: string; secret: string; vote_for_mayor: string }
+type VoteMap = { [index: string]: string; mayor_vote: string; verification: string }
 export type VoteWithToken = VoteMap & { token: string }
 type State = {
   encrypted: Partial<VoteWithToken>

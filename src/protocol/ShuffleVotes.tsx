@@ -22,9 +22,9 @@ export function ShuffleVotes(): JSX.Element {
     <Paper>
       <code>
         <FlipMove>
-          {votes.map(({ secret, token, vote_for_mayor }) => (
+          {votes.map(({ mayor_vote, token, verification }) => (
             <p key={token}>
-              {`{`} secret: {secret}, vote_for_mayor: {vote_for_mayor} {'}'}
+              {`{`} mayor_vote: {mayor_vote}, verification: {verification} {'}'}
             </p>
           ))}
         </FlipMove>

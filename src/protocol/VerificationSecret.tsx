@@ -10,7 +10,7 @@ export function VerificationSecret(): JSX.Element {
   const { width } = useWindowDimensions()
 
   const generate = () => {
-    dispatch({ secret: generateVerificationSecret() })
+    dispatch({ verification: generateVerificationSecret() })
   }
 
   useEffect(generate, [])
@@ -35,7 +35,7 @@ export function VerificationSecret(): JSX.Element {
               label=""
               size="small"
               style={{ backgroundColor: '#fff8' }}
-              value={state.plaintext.secret}
+              value={state.plaintext.verification}
               variant="outlined"
             />
             <Button color="primary" onClick={generate}>

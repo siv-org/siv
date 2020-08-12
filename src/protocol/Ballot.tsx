@@ -21,9 +21,9 @@ export const Ballot = (): JSX.Element => {
       </p>
       <NoSsr>
         <RadioGroup
-          onChange={(event) => dispatch({ vote_for_mayor: event.target.value })}
+          onChange={(event) => dispatch({ mayor_vote: event.target.value })}
           style={{ paddingLeft: '1.5rem' }}
-          value={state.plaintext.vote_for_mayor}
+          value={state.plaintext.mayor_vote}
         >
           {candidates.map((name) => (
             <FormControlLabel control={<Radio color="primary" />} key={name} label={name} value={name} />
