@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import { useState } from 'react'
 
+import { api } from '../api-helper'
 import { AddPeople } from './AddPeople'
 import { BallotDesigner } from './BallotDesigner'
 
@@ -31,17 +32,7 @@ export const AdminPage = (): JSX.Element => {
           onClick={async () => {
             const voters = (document.getElementById('voters-input') as HTMLInputElement).value.split('\n')
             // Call backend endpoint
-            const { status } = await fetch('/api/invite-voters', {
-              body: JSON.stringify({
-                password: localStorage.password,
-                voters,
-              }),
-              headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-              },
-              method: 'POST',
-            })
+            const { status } = await api('invite-voters', { password: localStorage.password, voters })
             if (status === 401) {
               localStorage.removeItem('password')
               alert('Invalid Password')

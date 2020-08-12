@@ -5,6 +5,7 @@ import { firestore } from 'firebase/app'
 import { omit } from 'lodash-es'
 import { useState } from 'react'
 
+import { api } from '../api-helper'
 import { OnClickButton } from './Button'
 
 export function LetYourGovtKnow({ idKey }: { idKey: string }): JSX.Element {
@@ -60,16 +61,9 @@ export function LetYourGovtKnow({ idKey }: { idKey: string }): JSX.Element {
                   setSaved(true)
 
                   // Notify via Pushover
-                  fetch('/api/pushover', {
-                    body: JSON.stringify({
-                      message: `${fields.email}\nCTA #${idKey}\n\n${fields.message}`,
-                      title: `SIV: ${fields.name} (${fields.zip})`,
-                    }),
-                    headers: {
-                      Accept: 'application/json',
-                      'Content-Type': 'application/json',
-                    },
-                    method: 'POST',
+                  api('pushover', {
+                    message: `${fields.email}\nCTA #${idKey}\n\n${fields.message}`,
+                    title: `SIV: ${fields.name} (${fields.zip})`,
                   })
                 })
             }}

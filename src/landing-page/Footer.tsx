@@ -3,6 +3,7 @@ import { firestore } from 'firebase/app'
 import Link from 'next/link'
 import { useState } from 'react'
 
+import { api } from '../api-helper'
 import { OnClickButton } from './Button'
 import { consultation_link } from './ForGovernments'
 
@@ -45,16 +46,9 @@ export const Footer = (): JSX.Element => {
                   setSaved(true)
 
                   // Notify via Pushover
-                  fetch('/api/pushover', {
-                    body: JSON.stringify({
-                      message: fields.email,
-                      title: `SIV newsletter signup`,
-                    }),
-                    headers: {
-                      Accept: 'application/json',
-                      'Content-Type': 'application/json',
-                    },
-                    method: 'POST',
+                  api('pushover', {
+                    message: fields.email,
+                    title: `SIV newsletter signup`,
                   })
                 })
             }}
