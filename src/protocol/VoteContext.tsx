@@ -8,7 +8,7 @@ import { Big, big } from './crypto/types'
 import { candidates, public_key, voters } from './election-parameters'
 
 const rand = () => pickRandomInteger(public_key.modulo).toString().padStart(public_key.modulo.toString().length, '0')
-export const randEncrypted = () => `{ sealed_data: ${rand()}, sealing_factor: ${rand()} }`
+export const randEncrypted = () => `{ message: ${rand()}, unlock: ${rand()} }`
 
 const initState = {
   encrypted: { token: voters[0].token },

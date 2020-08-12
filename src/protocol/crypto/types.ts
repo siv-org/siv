@@ -4,14 +4,14 @@ import { reduce } from 'lodash'
 export { BigInteger as Big } from 'jsbn'
 
 export type Cipher_Text = {
-  sealed_data: Big
-  sealing_factor: Big
+  message: Big
+  unlock: Big
 }
 
 export type Public_Key = {
   generator: Big
   modulo: Big
-  sealing_target: Big
+  recipient: Big
 }
 
 // Add Big helper methods greaterThan/lessThan

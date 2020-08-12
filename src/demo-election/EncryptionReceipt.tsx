@@ -19,8 +19,8 @@ export function EncryptionReceipt({
 Encrypted @ ${new Date().toString()}
 
 Encryption Formula
-  sealed_data = encoded * (sealing_target ^ randomizer) % modulo
-  sealing_factor = (generator ^ randomizer) % modulo
+  message = encoded * (recipient ^ randomizer) % modulo
+  unlock = (generator ^ randomizer) % modulo
 
 Public Key
   ${map(public_key, (v, k) => `${k}: ${v.toString()}`).join('\n  ')}

@@ -18,7 +18,8 @@ TODO:
 - [x] Backend assigns vote tokens and emails invitation to voters
   - [x] Password protect
 - [x] Voter interface to cast vote
-- [ ] Encrypt voters vote
+- [x] Encrypt voters vote
+  - [ ] Error handling
   - [ ] Walk voters through extra private mode
   - [ ] Health / Antivirus on browser checker
 - [ ] Submit Voters vote
