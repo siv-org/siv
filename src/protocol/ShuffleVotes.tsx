@@ -1,4 +1,4 @@
-import { shuffle } from 'lodash'
+import { shuffle } from 'lodash-es'
 import { useEffect, useState } from 'react'
 import FlipMove from 'react-flip-move'
 

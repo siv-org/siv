@@ -1,4 +1,4 @@
-import { map, mapValues, merge } from 'lodash'
+import { map, mapValues, merge } from 'lodash-es'
 import { createContext, useContext, useMemo, useReducer } from 'react'
 
 import { encode } from './crypto/encode'

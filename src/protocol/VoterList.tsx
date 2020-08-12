@@ -1,5 +1,5 @@
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core'
-import { range } from 'lodash'
+import { range } from 'lodash-es'
 
 import { voters } from './election-parameters'
 

@@ -1,4 +1,4 @@
-import { map } from 'lodash'
+import { map } from 'lodash-es'
 import Head from 'next/head'
 import { useState } from 'react'
 

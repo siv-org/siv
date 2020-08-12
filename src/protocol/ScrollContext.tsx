@@ -1,4 +1,4 @@
-import { merge } from 'lodash'
+import { merge } from 'lodash-es'
 import { createContext, useContext, useMemo, useReducer } from 'react'
 
 const initState = { current: 'Voter Registration' }

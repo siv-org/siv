@@ -1,5 +1,5 @@
 import { NoSsr } from '@material-ui/core'
-import { map } from 'lodash'
+import { map } from 'lodash-es'
 
 import { encode } from '../protocol/crypto/encode'
 import { public_key } from '../protocol/election-parameters'

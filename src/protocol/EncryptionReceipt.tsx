@@ -1,4 +1,4 @@
-import { map } from 'lodash'
+import { map } from 'lodash-es'
 
 import { encode } from './crypto/encode'
 import { public_key } from './election-parameters'

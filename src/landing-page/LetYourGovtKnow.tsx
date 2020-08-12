@@ -2,7 +2,7 @@ const darkBlue = '#002868'
 
 import { BoxProps, NoSsr, TextField, TextFieldProps } from '@material-ui/core'
 import { firestore } from 'firebase/app'
-import { omit } from 'lodash'
+import { omit } from 'lodash-es'
 import { useState } from 'react'
 
 import { OnClickButton } from './Button'

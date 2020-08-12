@@ -1,4 +1,4 @@
-import { countBy, mapValues, orderBy } from 'lodash'
+import { countBy, mapValues, orderBy } from 'lodash-es'
 import { useMemo } from 'react'
 
 import { candidates, voters } from './election-parameters'

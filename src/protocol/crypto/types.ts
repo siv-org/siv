@@ -1,5 +1,5 @@
 import { BigInteger as Big } from 'jsbn'
-import { reduce } from 'lodash'
+import { reduce } from 'lodash-es'
 
 export { BigInteger as Big } from 'jsbn'
 

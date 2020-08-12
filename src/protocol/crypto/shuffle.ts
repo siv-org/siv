@@ -1,4 +1,4 @@
-import { shuffle as permute } from 'lodash'
+import { shuffle as permute } from 'lodash-es'
 
 import pick_random_integer from './pick-random-integer'
 import { Cipher_Text, Public_Key } from './types'
