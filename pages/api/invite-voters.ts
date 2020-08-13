@@ -16,14 +16,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // 3. Store the vote auth_tokens in db
   const election_id = Number(new Date()).toString()
+  const election = firebase.firestore().collection('elections').doc(election_id)
+  election.set({ foo: 'bar' }) // So we can query if election exists later
   voters.forEach((voter: string, index: number) => {
-    firebase
-      .firestore()
-      .collection('elections')
-      .doc(election_id)
-      .collection('voters')
-      .doc(voter)
-      .set({ auth_token: auth_tokens[index], email: voter })
+    election.collection('voters').doc(voter).set({ auth_token: auth_tokens[index], email: voter })
   })
 
   // 4. Email each voter their auth token
