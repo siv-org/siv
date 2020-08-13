@@ -27,7 +27,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // 4. Email each voter their auth token
   await Promise.all(
     voters.slice(-1).map((voter: string, index: number) => {
-      const link = `www.secureinternetvoting.org/demo-election?election=${election_id}&auth=${auth_tokens[index]}`
+      const link = `${req.headers.origin}/demo-election?election=${election_id}&auth=${auth_tokens[index]}`
 
       return mailgun.messages().send({
         from: 'SIV Admin <admin@secureinternetvoting.org>',
