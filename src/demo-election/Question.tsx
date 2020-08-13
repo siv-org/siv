@@ -1,7 +1,7 @@
 import { FormControlLabel, NoSsr, Radio, RadioGroup, TextField } from '@material-ui/core'
 import { useState } from 'react'
 
-import { encode } from '../protocol/crypto/encode'
+import { encode } from '../crypto/encode'
 import { Paper } from '../protocol/Paper'
 
 const ballot = {

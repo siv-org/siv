@@ -1,10 +1,10 @@
 import { map, mapValues, merge } from 'lodash-es'
 import { createContext, useContext, useMemo, useReducer } from 'react'
 
-import { encode } from './crypto/encode'
-import encrypt from './crypto/encrypt'
-import pickRandomInteger from './crypto/pick-random-integer'
-import { Big, big } from './crypto/types'
+import { encode } from '../crypto/encode'
+import encrypt from '../crypto/encrypt'
+import pickRandomInteger from '../crypto/pick-random-integer'
+import { Big, big } from '../crypto/types'
 import { candidates, public_key, voters } from './election-parameters'
 
 const rand = () => pickRandomInteger(public_key.modulo).toString().padStart(public_key.modulo.toString().length, '0')

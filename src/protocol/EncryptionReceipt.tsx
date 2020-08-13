@@ -1,6 +1,6 @@
 import { map } from 'lodash-es'
 
-import { encode } from './crypto/encode'
+import { encode } from '../crypto/encode'
 import { public_key } from './election-parameters'
 import { Paper } from './Paper'
 import { useVoteContext } from './VoteContext'
