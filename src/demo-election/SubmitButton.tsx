@@ -1,3 +1,5 @@
+import { useState } from 'react'
+
 import { api } from '../api-helper'
 import { OnClickButton } from '../landing-page/Button'
 
@@ -12,10 +14,17 @@ export const SubmitButton = ({
   electionId?: string
   encryptedString: string
 }) => {
+  const [sent, setSent] = useState(false)
   return (
     <div>
-      <OnClickButton {...{ disabled }} onClick={() => api('submit-vote', { authToken, electionId, encryptedString })}>
-        Submit
+      <OnClickButton
+        disabled={disabled || sent}
+        onClick={async () => {
+          const { status } = await api('submit-vote', { authToken, electionId, encryptedString })
+          setSent(status === 200)
+        }}
+      >
+        {!sent ? 'Submit' : 'Submitted.'}
       </OnClickButton>
       <style jsx>{`
         div {
