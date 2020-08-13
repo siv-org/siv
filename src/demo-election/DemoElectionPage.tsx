@@ -17,6 +17,11 @@ export const DemoElectionPage = (): JSX.Element => {
   const [plaintext, setPlaintext] = useState('')
   const random = pickRandomInteger(public_key.modulo)
   const encrypted = encrypt(public_key, random, big(encode(plaintext)))
+  const encryptedString = `{ \n${map(
+    encrypted,
+    (value: Big, key) => `${key}: ${value.toString().padStart(public_key.modulo.toString().length, '0')}`,
+  ).join(',\n\t ')} \n}`
+
   const [authToken, setAuthToken] = useState<string>()
   const [electionId, setElectionId] = useState<string>()
 
@@ -49,15 +54,10 @@ export const DemoElectionPage = (): JSX.Element => {
         <Intro />
         <YourAuthToken {...{ authToken, electionId }} />
         <Question {...{ plaintext }} setPlaintext={setPlaintext} />
-        <SubmitButton auth="" encrypted_vote="" />
+        <SubmitButton {...{ authToken, electionId, encryptedString }} />
         <EncryptionReceipt
           state={{
-            encrypted: {
-              best_icecream: `{ \n${map(
-                encrypted,
-                (value: Big, key) => `${key}: ${value.toString().padStart(public_key.modulo.toString().length, '0')}`,
-              ).join(',\n\t ')} \n}`,
-            },
+            encrypted: { best_icecream: encryptedString },
             plaintext: { best_icecream: plaintext },
             randomizer: { best_icecream: random.toString() },
           }}
