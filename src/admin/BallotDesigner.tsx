@@ -24,11 +24,16 @@ export const BallotDesigner = () => (
       }
 
       textarea {
-        width: 320px;
-        max-width: 100%;
-        height: 190px;
-        padding: 8px;
+        background: #eee;
+        border-color: #ccc;
+        border-radius: 4px;
         cursor: not-allowed;
+        font-family: monospace;
+        font-size: 12px;
+        max-width: 100%;
+        height: 200px;
+        padding: 8px;
+        width: 450px;
       }
     `}</style>
   </>

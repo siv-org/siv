@@ -7,7 +7,7 @@ export const AdminPage = (): JSX.Element => {
   return (
     <>
       <Head>
-        <title>SIV: Admin</title>
+        <title>SIV: Create new election</title>
         <link href="/favicon.png" rel="icon" />
         <meta content="minimum-scale=1, initial-scale=1, width=device-width" name="viewport" />
         <meta content="/preview.png" property="og:image" />

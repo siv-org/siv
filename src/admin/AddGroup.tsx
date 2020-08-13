@@ -44,15 +44,16 @@ export const AddGroup = ({
         textarea {
           width: 100%;
           height: 87px;
+          padding-left: 23px;
+          padding-top: 3px;
           resize: vertical;
 
           background: url(https://i.imgur.com/2cOaJ.png);
           background-position: -11px -6px;
           background-attachment: local;
           background-repeat: no-repeat;
-          padding-left: 23px;
-          padding-top: 3px;
           border-color: #ccc;
+          border-radius: 4px;
 
           font-size: 13px;
           line-height: 16px;
