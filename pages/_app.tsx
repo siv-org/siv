@@ -1,4 +1,4 @@
-import '../src/global.css'
+import '../src/reset.css'
 
 import { AppProps } from 'next/app'
 
