@@ -11,6 +11,7 @@ export const AddParticipants = () => {
   return (
     <div>
       <AddGroup
+        defaultValue="admin@secureinternetvoting.org&#13;&#10;"
         disabled={pubKey}
         message={`Trustees made pub key ${public_key.recipient.toString()}`}
         onClick={() => {

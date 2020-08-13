@@ -3,23 +3,26 @@ import { useState } from 'react'
 import { OnClickButton } from '../landing-page/Button'
 
 export const AddGroup = ({
+  defaultValue,
   disabled,
   message,
   onClick,
   type,
 }: {
+  defaultValue?: string
   disabled?: boolean
   message: string
   onClick: () => boolean | Promise<boolean>
   type: string
 }) => {
   const [sent, setSent] = useState(false)
+  const textarea_id = `${type}-input`
 
   return (
     <div className="container">
-      <label htmlFor={`${type}-input`}>Add {type} by email address:</label>
+      <label htmlFor={textarea_id}>Add {type} by email address:</label>
       <div className="textarea-wrapper">
-        <textarea disabled={disabled && type !== 'voters'} id={`${type}-input`} />
+        <textarea {...{ defaultValue }} disabled={disabled && type !== 'voters'} id={textarea_id} wrap="off" />
       </div>
       <div className="right-aligned">
         <OnClickButton
