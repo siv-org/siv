@@ -28,8 +28,8 @@ export const DemoElectionPage = (): JSX.Element => {
   // Grab values from URL querystring
   useEffect(() => {
     const query_string = window.location.href.split('?')[1]
-    const terms = query_string.split('&')
-    terms.forEach((term) => {
+    const terms = query_string?.split('&')
+    terms?.forEach((term) => {
       const [key, value] = term.split('=')
       if (key === 'auth') {
         setAuthToken(value)
