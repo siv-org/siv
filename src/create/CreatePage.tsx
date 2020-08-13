@@ -3,7 +3,7 @@ import Head from 'next/head'
 import { AddParticipants } from './AddParticipants'
 import { BallotDesigner } from './BallotDesigner'
 
-export const AdminPage = (): JSX.Element => {
+export const CreatePage = (): JSX.Element => {
   return (
     <>
       <Head>
