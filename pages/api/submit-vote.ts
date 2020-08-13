@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 
-import { firebase, pushover } from './_services'
+import { firebase, mailgun, pushover } from './_services'
 import { validateAuthToken } from './check-auth-token'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -18,33 +18,33 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   // 2. Store the encrypted vote in db
-  firebase
+  await firebase
     .firestore()
     .collection('elections')
     .doc(electionId)
     .collection('votes')
     .add({ authToken, created_at: new Date(), encryptedString, headers: req.headers })
 
-  // 3. TODO Email the voter their submission receipt
-  // const link = `www.secureinternetvoting.org/demo-election-results`
+  // 3. Email the voter their submission receipt
+  const link = `www.secureinternetvoting.org/election/${electionId}`
 
-  //   await mailgun.messages().send({
-  //     from: 'SIV Admin <admin@secureinternetvoting.org>',
-  //     html: `Your vote has been received. Thank you.
+  await mailgun.messages().send({
+    from: 'SIV Admin <admin@secureinternetvoting.org>',
+    html: `Your vote has been received. Thank you.
 
-  // The final results will be posted at <a href="${link}">${link}</a> when the election closes.
+  The final results will be posted at <a href="${link}">${link}</a> when the election closes.
 
-  // Here is the encrypted vote you submitted:
+  Here is the encrypted vote you submitted:
 
-  // <code style="margin: 0 30px;">${JSON.stringify(authToken)}</code>
+  <code style="margin: 0 30px;">${JSON.stringify({ auth: authToken, best_icecream: encryptedString })}</code>s
 
-  // <em style="font-size:10px">If you did not submit this ballot, <a>click here</a> to report a problem.</em>`.replace(
-  //       /\n/g,
-  //       '<br />',
-  //     ),
-  //     subject: 'Vote Confirmation',
-  //     to: 'admin@secureinternetvoting.org',
-  //   })
+  <em style="font-size:10px">If you did not submit this ballot, hit reply to report a problem.</em>`.replace(
+      /\n/g,
+      '<br />',
+    ),
+    subject: 'Vote Confirmation',
+    to: 'admin@secureinternetvoting.org',
+  })
 
   res.status(200).end('Success.')
 }
