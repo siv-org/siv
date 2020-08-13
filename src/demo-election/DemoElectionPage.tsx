@@ -68,7 +68,7 @@ export const DemoElectionPage = (): JSX.Element => {
         main {
           max-width: 750px;
           width: 100%;
-          margin: 2rem auto;
+          margin: 0 auto;
           padding: 1rem;
         }
       `}</style>

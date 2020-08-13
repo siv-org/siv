@@ -13,17 +13,6 @@ export const YourAuthToken = ({ authToken, electionId }: { authToken?: string; e
     setMessage('')
     setStatus(undefined)
 
-    // Make sure we have the right parameters
-    if (!authToken) {
-      setStatus('fail')
-      return setMessage('Missing Auth Token.')
-    }
-
-    if (!electionId) {
-      setStatus('fail')
-      return setMessage('Missing Election ID.')
-    }
-
     // Ask API
     const response = await api('check-auth-token', { authToken, electionId })
     setStatus(response.status >= 400 ? 'fail' : 'pass')
@@ -43,7 +32,7 @@ export const YourAuthToken = ({ authToken, electionId }: { authToken?: string; e
         </p>
       ) : status === 'fail' ? (
         <p className="error">
-          <span className="x">❌</span> <b>Error:</b>&nbsp;{message}
+          <span className="x">❌</span> <b>Error:</b> {message}
         </p>
       ) : (
         <p className="authorized">✅ {message}</p>
@@ -65,6 +54,10 @@ export const YourAuthToken = ({ authToken, electionId }: { authToken?: string; e
         .x {
           font-size: 10px;
           margin-right: 8px;
+        }
+
+        .error b {
+          margin-right: 5px;
         }
 
         .authorized {

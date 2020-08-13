@@ -23,7 +23,7 @@ export const AdminPage = (): JSX.Element => {
         main {
           max-width: 750px;
           width: 100%;
-          margin: 0rem auto;
+          margin: 0 auto;
           padding: 1rem;
         }
 

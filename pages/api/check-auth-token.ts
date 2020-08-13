@@ -20,7 +20,7 @@ export async function validateAuthToken(
 ) {
   // Did they send us an Auth Token?
   if (!authToken) {
-    return fail('Missing Auth Token.')
+    return fail('Missing Auth Token. Only registered voters are allowed to vote.')
   }
 
   // Is Auth token malformed?
