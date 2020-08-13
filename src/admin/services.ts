@@ -10,25 +10,17 @@ const {
   PUSHOVER_USER_KEY,
 } = process.env
 
-// Init firebase
-try {
-  Firebase.initializeApp({
-    credential: Firebase.credential.cert({
-      clientEmail: FIREBASE_CLIENT_EMAIL,
-      privateKey: FIREBASE_PRIVATE_KEY,
-      projectId: FIREBASE_PROJECT_ID,
-    }),
-    databaseURL: 'https://siv-demo.firebaseio.com',
-  })
-} catch (error) {
-  // We skip the "already exists" message which is
-  // not an actual error when we're hot-reloading.
-  if (!/already exists/u.test(error.message)) {
-    // eslint-disable-next-line no-console
-    console.error('Firebase admin initialization error', error.stack)
-  }
-}
-export const firebase = Firebase
+// Init firebase (only once)
+export const firebase = !Firebase.apps.length
+  ? Firebase.initializeApp({
+      credential: Firebase.credential.cert({
+        clientEmail: FIREBASE_CLIENT_EMAIL,
+        privateKey: FIREBASE_PRIVATE_KEY,
+        projectId: FIREBASE_PROJECT_ID,
+      }),
+      databaseURL: 'https://siv-demo.firebaseio.com',
+    })
+  : Firebase.app()
 
 /** Init mailgun */
 export const mailgun = Mailgun({ apiKey: MAILGUN_API_KEY as string, domain: 'secureinternetvoting.org' })

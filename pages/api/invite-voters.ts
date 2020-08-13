@@ -5,18 +5,14 @@ import { firebase, mailgun, pushover } from '../../src/admin/services'
 const { ADMIN_PASSWORD } = process.env
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  console.log('starting /invite-voters func')
   // 1. Check for password
   const { password, voters } = req.body
   if (password !== ADMIN_PASSWORD) {
     return res.status(401).end('Invalid Password.')
   }
-  console.log('password passed')
 
   // 2. Generate auth token for each voter
   const auth_tokens = voters.map(() => generateAuthToken())
-
-  console.log('generated auth tokens')
 
   // 3. Store auth tokens in db
   const election_id = Number(new Date()).toString()
@@ -27,7 +23,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       election.collection('voters').doc(voter).set({ auth_token: auth_tokens[index], email: voter, index }),
     ),
   )
-  console.log('successfully stored auth tokens')
 
   // 4. Email each voter their auth token
   await Promise.all(
@@ -52,12 +47,10 @@ Click here to securely cast your vote:
       })
     }),
   )
-  console.log('successfully told mailgun to send messages')
 
   // 5. Send Admin push notification
   pushover(`Invited ${voters.length} voters`, voters.join(', '))
 
-  console.log('done')
   return res.status(200).end('Success.')
 }
 
