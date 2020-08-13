@@ -85,7 +85,7 @@ export const AddGroup = ({
 
 function checkPassword() {
   if (!localStorage.password) {
-    localStorage.password = prompt('Password?')
+    localStorage.password = prompt('Admin password?')
   }
 
   return true
