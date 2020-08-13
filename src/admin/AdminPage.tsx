@@ -2,6 +2,7 @@ import Head from 'next/head'
 import { useState } from 'react'
 
 import { api } from '../api-helper'
+import { public_key } from '../protocol/election-parameters'
 import { AddPeople } from './AddPeople'
 import { BallotDesigner } from './BallotDesigner'
 
@@ -19,10 +20,11 @@ export const AdminPage = (): JSX.Element => {
 
       <main>
         <h1>SIV Admin</h1>
+        <h2>Create new election</h2>
         <BallotDesigner />
         <AddPeople
           disabled={pubKey}
-          message="Trustees generated public key 23509282789382352"
+          message={`Trustees made pub key ${public_key.recipient.toString()}`}
           onClick={() => setPubKey(true)}
           type="trustees"
         />

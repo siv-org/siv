@@ -29,13 +29,15 @@ export const AddPeople = ({
     <style jsx>{`
       textarea {
         width: 100%;
-        height: 200px;
+        height: 87px;
+        resize: vertical;
 
-        background: url(http://i.imgur.com/2cOaJ.png);
+        background: url(https://i.imgur.com/2cOaJ.png);
+        background-position: -11px -6px;
         background-attachment: local;
         background-repeat: no-repeat;
-        padding-left: 35px;
-        padding-top: 10px;
+        padding-left: 23px;
+        padding-top: 3px;
         border-color: #ccc;
 
         font-size: 13px;
@@ -46,7 +48,7 @@ export const AddPeople = ({
         display: inline-block;
         background-image: linear-gradient(#f4f4f4 50%, #f9f9f9 50%);
         background-size: 100% 32px;
-        background-position: left 10px;
+        background-position: left 21px;
         width: 100%;
       }
 
