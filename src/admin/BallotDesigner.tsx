@@ -1,6 +1,6 @@
 export const BallotDesigner = () => (
   <>
-    <p>Enter ballot questions: </p>
+    <p>Ballot design:</p>
     <textarea
       disabled
       value={`[
@@ -19,10 +19,16 @@ export const BallotDesigner = () => (
     />
 
     <style jsx>{`
+      p {
+        margin-bottom: 0px;
+      }
+
       textarea {
-        width: 100%;
-        height: 220px;
+        width: 320px;
+        max-width: 100%;
+        height: 190px;
         padding: 8px;
+        cursor: not-allowed;
       }
     `}</style>
   </>

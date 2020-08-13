@@ -3,6 +3,7 @@ import Link from 'next/link'
 const darkBlue = '#002868'
 
 type ButtonProps = {
+  background?: string
   children: string
   invertColor?: boolean
   style?: React.CSSProperties
@@ -46,6 +47,7 @@ export const OnClickButton = ({
   children,
   disabled,
   onClick,
+  background,
   style = {},
 }: ButtonProps & {
   disabled?: boolean
@@ -55,6 +57,7 @@ export const OnClickButton = ({
     {children}
     <style jsx>{`
       a {
+        ${background && `background: ${background}`};
         border: 2px solid ${darkBlue};
         border-radius: 0.4rem;
         color: ${darkBlue};
