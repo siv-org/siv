@@ -1,3 +1,4 @@
+import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
 import { AddParticipants } from './AddParticipants'
 import { BallotDesigner } from './BallotDesigner'
@@ -30,25 +31,7 @@ export const CreatePage = (): JSX.Element => {
           font-size: 18px;
         }
       `}</style>
-
-      <style global jsx>{`
-        body {
-          background-color: hsl(0, 0%, 97%);
-          color: #222;
-          font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans,
-            Droid Sans, Helvetica Neue, sans-serif;
-          font-size: 0.875rem;
-          letter-spacing: 0.01071em;
-          line-height: 1.43;
-
-          max-width: 100%;
-        }
-
-        a {
-          color: #0070f3;
-          text-decoration: none;
-        }
-      `}</style>
+      <GlobalCSS />
     </>
   )
 }
