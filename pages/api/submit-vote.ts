@@ -26,7 +26,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     .add({ authToken, created_at: new Date(), encryptedString, headers: req.headers })
 
   // 3. Email the voter their submission receipt
-  const link = `www.secureinternetvoting.org/election/${electionId}`
+  const link = `${req.headers.origin}/election/${electionId}`
 
   await mailgun.messages().send({
     from: 'SIV Admin <admin@secureinternetvoting.org>',
