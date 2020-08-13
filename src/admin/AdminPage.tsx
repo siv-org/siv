@@ -36,7 +36,7 @@ export const AdminPage = (): JSX.Element => {
             if (status === 401) {
               localStorage.removeItem('password')
               alert('Invalid Password')
-            } else {
+            } else if (status === 200) {
               setSentVotersInvite(true)
             }
           }}
