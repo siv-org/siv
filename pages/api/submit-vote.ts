@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 
-import { firebase, pushover } from '../../src/admin/services'
+import { firebase, pushover } from './_services'
 import { validateAuthToken } from './check-auth-token'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {

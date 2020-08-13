@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 
-import { firebase } from '../../src/admin/services'
+import { firebase } from './_services'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { authToken, electionId } = req.body

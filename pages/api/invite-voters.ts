@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 
-import { firebase, mailgun, pushover } from '../../src/admin/services'
+import { firebase, mailgun, pushover } from './_services'
 
 const { ADMIN_PASSWORD } = process.env
 
