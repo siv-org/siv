@@ -3,13 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "type-check": "tsc --pretty --noEmit",
+    "dev": "next dev",
     "format": "prettier --write **/*.{js,ts,tsx}",
     "lint": "eslint . --ext ts --ext tsx --ext js",
-    "test-all": "yarn lint && yarn type-check"
+    "start": "next start",
+    "test-all": "yarn lint && yarn type-check",
+    "type-check": "tsc --pretty --noEmit"
   },
   "husky": {
     "hooks": {
@@ -30,12 +30,6 @@
     "semi": false,
     "singleQuote": true,
     "trailingComma": "all"
-  },
-  "importSort": {
-    ".js, .jsx, .ts, .tsx": {
-      "style": "module",
-      "parser": "typescript"
-    }
   },
   "stylelint": {
     "extends": [
@@ -84,9 +78,16 @@
     "lint-staged": "^10.0.10",
     "prettier": "^2.0.2",
     "prettier-plugin-import-sort": "^0.0.4",
+    "prettier-plugin-packagejson": "^2.2.5",
     "stylelint": "^13.6.1",
     "stylelint-config-idiomatic-order": "^8.1.0",
     "stylelint-config-standard": "^20.0.0",
     "typescript": "^3.8.3"
+  },
+  "importSort": {
+    ".js, .jsx, .ts, .tsx": {
+      "style": "module",
+      "parser": "typescript"
+    }
   }
 }
