@@ -22,7 +22,7 @@ export const AddGroup = ({
     <div className="container">
       <label htmlFor={textarea_id}>Add {type} by email address:</label>
       <div className="textarea-wrapper">
-        <textarea {...{ defaultValue }} disabled={disabled && type !== 'voters'} id={textarea_id} wrap="off" />
+        <textarea {...{ defaultValue }} disabled={sent} id={textarea_id} wrap="off" />
       </div>
       <div className="right-aligned">
         <OnClickButton
