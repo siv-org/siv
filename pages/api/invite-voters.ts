@@ -15,11 +15,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const auth_tokens = voters.map(() => generateAuthToken())
 
   // 3. Store the vote auth_tokens in db
+  const election_id = Number(new Date()).toString()
   voters.forEach((voter: string, index: number) => {
     firebase
       .firestore()
       .collection('elections')
-      .doc(Number(new Date()).toString())
+      .doc(election_id)
       .collection('voters')
       .doc(voter)
       .set({ auth_token: auth_tokens[index], email: voter })
@@ -27,7 +28,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // 4. Email each voter their auth token
   voters.slice(-1).forEach((voter: string, index: number) => {
-    const link = `www.secureinternetvoting.org/demo-election?auth=${auth_tokens[index]}`
+    const link = `www.secureinternetvoting.org/demo-election?election=${election_id}&auth=${auth_tokens[index]}`
 
     mailgun.messages().send({
       from: 'SIV Admin <admin@secureinternetvoting.org>',

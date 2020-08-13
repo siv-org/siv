@@ -75,6 +75,7 @@ export const OnClickButton = ({
         background-color: ${darkBlue};
         color: ${'#fff'};
         cursor: pointer;
+        text-decoration: none;
       }
     `}</style>
   </a>
