@@ -54,7 +54,7 @@ export const DemoElectionPage = (): JSX.Element => {
         <Intro />
         <YourAuthToken {...{ authToken, electionId }} />
         <Question {...{ plaintext }} setPlaintext={setPlaintext} />
-        <SubmitButton {...{ authToken, electionId, encryptedString }} />
+        <SubmitButton {...{ authToken, electionId, encryptedString }} disabled={!plaintext || plaintext === ''} />
         <EncryptionReceipt
           state={{
             encrypted: { best_icecream: encryptedString },

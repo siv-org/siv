@@ -23,7 +23,7 @@ TODO:
   - [ ] Walk voters through extra private mode
   - [ ] Health / Antivirus on browser checker
 - [x] Submit Voters vote
-  - [ ] Validate ballot before sending
+  - [x] Validate ballot before sending
 - [x] Admin endpoint to receive submitted votes & validate vote token
 - [ ] Bulletin board of all valid received votes
 - [ ] Admin sends voter confirmation that vote was received

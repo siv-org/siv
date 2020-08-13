@@ -69,6 +69,10 @@ export const OnClickButton = ({
         transition: 0.1s background-color linear, 0.1s color linear;
       }
 
+      a:hover {
+        text-decoration: none;
+      }
+
       .disabled {
         opacity: 0.4;
         cursor: default;
@@ -78,7 +82,6 @@ export const OnClickButton = ({
         background-color: ${darkBlue};
         color: ${'#fff'};
         cursor: pointer;
-        text-decoration: none;
       }
     `}</style>
   </a>

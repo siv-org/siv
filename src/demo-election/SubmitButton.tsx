@@ -3,16 +3,18 @@ import { OnClickButton } from '../landing-page/Button'
 
 export const SubmitButton = ({
   authToken,
+  disabled,
   electionId,
   encryptedString,
 }: {
   authToken?: string
+  disabled?: boolean
   electionId?: string
   encryptedString: string
 }) => {
   return (
     <div>
-      <OnClickButton onClick={() => api('submit-vote', { authToken, electionId, encryptedString })}>
+      <OnClickButton {...{ disabled }} onClick={() => api('submit-vote', { authToken, electionId, encryptedString })}>
         Submit
       </OnClickButton>
       <style jsx>{`
