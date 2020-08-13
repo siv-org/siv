@@ -1,17 +1,11 @@
-import Head from 'next/head'
-
+import { Head } from '../Head'
 import { AddParticipants } from './AddParticipants'
 import { BallotDesigner } from './BallotDesigner'
 
 export const CreatePage = (): JSX.Element => {
   return (
     <>
-      <Head>
-        <title>SIV: Create new election</title>
-        <link href="/favicon.png" rel="icon" />
-        <meta content="minimum-scale=1, initial-scale=1, width=device-width" name="viewport" />
-        <meta content="/preview.png" property="og:image" />
-      </Head>
+      <Head title="Create new election" />
 
       <main>
         <h1>Secure Internet Voting: Create new election</h1>

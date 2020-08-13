@@ -1,17 +1,13 @@
-import Head from 'next/head'
 import { useRouter } from 'next/router'
+
+import { Head } from '../Head'
 
 export const ElectionStatusPage = (): JSX.Element => {
   const router = useRouter()
   const { election_id } = router.query
   return (
     <>
-      <Head>
-        <title>SIV: Election Status</title>
-        <link href="/favicon.png" rel="icon" />
-        <meta content="minimum-scale=1, initial-scale=1, width=device-width" name="viewport" />
-        <meta content="/preview.png" property="og:image" />
-      </Head>
+      <Head title="Election Status" />
 
       <main>
         <h1>Election Status</h1>

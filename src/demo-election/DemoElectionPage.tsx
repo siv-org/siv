@@ -1,11 +1,11 @@
 import { map } from 'lodash-es'
-import Head from 'next/head'
 import { useEffect, useState } from 'react'
 
 import { encode } from '../crypto/encode'
 import encrypt from '../crypto/encrypt'
 import pickRandomInteger from '../crypto/pick-random-integer'
 import { Big, big } from '../crypto/types'
+import { Head } from '../Head'
 import { public_key } from '../protocol/election-parameters'
 import { EncryptionReceipt } from './EncryptionReceipt'
 import { Intro } from './Intro'
@@ -42,12 +42,7 @@ export const DemoElectionPage = (): JSX.Element => {
 
   return (
     <>
-      <Head>
-        <title>SIV: Demo Election</title>
-        <link href="/favicon.png" rel="icon" />
-        <meta content="minimum-scale=1, initial-scale=1, width=device-width" name="viewport" />
-        <meta content="/preview.png" property="og:image" />
-      </Head>
+      <Head title="Demo Election" />
 
       <main>
         <h1>Demo Election</h1>

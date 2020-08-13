@@ -1,6 +1,5 @@
-import Head from 'next/head'
-
 import { HeaderBar } from '../faq/HeaderBar'
+import { Head } from '../Head'
 import { BlueDivider } from '../landing-page/BlueDivider'
 import { Footer } from '../landing-page/Footer'
 import { BuiltUponResearch } from './BuiltUponResearch'
@@ -9,12 +8,7 @@ import { Team } from './Team'
 
 export const AboutPage = (): JSX.Element => (
   <>
-    <Head>
-      <title>SIV: About</title>
-      <link href="/favicon.png" rel="icon" />
-      <meta content="minimum-scale=1, initial-scale=1, width=device-width" name="viewport" />
-      <meta content="/preview.png" property="og:image" />
-    </Head>
+    <Head title="About" />
 
     <HeaderBar />
     <main>

@@ -1,5 +1,4 @@
-import Head from 'next/head'
-
+import { Head } from '../Head'
 import { Content } from './Content'
 import { ScrollContextProvider } from './ScrollContext'
 import { Sidebar } from './Sidebar'
@@ -8,13 +7,7 @@ import { VoteContextProvider } from './VoteContext'
 
 export const ProtocolPage = (): JSX.Element => (
   <>
-    <Head>
-      <title>SIV: Protocol</title>
-      <link href="/favicon.png" rel="icon" />
-
-      <meta content="minimum-scale=1, initial-scale=1, width=device-width" name="viewport" />
-      <meta content="/preview.png" property="og:image" />
-    </Head>
+    <Head title="Protocol" />
 
     <VoteContextProvider>
       <ScrollContextProvider>

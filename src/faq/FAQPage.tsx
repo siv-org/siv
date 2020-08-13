@@ -1,5 +1,4 @@
-import Head from 'next/head'
-
+import { Head } from '../Head'
 import { BlueDivider } from '../landing-page/BlueDivider'
 import { Footer } from '../landing-page/Footer'
 import { faq } from './faq'
@@ -7,12 +6,7 @@ import { HeaderBar } from './HeaderBar'
 
 export const FAQPage = (): JSX.Element => (
   <>
-    <Head>
-      <title>SIV: FAQ</title>
-      <link href="/favicon.png" rel="icon" />
-      <meta content="minimum-scale=1, initial-scale=1, width=device-width" name="viewport" />
-      <meta content="/preview.png" property="og:image" />
-    </Head>
+    <Head title="FAQ" />
 
     <HeaderBar />
     <main>
