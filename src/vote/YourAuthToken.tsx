@@ -9,6 +9,9 @@ export const YourAuthToken = ({ auth, election_id }: { auth?: string; election_i
   const [status, setStatus] = useState<Status>()
 
   async function validateAuthToken() {
+    // Wait for election_id
+    if (!election_id) return
+
     // Reset status
     setMessage('')
     setStatus(undefined)
