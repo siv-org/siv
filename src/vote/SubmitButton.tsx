@@ -4,14 +4,14 @@ import { api } from '../api-helper'
 import { OnClickButton } from '../landing-page/Button'
 
 export const SubmitButton = ({
-  authToken,
+  auth,
   disabled,
-  electionId,
+  election_id,
   encryptedString,
 }: {
-  authToken?: string
+  auth?: string
   disabled?: boolean
-  electionId?: string
+  election_id?: string
   encryptedString: string
 }) => {
   const [sent, setSent] = useState(false)
@@ -20,7 +20,7 @@ export const SubmitButton = ({
       <OnClickButton
         disabled={disabled || sent}
         onClick={async () => {
-          const { status } = await api('submit-vote', { authToken, electionId, encryptedString })
+          const { status } = await api('submit-vote', { auth, election_id, encryptedString })
           setSent(status === 200)
         }}
       >
