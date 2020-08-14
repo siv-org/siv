@@ -1,5 +1,6 @@
 import { map } from 'lodash-es'
-import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
+import { useState } from 'react'
 
 import { encode } from '../crypto/encode'
 import encrypt from '../crypto/encrypt'
@@ -14,7 +15,7 @@ import { Question } from './Question'
 import { SubmitButton } from './SubmitButton'
 import { YourAuthToken } from './YourAuthToken'
 
-export const DemoElectionPage = (): JSX.Element => {
+export const VotePage = (): JSX.Element => {
   const [plaintext, setPlaintext] = useState('')
   const random = pickRandomInteger(public_key.modulo)
   const encrypted = encrypt(public_key, random, big(encode(plaintext)))
@@ -23,23 +24,7 @@ export const DemoElectionPage = (): JSX.Element => {
     (value: Big, key) => `${key}: ${value.toString().padStart(public_key.modulo.toString().length, '0')}`,
   ).join(',\n\t ')} \n}`
 
-  const [authToken, setAuthToken] = useState<string>()
-  const [electionId, setElectionId] = useState<string>()
-
-  // Grab values from URL querystring
-  useEffect(() => {
-    const query_string = window.location.href.split('?')[1]
-    const terms = query_string?.split('&')
-    terms?.forEach((term) => {
-      const [key, value] = term.split('=')
-      if (key === 'auth') {
-        setAuthToken(value)
-      }
-      if (key === 'election') {
-        setElectionId(value)
-      }
-    })
-  }, [])
+  const { auth, election_id } = useRouter().query as NodeJS.Dict<string>
 
   return (
     <>
@@ -48,9 +33,9 @@ export const DemoElectionPage = (): JSX.Element => {
       <main>
         <h1>Demo Election</h1>
         <Intro />
-        <YourAuthToken {...{ authToken, electionId }} />
+        <YourAuthToken {...{ auth, election_id }} />
         <Question {...{ plaintext }} setPlaintext={setPlaintext} />
-        <SubmitButton {...{ authToken, electionId, encryptedString }} disabled={!plaintext || plaintext === ''} />
+        <SubmitButton {...{ auth, election_id, encryptedString }} disabled={!plaintext || plaintext === ''} />
         <EncryptionReceipt
           state={{
             encrypted: { best_icecream: encryptedString },

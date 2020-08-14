@@ -4,7 +4,7 @@ import { api } from '../api-helper'
 
 type Status = undefined | 'fail' | 'pass'
 
-export const YourAuthToken = ({ authToken, electionId }: { authToken?: string; electionId?: string }) => {
+export const YourAuthToken = ({ auth, election_id }: { auth?: string; election_id?: string }) => {
   const [message, setMessage] = useState('')
   const [status, setStatus] = useState<Status>()
 
@@ -14,7 +14,7 @@ export const YourAuthToken = ({ authToken, electionId }: { authToken?: string; e
     setStatus(undefined)
 
     // Ask API
-    const response = await api('check-auth-token', { authToken, electionId })
+    const response = await api('check-auth-token', { auth, election_id })
     setStatus(response.status >= 400 ? 'fail' : 'pass')
     setMessage(await response.text())
   }
@@ -22,7 +22,7 @@ export const YourAuthToken = ({ authToken, electionId }: { authToken?: string; e
   // Check auth token w/ admin server
   useEffect(() => {
     validateAuthToken()
-  }, [authToken, electionId])
+  }, [auth, election_id])
 
   return (
     <>

@@ -3,9 +3,9 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { firebase } from './_services'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { authToken, electionId } = req.body
+  const { auth, election_id } = req.body
 
-  await validateAuthToken(authToken, electionId, {
+  await validateAuthToken(auth, election_id, {
     fail: (message) => res.status(400).end(message),
     pass: (message) => res.status(200).end(message),
   })
@@ -14,33 +14,33 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 type Response = (message: string) => void
 
 export async function validateAuthToken(
-  authToken: string,
-  electionId: string,
+  auth: string,
+  election_id: string,
   { fail, pass }: { fail: Response; pass: Response },
 ) {
   // Did they send us an Auth Token?
-  if (!authToken) {
+  if (!auth) {
     return fail('Missing Auth Token. Only registered voters are allowed to vote.')
   }
 
   // Is Auth token malformed?
-  if (!/^[0-9a-f]{10}$/.test(authToken)) {
+  if (!/^[0-9a-f]{10}$/.test(auth)) {
     return fail('Malformed Auth Token.')
   }
 
   // Did they send us an Election ID?
-  if (!electionId) {
+  if (!election_id) {
     return fail('Missing Election ID.')
   }
 
-  // Is electionId in DB?
-  const election = firebase.firestore().collection('elections').doc(electionId)
+  // Is election_id in DB?
+  const election = firebase.firestore().collection('elections').doc(election_id)
   if (!(await election.get()).exists) {
     return fail('Unknown Election ID.')
   }
 
   // Is Auth token in DB?
-  const [auth_token_doc] = (await election.collection('voters').where('auth_token', '==', authToken).get()).docs
+  const [auth_token_doc] = (await election.collection('voters').where('auth_token', '==', auth).get()).docs
   if (!auth_token_doc) {
     return fail('Invalid Auth Token.')
   }

@@ -4,8 +4,7 @@ import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
 
 export const ElectionStatusPage = (): JSX.Element => {
-  const router = useRouter()
-  const { election_id } = router.query
+  const { election_id } = useRouter().query
   return (
     <>
       <Head title="Election Status" />
