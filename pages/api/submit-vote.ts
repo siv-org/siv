@@ -36,7 +36,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   Here is the encrypted vote you submitted:
 
-  <code style="margin: 0 30px;">${JSON.stringify({ auth, best_icecream: encryptedString })}</code>s
+  <code style="margin: 0 30px;">${JSON.stringify({ auth, best_icecream: encryptedString })}</code>
 
   <em style="font-size:10px">If you did not submit this ballot, hit reply to report a problem.</em>`.replace(
       /\n/g,
