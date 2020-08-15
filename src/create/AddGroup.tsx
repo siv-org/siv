@@ -46,20 +46,22 @@ export const AddGroup = ({
         <textarea {...{ defaultValue }} disabled={!!status} id={textarea_id} wrap="off" />
       </div>
       <div className="right-aligned">
-        <OnClickButton
-          background="white"
-          disabled={disabled || !!status}
-          style={{ marginRight: 0, padding: '8px 17px' }}
-          onClick={async () => {
-            if (!checkPassword()) return
+        {status !== 'Sent.' && (
+          <OnClickButton
+            background="white"
+            disabled={disabled || !!status}
+            style={{ marginRight: 0, padding: '8px 17px' }}
+            onClick={async () => {
+              if (!checkPassword()) return
 
-            setStatus('Sending...')
-            if (!(await onSubmit())) return setStatus(undefined)
-            setStatus('Sent.')
-          }}
-        >
-          {status || 'Send Invitation'}
-        </OnClickButton>
+              setStatus('Sending...')
+              if (!(await onSubmit())) return setStatus(undefined)
+              setStatus('Sent.')
+            }}
+          >
+            {status || 'Send Invitation'}
+          </OnClickButton>
+        )}
         {disabled && <p className="message">{message}</p>}
       </div>
       <style jsx>{`
