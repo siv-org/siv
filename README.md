@@ -26,7 +26,7 @@ TODO:
 - [x] Voter Auth Tokens can only be used once
 - [x] Admin can see which voters submitted
 - [x] Admin can manually close voting early
-- [ ] Admin does first shuffle
+- [x] Admin does first shuffle
 - [ ] Admin posts final results
 
 For strong privacy:
