@@ -6,6 +6,7 @@ import { public_key } from '../protocol/election-parameters'
 import { AddGroup } from './AddGroup'
 
 export const AddParticipants = () => {
+  const [closed, setClosed] = useState(false)
   const [pubKey, setPubKey] = useState(false)
   const [election_id, setElectionID] = useState<string>()
 
@@ -57,9 +58,12 @@ export const AddParticipants = () => {
       {election_id && (
         <OnClickButton
           style={{ float: 'right', marginRight: 0 }}
-          onClick={() => api(`election/${election_id}/close?password=${localStorage.password}`)}
+          onClick={async () => {
+            const { status } = await api(`election/${election_id}/close?password=${localStorage.password}`)
+            if (status === 201) setClosed(true)
+          }}
         >
-          Close Election
+          {!closed ? `Close Election` : `Election Closed.`}
         </OnClickButton>
       )}
 
