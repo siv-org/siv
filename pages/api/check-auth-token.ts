@@ -45,7 +45,11 @@ export async function validateAuthToken(
     return fail('Invalid Auth Token.')
   }
 
-  // TODO Has Auth Token been used yet?
+  // Has Auth Token been used yet?
+  const [vote_doc] = (await election.collection('votes').where('auth', '==', auth).get()).docs
+  if (vote_doc) {
+    return fail('Auth Token already used.')
+  }
 
   // TODO Has Auth Token been invalidated?
 

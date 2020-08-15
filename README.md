@@ -23,7 +23,7 @@ TODO:
 - [x] Admin endpoint to receive submitted votes & validate vote token
 - [x] Bulletin board of all valid received votes
 - [x] Admin sends voter confirmation that vote was received
-- [ ] Vote Tokens can only be used once
+- [x] Voter Auth Tokens can only be used once
 - [ ] Admin can manually close voting early
 - [ ] Admin does first shuffle
 - [ ] Admin posts final results
