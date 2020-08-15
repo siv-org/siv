@@ -1,22 +1,34 @@
+import ms from 'ms'
 import { useState } from 'react'
+import useSWR from 'swr'
 
 import { OnClickButton } from '../landing-page/Button'
+
+const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
 export const AddGroup = ({
   defaultValue,
   disabled,
   message,
   onSubmit,
+  statusURL,
   type,
 }: {
   defaultValue?: string
   disabled?: boolean
   message: string
   onSubmit: () => boolean | Promise<boolean>
+  statusURL?: string
   type: string
 }) => {
   const [status, setStatus] = useState<string>()
   const textarea_id = `${type}-input`
+
+  // Check if voters have submitted
+  const { data, error } = useSWR(statusURL ? statusURL : null, fetcher, {
+    refreshInterval: ms('5s'),
+  })
+  console.log({ data, error })
 
   return (
     <div className="container">

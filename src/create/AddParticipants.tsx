@@ -23,6 +23,9 @@ export const AddParticipants = () => {
       <AddGroup
         disabled={!pubKey || !!election_id}
         message={!pubKey ? 'Waiting on Trustees' : !election_id ? '' : `Created election ${election_id}`}
+        statusURL={
+          election_id ? `api/election/${election_id}/has-submitted-vote?password=${localStorage.password}` : undefined
+        }
         type="voters"
         onSubmit={async () => {
           // Grab voters from textarea
