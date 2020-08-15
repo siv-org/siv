@@ -16,18 +16,20 @@ export const SubmitButton = ({
   election_id?: string
   encrypted: Record<string, Big>
 }) => {
-  const [sent, setSent] = useState(false)
+  const [status, setStatus] = useState<string>()
   const encrypted_vote = mapValues(encrypted, (v) => v.toString())
   return (
     <div>
       <OnClickButton
-        disabled={disabled || sent}
+        disabled={disabled || !!status}
+        style={{ marginRight: 0 }}
         onClick={async () => {
+          setStatus('Submitting...')
           const { status } = await api('submit-vote', { auth, election_id, encrypted_vote })
-          setSent(status === 200)
+          setStatus(status === 200 ? 'Submitted.' : 'Error')
         }}
       >
-        {!sent ? 'Submit' : 'Submitted.'}
+        {status || 'Submit'}
       </OnClickButton>
       <style jsx>{`
         div {
