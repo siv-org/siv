@@ -6,7 +6,7 @@ import { AddGroup } from './AddGroup'
 
 export const AddParticipants = () => {
   const [pubKey, setPubKey] = useState(false)
-  const [sentVotersInvite, setSentVotersInvite] = useState(false)
+  const [election_id, setElectionID] = useState<string>()
 
   return (
     <div>
@@ -21,8 +21,8 @@ export const AddParticipants = () => {
         type="trustees"
       />
       <AddGroup
-        disabled={!pubKey || sentVotersInvite}
-        message={!pubKey ? 'Waiting on Trustees' : ''}
+        disabled={!pubKey || !!election_id}
+        message={!pubKey ? 'Waiting on Trustees' : !election_id ? '' : `Created election ${election_id}`}
         onClick={async () => {
           // Grab voters from textarea
           const voters = (document.getElementById('voters-input') as HTMLInputElement).value
@@ -30,16 +30,17 @@ export const AddParticipants = () => {
             .filter((v) => v !== '')
 
           // Call backend endpoint
-          const { status } = await api('invite-voters', { password: localStorage.password, voters })
+          const response = await api('invite-voters', { password: localStorage.password, voters })
 
           // Success case
-          if (status === 200) {
-            setSentVotersInvite(true)
+          if (response.status === 201) {
+            setElectionID(await response.text())
+
             return true
           }
 
           // Need to reset password
-          if (status === 401) {
+          if (response.status === 401) {
             localStorage.removeItem('password')
             alert('Invalid Password')
           }

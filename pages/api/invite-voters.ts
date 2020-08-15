@@ -51,7 +51,7 @@ Click here to securely cast your vote:
   // 5. Send Admin push notification
   pushover(`Invited ${voters.length} voters`, voters.join(', '))
 
-  return res.status(200).end('Success.')
+  return res.status(201).end(election_id)
 }
 
 function generateAuthToken() {
