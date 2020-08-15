@@ -6,13 +6,13 @@ export const AddGroup = ({
   defaultValue,
   disabled,
   message,
-  onClick,
+  onSubmit,
   type,
 }: {
   defaultValue?: string
   disabled?: boolean
   message: string
-  onClick: () => boolean | Promise<boolean>
+  onSubmit: () => boolean | Promise<boolean>
   type: string
 }) => {
   const [status, setStatus] = useState<string>()
@@ -33,7 +33,7 @@ export const AddGroup = ({
             if (!checkPassword()) return
 
             setStatus('Sending...')
-            if (!(await onClick())) return setStatus(undefined)
+            if (!(await onSubmit())) return setStatus(undefined)
             setStatus('Sent.')
           }}
         >

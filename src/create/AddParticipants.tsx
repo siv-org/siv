@@ -15,7 +15,7 @@ export const AddParticipants = () => {
         disabled={pubKey}
         message={`Trustees made pub key ${public_key.recipient.toString()}`}
         type="trustees"
-        onClick={() => {
+        onSubmit={() => {
           setPubKey(true)
           return true
         }}
@@ -24,7 +24,7 @@ export const AddParticipants = () => {
         disabled={!pubKey || !!election_id}
         message={!pubKey ? 'Waiting on Trustees' : !election_id ? '' : `Created election ${election_id}`}
         type="voters"
-        onClick={async () => {
+        onSubmit={async () => {
           // Grab voters from textarea
           const voters = (document.getElementById('voters-input') as HTMLInputElement).value
             .split('\n')
