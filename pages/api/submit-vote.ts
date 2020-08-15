@@ -3,6 +3,8 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { firebase, mailgun, pushover } from './_services'
 import { validateAuthToken } from './check-auth-token'
 
+const { ADMIN_EMAIL } = process.env
+
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { auth, election_id, encrypted_vote } = req.body
 
@@ -43,7 +45,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       '<br />',
     ),
     subject: 'Vote Confirmation',
-    to: 'admin@secureinternetvoting.org',
+    to: ADMIN_EMAIL || 'admin@secureinternetvoting.org',
   })
 
   res.status(200).end('Success.')

@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 import { firebase, mailgun, pushover } from './_services'
 
-const { ADMIN_PASSWORD } = process.env
+const { ADMIN_EMAIL, ADMIN_PASSWORD } = process.env
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   // 1. Check for password
@@ -43,7 +43,7 @@ Click here to securely cast your vote:
           '<br />',
         ),
         subject: 'Vote Invitation',
-        to: 'admin@secureinternetvoting.org',
+        to: ADMIN_EMAIL || 'admin@secureinternetvoting.org',
       })
     }),
   )

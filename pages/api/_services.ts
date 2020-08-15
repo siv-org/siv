@@ -3,9 +3,11 @@ import Mailgun from 'mailgun-js'
 
 const {
   FIREBASE_CLIENT_EMAIL,
+  FIREBASE_DATABASE_URL,
   FIREBASE_PRIVATE_KEY,
   FIREBASE_PROJECT_ID,
   MAILGUN_API_KEY,
+  MAILGUN_DOMAIN,
   PUSHOVER_APP_TOKEN,
   PUSHOVER_USER_KEY,
 } = process.env
@@ -18,12 +20,15 @@ export const firebase = !Firebase.apps.length
         privateKey: FIREBASE_PRIVATE_KEY,
         projectId: FIREBASE_PROJECT_ID,
       }),
-      databaseURL: 'https://siv-demo.firebaseio.com',
+      databaseURL: FIREBASE_DATABASE_URL || 'https://siv-demo.firebaseio.com',
     })
   : Firebase.app()
 
 /** Init mailgun */
-export const mailgun = Mailgun({ apiKey: MAILGUN_API_KEY as string, domain: 'secureinternetvoting.org' })
+export const mailgun = Mailgun({
+  apiKey: MAILGUN_API_KEY as string,
+  domain: MAILGUN_DOMAIN || 'secureinternetvoting.org',
+})
 
 /** Helper function to use Pushover */
 export const pushover = (title: string, message: string) =>
