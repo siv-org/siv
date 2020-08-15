@@ -65,9 +65,9 @@ export const AddGroup = ({
 
         .textarea-wrapper {
           display: inline-block;
-          background-image: linear-gradient(#f4f4f4 50%, #f9f9f9 50%);
+          background-image: linear-gradient(#fafafa 50%, #fff 50%);
           background-size: 100% 32px;
-          background-position: left 21px;
+          background-position: left 3px;
           width: 100%;
         }
 
