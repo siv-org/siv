@@ -1,5 +1,5 @@
 import ms from 'ms'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import useSWR from 'swr'
 
 import { OnClickButton } from '../landing-page/Button'
@@ -24,11 +24,20 @@ export const AddGroup = ({
   const [status, setStatus] = useState<string>()
   const textarea_id = `${type}-input`
 
-  // Check if voters have submitted
-  const { data, error } = useSWR(statusURL ? statusURL : null, fetcher, {
+  // Check if they've submitted
+  const { data } = useSWR(statusURL ? statusURL : null, fetcher, {
     refreshInterval: ms('5s'),
   })
-  console.log({ data, error })
+  // Show which have submitted already
+  useEffect(() => {
+    if (!data) return
+    const textarea = document.getElementById(textarea_id) as HTMLInputElement
+    const newContent = textarea.value
+      .split('\n')
+      .map((line, index) => (data[index] && !line.includes('·') ? line + ' · ✔ Voted' : line))
+      .join('\n')
+    textarea.value = newContent
+  }, [data])
 
   return (
     <div className="container">
