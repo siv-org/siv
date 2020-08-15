@@ -9,7 +9,7 @@ export const CreatePage = (): JSX.Element => {
       <Head title="Create new election" />
 
       <main>
-        <h1>Secure Internet Voting: Create new election</h1>
+        <h1>Create a new Secure Internet Vote</h1>
         <BallotDesigner />
         <AddParticipants />
       </main>
