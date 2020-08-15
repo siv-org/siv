@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
 import { AcceptedVotes } from './AcceptedVotes'
+import { DecryptedVotes } from './DecryptedVotes'
 
 export const ElectionStatusPage = (): JSX.Element => {
   const { election_id } = useRouter().query
@@ -14,6 +15,7 @@ export const ElectionStatusPage = (): JSX.Element => {
         <h1>Election Status</h1>
         <h2>ID: {election_id}</h2>
         <AcceptedVotes />
+        <DecryptedVotes />
       </main>
 
       <style jsx>{`

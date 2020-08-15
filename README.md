@@ -27,7 +27,7 @@ TODO:
 - [x] Admin can see which voters submitted
 - [x] Admin can manually close voting early
 - [x] Admin does first shuffle
-- [ ] Admin posts final results
+- [x] Admin posts final results
 
 For strong privacy:
 
