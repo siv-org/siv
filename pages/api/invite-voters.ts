@@ -43,7 +43,7 @@ Click here to securely cast your vote:
           '<br />',
         ),
         subject: 'Vote Invitation',
-        to: ADMIN_EMAIL || 'admin@secureinternetvoting.org',
+        to: ADMIN_EMAIL || voter,
       })
     }),
   )

@@ -19,16 +19,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     return pushover('SIV submission: Auth Token failure', ' ')
   }
 
+  const election = firebase.firestore().collection('elections').doc(election_id)
+
   // 2. Store the encrypted vote in db
-  await firebase
-    .firestore()
-    .collection('elections')
-    .doc(election_id)
-    .collection('votes')
-    .add({ auth, created_at: new Date(), encrypted_vote, headers: req.headers })
+  await election.collection('votes').add({ auth, created_at: new Date(), encrypted_vote, headers: req.headers })
 
   // 3. Email the voter their submission receipt
   const link = `${req.headers.origin}/election/${election_id}`
+  const { email } = (await election.collection('voters').where('auth_token', '==', auth).get()).docs[0].data()
 
   await mailgun.messages().send({
     from: 'SIV Admin <admin@secureinternetvoting.org>',
@@ -45,7 +43,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       '<br />',
     ),
     subject: 'Vote Confirmation',
-    to: ADMIN_EMAIL || 'admin@secureinternetvoting.org',
+    to: ADMIN_EMAIL || email,
   })
 
   res.status(200).end('Success.')
