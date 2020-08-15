@@ -25,7 +25,7 @@ TODO:
 - [x] Admin sends voter confirmation that vote was received
 - [x] Voter Auth Tokens can only be used once
 - [x] Admin can see which voters submitted
-- [ ] Admin can manually close voting early
+- [x] Admin can manually close voting early
 - [ ] Admin does first shuffle
 - [ ] Admin posts final results
 
