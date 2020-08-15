@@ -14,15 +14,16 @@ export const AddParticipants = () => {
         defaultValue="admin@secureinternetvoting.org&#13;&#10;"
         disabled={pubKey}
         message={`Trustees made pub key ${public_key.recipient.toString()}`}
+        type="trustees"
         onClick={() => {
           setPubKey(true)
           return true
         }}
-        type="trustees"
       />
       <AddGroup
         disabled={!pubKey || !!election_id}
         message={!pubKey ? 'Waiting on Trustees' : !election_id ? '' : `Created election ${election_id}`}
+        type="voters"
         onClick={async () => {
           // Grab voters from textarea
           const voters = (document.getElementById('voters-input') as HTMLInputElement).value
@@ -46,7 +47,6 @@ export const AddParticipants = () => {
           }
           return false
         }}
-        type="voters"
       />
       <style jsx>{`
         div {

@@ -33,9 +33,9 @@ export const Question = ({
           {ballot.question}
         </p>
         <RadioGroup
-          onChange={(event) => setPlaintext(event.target.value)}
           style={{ paddingLeft: '1.5rem' }}
           value={plaintext}
+          onChange={(event) => setPlaintext(event.target.value)}
         >
           {ballot.choices.map((name) => (
             <FormControlLabel control={<Radio color="primary" />} key={name} label={name} value={name} />
@@ -44,8 +44,8 @@ export const Question = ({
             control={
               <Radio
                 color="primary"
-                onClick={() => document.getElementById('other')?.focus()}
                 style={{ bottom: 11, position: 'relative' }}
+                onClick={() => document.getElementById('other')?.focus()}
               />
             }
             label={
@@ -54,6 +54,8 @@ export const Question = ({
                 helperText={error}
                 id="other"
                 label="Other"
+                size="small"
+                variant="outlined"
                 onChange={(event) => {
                   setError(' ')
                   // Check for too many characters
@@ -70,8 +72,6 @@ export const Question = ({
                   setOther(event.target.value)
                   setPlaintext(event.target.value)
                 }}
-                size="small"
-                variant="outlined"
               />
             }
             style={{ marginTop: 5 }}

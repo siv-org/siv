@@ -28,6 +28,7 @@ export const AddGroup = ({
         <OnClickButton
           background="white"
           disabled={disabled || !!status}
+          style={{ marginRight: 0, padding: '8px 17px' }}
           onClick={async () => {
             if (!checkPassword()) return
 
@@ -35,7 +36,6 @@ export const AddGroup = ({
             if (!(await onClick())) return setStatus(undefined)
             setStatus('Sent.')
           }}
-          style={{ marginRight: 0, padding: '8px 17px' }}
         >
           {status || 'Send Invitation'}
         </OnClickButton>

@@ -44,6 +44,7 @@ export function LetYourGovtKnow({ idKey }: { idKey: string }): JSX.Element {
           {saved && <p style={{ margin: 0, opacity: 0.7, width: 60 }}>Done.</p>}
           <OnClickButton
             disabled={saved}
+            style={{ marginRight: 0 }}
             onClick={() => {
               const fields: Record<string, string | Date> = { created_at: new Date().toString(), idKey }
 
@@ -67,7 +68,6 @@ export function LetYourGovtKnow({ idKey }: { idKey: string }): JSX.Element {
                   })
                 })
             }}
-            style={{ marginRight: 0 }}
           >
             Send
           </OnClickButton>

@@ -23,14 +23,15 @@ export const Footer = (): JSX.Element => {
             <TextField
               id="newsletter-signup-field"
               label="Email Address"
-              onChange={() => setSaved(false)}
               size="small"
               style={{ flex: 1, marginRight: 10, maxWidth: 250 }}
               variant="outlined"
+              onChange={() => setSaved(false)}
             />
           </NoSsr>
           <OnClickButton
             disabled={saved}
+            style={{ margin: 0, padding: '8px 17px' }}
             onClick={() => {
               const fields = {
                 created_at: new Date().toString(),
@@ -52,7 +53,6 @@ export const Footer = (): JSX.Element => {
                   })
                 })
             }}
-            style={{ margin: 0, padding: '8px 17px' }}
           >
             {saved ? 'Done!' : 'Sign Up'}
           </OnClickButton>

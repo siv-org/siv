@@ -53,7 +53,7 @@ export const OnClickButton = ({
   disabled?: boolean
   onClick: () => void
 }): JSX.Element => (
-  <a className={disabled ? 'disabled' : ''} onClick={() => !disabled && onClick()} style={style}>
+  <a className={disabled ? 'disabled' : ''} style={style} onClick={() => !disabled && onClick()}>
     {children}
     <style jsx>{`
       a {
