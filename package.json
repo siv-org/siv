@@ -55,6 +55,7 @@
     "jsbn": "^1.1.0",
     "lodash-es": "^4.17.15",
     "mailgun-js": "^0.22.0",
+    "ms": "^2.1.2",
     "next": "latest",
     "next-transpile-modules": "^4.0.3",
     "react": "^16.13.1",
@@ -64,6 +65,7 @@
   },
   "devDependencies": {
     "@types/mailgun-js": "^0.22.10",
+    "@types/ms": "^0.7.31",
     "@types/node": "^13.9.5",
     "@types/react": "^16.9.27",
     "@typescript-eslint/eslint-plugin": "^3.4.0",

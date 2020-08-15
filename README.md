@@ -21,7 +21,7 @@ TODO:
 - [x] Submit Voters vote
   - [x] Validate ballot before sending
 - [x] Admin endpoint to receive submitted votes & validate vote token
-- [ ] Bulletin board of all valid received votes
+- [x] Bulletin board of all valid received votes
 - [x] Admin sends voter confirmation that vote was received
 - [ ] Vote Tokens can only be used once
 - [ ] Admin can manually close voting early
