@@ -15,23 +15,29 @@ export const AddGroup = ({
   onClick: () => boolean | Promise<boolean>
   type: string
 }) => {
-  const [sent, setSent] = useState(false)
+  const [status, setStatus] = useState<string>()
   const textarea_id = `${type}-input`
 
   return (
     <div className="container">
       <label htmlFor={textarea_id}>Add {type} by email address:</label>
       <div className="textarea-wrapper">
-        <textarea {...{ defaultValue }} disabled={sent} id={textarea_id} wrap="off" />
+        <textarea {...{ defaultValue }} disabled={!!status} id={textarea_id} wrap="off" />
       </div>
       <div className="right-aligned">
         <OnClickButton
           background="white"
-          disabled={disabled || sent}
-          onClick={async () => checkPassword() && (await onClick()) && setSent(true)}
+          disabled={disabled || !!status}
+          onClick={async () => {
+            if (!checkPassword()) return
+
+            setStatus('Sending...')
+            if (!(await onClick())) return setStatus(undefined)
+            setStatus('Sent.')
+          }}
           style={{ marginRight: 0, padding: '8px 17px' }}
         >
-          {!sent ? 'Send Invitation' : 'Sent.'}
+          {status || 'Send Invitation'}
         </OnClickButton>
         {disabled && <p className="message">{message}</p>}
       </div>
