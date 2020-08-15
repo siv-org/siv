@@ -26,7 +26,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // 4. Email each voter their auth token
   await Promise.all(
-    voters.slice(-1).map((voter: string, index: number) => {
+    voters.map((voter: string, index: number) => {
       const link = `${req.headers.origin}/election/${election_id}/vote?auth=${auth_tokens[index]}`
 
       return mailgun.messages().send({
