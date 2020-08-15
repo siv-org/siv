@@ -30,10 +30,10 @@ export const BallotDesigner = () => (
         cursor: not-allowed;
         font-family: monospace;
         font-size: 12px;
-        max-width: 100%;
         height: 200px;
         padding: 8px;
-        width: 450px;
+        resize: vertical;
+        width: 100%;
       }
     `}</style>
   </>
