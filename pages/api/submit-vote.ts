@@ -4,7 +4,7 @@ import { firebase, mailgun, pushover } from './_services'
 import { validateAuthToken } from './check-auth-token'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { auth, election_id, encryptedString } = req.body
+  const { auth, election_id, encrypted_vote } = req.body
 
   // 1. Validate auth token
   let validated = false
@@ -23,7 +23,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     .collection('elections')
     .doc(election_id)
     .collection('votes')
-    .add({ auth, created_at: new Date(), encryptedString, headers: req.headers })
+    .add({ auth, created_at: new Date(), encrypted_vote, headers: req.headers })
 
   // 3. Email the voter their submission receipt
   const link = `${req.headers.origin}/election/${election_id}`
@@ -36,7 +36,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   Here is the encrypted vote you submitted:
 
-  <code style="margin: 0 30px;">${JSON.stringify({ auth, best_icecream: encryptedString })}</code>
+  <code style="margin: 0 30px;">${JSON.stringify({ auth, best_icecream: encrypted_vote })}</code>
 
   <em style="font-size:10px">If you did not submit this ballot, hit reply to report a problem.</em>`.replace(
       /\n/g,

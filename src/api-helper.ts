@@ -1,4 +1,4 @@
-export const api = (route: string, body: Record<string, string | string[] | undefined>) =>
+export const api = (route: string, body: Record<string, unknown>) =>
   fetch(`/api/${route}`, {
     body: JSON.stringify(body),
     headers: {

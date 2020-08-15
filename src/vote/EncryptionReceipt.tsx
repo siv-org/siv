@@ -2,14 +2,16 @@ import { NoSsr } from '@material-ui/core'
 import { map } from 'lodash-es'
 
 import { encode } from '../crypto/encode'
+import { Big } from '../crypto/types'
 import { public_key } from '../protocol/election-parameters'
 import { Paper } from '../protocol/Paper'
 
-type Ballot = { [index: string]: string; best_icecream: string }
+type Map = Record<string, string>
+type EncryptedMap = { [index: string]: { encrypted: Big; unlock: Big } }
 export function EncryptionReceipt({
   state,
 }: {
-  state: { encrypted: Ballot; plaintext: Ballot; randomizer: Ballot }
+  state: { encrypted: EncryptedMap; plaintext: Map; randomizer: Map }
 }): JSX.Element {
   return (
     <NoSsr>
@@ -31,7 +33,8 @@ ${map(
   plaintext: ${state.plaintext[key]}
   encoded: ${encode(state.plaintext[key] as string)}
   randomizer: ${state.randomizer[key]}
-  ${state.encrypted[key]?.slice(3, -2)}
+    encrypted: ${state.encrypted[key].encrypted}
+    unlock: ${state.encrypted[key].unlock}
 `,
 ).join('\n')}
 `}
@@ -43,7 +46,6 @@ ${map(
           font-size: 11px;
           max-width: 100%;
           white-space: pre-wrap;
-          tab-size: 4;
         }
       `}</style>
     </NoSsr>

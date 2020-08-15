@@ -1,11 +1,10 @@
-import { map } from 'lodash-es'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 
 import { encode } from '../crypto/encode'
 import encrypt from '../crypto/encrypt'
 import pickRandomInteger from '../crypto/pick-random-integer'
-import { Big, big } from '../crypto/types'
+import { big } from '../crypto/types'
 import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
 import { public_key } from '../protocol/election-parameters'
@@ -19,10 +18,6 @@ export const VotePage = (): JSX.Element => {
   const [plaintext, setPlaintext] = useState('')
   const random = pickRandomInteger(public_key.modulo)
   const encrypted = encrypt(public_key, random, big(encode(plaintext)))
-  const encryptedString = `{ \n${map(
-    encrypted,
-    (value: Big, key) => `${key}: ${value.toString().padStart(public_key.modulo.toString().length, '0')}`,
-  ).join(',\n\t ')} \n}`
 
   const { auth, election_id } = useRouter().query as NodeJS.Dict<string>
 
@@ -35,10 +30,10 @@ export const VotePage = (): JSX.Element => {
         <Intro />
         <YourAuthToken {...{ auth, election_id }} />
         <Question {...{ plaintext }} setPlaintext={setPlaintext} />
-        <SubmitButton {...{ auth, election_id, encryptedString }} disabled={!plaintext || plaintext === ''} />
+        <SubmitButton {...{ auth, election_id, encrypted }} disabled={!plaintext || plaintext === ''} />
         <EncryptionReceipt
           state={{
-            encrypted: { best_icecream: encryptedString },
+            encrypted: { best_icecream: encrypted },
             plaintext: { best_icecream: plaintext },
             randomizer: { best_icecream: random.toString() },
           }}
