@@ -19,6 +19,8 @@ export const VotePage = (): JSX.Element => {
   const random = pickRandomInteger(public_key.modulo)
   const encrypted = encrypt(public_key, random, big(encode(plaintext)))
 
+  const max_string_length = Math.floor(public_key.modulo.bitLength() / 6)
+
   const { auth, election_id } = useRouter().query as NodeJS.Dict<string>
 
   return (
@@ -29,7 +31,7 @@ export const VotePage = (): JSX.Element => {
         <h1>Demo Election</h1>
         <Intro />
         <YourAuthToken {...{ auth, election_id }} />
-        <Question {...{ plaintext }} setPlaintext={setPlaintext} />
+        <Question {...{ max_string_length, plaintext, setPlaintext }} />
         <SubmitButton {...{ auth, election_id, encrypted }} disabled={!plaintext || plaintext === ''} />
         <EncryptionReceipt
           state={{

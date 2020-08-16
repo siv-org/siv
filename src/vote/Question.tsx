@@ -11,9 +11,11 @@ const ballot = {
 }
 
 export const Question = ({
+  max_string_length,
   plaintext,
   setPlaintext,
 }: {
+  max_string_length: number
   plaintext: string
   setPlaintext: (plaintext: string) => void
 }): JSX.Element => {
@@ -38,7 +40,12 @@ export const Question = ({
           onChange={(event) => setPlaintext(event.target.value)}
         >
           {ballot.choices.map((name) => (
-            <FormControlLabel control={<Radio color="primary" />} key={name} label={name} value={name} />
+            <FormControlLabel
+              control={<Radio color="primary" />}
+              key={name}
+              label={name}
+              value={name.slice(0, max_string_length)}
+            />
           ))}
           <FormControlLabel
             control={
