@@ -37,6 +37,7 @@ For strong privacy:
 
 After core features complete:
 
+- [ ] Instructions on how voters can verify
 - [ ] Admin can assign time for voting to close automatically
 - [ ] Offer voters Extra Private Mode
 - [ ] Health check on voter's device:
