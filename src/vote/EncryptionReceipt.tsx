@@ -18,6 +18,8 @@ export function EncryptionReceipt({
       <Paper>
         <code>
           {`
+ENCRYPTION RECEIPT - Save this for Verification
+
 Encrypted @ ${new Date().toString()}
 
 Encryption Formula

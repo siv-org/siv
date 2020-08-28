@@ -2,14 +2,16 @@ import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
 import { AddParticipants } from './AddParticipants'
 import { BallotDesigner } from './BallotDesigner'
+import { HeaderBar } from './HeaderBar'
 
 export const CreatePage = (): JSX.Element => {
   return (
     <>
       <Head title="Create new election" />
 
+      <HeaderBar />
       <main>
-        <h1>Create a new Secure Internet Vote</h1>
+        <h1>Create a New Election</h1>
         <BallotDesigner />
         <AddParticipants />
       </main>
