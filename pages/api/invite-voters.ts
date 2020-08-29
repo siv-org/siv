@@ -1,8 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 
-import { firebase, mailgun, pushover } from './_services'
+import { firebase, pushover, sendEmail } from './_services'
 
-const { ADMIN_EMAIL, ADMIN_PASSWORD } = process.env
+const { ADMIN_PASSWORD } = process.env
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   // 1. Check for password
@@ -29,21 +29,17 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     voters.map((voter: string, index: number) => {
       const link = `${req.headers.origin}/election/${election_id}/vote?auth=${auth_tokens[index]}`
 
-      return mailgun.messages().send({
-        from: 'SIV Admin <admin@secureinternetvoting.org>',
-        html: `Voting for the Best Ice Cream is now open.
+      return sendEmail({
+        recipient: voter,
+        subject: 'Vote Invitation',
+        text: `Voting for the Best Ice Cream is now open.
 
 Votes accepted for the next 24 hours.
 
 Click here to securely cast your vote:
 <a href="${link}">${link}</a>
 
-<em style="font-size:10px">This link is unique for you. Don't share it with anyone, or they'll be able to take your vote.</em>`.replace(
-          /\n/g,
-          '<br />',
-        ),
-        subject: 'Vote Invitation',
-        to: ADMIN_EMAIL || voter,
+<em style="font-size:10px; opacity: 0.6;">This link is unique for you. Don't share it with anyone, or they'll be able to take your vote.</em>`,
       })
     }),
   )

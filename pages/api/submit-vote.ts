@@ -1,9 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 
-import { firebase, mailgun, pushover } from './_services'
+import { firebase, pushover, sendEmail } from './_services'
 import { validateAuthToken } from './check-auth-token'
-
-const { ADMIN_EMAIL } = process.env
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { auth, election_id, encrypted_vote } = req.body
@@ -28,9 +26,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const link = `${req.headers.origin}/election/${election_id}`
   const { email } = (await election.collection('voters').where('auth_token', '==', auth).get()).docs[0].data()
 
-  await mailgun.messages().send({
-    from: 'SIV Admin <admin@secureinternetvoting.org>',
-    html: `Your vote has been received. Thank you.
+  await sendEmail({
+    recipient: email,
+    subject: 'Vote Confirmation',
+    text: `Your vote has been received. Thank you.
 
   The final results will be posted at <a href="${link}">${link}</a> when the election closes.
 
@@ -38,12 +37,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   <code style="margin: 0 30px;">${JSON.stringify({ auth, best_icecream: encrypted_vote })}</code>
 
-  <em style="font-size:10px">If you did not submit this ballot, hit reply to report a problem.</em>`.replace(
-      /\n/g,
-      '<br />',
-    ),
-    subject: 'Vote Confirmation',
-    to: ADMIN_EMAIL || email,
+  <em style="font-size:10px">If you did not submit this ballot, hit reply to report a problem.</em>`,
   })
 
   res.status(200).end('Success.')
