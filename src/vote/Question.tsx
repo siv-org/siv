@@ -66,7 +66,7 @@ export const Question = ({
                 onChange={(event) => {
                   setError(' ')
                   // Check for too many characters
-                  if (event.target.value.length > 10) {
+                  if (event.target.value.length > max_string_length) {
                     return setError('Too many characters')
                   }
                   // Check for invalid characters
