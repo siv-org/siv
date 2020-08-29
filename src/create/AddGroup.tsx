@@ -78,7 +78,7 @@ export const AddGroup = ({
           resize: vertical;
 
           background: url(https://i.imgur.com/2cOaJ.png);
-          background-position: -11px -6px;
+          background-position: -11px -7px;
           background-attachment: local;
           background-repeat: no-repeat;
           border-color: #ccc;
