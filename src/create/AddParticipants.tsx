@@ -36,8 +36,13 @@ export const AddParticipants = () => {
               .split('\n')
               .filter((v) => v !== '')
 
+            // Grab ballot design from textarea
+            const ballot_design = (document.getElementById('ballot-design') as HTMLInputElement).value
+              .replace(/\n/g, '') // remove new lines
+              .replace(/ {2,}/, ' ') // remove extra spaces
+
             // Call backend endpoint
-            const response = await api('invite-voters', { password: localStorage.password, voters })
+            const response = await api('invite-voters', { ballot_design, password: localStorage.password, voters })
 
             // Success case
             if (response.status === 201) {
