@@ -12,7 +12,7 @@ export const SIVFeatures = (): JSX.Element => (
         text="You can vote from your phone in a minute, without needing to install anything."
       />
       <Feature headline="Private" text="No one, not even election administrators, can see how you voted." />
-      <Feature headline="Verifiable" text="You can personally verify that your vote counted." />
+      <Feature headline="Verifiable" text="You can personally verify that your was vote counted correctly." />
     </Row>
     <Row>
       <Feature headline="Widely accessible" text="Works with any smartphone or desktop." />
