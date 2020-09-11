@@ -271,12 +271,12 @@ export const groupedSteps: Group[] = [
       {
         leftFirst: true,
         name: 'Step 4: Verifiable Shuffle',
-        subheader: "Encrypted votes are shuffled by the Trustees for voters' privacy.",
+        subheader: 'All the encrypted votes are then anonymized by the Trustees.',
         then: [
           {
             left: [
               {
-                html: light("The goal of this step is to unlink voters' identities from the contents of their votes."),
+                html: light("This step de-links voters' identities from the contents of their encrypted votes."),
               },
             ],
           },
@@ -314,9 +314,10 @@ export const groupedSteps: Group[] = [
             left: [
               '',
               {
-                html: `Although this mixes up the votes, like spinning them inside a giant Bingo wheel, this alone isn't enough to properly anonymize them, because the encrypted data — the outsides of our locked safes — are still distinguishable. Any computer could quickly reconstruct the original list.`,
+                details: `This randomizes the order of the votes, like mixing them up in a hat.
+
+                But this alone isn't enough to properly anonymize them, because the encrypted data — the outsides of our locked safes — are still distinguishable. Any computer could quickly reconstruct the original list.`,
               },
-              '',
               '',
               '',
               '',
@@ -340,7 +341,7 @@ export const groupedSteps: Group[] = [
               '',
               {
                 html: `${light(
-                  `SIV is built upon a modular exponential operation ("modPow", also called ElGamal) to enable this re-encryption. The math is equivalent to multiplying X^A * X^B, or X^(A+B), where A is the Voter's Randomizer and B is the Re-encrypter's. Because the encryption only needs these exponents to be randomly chosen integers, there is no impact to the underlying contents.`,
+                  `SIV is built upon a modular exponential operation ("modPow", also called <a href="https://en.wikipedia.org/wiki/ElGamal_encryption" target="_blank">ElGamal</a>) to enable this re-encryption. The math is equivalent to multiplying X^A * X^B, or X^(A+B), where A is the Voter's Randomizer and B is the Re-encrypter's. Because the encryption only needs these exponents to be randomly chosen integers, there is no impact to the underlying contents.`,
                 )}`,
               },
               '',
@@ -366,14 +367,18 @@ export const groupedSteps: Group[] = [
             left: [
               {
                 p:
-                  'To get strong cryptographic privacy, we now have Trustee #2 repeat this same shuffle + re-encryption process, starting with the mixed list from Trustee #1.',
+                  'For strong cryptographic privacy, Trustee #2 then repeats this same shuffle + re-encryption process, starting with the mixed list from Trustee #1.',
               },
               '',
               {
                 p: `This way, all of our Trustees independently shuffle the encrypted votes, like multiple people shuffling a deck of cards, then handing it off to the next person.`,
               },
               {
-                p: `The overall privacy is ensured as long as at least one Trustee refuses to share their record of how they shuffled.`,
+                p: `Total privacy is ensured as long as at least a single Trustee refuses to share their record of how they shuffled.`,
+              },
+              '',
+              {
+                p: `No matter what — even if a trustee is dishonest or compromised — we can ensure that no votes are modified or lost.`,
               },
             ],
             right: ['', '', { image: 'step-4-shuffle.png', maxWidth: 490 }],
@@ -389,8 +394,8 @@ export const groupedSteps: Group[] = [
           {
             left: [
               {
-                html: `Only unlocks the ${blue(semibold('vote contents'))} of the final list. ${em(
-                  'Preserves privacy.',
+                html: `This unlocks just the ${blue(semibold('vote contents'))} of the final list, while ${em(
+                  'preserving privacy.',
                 )}`,
               },
               '',
@@ -414,8 +419,12 @@ export const groupedSteps: Group[] = [
               },
               '',
               '',
-              '',
               { details: `Anyone can tally the final vote count themselves.` },
+              '',
+              '',
+              {
+                details: `Only submissions from authenticated voters were accepted, which can be verified with standard Risk-Limiting Audits after the election.`,
+              },
             ],
             right: [{ react: Unlocked }, ''],
           },
