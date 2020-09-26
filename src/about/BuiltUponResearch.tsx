@@ -36,20 +36,28 @@ Other helpful technologies:
 
 export const BuiltUponResearch = () => (
   <>
-    <h3>SIV is powered by:</h3>
+    <h2>Powering SIV</h2>
     <p>
-      {crypto.map(({ history, tech }) => (
-        <>
+      {crypto.map(({ history, tech }, index) => (
+        <div key={index}>
           <h4>{tech}</h4>
           <p>{history}</p>
-        </>
+        </div>
       ))}
     </p>
-    <h3>Technologies powering SIV:</h3>
+    <h3>Technologies Used</h3>
     <p>{technologies}</p>
     <style jsx>{`
       p {
         white-space: pre-wrap;
+      }
+
+      h2 {
+        font-size: calc(2.16vw + 1rem);
+      }
+
+      h4 {
+        font-size: calc(0.24vw + 1rem);
       }
     `}</style>
   </>
