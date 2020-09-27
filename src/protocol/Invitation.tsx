@@ -21,7 +21,7 @@ export const Invitation = () => (
     <p>
       From: <b>elections@local.gov</b> <br />
       To: <b>you@email.com</b> <br />
-      Subject: <b>Your Ballot for Mayor</b>
+      Subject: <b>Your Vote Invitation</b>
     </p>
     <p>Voting for our next Mayor is now open.</p>
     <p>Votes accepted for the next 14 days.</p>
