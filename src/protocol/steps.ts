@@ -137,12 +137,13 @@ export const groupedSteps: Group[] = [
         name: 'Step 2: Mark & Encrypt Your Vote',
         subheader: `Voter fills out their ballot, which gets immediately encrypted.`,
         then: [
+          { left: ['', ''] },
           {
-            left: [{ p: 'Voter sees a GUI to make it easy to fill out their ballot:' }],
-            right: [{ react: Ballot }],
+            left: ['', '', { p: 'SIV shows voters a GUI to fill out their ballot:' }],
+            right: ['', { react: Ballot }],
           },
           {
-            left: [{ html: `At the end, there's a special ${em('Verification Secret')} section.` }],
+            left: [{ html: `SIV adds a special ${em('Verification Secret')} section at the end.` }],
             right: [{ react: VerificationSecret }],
           },
           {
@@ -155,7 +156,7 @@ export const groupedSteps: Group[] = [
               {
                 html: `Then the ${blue(semibold('plaintext vote'))} can be sealed, resulting in an ${purple(
                   semibold('encrypted vote'),
-                )} like:`,
+                )} that looks like:`,
               },
             ],
             right: ['', { react: EncryptedVote }],
@@ -164,7 +165,7 @@ export const groupedSteps: Group[] = [
             left: [
               '',
               {
-                html: `Encrypted votes ${semibold('can be safely shared')}, without revealing the vote.<br />
+                html: `Encrypted votes ${semibold('can be safely shared')}, without revealing the underlying vote.<br />
                   ${light('The encryption acts like sealing it inside a locked safe.')}`,
               },
             ],
