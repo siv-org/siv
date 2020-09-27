@@ -317,7 +317,7 @@ export const groupedSteps: Group[] = [
               {
                 details: `This randomizes the order of the votes, like mixing them up in a hat.
 
-                But this alone isn't enough to properly anonymize them, because the encrypted data — the outsides of our locked safes — are still distinguishable. Any computer could quickly reconstruct the original list.`,
+                But this alone isn't enough to properly anonymize them, because the encrypted data — the outsides of our metaphorical locked safes — are still distinguishable. Any computer could quickly reconstruct the original list.`,
               },
               '',
               '',
@@ -378,8 +378,14 @@ export const groupedSteps: Group[] = [
                 p: `Total privacy is ensured as long as at least a single Trustee refuses to share their record of how they shuffled.`,
               },
               '',
+              '',
+              '',
               {
-                p: `No matter what — even if a trustee is dishonest or compromised — we can ensure that no votes are modified or lost.`,
+                html: `${light(
+                  `Each Trustee also provides a ${em(
+                    `Zero-Knowledge Proof of a Valid Shuffle`,
+                  )}. The SIV Shuffling software can generate this for them automatically. This proof allows anyone to verify vote accuracy, even if a Trustee is dishonest or compromised.`,
+                )}`,
               },
             ],
             right: ['', '', { image: 'step-4-shuffle.png', maxWidth: 490 }],
@@ -390,7 +396,7 @@ export const groupedSteps: Group[] = [
       // Step 5
       {
         name: 'Step 5: Votes Unlocked & Tallied',
-        subheader: 'Then a quorum of Trustees can work together to Unlock the final shuffled list.',
+        subheader: 'A quorum of Trustees then works together to Unlock the final shuffled list.',
         then: [
           {
             left: [

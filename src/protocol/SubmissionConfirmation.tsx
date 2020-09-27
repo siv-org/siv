@@ -12,7 +12,7 @@ export const SubmissionConfirmation = () => {
       <p>
         From: <b>elections@local.gov</b> <br />
         To: <b>you@email.com</b> <br />
-        Subject: <b>Vote for Mayor Confirmation</b>
+        Subject: <b>Vote Confirmation</b>
       </p>
       <p>Your vote for mayor has been received. Thank you.</p>
       <p>
