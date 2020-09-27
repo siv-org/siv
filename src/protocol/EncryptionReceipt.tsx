@@ -16,6 +16,7 @@ export function EncryptionReceipt(): JSX.Element {
 Encrypted @ ${new Date().toString()}
 
 Encryption Formula
+  https://en.wikipedia.org/wiki/ElGamal_encryption
   encrypted = encoded * (recipient ^ randomizer) % modulo
   unlock = (generator ^ randomizer) % modulo
 
