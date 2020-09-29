@@ -21,18 +21,18 @@ built on Ralph Merkle, Singularity University & Georgia Institute of Technology`
   },
 
   {
-    history: `as described by Dr. Andrew Neff, VoteHere Inc `,
-    tech: `Mixnet built upon Verifiable Cryptographic Shuffle`,
+    history: `Verifiable Cryptographic Shuffle, as described by Dr. Andrew Neff`,
+    tech: `Anonymization Mixnet`,
   },
 ]
 
-const technologies = `• WebCrypto RNG
-• V8-fast javascript
+const technologies = `1: WebCrypto RNG
+2: V8-fast javascript
 
 Other helpful technologies:
-• JSBI, from Stanford
-• React, from Facebook
-• Typescript, from Microsoft`
+3: JSBI, from Stanford
+4: React, from Facebook
+5: Typescript, from Microsoft`
 
 export const BuiltUponResearch = () => (
   <>
