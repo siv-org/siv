@@ -26,17 +26,9 @@ built on Ralph Merkle, Singularity University & Georgia Institute of Technology`
   },
 ]
 
-const technologies = `1: WebCrypto RNG
-2: V8-fast javascript
-
-Other helpful technologies:
-3: JSBI, from Stanford
-4: React, from Facebook
-5: Typescript, from Microsoft`
-
 export const BuiltUponResearch = () => (
   <>
-    <h2>Powering SIV</h2>
+    <h1>Powering SIV</h1>
     <p>
       {crypto.map(({ history, tech }, index) => (
         <div key={index}>
@@ -45,19 +37,21 @@ export const BuiltUponResearch = () => (
         </div>
       ))}
     </p>
-    <h3>Technologies Used</h3>
-    <p>{technologies}</p>
+    <br />
+    <h2>Technologies Used</h2>
+    <p>
+      <b>1:</b> WebCrypto RNG
+      <br />
+      <b>2:</b> V8-fast Javascript <br />
+      <br />
+      Other helpful technologies: <br />
+      <b>3:</b> JSBI, from Stanford <br />
+      <b>4:</b> React, from Facebook <br />
+      <b>5:</b> Typescript, from Microsoft
+    </p>
     <style jsx>{`
       p {
         white-space: pre-wrap;
-      }
-
-      h2 {
-        font-size: calc(2.16vw + 1rem);
-      }
-
-      h4 {
-        font-size: calc(0.24vw + 1rem);
       }
     `}</style>
   </>
