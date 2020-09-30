@@ -29,14 +29,14 @@ Built upon 1976's "New Directions in Cryptography" by Dr. Martin Hellman and Dr.
 export const BuiltUponResearch = () => (
   <>
     <h1>Powering SIV</h1>
-    <p>
+    <div>
       {crypto.map(({ history, tech }, index) => (
         <div key={index}>
           <h4>{tech}</h4>
           <p>{history}</p>
         </div>
       ))}
-    </p>
+    </div>
     <br />
     <h2>Technologies Used</h2>
     <p>
