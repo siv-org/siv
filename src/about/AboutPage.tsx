@@ -14,6 +14,7 @@ export const AboutPage = (): JSX.Element => (
 
     <HeaderBar />
     <AboveFold />
+    <a id="research" />
     <main>
       <BuiltUponResearch />
       <Team />
