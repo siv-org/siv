@@ -1,4 +1,4 @@
-export const JumboBlue = ({ children }: { children: JSX.Element[] }): JSX.Element => (
+export const JumboBlue = ({ children, height }: { children: JSX.Element[]; height?: number }): JSX.Element => (
   <div>
     {children}
 
@@ -11,7 +11,7 @@ export const JumboBlue = ({ children }: { children: JSX.Element[] }): JSX.Elemen
         display: flex;
         flex-direction: column;
         justify-content: center;
-        min-height: 99vh;
+        min-height: ${height || 99}vh;
         padding: 10vmax 7vw;
       }
 

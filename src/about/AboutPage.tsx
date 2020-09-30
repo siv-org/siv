@@ -13,7 +13,7 @@ export const AboutPage = (): JSX.Element => (
     </Head>
 
     <HeaderBar />
-    <AboveFold />
+    <AboveFold height={49} />
     <a id="research" />
     <main>
       <BuiltUponResearch />
