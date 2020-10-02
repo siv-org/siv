@@ -38,7 +38,7 @@ export const Content = () => (
       <div>
         <h4>Project led by David Ernst</h4>
         <p>
-          David believes people should be able to vote without being afraid they are going to die in a pandemic. This
+          David believes people should be able to vote without being afraid they will get sick in a pandemic. This
           drives him to give governments the opportunity to let citizens safely vote online.
         </p>
         <p>
