@@ -16,9 +16,9 @@ export const Footer = (): JSX.Element => {
     <div className="container">
       <div className="column">
         <h3 style={{ fontWeight: 400 }}>Democracy Knowledge & News</h3>
-        <p>Sign up with your email to receive occasional updates.</p>
+        <p>Sign up to receive occasional updates</p>
 
-        <div style={{ display: 'flex', marginTop: 24 }}>
+        <div style={{ display: 'flex', marginTop: 15 }}>
           <NoSsr>
             <TextField
               id="newsletter-signup-field"
@@ -61,6 +61,10 @@ export const Footer = (): JSX.Element => {
       <div className="column right-aligned">
         <h3>SIV</h3>
         <p>
+          <Link href="/about">
+            <a className="styled-link">About</a>
+          </Link>
+          <br />
           <Link href="/protocol">
             <a className="styled-link">Study Protocol</a>
           </Link>
