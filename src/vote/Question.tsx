@@ -5,9 +5,9 @@ import { encode } from '../crypto/encode'
 import { Paper } from '../protocol/Paper'
 
 const ballot = {
-  allow_write_in: true,
-  choices: ['Chocolate', 'Cookie Dough', 'Mint', 'Strawberry', 'Vanilla'],
-  question: 'What is the best flavor of ice cream?',
+  choices: ['George H. W. Bush', 'Bill Clinton', 'Ross Perot'],
+  question: 'Who should become President?',
+  write_in_allowed: true,
 }
 
 export const Question = ({

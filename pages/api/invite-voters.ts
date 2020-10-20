@@ -32,7 +32,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       return sendEmail({
         recipient: voter,
         subject: 'Vote Invitation',
-        text: `Voting for the Best Ice Cream is now open.
+        text: `Voting is now open.
 
 Votes accepted for the next 24 hours.
 

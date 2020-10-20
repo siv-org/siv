@@ -4,15 +4,13 @@ export const BallotDesigner = () => (
     <textarea
       defaultValue={`[
   {
-    question: 'What is the best flavor of ice cream?',
+    question: 'Who should become President?',
     choices: [
-      'Chocolate',
-      'Cookie Dough',
-      'Mint',
-      'Strawberry',
-      'Vanilla',
+      'George H. W. Bush',
+      'Bill Clinton',
+      'Ross Perot',
     ],
-    allow_write_in: true,
+    write_in_allowed: true,
   }
 ]`}
       id="ballot-design"
