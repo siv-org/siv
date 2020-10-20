@@ -18,7 +18,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Grab public votes fields
   const votes = (await election.collection('votes').get()).docs.map((doc) => {
     const data = doc.data()
-    return { auth: data.auth, best_icecream: data.encrypted_vote }
+    return { auth: data.auth, vote: data.encrypted_vote }
   })
 
   res.status(200).json(votes)

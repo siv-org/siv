@@ -35,9 +35,9 @@ export const VotePage = (): JSX.Element => {
         <SubmitButton {...{ auth, election_id, encrypted }} disabled={!plaintext || plaintext === ''} />
         <EncryptionReceipt
           state={{
-            encrypted: { best_icecream: encrypted },
-            plaintext: { best_icecream: plaintext },
-            randomizer: { best_icecream: random.toString() },
+            encrypted: { vote: encrypted },
+            plaintext: { vote: plaintext },
+            randomizer: { vote: random.toString() },
           }}
         />
       </main>

@@ -32,7 +32,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const votes = (await election.collection('votes').get()).docs.map((doc) => {
     const data = doc.data()
     return {
-      best_icecream: decode(
+      vote: decode(
         decrypt(public_key, big(decryption_key), {
           encrypted: big(data.encrypted_vote.encrypted),
           unlock: big(data.encrypted_vote.unlock),

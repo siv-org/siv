@@ -16,7 +16,7 @@ export const DecryptedVotes = (): JSX.Element => {
   if (!data) return <></>
 
   // Tally vote totals
-  const vote_counts = countBy(data.map((v: { best_icecream: string }) => v.best_icecream))
+  const vote_counts = countBy(data.map((v: { vote: string }) => v.vote))
   const tuples = mapValues(vote_counts, (votes, name) => ({ name, votes }))
   const ordered = orderBy(tuples, 'votes', 'desc')
 
