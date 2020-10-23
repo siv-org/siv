@@ -2,11 +2,11 @@ import { Public_Key, bigPubKey } from '../crypto/types'
 
 export const public_key: Public_Key = bigPubKey({
   generator: '2',
-  modulo: '715604493385936562106467', // 80 bit key
-  recipient: '543126634579150611316620',
+  modulo: '324055971942726208597707896976389887403', // 128 bit key
+  recipient: '310239354488225371009501519625634456790',
 })
 
-export const decryption_key = '66217825219932135602133'
+export const decryption_key = '212242581924932109609312943307120196201'
 
 export const candidates = ['Angela Alioto', 'London Breed', 'Mark Leno', 'Jane Kim']
 
