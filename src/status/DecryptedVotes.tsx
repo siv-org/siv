@@ -25,18 +25,29 @@ export const DecryptedVotes = (): JSX.Element => {
       <h3>Decrypted Votes</h3>
       <ol>
         {data.map((vote: NodeJS.Dict<string>, index: number) => (
-          <li key={index}>{JSON.stringify(vote)}</li>
-        ))}
-      </ol>
-      <br />
-      <b>Final results:</b>
-      <ol>
-        {ordered.map(({ name, votes }) => (
-          <li key={name}>
-            {name}: {votes}
+          <li key={index}>
+            {vote.vote} [{vote.tracking}]
           </li>
         ))}
       </ol>
+      <br />
+      <div className="results">
+        <b>Final results:</b>
+        <ol>
+          {ordered.map(({ name, votes }) => (
+            <li key={name}>
+              {name}: {votes}
+            </li>
+          ))}
+        </ol>
+      </div>
+      <style jsx>{`
+        .results {
+          border: 2px solid #999;
+          border-radius: 7px;
+          padding: 10px;
+        }
+      `}</style>
     </div>
   )
 }
