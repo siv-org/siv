@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 
+import { stringifyEncryptedVote } from '../../src/status/AcceptedVotes'
 import { firebase, pushover, sendEmail } from './_services'
 import { validateAuthToken } from './check-auth-token'
 
@@ -35,9 +36,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   Here is the encrypted vote you submitted:
 
-  <code style="margin: 0 30px;">${JSON.stringify({ auth, vote: encrypted_vote })}</code>
+<code style="margin: 0 30px;">${stringifyEncryptedVote({ auth, ...encrypted_vote })}</code>
 
-  <em style="font-size:10px">If you did not submit this ballot, hit reply to report a problem.</em>`,
+  <em style="font-size:10px">If you did not submit this ballot, reply to report a problem.</em>`,
   })
 
   res.status(200).end('Success.')

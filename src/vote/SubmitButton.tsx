@@ -17,7 +17,7 @@ export const SubmitButton = ({
   encrypted: Record<string, Record<string, Big>>
 }) => {
   const [status, setStatus] = useState<string>()
-  const encrypted_vote = mapValues(encrypted, (v) => v.toString())
+  const encrypted_vote = mapValues(encrypted, (k) => mapValues(k, (v) => v.toString()))
   return (
     <div>
       <OnClickButton

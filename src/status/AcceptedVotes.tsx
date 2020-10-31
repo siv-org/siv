@@ -2,7 +2,11 @@ import ms from 'ms'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
+import { Cipher_Text } from '../crypto/types'
+
 const fetcher = (url: string) => fetch(url).then((r) => r.json())
+
+type Vote = { auth: string; tracking: Cipher_Text; vote: Cipher_Text }
 
 export const AcceptedVotes = (): JSX.Element => {
   const { election_id } = useRouter().query
@@ -19,10 +23,19 @@ export const AcceptedVotes = (): JSX.Element => {
     <div>
       <h3>Accepted Votes</h3>
       <ol>
-        {data.map((vote: NodeJS.Dict<string>, index: number) => (
-          <li key={index}>{JSON.stringify(vote)}</li>
+        {data.map((vote: Vote, index: number) => (
+          <li key={index}>{stringifyEncryptedVote(vote)}</li>
         ))}
       </ol>
+      <style jsx>{`
+        li {
+          white-space: pre-wrap;
+        }
+      `}</style>
     </div>
   )
+}
+
+export function stringifyEncryptedVote(vote: Vote) {
+  return `{ auth: '${vote.auth}', tracking: { encrypted: '${vote.tracking.encrypted}', unlock: '${vote.tracking.unlock}' }, vote: { encrypted: '${vote.vote.encrypted}', unlock: '${vote.vote.unlock}' } }`
 }
