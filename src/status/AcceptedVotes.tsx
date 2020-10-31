@@ -2,7 +2,7 @@ import ms from 'ms'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
-import { Cipher_Text } from '../crypto/types'
+import { Big, Cipher_Text, big } from '../crypto/types'
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
@@ -37,5 +37,9 @@ export const AcceptedVotes = (): JSX.Element => {
 }
 
 export function stringifyEncryptedVote(vote: Vote) {
-  return `{ auth: '${vote.auth}', tracking: { encrypted: '${vote.tracking.encrypted}', unlock: '${vote.tracking.unlock}' }, vote: { encrypted: '${vote.vote.encrypted}', unlock: '${vote.vote.unlock}' } }`
+  return `{ auth: '${vote.auth}', tracking: { encrypted: '${big(vote.tracking.encrypted).toString(36)}', unlock: '${big(
+    vote.tracking.unlock,
+  ).toString(36)}' }, vote: { encrypted: '${big(vote.vote.encrypted).toString(36)}', unlock: '${big(
+    vote.vote.unlock,
+  ).toString(36)}' } }`
 }
