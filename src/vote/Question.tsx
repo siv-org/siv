@@ -12,12 +12,12 @@ const ballot = {
 
 export const Question = ({
   max_string_length,
-  plaintext,
-  setPlaintext,
+  setVotePlaintext,
+  vote_plaintext,
 }: {
   max_string_length: number
-  plaintext: string
-  setPlaintext: (plaintext: string) => void
+  setVotePlaintext: (plaintext: string) => void
+  vote_plaintext: string
 }): JSX.Element => {
   const [other, setOther] = useState<string>()
   const [error, setError] = useState(' ')
@@ -36,8 +36,8 @@ export const Question = ({
         </p>
         <RadioGroup
           style={{ paddingLeft: '1.5rem' }}
-          value={plaintext}
-          onChange={(event) => setPlaintext(event.target.value)}
+          value={vote_plaintext}
+          onChange={(event) => setVotePlaintext(event.target.value)}
         >
           {ballot.choices.map((name) => (
             <FormControlLabel
@@ -77,7 +77,7 @@ export const Question = ({
                   }
                   // Passed checks
                   setOther(event.target.value)
-                  setPlaintext(event.target.value)
+                  setVotePlaintext(event.target.value)
                 }}
               />
             }

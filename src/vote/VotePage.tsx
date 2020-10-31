@@ -1,3 +1,4 @@
+import { mapValues } from 'lodash-es'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 
@@ -15,9 +16,13 @@ import { SubmitButton } from './SubmitButton'
 import { YourAuthToken } from './YourAuthToken'
 
 export const VotePage = (): JSX.Element => {
-  const [plaintext, setPlaintext] = useState('')
-  const random = pickRandomInteger(public_key.modulo)
-  const encrypted = encrypt(public_key, random, big(encode(plaintext)))
+  const tracking = generateTrackingNum()
+  const [vote_plaintext, setVotePlaintext] = useState('')
+  const randomizer = { tracking: pickRandomInteger(public_key.modulo), vote: pickRandomInteger(public_key.modulo) }
+  const encrypted = {
+    tracking: encrypt(public_key, randomizer.tracking, big(encode(vote_plaintext))),
+    vote: encrypt(public_key, randomizer.vote, big(encode(vote_plaintext))),
+  }
 
   const max_string_length = Math.floor(public_key.modulo.bitLength() / 6)
 
@@ -31,13 +36,13 @@ export const VotePage = (): JSX.Element => {
         <h1>Cast Your Vote</h1>
         <Intro />
         <YourAuthToken {...{ auth, election_id }} />
-        <Question {...{ max_string_length, plaintext, setPlaintext }} />
-        <SubmitButton {...{ auth, election_id, encrypted }} disabled={!plaintext || plaintext === ''} />
+        <Question {...{ max_string_length, setVotePlaintext, vote_plaintext }} />
+        <SubmitButton {...{ auth, election_id, encrypted }} disabled={!vote_plaintext || vote_plaintext === ''} />
         <EncryptionReceipt
           state={{
-            encrypted: { vote: encrypted },
-            plaintext: { vote: plaintext },
-            randomizer: { vote: random.toString() },
+            encrypted,
+            plaintext: { tracking, vote: vote_plaintext },
+            randomizer: mapValues(randomizer, (r) => r.toString()),
           }}
         />
       </main>
@@ -53,4 +58,12 @@ export const VotePage = (): JSX.Element => {
       <GlobalCSS />
     </>
   )
+}
+
+function generateTrackingNum() {
+  const random = Math.random()
+  const integer = String(random).slice(2)
+  const hex = Number(integer).toString(16)
+  const id = `${hex.slice(0, 4)} ${hex.slice(4, 8)} ${hex.slice(8, 12)}`
+  return id
 }

@@ -14,7 +14,7 @@ export const SubmitButton = ({
   auth?: string
   disabled?: boolean
   election_id?: string
-  encrypted: Record<string, Big>
+  encrypted: Record<string, Record<string, Big>>
 }) => {
   const [status, setStatus] = useState<string>()
   const encrypted_vote = mapValues(encrypted, (v) => v.toString())
