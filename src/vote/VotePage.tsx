@@ -20,7 +20,7 @@ export const VotePage = (): JSX.Element => {
   const [vote_plaintext, setVotePlaintext] = useState('')
   const randomizer = { tracking: pickRandomInteger(public_key.modulo), vote: pickRandomInteger(public_key.modulo) }
   const encrypted = {
-    tracking: encrypt(public_key, randomizer.tracking, big(encode(vote_plaintext))),
+    tracking: encrypt(public_key, randomizer.tracking, big(encode(tracking))),
     vote: encrypt(public_key, randomizer.vote, big(encode(vote_plaintext))),
   }
 

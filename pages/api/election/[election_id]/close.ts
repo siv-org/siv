@@ -30,12 +30,18 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Decrypt votes
   const votes = (await election.collection('votes').get()).docs.map((doc) => {
-    const data = doc.data()
+    const { encrypted_vote } = doc.data()
     return {
+      tracking: decode(
+        decrypt(public_key, big(decryption_key), {
+          encrypted: big(encrypted_vote.tracking.encrypted),
+          unlock: big(encrypted_vote.tracking.unlock),
+        }),
+      ),
       vote: decode(
         decrypt(public_key, big(decryption_key), {
-          encrypted: big(data.encrypted_vote.encrypted),
-          unlock: big(data.encrypted_vote.unlock),
+          encrypted: big(encrypted_vote.vote.encrypted),
+          unlock: big(encrypted_vote.vote.unlock),
         }),
       ),
     }
