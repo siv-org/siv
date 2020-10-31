@@ -25,10 +25,10 @@ export const VotePage = (): JSX.Element => {
 
   return (
     <>
-      <Head title="Demo Election" />
+      <Head title="Cast Your Vote" />
 
       <main>
-        <h1>Demo Election</h1>
+        <h1>Cast Your Vote</h1>
         <Intro />
         <YourAuthToken {...{ auth, election_id }} />
         <Question {...{ max_string_length, plaintext, setPlaintext }} />

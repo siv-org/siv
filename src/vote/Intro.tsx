@@ -1,7 +1,7 @@
 export const Intro = () => (
   <p>
     <b>
-      This vote is powered by the{' '}
+      This election is powered by the{' '}
       <a href="https://secureinternetvoting.org" rel="noreferrer" target="_blank">
         SecureInternetVoting.org
       </a>{' '}
