@@ -73,12 +73,15 @@ export const SideBySide = ({
 
       .text-col {
         margin-${flipped ? `right` : 'left'}: 9%;
+        justify-content: center;
+        display: flex;
+        flex-direction: column;
       }
 
-      /* Large screens: top align text */
+      /* No headline margin needed when columned */
       @media (min-width: 700px) {
         .text-col > *:first-child {
-          margin-top: 0;
+          margin: 0;
         }
       }
 
