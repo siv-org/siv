@@ -1,6 +1,10 @@
+import Link from 'next/link'
+
 export const HeaderBar = (): JSX.Element => (
   <div>
-    Secure Internet Voting
+    <Link href="/">
+      <a>Secure Internet Voting</a>
+    </Link>
     <style jsx>{`
       div {
         color: #fff;
@@ -23,6 +27,15 @@ export const HeaderBar = (): JSX.Element => (
         div {
           padding: 6vw;
         }
+      }
+
+      a {
+        color: #fff;
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
       }
     `}</style>
   </div>
