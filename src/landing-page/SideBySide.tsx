@@ -14,7 +14,7 @@ export const SideBySide = ({
   flipped?: boolean
   graphic: string
   graphicCaption?: string
-  headline: string | JSX.Element
+  headline?: string | JSX.Element
   noDarkFilter?: boolean
   smallHeadline?: boolean
   text: string
@@ -27,7 +27,7 @@ export const SideBySide = ({
     <div className="text-col">
       {smallHeadline ? (
         <>
-          <h4>{headline}</h4>
+          {headline && <h4>{headline}</h4>}
           <h3>{text}</h3>
         </>
       ) : (

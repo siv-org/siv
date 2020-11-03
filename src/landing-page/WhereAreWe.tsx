@@ -7,14 +7,13 @@ export const WhereAreWe = (): JSX.Element => (
       smallHeadline
       graphic="voting.jpg"
       headline="Unusual Times"
-      text="As states attempt re-opening, it’s becoming clear we face unprecedented challenges with safe and reliable voting."
+      text="As states work to protect citizen health, we face unprecedented challenges with safe and reliable voting."
     />
     <SideBySide
       flipped
       smallHeadline
       graphic="voting-line-ridic.jpg"
-      headline="Early Warning Signs"
-      text="Six hour waiting lines in Georgia. 600,000 voters in Kentucky forced to share a single polling location. Cancelled or postponed primaries in dozens of states."
+      text="Six hour waiting lines in Georgia. 600,000 voters in Kentucky forced to share a single polling location. Tens of thousands of polling centers closed throughout the country."
     />
   </Section>
 )
