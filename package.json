@@ -61,6 +61,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-flip-move": "^3.0.4",
+    "react-scroll": "^1.8.1",
     "swr": "^0.3.0"
   },
   "devDependencies": {
@@ -68,6 +69,7 @@
     "@types/ms": "^0.7.31",
     "@types/node": "^13.9.5",
     "@types/react": "^16.9.27",
+    "@types/react-scroll": "^1.8.2",
     "@typescript-eslint/eslint-plugin": "^3.4.0",
     "@typescript-eslint/parser": "^3.4.0",
     "eslint": "^6.8.0",

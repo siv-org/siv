@@ -4,6 +4,7 @@ import { BoxProps, NoSsr, TextField, TextFieldProps } from '@material-ui/core'
 import { firestore } from 'firebase/app'
 import { omit } from 'lodash-es'
 import { useState } from 'react'
+import { Element } from 'react-scroll'
 
 import { api } from '../api-helper'
 import { OnClickButton } from './Button'
@@ -21,6 +22,7 @@ export function LetYourGovtKnow({ idKey }: { idKey: string }): JSX.Element {
 
   return (
     <div className="container">
+      <Element name="let-your-govt-know" />
       <div className="column">
         <h3 style={{ color: darkBlue, margin: '1.5rem 0' }}>
           Let your local government know you want Secure Internet Voting
