@@ -31,7 +31,10 @@ export const Footer = (): JSX.Element => {
           </Link>
         </p>
         <p>
-          <a href={`mailto:${email}`}>{email}</a>
+          <a href={`mailto:${email}`}>
+            <img id="mail-icon" src="/protocol/step-1-invitation-icon.png" width="17px" />
+            {email}
+          </a>
         </p>
       </div>
       <style jsx>{`
@@ -60,6 +63,10 @@ export const Footer = (): JSX.Element => {
 
         a.styled-link:hover {
           text-decoration: underline;
+        }
+
+        #mail-icon {
+          margin-right: 7px;
         }
 
         /* Small screens: reduce horiz padding */
