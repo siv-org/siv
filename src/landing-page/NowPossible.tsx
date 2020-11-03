@@ -5,7 +5,7 @@ export const NowPossible = (): JSX.Element => (
   <Section>
     <SideBySide
       noDarkFilter
-      graphic="hello-phone.png"
+      graphic="hello-phone-2.png"
       headline={
         <>
           Fast, private, and <em>verifiable</em> internet voting is now possible.
