@@ -26,7 +26,7 @@ export function LetYourGovtKnow({ idKey }: { idKey: string }): JSX.Element {
           Let your government officials know you want Secure Internet Voting
         </h3>
 
-        <p>We’ll send them a message so they know more of their constituents are interested.</p>
+        <p>Add your name so they know more of their constituents are interested.</p>
       </div>
 
       <form autoComplete="off" className="column">
@@ -35,10 +35,10 @@ export function LetYourGovtKnow({ idKey }: { idKey: string }): JSX.Element {
           <Field label="ZIP" {...fieldProps} style={{ maxWidth: 80 }} />
         </Row>
         <Row>
-          <Field fullWidth label="Email" {...fieldProps} />
+          <Field fullWidth label="Your Email (optional)" {...fieldProps} />
         </Row>
         <Row>
-          <Field fullWidth multiline label="Message" rows={4} {...fieldProps} />
+          <Field fullWidth multiline id="message" label="Your Message (optional)" rows={4} {...fieldProps} />
         </Row>
         <Row style={{ justifyContent: 'flex-end' }}>
           {saved && <p style={{ margin: 0, opacity: 0.7, width: 60 }}>Done.</p>}
