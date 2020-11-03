@@ -36,19 +36,18 @@ export const Content = () => (
         <img src="about/david.jpg" style={{ height: 'auto', width: '80%' }} />
       </div>
       <div>
-        <h4>Project led by David Ernst</h4>
+        <h4>SIV is led by David Ernst</h4>
         <p>
           David believes people should be able to vote without being afraid they will get sick in a pandemic. This
           drives him to give governments the opportunity to let citizens safely vote online.
         </p>
         <p>
           Originally from Dallas, Texas, David left high school early to pursue a degree in Mathematics and Philosophy
-          at Bard College at Simon’s Rock. As CTO of Numerai, he helped build an AI-run, crowd-sourced hedge fund that
-          uses competition to predict the stock market.
+          at Bard College at Simon’s Rock.
         </p>
         <p>
-          Over the years he’s built software for education, personal health, commercial construction, and more, used by
-          thousands of people worldwide.
+          Over the years he’s built software for education, personal health, finance, commercial construction, and more,
+          used by thousands of people worldwide.
         </p>
         <p>He’s passionate about political reform, and even ran for office in California in the 2018 election.</p>
       </div>

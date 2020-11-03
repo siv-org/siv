@@ -1,6 +1,6 @@
 export const research = [
   {
-    history: `First described in 1991 by Dr. Torben Pryds Pedersen, Computer Science Department, Aarhus University, Denmark
+    history: `First described in 1991 by Dr. Torben Pedersen, Computer Science Department, Aarhus University, Denmark
 
 Built upon 1991's "Verifiable Secret Sharing Scheme" by Dr. Paul Feldman, MIT Computer Science & Artificial Intelligence Laboratory
 
@@ -12,16 +12,16 @@ Built upon the 1795 Polynomial Interpolation Method discovered by Joseph-Louis L
   },
 
   {
-    history: `Based on 1985's "A public key cryptosystem and a signature scheme based on discrete logarithms" by Dr. Taher Elgamal, Stanford University (MS, PhD)
+    history: `Based on 1985's "A public key cryptosystem and a signature scheme based on discrete logarithms" by Dr. Taher Elgamal, Stanford University
 
-Built upon 1978's "Secure communications over insecure channels" by Dr. Ralph C Merkle, University of California Berkeley & Georgia Institute of Technology
+Built upon 1978's "Secure communications over insecure channels" by Dr. Ralph Merkle, University of California Berkeley & Georgia Institute of Technology
 
 Built upon 1976's "New Directions in Cryptography" by Dr. Martin Hellman and Dr. Whitfield Diffie, Stanford University.`,
     tech: `Discrete Logarithm Encryption`,
   },
 
   {
-    history: `Based on the 2004 Verifiable Cryptographic Shuffle, as described by Dr. Andrew Neff.`,
+    history: `Based on 2001's "A Verifiable Secret Shuffle and its Application to E-Voting" by Dr. Andrew Neff, Princeton University.`,
     tech: `Anonymization Mixnet`,
   },
 ]
