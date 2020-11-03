@@ -16,11 +16,5 @@ export const WhereAreWe = (): JSX.Element => (
       headline="Early Warning Signs"
       text="Six hour waiting lines in Georgia. 600,000 voters in Kentucky forced to share a single polling location. Cancelled or postponed primaries in dozens of states."
     />
-    <SideBySide
-      smallHeadline
-      graphic="vote-by-mail.jpg"
-      headline="Search for Alternatives"
-      text="Election officials and political advocates have rushed to provide safe alternatives, especially Vote by Mail."
-    />
   </Section>
 )

@@ -8,7 +8,6 @@ import { HeaderBar } from './HeaderBar'
 import { LetYourGovtKnow } from './LetYourGovtKnow'
 import { NowPossible } from './NowPossible'
 import { SIVFeatures } from './SIVFeatures'
-import { WeCanDoBetter } from './WeCanDoBetter'
 import { WhereAreWe } from './WhereAreWe'
 
 export const LandingPage = (): JSX.Element => (
@@ -21,7 +20,7 @@ export const LandingPage = (): JSX.Element => (
       <HeaderBar />
       <AboveFold />
       <WhereAreWe />
-      <WeCanDoBetter />
+      <BlueDivider />
       <NowPossible />
       <BlueDivider />
       <SIVFeatures />
