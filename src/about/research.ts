@@ -1,6 +1,6 @@
 export const research = [
   {
-    history: `First described in 1991 by Dr. Torben Pedersen, Computer Science Department, Aarhus University, Denmark
+    history: `First described in 1992's "Non-Interactive and Information-Theoretic Secure Verifiable Secret Sharing" by Dr. Torben Pedersen, Aarhus University, Denmark
 
 Built upon 1991's "Verifiable Secret Sharing Scheme" by Dr. Paul Feldman, MIT Computer Science & Artificial Intelligence Laboratory
 
