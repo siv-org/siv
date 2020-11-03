@@ -5,6 +5,7 @@ const darkBlue = '#002868'
 
 export const SIVFeatures = (): JSX.Element => (
   <Section>
+    <h4>Introducing</h4>
     <h2>Secure Internet Voting</h2>
     <Row>
       <Feature
@@ -32,6 +33,7 @@ export const SIVFeatures = (): JSX.Element => (
         margin-bottom: 4rem;
       }
 
+      h4,
       h2,
       .center-button {
         text-align: center;
@@ -42,6 +44,7 @@ export const SIVFeatures = (): JSX.Element => (
       }
 
       @media (max-width: 620px) {
+        h4,
         h2 {
           text-align: left;
         }
