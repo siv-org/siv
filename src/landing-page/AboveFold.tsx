@@ -2,12 +2,16 @@ import { Link } from 'react-scroll'
 
 import { JumboBlue } from './JumboBlue'
 
-export const AboveFold = ({ height }: { height?: number }): JSX.Element => (
+export const AboveFold = ({ height, showButton = true }: { height?: number; showButton?: boolean }): JSX.Element => (
   <JumboBlue height={height}>
     <h1 style={{ margin: '4rem 0 0', padding: 17, textAlign: 'center' }}>Fast. Private. Verifiable</h1>
-    <Link id="above-fold-btn" offset={-25} smooth={true} to="let-your-govt-know">
-      Bring To Your Community
-    </Link>
+    <>
+      {showButton && (
+        <Link id="above-fold-btn" offset={-25} smooth={true} to="let-your-govt-know">
+          Bring To Your Community
+        </Link>
+      )}
+    </>
     <style global jsx>{`
       #above-fold-btn {
         background: none;

@@ -12,7 +12,7 @@ export const AboutPage = (): JSX.Element => (
     </Head>
 
     <HeaderBar />
-    <AboveFold height={49} />
+    <AboveFold height={49} showButton={false} />
     <a id="research" />
     <Content />
     <BlueDivider />
