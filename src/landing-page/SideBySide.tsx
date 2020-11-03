@@ -28,12 +28,12 @@ export const SideBySide = ({
       {smallHeadline ? (
         <>
           {headline && <h4>{headline}</h4>}
-          <h3>{text}</h3>
+          <h3 className="primary">{text}</h3>
         </>
       ) : (
         <>
           <h3>{headline}</h3>
-          <h4>{text}</h4>
+          <h4 className="primary">{text}</h4>
           {button && (
             <div style={{ textAlign: 'center' }}>
               <Button href={button.href}>{button.text}</Button>
@@ -78,6 +78,10 @@ export const SideBySide = ({
         flex-direction: column;
       }
 
+      .primary {
+        color: #002868;
+      }
+
       /* No headline margin needed when columned */
       @media (min-width: 700px) {
         .text-col > *:first-child {
@@ -85,7 +89,7 @@ export const SideBySide = ({
         }
       }
 
-      /* Small screens: show vertically */
+      /* 1-column for small screens */
       @media (max-width: 700px) {
         .container {
           flex-direction: column;
