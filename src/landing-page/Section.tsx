@@ -1,4 +1,4 @@
-export const Section = ({ children }: { children: JSX.Element[] }): JSX.Element => (
+export const Section = ({ children }: { children: JSX.Element | JSX.Element[] }): JSX.Element => (
   <div className="section">
     {children}
     <style jsx>{`
