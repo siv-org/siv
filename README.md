@@ -1,13 +1,29 @@
-# SIV Demo
+# SIV
 
-## How to use
+## Development
 
-Install dependencies and run:
+Install dependencies:
 
 ```bash
 yarn
-yarn dev
 ```
+
+Start dev server:
+
+```bash
+yarn dev
+
+# ready - started server on http://localhost:3000
+```
+
+## Layout
+
+- http://secureinternetvoting.org - Landing page
+- http://secureinternetvoting.org/create - Create New Election
+- http://secureinternetvoting.org/protocol - Protocol Description
+- http://secureinternetvoting.org/faq - FAQ
+
+## Next steps
 
 For strong privacy:
 
@@ -17,8 +33,8 @@ For strong privacy:
 
 After core features complete:
 
-- [ ] Instructions on how voters can verify
-- [ ] Offer voters Extra Private Mode
+- [ ] Improve Verification instructions
+- [ ] Extra Private Mode (Airplane + Incognito) instructions
 - [ ] Health check on voter's device:
   - [ ] Can they establish a secure connection?
   - [ ] Is their browser up to date?
