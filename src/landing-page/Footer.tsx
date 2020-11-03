@@ -1,64 +1,17 @@
-import { NoSsr, TextField } from '@material-ui/core'
-import { firestore } from 'firebase/app'
 import Link from 'next/link'
-import { useState } from 'react'
 
-import { api } from '../api-helper'
-import { OnClickButton } from './Button'
+import { EmailSignup } from './EmailSignup'
 import { consultation_link } from './ForGovernments'
 
 const email = 'questions@secureinternetvoting.org'
 
 export const Footer = (): JSX.Element => {
-  const [saved, setSaved] = useState(false)
-
   return (
-    <div className="container">
+    <div className="columns">
       <div className="column">
-        <h3 style={{ fontWeight: 400 }}>Democracy Knowledge & News</h3>
-        <p>Sign up to receive occasional updates</p>
-
-        <div style={{ display: 'flex', marginTop: 15 }}>
-          <NoSsr>
-            <TextField
-              id="newsletter-signup-field"
-              label="Email Address"
-              size="small"
-              style={{ flex: 1, marginRight: 10, maxWidth: 250 }}
-              variant="outlined"
-              onChange={() => setSaved(false)}
-            />
-          </NoSsr>
-          <OnClickButton
-            disabled={saved}
-            style={{ margin: 0, padding: '8px 17px' }}
-            onClick={() => {
-              const fields = {
-                created_at: new Date().toString(),
-                email: (document.getElementById('newsletter-signup-field') as HTMLInputElement).value,
-              }
-
-              // Store submission in Firestore
-              firestore()
-                .collection('news-signups')
-                .doc(new Date().toISOString() + ' ' + String(Math.random()).slice(2, 7))
-                .set(fields)
-                .then(() => {
-                  setSaved(true)
-
-                  // Notify via Pushover
-                  api('pushover', {
-                    message: fields.email,
-                    title: `SIV newsletter signup`,
-                  })
-                })
-            }}
-          >
-            {saved ? 'Done!' : 'Sign Up'}
-          </OnClickButton>
-        </div>
+        <EmailSignup />
       </div>
-      <div className="column right-aligned">
+      <div className="column text-align-right">
         <h3>SIV</h3>
         <p>
           <Link href="/about">
@@ -82,7 +35,7 @@ export const Footer = (): JSX.Element => {
         </p>
       </div>
       <style jsx>{`
-        .container {
+        .columns {
           padding: 3rem;
           display: flex;
           justify-content: space-between;
@@ -92,7 +45,7 @@ export const Footer = (): JSX.Element => {
           margin-right: 15%;
         }
 
-        .right-aligned {
+        .text-align-right {
           text-align: right;
         }
 
@@ -111,7 +64,7 @@ export const Footer = (): JSX.Element => {
 
         /* Small screens: reduce horiz padding */
         @media (max-width: 750px) {
-          .container {
+          .columns {
             padding: 17px 6vw;
             flex-direction: column;
           }
@@ -121,7 +74,7 @@ export const Footer = (): JSX.Element => {
             margin-bottom: 3rem;
           }
 
-          .right-aligned {
+          .text-align-right {
             text-align: left;
           }
         }
