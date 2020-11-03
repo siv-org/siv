@@ -27,13 +27,13 @@ export const SideBySide = ({
     <div className="text-col">
       {smallHeadline ? (
         <>
-          {headline && <h4>{headline}</h4>}
-          <h3 className="primary">{text}</h3>
+          {headline && <h4 className="primary">{headline}</h4>}
+          <h3>{text}</h3>
         </>
       ) : (
         <>
-          <h3>{headline}</h3>
-          <h4 className="primary">{text}</h4>
+          <h3 className="primary">{headline}</h3>
+          <h4>{text}</h4>
           {button && (
             <div style={{ textAlign: 'center' }}>
               <Button href={button.href}>{button.text}</Button>
