@@ -5,7 +5,6 @@ export const NowPossible = (): JSX.Element => (
   <Section>
     <SideBySide
       noDarkFilter
-      button={{ href: '/protocol', text: 'SIV Protocol Details' }}
       graphic="hello-phone.png"
       headline={
         <>
