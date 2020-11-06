@@ -23,7 +23,7 @@ export const Content = () => (
         <br />
         <b>2:</b> V8-fast Javascript <br />
         <br />
-        Other helpful technologies: <br />
+        Other contributing technologies: <br />
         <b>3:</b> JSBI, from Stanford <br />
         <b>4:</b> React, from Facebook <br />
         <b>5:</b> Typescript, from Microsoft
