@@ -68,6 +68,12 @@ export const Topbar = () => {
           outline: none;
         }
 
+        /* Only for Windows */
+        optgroup,
+        option {
+          color: #222;
+        }
+
         /* Hide for large screens */
         @media (min-width: 1030px) {
           div {
