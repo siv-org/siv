@@ -107,6 +107,7 @@ export const AddGroup = ({
         .message {
           margin-top: 0;
           font-size: 12px;
+          overflow-wrap: break-word;
         }
       `}</style>
     </div>
