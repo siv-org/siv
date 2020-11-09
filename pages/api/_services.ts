@@ -34,7 +34,7 @@ const mailgun = Mailgun({
 export const sendEmail = ({ recipient, subject, text }: { recipient: string; subject: string; text: string }) =>
   mailgun.messages().send({
     from: 'SIV Admin <admin@secureinternetvoting.org>',
-    html: `<body style="background-color: #f5f5f5; padding: 2em;">
+    html: `<body style="background-color: #f5f5f5; padding: 2em 0.5em;">
     <table align="center" style="text-align: left; max-width: 600px; background-color: white;">
         <tr>
           <td align="center" style="text-align:center; background: linear-gradient(90deg, #010b26 0%, #072054 100%);">
