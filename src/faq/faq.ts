@@ -1,19 +1,19 @@
 export const faq: { q: string; resp?: string }[] = [
   {
     q: 'How does SIV authenticate voters?',
-    resp: `SIV offers a simple process entirely controlled by election officials, ensuring that only registered voters have the option to participate.
+    resp: `SIV is built upon a simple authentication system entirely controlled by election officials to ensure that only registered voters can vote.
 
-As the election approaches, Election Administrators send individualized Voter Auth Tokens to registered voters, which they use to vote online. It's important that this process generates written records, for auditing.
+As the election approaches, Election Administrators send individualized Voter Authentication Tokens to registered voters for them to vote online. The exact process is up to Election Officials, but it's important that it generates written records for auditing.
 
-Long term, there are faster & cheaper digital options (email, text, etc) for Auth Token distribution and jurisdictions can move quickly towards going entirely paperless, if desired.
+Long term, there are fast & cheap digital options (email, text, etc) for Auth Token distribution, and jurisdictions can move towards going entirely paperless, if desired.
 
-As a starting place, SIV can be easily implemented with exactly what Vote by Mail does: (1) Mail voters a sealed envelope to their address on file, and (2) Require them to send back a signature.
+But as a starting place, SIV can be easily implemented with exactly what Vote by Mail does: (1) Mail voters a sealed envelope to their address on file, and (2) Require them to send back a signature.
 
-This can all take place well ahead of the election, entirely eliminating concerns about delays from overloaded postal systems, or other last minute scheduling issues.
+This is at least as strong as Vote by Mail, and can all take place well ahead of the election, entirely eliminating concerns about delays from overloaded postal systems, or other last minute scheduling issues.
 
-Additional authentication requirements can be set up, including requiring voters to list an email address or phone number ahead of time or restricting Auth Token downloads to devices within the jurisdiction.
+Additional authentication requirements can be layered on, including requiring voters to list a second-factor email address or phone number ahead of time, or restricting Auth Token downloads to devices within the jurisdiction.
 
-At the end of the day, the authentication process is up to Election Administrators.
+At the end of the day, SIV is compatible with whatever authentication process Election Administrators define.
 
 Election officials can always contact us to schedule a personalized consultation if they'd like advice on the best approaches for their jurisdiction: contact@secureinternetvoting.org.`,
   },
