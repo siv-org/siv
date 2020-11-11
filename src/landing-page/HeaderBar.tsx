@@ -1,9 +1,11 @@
-import { consultation_link } from './ForGovernments'
+import Link from 'next/link'
 
 export const HeaderBar = (): JSX.Element => (
   <div>
     Secure Internet Voting
-    <a href={consultation_link}>For Governments</a>
+    <Link href="/for-governments">
+      <a>For Governments</a>
+    </Link>
     <style jsx>{`
       div {
         color: #fff;

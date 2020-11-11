@@ -1,7 +1,6 @@
 import Link from 'next/link'
 
 import { EmailSignup } from './EmailSignup'
-import { consultation_link } from './ForGovernments'
 
 const email = 'questions@secureinternetvoting.org'
 
@@ -22,9 +21,9 @@ export const Footer = (): JSX.Element => {
             <a className="styled-link">Study Protocol</a>
           </Link>
           <br />
-          <a className="styled-link" href={consultation_link}>
-            For Governments
-          </a>
+          <Link href="/for-governments">
+            <a className="styled-link">For Governments</a>
+          </Link>
           <br />
           <Link href="/faq">
             <a className="styled-link">Frequently Asked Questions</a>

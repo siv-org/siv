@@ -23,6 +23,7 @@ export function GiveYourVoters({ idKey }: { idKey: string }): JSX.Element {
   return (
     <div className="container">
       <div className="column">
+        <a id="give-your-voters" />
         <Element name="give-your-voters" />
         <h3 style={{ color: darkBlue, margin: '1.5rem 0' }}>Give your voters the future of democracy</h3>
 
