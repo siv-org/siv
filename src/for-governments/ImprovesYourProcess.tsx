@@ -13,7 +13,7 @@ export const ImprovesYourProcess = (): JSX.Element => (
       />
       <Feature
         headline="Auditable Verification"
-        text="Easy verification each vote was from a registered voter, not tampered with, and counted correctly."
+        text="Easily verify each vote was from a registered voter, not tampered with, and counted correctly."
       />
       <Feature
         headline="Budget Savings"
