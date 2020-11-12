@@ -71,8 +71,8 @@ export function GiveYourVoters({ idKey }: { idKey: string }): JSX.Element {
 
                   // Notify via Pushover
                   api('pushover', {
-                    message: `${fields.email}\nCTA #${idKey}\n\n${fields.message}`,
-                    title: `SIV: ${fields.name} (${fields.zip})`,
+                    message: `${fields.email}\n\n${fields.message}`,
+                    title: `SIV jurisdiction-lead: ${fields.name} (${fields.location})`,
                   })
                 })
             }}
