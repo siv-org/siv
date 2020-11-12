@@ -50,7 +50,7 @@ Click here to securely cast your vote:
   return res.status(201).end(election_id)
 }
 
-function generateAuthToken() {
+export function generateAuthToken() {
   const random = Math.random()
   const integer = String(random).slice(2)
   const hex = Number(integer).toString(16)
