@@ -2,6 +2,7 @@ import { HeaderBar } from '../create/HeaderBar'
 import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
 import { Attendees } from './Attendees'
+import { Parameters } from './Parameters'
 
 export const KeyGenerationPage = (): JSX.Element => {
   return (
@@ -11,7 +12,9 @@ export const KeyGenerationPage = (): JSX.Element => {
       <HeaderBar />
       <main>
         <h1>Threshold Key Generation</h1>
+        <h4>Election ID: 16121023123</h4>
         <Attendees />
+        <Parameters />
       </main>
 
       <style jsx>{`
