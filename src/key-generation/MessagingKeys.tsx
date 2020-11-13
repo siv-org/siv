@@ -1,4 +1,5 @@
 import { Private } from './Private'
+import { YouLabel } from './YouLabel'
 
 export const MessagingKeys = () => (
   <>
@@ -14,7 +15,9 @@ export const MessagingKeys = () => (
     </Private>
     <ol>
       <li>admin@secureinternetvoting.org broadcasts their Public key is 49</li>
-      <li>trustee_1@gmail.com [YOU] broadcasts their Public key is 28.</li>
+      <li>
+        trustee_1@gmail.com <YouLabel /> broadcasts their Public key is 28.
+      </li>
       <li>cool_trustee@yahoo.com broadcasts their Public key is 7.</li>
     </ol>
   </>

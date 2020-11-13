@@ -1,9 +1,13 @@
+import { YouLabel } from './YouLabel'
+
 export const Attendees = () => (
   <>
     <h3>Attendees:</h3>
     <ol>
       <li>admin@secureinternetvoting.org</li>
-      <li>trustee_1@gmail.com [YOU]</li>
+      <li>
+        trustee_1@gmail.com <YouLabel />
+      </li>
       <li>cool_trustee@yahoo.com</li>
     </ol>
     <Awaiting />
