@@ -10,7 +10,7 @@ export const Private = ({ children }: { children: string | JSX.Element | JSX.Ele
       }
 
       div {
-        border: 1px dashed purple;
+        border: 2px dashed purple;
         padding: 1rem;
       }
     `}</style>
