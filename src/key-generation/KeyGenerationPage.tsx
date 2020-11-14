@@ -48,6 +48,11 @@ export const KeyGenerationPage = (): JSX.Element => {
           font-size: 18px;
         }
       `}</style>
+      <style global jsx>{`
+        h3 {
+          margin-top: 2.5rem;
+        }
+      `}</style>
       <GlobalCSS />
     </>
   )
