@@ -3,12 +3,12 @@ export const YouLabel = () => (
     YOU
     <style jsx>{`
       span {
-        background-color: rgb(255, 153, 0);
+        border: 1px solid purple;
         border-radius: 4px;
-        color: white;
+        color: purple;
         font-size: 11px;
         font-weight: 600;
-        padding: 3px 4px;
+        padding: 2px 4px;
       }
     `}</style>
   </span>
