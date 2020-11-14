@@ -5,6 +5,7 @@ import { Attendees } from './Attendees'
 import { MessagingKeys } from './MessagingKeys'
 import { Parameters } from './Parameters'
 import { PrivateCoefficients } from './PrivateCoefficients'
+import { PublicBroadcastValues } from './PublicBroadcastValues'
 
 export const KeyGenerationPage = (): JSX.Element => {
   return (
@@ -19,6 +20,7 @@ export const KeyGenerationPage = (): JSX.Element => {
         <Parameters />
         <MessagingKeys />
         <PrivateCoefficients />
+        <PublicBroadcastValues />
       </main>
 
       <style jsx>{`
