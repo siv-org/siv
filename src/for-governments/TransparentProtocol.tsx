@@ -9,6 +9,8 @@ export const TransparentProtocol = (): JSX.Element => (
       div {
         padding: 30px;
         text-align: center;
+        max-width: 1240px;
+        margin: 0 auto;
       }
     `}</style>
   </div>
