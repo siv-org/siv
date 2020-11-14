@@ -22,7 +22,7 @@ export const Private = ({ children }: { children: string | JSX.Element | JSX.Ele
       }
 
       div {
-        border: 2px dashed rgba(128, 0, 128, 0.7);
+        border: 2px dashed rgba(128, 0, 128, 0.4);
         padding: 0.5rem 1rem;
         position: relative;
         margin-bottom: 30px;
