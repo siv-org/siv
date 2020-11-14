@@ -4,6 +4,7 @@ import { Head } from '../Head'
 import { Attendees } from './Attendees'
 import { MessagingKeys } from './MessagingKeys'
 import { Parameters } from './Parameters'
+import { PrivateCoefficients } from './PrivateCoefficients'
 
 export const KeyGenerationPage = (): JSX.Element => {
   return (
@@ -17,6 +18,7 @@ export const KeyGenerationPage = (): JSX.Element => {
         <Attendees />
         <Parameters />
         <MessagingKeys />
+        <PrivateCoefficients />
       </main>
 
       <style jsx>{`
