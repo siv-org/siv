@@ -29,5 +29,13 @@ export const PairwiseShares = () => (
         <li>For cool_trustee@yahoo.com, pub key = 7, so E(14) = 3</li>
       </ol>
     </Private>
+    <p>Send &amp; receive pairwise shares to all the other trustees.</p>
+    <Private>
+      <ol>
+        <li>admin@secureinternetvoting.org sent you 16</li>
+        <li>Your own share is 6</li>
+        <li>cool_trustee@yahoo.com sent you 21</li>
+      </ol>
+    </Private>
   </>
 )
