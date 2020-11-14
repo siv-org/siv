@@ -1,6 +1,6 @@
 export const Parameters = () => (
   <>
-    <h3>Parameters:</h3>
+    <h3>II. Parameters:</h3>
     <ul>
       <li>You are generating a 3 of 3 threshold key.</li>
       <li>

@@ -3,11 +3,8 @@ import { YouLabel } from './YouLabel'
 
 export const MessagingKeys = () => (
   <>
-    <h3>Messaging Keys:</h3>
-    <p>
-      First, everyone needs to generate a private/public key pair for peer-to-peer messaging within this key
-      generation...
-    </p>
+    <h3>III. Messaging Keys:</h3>
+    <p>Everyone needs to generate a private/public key pair for peer-to-peer messaging within this key generation...</p>
     <Private>
       <p>Running crypto.random() on your device to generate the key pair...</p>
       <p>Private key (y) = 13</p>

@@ -2,7 +2,7 @@ import { YouLabel } from './YouLabel'
 
 export const Attendees = () => (
   <>
-    <h3>Attendees:</h3>
+    <h3>I. Attendees:</h3>
     <ol>
       <li>admin@secureinternetvoting.org</li>
       <li>
