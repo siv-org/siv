@@ -7,8 +7,12 @@ export const MessagingKeys = () => (
     <p>Everyone needs to generate a private/public key pair for peer-to-peer messaging within this key generation.</p>
     <Private>
       <p>Running Crypto.getRandomValues() on your device to generate the key pair...</p>
-      <p>Private key (y) = 13</p>
-      <p>Public key (h) = g ^ y % p = 4 ^ 13 % 57 = 28.</p>
+      <p>
+        Private key <i>y</i> = 13
+      </p>
+      <p>
+        Public key <i>h</i> = g ^ y % p = 4 ^ 13 % 57 ≡ 28.
+      </p>
     </Private>
     <ol>
       <li>admin@secureinternetvoting.org broadcasts their Public key is 49.</li>

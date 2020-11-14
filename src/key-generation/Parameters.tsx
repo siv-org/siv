@@ -2,7 +2,9 @@ export const Parameters = () => (
   <>
     <h3>II. Parameters:</h3>
     <ul>
-      <li>You are generating a 3 of 3 threshold key (t = 3, n = 3)</li>
+      <li>
+        You are generating a 3 of 3 threshold key (<i>t</i> = 3, <i>n</i> = 3)
+      </li>
       <li>
         Prime <i>p</i> = 57
       </li>
