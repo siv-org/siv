@@ -8,7 +8,7 @@ export const Attendees = () => (
       <li>
         trustee_1@gmail.com <YouLabel />
       </li>
-      <li>cool_trustee@yahoo.com</li>
+      <li>other_trustee@yahoo.com</li>
     </ol>
     <Awaiting />
   </>

@@ -15,7 +15,7 @@ export const MessagingKeys = () => (
       <li>
         trustee_1@gmail.com <YouLabel /> broadcasts their Public key is 28.
       </li>
-      <li>cool_trustee@yahoo.com broadcasts their Public key is 7.</li>
+      <li>other_trustee@yahoo.com broadcasts their Public key is 7.</li>
     </ol>
   </>
 )

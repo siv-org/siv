@@ -25,7 +25,7 @@ export const PublicBroadcastValues = () => (
       <li>
         trustee_1@gmail.com <YouLabel /> broadcasts commitments 49, 7, 1.
       </li>
-      <li>cool_trustee@yahoo.com broadcasts commitments 17, 36, 34.</li>
+      <li>other_trustee@yahoo.com broadcasts commitments 17, 36, 34.</li>
     </ol>
   </>
 )

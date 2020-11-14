@@ -15,7 +15,7 @@ export const PairwiseShares = () => (
           For trustee_1@gmail.com <YouLabel />, f(2) = 15 + 21(2) + 9(2)<sup>2</sup> % 29 ≡ 6
         </li>
         <li>
-          For cool_trustee@yahoo.com, f(3) = 15 + 21(3) + 9(3)<sup>2</sup> % 29 ≡ 14
+          For other_trustee@yahoo.com, f(3) = 15 + 21(3) + 9(3)<sup>2</sup> % 29 ≡ 14
         </li>
       </ol>
     </Private>
@@ -26,7 +26,7 @@ export const PairwiseShares = () => (
         <li>
           For trustee_1@gmail.com <YouLabel />, no need to encrypt to yourself.
         </li>
-        <li>For cool_trustee@yahoo.com, pub key = 7, so E(14) = 3</li>
+        <li>For other_trustee@yahoo.com, pub key = 7, so E(14) = 3</li>
       </ol>
     </Private>
     <p>Send &amp; receive pairwise shares to all the other trustees.</p>
@@ -34,7 +34,7 @@ export const PairwiseShares = () => (
       <ol>
         <li>admin@secureinternetvoting.org sent you 16</li>
         <li>Your own share is 6</li>
-        <li>cool_trustee@yahoo.com sent you 21</li>
+        <li>other_trustee@yahoo.com sent you 21</li>
       </ol>
     </Private>
   </>
