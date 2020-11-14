@@ -2,6 +2,7 @@ import { HeaderBar } from '../create/HeaderBar'
 import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
 import { Attendees } from './Attendees'
+import { CalculatePrivateKeyshare } from './CalculatePrivateKeyshare'
 import { MessagingKeys } from './MessagingKeys'
 import { PairwiseShares } from './PairwiseShares'
 import { Parameters } from './Parameters'
@@ -25,6 +26,7 @@ export const KeyGenerationPage = (): JSX.Element => {
         <PublicBroadcastValues />
         <PairwiseShares />
         <VerifyShares />
+        <CalculatePrivateKeyshare />
       </main>
 
       <style jsx>{`
