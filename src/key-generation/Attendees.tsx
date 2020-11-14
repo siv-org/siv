@@ -21,7 +21,7 @@ const Awaiting = () => {
   awaiting.pop()
 
   if (!awaiting.length) {
-    return <h4>Everyone&apos;s arrived. 👍</h4>
+    return <p>Everyone&apos;s arrived. 👍</p>
   }
 
   return (

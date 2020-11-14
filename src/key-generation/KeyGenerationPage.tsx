@@ -3,6 +3,7 @@ import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
 import { Attendees } from './Attendees'
 import { MessagingKeys } from './MessagingKeys'
+import { PairwiseShares } from './PairwiseShares'
 import { Parameters } from './Parameters'
 import { PrivateCoefficients } from './PrivateCoefficients'
 import { PublicBroadcastValues } from './PublicBroadcastValues'
@@ -21,6 +22,7 @@ export const KeyGenerationPage = (): JSX.Element => {
         <MessagingKeys />
         <PrivateCoefficients />
         <PublicBroadcastValues />
+        <PairwiseShares />
       </main>
 
       <style jsx>{`
