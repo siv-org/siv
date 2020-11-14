@@ -8,6 +8,7 @@ import { PairwiseShares } from './PairwiseShares'
 import { Parameters } from './Parameters'
 import { PrivateCoefficients } from './PrivateCoefficients'
 import { PublicBroadcastValues } from './PublicBroadcastValues'
+import { PublicThresholdKey } from './PublicThresholdKey'
 import { VerifyShares } from './VerifyShares'
 
 export const KeyGenerationPage = (): JSX.Element => {
@@ -27,6 +28,7 @@ export const KeyGenerationPage = (): JSX.Element => {
         <PairwiseShares />
         <VerifyShares />
         <CalculatePrivateKeyshare />
+        <PublicThresholdKey />
       </main>
 
       <style jsx>{`
