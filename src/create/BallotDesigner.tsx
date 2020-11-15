@@ -4,13 +4,13 @@ export const BallotDesigner = () => (
     <textarea
       defaultValue={`[
   {
-    question: 'Who should become President?',
-    choices: [
-      'George H. W. Bush',
-      'Bill Clinton',
-      'Ross Perot',
+    "question": "Who should become President?",
+    "choices": [
+      "George H. W. Bush",
+      "Bill Clinton",
+      "Ross Perot"
     ],
-    write_in_allowed: true,
+    "write_in_allowed": true
   }
 ]`}
       id="ballot-design"

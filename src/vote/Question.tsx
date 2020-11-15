@@ -3,24 +3,28 @@ import { useState } from 'react'
 
 import { encode } from '../crypto/encode'
 import { Paper } from '../protocol/Paper'
-
-const ballot = {
-  choices: ['George H. W. Bush', 'Bill Clinton', 'Ross Perot'],
-  question: 'Who should become President?',
-  write_in_allowed: true,
-}
+import { useBallotDesign } from './useBallotDesign'
 
 export const Question = ({
+  election_id,
   max_string_length,
   setVotePlaintext,
   vote_plaintext,
 }: {
+  election_id?: string
   max_string_length: number
   setVotePlaintext: (plaintext: string) => void
   vote_plaintext: string
 }): JSX.Element => {
   const [other, setOther] = useState<string>()
   const [error, setError] = useState(' ')
+
+  const ballot = useBallotDesign(election_id)
+
+  if (!ballot) {
+    return <p>Loading ballot...</p>
+  }
+
   return (
     <NoSsr>
       <Paper noFade>

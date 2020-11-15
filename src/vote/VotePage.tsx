@@ -36,7 +36,7 @@ export const VotePage = (): JSX.Element => {
         <h1>Cast Your Vote</h1>
         <Intro />
         <YourAuthToken {...{ auth, election_id }} />
-        <Question {...{ max_string_length, setVotePlaintext, vote_plaintext }} />
+        <Question {...{ election_id, max_string_length, setVotePlaintext, vote_plaintext }} />
         <SubmitButton {...{ auth, election_id, encrypted }} disabled={!vote_plaintext || vote_plaintext === ''} />
         <EncryptionReceipt
           state={{
