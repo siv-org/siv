@@ -9,7 +9,7 @@ export const BallotDesigner = () => {
         defaultValue={`[
   {
     "question": "Who should become President?",
-    "choices": [
+    "options": [
       "George H. W. Bush",
       "Bill Clinton",
       "Ross Perot"

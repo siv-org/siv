@@ -4,7 +4,7 @@ export const BallotDesigner = () => (
       disabled
       value={`[{
   question: 'Who should be the next mayor?',
-  choices: [
+  options: [
     'Angela Alioto',
     'London Breed',
     'Mark Leno',

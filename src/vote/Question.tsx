@@ -43,7 +43,7 @@ export const Question = ({
           value={vote_plaintext}
           onChange={(event) => setVotePlaintext(event.target.value)}
         >
-          {ballot.choices.map((name) => (
+          {ballot.options.map((name) => (
             <FormControlLabel
               control={<Radio color="primary" />}
               key={name}
