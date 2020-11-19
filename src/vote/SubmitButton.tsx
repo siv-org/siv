@@ -2,22 +2,15 @@ import { mapValues } from 'lodash-es'
 import { useState } from 'react'
 
 import { api } from '../api-helper'
-import { Big } from '../crypto/types'
 import { OnClickButton } from '../landing-page/Button'
+import { State } from './useVoteState'
 
-export const SubmitButton = ({
-  auth,
-  disabled,
-  election_id,
-  encrypted,
-}: {
-  auth?: string
-  disabled?: boolean
-  election_id?: string
-  encrypted: Record<string, Record<string, Big>>
-}) => {
+export const SubmitButton = ({ auth, election_id, state }: { auth?: string; election_id?: string; state: State }) => {
   const [status, setStatus] = useState<string>()
-  const encrypted_vote = mapValues(encrypted, (k) => mapValues(k, (v) => v.toString()))
+  const encrypted_vote = mapValues(state.encrypted, (k) => mapValues(k, (v) => v.toString()))
+
+  const disabled = !Object.keys(state.plaintext).length
+
   return (
     <div>
       <OnClickButton

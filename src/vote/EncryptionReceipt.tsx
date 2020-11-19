@@ -1,17 +1,11 @@
 import { NoSsr } from '@material-ui/core'
 import { map } from 'lodash-es'
 
-import { encode } from '../crypto/encode'
-import encrypt from '../crypto/encrypt'
 import { public_key } from '../protocol/election-parameters'
 import { Paper } from '../protocol/Paper'
+import { State } from './useVoteState'
 
-type Map = Record<string, string>
-export function EncryptionReceipt({
-  state,
-}: {
-  state: { encrypted: Record<string, ReturnType<typeof encrypt>>; plaintext: Map; randomizer: Map }
-}): JSX.Element {
+export function EncryptionReceipt({ state }: { state: State }): JSX.Element {
   return (
     <NoSsr>
       <Paper>
@@ -32,7 +26,7 @@ ${Object.keys(state.plaintext)
   .map(
     (key) => `${key}
   plaintext: ${state.plaintext[key]}
-  encoded: ${/*encode(state.plaintext[key] as string)*/ ''}
+  encoded: ${state.encoded[key]}
   randomizer: ${state.randomizer[key]}
     encrypted: ${state.encrypted[key].encrypted}
     unlock: ${state.encrypted[key].unlock}

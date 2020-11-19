@@ -1,35 +1,23 @@
-import { mapValues } from 'lodash-es'
 import { useRouter } from 'next/router'
-import { useReducer } from 'react'
 
-import { encode } from '../crypto/encode'
-import encrypt from '../crypto/encrypt'
-import pickRandomInteger from '../crypto/pick-random-integer'
-import { big } from '../crypto/types'
 import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
 import { public_key } from '../protocol/election-parameters'
 import { EncryptionReceipt } from './EncryptionReceipt'
 import { Intro } from './Intro'
-import { Question } from './Question'
+import { Items } from './Items'
 import { SubmitButton } from './SubmitButton'
+import { useVoteState } from './useVoteState'
 import { YourAuthToken } from './YourAuthToken'
 
-type Map = Record<string, string>
-
 export const VotePage = (): JSX.Element => {
-  const tracking = generateTrackingNum()
-  const [vote_plaintext, setVotePlaintext] = useReducer((prev: Map, payload: Map) => {
-    return { ...prev, [payload.key]: payload.value }
-  }, {})
-  const randomizer = { tracking: pickRandomInteger(public_key.modulo), vote: pickRandomInteger(public_key.modulo) }
-  const encrypted = {
-    tracking: encrypt(public_key, randomizer.tracking, big(encode(tracking))),
-    ...mapValues(vote_plaintext, (plain) => 'foo'), //encrypt(public_key, randomizer.vote, big(encode(plain)))),
-  }
+  // Initialize local vote state
+  const [state, dispatch] = useVoteState()
 
+  // Calculate maximum write-in string length
   const max_string_length = Math.floor(public_key.modulo.bitLength() / 6)
 
+  // Grab election parameters from URL
   const { auth, election_id } = useRouter().query as NodeJS.Dict<string>
 
   return (
@@ -40,18 +28,9 @@ export const VotePage = (): JSX.Element => {
         <h1>Cast Your Vote</h1>
         <Intro />
         <YourAuthToken {...{ auth, election_id }} />
-        <Question {...{ election_id, max_string_length, setVotePlaintext, vote_plaintext }} />
-        <SubmitButton
-          {...{ auth, election_id, encrypted }}
-          disabled={!vote_plaintext || !Object.keys(vote_plaintext)}
-        />
-        <EncryptionReceipt
-          state={{
-            encrypted,
-            plaintext: { tracking, ...vote_plaintext },
-            randomizer: mapValues(randomizer, (r) => r.toString()),
-          }}
-        />
+        <Items {...{ dispatch, election_id, max_string_length, state }} />
+        <SubmitButton {...{ auth, election_id, state }} />
+        <EncryptionReceipt {...{ state }} />
       </main>
 
       <style jsx>{`
@@ -65,12 +44,4 @@ export const VotePage = (): JSX.Element => {
       <GlobalCSS />
     </>
   )
-}
-
-function generateTrackingNum() {
-  const random = Math.random()
-  const integer = String(random).slice(2)
-  const hex = Number(integer).toString(16)
-  const id = `${hex.slice(0, 4)} ${hex.slice(4, 8)} ${hex.slice(8, 12)}`.toUpperCase()
-  return id
 }
