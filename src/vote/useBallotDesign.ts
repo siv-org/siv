@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 
 type Item = {
   description?: string
+  id?: string
   options: string[]
   question?: string
   title: string

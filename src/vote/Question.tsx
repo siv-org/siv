@@ -1,5 +1,5 @@
 import { FormControlLabel, NoSsr, Radio, RadioGroup, TextField } from '@material-ui/core'
-import { useState } from 'react'
+import { Dispatch, useState } from 'react'
 
 import { encode } from '../crypto/encode'
 import { Paper } from '../protocol/Paper'
@@ -13,8 +13,8 @@ export const Question = ({
 }: {
   election_id?: string
   max_string_length: number
-  setVotePlaintext: (plaintext: string) => void
-  vote_plaintext: string
+  setVotePlaintext: Dispatch<Record<string, string>>
+  vote_plaintext: Record<string, string>
 }): JSX.Element => {
   const [other, setOther] = useState<string>()
   const [error, setError] = useState(' ')
@@ -29,14 +29,14 @@ export const Question = ({
     <NoSsr>
       <Paper noFade>
         {ballot.map((item) => (
-          <>
+          <div key={item.title}>
             <p className="title">{item.title}</p>
             <p className="description">{item.description}</p>
             <p className="question">{item.question}</p>
             <RadioGroup
               style={{ paddingLeft: '1.5rem' }}
               value={vote_plaintext}
-              onChange={(event) => setVotePlaintext(event.target.value)}
+              onChange={(event) => setVotePlaintext({ [item.id || 'vote']: event.target.value })}
             >
               {item.options.map((name) => (
                 <FormControlLabel
@@ -77,7 +77,7 @@ export const Question = ({
                         }
                         // Passed checks
                         setOther(event.target.value)
-                        setVotePlaintext(event.target.value)
+                        setVotePlaintext({ [item.id || 'vote']: event.target.value })
                       }}
                     />
                   }
@@ -87,7 +87,7 @@ export const Question = ({
               )}
             </RadioGroup>
             <br />
-          </>
+          </div>
         ))}
       </Paper>
       <style jsx>{`

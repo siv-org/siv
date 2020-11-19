@@ -28,11 +28,11 @@ Encryption Formula
 Public Key
   ${map(public_key, (v, k) => `${k}: ${v.toString()}`).join('\n  ')}
 
-${['vote', 'tracking']
+${Object.keys(state.plaintext)
   .map(
     (key) => `${key}
   plaintext: ${state.plaintext[key]}
-  encoded: ${encode(state.plaintext[key] as string)}
+  encoded: ${/*encode(state.plaintext[key] as string)*/ ''}
   randomizer: ${state.randomizer[key]}
     encrypted: ${state.encrypted[key].encrypted}
     unlock: ${state.encrypted[key].unlock}

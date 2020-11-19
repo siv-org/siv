@@ -1,6 +1,6 @@
 import { mapValues } from 'lodash-es'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useReducer } from 'react'
 
 import { encode } from '../crypto/encode'
 import encrypt from '../crypto/encrypt'
@@ -15,13 +15,17 @@ import { Question } from './Question'
 import { SubmitButton } from './SubmitButton'
 import { YourAuthToken } from './YourAuthToken'
 
+type Map = Record<string, string>
+
 export const VotePage = (): JSX.Element => {
   const tracking = generateTrackingNum()
-  const [vote_plaintext, setVotePlaintext] = useState('')
+  const [vote_plaintext, setVotePlaintext] = useReducer((prev: Map, payload: Map) => {
+    return { ...prev, [payload.key]: payload.value }
+  }, {})
   const randomizer = { tracking: pickRandomInteger(public_key.modulo), vote: pickRandomInteger(public_key.modulo) }
   const encrypted = {
     tracking: encrypt(public_key, randomizer.tracking, big(encode(tracking))),
-    vote: encrypt(public_key, randomizer.vote, big(encode(vote_plaintext))),
+    ...mapValues(vote_plaintext, (plain) => 'foo'), //encrypt(public_key, randomizer.vote, big(encode(plain)))),
   }
 
   const max_string_length = Math.floor(public_key.modulo.bitLength() / 6)
@@ -37,11 +41,14 @@ export const VotePage = (): JSX.Element => {
         <Intro />
         <YourAuthToken {...{ auth, election_id }} />
         <Question {...{ election_id, max_string_length, setVotePlaintext, vote_plaintext }} />
-        <SubmitButton {...{ auth, election_id, encrypted }} disabled={!vote_plaintext || vote_plaintext === ''} />
+        <SubmitButton
+          {...{ auth, election_id, encrypted }}
+          disabled={!vote_plaintext || !Object.keys(vote_plaintext)}
+        />
         <EncryptionReceipt
           state={{
             encrypted,
-            plaintext: { tracking, vote: vote_plaintext },
+            plaintext: { tracking, ...vote_plaintext },
             randomizer: mapValues(randomizer, (r) => r.toString()),
           }}
         />
