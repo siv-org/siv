@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
 
 type Ballot = {
+  description?: string
   options: string[]
-  question: string
+  question?: string
+  title: string
   write_in_allowed: boolean
 }
 

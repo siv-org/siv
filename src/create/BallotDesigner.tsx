@@ -8,7 +8,7 @@ export const BallotDesigner = () => {
       <textarea
         defaultValue={`[
   {
-    "question": "Who should become President?",
+    "title": "Who should become President?",
     "options": [
       "George H. W. Bush",
       "Bill Clinton",

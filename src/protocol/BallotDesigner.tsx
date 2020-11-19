@@ -3,7 +3,7 @@ export const BallotDesigner = () => (
     <textarea
       disabled
       value={`[{
-  question: 'Who should be the next mayor?',
+  title: 'Who should be the next mayor?',
   options: [
     'Angela Alioto',
     'London Breed',

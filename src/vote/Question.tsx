@@ -28,16 +28,9 @@ export const Question = ({
   return (
     <NoSsr>
       <Paper noFade>
-        <p
-          style={{
-            backgroundColor: '#e6eafb',
-            fontWeight: 'bold',
-            marginBottom: 10,
-            padding: '5px 13px',
-          }}
-        >
-          {ballot.question}
-        </p>
+        <p className="title">{ballot.title}</p>
+        <p className="description">{ballot.description}</p>
+        <p className="question">{ballot.question}</p>
         <RadioGroup
           style={{ paddingLeft: '1.5rem' }}
           value={vote_plaintext}
@@ -91,7 +84,21 @@ export const Question = ({
             />
           )}
         </RadioGroup>
+        <br />
       </Paper>
+      <style jsx>{`
+        .title {
+          font-size: 16px;
+          font-weight: bold;
+          margin-bottom: 10;
+          padding: 5px 13px;
+        }
+
+        .description,
+        .question {
+          margin: 13px;
+        }
+      `}</style>
     </NoSsr>
   )
 }
