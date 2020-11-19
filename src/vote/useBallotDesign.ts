@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-type Ballot = {
+type Item = {
   description?: string
   options: string[]
   question?: string
@@ -9,7 +9,7 @@ type Ballot = {
 }
 
 export function useBallotDesign(election_id?: string) {
-  const [design, setDesign] = useState<Ballot | null>()
+  const [design, setDesign] = useState<Item[] | null>()
 
   async function getDesign() {
     // Wait for election_id
@@ -18,7 +18,7 @@ export function useBallotDesign(election_id?: string) {
     // Ask API
     const response = await fetch(`/api/election/${election_id}/ballot-design`)
     const ballot_design = JSON.parse(await response.text())
-    setDesign(ballot_design[0])
+    setDesign(ballot_design)
   }
 
   // Download question when election_id is first loaded

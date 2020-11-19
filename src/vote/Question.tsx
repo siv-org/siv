@@ -28,63 +28,67 @@ export const Question = ({
   return (
     <NoSsr>
       <Paper noFade>
-        <p className="title">{ballot.title}</p>
-        <p className="description">{ballot.description}</p>
-        <p className="question">{ballot.question}</p>
-        <RadioGroup
-          style={{ paddingLeft: '1.5rem' }}
-          value={vote_plaintext}
-          onChange={(event) => setVotePlaintext(event.target.value)}
-        >
-          {ballot.options.map((name) => (
-            <FormControlLabel
-              control={<Radio color="primary" />}
-              key={name}
-              label={name}
-              value={name.slice(0, max_string_length)}
-            />
-          ))}
-          {ballot.write_in_allowed && (
-            <FormControlLabel
-              control={
-                <Radio
-                  color="primary"
-                  style={{ bottom: 11, position: 'relative' }}
-                  onClick={() => document.getElementById('other')?.focus()}
+        {ballot.map((item) => (
+          <>
+            <p className="title">{item.title}</p>
+            <p className="description">{item.description}</p>
+            <p className="question">{item.question}</p>
+            <RadioGroup
+              style={{ paddingLeft: '1.5rem' }}
+              value={vote_plaintext}
+              onChange={(event) => setVotePlaintext(event.target.value)}
+            >
+              {item.options.map((name) => (
+                <FormControlLabel
+                  control={<Radio color="primary" />}
+                  key={name}
+                  label={name}
+                  value={name.slice(0, max_string_length)}
                 />
-              }
-              label={
-                <TextField
-                  error={error !== ' '}
-                  helperText={error}
-                  id="other"
-                  label="Other"
-                  size="small"
-                  variant="outlined"
-                  onChange={(event) => {
-                    setError(' ')
-                    // Check for too many characters
-                    if (event.target.value.length > max_string_length) {
-                      return setError('Too many characters')
-                    }
-                    // Check for invalid characters
-                    try {
-                      encode(event.target.value)
-                    } catch {
-                      return setError('Invalid character')
-                    }
-                    // Passed checks
-                    setOther(event.target.value)
-                    setVotePlaintext(event.target.value)
-                  }}
+              ))}
+              {item.write_in_allowed && (
+                <FormControlLabel
+                  control={
+                    <Radio
+                      color="primary"
+                      style={{ bottom: 11, position: 'relative' }}
+                      onClick={() => document.getElementById('other')?.focus()}
+                    />
+                  }
+                  label={
+                    <TextField
+                      error={error !== ' '}
+                      helperText={error}
+                      id="other"
+                      label="Other"
+                      size="small"
+                      variant="outlined"
+                      onChange={(event) => {
+                        setError(' ')
+                        // Check for too many characters
+                        if (event.target.value.length > max_string_length) {
+                          return setError('Too many characters')
+                        }
+                        // Check for invalid characters
+                        try {
+                          encode(event.target.value)
+                        } catch {
+                          return setError('Invalid character')
+                        }
+                        // Passed checks
+                        setOther(event.target.value)
+                        setVotePlaintext(event.target.value)
+                      }}
+                    />
+                  }
+                  style={{ marginTop: 5 }}
+                  value={other}
                 />
-              }
-              style={{ marginTop: 5 }}
-              value={other}
-            />
-          )}
-        </RadioGroup>
-        <br />
+              )}
+            </RadioGroup>
+            <br />
+          </>
+        ))}
       </Paper>
       <style jsx>{`
         .title {
