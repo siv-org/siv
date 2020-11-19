@@ -51,43 +51,45 @@ export const Question = ({
               value={name.slice(0, max_string_length)}
             />
           ))}
-          <FormControlLabel
-            control={
-              <Radio
-                color="primary"
-                style={{ bottom: 11, position: 'relative' }}
-                onClick={() => document.getElementById('other')?.focus()}
-              />
-            }
-            label={
-              <TextField
-                error={error !== ' '}
-                helperText={error}
-                id="other"
-                label="Other"
-                size="small"
-                variant="outlined"
-                onChange={(event) => {
-                  setError(' ')
-                  // Check for too many characters
-                  if (event.target.value.length > max_string_length) {
-                    return setError('Too many characters')
-                  }
-                  // Check for invalid characters
-                  try {
-                    encode(event.target.value)
-                  } catch {
-                    return setError('Invalid character')
-                  }
-                  // Passed checks
-                  setOther(event.target.value)
-                  setVotePlaintext(event.target.value)
-                }}
-              />
-            }
-            style={{ marginTop: 5 }}
-            value={other}
-          />
+          {ballot.write_in_allowed && (
+            <FormControlLabel
+              control={
+                <Radio
+                  color="primary"
+                  style={{ bottom: 11, position: 'relative' }}
+                  onClick={() => document.getElementById('other')?.focus()}
+                />
+              }
+              label={
+                <TextField
+                  error={error !== ' '}
+                  helperText={error}
+                  id="other"
+                  label="Other"
+                  size="small"
+                  variant="outlined"
+                  onChange={(event) => {
+                    setError(' ')
+                    // Check for too many characters
+                    if (event.target.value.length > max_string_length) {
+                      return setError('Too many characters')
+                    }
+                    // Check for invalid characters
+                    try {
+                      encode(event.target.value)
+                    } catch {
+                      return setError('Invalid character')
+                    }
+                    // Passed checks
+                    setOther(event.target.value)
+                    setVotePlaintext(event.target.value)
+                  }}
+                />
+              }
+              style={{ marginTop: 5 }}
+              value={other}
+            />
+          )}
         </RadioGroup>
       </Paper>
     </NoSsr>
