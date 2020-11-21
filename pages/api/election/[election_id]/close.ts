@@ -1,6 +1,6 @@
 const { ADMIN_PASSWORD } = process.env
 
-import { shuffle } from 'lodash-es'
+import { mapValues, shuffle } from 'lodash-es'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import decrypt from '../../../../src/crypto/decrypt'
@@ -31,20 +31,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Decrypt votes
   const votes = (await election.collection('votes').get()).docs.map((doc) => {
     const { encrypted_vote } = doc.data()
-    return {
-      tracking: decode(
+    return mapValues(encrypted_vote, (value) =>
+      decode(
         decrypt(public_key, big(decryption_key), {
-          encrypted: big(encrypted_vote.tracking.encrypted),
-          unlock: big(encrypted_vote.tracking.unlock),
+          encrypted: big(value.encrypted),
+          unlock: big(value.unlock),
         }),
       ),
-      vote: decode(
-        decrypt(public_key, big(decryption_key), {
-          encrypted: big(encrypted_vote.vote.encrypted),
-          unlock: big(encrypted_vote.vote.unlock),
-        }),
-      ),
-    }
+    )
   })
 
   // Anonymize votes
