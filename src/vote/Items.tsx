@@ -100,6 +100,7 @@ export const Items = ({
           font-weight: bold;
           margin-bottom: 10;
           padding: 5px 13px;
+          white-space: pre;
         }
 
         .description,
