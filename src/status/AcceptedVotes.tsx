@@ -6,7 +6,7 @@ import { Cipher_Text } from '../crypto/types'
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
-type Vote = { auth: string; tracking: Cipher_Text; vote: Cipher_Text }
+type Vote = { auth: string } & { [index: string]: Cipher_Text }
 
 export const AcceptedVotes = (): JSX.Element => {
   const { election_id } = useRouter().query
@@ -36,6 +36,9 @@ export const AcceptedVotes = (): JSX.Element => {
   )
 }
 
-export function stringifyEncryptedVote(vote: Vote) {
-  return `{ auth: '${vote.auth}', tracking: { encrypted: '${vote.tracking.encrypted}', unlock: '${vote.tracking.unlock}' }, vote: { encrypted: '${vote.vote.encrypted}', unlock: '${vote.vote.unlock}' } }`
-}
+export const stringifyEncryptedVote = (vote: Vote) =>
+  `{ auth: ${vote.auth}${Object.keys(vote)
+    .map((key) =>
+      key === 'auth' ? '' : ` , ${key}: { encrypted: '${vote[key].encrypted}', unlock: '${vote[key].unlock}' }`,
+    )
+    .join('')} }`
