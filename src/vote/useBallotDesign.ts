@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-type Item = {
+export type Item = {
   description?: string
   id?: string
   options: string[]
