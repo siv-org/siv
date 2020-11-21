@@ -26,7 +26,10 @@ export const DecryptedVotes = (): JSX.Element => {
       <ol>
         {data.map((vote: NodeJS.Dict<string>, index: number) => (
           <li key={index}>
-            {vote.vote} [{vote.tracking}]
+            tracking: {vote.tracking}
+            {Object.keys(vote).map((key) => {
+              if (key !== 'tracking') return `, ${key}: ${vote[key]}`
+            })}
           </li>
         ))}
       </ol>
