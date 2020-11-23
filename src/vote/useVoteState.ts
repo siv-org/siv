@@ -22,6 +22,15 @@ function reducer(prev: State, payload: Map) {
   // Merge in new state from payload
   const newState = merge({ ...prev }, { plaintext: payload })
 
+  // Filter out empty values
+  Object.keys(newState.plaintext).forEach((key) => {
+    if (newState.plaintext[key] == '') {
+      Object.keys(initState).forEach((group) => {
+        delete (newState as never)[group][key]
+      })
+    }
+  })
+
   // Generate a new tracking number
   newState.plaintext.tracking = generateTrackingNum()
 
