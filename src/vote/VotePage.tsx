@@ -7,6 +7,7 @@ import { public_key } from '../protocol/election-parameters'
 import { Ballot } from './Ballot'
 import { EncryptionReceipt } from './EncryptionReceipt'
 import { Footer } from './Footer'
+import { Instructions } from './Instructions'
 import { SubmitButton } from './SubmitButton'
 import { useVoteState } from './useVoteState'
 import { YourAuthToken } from './YourAuthToken'
@@ -37,6 +38,7 @@ export const VotePage = (): JSX.Element => {
           <>
             <h1>Cast Your Vote</h1>
             <YourAuthToken {...{ auth, election_id }} />
+            <Instructions />
             <Ballot {...{ dispatch, election_id, max_string_length, state, submission_status }} />
             <SubmitButton {...{ auth, election_id, setSubmissionStatus, state, submission_status }} />
           </>
