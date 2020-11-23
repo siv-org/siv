@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 export type Item = {
   description?: string
   id?: string
-  options: { name: string; value?: string }[]
+  options: { name: string; sub?: string; value?: string }[]
   question?: string
   title: string
   write_in_allowed: boolean

@@ -34,11 +34,11 @@ export const Item = ({
         value={state.plaintext[id] || ''}
         onChange={(event) => dispatch({ [id]: event.target.value })}
       >
-        {options.map(({ name, value }) => (
+        {options.map(({ name, sub, value }) => (
           <FormControlLabel
             control={<Radio color="primary" />}
             key={name}
-            label={name}
+            label={<Label {...{ name, sub }} />}
             value={value || name.slice(0, max_string_length)}
           />
         ))}
@@ -98,5 +98,26 @@ export const Item = ({
         }
       `}</style>
     </>
+  )
+}
+
+function Label({ name, sub }: { name: string; sub?: string }) {
+  return (
+    <div>
+      {name}
+      {sub && <p>{sub}</p>}
+      <style jsx>{`
+        div {
+          position: relative;
+          margin: 8px 0;
+        }
+
+        p {
+          margin: 0 0 0px;
+          font-size: 12px;
+          opacity: 0.85;
+        }
+      `}</style>
+    </div>
   )
 }
