@@ -62,7 +62,7 @@ export const AddParticipants = () => {
       </div>
       {election_id && (
         <OnClickButton
-          style={{ float: 'right', marginRight: 0 }}
+          style={{ float: 'right', marginRight: 0, padding: '8px 17px' }}
           onClick={async () => {
             const { status } = await api(`election/${election_id}/close?password=${localStorage.password}`)
             if (status === 201) setClosed(true)
