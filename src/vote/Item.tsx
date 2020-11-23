@@ -34,12 +34,12 @@ export const Item = ({
         value={state.plaintext[id] || ''}
         onChange={(event) => dispatch({ [id]: event.target.value })}
       >
-        {options.map((name) => (
+        {options.map(({ name, value }) => (
           <FormControlLabel
             control={<Radio color="primary" />}
             key={name}
             label={name}
-            value={name.slice(0, max_string_length)}
+            value={value || name.slice(0, max_string_length)}
           />
         ))}
         {write_in_allowed && (

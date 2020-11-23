@@ -10,9 +10,9 @@ export const BallotDesigner = () => {
   {
     "title": "Who should become President?",
     "options": [
-      "George H. W. Bush",
-      "Bill Clinton",
-      "Ross Perot"
+      { "name": "George H. W. Bush" },
+      { "name": "Bill Clinton" },
+      { "name": "Ross Perot" }
     ],
     "write_in_allowed": true
   }
