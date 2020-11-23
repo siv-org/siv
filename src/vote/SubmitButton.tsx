@@ -31,6 +31,10 @@ export const SubmitButton = ({
           setSubmissionStatus('Submitting...')
           const { status } = await api('submit-vote', { auth, election_id, encrypted_vote })
           setSubmissionStatus(status === 200 ? 'Submitted.' : 'Error')
+          // Scroll page to top
+          if (status === 200) {
+            window.scrollTo(0, 0)
+          }
         }}
       >
         {submission_status || 'Submit'}
