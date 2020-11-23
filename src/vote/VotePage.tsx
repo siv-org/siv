@@ -5,7 +5,7 @@ import { Head } from '../Head'
 import { public_key } from '../protocol/election-parameters'
 import { Ballot } from './Ballot'
 import { EncryptionReceipt } from './EncryptionReceipt'
-import { Intro } from './Intro'
+import { Footer } from './Footer'
 import { SubmitButton } from './SubmitButton'
 import { useVoteState } from './useVoteState'
 import { YourAuthToken } from './YourAuthToken'
@@ -26,11 +26,11 @@ export const VotePage = (): JSX.Element => {
 
       <main>
         <h1>Cast Your Vote</h1>
-        <Intro />
         <YourAuthToken {...{ auth, election_id }} />
         <Ballot {...{ dispatch, election_id, max_string_length, state }} />
         <SubmitButton {...{ auth, election_id, state }} />
         <EncryptionReceipt {...{ state }} />
+        <Footer />
       </main>
 
       <style jsx>{`
