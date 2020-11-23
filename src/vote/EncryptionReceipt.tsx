@@ -10,7 +10,10 @@ export function EncryptionReceipt({ state }: { state: State }): JSX.Element {
     <NoSsr>
       <p>
         Your secret Tracking #: <b>{state.plaintext.tracking}</b>
+        <br />
+        <em>Save this to easily verify your vote was counted correctly.</em>
       </p>
+      <br />
       <p>Your Private Encryption Receipt:</p>
       <Paper noFade style={{ padding: '1.5rem' }}>
         <code>
@@ -38,6 +41,10 @@ ${Object.keys(state.plaintext)
       </Paper>
 
       <style jsx>{`
+        em {
+          font-size: 12px;
+        }
+
         code {
           font-size: 11px;
           max-width: 100%;
