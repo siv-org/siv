@@ -11,7 +11,7 @@ export function EncryptionReceipt({ state }: { state: State }): JSX.Element {
       <Paper noFade>
         <code>
           {`
-ENCRYPTION RECEIPT - Save this for Verification
+PRIVATE ENCRYPTION RECEIPT - Save this for Verification
 
 Encrypted @ ${new Date().toString()}
 
