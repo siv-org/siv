@@ -32,14 +32,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       return sendEmail({
         recipient: voter,
         subject: 'Vote Invitation',
-        text: `Voting is now open.
-
-Votes accepted for the next 24 hours.
-
+        text: `<h2 style="margin: 0">Vote Invitation</h2>
 Click here to securely cast your vote:
 <a href="${link}">${link}</a>
 
-<em style="font-size:10px; opacity: 0.6;">This link is unique for you. Don't share it with anyone, or they'll be able to take your vote.</em>`,
+<em style="font-size:13px; opacity: 0.6;">This link is unique for you. Don't share it with anyone.</em>`,
       })
     }),
   )

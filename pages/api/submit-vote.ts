@@ -30,15 +30,17 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   await sendEmail({
     recipient: email,
     subject: 'Vote Confirmation',
-    text: `Your vote has been received. Thank you.
+    text: `<h2 style="margin: 0">Your vote was successfully submitted. Thank you.</h2>
+  The election results will be posted at <a href="${link}">${link}</a> when the election closes.
 
-  The final results will be posted at <a href="${link}">${link}</a> when the election closes.
+  <hr />
 
-  Here is the encrypted vote you submitted:
+  For your records, here is the encrypted vote you submitted.
+  You can confirm it matches your private Encryption Receipt.
 
 <code style="margin: 0 30px;">${stringifyEncryptedVote({ auth, ...encrypted_vote })}</code>
 
-  <em style="font-size:10px">If you did not submit this ballot, reply to report a problem.</em>`,
+  <em style="font-size:13px">You can press reply if you have a problem.</em>`,
   })
 
   res.status(200).end('Success.')

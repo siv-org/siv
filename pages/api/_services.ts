@@ -38,7 +38,7 @@ export const sendEmail = ({ recipient, subject, text }: { recipient: string; sub
     <table align="center" style="text-align: left; max-width: 600px; background-color: white;">
         <tr>
           <td align="center" style="text-align:center; background: linear-gradient(90deg, #010b26 0%, #072054 100%);">
-            <a href="https://secureinternetvoting.org" style="font-size: calc(0.9vw + 0.9rem); font-weight: 700; color: white; line-height: 60px; text-decoration: none;">
+            <a href="https://secureinternetvoting.org" style="font-size: 17px; font-weight: 700; color: white; line-height: 50px; text-decoration: none;">
               Secure Internet Voting
             </a>
           </td>
