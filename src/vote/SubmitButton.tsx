@@ -1,12 +1,23 @@
 import { mapValues } from 'lodash-es'
-import { useState } from 'react'
+import { Dispatch, SetStateAction } from 'react'
 
 import { api } from '../api-helper'
 import { OnClickButton } from '../landing-page/Button'
 import { State } from './useVoteState'
 
-export const SubmitButton = ({ auth, election_id, state }: { auth?: string; election_id?: string; state: State }) => {
-  const [status, setStatus] = useState<string>()
+export const SubmitButton = ({
+  auth,
+  election_id,
+  setSubmissionStatus,
+  state,
+  submission_status,
+}: {
+  auth?: string
+  election_id?: string
+  setSubmissionStatus: Dispatch<SetStateAction<string | undefined>>
+  state: State
+  submission_status?: string
+}) => {
   const encrypted_vote = mapValues(state.encrypted, (k) => mapValues(k, (v) => v.toString()))
 
   const disabled = !Object.keys(state.plaintext).length
@@ -14,15 +25,15 @@ export const SubmitButton = ({ auth, election_id, state }: { auth?: string; elec
   return (
     <div>
       <OnClickButton
-        disabled={disabled || !!status}
+        disabled={disabled || !!submission_status}
         style={{ marginRight: 0 }}
         onClick={async () => {
-          setStatus('Submitting...')
+          setSubmissionStatus('Submitting...')
           const { status } = await api('submit-vote', { auth, election_id, encrypted_vote })
-          setStatus(status === 200 ? 'Submitted.' : 'Error')
+          setSubmissionStatus(status === 200 ? 'Submitted.' : 'Error')
         }}
       >
-        {status || 'Submit'}
+        {submission_status || 'Submit'}
       </OnClickButton>
       <style jsx>{`
         div {

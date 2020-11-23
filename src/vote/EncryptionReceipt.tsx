@@ -8,7 +8,7 @@ import { State } from './useVoteState'
 export function EncryptionReceipt({ state }: { state: State }): JSX.Element {
   return (
     <NoSsr>
-      <Paper>
+      <Paper noFade>
         <code>
           {`
 ENCRYPTION RECEIPT - Save this for Verification
