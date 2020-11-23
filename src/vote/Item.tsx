@@ -40,6 +40,12 @@ export const Item = ({
             key={name}
             label={<Label {...{ name, sub }} />}
             value={value || name.slice(0, max_string_length)}
+            onClick={() => {
+              // Deselect if already selected
+              if (state.plaintext[id] === value || name.slice(0, max_string_length)) {
+                dispatch({ [id]: '' })
+              }
+            }}
           />
         ))}
         {write_in_allowed && (
