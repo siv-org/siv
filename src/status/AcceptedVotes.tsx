@@ -39,6 +39,6 @@ export const AcceptedVotes = (): JSX.Element => {
 export const stringifyEncryptedVote = (vote: Vote) =>
   `{ auth: ${vote.auth}${Object.keys(vote)
     .map((key) =>
-      key === 'auth' ? '' : ` , ${key}: { encrypted: '${vote[key].encrypted}', unlock: '${vote[key].unlock}' }`,
+      key === 'auth' ? '' : `, ${key}: { encrypted: '${vote[key].encrypted}', unlock: '${vote[key].unlock}' }`,
     )
     .join('')} }`
