@@ -38,9 +38,11 @@ export const VotePage = (): JSX.Element => {
           <>
             <h1>Cast Your Vote</h1>
             <YourAuthToken {...{ auth, election_id }} />
-            <Instructions />
-            <Ballot {...{ dispatch, election_id, max_string_length, state, submission_status }} />
-            <SubmitButton {...{ auth, election_id, setSubmissionStatus, state, submission_status }} />
+            <div className="fade-in">
+              <Instructions />
+              <Ballot {...{ dispatch, election_id, max_string_length, state, submission_status }} />
+              <SubmitButton {...{ auth, election_id, setSubmissionStatus, state, submission_status }} />
+            </div>
           </>
         )}
         <Footer />
@@ -52,6 +54,18 @@ export const VotePage = (): JSX.Element => {
           width: 100%;
           margin: 0 auto;
           padding: 1rem;
+        }
+
+        .fade-in {
+          animation: fadeIn ease 2s;
+        }
+        @keyframes fadeIn {
+          0% {
+            opacity: 0;
+          }
+          100% {
+            opacity: 1;
+          }
         }
       `}</style>
       <GlobalCSS />
