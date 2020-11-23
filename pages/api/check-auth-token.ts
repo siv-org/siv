@@ -54,5 +54,5 @@ export async function validateAuthToken(
   // TODO Has Auth Token been invalidated?
 
   // Passed all checks
-  pass('Your Voter Auth Token is valid.')
+  pass('Your Voter Authorization Token is valid.')
 }
