@@ -8,12 +8,13 @@ import { State } from './useVoteState'
 export function EncryptionReceipt({ state }: { state: State }): JSX.Element {
   return (
     <NoSsr>
-      <Paper noFade>
+      <p>
+        Your secret Tracking #: <b>{state.plaintext.tracking}</b>
+      </p>
+      <p>Your Private Encryption Receipt:</p>
+      <Paper noFade style={{ padding: '1.5rem' }}>
         <code>
-          {`
-PRIVATE ENCRYPTION RECEIPT - Save this for Verification
-
-Encrypted @ ${new Date().toString()}
+          {`Encrypted @ ${new Date().toString()}
 
 Encryption Formula
   message = encoded * (recipient ^ randomizer) % modulo
@@ -32,8 +33,7 @@ ${Object.keys(state.plaintext)
     unlock: ${state.encrypted[key].unlock}
 `,
   )
-  .join('\n')}
-`}
+  .join('\n')}`}
         </code>
       </Paper>
 
