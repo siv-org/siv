@@ -1,3 +1,5 @@
+import { CSSProperties } from 'react'
+
 import { Button } from './Button'
 
 export const SideBySide = ({
@@ -6,6 +8,7 @@ export const SideBySide = ({
   graphic,
   graphicCaption,
   headline,
+  headlineStyle = {},
   noDarkFilter,
   smallHeadline,
   text,
@@ -15,6 +18,7 @@ export const SideBySide = ({
   graphic: string
   graphicCaption?: string
   headline?: string | JSX.Element
+  headlineStyle?: CSSProperties
   noDarkFilter?: boolean
   smallHeadline?: boolean
   text: string
@@ -27,7 +31,11 @@ export const SideBySide = ({
     <div className="text-col">
       {smallHeadline ? (
         <>
-          {headline && <h4 className="primary">{headline}</h4>}
+          {headline && (
+            <h4 className="primary" style={{ ...headlineStyle }}>
+              {headline}
+            </h4>
+          )}
           <h3>{text}</h3>
         </>
       ) : (

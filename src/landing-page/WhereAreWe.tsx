@@ -7,6 +7,7 @@ export const WhereAreWe = (): JSX.Element => (
       smallHeadline
       graphic="voting.jpg"
       headline="Unusual Times"
+      headlineStyle={{ color: '#222' }}
       text="As states work to protect citizen health, we face unprecedented challenges with safe and reliable voting."
     />
     <SideBySide
