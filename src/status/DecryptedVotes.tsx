@@ -21,6 +21,7 @@ export const DecryptedVotes = (): JSX.Element => {
       <Tally {...{ votes }} />
       <br />
       <h3>Decrypted Votes</h3>
+      <p>Order has been randomized.</p>
       <ol>
         {votes.map((vote: NodeJS.Dict<string>, index: number) => (
           <li key={index}>
@@ -31,6 +32,17 @@ export const DecryptedVotes = (): JSX.Element => {
           </li>
         ))}
       </ol>
+      <style jsx>{`
+        h3 {
+          margin-bottom: 5px;
+        }
+
+        p {
+          margin-top: 0px;
+          font-size: 13px;
+          font-style: italic;
+        }
+      `}</style>
     </div>
   )
 }
