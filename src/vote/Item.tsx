@@ -31,7 +31,7 @@ export const Item = ({
       <p className="question">{question}</p>
       <RadioGroup
         style={{ paddingLeft: '1.5rem' }}
-        value={state.plaintext[id]}
+        value={state.plaintext[id] || ''}
         onChange={(event) => dispatch({ [id]: event.target.value })}
       >
         {options.map((name) => (
