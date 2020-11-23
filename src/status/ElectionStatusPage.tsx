@@ -14,8 +14,8 @@ export const ElectionStatusPage = (): JSX.Element => {
       <main>
         <h1>Election Status</h1>
         <h2>ID: {election_id}</h2>
-        <AcceptedVotes />
         <DecryptedVotes />
+        <AcceptedVotes />
       </main>
 
       <style jsx>{`
