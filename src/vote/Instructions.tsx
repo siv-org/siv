@@ -1,11 +1,19 @@
 export const Instructions = () => (
-  <p>
-    <b>Instructions:</b> Mark your selections then press <em>Submit</em> at the bottom.
-    <br />
-    Your choices are encrypted on your own device for strong privacy.
+  <>
+    <p>
+      <b>Instructions:</b> Mark your selections then press <em>Submit</em> at the bottom.
+    </p>
+    <p>
+      <img src="/vote/lock.png" width="12px" />
+      Your choices are encrypted on your own device for strong privacy.
+    </p>
     <style jsx>{`
-      p {
+      img {
+        margin-right: 5px;
+        position: relative;
+        top: 3px;
+        opacity: 0.9;
       }
     `}</style>
-  </p>
+  </>
 )
