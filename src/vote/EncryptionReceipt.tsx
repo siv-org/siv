@@ -11,7 +11,7 @@ export function EncryptionReceipt({ state }: { state: State & { submitted_at: Da
       <p>
         Your secret Tracking #: <b>{state.plaintext.tracking}</b>
         <br />
-        <em>Save this to easily verify your vote was counted correctly.</em>
+        <em>Use this to verify your vote was counted correctly.</em>
       </p>
       <br />
       <p>Your Private Encryption Receipt:</p>
