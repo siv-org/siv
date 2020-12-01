@@ -1,4 +1,3 @@
-import { mapValues } from 'lodash-es'
 import { Dispatch, useState } from 'react'
 
 import { api } from '../api-helper'
@@ -16,8 +15,6 @@ export const SubmitButton = ({
   election_id?: string
   state: State
 }) => {
-  const encrypted_vote = mapValues(state.encrypted, (k) => mapValues(k, (v) => v.toString()))
-
   const [buttonText, setButtonText] = useState('Submit')
 
   return (
@@ -28,7 +25,7 @@ export const SubmitButton = ({
         onClick={async () => {
           setButtonText('Submitting...')
 
-          const { status } = await api('submit-vote', { auth, election_id, encrypted_vote })
+          const { status } = await api('submit-vote', { auth, election_id, encrypted_vote: state.encrypted })
 
           // Stop if there was there an error
           if (status !== 200) return setButtonText('Error')

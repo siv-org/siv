@@ -12,7 +12,7 @@ import { useLocalStorageReducer } from './useLocalStorage'
 type Map = Record<string, string>
 export type State = {
   encoded: Map
-  encrypted: Record<string, ReturnType<typeof encrypt>>
+  encrypted: Record<string, { encrypted: string; unlock: string }>
   plaintext: Map
   randomizer: Map
   submitted_at?: Date
@@ -20,7 +20,7 @@ export type State = {
 
 // Core state logic
 function reducer(prev: State, payload: Map) {
-  // Special handling for "submit" payload
+  // Special handler for the "submit" payload
   if (payload.submit) {
     return { ...prev, submitted_at: new Date() }
   }
@@ -46,15 +46,18 @@ function reducer(prev: State, payload: Map) {
 
   // For each key in plaintext
   const encrypted = mapValues(newState.plaintext, (value, key) => {
-    // Generate a randomizer
+    // Encode the string into an integer
+    encoded[key] = encode(value)
+
+    // Generate & store a randomizer
     const random = pickRandomInteger(public_key.modulo)
     randomizer[key] = random.toString()
 
-    // Store the encoded value
-    encoded[key] = encode(value as string)
+    // Encrypt the encoded value w/ its randomizer
+    const cipher = encrypt(public_key, random, big(encoded[key]))
 
-    // Encrypt the value
-    return encrypt(public_key, random, big(encoded[key] as string))
+    // Store the encrypted cipher as strings
+    return mapValues(cipher, (c) => c.toString())
   })
 
   return merge(newState, { encoded, encrypted, randomizer })
