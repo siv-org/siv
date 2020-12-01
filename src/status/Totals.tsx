@@ -26,7 +26,7 @@ export const Totals = ({ votes }: { votes: Record<string, string>[] }): JSX.Elem
       <h3>Vote Totals:</h3>
       {Object.keys(tallies).map((item) => (
         <div key={item}>
-          <h4>On {item}</h4>
+          {Object.keys(tallies).length > 1 && <h4>On `{item}`</h4>}
           <ul>
             {Object.keys(tallies[item]).map((selection) => (
               <li key={selection}>
