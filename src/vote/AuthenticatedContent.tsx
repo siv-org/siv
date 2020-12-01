@@ -1,5 +1,3 @@
-import { useState } from 'react'
-
 import { GlobalCSS } from '../GlobalCSS'
 import { public_key } from '../protocol/election-parameters'
 import { Ballot } from './Ballot'
@@ -13,14 +11,12 @@ export const AuthenticatedContent = ({ auth, election_id }: { auth: string; elec
   // Initialize local vote state on client
   const [state, dispatch] = useVoteState(`store-${election_id}-${auth}`)
 
-  const [submission_status, setSubmissionStatus] = useState<string>()
-
   // Calculate maximum write-in string length
   const max_string_length = Math.floor(public_key.modulo.bitLength() / 6)
 
   return (
     <>
-      {submission_status === 'Submitted.' ? (
+      {state.submitted_at ? (
         <>
           <h1>Vote Submitted.</h1>
           <EncryptionReceipt {...{ state }} />
@@ -31,8 +27,8 @@ export const AuthenticatedContent = ({ auth, election_id }: { auth: string; elec
           <YourAuthToken {...{ auth, election_id }} />
           <div className="fade-in">
             <Instructions />
-            <Ballot {...{ dispatch, election_id, max_string_length, state, submission_status }} />
-            <SubmitButton {...{ auth, election_id, setSubmissionStatus, state, submission_status }} />
+            <Ballot {...{ dispatch, election_id, max_string_length, state }} />
+            <SubmitButton {...{ auth, dispatch, election_id, state }} />
           </div>
         </>
       )}

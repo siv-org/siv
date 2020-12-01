@@ -15,10 +15,16 @@ export type State = {
   encrypted: Record<string, ReturnType<typeof encrypt>>
   plaintext: Map
   randomizer: Map
+  submitted_at?: Date
 }
 
 // Core state logic
 function reducer(prev: State, payload: Map) {
+  // Special handling for "submit" payload
+  if (payload.submit) {
+    return { ...prev, submitted_at: new Date() }
+  }
+
   // Merge in new state from payload
   const newState = merge({ ...prev }, { plaintext: payload })
 

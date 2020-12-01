@@ -5,7 +5,7 @@ import { public_key } from '../protocol/election-parameters'
 import { Paper } from '../protocol/Paper'
 import { State } from './useVoteState'
 
-export function EncryptionReceipt({ state }: { state: State }): JSX.Element {
+export function EncryptionReceipt({ state }: { state: State & { submitted_at: Date } }): JSX.Element {
   return (
     <NoSsr>
       <p>
@@ -17,7 +17,7 @@ export function EncryptionReceipt({ state }: { state: State }): JSX.Element {
       <p>Your Private Encryption Receipt:</p>
       <Paper noFade style={{ padding: '1.5rem' }}>
         <code>
-          {`Encrypted @ ${new Date().toString()}
+          {`Submitted @ ${new Date(state.submitted_at)}
 
 Encryption Formula
   message = encoded * (recipient ^ randomizer) % modulo

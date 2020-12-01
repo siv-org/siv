@@ -1,5 +1,5 @@
 import { mapValues } from 'lodash-es'
-import { Dispatch, SetStateAction } from 'react'
+import { Dispatch, useState } from 'react'
 
 import { api } from '../api-helper'
 import { OnClickButton } from '../landing-page/Button'
@@ -7,37 +7,39 @@ import { State } from './useVoteState'
 
 export const SubmitButton = ({
   auth,
+  dispatch,
   election_id,
-  setSubmissionStatus,
   state,
-  submission_status,
 }: {
   auth?: string
+  dispatch: Dispatch<Record<string, string>>
   election_id?: string
-  setSubmissionStatus: Dispatch<SetStateAction<string | undefined>>
   state: State
-  submission_status?: string
 }) => {
   const encrypted_vote = mapValues(state.encrypted, (k) => mapValues(k, (v) => v.toString()))
 
-  const disabled = !Object.keys(state.plaintext).length
+  const [buttonText, setButtonText] = useState('Submit')
 
   return (
     <div>
       <OnClickButton
-        disabled={disabled || !!submission_status}
+        disabled={Object.keys(state.plaintext).length === 0 || buttonText !== 'Submit'}
         style={{ marginRight: 0 }}
         onClick={async () => {
-          setSubmissionStatus('Submitting...')
+          setButtonText('Submitting...')
+
           const { status } = await api('submit-vote', { auth, election_id, encrypted_vote })
-          setSubmissionStatus(status === 200 ? 'Submitted.' : 'Error')
+
+          // Stop if there was there an error
+          if (status !== 200) return setButtonText('Error')
+
+          dispatch({ submit: 'true' })
+
           // Scroll page to top
-          if (status === 200) {
-            window.scrollTo(0, 0)
-          }
+          window.scrollTo(0, 0)
         }}
       >
-        {submission_status || 'Submit'}
+        {buttonText}
       </OnClickButton>
       <style jsx>{`
         div {
