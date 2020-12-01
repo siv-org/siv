@@ -1,5 +1,4 @@
 import { mapValues, merge } from 'lodash-es'
-import { useReducer } from 'react'
 
 import { encode } from '../crypto/encode'
 import encrypt from '../crypto/encrypt'
@@ -7,6 +6,7 @@ import pickRandomInteger from '../crypto/pick-random-integer'
 import { big } from '../crypto/types'
 import { public_key } from '../protocol/election-parameters'
 import { generateTrackingNum } from './tracking-num'
+import { useLocalStorageReducer } from './useLocalStorage'
 
 // Define our types
 type Map = Record<string, string>
@@ -62,4 +62,4 @@ const initState = {
 }
 
 // Export consumable hook that returns [state, dispatch]
-export const useVoteState = () => useReducer(reducer, initState)
+export const useVoteState = (storage_key: string) => useLocalStorageReducer(storage_key, reducer, initState)
