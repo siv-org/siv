@@ -2,7 +2,7 @@ import ms from 'ms'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
-import { Tally } from './Tally'
+import { Totals } from './Totals'
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
@@ -18,7 +18,7 @@ export const DecryptedVotes = (): JSX.Element => {
 
   return (
     <div>
-      <Tally {...{ votes }} />
+      <Totals {...{ votes }} />
       <br />
       <h3>Decrypted Votes</h3>
       <p>Order has been randomized.</p>

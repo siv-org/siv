@@ -13,7 +13,9 @@ export const ElectionStatusPage = (): JSX.Element => {
 
       <main>
         <h1>Election Status</h1>
-        <h2>ID: {election_id}</h2>
+        <p>
+          ID: <b>{election_id}</b>
+        </p>
         <DecryptedVotes />
         <AcceptedVotes />
       </main>

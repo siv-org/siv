@@ -1,4 +1,4 @@
-export const Tally = ({ votes }: { votes: Record<string, string>[] }): JSX.Element => {
+export const Totals = ({ votes }: { votes: Record<string, string>[] }): JSX.Element => {
   const tallies: { [index: string]: { [index: string]: number } } = {}
   // Sum up votes
   votes.forEach((vote) => {
@@ -22,7 +22,7 @@ export const Tally = ({ votes }: { votes: Record<string, string>[] }): JSX.Eleme
   // const ordered = orderBy(tuples, 'votes', 'desc')
 
   return (
-    <div className="results">
+    <div className="totals">
       <h3>Vote Totals:</h3>
       {Object.keys(tallies).map((item) => (
         <>
@@ -37,8 +37,9 @@ export const Tally = ({ votes }: { votes: Record<string, string>[] }): JSX.Eleme
         </>
       ))}
       <style jsx>{`
-        .results {
-          border: 2px solid #999;
+        .totals {
+          background: #f9f9f9;
+          border: 2px solid #ddd;
           border-radius: 7px;
           padding: 1rem;
         }

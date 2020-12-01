@@ -21,7 +21,7 @@ export const AcceptedVotes = (): JSX.Element => {
 
   return (
     <div>
-      <h3>Accepted Votes</h3>
+      <h3>All Accepted Votes</h3>
       <ol>
         {data.map((vote: Vote, index: number) => (
           <li key={index}>{stringifyEncryptedVote(vote)}</li>
