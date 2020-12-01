@@ -26,8 +26,8 @@ export const Ballot = ({
   return (
     <NoSsr>
       <Paper noFade>
-        {ballot.map((item) => (
-          <Item {...{ ...item, dispatch, max_string_length, state }} key={item.id} />
+        {ballot.map((item, index) => (
+          <Item {...{ ...item, dispatch, max_string_length, state }} key={index} />
         ))}
       </Paper>
       <style jsx>{`
