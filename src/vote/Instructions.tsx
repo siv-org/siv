@@ -9,7 +9,7 @@ export const Instructions = () => (
     </p>
     <style jsx>{`
       img {
-        margin-right: 5px;
+        margin-right: 7px;
         position: relative;
         top: 3px;
         opacity: 0.9;
