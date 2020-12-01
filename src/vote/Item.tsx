@@ -42,7 +42,7 @@ export const Item = ({
             value={value || name.slice(0, max_string_length)}
             onClick={() => {
               // Deselect if already selected
-              if (state.plaintext[id] === value || name.slice(0, max_string_length)) {
+              if (state.plaintext[id] === (value || name.slice(0, max_string_length))) {
                 dispatch({ [id]: '' })
               }
             }}
