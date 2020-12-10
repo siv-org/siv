@@ -21,9 +21,7 @@ export const ESignPage = (): JSX.Element => {
         <p>
           This vote is intended exclusively <b>David Ernst</b>. Sign your name in the box below.
         </p>
-        <div className="sig-container">
-          <SignaturePad redrawOnResize ref={signaturePad} />
-        </div>
+        <SignaturePad redrawOnResize ref={signaturePad} />
         <div className="buttons">
           <button onClick={() => signaturePad.current?.clear() || setSubmitted(false)}>Clear</button>
           <button onClick={() => setSubmitted(true)}>Submit</button>
@@ -32,18 +30,18 @@ export const ESignPage = (): JSX.Element => {
         <Footer />
       </main>
 
+      <style global jsx>{`
+        canvas {
+          border: 1px solid black;
+          height: 200px;
+        }
+      `}</style>
       <style jsx>{`
         main {
           max-width: 750px;
           width: 100%;
           margin: 0 auto;
           padding: 1rem;
-        }
-
-        .sig-container {
-          border: 1px solid black;
-          height: 200px;
-          overflow: hidden;
         }
 
         .buttons {
