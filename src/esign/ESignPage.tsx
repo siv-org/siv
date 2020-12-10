@@ -5,8 +5,12 @@ import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
 import { Footer } from './Footer'
 
+type Pad = {
+  clear: () => void
+}
+
 export const ESignPage = (): JSX.Element => {
-  const signaturePad = useRef(null)
+  const signaturePad = useRef<Pad>(null)
 
   return (
     <>
@@ -20,7 +24,7 @@ export const ESignPage = (): JSX.Element => {
           <SignaturePad redrawOnResize ref={signaturePad} />
         </div>
         <div className="buttons">
-          <button onClick={() => signaturePad.current.clear()}>Clear</button>
+          <button onClick={() => signaturePad.current?.clear()}>Clear</button>
           <button>Submit</button>
         </div>
         <Footer />
