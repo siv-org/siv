@@ -18,9 +18,29 @@ export const AddParticipants = () => {
           disabled={pubKey}
           message={`Trustees made pub key ${public_key.recipient.toString()}`}
           type="trustees"
-          onSubmit={() => {
-            setPubKey(true)
-            return true
+          onSubmit={async () => {
+            // Grab trustees from textarea
+            const trustees = (document.getElementById('trustees-input') as HTMLInputElement).value
+              .split('\n')
+              .filter((v) => v !== '')
+
+            // Call backend endpoint
+            const response = await api('invite-trustees', { password: localStorage.password, trustees })
+
+            // Success case
+            if (response.status === 201) {
+              setElectionID(await response.text())
+
+              setPubKey(true)
+              return true
+            }
+
+            // Reset password if incorrect
+            if (response.status === 401) {
+              localStorage.removeItem('password')
+              alert('Invalid Password')
+            }
+            return false
           }}
         />
         <AddGroup
@@ -51,7 +71,7 @@ export const AddParticipants = () => {
               return true
             }
 
-            // Need to reset password
+            // Reset password if incorrect
             if (response.status === 401) {
               localStorage.removeItem('password')
               alert('Invalid Password')
