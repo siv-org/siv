@@ -3,15 +3,7 @@ import { useRouter } from 'next/router'
 import { HeaderBar } from '../create/HeaderBar'
 import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
-import { Attendees } from './Attendees'
-import { CalculatePrivateKeyshare } from './CalculatePrivateKeyshare'
-import { MessagingKeys } from './MessagingKeys'
-import { PairwiseShares } from './PairwiseShares'
-import { Parameters } from './Parameters'
-import { PrivateCoefficients } from './PrivateCoefficients'
-import { PublicBroadcastValues } from './PublicBroadcastValues'
-import { PublicThresholdKey } from './PublicThresholdKey'
-import { VerifyShares } from './VerifyShares'
+import { AuthenticatedContent } from './AuthenticatedContent'
 
 export const KeyGenerationPage = (): JSX.Element => {
   // Grab election parameters from URL
@@ -25,15 +17,7 @@ export const KeyGenerationPage = (): JSX.Element => {
       <main>
         <h1>Threshold Key Generation</h1>
         <h4>Election ID: {election_id}</h4>
-        <Attendees />
-        <Parameters />
-        <MessagingKeys />
-        <PrivateCoefficients />
-        <PublicBroadcastValues />
-        <PairwiseShares />
-        <VerifyShares />
-        <CalculatePrivateKeyshare />
-        <PublicThresholdKey />
+        {election_id && auth && <AuthenticatedContent {...{ auth, election_id }} />}
       </main>
 
       <style jsx>{`
