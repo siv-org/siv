@@ -1,7 +1,8 @@
 import { Private } from './Private'
+import { State } from './useKeyGenState'
 import { YouLabel } from './YouLabel'
 
-export const MessagingKeys = ({ state }) => {
+export const MessagingKeys = ({ state }: { state: State }) => {
   if (state.start !== true) {
     return <></>
   }

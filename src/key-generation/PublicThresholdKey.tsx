@@ -1,4 +1,6 @@
-export const PublicThresholdKey = ({ state }) => {
+import { State } from './useKeyGenState'
+
+export const PublicThresholdKey = ({ state }: { state: State }) => {
   if (state.start !== true) {
     return <></>
   }

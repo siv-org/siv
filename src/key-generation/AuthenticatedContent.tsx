@@ -10,9 +10,15 @@ import { PublicThresholdKey } from './PublicThresholdKey'
 import { useKeyGenState } from './useKeyGenState'
 import { VerifyShares } from './VerifyShares'
 
-export const AuthenticatedContent = ({ auth, election_id }: { auth: string; election_id: string }): JSX.Element => {
+export const AuthenticatedContent = ({
+  election_id,
+  trustee_auth,
+}: {
+  election_id: string
+  trustee_auth: string
+}): JSX.Element => {
   // Initialize local vote state on client
-  const [state, dispatch] = useKeyGenState(`keygen-${election_id}-${auth}`)
+  const [state] = useKeyGenState(`keygen-${election_id}-${trustee_auth}`)
 
   return (
     <>

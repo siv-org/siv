@@ -7,7 +7,7 @@ import { AuthenticatedContent } from './AuthenticatedContent'
 
 export const KeyGenerationPage = (): JSX.Element => {
   // Grab election parameters from URL
-  const { auth, election_id } = useRouter().query as { auth?: string; election_id?: string }
+  const { election_id, trustee_auth } = useRouter().query as { election_id?: string; trustee_auth?: string }
 
   return (
     <>
@@ -17,7 +17,7 @@ export const KeyGenerationPage = (): JSX.Element => {
       <main>
         <h1>Threshold Key Generation</h1>
         <h4>Election ID: {election_id}</h4>
-        {election_id && auth && <AuthenticatedContent {...{ auth, election_id }} />}
+        {election_id && trustee_auth && <AuthenticatedContent {...{ election_id, trustee_auth }} />}
       </main>
 
       <style jsx>{`

@@ -1,4 +1,6 @@
-export const Parameters = ({ state }) => {
+import { State } from './useKeyGenState'
+
+export const Parameters = ({ state }: { state: State }) => {
   if (state.start !== true) {
     return <></>
   }

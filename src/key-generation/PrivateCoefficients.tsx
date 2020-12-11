@@ -1,6 +1,7 @@
 import { Private } from './Private'
+import { State } from './useKeyGenState'
 
-export const PrivateCoefficients = ({ state }) => {
+export const PrivateCoefficients = ({ state }: { state: State }) => {
   if (state.start !== true) {
     return <></>
   }
