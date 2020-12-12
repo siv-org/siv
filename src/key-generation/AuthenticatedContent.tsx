@@ -18,11 +18,12 @@ export const AuthenticatedContent = ({
   trustee_auth: string
 }): JSX.Element => {
   // Initialize local vote state on client
-  const [state] = useKeyGenState(`keygen-${election_id}-${trustee_auth}`)
+  const [state, dispatch] = useKeyGenState({ election_id, trustee_auth })
+  console.log('state:', state)
 
   return (
     <>
-      <Attendees />
+      <Attendees {...{ dispatch, state }} />
       <Parameters {...{ state }} />
       <MessagingKeys {...{ state }} />
       <PrivateCoefficients {...{ state }} />

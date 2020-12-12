@@ -1,37 +1,45 @@
+import { useEffect } from 'react'
+
+import { StateAndDispatch } from './useKeyGenState'
 import { YouLabel } from './YouLabel'
 
-export const Attendees = () => (
-  <>
-    <h3>I. Attendees:</h3>
-    <ol>
-      <li>admin@secureinternetvoting.org</li>
-      <li>
-        trustee_1@gmail.com <YouLabel />
-      </li>
-      <li>other_trustee@yahoo.com</li>
-    </ol>
-    <Awaiting />
-  </>
-)
+export const Attendees = ({ dispatch, state }: StateAndDispatch) => {
+  async function getTrustees() {
+    // Wait for election_id
+    if (!state.election_id) return
 
-const Awaiting = () => {
-  const awaiting = ['invited1', 'invited2', 'invited3']
-  awaiting.shift()
-  awaiting.pop()
-  awaiting.pop()
-
-  if (!awaiting.length) {
-    return <p>Everyone&apos;s arrived. 👍</p>
+    // Ask API
+    try {
+      const response = await fetch(
+        `/api/election/${state.election_id}/keygen/attendees?trustee_auth=${state.trustee_auth}`,
+      )
+      const trustees = JSON.parse(await response.text())
+      dispatch({ trustees })
+    } catch (e) {
+      console.error(e)
+    }
   }
+
+  // Download trustees when election_id is first loaded
+  useEffect(() => {
+    getTrustees()
+  }, [state.election_id])
+
+  const awaiting = []
 
   return (
     <>
-      <h3>Awaiting:</h3>
+      <h3>I. Attendees:</h3>
       <ol>
-        {awaiting.map((a) => (
-          <li key={a}>{a}</li>
+        {state.trustees.map(({ email, you }) => (
+          <li key={email}>
+            {email}
+            {you && <YouLabel />}
+          </li>
         ))}
       </ol>
+
+      {!awaiting.length && <p>Everyone&apos;s arrived. 👍</p>}
     </>
   )
 }
