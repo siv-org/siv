@@ -25,7 +25,7 @@ export const AuthenticatedContent = ({
     <>
       <Trustees {...{ dispatch, state }} />
       <Parameters {...{ state }} />
-      <MessagingKeys {...{ state }} />
+      <MessagingKeys {...{ dispatch, state }} />
       <PrivateCoefficients {...{ state }} />
       <PublicBroadcastValues {...{ state }} />
       <PairwiseShares {...{ state }} />

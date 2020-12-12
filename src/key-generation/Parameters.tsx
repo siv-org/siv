@@ -1,6 +1,6 @@
-import { StateAndDispatch } from './useKeyGenState'
+import { State } from './useKeyGenState'
 
-export const Parameters = ({ state }: StateAndDispatch) => {
+export const Parameters = ({ state }: { state: State }) => {
   if (!state.parameters) return <></>
 
   const n = state.trustees?.length

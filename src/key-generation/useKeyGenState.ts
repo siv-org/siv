@@ -1,5 +1,6 @@
 import { merge } from 'lodash-es'
 
+import { generate_key_pair } from '../crypto/generate-key-pair'
 import { useLocalStorageReducer } from '../vote/useLocalStorage'
 
 // Define our types
@@ -7,6 +8,7 @@ type Map = Record<string, unknown>
 export type State = {
   election_id: string
   parameters?: { g: string; p: string; q: string; t: number }
+  personal_key_pair?: ReturnType<typeof generate_key_pair>
   trustee_auth: string
   trustees?: { email: string; you?: boolean }[]
 }
