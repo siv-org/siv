@@ -1,5 +1,7 @@
+import { mapValues } from 'lodash-es'
 import { NextApiRequest, NextApiResponse } from 'next'
 
+import { generate_safe_prime } from '../../src/crypto/generate-safe-prime'
 import { firebase, pushover, sendEmail } from './_services'
 import { generateAuthToken } from './invite-voters'
 
@@ -12,22 +14,25 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(401).end('Invalid Password.')
   }
 
-  // 2. Create a new election
+  // 2. Generate a safe prime of the right bit size
+  const safe_prime = mapValues(generate_safe_prime(40), (v) => v.toString())
+
+  // 3. Create a new election
   const election_id = Number(new Date()).toString()
   const election = firebase.firestore().collection('elections').doc(election_id)
-  await election.set({ created_at: new Date(), g: 4, t: trustees.length })
+  await election.set({ created_at: new Date(), ...safe_prime, t: trustees.length })
 
-  // 3. Generate auth token for each trustee
+  // 4. Generate auth token for each trustee
   const auth_tokens = trustees.map(() => generateAuthToken())
 
-  // 4. Store auth tokens in db
+  // 5. Store auth tokens in db
   await Promise.all(
     trustees.map((trustee: string, index: number) =>
       election.collection('trustees').doc(trustee).set({ auth_token: auth_tokens[index], email: trustee, index }),
     ),
   )
 
-  // 4. Email each trustee their auth token
+  // 6. Email each trustee their auth token
   await Promise.all(
     trustees.map((trustee: string, index: number) => {
       if (trustee === 'admin@secureinternetvoting.org') {
