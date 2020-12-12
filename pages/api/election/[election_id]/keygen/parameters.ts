@@ -12,12 +12,17 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     .doc(election_id as string)
 
   // Is election_id in DB?
-  if (!(await election.get()).exists) {
+  const doc = await election.get()
+  if (!doc.exists) {
     return res.status(400).end('Unknown Election ID.')
   }
 
+  // Grab safe prime parameters
+  const data = { ...doc.data() }
+  const parameters = { g: data.g, p: data.p, q: data.q, t: data.t }
+
   // Grab trustees
-  const trustees = (await election.collection('trustees').get()).docs.map((doc) => {
+  const trustees = (await election.collection('trustees').orderBy('index', 'asc').get()).docs.map((doc) => {
     const data = doc.data()
     if (data.auth_token === trustee_auth) {
       data.you = true
@@ -26,5 +31,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     return omit({ ...data }, ['auth_token'])
   })
 
-  res.status(200).json(trustees)
+  res.status(200).json({ parameters, trustees })
 }

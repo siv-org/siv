@@ -1,8 +1,10 @@
-import { State } from './useKeyGenState'
+import { StateAndDispatch } from './useKeyGenState'
 
-export const Parameters = ({ state }: { state: State }) => {
-  const n = state.trustees.length
-  const t = state.trustees.length
+export const Parameters = ({ state }: StateAndDispatch) => {
+  if (!state.parameters) return <></>
+
+  const n = state.trustees?.length
+  const t = state.parameters.t
 
   return (
     <>
@@ -12,13 +14,13 @@ export const Parameters = ({ state }: { state: State }) => {
       </p>
       <ul>
         <li>
-          Prime <i>p</i> = 57
+          Prime <i>p</i> = {state.parameters.p}
         </li>
         <li>
-          Prime <i>q</i> = 29
+          Prime <i>q</i> = {state.parameters.q}
         </li>
         <li>
-          Generator <i>g</i> = 4
+          Generator <i>g</i> = {state.parameters.g}
         </li>
       </ul>
     </>

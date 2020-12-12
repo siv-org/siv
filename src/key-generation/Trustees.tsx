@@ -4,32 +4,32 @@ import { StateAndDispatch } from './useKeyGenState'
 import { YouLabel } from './YouLabel'
 
 export const Trustees = ({ dispatch, state }: StateAndDispatch) => {
-  async function getTrustees() {
+  async function getTrusteesAndParameters() {
     // Wait for election_id
     if (!state.election_id) return
 
     // Ask API
     try {
       const response = await fetch(
-        `/api/election/${state.election_id}/keygen/trustees?trustee_auth=${state.trustee_auth}`,
+        `/api/election/${state.election_id}/keygen/parameters?trustee_auth=${state.trustee_auth}`,
       )
-      const trustees = JSON.parse(await response.text())
-      dispatch({ trustees })
+      const data = await response.json()
+      dispatch(data)
     } catch (e) {
       console.error('Error loading trustees:', e)
     }
   }
 
-  // Download trustees when election_id is first loaded
+  // Download when election_id is first loaded
   useEffect(() => {
-    getTrustees()
+    getTrusteesAndParameters()
   }, [state.election_id])
 
   return (
     <>
       <h3>I. Trustees:</h3>
       <ol>
-        {state.trustees.map(({ email, you }) => (
+        {state.trustees?.map(({ email, you }) => (
           <li key={email}>
             {email}
             {you && <YouLabel />}
