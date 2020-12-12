@@ -6,7 +6,7 @@ const { ADMIN_PASSWORD } = process.env
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   // 1. Check for password
-  const { ballot_design, password, voters } = req.body
+  const { ballot_design, election_id, password, voters } = req.body
   if (password !== ADMIN_PASSWORD) {
     return res.status(401).end('Invalid Password.')
   }
@@ -15,9 +15,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const auth_tokens = voters.map(() => generateAuthToken())
 
   // 3. Store auth tokens in db
-  const election_id = Number(new Date()).toString()
   const election = firebase.firestore().collection('elections').doc(election_id)
-  await election.set({ ballot_design, created_at: new Date() }) // So we can query if election exists later
+  await election.set({ ballot_design })
   await Promise.all(
     voters.map((voter: string, index: number) =>
       election.collection('voters').doc(voter).set({ auth_token: auth_tokens[index], email: voter, index }),

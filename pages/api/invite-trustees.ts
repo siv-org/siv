@@ -12,14 +12,15 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(401).end('Invalid Password.')
   }
 
-  // 2. Generate auth token for each trustee
+  // 2. Create a new election
+  const election_id = Number(new Date()).toString()
+  const election = firebase.firestore().collection('elections').doc(election_id)
+  await election.set({ created_at: new Date(), g: 4, t: trustees.length })
+
+  // 3. Generate auth token for each trustee
   const auth_tokens = trustees.map(() => generateAuthToken())
 
-  // 3. Store auth tokens in db
-  const election_id = Number(new Date()).toString()
-  // TODO: Only do this once... duplicated in api/invite-voters
-  const election = firebase.firestore().collection('elections').doc(election_id)
-  await election.set({ created_at: new Date() }) // So we can query if election exists later
+  // 4. Store auth tokens in db
   await Promise.all(
     trustees.map((trustee: string, index: number) =>
       election.collection('trustees').doc(trustee).set({ auth_token: auth_tokens[index], email: trustee, index }),

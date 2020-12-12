@@ -62,12 +62,15 @@ export const AddParticipants = () => {
               .replace(/ {2,}/, ' ') // remove extra spaces
 
             // Call backend endpoint
-            const response = await api('invite-voters', { ballot_design, password: localStorage.password, voters })
+            const response = await api(`invite-voters`, {
+              ballot_design,
+              election_id,
+              password: localStorage.password,
+              voters,
+            })
 
             // Success case
             if (response.status === 201) {
-              setElectionID(await response.text())
-
               return true
             }
 
