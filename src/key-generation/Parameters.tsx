@@ -1,17 +1,16 @@
 import { State } from './useKeyGenState'
 
 export const Parameters = ({ state }: { state: State }) => {
-  if (state.start !== true) {
-    return <></>
-  }
+  const n = state.trustees.length
+  const t = state.trustees.length
 
   return (
     <>
       <h3>II. Parameters:</h3>
+      <p>
+        The goal is to generate a {t} of {n} threshold key (<i>t</i> = {t}, <i>n</i> = {n})
+      </p>
       <ul>
-        <li>
-          You are generating a 3 of 3 threshold key (<i>t</i> = 3, <i>n</i> = 3)
-        </li>
         <li>
           Prime <i>p</i> = 57
         </li>

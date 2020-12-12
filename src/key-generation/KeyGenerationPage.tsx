@@ -16,7 +16,9 @@ export const KeyGenerationPage = (): JSX.Element => {
       <HeaderBar />
       <main>
         <h1>Threshold Key Generation</h1>
-        <h4>Election ID: {election_id}</h4>
+        <p>
+          Election ID: <b>{election_id}</b>
+        </p>
         {election_id && trustee_auth && <AuthenticatedContent {...{ election_id, trustee_auth }} />}
       </main>
 
