@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { StateAndDispatch } from './useKeyGenState'
 import { YouLabel } from './YouLabel'
 
-export const Attendees = ({ dispatch, state }: StateAndDispatch) => {
+export const Trustees = ({ dispatch, state }: StateAndDispatch) => {
   async function getTrustees() {
     // Wait for election_id
     if (!state.election_id) return
@@ -11,7 +11,7 @@ export const Attendees = ({ dispatch, state }: StateAndDispatch) => {
     // Ask API
     try {
       const response = await fetch(
-        `/api/election/${state.election_id}/keygen/attendees?trustee_auth=${state.trustee_auth}`,
+        `/api/election/${state.election_id}/keygen/trustees?trustee_auth=${state.trustee_auth}`,
       )
       const trustees = JSON.parse(await response.text())
       dispatch({ trustees })
@@ -25,11 +25,9 @@ export const Attendees = ({ dispatch, state }: StateAndDispatch) => {
     getTrustees()
   }, [state.election_id])
 
-  const awaiting = []
-
   return (
     <>
-      <h3>I. Attendees:</h3>
+      <h3>I. Trustees:</h3>
       <ol>
         {state.trustees.map(({ email, you }) => (
           <li key={email}>
@@ -38,8 +36,6 @@ export const Attendees = ({ dispatch, state }: StateAndDispatch) => {
           </li>
         ))}
       </ol>
-
-      {!awaiting.length && <p>Everyone&apos;s arrived. 👍</p>}
     </>
   )
 }
