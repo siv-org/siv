@@ -16,7 +16,7 @@ export const Attendees = ({ dispatch, state }: StateAndDispatch) => {
       const trustees = JSON.parse(await response.text())
       dispatch({ trustees })
     } catch (e) {
-      console.error(e)
+      console.error('Error loading trustees:', e)
     }
   }
 
