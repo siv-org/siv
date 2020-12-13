@@ -8,18 +8,29 @@ import { StateAndDispatch } from './useKeyGenState'
 import { YouLabel } from './YouLabel'
 
 export const MessagingKeys = ({ dispatch, state }: StateAndDispatch) => {
-  // These effects will run once we've received parameters.p and identified ourselves
   useEffect(() => {
+    // These effects will run once we've received parameters.p and identified ourselves
     if (!state.parameters?.p || !state.your_email) return
 
+    // Don't run more than once
+    if (state.personal_key_pair) return
+
     // Generate your keypair
-    const personal_key_pair = generate_key_pair(big(state.parameters.p))
+    const personal_key_pair_bigs = generate_key_pair(big(state.parameters.p))
+    // Convert personal_key_pair to strings
+    const personal_key_pair = {
+      decryption_key: personal_key_pair_bigs.decryption_key.toString(),
+      public_key: {
+        recipient: personal_key_pair_bigs.public_key.recipient.toString(),
+      },
+    }
+
     dispatch({ personal_key_pair })
 
     // Tell admin the new public key you created
     api(`election/${state.election_id}/keygen/personal-pub-key`, {
       email: state.your_email,
-      personal_recipient_key: personal_key_pair.public_key.recipient.toString(),
+      personal_recipient_key: personal_key_pair.public_key.recipient,
       trustee_auth: state.trustee_auth,
     })
   }, [state.parameters?.p, state.your_email])
@@ -29,9 +40,11 @@ export const MessagingKeys = ({ dispatch, state }: StateAndDispatch) => {
   }
 
   const { g, p } = state.parameters
-  const { decryption_key, public_key } = state.personal_key_pair || { decryption_key: undefined, public_key: undefined }
-  const y = decryption_key?.toString() || ''
-  const h = public_key?.recipient.toString() || ''
+  const { decryption_key: y, public_key } = state.personal_key_pair || {
+    decryption_key: undefined,
+    public_key: undefined,
+  }
+  const h = public_key?.recipient
 
   return (
     <>
