@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 
+import { api } from '../api-helper'
 import { generate_key_pair } from '../crypto/generate-key-pair'
 import { big } from '../crypto/types'
 import { Private } from './Private'
@@ -7,11 +8,20 @@ import { StateAndDispatch } from './useKeyGenState'
 import { YouLabel } from './YouLabel'
 
 export const MessagingKeys = ({ dispatch, state }: StateAndDispatch) => {
+  // These effects will run once we've received parameters.p
   useEffect(() => {
     if (!state.parameters?.p) return
 
+    // Generate your keypair
     const personal_key_pair = generate_key_pair(big(state.parameters.p))
     dispatch({ personal_key_pair })
+
+    // Tell admin the new public key you created
+    api(`election/${state.election_id}/keygen/personal-pub-key`, {
+      email: state.your_email,
+      personal_recipient_key: personal_key_pair.public_key.recipient.toString(),
+      trustee_auth: state.trustee_auth,
+    })
   }, [state.parameters?.p])
 
   if (!state.parameters || !state.trustees) {

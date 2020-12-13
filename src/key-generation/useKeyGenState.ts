@@ -5,12 +5,14 @@ import { useLocalStorageReducer } from '../vote/useLocalStorage'
 
 // Define our types
 type Map = Record<string, unknown>
+export type Trustee = { email: string; you?: boolean }
 export type State = {
   election_id: string
   parameters?: { g: string; p: string; q: string; t: number }
   personal_key_pair?: ReturnType<typeof generate_key_pair>
   trustee_auth: string
-  trustees?: { email: string; you?: boolean }[]
+  trustees?: Trustee[]
+  your_email?: string
 }
 // Typescript helper w/ State and Dispatch
 export type StateAndDispatch = { dispatch: ReturnType<typeof useLocalStorageReducer>[1]; state: State }

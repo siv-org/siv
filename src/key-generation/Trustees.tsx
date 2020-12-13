@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import { StateAndDispatch } from './useKeyGenState'
+import { StateAndDispatch, Trustee } from './useKeyGenState'
 import { YouLabel } from './YouLabel'
 
 export const Trustees = ({ dispatch, state }: StateAndDispatch) => {
@@ -15,6 +15,14 @@ export const Trustees = ({ dispatch, state }: StateAndDispatch) => {
       )
       const data = await response.json()
       dispatch(data)
+
+      // Find your own email and store it to local state
+      data.trustees.some((trustee: Trustee) => {
+        if (trustee.you) {
+          dispatch({ your_email: trustee.email })
+          return true
+        }
+      })
     } catch (e) {
       console.error('Error loading trustees:', e)
     }
