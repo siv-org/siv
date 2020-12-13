@@ -8,9 +8,9 @@ import { StateAndDispatch } from './useKeyGenState'
 import { YouLabel } from './YouLabel'
 
 export const MessagingKeys = ({ dispatch, state }: StateAndDispatch) => {
-  // These effects will run once we've received parameters.p
+  // These effects will run once we've received parameters.p and identified ourselves
   useEffect(() => {
-    if (!state.parameters?.p) return
+    if (!state.parameters?.p || !state.your_email) return
 
     // Generate your keypair
     const personal_key_pair = generate_key_pair(big(state.parameters.p))
@@ -22,7 +22,7 @@ export const MessagingKeys = ({ dispatch, state }: StateAndDispatch) => {
       personal_recipient_key: personal_key_pair.public_key.recipient.toString(),
       trustee_auth: state.trustee_auth,
     })
-  }, [state.parameters?.p])
+  }, [state.parameters?.p, state.your_email])
 
   if (!state.parameters || !state.trustees) {
     return <></>
