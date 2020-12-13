@@ -5,7 +5,7 @@ import { useLocalStorageReducer } from '../vote/useLocalStorage'
 
 // Define our types
 type Map = Record<string, unknown>
-export type Trustee = { email: string; you?: boolean }
+export type Trustee = { email: string; recipient_key?: string; you?: boolean }
 export type State = {
   election_id: string
   parameters?: { g: string; p: string; q: string; t: number }

@@ -47,12 +47,13 @@ export const MessagingKeys = ({ dispatch, state }: StateAndDispatch) => {
         </p>
       </Private>
       <ol>
-        <li>admin@secureinternetvoting.org broadcasts their Public key is 49.</li>
-        <li>
-          trustee_1@gmail.com
-          <YouLabel /> broadcasts their Public key is 28.
-        </li>
-        <li>other_trustee@yahoo.com broadcasts their Public key is 7.</li>
+        {state.trustees.map(({ email, recipient_key, you }) => (
+          <li key={email}>
+            {email}
+            {you && <YouLabel />}{' '}
+            {recipient_key ? `broadcasts their Public key is ${recipient_key}` : `hasn't broadcast yet`}.
+          </li>
+        ))}
       </ol>
     </>
   )
