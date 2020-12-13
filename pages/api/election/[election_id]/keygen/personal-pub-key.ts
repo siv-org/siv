@@ -6,6 +6,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { election_id } = req.query
   const { email, personal_recipient_key, trustee_auth } = req.body
 
+  if (!email) {
+    return res.status(404)
+  }
+
   const electionDoc = firebase
     .firestore()
     .collection('elections')
