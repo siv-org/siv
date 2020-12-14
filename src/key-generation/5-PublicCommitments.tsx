@@ -29,7 +29,7 @@ export const PublicCommitments = ({ dispatch, state }: StateAndDispatch) => {
       email: state.your_email,
       trustee_auth: state.trustee_auth,
     })
-  }, [coeffs])
+  }, [coeffs, trustees])
 
   if (!coeffs || !g || !trustees) {
     return <></>

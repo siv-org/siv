@@ -20,7 +20,7 @@ export const PrivateCoefficients = ({ dispatch, state }: StateAndDispatch) => {
     )
 
     dispatch({ private_coefficients })
-  }, [state.trustees])
+  }, [state.trustees, trustees_w_recipient_keys?.length])
 
   if (!state.trustees || !state.parameters || trustees_w_recipient_keys?.length !== state.trustees.length) {
     return <></>
