@@ -1,6 +1,8 @@
 import { merge } from 'lodash-es'
 
 import { generate_key_pair } from '../crypto/generate-key-pair'
+import { Parameters } from '../crypto/threshold-keygen'
+import { big } from '../crypto/types'
 import { useLocalStorageReducer } from '../vote/useLocalStorage'
 import { diff } from './diff-objects'
 
@@ -11,6 +13,7 @@ export type State = {
   election_id: string
   parameters?: { g: string; p: string; q: string; t: number }
   personal_key_pair?: ReturnType<typeof generate_key_pair>
+  private_coefficients?: string[]
   trustee_auth: string
   trustees?: Trustee[]
   your_email?: string
@@ -35,3 +38,14 @@ function reducer(prev: State, payload: Map) {
 // Export consumable hook that returns [state, dispatch]
 export const useKeyGenState = ({ election_id, trustee_auth }: { election_id: string; trustee_auth: string }) =>
   useLocalStorageReducer(`keygen-${election_id}-${trustee_auth}`, reducer, { election_id, trustee_auth })
+
+// Helper function to create Parameter from state.parameters
+export function getParameters(state: State): Parameters {
+  if (!state.parameters) throw new TypeError('Missing params')
+
+  return {
+    g: big(state.parameters.g),
+    p: big(state.parameters.p),
+    q: big(state.parameters.q),
+  }
+}

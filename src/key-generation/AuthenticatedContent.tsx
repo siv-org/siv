@@ -33,7 +33,7 @@ export const AuthenticatedContent = ({
       <Trustees {...{ state }} />
       <Parameters {...{ state }} />
       <MessagingKeys {...{ dispatch, state }} />
-      <PrivateCoefficients {...{ state }} />
+      <PrivateCoefficients {...{ dispatch, state }} />
       <PublicBroadcastValues {...{ state }} />
       <PairwiseShares {...{ state }} />
       <VerifyShares {...{ state }} />
