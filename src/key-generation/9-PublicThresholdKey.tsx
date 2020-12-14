@@ -1,4 +1,4 @@
-import { State } from './useKeyGenState'
+import { State } from './keygen-state'
 
 export const PublicThresholdKey = ({ state }: { state: State }) => {
   if (state.start !== true) {

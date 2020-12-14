@@ -1,5 +1,5 @@
+import { State } from './keygen-state'
 import { Private } from './Private'
-import { State } from './useKeyGenState'
 
 export const CalculatePrivateKeyshare = ({ state }: { state: State }) => {
   if (state.start !== true) {

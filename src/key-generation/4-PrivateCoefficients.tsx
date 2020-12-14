@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
 
 import { pick_private_coefficients } from '../crypto/threshold-keygen'
+import { StateAndDispatch, getParameters } from './keygen-state'
 import { Private } from './Private'
-import { StateAndDispatch, getParameters } from './useKeyGenState'
 
 export const PrivateCoefficients = ({ dispatch, state }: StateAndDispatch) => {
   const trustees_w_recipient_keys = state.trustees?.filter((t) => t.recipient_key)

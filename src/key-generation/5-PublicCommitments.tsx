@@ -2,8 +2,8 @@ import { useEffect } from 'react'
 
 import { generate_public_coefficients } from '../crypto/threshold-keygen'
 import { big } from '../crypto/types'
+import { StateAndDispatch, getParameters } from './keygen-state'
 import { Private } from './Private'
-import { StateAndDispatch, getParameters } from './useKeyGenState'
 import { YouLabel } from './YouLabel'
 
 export const PublicCommitments = ({ dispatch, state }: StateAndDispatch) => {

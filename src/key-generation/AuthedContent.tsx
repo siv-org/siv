@@ -9,8 +9,8 @@ import { VerifyShares } from './7-VerifyShares'
 import { CalculatePrivateKeyshare } from './8-CalculatePrivateKeyshare'
 import { PublicThresholdKey } from './9-PublicThresholdKey'
 import { getTrusteesOnInit } from './get-latest-from-server'
+import { useKeyGenState } from './keygen-state'
 import { initPusher } from './pusher-helper'
-import { useKeyGenState } from './useKeyGenState'
 
 export const AuthedContent = ({
   election_id,

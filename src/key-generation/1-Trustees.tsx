@@ -1,4 +1,4 @@
-import { State } from './useKeyGenState'
+import { State } from './keygen-state'
 import { YouLabel } from './YouLabel'
 
 export const Trustees = ({ state }: { state: State }) => {

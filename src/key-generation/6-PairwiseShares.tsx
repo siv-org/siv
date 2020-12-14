@@ -1,5 +1,5 @@
+import { State } from './keygen-state'
 import { Private } from './Private'
-import { State } from './useKeyGenState'
 import { YouLabel } from './YouLabel'
 
 export const PairwiseShares = ({ state }: { state: State }) => {
