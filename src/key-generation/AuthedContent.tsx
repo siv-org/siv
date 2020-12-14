@@ -12,7 +12,7 @@ import { getTrusteesOnInit } from './get-latest-from-server'
 import { initPusher } from './pusher-helper'
 import { useKeyGenState } from './useKeyGenState'
 
-export const AuthenticatedContent = ({
+export const AuthedContent = ({
   election_id,
   trustee_auth,
 }: {

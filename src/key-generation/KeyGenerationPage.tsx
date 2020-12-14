@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import { HeaderBar } from '../create/HeaderBar'
 import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
-import { AuthenticatedContent } from './AuthenticatedContent'
+import { AuthedContent } from './AuthedContent'
 
 export const KeyGenerationPage = (): JSX.Element => {
   // Grab election parameters from URL
@@ -19,7 +19,7 @@ export const KeyGenerationPage = (): JSX.Element => {
         <p>
           Election ID: <b>{election_id}</b>
         </p>
-        {election_id && trustee_auth && <AuthenticatedContent {...{ election_id, trustee_auth }} />}
+        {election_id && trustee_auth && <AuthedContent {...{ election_id, trustee_auth }} />}
       </main>
 
       <style jsx>{`
