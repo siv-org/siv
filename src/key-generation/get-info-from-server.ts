@@ -17,9 +17,7 @@ export async function getTrusteesAndParameters({ dispatch, state }: StateAndDisp
 
   // Ask API
   try {
-    const response = await fetch(
-      `/api/election/${state.election_id}/keygen/parameters?trustee_auth=${state.trustee_auth}`,
-    )
+    const response = await fetch(`/api/election/${state.election_id}/keygen/latest?trustee_auth=${state.trustee_auth}`)
     const data = await response.json()
     dispatch(data)
 
