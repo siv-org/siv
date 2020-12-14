@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { pick_private_coefficients } from '../crypto/threshold-keygen'
 import { StateAndDispatch, getParameters } from './keygen-state'
-import { Private } from './Private'
+import { PrivateBox } from './PrivateBox'
 
 export const PrivateCoefficients = ({ dispatch, state }: StateAndDispatch) => {
   const trustees_w_recipient_keys = state.trustees?.filter((t) => t.recipient_key)
@@ -35,7 +35,7 @@ export const PrivateCoefficients = ({ dispatch, state }: StateAndDispatch) => {
         Each trustee picks their own private coefficients in ℤ<sub>q</sub>, f(x) = a<sub>1</sub> + a<sub>2</sub>x + ...
         + a<sub>t</sub>x<sup>t-1</sup> % q.
       </p>
-      <Private>
+      <PrivateBox>
         <p>Using Crypto.getRandomValues() on your device to generate your private polynomial...</p>
         <>
           {coeffs && (
@@ -53,7 +53,7 @@ export const PrivateCoefficients = ({ dispatch, state }: StateAndDispatch) => {
             </p>
           )}
         </>
-      </Private>
+      </PrivateBox>
     </>
   )
 }

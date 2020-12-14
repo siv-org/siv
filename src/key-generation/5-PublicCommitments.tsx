@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { generate_public_coefficients } from '../crypto/threshold-keygen'
 import { big } from '../crypto/types'
 import { StateAndDispatch, getParameters } from './keygen-state'
-import { Private } from './Private'
+import { PrivateBox } from './PrivateBox'
 import { YouLabel } from './YouLabel'
 
 export const PublicCommitments = ({ dispatch, state }: StateAndDispatch) => {
@@ -34,7 +34,7 @@ export const PublicCommitments = ({ dispatch, state }: StateAndDispatch) => {
         Each trustee broadcasts public commitments A<sub>1</sub>, ..., A<sub>t</sub> based on their private
         coefficients, A<sub>c</sub> = g ^ a<sub>c</sub> % p.
       </p>
-      <Private>
+      <PrivateBox>
         <p>Calculating your public commitments...</p>
         <>
           {coeffs.map((coeff, index) => (
@@ -47,7 +47,7 @@ export const PublicCommitments = ({ dispatch, state }: StateAndDispatch) => {
             </p>
           ))}
         </>
-      </Private>
+      </PrivateBox>
       <ol>
         <li>admin@secureinternetvoting.org broadcasts commitments 5, 21, 10.</li>
         <li>

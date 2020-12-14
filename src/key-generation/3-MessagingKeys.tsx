@@ -4,7 +4,7 @@ import { api } from '../api-helper'
 import { generate_key_pair } from '../crypto/generate-key-pair'
 import { big } from '../crypto/types'
 import { StateAndDispatch } from './keygen-state'
-import { Private } from './Private'
+import { PrivateBox } from './PrivateBox'
 import { YouLabel } from './YouLabel'
 
 export const MessagingKeys = ({ dispatch, state }: StateAndDispatch) => {
@@ -50,7 +50,7 @@ export const MessagingKeys = ({ dispatch, state }: StateAndDispatch) => {
     <>
       <h3>III. Messaging Keys:</h3>
       <p>Everyone needs to generate a private/public key pair for peer-to-peer messaging within this key generation.</p>
-      <Private>
+      <PrivateBox>
         <p>Running Crypto.getRandomValues() on your device to generate the key pair...</p>
         <p>
           Private key <i>y</i> = {y}
@@ -58,7 +58,7 @@ export const MessagingKeys = ({ dispatch, state }: StateAndDispatch) => {
         <p>
           Public key <i>h</i> = g ^ y % p = {g} ^ {y} % {p} ≡ {h}.
         </p>
-      </Private>
+      </PrivateBox>
       <ol>
         {state.trustees.map(({ email, recipient_key, you }) => (
           <li key={email}>

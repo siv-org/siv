@@ -1,4 +1,4 @@
-export const Private = ({ children }: { children: string | JSX.Element | JSX.Element[] }) => (
+export const PrivateBox = ({ children }: { children: string | JSX.Element | JSX.Element[] }) => (
   <div>
     <p>BEGIN PRIVATE</p>
     {children}

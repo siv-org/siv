@@ -1,5 +1,5 @@
 import { State } from './keygen-state'
-import { Private } from './Private'
+import { PrivateBox } from './PrivateBox'
 import { YouLabel } from './YouLabel'
 
 export const PairwiseShares = ({ state }: { state: State }) => {
@@ -10,7 +10,7 @@ export const PairwiseShares = ({ state }: { state: State }) => {
     <>
       <h3>VI. Pairwise Shares:</h3>
       <p>Each trustee calculates private shares to send to others.</p>
-      <Private>
+      <PrivateBox>
         <p>Calculating pairwise shares...</p>
         <ol>
           <li>
@@ -23,9 +23,9 @@ export const PairwiseShares = ({ state }: { state: State }) => {
             For other_trustee@yahoo.com, f(3) = 15 + 21(3) + 9(3)<sup>2</sup> % 29 ≡ 14
           </li>
         </ol>
-      </Private>
+      </PrivateBox>
       <p>Encrypt the private shares so only the target recipient can read them.</p>
-      <Private>
+      <PrivateBox>
         <ol>
           <li>For admin@secureinternetvoting.org, pub key = 49, so E(16) = 31</li>
           <li>
@@ -33,15 +33,15 @@ export const PairwiseShares = ({ state }: { state: State }) => {
           </li>
           <li>For other_trustee@yahoo.com, pub key = 7, so E(14) = 3</li>
         </ol>
-      </Private>
+      </PrivateBox>
       <p>Send &amp; receive pairwise shares to all the other trustees.</p>
-      <Private>
+      <PrivateBox>
         <ol>
           <li>admin@secureinternetvoting.org sent you 16</li>
           <li>Your own share is 6</li>
           <li>other_trustee@yahoo.com sent you 21</li>
         </ol>
-      </Private>
+      </PrivateBox>
     </>
   )
 }
