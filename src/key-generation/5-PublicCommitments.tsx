@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 
+import { api } from '../api-helper'
 import { generate_public_coefficients } from '../crypto/threshold-keygen'
 import { big } from '../crypto/types'
 import { StateAndDispatch, getParameters } from './keygen-state'
@@ -21,6 +22,13 @@ export const PublicCommitments = ({ dispatch, state }: StateAndDispatch) => {
     )
 
     dispatch({ commitments })
+
+    // Tell admin your new public commitments
+    api(`election/${state.election_id}/keygen/commitments`, {
+      commitments,
+      email: state.your_email,
+      trustee_auth: state.trustee_auth,
+    })
   }, [coeffs])
 
   if (!coeffs || !g || !trustees) {
@@ -29,7 +37,7 @@ export const PublicCommitments = ({ dispatch, state }: StateAndDispatch) => {
 
   return (
     <>
-      <h3>V. Public Broadcast Commitments:</h3>
+      <h3>V. Public Commitments:</h3>
       <p>
         Each trustee broadcasts public commitments A<sub>1</sub>, ..., A<sub>t</sub> based on their private
         coefficients, A<sub>c</sub> = g ^ a<sub>c</sub> % p.
@@ -61,7 +69,6 @@ export const PublicCommitments = ({ dispatch, state }: StateAndDispatch) => {
                 Waiting on <b>{email}</b> to broadcast their commitments...
               </i>
             )}
-            .
           </li>
         ))}
       </ol>
