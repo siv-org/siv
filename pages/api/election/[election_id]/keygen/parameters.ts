@@ -1,4 +1,3 @@
-import { omit } from 'lodash-es'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import { firebase } from '../../../_services'
@@ -23,12 +22,17 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Grab trustees
   const trustees = (await election.collection('trustees').orderBy('index', 'asc').get()).docs.map((doc) => {
-    const data = doc.data()
+    const data = { ...doc.data() }
+    // Add you: true if requester's own document
     if (data.auth_token === trustee_auth) {
       data.you = true
     }
 
-    return omit({ ...data }, ['auth_token'])
+    // Omit these fields
+    delete data.auth_token
+    delete data.decryption_key
+
+    return data
   })
 
   res.status(200).json({ parameters, trustees })
