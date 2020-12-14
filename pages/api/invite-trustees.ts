@@ -1,6 +1,7 @@
 import { mapValues } from 'lodash-es'
 import { NextApiRequest, NextApiResponse } from 'next'
 
+import { generate_key_pair } from '../../src/crypto/generate-key-pair'
 import { generate_safe_prime } from '../../src/crypto/generate-safe-prime'
 import { firebase, pushover, sendEmail } from './_services'
 import { generateAuthToken } from './invite-voters'
@@ -15,7 +16,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   // 2. Generate a safe prime of the right bit size
-  const safe_prime = mapValues(generate_safe_prime(40), (v) => v.toString())
+  const safe_prime_bigs = generate_safe_prime(40)
+  const safe_prime = mapValues(safe_prime_bigs, (v) => v.toString())
 
   // 3. Create a new election
   const election_id = Number(new Date()).toString()
@@ -59,7 +61,16 @@ Click here to join:
     }),
   )
 
-  // 5. Send Admin push notification
+  // 7. Generate admin's keypair
+  const pair = generate_key_pair(safe_prime_bigs.p)
+
+  // 8. Store admin keypair in DB
+  await election.collection('trustees').doc('admin@secureinternetvoting.org').update({
+    decryption_key: pair.decryption_key.toString(),
+    recipient_key: pair.public_key.recipient.toString(),
+  })
+
+  // 9. Send Admin push notification
   pushover(`Invited ${trustees.length} trustees`, trustees.join(', '))
 
   return res.status(201).end(election_id)
