@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import { HeaderBar } from '../create/HeaderBar'
 import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
-import { AuthedContent } from './AuthedContent'
+import { AuthedContent } from './_AuthedContent'
 
 export const KeyGenerationPage = (): JSX.Element => {
   // Grab election parameters from URL
