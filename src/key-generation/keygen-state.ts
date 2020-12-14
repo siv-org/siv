@@ -8,7 +8,7 @@ import { diff } from './diff-objects'
 
 // Define our types
 type Map = Record<string, unknown>
-export type Trustee = { email: string; recipient_key?: string; you?: boolean }
+export type Trustee = { commitments: string[]; email: string; recipient_key?: string; you?: boolean }
 export type State = {
   commitments?: string[]
   election_id: string

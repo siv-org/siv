@@ -7,7 +7,7 @@ import { PrivateBox } from './PrivateBox'
 import { YouLabel } from './YouLabel'
 
 export const PublicCommitments = ({ dispatch, state }: StateAndDispatch) => {
-  const { private_coefficients: coeffs } = state
+  const { private_coefficients: coeffs, trustees } = state
   const { g, p } = state.parameters || {}
 
   // Runs once, after private coefficients have been generated
@@ -23,7 +23,7 @@ export const PublicCommitments = ({ dispatch, state }: StateAndDispatch) => {
     dispatch({ commitments })
   }, [coeffs])
 
-  if (!coeffs || !g) {
+  if (!coeffs || !g || !trustees) {
     return <></>
   }
 
@@ -49,11 +49,21 @@ export const PublicCommitments = ({ dispatch, state }: StateAndDispatch) => {
         </>
       </PrivateBox>
       <ol>
-        <li>admin@secureinternetvoting.org broadcasts commitments 5, 21, 10.</li>
-        <li>
-          trustee_1@gmail.com <YouLabel /> broadcasts commitments 49, 7, 1.
-        </li>
-        <li>other_trustee@yahoo.com broadcasts commitments 17, 36, 34.</li>
+        {trustees.map(({ commitments, email, you }) => (
+          <li key={email}>
+            {commitments ? (
+              <>
+                {email}
+                {you && <YouLabel />} broadcasts commitments {commitments.join(', ')}.
+              </>
+            ) : (
+              <i>
+                Waiting on <b>{email}</b> to broadcast their commitments...
+              </i>
+            )}
+            .
+          </li>
+        ))}
       </ol>
     </>
   )
