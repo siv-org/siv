@@ -1,7 +1,7 @@
 import Pusher from 'pusher-js'
 import { useEffect } from 'react'
 
-import { getTrusteesAndParameters } from './get-info-from-server'
+import { getLatestFromServer } from './get-latest-from-server'
 import { StateAndDispatch } from './useKeyGenState'
 
 export function initPusher({ dispatch, state }: StateAndDispatch) {
@@ -14,7 +14,7 @@ export function initPusher({ dispatch, state }: StateAndDispatch) {
     const channel = pusher.subscribe('keygen')
     channel.bind('update', function (data: unknown) {
       console.log('❕ Pusher keygen:update', data)
-      getTrusteesAndParameters({ dispatch, state })
+      getLatestFromServer({ dispatch, state })
     })
 
     // Return cleanup code

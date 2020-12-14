@@ -8,7 +8,7 @@ import { PairwiseShares } from './6-PairwiseShares'
 import { VerifyShares } from './7-VerifyShares'
 import { CalculatePrivateKeyshare } from './8-CalculatePrivateKeyshare'
 import { PublicThresholdKey } from './9-PublicThresholdKey'
-import { getTrusteesOnInit } from './get-info-from-server'
+import { getTrusteesOnInit } from './get-latest-from-server'
 import { initPusher } from './pusher-helper'
 import { useKeyGenState } from './useKeyGenState'
 

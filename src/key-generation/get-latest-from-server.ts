@@ -5,11 +5,11 @@ import { StateAndDispatch, Trustee } from './useKeyGenState'
 export function getTrusteesOnInit({ dispatch, state }: StateAndDispatch) {
   // Download when election_id is first loaded
   useEffect(() => {
-    getTrusteesAndParameters({ dispatch, state })
+    getLatestFromServer({ dispatch, state })
   }, [state.election_id])
 }
 
-export async function getTrusteesAndParameters({ dispatch, state }: StateAndDispatch) {
+export async function getLatestFromServer({ dispatch, state }: StateAndDispatch) {
   // Wait for election_id
   if (!state.election_id) return
 
