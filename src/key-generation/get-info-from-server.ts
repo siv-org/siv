@@ -9,7 +9,7 @@ export function getTrusteesOnInit({ dispatch, state }: StateAndDispatch) {
   }, [state.election_id])
 }
 
-async function getTrusteesAndParameters({ dispatch, state }: StateAndDispatch) {
+export async function getTrusteesAndParameters({ dispatch, state }: StateAndDispatch) {
   // Wait for election_id
   if (!state.election_id) return
 

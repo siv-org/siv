@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import { firebase } from '../../../_services'
+import { pusher } from '../../../pusher'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { election_id } = req.query
@@ -31,7 +32,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   // Save the new recipient key they gave us
-  trusteeDoc.update({ recipient_key: personal_recipient_key })
+  await trusteeDoc.update({ recipient_key: personal_recipient_key })
+
+  // Notify all participants there's been an update
+  pusher.trigger('keygen', 'update', 'New pub-key added')
 
   res.status(201).end(`Set ${email} pub key to ${personal_recipient_key}`)
 }

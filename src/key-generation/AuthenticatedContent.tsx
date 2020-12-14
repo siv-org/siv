@@ -1,5 +1,6 @@
 import { GlobalCSS } from '../GlobalCSS'
 import { CalculatePrivateKeyshare } from './CalculatePrivateKeyshare'
+import { getTrusteesOnInit } from './get-info-from-server'
 import { MessagingKeys } from './MessagingKeys'
 import { PairwiseShares } from './PairwiseShares'
 import { Parameters } from './Parameters'
@@ -9,7 +10,6 @@ import { PublicThresholdKey } from './PublicThresholdKey'
 import { initPusher } from './pusher-helper'
 import { Trustees } from './Trustees'
 import { useKeyGenState } from './useKeyGenState'
-import { getTrusteesOnInit } from './useLatestInfoFromServer'
 import { VerifyShares } from './VerifyShares'
 
 export const AuthenticatedContent = ({
@@ -21,13 +21,13 @@ export const AuthenticatedContent = ({
 }): JSX.Element => {
   // Initialize local vote state on client
   const [state, dispatch] = useKeyGenState({ election_id, trustee_auth })
-  console.log('state:', state)
+  console.log('📝 state:', state)
 
   // Get initial Trustee info
   getTrusteesOnInit({ dispatch, state })
 
   // Activate Pusher to get updates from the server on new data
-  initPusher()
+  initPusher({ dispatch, state })
 
   return (
     <>
