@@ -3,6 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 import { generate_key_pair } from '../../src/crypto/generate-key-pair'
 import { generate_safe_prime } from '../../src/crypto/generate-safe-prime'
+import { generate_public_coefficients, pick_private_coefficients } from '../../src/crypto/threshold-keygen'
 import { firebase, pushover, sendEmail } from './_services'
 import { generateAuthToken } from './invite-voters'
 
@@ -64,11 +65,20 @@ Click here to join:
   // 7. Generate admin's keypair
   const pair = generate_key_pair(safe_prime_bigs.p)
 
-  // 8. Store admin keypair in DB
-  await election.collection('trustees').doc('admin@secureinternetvoting.org').update({
-    decryption_key: pair.decryption_key.toString(),
-    recipient_key: pair.public_key.recipient.toString(),
-  })
+  // 8. Generate admin's private coefficients and public commitments
+  const private_coefficients = pick_private_coefficients(trustees.length, safe_prime_bigs)
+  const commitments = generate_public_coefficients(private_coefficients, safe_prime_bigs)
+
+  // Store all this admin data
+  await election
+    .collection('trustees')
+    .doc('admin@secureinternetvoting.org')
+    .update({
+      commitments,
+      decryption_key: pair.decryption_key.toString(),
+      private_coefficients: private_coefficients.map((c) => c.toString()),
+      recipient_key: pair.public_key.recipient.toString(),
+    })
 
   // 9. Send Admin push notification
   pushover(`Invited ${trustees.length} trustees`, trustees.join(', '))

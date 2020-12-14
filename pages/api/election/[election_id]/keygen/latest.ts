@@ -31,6 +31,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     // Omit these fields
     delete data.auth_token
     delete data.decryption_key
+    delete data.private_coefficients
 
     return sortObject(data)
   })
