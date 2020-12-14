@@ -1,10 +1,27 @@
+import { useEffect } from 'react'
+
+import { generate_public_coefficients } from '../crypto/threshold-keygen'
+import { big } from '../crypto/types'
 import { Private } from './Private'
-import { State } from './useKeyGenState'
+import { StateAndDispatch, getParameters } from './useKeyGenState'
 import { YouLabel } from './YouLabel'
 
-export const PublicBroadcastValues = ({ state }: { state: State }) => {
-  const coeffs = state.private_coefficients
+export const PublicCommitments = ({ dispatch, state }: StateAndDispatch) => {
+  const { private_coefficients: coeffs } = state
   const { g, p } = state.parameters || {}
+
+  // Runs once, after private coefficients have been generated
+  useEffect(() => {
+    if (!coeffs || state.commitments) return
+
+    // Calculate public broadcast commitments
+    const commitments = generate_public_coefficients(
+      coeffs.map((c) => big(c)),
+      getParameters(state),
+    )
+
+    dispatch({ commitments })
+  }, [coeffs])
 
   if (!coeffs || !g) {
     return <></>
@@ -22,7 +39,11 @@ export const PublicBroadcastValues = ({ state }: { state: State }) => {
         <>
           {coeffs.map((coeff, index) => (
             <p key={index}>
-              A<sub>{index + 1}</sub> = {g} ^ {coeff} % {p} ≡ 49
+              {state.commitments && (
+                <>
+                  A<sub>{index + 1}</sub> = {g} ^ {coeff} % {p} ≡ {state.commitments[index]}
+                </>
+              )}
             </p>
           ))}
         </>

@@ -10,6 +10,7 @@ import { diff } from './diff-objects'
 type Map = Record<string, unknown>
 export type Trustee = { email: string; recipient_key?: string; you?: boolean }
 export type State = {
+  commitments?: string[]
   election_id: string
   parameters?: { g: string; p: string; q: string; t: number }
   personal_key_pair?: ReturnType<typeof generate_key_pair>

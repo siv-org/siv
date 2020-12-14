@@ -3,7 +3,7 @@ import { Trustees } from './1-Trustees'
 import { Parameters } from './2-Parameters'
 import { MessagingKeys } from './3-MessagingKeys'
 import { PrivateCoefficients } from './4-PrivateCoefficients'
-import { PublicBroadcastValues } from './5-PublicBroadcastValues'
+import { PublicCommitments } from './5-PublicCommitments'
 import { PairwiseShares } from './6-PairwiseShares'
 import { VerifyShares } from './7-VerifyShares'
 import { CalculatePrivateKeyshare } from './8-CalculatePrivateKeyshare'
@@ -34,7 +34,7 @@ export const AuthenticatedContent = ({
       <Parameters {...{ state }} />
       <MessagingKeys {...{ dispatch, state }} />
       <PrivateCoefficients {...{ dispatch, state }} />
-      <PublicBroadcastValues {...{ state }} />
+      <PublicCommitments {...{ dispatch, state }} />
       <PairwiseShares {...{ state }} />
       <VerifyShares {...{ state }} />
       <CalculatePrivateKeyshare {...{ state }} />
