@@ -32,8 +32,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     delete data.auth_token
     delete data.decryption_key
 
-    return data
+    return sortObject(data)
   })
 
   res.status(200).json({ parameters, trustees })
 }
+
+const sortObject = (obj: Record<string, unknown>) =>
+  Object.keys(obj)
+    .sort()
+    .reduce((memo, key) => ({ ...memo, [key]: obj[key] }), {})
