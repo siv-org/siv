@@ -62,9 +62,17 @@ export const MessagingKeys = ({ dispatch, state }: StateAndDispatch) => {
       <ol>
         {state.trustees.map(({ email, recipient_key, you }) => (
           <li key={email}>
-            {email}
-            {you && <YouLabel />}{' '}
-            {recipient_key ? `broadcasts their Public key is ${recipient_key}` : `hasn't broadcast yet`}.
+            {recipient_key ? (
+              <>
+                {email}
+                {you && <YouLabel />} broadcasts their Public key is {recipient_key}
+              </>
+            ) : (
+              <i>
+                Waiting on <b>{email}</b> to broadcast their Public key...
+              </i>
+            )}
+            .
           </li>
         ))}
       </ol>

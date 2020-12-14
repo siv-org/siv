@@ -2,7 +2,8 @@ import { Private } from './Private'
 import { State } from './useKeyGenState'
 
 export const PrivateCoefficients = ({ state }: { state: State }) => {
-  if (state.start !== true) {
+  const trustees_w_recipient_keys = state.trustees?.filter((t) => t.recipient_key)
+  if (!state.trustees || trustees_w_recipient_keys?.length !== state.trustees.length) {
     return <></>
   }
 
