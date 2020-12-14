@@ -8,6 +8,7 @@ import { PublicBroadcastValues } from './PublicBroadcastValues'
 import { PublicThresholdKey } from './PublicThresholdKey'
 import { Trustees } from './Trustees'
 import { useKeyGenState } from './useKeyGenState'
+import { useLatestInfoFromServer } from './useLatestInfoFromServer'
 import { VerifyShares } from './VerifyShares'
 
 export const AuthenticatedContent = ({
@@ -21,9 +22,12 @@ export const AuthenticatedContent = ({
   const [state, dispatch] = useKeyGenState({ election_id, trustee_auth })
   console.log('state:', state)
 
+  // Activate our continuously-running GET request to ask the server for the latest info
+  useLatestInfoFromServer({ dispatch, state })
+
   return (
     <>
-      <Trustees {...{ dispatch, state }} />
+      <Trustees {...{ state }} />
       <Parameters {...{ state }} />
       <MessagingKeys {...{ dispatch, state }} />
       <PrivateCoefficients {...{ state }} />
