@@ -21,7 +21,6 @@ export const AuthenticatedContent = ({
 }): JSX.Element => {
   // Initialize local vote state on client
   const [state, dispatch] = useKeyGenState({ election_id, trustee_auth })
-  console.log('📝 state:', state)
 
   // Get initial Trustee info
   getTrusteesOnInit({ dispatch, state })

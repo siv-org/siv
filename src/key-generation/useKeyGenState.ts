@@ -2,6 +2,7 @@ import { merge } from 'lodash-es'
 
 import { generate_key_pair } from '../crypto/generate-key-pair'
 import { useLocalStorageReducer } from '../vote/useLocalStorage'
+import { diff } from './diff-objects'
 
 // Define our types
 type Map = Record<string, unknown>
@@ -21,6 +22,12 @@ export type StateAndDispatch = { dispatch: ReturnType<typeof useLocalStorageRedu
 function reducer(prev: State, payload: Map) {
   // Merge in new state from payload
   const newState = merge({ ...prev }, { ...payload })
+
+  // Print state changes to console
+  const stateDiff = diff(prev, newState)
+  if (Object.keys(stateDiff).length) {
+    console.log('📝 State updated', stateDiff, newState)
+  }
 
   return newState
 }
