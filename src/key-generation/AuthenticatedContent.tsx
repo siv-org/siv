@@ -6,9 +6,10 @@ import { Parameters } from './Parameters'
 import { PrivateCoefficients } from './PrivateCoefficients'
 import { PublicBroadcastValues } from './PublicBroadcastValues'
 import { PublicThresholdKey } from './PublicThresholdKey'
+import { initPusher } from './pusher-helper'
 import { Trustees } from './Trustees'
 import { useKeyGenState } from './useKeyGenState'
-import { useLatestInfoFromServer } from './useLatestInfoFromServer'
+import { getTrusteesOnInit } from './useLatestInfoFromServer'
 import { VerifyShares } from './VerifyShares'
 
 export const AuthenticatedContent = ({
@@ -22,8 +23,11 @@ export const AuthenticatedContent = ({
   const [state, dispatch] = useKeyGenState({ election_id, trustee_auth })
   console.log('state:', state)
 
-  // Activate our continuously-running GET request to ask the server for the latest info
-  useLatestInfoFromServer({ dispatch, state })
+  // Get initial Trustee info
+  getTrusteesOnInit({ dispatch, state })
+
+  // Activate Pusher to get updates from the server on new data
+  initPusher()
 
   return (
     <>
