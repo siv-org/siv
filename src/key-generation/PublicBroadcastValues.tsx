@@ -3,27 +3,29 @@ import { State } from './useKeyGenState'
 import { YouLabel } from './YouLabel'
 
 export const PublicBroadcastValues = ({ state }: { state: State }) => {
-  if (state.start !== true) {
+  const coeffs = state.private_coefficients
+  const { g, p } = state.parameters || {}
+
+  if (!coeffs || !g) {
     return <></>
   }
+
   return (
     <>
-      <h3>V. Public Broadcast Values:</h3>
+      <h3>V. Public Broadcast Commitments:</h3>
       <p>
-        Each trustee broadcasts public commitments A<sub>0</sub>, ..., A<sub>t-1</sub> from their private coefficients,
-        g ^ a % p.
+        Each trustee broadcasts public commitments A<sub>1</sub>, ..., A<sub>t</sub> based on their private
+        coefficients, A<sub>c</sub> = g ^ a<sub>c</sub> % p.
       </p>
       <Private>
         <p>Calculating your public commitments...</p>
-        <p>
-          A<sub>0</sub> = 4 ^ 15 % 57 ≡ 49
-        </p>
-        <p>
-          A<sub>1</sub> = 4 ^ 21 % 57 ≡ 7
-        </p>
-        <p>
-          A<sub>2</sub> = 4 ^ 9 % 57 ≡ 1
-        </p>
+        <>
+          {coeffs.map((coeff, index) => (
+            <p key={index}>
+              A<sub>{index + 1}</sub> = {g} ^ {coeff} % {p} ≡ 49
+            </p>
+          ))}
+        </>
       </Private>
       <ol>
         <li>admin@secureinternetvoting.org broadcasts commitments 5, 21, 10.</li>
