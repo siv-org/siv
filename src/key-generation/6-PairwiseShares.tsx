@@ -3,7 +3,10 @@ import { PrivateBox } from './PrivateBox'
 import { YouLabel } from './YouLabel'
 
 export const PairwiseShares = ({ state }: { state: State }) => {
-  if (state.start !== true) {
+  const { parameters, private_coefficients: coeffs, trustees } = state
+  const trustees_w_commitments = trustees?.filter((t) => t.commitments).length
+
+  if (!trustees || !trustees_w_commitments || trustees_w_commitments < trustees?.length || !coeffs) {
     return <></>
   }
   return (
@@ -13,15 +16,25 @@ export const PairwiseShares = ({ state }: { state: State }) => {
       <PrivateBox>
         <p>Calculating pairwise shares...</p>
         <ol>
-          <li>
-            For admin@secureinternetvoting.org, f(1) = 15 + 21(1) + 9(1)<sup>2</sup> % 29 ≡ 16
-          </li>
-          <li>
-            For trustee_1@gmail.com <YouLabel />, f(2) = 15 + 21(2) + 9(2)<sup>2</sup> % 29 ≡ 6
-          </li>
-          <li>
-            For other_trustee@yahoo.com, f(3) = 15 + 21(3) + 9(3)<sup>2</sup> % 29 ≡ 14
-          </li>
+          {trustees.map(({ email, you }, trustee_index) => (
+            <li key={email}>
+              For {email}
+              {you && <YouLabel />}
+              <br />
+              f({trustee_index + 1}) ={' '}
+              {coeffs.map((coeff, term_index) => (
+                <span key={term_index}>
+                  {coeff}
+                  {term_index ? `(${trustee_index + 1})` : ''}
+                  {term_index > 1 && <sup>{term_index}</sup>}
+                  {term_index !== coeffs.length - 1 && ' + '}
+                </span>
+              ))}{' '}
+              % {parameters?.q} ≡ ...
+              <br />
+              <br />
+            </li>
+          ))}
         </ol>
       </PrivateBox>
       <p>Encrypt the private shares so only the target recipient can read them.</p>
