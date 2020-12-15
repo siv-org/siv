@@ -15,6 +15,7 @@ export type State = {
   parameters?: { g: string; p: string; q: string; t: number }
   personal_key_pair?: ReturnType<typeof generate_key_pair>
   private_coefficients?: string[]
+  start: boolean // TODO: Remove me
   trustee_auth: string
   trustees?: Trustee[]
   your_email?: string
