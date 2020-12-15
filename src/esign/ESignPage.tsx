@@ -19,7 +19,7 @@ export const ESignPage = (): JSX.Element => {
 
       <main>
         <p>
-          This vote is intended exclusively <b>David Ernst</b>. Sign your name in the box below.
+          This vote is intended exclusively for <b>David Ernst</b>. Sign your name in the box below.
         </p>
         <SignaturePad redrawOnResize ref={signaturePad} />
         <div className="buttons">
