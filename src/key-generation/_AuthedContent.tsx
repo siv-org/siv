@@ -35,7 +35,7 @@ export const AuthedContent = ({
       <MessagingKeys {...{ dispatch, state }} />
       <PrivateCoefficients {...{ dispatch, state }} />
       <PublicCommitments {...{ dispatch, state }} />
-      <PairwiseShares {...{ state }} />
+      <PairwiseShares {...{ dispatch, state }} />
       <VerifyShares {...{ state }} />
       <CalculatePrivateKeyshare {...{ state }} />
       <PublicThresholdKey {...{ state }} />

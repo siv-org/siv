@@ -12,6 +12,7 @@ export type Trustee = { commitments: string[]; email: string; recipient_key?: st
 export type State = {
   commitments?: string[]
   election_id: string
+  pairwise_shares?: string[]
   parameters?: { g: string; p: string; q: string; t: number }
   personal_key_pair?: ReturnType<typeof generate_key_pair>
   private_coefficients?: string[]

@@ -1,12 +1,32 @@
-import { State } from './keygen-state'
+import { useEffect } from 'react'
+
+import { evaluate_private_polynomial } from '../crypto/threshold-keygen'
+import { big } from '../crypto/types'
+import { StateAndDispatch, getParameters } from './keygen-state'
 import { PrivateBox } from './PrivateBox'
 import { YouLabel } from './YouLabel'
 
-export const PairwiseShares = ({ state }: { state: State }) => {
+export const PairwiseShares = ({ dispatch, state }: StateAndDispatch) => {
   const { parameters, private_coefficients: coeffs, trustees } = state
   const trustees_w_commitments = trustees?.filter((t) => t.commitments).length
 
-  if (!trustees || !trustees_w_commitments || trustees_w_commitments < trustees?.length || !coeffs) {
+  // Runs once, after all commitments have been broadcast
+  useEffect(() => {
+    if (!trustees || !coeffs || trustees_w_commitments !== trustees.length) return
+
+    // Calculate pairwise shares
+    const pairwise_shares = trustees?.map((t, index) =>
+      evaluate_private_polynomial(
+        index,
+        coeffs.map((c) => big(c)),
+        getParameters(state),
+      ).toString(),
+    )
+
+    dispatch({ pairwise_shares })
+  }, [coeffs, trustees])
+
+  if (!trustees || !coeffs || trustees_w_commitments !== trustees.length) {
     return <></>
   }
   return (
@@ -30,7 +50,7 @@ export const PairwiseShares = ({ state }: { state: State }) => {
                   {term_index !== coeffs.length - 1 && ' + '}
                 </span>
               ))}{' '}
-              % {parameters?.q} ≡ ...
+              % {parameters?.q} ≡ {state.pairwise_shares ? state.pairwise_shares[trustee_index] : '...'}
               <br />
               <br />
             </li>
