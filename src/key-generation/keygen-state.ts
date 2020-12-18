@@ -12,6 +12,8 @@ export type Trustee = { commitments: string[]; email: string; recipient_key?: st
 export type State = {
   commitments?: string[]
   election_id: string
+  encrypted_pairwise_shares?: string[]
+  pairwise_randomizers?: string[]
   pairwise_shares?: string[]
   parameters?: { g: string; p: string; q: string; t: number }
   personal_key_pair?: ReturnType<typeof generate_key_pair>
@@ -21,8 +23,15 @@ export type State = {
   trustees?: Trustee[]
   your_email?: string
 }
-// Typescript helper w/ State and Dispatch
-export type StateAndDispatch = { dispatch: ReturnType<typeof useLocalStorageReducer>[1]; state: State }
+/**
+ * Typescript helper w/ State and Dispatch
+ * @property dispatch - Takes {key: value} and sticks it in local storage
+ * @property state - The current state, persisted in localstorage against refreshes, window closes, etc
+ */
+export type StateAndDispatch = {
+  dispatch: ReturnType<typeof useLocalStorageReducer>[1]
+  state: State
+}
 
 // Core state logic
 function reducer(prev: State, payload: Map) {
@@ -42,7 +51,7 @@ function reducer(prev: State, payload: Map) {
 export const useKeyGenState = ({ election_id, trustee_auth }: { election_id: string; trustee_auth: string }) =>
   useLocalStorageReducer(`keygen-${election_id}-${trustee_auth}`, reducer, { election_id, trustee_auth })
 
-// Helper function to create Parameter from state.parameters
+/** Helper function to create Parameter from state.parameters */
 export function getParameters(state: State): Parameters {
   if (!state.parameters) throw new TypeError('Missing params')
 

@@ -1,5 +1,5 @@
 import { BigInteger as Big } from 'jsbn'
-import { reduce } from 'lodash-es'
+import { mapValues, reduce } from 'lodash-es'
 
 export { BigInteger as Big } from 'jsbn'
 
@@ -54,3 +54,7 @@ export function big(input: number | Big | string, radix = 10): Big {
 /** Converts public_key with string or number values to BigIntegers */
 export const bigPubKey = (obj: { [P in keyof Public_Key]: string | number }) =>
   reduce(obj, (memo, value, key) => ({ ...memo, [key]: big(value) }), {}) as Public_Key
+
+/** Converts an object of bigs to strings */
+export const toStrings = (object: Cipher_Text | Public_Key) =>
+  JSON.stringify(mapValues(object, (v: Big) => v.toString()))
