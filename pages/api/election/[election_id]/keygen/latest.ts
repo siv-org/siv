@@ -28,7 +28,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       data.you = true
     }
 
-    // Omit these fields
+    // Keep these fields private
     delete data.auth_token
     delete data.decryption_key
     delete data.private_coefficients

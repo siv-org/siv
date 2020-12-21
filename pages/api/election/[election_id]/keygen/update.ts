@@ -5,7 +5,8 @@ import { pusher } from '../../../pusher'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { election_id } = req.query
-  const { commitments, email, trustee_auth } = req.body
+  const { body } = req
+  const { email, trustee_auth } = body
 
   if (!email) {
     return res.status(404)
@@ -31,11 +32,15 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(401).end('Bad trustee_auth token')
   }
 
-  // Save the new commitments they gave us
-  await trusteeDoc.update({ commitments })
+  // Remove email & trustee_auth from body obj
+  delete body.email
+  delete body.trustee_auth
+
+  // Save whatever other new data they gave us
+  await trusteeDoc.update({ ...body })
 
   // Notify all participants there's been an update
-  pusher.trigger('keygen', 'update', 'New commitments added')
+  pusher.trigger('keygen', 'update', `${email} updated`)
 
-  res.status(201).end(`Set ${email} commitments to ${commitments}`)
+  res.status(201).end(`Updated ${email} object`)
 }

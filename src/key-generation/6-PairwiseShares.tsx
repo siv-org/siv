@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { useEffect } from 'react'
 
+import { api } from '../api-helper'
 import encrypt from '../crypto/encrypt'
 import pickRandomInteger from '../crypto/pick-random-integer'
 import { evaluate_private_polynomial } from '../crypto/threshold-keygen'
@@ -56,6 +57,13 @@ export const PairwiseShares = ({ dispatch, state }: StateAndDispatch) => {
     )
 
     dispatch({ encrypted_pairwise_shares, pairwise_randomizers: pairwise_randomizers.map((r) => r.toString()) })
+
+    // Send encrypted_pairwise_shares to admin to broadcast
+    api(`election/${state.election_id}/keygen/update`, {
+      email: state.your_email,
+      encrypted_pairwise_shares,
+      trustee_auth: state.trustee_auth,
+    })
   }, [coeffs, trustees])
 
   if (!trustees || !coeffs || trustees_w_commitments !== trustees.length) {
@@ -105,8 +113,8 @@ export const PairwiseShares = ({ dispatch, state }: StateAndDispatch) => {
                 </>
               ) : (
                 <>
-                  <br />
-                  pub key = {recipient_key}, using randomizer {randomizers ? randomizers[index] : '...'}, so E(
+                  , pub key = {recipient_key}, <br />
+                  using randomizer {randomizers ? randomizers[index] : '...'}, so E(
                   {shares ? shares[index] : '...'}) = {encrypteds ? encrypteds[index] : '...'}
                 </>
               )}
