@@ -38,7 +38,7 @@ export const AuthedContent = ({
       <PublicCommitments {...{ dispatch, state }} />
       <SendPairwiseShares {...{ dispatch, state }} />
       <ReceivedPairwiseShares {...{ dispatch, state }} />
-      <VerifyShares {...{ state }} />
+      <VerifyShares {...{ dispatch, state }} />
       <CalculatePrivateKeyshare {...{ state }} />
       <PublicThresholdKey {...{ state }} />
 

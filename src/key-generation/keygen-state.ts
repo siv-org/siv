@@ -13,6 +13,7 @@ export type Trustee = {
   encrypted_pairwise_shares: string[]
   index: number
   recipient_key?: string
+  verifications?: boolean[]
   you?: boolean
 }
 export type State = {
@@ -28,6 +29,7 @@ export type State = {
   start: boolean // TODO: Remove me
   trustee_auth: string
   trustees?: Trustee[]
+  verifications?: (boolean | null)[]
   your_email?: string
 }
 
