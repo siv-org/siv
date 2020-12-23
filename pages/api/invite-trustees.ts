@@ -46,13 +46,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
       return sendEmail({
         recipient: trustee,
-        subject: 'Your Invitation To Threshold Key Generation',
+        subject: `Key Generation for Election ${election_id}`,
         text: `Dear ${trustee},
 
-You've been invited to take part in a SIV Threshold Key Generation.
+You're invited to join a SIV Multiparty Key Generation.
 
-This will help thoroughly anonymize the SIV votes.
-The more trustees there are, the more protected the votes are.
+This helps thoroughly anonymize election votes.
+Each Trustee adds an extra layer of vote privacy.
 
 Click here to join:
 <a href="${link}">${link}</a>
