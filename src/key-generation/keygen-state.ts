@@ -1,6 +1,5 @@
 import { merge } from 'lodash-es'
 
-import { generate_key_pair } from '../crypto/generate-key-pair'
 import { Parameters } from '../crypto/threshold-keygen'
 import { big } from '../crypto/types'
 import { useLocalStorageReducer } from '../vote/useLocalStorage'
@@ -18,12 +17,13 @@ export type Trustee = {
 }
 export type State = {
   commitments?: string[]
+  decrypted_shares?: (string | undefined)[]
   election_id: string
   encrypted_pairwise_shares?: string[]
   pairwise_randomizers?: string[]
   pairwise_shares?: string[]
   parameters?: { g: string; p: string; q: string; t: number }
-  personal_key_pair?: ReturnType<typeof generate_key_pair>
+  personal_key_pair?: { decryption_key: string; public_key: { recipient: string } }
   private_coefficients?: string[]
   start: boolean // TODO: Remove me
   trustee_auth: string

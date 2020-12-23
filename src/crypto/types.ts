@@ -51,6 +51,10 @@ export function big(input: number | Big | string, radix = 10): Big {
   throw new TypeError(`${input} is not a number or string of an integer`)
 }
 
+/** Converts cipher with string or number values to BigIntegers */
+export const bigCipher = (obj: { [P in keyof Cipher_Text]: string | number }) =>
+  reduce(obj, (memo, value, key) => ({ ...memo, [key]: big(value) }), {}) as Cipher_Text
+
 /** Converts public_key with string or number values to BigIntegers */
 export const bigPubKey = (obj: { [P in keyof Public_Key]: string | number }) =>
   reduce(obj, (memo, value, key) => ({ ...memo, [key]: big(value) }), {}) as Public_Key

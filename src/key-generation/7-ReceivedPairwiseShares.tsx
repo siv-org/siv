@@ -1,24 +1,50 @@
 import { useEffect } from 'react'
 
-// import decrypt from '../crypto/decrypt'
+import decrypt from '../crypto/decrypt'
+import { big, bigCipher, bigPubKey } from '../crypto/types'
 import { StateAndDispatch } from './keygen-state'
 import { PrivateBox } from './PrivateBox'
 
 export const ReceivedPairwiseShares = ({ dispatch, state }: StateAndDispatch) => {
-  const { pairwise_shares: shares, parameters, private_coefficients: coeffs, trustees } = state
-  const trustees_w_commitments = trustees?.filter((t) => t.commitments).length
+  const { decrypted_shares = [], parameters, pairwise_shares: shares, trustees = [], personal_key_pair } = state
 
-  // Runs once, after all commitments have been broadcast
+  const encrypteds = trustees.map((t) => t.encrypted_pairwise_shares)
+
+  const own_index = trustees.find((t) => t.you)?.index || 0
+  const roman = convertToRoman(own_index + 1).toLowerCase()
+
+  // Rerun whenever broadcast encrypted_pairwise_shares have changed
   useEffect(() => {
-    // Need these before we begin
-    if (!parameters || !trustees || shares) return
-  }, [coeffs, trustees_w_commitments])
+    if (!personal_key_pair || !parameters) return
 
-  if (!trustees || !coeffs || trustees_w_commitments !== trustees.length) {
+    // For each trustee...
+    trustees.forEach(({ email, encrypted_pairwise_shares, index }) => {
+      const encrypted_share_for_us = encrypted_pairwise_shares[own_index]
+
+      // Have they broadcast an encrypted_pairwise share for us and we haven't decrypted it yet?
+      if (encrypted_share_for_us && !decrypted_shares[index]) {
+        // Then lets decrypt it
+        console.log(`Unlocking cipher from ${email}...`)
+        decrypted_shares[index] = decrypt(
+          bigPubKey({
+            generator: parameters.g,
+            modulo: parameters.p,
+            recipient: personal_key_pair.public_key.recipient,
+          }),
+          big(personal_key_pair.decryption_key),
+          bigCipher(JSON.parse(encrypted_share_for_us)),
+        )
+
+        // Store the decrypted result
+        dispatch({ decrypted_shares })
+      }
+    })
+  }, [encrypteds?.join()])
+
+  // Only show after calculated own pairwise shares
+  if (!shares) {
     return <></>
   }
-
-  const own_index = trustees.find((t) => t.you)!.index
 
   return (
     <>
@@ -26,17 +52,22 @@ export const ReceivedPairwiseShares = ({ dispatch, state }: StateAndDispatch) =>
       <p>Decrypt the shares intended for you.</p>
       <PrivateBox>
         <ol>
-          {trustees.map(({ email, encrypted_pairwise_shares, you }) => (
+          {trustees.map(({ email, encrypted_pairwise_shares, index, you }) => (
             <li key={email}>
               {you ? (
                 <>Your own share is {shares ? shares[own_index] : '...'}.</>
-              ) : (
+              ) : encrypted_pairwise_shares[own_index] ? (
                 <>
-                  {email} sent you encrypted share {convertToRoman(own_index + 1).toLowerCase()}.{' '}
+                  {email} sent encrypted share {roman} for you:
                   {encrypted_pairwise_shares[own_index]}.
                   <br />
-                  Your private key {state.personal_key_pair?.decryption_key} decrypts this into: ...
+                  Your private key {personal_key_pair?.decryption_key} decrypts this into:{' '}
+                  {decrypted_shares[index] || '...'}
                 </>
+              ) : (
+                <i>
+                  Waiting on <b>{email}</b> to broadcast encrypted share {roman} for you...
+                </i>
               )}
             </li>
           ))}
