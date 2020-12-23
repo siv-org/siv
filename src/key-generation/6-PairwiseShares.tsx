@@ -123,6 +123,24 @@ export const PairwiseShares = ({ dispatch, state }: StateAndDispatch) => {
         </ol>
       </PrivateBox>
       <p>Send &amp; receive pairwise shares to all the other trustees.</p>
+      <ol>
+        {trustees.map(({ email, encrypted_pairwise_shares, you }) => (
+          <li key={email}>
+            {encrypted_pairwise_shares ? (
+              <>
+                {email}
+                {you && <YouLabel />} broadcasts encrypted shares {encrypted_pairwise_shares.join(', ')}.
+              </>
+            ) : (
+              <i>
+                Waiting on <b>{email}</b> to broadcast their shares...
+              </i>
+            )}
+          </li>
+        ))}
+      </ol>
+      <br />
+      <p>Decrypt the shares intended for you.</p>
       <PrivateBox>
         <ol>
           <li>admin@secureinternetvoting.org sent you 16</li>
