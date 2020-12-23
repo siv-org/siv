@@ -46,14 +46,16 @@ export const PairwiseShares = ({ dispatch, state }: StateAndDispatch) => {
     const pairwise_randomizers = trustees.map(() => pickRandomInteger(big(parameters.p)))
 
     // Then we encrypt
-    const encrypted_pairwise_shares = trustees.map(({ recipient_key }, index) =>
-      toStrings(
-        encrypt(
-          bigPubKey({ generator: parameters.g, modulo: parameters.p, recipient: recipient_key! }),
-          pairwise_randomizers[index],
-          big(pairwise_shares[index]),
-        ),
-      ),
+    const encrypted_pairwise_shares = trustees.map(({ recipient_key, you }, index) =>
+      you
+        ? null
+        : toStrings(
+            encrypt(
+              bigPubKey({ generator: parameters.g, modulo: parameters.p, recipient: recipient_key! }),
+              pairwise_randomizers[index],
+              big(pairwise_shares[index]),
+            ),
+          ),
     )
 
     dispatch({ encrypted_pairwise_shares, pairwise_randomizers: pairwise_randomizers.map((r) => r.toString()) })
