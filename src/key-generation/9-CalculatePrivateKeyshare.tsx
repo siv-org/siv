@@ -7,7 +7,7 @@ export const CalculatePrivateKeyshare = ({ state }: { state: State }) => {
   }
   return (
     <>
-      <h3>VIII. Calculate Private Keyshare:</h3>
+      <h3>IX. Calculate Private Keyshare:</h3>
       <p>Each trustee calculates own private keyshare from incoming secrets.</p>
       <PrivateBox>
         <p>Your private keyshare is the sum of each of the incoming secrets mod q...</p>

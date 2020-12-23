@@ -6,7 +6,7 @@ export const PublicThresholdKey = ({ state }: { state: State }) => {
   }
   return (
     <>
-      <h3>IX. Public Threshold Key:</h3>
+      <h3>X. Public Threshold Key:</h3>
       <p>
         Anyone can calculate the generated Public Key as the product of all broadcasts A<sub>0</sub> % p.
       </p>

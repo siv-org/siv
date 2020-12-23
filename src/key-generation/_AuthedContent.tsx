@@ -1,13 +1,14 @@
 import { GlobalCSS } from '../GlobalCSS'
 import { Trustees } from './1-Trustees'
+import { PublicThresholdKey } from './10-PublicThresholdKey'
 import { Parameters } from './2-Parameters'
 import { MessagingKeys } from './3-MessagingKeys'
 import { PrivateCoefficients } from './4-PrivateCoefficients'
 import { PublicCommitments } from './5-PublicCommitments'
-import { PairwiseShares } from './6-PairwiseShares'
-import { VerifyShares } from './7-VerifyShares'
-import { CalculatePrivateKeyshare } from './8-CalculatePrivateKeyshare'
-import { PublicThresholdKey } from './9-PublicThresholdKey'
+import { SendPairwiseShares } from './6-SendPairwiseShares'
+import { ReceivedPairwiseShares } from './7-ReceivedPairwiseShares'
+import { VerifyShares } from './8-VerifyShares'
+import { CalculatePrivateKeyshare } from './9-CalculatePrivateKeyshare'
 import { getTrusteesOnInit } from './get-latest-from-server'
 import { useKeyGenState } from './keygen-state'
 import { initPusher } from './pusher-helper'
@@ -35,7 +36,8 @@ export const AuthedContent = ({
       <MessagingKeys {...{ dispatch, state }} />
       <PrivateCoefficients {...{ dispatch, state }} />
       <PublicCommitments {...{ dispatch, state }} />
-      <PairwiseShares {...{ dispatch, state }} />
+      <SendPairwiseShares {...{ dispatch, state }} />
+      <ReceivedPairwiseShares {...{ dispatch, state }} />
       <VerifyShares {...{ state }} />
       <CalculatePrivateKeyshare {...{ state }} />
       <PublicThresholdKey {...{ state }} />

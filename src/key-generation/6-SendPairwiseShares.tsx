@@ -10,7 +10,7 @@ import { StateAndDispatch, getParameters } from './keygen-state'
 import { PrivateBox } from './PrivateBox'
 import { YouLabel } from './YouLabel'
 
-export const PairwiseShares = ({ dispatch, state }: StateAndDispatch) => {
+export const SendPairwiseShares = ({ dispatch, state }: StateAndDispatch) => {
   const {
     encrypted_pairwise_shares: encrypteds,
     pairwise_randomizers: randomizers,
@@ -72,11 +72,9 @@ export const PairwiseShares = ({ dispatch, state }: StateAndDispatch) => {
     return <></>
   }
 
-  const own_index = trustees.find((t) => t.you)!.index
-
   return (
     <>
-      <h3>VI. Pairwise Shares:</h3>
+      <h3>VI. Send Pairwise Shares:</h3>
       <p>Each trustee calculates private shares to send to others.</p>
       <PrivateBox>
         <p>Calculating pairwise shares...</p>
@@ -152,26 +150,6 @@ export const PairwiseShares = ({ dispatch, state }: StateAndDispatch) => {
           </li>
         ))}
       </ol>
-      <br />
-      <p>Decrypt the shares intended for you.</p>
-      <PrivateBox>
-        <ol>
-          {trustees.map(({ email, encrypted_pairwise_shares, you }) => (
-            <li key={email}>
-              {you ? (
-                <>Your own share is {shares ? shares[own_index] : '...'}.</>
-              ) : (
-                <>
-                  {email} sent you encrypted share {convertToRoman(own_index + 1).toLowerCase()}.{' '}
-                  {encrypted_pairwise_shares[own_index]}.
-                  <br />
-                  Your private key {state.personal_key_pair?.decryption_key} decrypts this into: ...
-                </>
-              )}
-            </li>
-          ))}
-        </ol>
-      </PrivateBox>
       <style jsx>{`
         li {
           margin-bottom: 15px;
@@ -195,32 +173,4 @@ export const PairwiseShares = ({ dispatch, state }: StateAndDispatch) => {
       `}</style>
     </>
   )
-}
-
-// adapted from https://stackoverflow.com/a/41358305
-function convertToRoman(num: number) {
-  const roman: Record<string, number> = {
-    C: 100,
-    CD: 400,
-    CM: 900,
-    D: 500,
-    I: 1,
-    IV: 4,
-    IX: 9,
-    L: 50,
-    M: 1000,
-    V: 5,
-    X: 10,
-    XC: 90,
-    XL: 40,
-  }
-  let str = ''
-
-  for (const i of Object.keys(roman)) {
-    const q = Math.floor(num / roman[i])
-    num -= q * roman[i]
-    str += i.repeat(q)
-  }
-
-  return str
 }

@@ -8,7 +8,7 @@ export const VerifyShares = ({ state }: { state: State }) => {
   }
   return (
     <>
-      <h3>VII. Verify Shares:</h3>
+      <h3>VIII. Verify Shares:</h3>
       <p>Each trustee can verify their received shares.</p>
       <PrivateBox>
         <p>Checking received shares...</p>
