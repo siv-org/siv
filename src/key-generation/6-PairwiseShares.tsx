@@ -101,9 +101,10 @@ export const PairwiseShares = ({ dispatch, state }: StateAndDispatch) => {
         </ol>
       </PrivateBox>
       <p>Encrypt the private shares so only the target recipient can read them.</p>
-      <p>
+      <p className="encryption-note">
         <code>
-          encrypted = message * (recipient ^ randomizer) % modulo
+          <i>https://en.wikipedia.org/wiki/ElGamal_encryption</i>
+          {'\n'}encrypted = message * (recipient ^ randomizer) % modulo
           {'\n'}unlock = (generator ^ randomizer) % modulo
         </code>
       </p>
@@ -176,9 +177,15 @@ export const PairwiseShares = ({ dispatch, state }: StateAndDispatch) => {
           margin-bottom: 15px;
         }
 
+        .encryption-note {
+          margin-bottom: 20px;
+          border: 1px solid #ccc;
+          padding: 5px 10px;
+          border-radius: 4px;
+        }
+
         code {
           font-size: 13px;
-          margin-bottom: 20px;
           white-space: pre;
         }
 
