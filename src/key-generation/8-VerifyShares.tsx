@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 
+import { api } from '../api-helper'
 import { is_received_share_valid } from '../crypto/threshold-keygen'
 import { big } from '../crypto/types'
 import { StateAndDispatch, getParameters } from './keygen-state'
@@ -43,7 +44,12 @@ export const VerifyShares = ({ dispatch, state }: StateAndDispatch) => {
     // Store the result
     dispatch({ verifications })
 
-    // Send the result to admin
+    // Tell admin verification results
+    api(`election/${state.election_id}/keygen/update`, {
+      email: state.your_email,
+      trustee_auth: state.trustee_auth,
+      verifications,
+    })
   }, [decrypted_shares])
 
   if (!decrypted_shares || decrypted_shares.length < 2) {
@@ -76,15 +82,15 @@ export const VerifyShares = ({ dispatch, state }: StateAndDispatch) => {
         </ol>
       </PrivateBox>
       <ol>
-        {trustees.map(({ email, verifications, you }) => (
+        {trustees.map(({ email, verifications, you }, index) => (
           <li key={email}>
             {verifications ? (
               <>
                 {email}
                 {you && <YouLabel />} broadcasts:
                 <ol type="i">
-                  {verifications.map((verified, index) => (
-                    <li key={index}>{verified}</li>
+                  {verifications.map((verified, index2) => (
+                    <li key={index2}>{index === index2 ? 'skipped own' : verified ? '✅ passed' : ' ❌ failed'}</li>
                   ))}
                 </ol>
               </>
