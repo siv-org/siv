@@ -40,7 +40,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   await trusteeDoc.update({ ...body })
 
   // Notify all participants there's been an update
-  pusher.trigger('keygen', 'update', `${email} updated`)
+  pusher.trigger('keygen', 'update', `${email} updated ${Object.keys(body)}`)
 
   res.status(201).end(`Updated ${email} object`)
 }
