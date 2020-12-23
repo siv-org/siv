@@ -64,7 +64,7 @@ export const PairwiseShares = ({ dispatch, state }: StateAndDispatch) => {
       encrypted_pairwise_shares,
       trustee_auth: state.trustee_auth,
     })
-  }, [coeffs, trustees])
+  }, [coeffs, trustees_w_commitments])
 
   if (!trustees || !coeffs || trustees_w_commitments !== trustees.length) {
     return <></>
