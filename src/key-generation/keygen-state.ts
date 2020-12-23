@@ -12,6 +12,7 @@ export type Trustee = {
   commitments: string[]
   email: string
   encrypted_pairwise_shares: string[]
+  index: number
   recipient_key?: string
   you?: boolean
 }
@@ -29,6 +30,7 @@ export type State = {
   trustees?: Trustee[]
   your_email?: string
 }
+
 /**
  * Typescript helper w/ State and Dispatch
  * @property dispatch - Takes {key: value} and sticks it in local storage
