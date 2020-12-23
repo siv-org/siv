@@ -32,7 +32,7 @@ export const PairwiseShares = ({ dispatch, state }: StateAndDispatch) => {
     // Calculate pairwise shares
     const pairwise_shares = trustees.map((_, index) =>
       evaluate_private_polynomial(
-        index,
+        index + 1,
         coeffs.map((c) => big(c)),
         getParameters(state),
       ).toString(),
@@ -129,7 +129,14 @@ export const PairwiseShares = ({ dispatch, state }: StateAndDispatch) => {
             {encrypted_pairwise_shares ? (
               <>
                 {email}
-                {you && <YouLabel />} broadcasts encrypted shares {encrypted_pairwise_shares.join(', ')}.
+                {you && <YouLabel />} broadcasts encrypted shares:
+                <ol type="i">
+                  {encrypted_pairwise_shares.map((share, index) => (
+                    <li className="encrypted-shares" key={index}>
+                      {String(share)}
+                    </li>
+                  ))}
+                </ol>
               </>
             ) : (
               <i>
@@ -157,6 +164,10 @@ export const PairwiseShares = ({ dispatch, state }: StateAndDispatch) => {
           font-size: 13px;
           margin-bottom: 20px;
           white-space: pre;
+        }
+
+        .encrypted-shares {
+          margin-bottom: 0;
         }
       `}</style>
     </>

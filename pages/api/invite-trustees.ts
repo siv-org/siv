@@ -3,18 +3,26 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 import { generate_key_pair } from '../../src/crypto/generate-key-pair'
 import { generate_safe_prime } from '../../src/crypto/generate-safe-prime'
-import { generate_public_coefficients, pick_private_coefficients } from '../../src/crypto/threshold-keygen'
+import {
+  evaluate_private_polynomial,
+  generate_public_coefficients,
+  pick_private_coefficients,
+} from '../../src/crypto/threshold-keygen'
+import { big } from '../../src/crypto/types'
 import { firebase, pushover, sendEmail } from './_services'
 import { generateAuthToken } from './invite-voters'
+import { pusher } from './pusher'
 
-const { ADMIN_PASSWORD } = process.env
+const { ADMIN_EMAIL, ADMIN_PASSWORD } = process.env
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
+  // Ensure env-vars are set
+  if (!ADMIN_EMAIL) return res.status(501).end('Missing process.env.ADMIN_EMAIL')
+  if (!ADMIN_PASSWORD) return res.status(501).end('Missing process.env.ADMIN_PASSWORD')
+
   // 1. Check for password
   const { password, trustees } = req.body
-  if (password !== ADMIN_PASSWORD) {
-    return res.status(401).end('Invalid Password.')
-  }
+  if (password !== ADMIN_PASSWORD) return res.status(401).end('Invalid Password.')
 
   // 2. Generate a safe prime of the right bit size
   const safe_prime_bigs = generate_safe_prime(40)
@@ -38,7 +46,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // 6. Email each trustee their auth token
   await Promise.all(
     trustees.map((trustee: string, index: number) => {
-      if (trustee === 'admin@secureinternetvoting.org') {
+      if (trustee === ADMIN_EMAIL) {
         return
       }
 
@@ -62,26 +70,40 @@ Click here to join:
     }),
   )
 
-  // 7. Generate admin's keypair
+  // 7. Send Admin push notification
+  pushover(`Invited ${trustees.length} trustees`, trustees.join(', '))
+
+  // 8. Send http success back to front-end
+  res.status(201).end(election_id)
+
+  // 9. Generate admin's keypair
   const pair = generate_key_pair(safe_prime_bigs.p)
 
-  // 8. Generate admin's private coefficients and public commitments
+  // 10. Generate admin's private coefficients and public commitments
   const private_coefficients = pick_private_coefficients(trustees.length, safe_prime_bigs)
   const commitments = generate_public_coefficients(private_coefficients, safe_prime_bigs)
 
-  // Store all this admin data
-  await election
+  // 11. Generate admins own keyshare for themselves
+  const pairwise_shares = new Array(trustees.length).fill(null)
+  pairwise_shares[0] = evaluate_private_polynomial(
+    1,
+    private_coefficients,
+    mapValues(safe_prime, (v) => big(v)),
+  ).toString()
+
+  // Store all this new admin data
+  election
     .collection('trustees')
-    .doc('admin@secureinternetvoting.org')
+    .doc(ADMIN_EMAIL)
     .update({
       commitments,
       decryption_key: pair.decryption_key.toString(),
+      encrypted_pairwise_shares: new Array(trustees.length).fill(null),
+      pairwise_randomizers: new Array(trustees.length).fill(null),
+      pairwise_shares,
       private_coefficients: private_coefficients.map((c) => c.toString()),
       recipient_key: pair.public_key.recipient.toString(),
     })
 
-  // 9. Send Admin push notification
-  pushover(`Invited ${trustees.length} trustees`, trustees.join(', '))
-
-  return res.status(201).end(election_id)
+  pusher.trigger('keygen', 'update', `${ADMIN_EMAIL} created their initial data`)
 }
