@@ -13,7 +13,7 @@ export function initPusher({ dispatch, state }: StateAndDispatch) {
 
     const channel = pusher.subscribe('keygen')
     channel.bind('update', function (data: unknown) {
-      console.log('❕ Pusher keygen:update', data)
+      console.log('🆕 Pusher keygen:update', data)
       getLatestFromServer({ dispatch, state })
     })
 
