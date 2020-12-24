@@ -8,51 +8,46 @@ import { PrivateBox } from './PrivateBox'
 import { YouLabel } from './YouLabel'
 
 export const VerifyShares = ({ dispatch, state }: StateAndDispatch) => {
-  const { decrypted_shares, trustees = [], verifications = [] } = state
+  const { decrypted_shares_from = {}, trustees = [], verified = {} } = state
   const own_index = trustees.find((t) => t.you)?.index || 0
 
   // Re-run whenever we've decrypted a new received share
   useEffect(() => {
-    if (!decrypted_shares) return
+    if (!decrypted_shares_from) return
 
     // For each trustee...
-    trustees.forEach(({ commitments, email, index }) => {
-      // Don't check more than once
-      if (typeof verifications[index] === 'boolean') return
+    trustees.forEach(({ commitments, email }) => {
+      // Stop if we already checked this person
+      if (verified[email] !== undefined) return
 
-      const decrypted_share = decrypted_shares[index]
+      const decrypted_share = decrypted_shares_from[email]
 
-      // Do we have a decrypted share from them?
+      // Do we have a decrypted share from them to check?
       if (decrypted_share) {
         console.log(`Verifying share from ${email}...`)
 
         // Verify the share
-        verifications[index] = is_received_share_valid(
+        verified[email] = is_received_share_valid(
           big(decrypted_share),
           own_index + 1,
           commitments,
           getParameters(state),
         )
-      } else {
-        // Otherwise this is:
-        // (a) ourselves — we never encrypted, or
-        // (b) a trustee that hasn't published encrypted shares yet
-        // Either way, set to null bc Firebase won't store undefineds
-        verifications[index] = null
       }
     })
     // Store the result
-    dispatch({ verifications })
+    dispatch({ verified })
 
     // Tell admin verification results
     api(`election/${state.election_id}/keygen/update`, {
-      email: state.your_email,
+      email: state.own_email,
       trustee_auth: state.trustee_auth,
-      verifications,
+      verified,
     })
-  }, [decrypted_shares?.join()])
+  }, [Object.keys(decrypted_shares_from).join()])
 
-  if (!decrypted_shares || decrypted_shares.length < 2) {
+  // Don't display this section until we decrypt at least 2 shares (admin's comes at start)
+  if (Object.keys(decrypted_shares_from).length < 2) {
     return <></>
   }
 
@@ -74,19 +69,11 @@ export const VerifyShares = ({ dispatch, state }: StateAndDispatch) => {
                 'Skipping your own share.'
               ) : (
                 <>
-                  {email} sent you {decrypted_shares[index]}
-                  {verifications[index] === undefined ? (
-                    '...'
+                  {email} sent you {decrypted_shares_from[email]}
+                  {verified[email] === undefined ? (
+                    'checking...'
                   ) : (
-                    <>
-                      , which{' '}
-                      {verifications[index]
-                        ? '✅ passes'
-                        : verifications[index] === false
-                        ? ' ❌ fails'
-                        : '[pending...]'}{' '}
-                      commitment verification
-                    </>
+                    <>, which {verified[email] ? '✅ passes' : ' ❌ fails'} commitment verification</>
                   )}
                 </>
               )}
@@ -95,25 +82,26 @@ export const VerifyShares = ({ dispatch, state }: StateAndDispatch) => {
         </ol>
       </PrivateBox>
       <ol>
-        {trustees.map(({ email, verifications, you }, index) => (
+        {trustees.map(({ email, verified, you }) => (
           <li key={email}>
-            {verifications ? (
+            {verified ? (
               <>
                 {email}
-                {you && <YouLabel />} broadcasts:
-                <ol type="i">
-                  {verifications.map((verified, index2) => (
-                    <li key={index2}>
-                      {index === index2
-                        ? '⏩ skipped own'
-                        : verified
-                        ? '✅ passed'
-                        : verified === false
-                        ? ' ❌ failed'
-                        : '⚠️ pending...'}
-                    </li>
-                  ))}
-                </ol>
+                {you && <YouLabel />} checked:
+                <ul>
+                  {trustees.map(
+                    ({ email: email2 }) =>
+                      email !== email2 && (
+                        <li key={email2}>
+                          {verified
+                            ? `✅ ${email2} passed`
+                            : verified === false
+                            ? ` ❌ ${email2} failed`
+                            : `⚠️ ${email2} pending...`}
+                        </li>
+                      ),
+                  )}
+                </ul>
               </>
             ) : (
               <i>

@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { keyBy, mapValues } from 'lodash-es'
 import { useEffect } from 'react'
 
 import { api } from '../api-helper'
@@ -12,9 +12,9 @@ import { YouLabel } from './YouLabel'
 
 export const SendPairwiseShares = ({ dispatch, state }: StateAndDispatch) => {
   const {
-    encrypted_pairwise_shares: encrypteds,
-    pairwise_randomizers: randomizers,
-    pairwise_shares: shares,
+    encrypted_pairwise_shares_for: encrypteds_for,
+    pairwise_randomizers_for: randomizers,
+    pairwise_shares_for: shares,
     parameters,
     private_coefficients: coeffs,
     trustees,
@@ -29,8 +29,10 @@ export const SendPairwiseShares = ({ dispatch, state }: StateAndDispatch) => {
     // Don't run if we've already calculated these
     if (shares) return
 
+    const trusteesMap = keyBy(trustees, 'email')
+
     // Calculate pairwise shares
-    const pairwise_shares = trustees.map((_, index) =>
+    const pairwise_shares_for = mapValues(trusteesMap, ({ index }) =>
       evaluate_private_polynomial(
         index + 1,
         coeffs.map((c) => big(c)),
@@ -38,32 +40,39 @@ export const SendPairwiseShares = ({ dispatch, state }: StateAndDispatch) => {
       ).toString(),
     )
 
-    dispatch({ pairwise_shares })
-
     // Encrypt the pairwise shares for the target recipients eyes only...
 
     // First we pick randomizers for each
-    const pairwise_randomizers = trustees.map(() => pickRandomInteger(big(parameters.p)))
+    const pairwise_randomizers_for = mapValues(trusteesMap, () => pickRandomInteger(big(parameters.p)))
 
     // Then we encrypt
-    const encrypted_pairwise_shares = trustees.map(({ recipient_key, you }, index) =>
-      you
-        ? null
-        : toStrings(
-            encrypt(
-              bigPubKey({ generator: parameters.g, modulo: parameters.p, recipient: recipient_key! }),
-              pairwise_randomizers[index],
-              big(pairwise_shares[index]),
-            ),
-          ),
+    const encrypted_pairwise_shares_for = trustees.reduce(
+      (memo, { email, recipient_key, you }) =>
+        you
+          ? memo // Don't encrypt to self
+          : {
+              ...memo,
+              [email]: toStrings(
+                encrypt(
+                  bigPubKey({ generator: parameters.g, modulo: parameters.p, recipient: recipient_key as string }),
+                  pairwise_randomizers_for[email],
+                  big(pairwise_shares_for[email]),
+                ),
+              ),
+            },
+      {},
     )
 
-    dispatch({ encrypted_pairwise_shares, pairwise_randomizers: pairwise_randomizers.map((r) => r.toString()) })
+    dispatch({
+      encrypted_pairwise_shares_for,
+      pairwise_randomizers_for: mapValues(pairwise_randomizers_for, (r) => r.toString()),
+      pairwise_shares_for,
+    })
 
     // Send encrypted_pairwise_shares to admin to broadcast
     api(`election/${state.election_id}/keygen/update`, {
-      email: state.your_email,
-      encrypted_pairwise_shares,
+      email: state.own_email,
+      encrypted_pairwise_shares_for,
       trustee_auth: state.trustee_auth,
     })
   }, [coeffs, trustees_w_commitments])
@@ -93,7 +102,7 @@ export const SendPairwiseShares = ({ dispatch, state }: StateAndDispatch) => {
                   {term_index !== coeffs.length - 1 && ' + '}
                 </span>
               ))}{' '}
-              % {parameters?.q} ≡ {state.pairwise_shares ? state.pairwise_shares[trustee_index] : '...'}
+              % {parameters?.q} ≡ {state.pairwise_shares_for ? state.pairwise_shares_for[email] : '[pending...]'}
             </li>
           ))}
         </ol>
@@ -118,8 +127,8 @@ export const SendPairwiseShares = ({ dispatch, state }: StateAndDispatch) => {
               ) : (
                 <>
                   , pub key = {recipient_key}, <br />
-                  using randomizer {randomizers ? randomizers[index] : '...'}, so E(
-                  {shares ? shares[index] : '...'}) = {encrypteds ? encrypteds[index] : '...'}
+                  using randomizer {randomizers ? randomizers[index] : '[pending...]'}, so E(
+                  {shares ? shares[email] : '[pending...]'}) = {encrypteds_for ? encrypteds_for[index] : '[pending...]'}
                 </>
               )}
             </li>
@@ -128,19 +137,19 @@ export const SendPairwiseShares = ({ dispatch, state }: StateAndDispatch) => {
       </PrivateBox>
       <p>Send &amp; receive pairwise shares to all the other trustees.</p>
       <ol>
-        {trustees.map(({ email, encrypted_pairwise_shares, you }) => (
+        {trustees.map(({ email, encrypted_pairwise_shares_for = {}, you }) => (
           <li key={email}>
-            {encrypted_pairwise_shares ? (
+            {encrypted_pairwise_shares_for ? (
               <>
                 {email}
-                {you && <YouLabel />} broadcasts encrypted shares:
-                <ol type="i">
-                  {encrypted_pairwise_shares.map((share, index) => (
-                    <li className="encrypted-shares" key={index}>
-                      {String(share)}
+                {you && <YouLabel />} broadcast encrypted shares for:
+                <ul>
+                  {Object.keys(encrypted_pairwise_shares_for).map((email) => (
+                    <li className="encrypted-shares" key={email}>
+                      {email}: {String(encrypted_pairwise_shares_for[email])}
                     </li>
                   ))}
-                </ol>
+                </ul>
               </>
             ) : (
               <i>

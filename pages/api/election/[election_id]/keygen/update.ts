@@ -8,6 +8,7 @@ import { big, bigCipher, bigPubKey, toStrings } from '../../../../../src/crypto/
 import { State } from '../../../../../src/key-generation/keygen-state'
 import { firebase } from '../../../_services'
 import { pusher } from '../../../pusher'
+import { commafy, transform_email_keys } from './commafy'
 
 const { ADMIN_EMAIL } = process.env
 
@@ -40,8 +41,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   delete body.email
   delete body.trustee_auth
 
+  // Escape object keys w/ periods into commas
+  // (Firebase doesn't like dots in keys)
+  const commafied = transform_email_keys(body, 'commafy')
+
   // Save whatever other new data they gave us
-  await trusteeDoc.update({ ...body })
+  await trusteeDoc.update(commafied)
 
   // Notify all participants there's been an update
   pusher.trigger('keygen', 'update', `${email} updated ${Object.keys(body)}`)
@@ -50,63 +55,55 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // If they provided their public key, admin can now encrypt pairwise shares for them.
   // If they provided encrypted shares, admin can decrypt their own and verify them.
-  if (body.recipient_key || body.encrypted_pairwise_shares) {
+  if (body.recipient_key || body.encrypted_pairwise_shares_for) {
     // Get admin's private data
     const adminDoc = electionDoc.collection('trustees').doc(ADMIN_EMAIL)
     const admin = { ...(await adminDoc.get()).data() } as Required<State> & {
       decryption_key: string
       recipient_key: string
     }
-    const {
-      decrypted_shares,
-      decryption_key,
-      encrypted_pairwise_shares,
-      pairwise_randomizers,
-      pairwise_shares,
-      private_coefficients: coeffs,
-      recipient_key,
-      verifications,
-    } = admin
+    const { decryption_key, private_coefficients, recipient_key } = admin
 
     // Get election parameters
     const parameters = { ...election.data() }
     const big_parameters = { g: big(parameters.g), p: big(parameters.p), q: big(parameters.q) }
 
-    // Which index are we editing?
-    const { index } = trustee
-
     // Logic for new recipient_key
     if (body.recipient_key) {
       // Calculate admin's pairwise share for this trustee
-      pairwise_shares[index] = evaluate_private_polynomial(
-        index + 1,
-        coeffs.map((c) => big(c)),
+      const pairwise_share = evaluate_private_polynomial(
+        trustee.index + 1,
+        private_coefficients.map((c) => big(c)),
         big_parameters,
       ).toString()
 
       // Encrypt the pairwise shares for the target recipients eyes only...
 
       // First we pick a randomizer
-      pairwise_randomizers[index] = pickRandomInteger(big(parameters.p)).toString()
+      const pairwise_randomizer = pickRandomInteger(big(parameters.p)).toString()
 
       // Then we encrypt
-      encrypted_pairwise_shares[index] = toStrings(
+      const encrypted_pairwise_share = toStrings(
         encrypt(
           bigPubKey({ generator: parameters.g, modulo: parameters.p, recipient: body.recipient_key }),
-          big(pairwise_randomizers[index]),
-          big(pairwise_shares[index]),
+          big(pairwise_randomizer),
+          big(pairwise_share),
         ),
       )
 
       // Store all the new data we created
-      await adminDoc.update({ encrypted_pairwise_shares, pairwise_randomizers, pairwise_shares })
+      await adminDoc.update({
+        [`encrypted_pairwise_shares_for.${commafy(email)}`]: encrypted_pairwise_share,
+        [`pairwise_randomizers_for.${commafy(email)}`]: pairwise_randomizer,
+        [`pairwise_shares_for.${commafy(email)}`]: pairwise_share,
+      })
 
       // Notify all participants there's been an update
-      pusher.trigger('keygen', 'update', `${ADMIN_EMAIL} updated encrypted_pairwise_shares ${trustee.index}`)
+      pusher.trigger('keygen', 'update', `${ADMIN_EMAIL} updated encrypted_pairwise_shares_for ${email}`)
     }
 
     // Logic for new encrypted shares
-    if (body.encrypted_pairwise_shares) {
+    if (body.encrypted_pairwise_shares_for) {
       // Decrypt the share for admin
       const decrypted_share = decrypt(
         bigPubKey({
@@ -115,18 +112,20 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           recipient: recipient_key,
         }),
         big(decryption_key),
-        bigCipher(JSON.parse(body.encrypted_pairwise_shares[0])),
+        bigCipher(JSON.parse(body.encrypted_pairwise_shares_for[ADMIN_EMAIL])),
       )
-      decrypted_shares[index] = decrypted_share
 
       // Verify the received share
-      verifications[index] = is_received_share_valid(big(decrypted_share), 1, trustee.commitments, big_parameters)
+      const verification = is_received_share_valid(big(decrypted_share), 1, trustee.commitments, big_parameters)
 
       // Store all the new data we created
-      await adminDoc.update({ decrypted_shares, verifications })
+      await adminDoc.update({
+        [`decrypted_shares_from.${commafy(email)}`]: decrypted_share,
+        [`verified.${commafy(email)}`]: verification,
+      })
 
       // Notify all participants there's been an update
-      pusher.trigger('keygen', 'update', `${ADMIN_EMAIL} updated verifications ${trustee.index}`)
+      pusher.trigger('keygen', 'update', `${ADMIN_EMAIL} updated verification for ${email}`)
     }
   }
 }

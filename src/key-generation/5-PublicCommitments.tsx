@@ -26,7 +26,7 @@ export const PublicCommitments = ({ dispatch, state }: StateAndDispatch) => {
     // Tell admin your new public commitments
     api(`election/${state.election_id}/keygen/update`, {
       commitments,
-      email: state.your_email,
+      email: state.own_email,
       trustee_auth: state.trustee_auth,
     })
   }, [coeffs, trustees])

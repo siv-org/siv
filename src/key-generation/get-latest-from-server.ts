@@ -26,7 +26,7 @@ export async function getLatestFromServer({ dispatch, state }: StateAndDispatch)
     // Find your own email and store it to local state
     data.trustees.some((trustee: Trustee) => {
       if (trustee.you) {
-        dispatch({ your_email: trustee.email })
+        dispatch({ own_email: trustee.email })
         return true
       }
     })

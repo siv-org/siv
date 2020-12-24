@@ -10,7 +10,7 @@ import { YouLabel } from './YouLabel'
 export const MessagingKeys = ({ dispatch, state }: StateAndDispatch) => {
   useEffect(() => {
     // These effects will run once we've received parameters.p and identified ourselves
-    if (!state.parameters?.p || !state.your_email) return
+    if (!state.parameters?.p || !state.own_email) return
 
     // Don't run more than once
     if (state.personal_key_pair) return
@@ -29,11 +29,11 @@ export const MessagingKeys = ({ dispatch, state }: StateAndDispatch) => {
 
     // Tell admin the new public key you created
     api(`election/${state.election_id}/keygen/update`, {
-      email: state.your_email,
+      email: state.own_email,
       recipient_key: personal_key_pair.public_key.recipient,
       trustee_auth: state.trustee_auth,
     })
-  }, [state.parameters?.p, state.your_email])
+  }, [state.parameters?.p, state.own_email])
 
   if (!state.parameters || !state.trustees) {
     return <></>

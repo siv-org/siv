@@ -6,31 +6,30 @@ import { useLocalStorageReducer } from '../vote/useLocalStorage'
 import { diff } from './diff-objects'
 
 // Define our types
-type Map = Record<string, unknown>
 export type Trustee = {
   commitments: string[]
   email: string
-  encrypted_pairwise_shares: string[]
+  encrypted_pairwise_shares_for: Record<string, string>
   index: number
   recipient_key?: string
-  verifications?: boolean[]
+  verified?: Record<string, boolean>
   you?: boolean
 }
 export type State = {
   commitments?: string[]
-  decrypted_shares?: (string | undefined)[]
+  decrypted_shares_from?: Record<string, string>
   election_id: string
-  encrypted_pairwise_shares?: string[]
-  pairwise_randomizers?: string[]
-  pairwise_shares?: string[]
+  encrypted_pairwise_shares_for?: Record<string, string>
+  own_email: string
+  pairwise_randomizers_for?: Record<string, string>
+  pairwise_shares_for?: Record<string, string>
   parameters?: { g: string; p: string; q: string; t: number }
   personal_key_pair?: { decryption_key: string; public_key: { recipient: string } }
   private_coefficients?: string[]
   start: boolean // TODO: Remove me
   trustee_auth: string
   trustees?: Trustee[]
-  verifications?: (boolean | null)[]
-  your_email?: string
+  verified?: Record<string, boolean>
 }
 
 /**
@@ -44,7 +43,7 @@ export type StateAndDispatch = {
 }
 
 // Core state logic
-function reducer(prev: State, payload: Map) {
+function reducer(prev: State, payload: Record<string, unknown>) {
   // Merge in new state from payload
   const newState = merge({ ...prev }, { ...payload })
 
@@ -59,7 +58,7 @@ function reducer(prev: State, payload: Map) {
 
 // Export consumable hook that returns [state, dispatch]
 export const useKeyGenState = ({ election_id, trustee_auth }: { election_id: string; trustee_auth: string }) =>
-  useLocalStorageReducer(`keygen-${election_id}-${trustee_auth}`, reducer, { election_id, trustee_auth })
+  useLocalStorageReducer(`keygen-${election_id}-${trustee_auth}`, reducer, { election_id, own_email: '', trustee_auth })
 
 /** Helper function to create Parameter from state.parameters */
 export function getParameters(state: State): Parameters {

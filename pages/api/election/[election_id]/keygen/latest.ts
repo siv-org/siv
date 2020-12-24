@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import { firebase } from '../../../_services'
+import { transform_email_keys } from './commafy'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { election_id, trustee_auth } = req.query
@@ -32,10 +33,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     delete data.auth_token
     delete data.decryption_key
     delete data.private_coefficients
-    delete data.pairwise_shares
-    delete data.pairwise_randomizers
+    delete data.pairwise_shares_for
+    delete data.pairwise_randomizers_for
 
-    return sortObject(data)
+    // Convert commas back into dots
+    const decommafied = transform_email_keys(data, 'decommafy')
+
+    return sortObject(decommafied)
   })
 
   res.status(200).json({ parameters, trustees })

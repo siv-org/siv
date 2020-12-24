@@ -1,3 +1,4 @@
+import { sumBy } from 'lodash-es'
 import { useEffect } from 'react'
 
 import decrypt from '../crypto/decrypt'
@@ -6,26 +7,30 @@ import { StateAndDispatch } from './keygen-state'
 import { PrivateBox } from './PrivateBox'
 
 export const ReceivedPairwiseShares = ({ dispatch, state }: StateAndDispatch) => {
-  const { decrypted_shares = [], parameters, pairwise_shares: shares, trustees = [], personal_key_pair } = state
+  const {
+    decrypted_shares_from = {},
+    parameters,
+    pairwise_shares_for: shares,
+    trustees = [],
+    personal_key_pair,
+    own_email,
+  } = state
 
-  const encrypteds = trustees.map((t) => t.encrypted_pairwise_shares)
+  const num_encrypteds_broadcast = sumBy(trustees, (t) => Object.keys(t.encrypted_pairwise_shares_for || {}).length)
 
-  const own_index = trustees.find((t) => t.you)?.index || 0
-  const roman = convertToRoman(own_index + 1).toLowerCase()
-
-  // Rerun whenever broadcast encrypted_pairwise_shares have changed
+  // Reruns whenever more encrypted_pairwise_shares_for are broadcast
   useEffect(() => {
     if (!personal_key_pair || !parameters) return
 
     // For each trustee...
-    trustees.forEach(({ email, encrypted_pairwise_shares = [], index }) => {
-      const encrypted_share_for_us = encrypted_pairwise_shares[own_index]
+    trustees.forEach(({ email, encrypted_pairwise_shares_for = {} }) => {
+      const encrypted_share_for_us = encrypted_pairwise_shares_for[own_email]
 
-      // Have they broadcast an encrypted_pairwise share for us and we haven't decrypted it yet?
-      if (encrypted_share_for_us && !decrypted_shares[index]) {
+      // Have they broadcast an encrypted_pairwise_share for us and we haven't decrypted it yet?
+      if (encrypted_share_for_us && !decrypted_shares_from[email]) {
         // Then lets decrypt it
         console.log(`Unlocking cipher from ${email}...`)
-        decrypted_shares[index] = decrypt(
+        decrypted_shares_from[email] = decrypt(
           bigPubKey({
             generator: parameters.g,
             modulo: parameters.p,
@@ -36,10 +41,10 @@ export const ReceivedPairwiseShares = ({ dispatch, state }: StateAndDispatch) =>
         )
 
         // Store the decrypted result
-        dispatch({ decrypted_shares })
+        dispatch({ decrypted_shares_from })
       }
     })
-  }, [encrypteds?.join()])
+  }, [num_encrypteds_broadcast])
 
   // Only show after calculated own pairwise shares
   if (!shares) {
@@ -52,21 +57,20 @@ export const ReceivedPairwiseShares = ({ dispatch, state }: StateAndDispatch) =>
       <p>Decrypt the shares intended for you.</p>
       <PrivateBox>
         <ol>
-          {trustees.map(({ email, encrypted_pairwise_shares = [], index, you }) => (
+          {trustees.map(({ email, encrypted_pairwise_shares_for = {}, you }) => (
             <li key={email}>
               {you ? (
-                <>Your own share is {shares ? shares[own_index] : '...'}.</>
-              ) : encrypted_pairwise_shares[own_index] ? (
+                <>Your own share is {shares ? shares[own_email] : '[pending...]'}.</>
+              ) : encrypted_pairwise_shares_for[own_email] ? (
                 <>
-                  {email} sent encrypted share {roman} for you:
-                  {encrypted_pairwise_shares[own_index]}.
-                  <br />
+                  {email} sent you this encrypted share:
+                  <p className="encrypteds">{encrypted_pairwise_shares_for[own_email]}</p>
                   Your private key {personal_key_pair?.decryption_key} decrypts this into:{' '}
-                  {decrypted_shares[index] || '...'}
+                  {decrypted_shares_from[email] || '[pending...'}
                 </>
               ) : (
                 <i>
-                  Waiting on <b>{email}</b> to broadcast encrypted share {roman} for you...
+                  Waiting on <b>{email}</b> to broadcast encrypted share for you...
                 </i>
               )}
             </li>
@@ -77,35 +81,12 @@ export const ReceivedPairwiseShares = ({ dispatch, state }: StateAndDispatch) =>
         li {
           margin-bottom: 15px;
         }
+
+        .encrypteds {
+          font-size: 13px;
+          margin: 0 0 10px;
+        }
       `}</style>
     </>
   )
-}
-
-// adapted from https://stackoverflow.com/a/41358305
-function convertToRoman(num: number) {
-  const roman: Record<string, number> = {
-    C: 100,
-    CD: 400,
-    CM: 900,
-    D: 500,
-    I: 1,
-    IV: 4,
-    IX: 9,
-    L: 50,
-    M: 1000,
-    V: 5,
-    X: 10,
-    XC: 90,
-    XL: 40,
-  }
-  let str = ''
-
-  for (const i of Object.keys(roman)) {
-    const q = Math.floor(num / roman[i])
-    num -= q * roman[i]
-    str += i.repeat(q)
-  }
-
-  return str
 }

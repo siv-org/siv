@@ -84,15 +84,13 @@ Click here to join:
   const commitments = generate_public_coefficients(private_coefficients, safe_prime_bigs)
 
   // 11. Generate admins own keyshare for themselves
-  const pairwise_shares = new Array(trustees.length).fill(null)
-  pairwise_shares[0] = evaluate_private_polynomial(
-    1,
-    private_coefficients,
-    mapValues(safe_prime, (v) => big(v)),
-  ).toString()
-
-  // For fields we'll fill in one-by-one (firebase doesn't like `undefined`s)
-  const nulls = new Array(trustees.length).fill(null)
+  const pairwise_shares_for = {
+    [ADMIN_EMAIL]: evaluate_private_polynomial(
+      1,
+      private_coefficients,
+      mapValues(safe_prime, (v) => big(v)),
+    ).toString(),
+  }
 
   // Store all this new admin data
   election
@@ -100,14 +98,10 @@ Click here to join:
     .doc(ADMIN_EMAIL)
     .update({
       commitments,
-      decrypted_shares: nulls,
       decryption_key: pair.decryption_key.toString(),
-      encrypted_pairwise_shares: nulls,
-      pairwise_randomizers: nulls,
-      pairwise_shares,
+      pairwise_shares_for,
       private_coefficients: private_coefficients.map((c) => c.toString()),
       recipient_key: pair.public_key.recipient.toString(),
-      verifications: nulls,
     })
 
   pusher.trigger('keygen', 'update', `${ADMIN_EMAIL} created their initial data`)
