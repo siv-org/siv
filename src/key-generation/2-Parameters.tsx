@@ -1,3 +1,4 @@
+import { big } from '../crypto/types'
 import { State } from './keygen-state'
 
 export const Parameters = ({ state }: { state: State }) => {
@@ -14,7 +15,7 @@ export const Parameters = ({ state }: { state: State }) => {
       </p>
       <ul>
         <li>
-          Prime <i>p</i> = {state.parameters.p}
+          Prime <i>p</i> = {state.parameters.p} ({big(state.parameters.p).bitLength()} bits)
         </li>
         <li>
           Prime <i>q</i> = {state.parameters.q}
