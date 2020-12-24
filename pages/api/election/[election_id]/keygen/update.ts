@@ -104,6 +104,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     // Logic for new encrypted shares
     if (body.encrypted_pairwise_shares_for) {
+      let encrypted
+      try {
+        encrypted = JSON.parse(body.encrypted_pairwise_shares_for[ADMIN_EMAIL])
+      } catch (e) {
+        return console.error(`Error parsing encrypted share from ${email} for admin`, e)
+      }
       // Decrypt the share for admin
       const decrypted_share = decrypt(
         bigPubKey({
@@ -112,7 +118,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           recipient: recipient_key,
         }),
         big(decryption_key),
-        bigCipher(JSON.parse(body.encrypted_pairwise_shares_for[ADMIN_EMAIL])),
+        bigCipher(encrypted),
       )
 
       // Verify the received share
