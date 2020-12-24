@@ -1,13 +1,25 @@
 import { sumBy } from 'lodash-es'
+import { useEffect } from 'react'
 
-import { State } from './keygen-state'
+import { compute_keyshare } from '../crypto/threshold-keygen'
+import { big } from '../crypto/types'
+import { StateAndDispatch } from './keygen-state'
 import { PrivateBox } from './PrivateBox'
 
-export const CalculatePrivateKeyshare = ({ state }: { state: State }) => {
+export const CalculatePrivateKeyshare = ({ dispatch, state }: StateAndDispatch) => {
   const { trustees = [], decrypted_shares_from = {}, parameters, private_keyshare = '...' } = state
 
   const num_passed = sumBy(trustees, (t) => sumBy(Object.values(t.verified || {}), Number))
   const num_expected = trustees.length * trustees.length - 1
+
+  useEffect(() => {
+    // Don't start until all passed verifications
+    if ((!num_passed && num_passed !== num_expected) || !parameters) return
+
+    const incoming_bigs = Object.values(decrypted_shares_from).map((n) => big(n))
+
+    dispatch({ private_keyshare: compute_keyshare(incoming_bigs, big(parameters.q)).toString() })
+  }, [num_passed])
 
   if (!num_passed && num_passed !== num_expected) {
     return <></>

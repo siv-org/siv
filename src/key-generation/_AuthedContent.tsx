@@ -39,8 +39,8 @@ export const AuthedContent = ({
       <SendPairwiseShares {...{ dispatch, state }} />
       <ReceivedPairwiseShares {...{ dispatch, state }} />
       <VerifyShares {...{ dispatch, state }} />
-      <CalculatePrivateKeyshare {...{ state }} />
-      <PublicThresholdKey {...{ state }} />
+      <CalculatePrivateKeyshare {...{ dispatch, state }} />
+      <PublicThresholdKey {...{ dispatch, state }} />
 
       <style jsx>{``}</style>
       <GlobalCSS />
