@@ -18,7 +18,7 @@ export const ReceivedPairwiseShares = ({ dispatch, state }: StateAndDispatch) =>
     if (!personal_key_pair || !parameters) return
 
     // For each trustee...
-    trustees.forEach(({ email, encrypted_pairwise_shares, index }) => {
+    trustees.forEach(({ email, encrypted_pairwise_shares = [], index }) => {
       const encrypted_share_for_us = encrypted_pairwise_shares[own_index]
 
       // Have they broadcast an encrypted_pairwise share for us and we haven't decrypted it yet?
@@ -52,7 +52,7 @@ export const ReceivedPairwiseShares = ({ dispatch, state }: StateAndDispatch) =>
       <p>Decrypt the shares intended for you.</p>
       <PrivateBox>
         <ol>
-          {trustees.map(({ email, encrypted_pairwise_shares, index, you }) => (
+          {trustees.map(({ email, encrypted_pairwise_shares = [], index, you }) => (
             <li key={email}>
               {you ? (
                 <>Your own share is {shares ? shares[own_index] : '...'}.</>

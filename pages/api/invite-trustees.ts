@@ -97,12 +97,14 @@ Click here to join:
     .doc(ADMIN_EMAIL)
     .update({
       commitments,
+      decrypted_shares: new Array(trustees.length).fill(null),
       decryption_key: pair.decryption_key.toString(),
       encrypted_pairwise_shares: new Array(trustees.length).fill(null),
       pairwise_randomizers: new Array(trustees.length).fill(null),
       pairwise_shares,
       private_coefficients: private_coefficients.map((c) => c.toString()),
       recipient_key: pair.public_key.recipient.toString(),
+      verifications: new Array(trustees.length).fill(null),
     })
 
   pusher.trigger('keygen', 'update', `${ADMIN_EMAIL} created their initial data`)
