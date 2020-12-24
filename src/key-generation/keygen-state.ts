@@ -26,6 +26,7 @@ export type State = {
   parameters?: { g: string; p: string; q: string; t: number }
   personal_key_pair?: { decryption_key: string; public_key: { recipient: string } }
   private_coefficients?: string[]
+  private_keyshare?: string
   start: boolean // TODO: Remove me
   trustee_auth: string
   trustees?: Trustee[]
