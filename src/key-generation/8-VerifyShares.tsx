@@ -50,7 +50,7 @@ export const VerifyShares = ({ dispatch, state }: StateAndDispatch) => {
       trustee_auth: state.trustee_auth,
       verifications,
     })
-  }, [decrypted_shares])
+  }, [decrypted_shares?.join()])
 
   if (!decrypted_shares || decrypted_shares.length < 2) {
     return <></>
