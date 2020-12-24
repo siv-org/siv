@@ -91,20 +91,23 @@ Click here to join:
     mapValues(safe_prime, (v) => big(v)),
   ).toString()
 
+  // For fields we'll fill in one-by-one (firebase doesn't like `undefined`s)
+  const nulls = new Array(trustees.length).fill(null)
+
   // Store all this new admin data
   election
     .collection('trustees')
     .doc(ADMIN_EMAIL)
     .update({
       commitments,
-      decrypted_shares: new Array(trustees.length).fill(null),
+      decrypted_shares: nulls,
       decryption_key: pair.decryption_key.toString(),
-      encrypted_pairwise_shares: new Array(trustees.length).fill(null),
-      pairwise_randomizers: new Array(trustees.length).fill(null),
+      encrypted_pairwise_shares: nulls,
+      pairwise_randomizers: nulls,
       pairwise_shares,
       private_coefficients: private_coefficients.map((c) => c.toString()),
       recipient_key: pair.public_key.recipient.toString(),
-      verifications: new Array(trustees.length).fill(null),
+      verifications: nulls,
     })
 
   pusher.trigger('keygen', 'update', `${ADMIN_EMAIL} created their initial data`)
