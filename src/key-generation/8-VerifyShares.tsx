@@ -110,7 +110,7 @@ export const VerifyShares = ({ dispatch, state }: StateAndDispatch) => {
                         ? '✅ passed'
                         : verified === false
                         ? ' ❌ failed'
-                        : '...'}
+                        : '⚠️ pending...'}
                     </li>
                   ))}
                 </ol>
