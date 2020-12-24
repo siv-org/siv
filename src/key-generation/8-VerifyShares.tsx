@@ -59,7 +59,12 @@ export const VerifyShares = ({ dispatch, state }: StateAndDispatch) => {
   return (
     <>
       <h3>VIII. Verify Shares:</h3>
-      <p>Each trustee can verify their received shares.</p>
+      <p>
+        Each trustee can verify their received private shares against senders&apos; public commitments A<sub>c</sub>.
+      </p>
+      <p>
+        <i>Confirm:</i> g ^ share == Product( c from 0 to t-1 ){'{'} A<sub>c</sub> ^receivers_index ^c % p {'}'}
+      </p>
       <PrivateBox>
         <p>Checking received shares...</p>
         <ol>
@@ -90,7 +95,7 @@ export const VerifyShares = ({ dispatch, state }: StateAndDispatch) => {
                 {you && <YouLabel />} broadcasts:
                 <ol type="i">
                   {verifications.map((verified, index2) => (
-                    <li key={index2}>{index === index2 ? 'skipped own' : verified ? '✅ passed' : ' ❌ failed'}</li>
+                    <li key={index2}>{index === index2 ? '⏩ skipped own' : verified ? '✅ passed' : ' ❌ failed'}</li>
                   ))}
                 </ol>
               </>

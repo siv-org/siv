@@ -41,7 +41,7 @@ export const evaluate_private_polynomial = (j: number, private_coefficients: Big
 
 /** Each Pⱼ verifies the shares he received from the other parties by checking for i = 1,...,n:
 
- g^(s[i,j]) = Product( k=0, t ){ (A[i,k]) ^j ^k mod p }
+ g^(s[i,j]) = Product( k=0, t-1 ){ (A[i,k]) ^j ^k mod p }
 
  */
 export const is_received_share_valid = (
