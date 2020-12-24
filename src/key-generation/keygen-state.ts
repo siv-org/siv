@@ -27,7 +27,7 @@ export type State = {
   personal_key_pair?: { decryption_key: string; public_key: { recipient: string } }
   private_coefficients?: string[]
   private_keyshare?: string
-  start: boolean // TODO: Remove me
+  threshold_public_key?: string
   trustee_auth: string
   trustees?: Trustee[]
   verified?: Record<string, boolean>
