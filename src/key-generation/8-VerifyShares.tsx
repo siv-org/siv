@@ -15,6 +15,8 @@ export const VerifyShares = ({ dispatch, state }: StateAndDispatch) => {
   useEffect(() => {
     if (!decrypted_shares_from) return
 
+    let updated = false
+
     // For each trustee...
     trustees.forEach(({ commitments, email }) => {
       // Stop if we already checked this person
@@ -23,7 +25,9 @@ export const VerifyShares = ({ dispatch, state }: StateAndDispatch) => {
       const decrypted_share = decrypted_shares_from[email]
 
       // Do we have a decrypted share from them to check?
-      if (decrypted_share) {
+      if (decrypted_share && commitments.length) {
+        updated = true
+
         console.log(`Verifying share from ${email}...`)
 
         // Verify the share
@@ -35,6 +39,10 @@ export const VerifyShares = ({ dispatch, state }: StateAndDispatch) => {
         )
       }
     })
+
+    // Stop if nothing changed
+    if (!updated) return
+
     // Store the result
     dispatch({ verified })
 
