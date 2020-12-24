@@ -78,7 +78,15 @@ export const VerifyShares = ({ dispatch, state }: StateAndDispatch) => {
                   {verifications[index] === undefined ? (
                     '...'
                   ) : (
-                    <>, which {verifications[index] ? '✅ passes' : ' ❌ fails'} commitment verification</>
+                    <>
+                      , which{' '}
+                      {verifications[index]
+                        ? '✅ passes'
+                        : verifications[index] === false
+                        ? ' ❌ fails'
+                        : '[pending...]'}{' '}
+                      commitment verification
+                    </>
                   )}
                 </>
               )}
@@ -95,7 +103,15 @@ export const VerifyShares = ({ dispatch, state }: StateAndDispatch) => {
                 {you && <YouLabel />} broadcasts:
                 <ol type="i">
                   {verifications.map((verified, index2) => (
-                    <li key={index2}>{index === index2 ? '⏩ skipped own' : verified ? '✅ passed' : ' ❌ failed'}</li>
+                    <li key={index2}>
+                      {index === index2
+                        ? '⏩ skipped own'
+                        : verified
+                        ? '✅ passed'
+                        : verified === false
+                        ? ' ❌ failed'
+                        : '...'}
+                    </li>
                   ))}
                 </ol>
               </>
