@@ -62,7 +62,7 @@ export const PublicCommitments = ({ dispatch, state }: StateAndDispatch) => {
             {commitments ? (
               <>
                 {email}
-                {you && <YouLabel />} broadcasts commitments {commitments.join(', ')}.
+                {you && <YouLabel />} broadcast commitments {commitments.join(', ')}.
               </>
             ) : (
               <i>

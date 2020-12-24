@@ -60,13 +60,15 @@ export const ReceivedPairwiseShares = ({ dispatch, state }: StateAndDispatch) =>
           {trustees.map(({ email, encrypted_pairwise_shares_for = {}, you }) => (
             <li key={email}>
               {you ? (
-                <>Your own share is {shares ? shares[own_email] : '[pending...]'}.</>
+                <>
+                  Your own share is <b>{shares ? shares[own_email] : '[pending...]'}</b>
+                </>
               ) : encrypted_pairwise_shares_for[own_email] ? (
                 <>
                   {email} sent you this encrypted share:
                   <p className="encrypteds">{encrypted_pairwise_shares_for[own_email]}</p>
                   Your private key {personal_key_pair?.decryption_key} decrypts this into:{' '}
-                  {decrypted_shares_from[email] || '[pending...'}
+                  <b>{decrypted_shares_from[email] || '[pending...'}</b>
                 </>
               ) : (
                 <i>
@@ -85,6 +87,10 @@ export const ReceivedPairwiseShares = ({ dispatch, state }: StateAndDispatch) =>
         .encrypteds {
           font-size: 13px;
           margin: 0 0 10px;
+        }
+
+        b {
+          font-weight: 600;
         }
       `}</style>
     </>

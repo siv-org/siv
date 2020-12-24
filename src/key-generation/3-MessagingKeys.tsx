@@ -65,7 +65,7 @@ export const MessagingKeys = ({ dispatch, state }: StateAndDispatch) => {
             {recipient_key ? (
               <>
                 {email}
-                {you && <YouLabel />} broadcasts their Public key is {recipient_key}
+                {you && <YouLabel />} broadcast their Public key is {recipient_key}
               </>
             ) : (
               <i>

@@ -142,7 +142,7 @@ export const SendPairwiseShares = ({ dispatch, state }: StateAndDispatch) => {
             {encrypted_pairwise_shares_for ? (
               <>
                 {email}
-                {you && <YouLabel />} broadcast encrypted shares for:
+                {you && <YouLabel />} broadcast encrypted shares for...
                 <ul>
                   {Object.keys(encrypted_pairwise_shares_for).map((email) => (
                     <li className="encrypted-shares" key={email}>

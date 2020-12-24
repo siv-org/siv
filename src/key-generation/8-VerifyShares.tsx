@@ -73,7 +73,7 @@ export const VerifyShares = ({ dispatch, state }: StateAndDispatch) => {
                   {verified[email] === undefined ? (
                     'checking...'
                   ) : (
-                    <>, which {verified[email] ? '✅ passes' : ' ❌ fails'} commitment verification</>
+                    <>, which {verified[email] ? '✓ fits' : ' ❌ fails against'} commitments.</>
                   )}
                 </>
               )}
