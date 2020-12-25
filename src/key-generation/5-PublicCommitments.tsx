@@ -39,7 +39,7 @@ export const PublicCommitments = ({ dispatch, state }: StateAndDispatch) => {
     <>
       <h3>V. Public Commitments:</h3>
       <p>
-        Each trustee broadcasts public commitments A<sub>1</sub>, ..., A<sub>t</sub> based on their private
+        Each trustee broadcasts public commitments A<sub>0</sub>, ..., A<sub>t-1</sub> based on their private
         coefficients, A<sub>c</sub> = g ^ a<sub>c</sub> % p.
       </p>
       <PrivateBox>
@@ -49,7 +49,7 @@ export const PublicCommitments = ({ dispatch, state }: StateAndDispatch) => {
             <p key={index}>
               {state.commitments && (
                 <>
-                  A<sub>{index + 1}</sub> = {g} ^ {coeff} % {p} ≡ {state.commitments[index]}
+                  A<sub>{index}</sub> = {g} ^ {coeff} % {p} ≡ {state.commitments[index]}
                 </>
               )}
             </p>

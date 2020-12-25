@@ -29,7 +29,7 @@ export const PublicThresholdKey = ({ dispatch, state }: StateAndDispatch) => {
       <ul>
         {trustees.map(({ commitments, email }) => (
           <li key={email}>
-            {email} broadcast A<sub>0</sub> = {commitments[0]}
+            {email} had broadcast A<sub>0</sub> = {commitments[0]}
           </li>
         ))}
       </ul>

@@ -32,8 +32,8 @@ export const PrivateCoefficients = ({ dispatch, state }: StateAndDispatch) => {
     <>
       <h3>IV. Private Coefficients:</h3>
       <p>
-        Each trustee picks their own private coefficients in ℤ<sub>q</sub>, f(x) = a<sub>1</sub> + a<sub>2</sub>x + ...
-        + a<sub>t</sub>x<sup>t-1</sup> % q.
+        Each trustee picks their own private coefficients in ℤ<sub>q</sub>, f(x) = a<sub>0</sub> + a<sub>1</sub>x + ...
+        + a<sub>t-1</sub>x<sup>t-1</sup> % q.
       </p>
       <PrivateBox>
         <p>Using Crypto.getRandomValues() on your device to generate your private polynomial...</p>
