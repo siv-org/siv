@@ -1,6 +1,7 @@
 import { GlobalCSS } from '../GlobalCSS'
 import { Trustees } from './1-Trustees'
 import { PublicThresholdKey } from './10-PublicThresholdKey'
+import { PartialDecryptionTest } from './11-PartialDecryptionTest'
 import { Parameters } from './2-Parameters'
 import { MessagingKeys } from './3-MessagingKeys'
 import { PrivateCoefficients } from './4-PrivateCoefficients'
@@ -41,6 +42,7 @@ export const AuthedContent = ({
       <VerifyShares {...{ dispatch, state }} />
       <CalculatePrivateKeyshare {...{ dispatch, state }} />
       <PublicThresholdKey {...{ dispatch, state }} />
+      <PartialDecryptionTest {...{ dispatch, state }} />
 
       <style jsx>{``}</style>
       <GlobalCSS />

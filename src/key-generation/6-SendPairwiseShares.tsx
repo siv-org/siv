@@ -6,6 +6,7 @@ import encrypt from '../crypto/encrypt'
 import pickRandomInteger from '../crypto/pick-random-integer'
 import { evaluate_private_polynomial } from '../crypto/threshold-keygen'
 import { big, bigPubKey, toStrings } from '../crypto/types'
+import { EncryptionNote } from './EncryptionNote'
 import { StateAndDispatch, getParameters } from './keygen-state'
 import { PrivateBox } from './PrivateBox'
 import { YouLabel } from './YouLabel'
@@ -108,13 +109,7 @@ export const SendPairwiseShares = ({ dispatch, state }: StateAndDispatch) => {
         </ol>
       </PrivateBox>
       <p>Encrypt the private shares so only the target recipient can read them.</p>
-      <p className="encryption-note">
-        <code>
-          <i>https://en.wikipedia.org/wiki/ElGamal_encryption</i>
-          {'\n'}encrypted = message * (recipient ^ randomizer) % modulo
-          {'\n'}unlock = (generator ^ randomizer) % modulo
-        </code>
-      </p>
+      <EncryptionNote />
       <PrivateBox>
         <ol>
           {trustees.map(({ email, recipient_key, you }, index) => (
@@ -162,18 +157,6 @@ export const SendPairwiseShares = ({ dispatch, state }: StateAndDispatch) => {
       <style jsx>{`
         li {
           margin-bottom: 15px;
-        }
-
-        .encryption-note {
-          margin-bottom: 20px;
-          border: 1px solid #ccc;
-          padding: 5px 10px;
-          border-radius: 4px;
-        }
-
-        code {
-          font-size: 13px;
-          white-space: pre;
         }
 
         .encrypted-shares {

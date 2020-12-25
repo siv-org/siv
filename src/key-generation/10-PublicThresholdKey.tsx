@@ -37,8 +37,8 @@ export const PublicThresholdKey = ({ dispatch, state }: StateAndDispatch) => {
         Public threshold key = {trustees.map(({ commitments }) => commitments[0]).join(' * ')} % {parameters?.p} ≡{' '}
         {threshold_public_key}
       </p>
-      <br />
-      <h3>All done. 🎉</h3>
+      {/* <br />
+      <h3>All done. 🎉</h3> */}
     </>
   )
 }
