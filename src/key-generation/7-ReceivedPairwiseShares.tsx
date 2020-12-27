@@ -68,7 +68,7 @@ export const ReceivedPairwiseShares = ({ dispatch, state }: StateAndDispatch) =>
                   {email} sent you this encrypted share:
                   <p className="encrypteds">{encrypted_pairwise_shares_for[own_email]}</p>
                   Your private key {personal_key_pair?.decryption_key} decrypts this into:{' '}
-                  <b>{decrypted_shares_from[email] || '[pending...'}</b>
+                  <b>{decrypted_shares_from[email] || '[pending...]'}</b>
                 </>
               ) : (
                 <i>

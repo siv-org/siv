@@ -18,6 +18,9 @@ export const CalculatePrivateKeyshare = ({ dispatch, state }: StateAndDispatch) 
 
     const incoming_bigs = Object.values(decrypted_shares_from).map((n) => big(n))
 
+    // Stop if we haven't received any bigs yet
+    if (!incoming_bigs.length) return
+
     dispatch({ private_keyshare: compute_keyshare(incoming_bigs, big(parameters.q)).toString() })
   }, [num_passed])
 

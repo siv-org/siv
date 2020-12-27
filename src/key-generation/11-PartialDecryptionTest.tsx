@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 
+import { api } from '../api-helper'
 import { partial_decrypt } from '../crypto/threshold-keygen'
 import { big } from '../crypto/types'
 import { EncryptionNote } from './EncryptionNote'
@@ -16,11 +17,21 @@ export const PartialDecryptionTest = ({ dispatch, state }: StateAndDispatch) => 
     // Don't start until we have the threshold key
     if (!threshold_public_key || !parameters || !private_keyshare) return
 
+    // Only calculate once
+    if (partial) return
+
     const unlock = big(parameters.g).modPow(big(randomizer), big(parameters.p))
 
     const partial_decryption = partial_decrypt(unlock, big(private_keyshare), getParameters(state)).toString()
 
     dispatch({ partial_decryption })
+
+    // Send partial to admin
+    api(`election/${state.election_id}/keygen/update`, {
+      email: state.own_email,
+      partial_decryption,
+      trustee_auth: state.trustee_auth,
+    })
   }, [threshold_public_key])
 
   if (!threshold_public_key || !parameters) {
@@ -62,10 +73,10 @@ export const PartialDecryptionTest = ({ dispatch, state }: StateAndDispatch) => 
         </p>
       </PrivateBox>
       <ul>
-        {trustees.map(({ email, partial }) => (
+        {trustees.map(({ email, partial_decryption }) => (
           <li key={email}>
-            {partial ? (
-              `${email} broadcast partial: = ${partial}`
+            {partial_decryption ? (
+              `${email} broadcast partial: = ${partial_decryption}`
             ) : (
               <i>
                 Waiting on <b>{email}</b> to broadcast partial
