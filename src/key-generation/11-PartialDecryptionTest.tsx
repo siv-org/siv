@@ -7,7 +7,7 @@ import { StateAndDispatch, getParameters } from './keygen-state'
 import { PrivateBox } from './PrivateBox'
 
 export const PartialDecryptionTest = ({ dispatch, state }: StateAndDispatch) => {
-  const { parameters, partial_decryption: partial, private_keyshare, threshold_public_key } = state
+  const { parameters, partial_decryption: partial, private_keyshare, threshold_public_key, trustees = [] } = state
 
   const plaintext = '2020'
   const randomizer = '108'
@@ -61,6 +61,19 @@ export const PartialDecryptionTest = ({ dispatch, state }: StateAndDispatch) => 
           partial = {unlock.toString()} ^ {private_keyshare} % {parameters.p} ≡ {partial || '[pending...]'}
         </p>
       </PrivateBox>
+      <ul>
+        {trustees.map(({ email, partial }) => (
+          <li key={email}>
+            {partial ? (
+              `${email} broadcast partial: = ${partial}`
+            ) : (
+              <i>
+                Waiting on <b>{email}</b> to broadcast partial
+              </i>
+            )}
+          </li>
+        ))}
+      </ul>
     </>
   )
 }

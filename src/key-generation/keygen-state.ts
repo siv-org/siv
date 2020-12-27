@@ -11,6 +11,7 @@ export type Trustee = {
   email: string
   encrypted_pairwise_shares_for: Record<string, string>
   index: number
+  partial?: string
   recipient_key?: string
   verified?: Record<string, boolean>
   you?: boolean
