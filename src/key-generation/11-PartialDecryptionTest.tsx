@@ -76,7 +76,7 @@ export const PartialDecryptionTest = ({ dispatch, state }: StateAndDispatch) => 
         {trustees.map(({ email, partial_decryption }) => (
           <li key={email}>
             {partial_decryption ? (
-              `${email} broadcast partial: = ${partial_decryption}`
+              `${email} broadcast partial: ${partial_decryption}`
             ) : (
               <i>
                 Waiting on <b>{email}</b> to broadcast partial
