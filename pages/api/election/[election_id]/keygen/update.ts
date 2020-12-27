@@ -1,11 +1,18 @@
+import { sumBy } from 'lodash-es'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import decrypt from '../../../../../src/crypto/decrypt'
 import encrypt from '../../../../../src/crypto/encrypt'
 import pickRandomInteger from '../../../../../src/crypto/pick-random-integer'
-import { evaluate_private_polynomial, is_received_share_valid } from '../../../../../src/crypto/threshold-keygen'
+import {
+  compute_keyshare,
+  compute_pub_key,
+  evaluate_private_polynomial,
+  is_received_share_valid,
+  partial_decrypt,
+} from '../../../../../src/crypto/threshold-keygen'
 import { big, bigCipher, bigPubKey, toStrings } from '../../../../../src/crypto/types'
-import { State } from '../../../../../src/key-generation/keygen-state'
+import { State, Trustee } from '../../../../../src/key-generation/keygen-state'
 import { firebase } from '../../../_services'
 import { pusher } from '../../../pusher'
 import { commafy, transform_email_keys } from './commafy'
@@ -132,6 +139,42 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
       // Notify all participants there's been an update
       pusher.trigger('keygen', 'update', `${ADMIN_EMAIL} updated verification for ${email}`)
+
+      // If admin has verified all shares, they can now (1) calculate their own private keyshare, (2) the public threshold key, and (3) encrypt and then (4) partially decrypt a test message.
+
+      // Get latest admin data
+      const adminLatest = { ...(await adminDoc.get()).data() } as State
+      const numPassed = sumBy(Object.values(adminLatest.verified || {}), Number)
+      const numExpected = parameters.t - 1
+      // Stop if not enough have passed yet
+      if (!numPassed || numPassed !== numExpected) return
+
+      const incoming_bigs = Object.values(adminLatest.decrypted_shares_from || {}).map((n) => big(n))
+
+      // (1) Calculate admins private keyshare
+      const private_keyshare = compute_keyshare(incoming_bigs, big_parameters.q).toString()
+
+      // Get all trustees
+      const trustees: Trustee[] = []
+      ;(await electionDoc.collection('trustees').get()).forEach((doc) => trustees.push({ ...doc.data() } as Trustee))
+      const constant_commitments = trustees.map((t) => big(t.commitments[0]))
+
+      // (2) Calculate & store public threshold key
+      const threshold_public_key = compute_pub_key(constant_commitments, big_parameters.p).toString()
+      await electionDoc.update({ threshold_public_key })
+
+      // (3) Encrypt test message
+      const randomizer = '108'
+      const unlock = big_parameters.g.modPow(big(randomizer), big_parameters.p)
+
+      // (4) Partially decrypt test message
+      const partial_decryption = partial_decrypt(unlock, big(private_keyshare), big_parameters).toString()
+
+      // Store admin's private_keyshare & partial_decryption
+      adminDoc.update({ partial_decryption, private_keyshare })
+
+      // Notify all participants there's been an update
+      pusher.trigger('keygen', 'update', `${ADMIN_EMAIL} updated partial_decryption`)
     }
   }
 }

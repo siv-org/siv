@@ -35,6 +35,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     delete data.private_coefficients
     delete data.pairwise_shares_for
     delete data.pairwise_randomizers_for
+    delete data.private_keyshare
 
     // Convert commas back into dots
     const decommafied = transform_email_keys(data, 'decommafy')
