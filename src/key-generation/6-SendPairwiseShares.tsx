@@ -112,7 +112,7 @@ export const SendPairwiseShares = ({ dispatch, state }: StateAndDispatch) => {
       <EncryptionNote />
       <PrivateBox>
         <ol>
-          {trustees.map(({ email, recipient_key, you }, index) => (
+          {trustees.map(({ email, recipient_key, you }) => (
             <li key={email}>
               For {email}
               {you ? (
@@ -122,8 +122,8 @@ export const SendPairwiseShares = ({ dispatch, state }: StateAndDispatch) => {
               ) : (
                 <>
                   , pub key = {recipient_key}, <br />
-                  using randomizer {randomizers ? randomizers[index] : '[pending...]'}, so E(
-                  {shares ? shares[email] : '[pending...]'}) = {encrypteds_for ? encrypteds_for[index] : '[pending...]'}
+                  using randomizer {randomizers ? randomizers[email] : '[pending...]'}, so E(
+                  {shares ? shares[email] : '[pending...]'}) = {encrypteds_for ? encrypteds_for[email] : '[pending...]'}
                 </>
               )}
             </li>
