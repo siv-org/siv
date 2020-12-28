@@ -34,9 +34,9 @@ export const CalculatePrivateKeyshare = ({ dispatch, state }: StateAndDispatch) 
       <PrivateBox>
         <p>Your private keyshare is the sum of each of the incoming secrets mod q...</p>
         <ul>
-          {Object.keys(decrypted_shares_from).map((email) => (
+          {trustees.map(({ email, you }) => (
             <li key={email}>
-              {email} sent you {decrypted_shares_from[email]}
+              {you ? `Your own share is` : `${email} sent you`} {decrypted_shares_from[email]}
             </li>
           ))}
         </ul>

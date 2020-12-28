@@ -14,6 +14,7 @@ import { YouLabel } from './YouLabel'
 export const SendPairwiseShares = ({ dispatch, state }: StateAndDispatch) => {
   const {
     encrypted_pairwise_shares_for: encrypteds_for,
+    own_email,
     pairwise_randomizers_for: randomizers,
     pairwise_shares_for: shares,
     parameters,
@@ -40,6 +41,8 @@ export const SendPairwiseShares = ({ dispatch, state }: StateAndDispatch) => {
         getParameters(state),
       ).toString(),
     )
+    // Save the share for yourself
+    dispatch({ decrypted_shares_from: { [own_email]: pairwise_shares_for[own_email] } })
 
     // Encrypt the pairwise shares for the target recipients eyes only...
 

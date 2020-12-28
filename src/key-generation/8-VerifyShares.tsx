@@ -18,9 +18,11 @@ export const VerifyShares = ({ dispatch, state }: StateAndDispatch) => {
     let updated = false
 
     // For each trustee...
-    trustees.forEach(({ commitments, email }) => {
+    trustees.forEach(({ commitments, email, you }) => {
       // Stop if we already checked this person
       if (verified[email] !== undefined) return
+      // Don't check our own
+      if (you) return
 
       const decrypted_share = decrypted_shares_from[email]
 

@@ -91,6 +91,7 @@ Click here to join:
       mapValues(safe_prime, (v) => big(v)),
     ).toString(),
   }
+  const decrypted_shares_from = { ...pairwise_shares_for }
 
   // Store all this new admin data
   election
@@ -98,6 +99,7 @@ Click here to join:
     .doc(ADMIN_EMAIL)
     .update({
       commitments,
+      decrypted_shares_from,
       decryption_key: pair.decryption_key.toString(),
       pairwise_shares_for,
       private_coefficients: private_coefficients.map((c) => c.toString()),
