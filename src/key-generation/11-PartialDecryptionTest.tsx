@@ -6,6 +6,7 @@ import { big } from '../crypto/types'
 import { EncryptionNote } from './EncryptionNote'
 import { StateAndDispatch, getParameters } from './keygen-state'
 import { PrivateBox } from './PrivateBox'
+import { YouLabel } from './YouLabel'
 
 export const PartialDecryptionTest = ({ dispatch, state }: StateAndDispatch) => {
   const { parameters, partial_decryption: partial, private_keyshare, threshold_public_key, trustees = [] } = state
@@ -73,10 +74,12 @@ export const PartialDecryptionTest = ({ dispatch, state }: StateAndDispatch) => 
         </p>
       </PrivateBox>
       <ul>
-        {trustees.map(({ email, partial_decryption }) => (
+        {trustees.map(({ email, partial_decryption, you }) => (
           <li key={email}>
             {partial_decryption ? (
-              `${email} broadcast partial: ${partial_decryption}`
+              <>
+                {email} {you && <YouLabel />} broadcast partial: {partial_decryption}
+              </>
             ) : (
               <i>
                 Waiting on <b>{email}</b> to broadcast partial
