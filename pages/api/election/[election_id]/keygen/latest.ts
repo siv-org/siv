@@ -33,6 +33,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     delete data.private_coefficients
     delete data.pairwise_shares_for
     delete data.pairwise_randomizers_for
+    delete data.decrypted_shares_from
     delete data.private_keyshare
 
     // Convert commas back into dots
