@@ -25,7 +25,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { election_id } = req.query
   const { body } = req
   const { email, trustee_auth } = body
-  console.log('/update:', body)
+  console.log('/api/update received:', body)
 
   if (!email) return res.status(404)
 
@@ -55,9 +55,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Save whatever other new data they gave us
   await trusteeDoc.update(commafied)
+  console.log('Saved update to', email, commafied)
 
   // Notify all participants there's been an update
-  pusher.trigger('keygen', 'update', `${email} updated ${Object.keys(body)}`)
+  pusher.trigger('keygen', 'update', { [email]: body })
 
   res.status(201).end(`Updated ${email} object`)
 
@@ -99,15 +100,20 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         ),
       )
 
-      // Store all the new data we created
-      await adminDoc.update({
+      const admin_update = {
         [`encrypted_pairwise_shares_for.${commafy(email)}`]: encrypted_pairwise_share,
         [`pairwise_randomizers_for.${commafy(email)}`]: pairwise_randomizer,
         [`pairwise_shares_for.${commafy(email)}`]: pairwise_share,
-      })
+      }
+
+      // Store all the new data we created
+      await adminDoc.update(admin_update)
+      console.log('Updated admin:', admin_update)
 
       // Notify all participants there's been an update
-      pusher.trigger('keygen', 'update', `${ADMIN_EMAIL} updated encrypted_pairwise_shares_for ${email}`)
+      pusher.trigger('keygen', 'update', {
+        [ADMIN_EMAIL]: { encrypted_pairwise_shares_for: { [email]: encrypted_pairwise_share } },
+      })
     }
 
     // Logic for new encrypted shares
@@ -133,13 +139,15 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       const verification = is_received_share_valid(big(decrypted_share), 1, trustee.commitments, big_parameters)
 
       // Store all the new data we created
-      await adminDoc.update({
+      const admin_update = {
         [`decrypted_shares_from.${commafy(email)}`]: decrypted_share,
         [`verified.${commafy(email)}`]: verification,
-      })
+      }
+      await adminDoc.update(admin_update)
+      console.log('Updated admin:', admin_update)
 
       // Notify all participants there's been an update
-      pusher.trigger('keygen', 'update', `${ADMIN_EMAIL} updated verification for ${email}`)
+      pusher.trigger('keygen', 'update', { [ADMIN_EMAIL]: { verification: { [email]: verification } } })
 
       // If admin has verified all shares, they can now (1) calculate their own private keyshare, (2) the public threshold key, and (3) encrypt and then (4) partially decrypt a test message.
 
@@ -172,10 +180,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       const partial_decryption = partial_decrypt(unlock, big(private_keyshare), big_parameters).toString()
 
       // Store admin's private_keyshare & partial_decryption
-      await adminDoc.update({ partial_decryption, private_keyshare })
+      const admin_update_2 = { partial_decryption, private_keyshare }
+      await adminDoc.update(admin_update_2)
+      console.log('Updated admin:', admin_update_2)
 
       // Notify all participants there's been an update
-      pusher.trigger('keygen', 'update', `${ADMIN_EMAIL} updated partial_decryption`)
+      pusher.trigger('keygen', 'update', { [ADMIN_EMAIL]: { partial_decryption } })
     }
   }
 }
