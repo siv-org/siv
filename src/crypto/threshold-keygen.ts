@@ -5,6 +5,8 @@
 
 import { range } from 'lodash'
 
+import { AsyncReturnType } from './async-return-type'
+import { integer_from_seed } from './integer-from-seed'
 import { moduloLambda } from './lagrange'
 import pickRandomInteger from './pick-random-integer'
 import { Big, big } from './types'
@@ -103,24 +105,6 @@ export const partial_decrypt = (sealing_factor: Big, private_key_share: Big, { p
       = c[1]^a
 */
 export const combine_partials = (partial_decrypts: Big[], { p, q }: Parameters) => {
-  // var prod = big(1)
-  // partial_decrypts.forEach((part, i) => {
-  //     let L = big(1)
-  //     partial_decrypts.forEach((_, ii) => {
-  //         let I = big(i + 1)
-  //         let II = big(ii + 1)
-  //         if (I.equals(II)) return
-  //         let num = big(0).subtract(II).mod(q)
-  //         let den = I.subtract(II).mod(q)
-
-  //         // console.log(`I = ${I}, II = ${II}, num = ${num}, den = ${den}, q = ${q}`)
-
-  //         L = L.multiply(num.multiply(den.modInverse(q)).mod(q)).mod(q)
-  //     })
-  //     prod = prod.multiply(part.modPow(L, p)).mod(p)
-  // })
-  // return prod
-
   const indices = range(1, partial_decrypts.length + 1)
 
   const indices_as_bigs = indices.map((index) => [big(index)])
@@ -130,39 +114,87 @@ export const combine_partials = (partial_decrypts: Big[], { p, q }: Parameters) 
   return product_bigs(partials_to_lambdas, p)
 }
 
-/** Use Zero knowledge proof to prove
-    log[c[1]](dⱼ) = log[g](hⱼ)
+/** Creates non-interactive Zero Knowledge proof of a valid partial decryption
+ *  by proving these two logs are equivalent:
+ *
+ *  log(g^trustees_secret)/log(g) = log(partial_decryption)/log(unlock_factor)
+ *
+ *  which are both equal to trustees_secret
+ *
+ *  @param ciphertext_unlock c[0] of the encrypted ciphertext (g ^ randomizer)
+ *  @param trustees_secret
+ *  @param {g, p, q} - Safe prime parameters
+ *
+ *  Based on Chaum-Pedersen ZK Proof of Discrete Logs
+ *
+ */
+export async function generate_partial_decryption_proof(
+  ciphertext_unlock: Big,
+  trustees_secret: Big,
+  { g, p, q }: Parameters,
+) {
+  // Prover picks a secret random integer less than q
+  const secret_r = pickRandomInteger(q)
 
-    g = generator
-    gs = g^s (s is the global secret)
-    c[0] = unlock_factor of the encrypted (g ^ randomizer)
-    t.part = partial for a given trustee
-    t.s = secret for a given trustee
+  const g_to_trustees_secret = g.modPow(trustees_secret, p)
 
-    log_proof(g, gs, c[0], t.part, t.s)
-*/
-// function log_proof(g, x, h, y, alpha) {
-// for (var i = 0; i < 100; i++) {
-//     // prover creates:
-//     let w = rand(big(1), q)
+  // Calculates Verifier's deterministic random number (Fiat-Shamir technique):
+  const public_r = await integer_from_seed(`${ciphertext_unlock} ${g_to_trustees_secret}`, q)
 
-//     // prover sends:
-//     let gw = g.modPow(w, p)
-//     let hw = h.modPow(w, p)
+  // Prover creates and sends:
+  const obfuscated_trustee_secret = secret_r.add(public_r.multiply(trustees_secret))
 
-//     // verifier creates and sends:
-//     let c = rand(big(1), q)
+  // Prover also shares commitment of their secret randomizer choice
+  const g_to_secret_r = g.modPow(secret_r, p)
+  const unlock_to_secret_r = ciphertext_unlock.modPow(secret_r, p)
 
-//     // prover creates and sends:
-//     let r = w.add(c.multiply(alpha))
+  return { g_to_secret_r, obfuscated_trustee_secret, unlock_to_secret_r }
+}
 
-//     // verifier checks:
-//     var check = g.modPow(r, p).equals(gw.multiply(x.modPow(c, p)).mod(p))
-//        && h.modPow(r, p).equals(hw.multiply(y.modPow(c, p)).mod(p))
-//     if (!check) return false
-// }
-// return true
-// }
+/** Verifies a non-interactive Zero Knowledge proof of a valid partial decryption
+ *  by checking these two logs are equivalent:
+ *
+ *  log(g^trustees_secret)/log(g) = log(partial_decryption)/log(unlock_factor)
+ *
+ *  which are both equal to trustees_secret
+ *
+ *  @param ciphertext_unlock c[0] of the encrypted ciphertext (g ^ randomizer)
+ *  @param trustees_secret
+ *  @param {g, p, q} - Safe prime parameters
+ *
+ *  Based on Chaum-Pedersen ZK Proof of Discrete Logs
+ *
+ */
+export async function verify_partial_decryption_proof(
+  ciphertext_unlock: Big,
+  g_to_trustees_secret: Big,
+  partial_decryption: Big,
+  {
+    g_to_secret_r,
+    obfuscated_trustee_secret,
+    unlock_to_secret_r,
+  }: AsyncReturnType<typeof generate_partial_decryption_proof>,
+  { g, p, q }: Parameters,
+) {
+  // Recalculate deterministic verifier nonce
+  const public_r = await integer_from_seed(`${ciphertext_unlock} ${g_to_trustees_secret}`, q)
+
+  // Verifier checks:
+  // g ^ obfuscated_trustee_secret
+  const left_side_1 = g.modPow(obfuscated_trustee_secret, p)
+  //   == g_to_secret_r * (g ^ trustee_secret ^ public_r)
+  const right_side_1 = g_to_secret_r.multiply(g_to_trustees_secret.modPow(public_r, p)).mod(p)
+  const check1 = left_side_1.equals(right_side_1)
+
+  // And Verifier checks:
+  // ciphertext_unlock ^ obfuscated_trustee_secret
+  const left_side_2 = ciphertext_unlock.modPow(obfuscated_trustee_secret, p)
+  //   == unlock_to_secret_r * (partial_decryption ^ public_r)
+  const right_side_2 = unlock_to_secret_r.multiply(partial_decryption.modPow(public_r, p)).mod(p)
+  const check2 = left_side_2.equals(right_side_2)
+
+  return check1 && check2
+}
 
 /** Thereafter, compute
     m = c[2] / d

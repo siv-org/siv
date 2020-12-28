@@ -33,7 +33,7 @@ Big.prototype.lessThan = function (x: Big) {
 }
 
 /** Smartly converts numbers or strings of numbers into Big */
-export function big(input: number | Big | string, radix = 10): Big {
+export function big(input: number | Big | string | number[], radix = 10): Big {
   // Is input already a Big?
   if (input instanceof Big) {
     return input
@@ -46,6 +46,11 @@ export function big(input: number | Big | string, radix = 10): Big {
   // Is input a string of a number?
   if (typeof input === 'string' && (Number.isInteger(Number(input)) || Number(input) === Infinity)) {
     return new Big(input, radix)
+  }
+
+  // Can also pass in an array of bytes
+  if (Array.isArray(input)) {
+    return new Big(input)
   }
 
   throw new TypeError(`${input} is not a number or string of an integer`)
