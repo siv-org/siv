@@ -77,11 +77,13 @@ export const VerifyShares = ({ dispatch, state }: StateAndDispatch) => {
             <li key={index}>
               {you ? (
                 'Skipping your own share.'
+              ) : !decrypted_shares_from[email] ? (
+                `Still waiting on share from ${email}`
               ) : (
                 <>
                   {email} sent you {decrypted_shares_from[email]}
                   {verified[email] === undefined ? (
-                    'checking...'
+                    '[checking...]'
                   ) : (
                     <>, which {verified[email] ? '✓ fits' : ' ❌ fails against'} commitments.</>
                   )}
@@ -107,7 +109,7 @@ export const VerifyShares = ({ dispatch, state }: StateAndDispatch) => {
                             ? `✅ ${email2} passed`
                             : verified[email2] === false
                             ? ` ❌ ${email2} failed`
-                            : `⚠️ ${email2} pending...`}
+                            : `⚠️ ${email2} [pending...]`}
                         </li>
                       ),
                   )}
