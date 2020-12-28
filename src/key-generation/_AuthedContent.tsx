@@ -1,4 +1,5 @@
 import { GlobalCSS } from '../GlobalCSS'
+import { ResetButton } from './_ResetButton'
 import { Trustees } from './1-Trustees'
 import { PublicThresholdKey } from './10-PublicThresholdKey'
 import { PartialDecryptionTest } from './11-PartialDecryptionTest'
@@ -33,6 +34,7 @@ export const AuthedContent = ({
 
   return (
     <>
+      <ResetButton {...{ state }} />
       <Trustees {...{ state }} />
       <Parameters {...{ state }} />
       <MessagingKeys {...{ dispatch, state }} />
