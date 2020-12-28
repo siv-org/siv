@@ -31,6 +31,6 @@ export async function getLatestFromServer({ dispatch, state }: StateAndDispatch)
       }
     })
   } catch (e) {
-    console.error('Error loading trustees:', e)
+    console.error('Error loading /api/keygen/latest:', e)
   }
 }

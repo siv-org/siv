@@ -103,9 +103,9 @@ export const VerifyShares = ({ dispatch, state }: StateAndDispatch) => {
                     ({ email: email2 }) =>
                       email !== email2 && (
                         <li key={email2}>
-                          {verified
+                          {verified[email2]
                             ? `✅ ${email2} passed`
-                            : verified === false
+                            : verified[email2] === false
                             ? ` ❌ ${email2} failed`
                             : `⚠️ ${email2} pending...`}
                         </li>
