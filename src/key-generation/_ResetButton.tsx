@@ -9,12 +9,10 @@ export function ResetButton({ state }: { state: State }) {
   return (
     <div
       onClick={() => {
-        if (confirm('Are you sure you want to Reset?')) {
-          api(`election/${state.election_id}/keygen/reset`, {
-            email: state.own_email,
-            trustee_auth: state.trustee_auth,
-          })
-        }
+        api(`election/${state.election_id}/keygen/reset`, {
+          email: state.own_email,
+          trustee_auth: state.trustee_auth,
+        })
       }}
     >
       Reset

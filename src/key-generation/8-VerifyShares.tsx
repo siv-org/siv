@@ -27,7 +27,7 @@ export const VerifyShares = ({ dispatch, state }: StateAndDispatch) => {
       const decrypted_share = decrypted_shares_from[email]
 
       // Do we have a decrypted share from them to check?
-      if (decrypted_share && commitments.length) {
+      if (decrypted_share && commitments?.length) {
         updated = true
 
         console.log(`Verifying share from ${email}...`)

@@ -47,7 +47,10 @@ export type StateAndDispatch = {
 
 // Core state logic
 function reducer(prev: State, payload: Record<string, unknown>) {
-  // Merge in new state from payload
+  // Special handler for reset
+  if (payload.reset) return payload.reset
+
+  // Otherwise merge in new state from payload
   const newState = merge({ ...prev }, { ...payload })
 
   // Print state changes to console

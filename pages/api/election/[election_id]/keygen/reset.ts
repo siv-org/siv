@@ -43,7 +43,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const adminDoc = electionDoc.collection('trustees').doc(ADMIN_EMAIL)
     const admin = (await adminDoc.get()).data()
 
-    const admin_initial_fields = ['decryption_key', 'private_coefficients', 'pairwise_shares_for']
+    const admin_initial_fields = [
+      'recipient_key',
+      'decryption_key',
+      'private_coefficients',
+      'pairwise_shares_for',
+      'commitments',
+    ]
 
     const cleaned = pick(admin, [...all_trustee_initial_fields, ...admin_initial_fields])
 
