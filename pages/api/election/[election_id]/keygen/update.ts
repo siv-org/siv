@@ -25,6 +25,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { election_id } = req.query
   const { body } = req
   const { email, trustee_auth } = body
+  console.log('/update:', body)
 
   if (!email) return res.status(404)
 
