@@ -171,7 +171,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       const partial_decryption = partial_decrypt(unlock, big(private_keyshare), big_parameters).toString()
 
       // Store admin's private_keyshare & partial_decryption
-      adminDoc.update({ partial_decryption, private_keyshare })
+      await adminDoc.update({ partial_decryption, private_keyshare })
 
       // Notify all participants there's been an update
       pusher.trigger('keygen', 'update', `${ADMIN_EMAIL} updated partial_decryption`)
