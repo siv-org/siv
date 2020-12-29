@@ -13,7 +13,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Is election_id in DB?
   const doc = await election.get()
-  if (!doc.exists) return res.status(400).end('Unknown Election ID.')
+  if (!doc.exists) return res.status(400).send('Unknown Election ID.')
 
   // Grab safe prime parameters
   const data = { ...doc.data() }

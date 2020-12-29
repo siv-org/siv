@@ -20,14 +20,14 @@ import { commafy, transform_email_keys } from './commafy'
 const { ADMIN_EMAIL } = process.env
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  if (!ADMIN_EMAIL) return res.status(501).end('Missing process.env.ADMIN_EMAIL')
+  if (!ADMIN_EMAIL) return res.status(501).send('Missing process.env.ADMIN_EMAIL')
 
   const { election_id } = req.query
   const { body } = req
   const { email, trustee_auth } = body
   console.log('/api/update received:', body)
 
-  if (!email) return res.status(404)
+  if (!email) return res.status(404).end()
 
   const electionDoc = firebase
     .firestore()
@@ -36,14 +36,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Is election_id in DB?
   const election = await electionDoc.get()
-  if (!election.exists) return res.status(400).end('Unknown Election ID.')
+  if (!election.exists) return res.status(400).send('Unknown Election ID.')
 
   // Grab claimed trustee
   const trusteeDoc = electionDoc.collection('trustees').doc(email)
   const trustee = { ...(await trusteeDoc.get()).data() }
 
   // Authenticate by checking if trustee_auth token matches
-  if (trustee.auth_token !== trustee_auth) return res.status(401).end('Bad trustee_auth token')
+  if (trustee.auth_token !== trustee_auth) return res.status(401).send('Bad trustee_auth token')
 
   // Remove email & trustee_auth from body obj
   delete body.email
@@ -60,7 +60,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Notify all participants there's been an update
   pusher.trigger('keygen', 'update', { [email]: body })
 
-  res.status(201).end(`Updated ${email} object`)
+  res.status(201).send(`Updated ${email} object`)
 
   // If they provided their public key, admin can now encrypt pairwise shares for them.
   // If they provided encrypted shares, admin can decrypt their own and verify them.

@@ -9,13 +9,13 @@ import { pusher } from '../../../pusher'
 const { ADMIN_EMAIL } = process.env
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  if (!ADMIN_EMAIL) return res.status(501).end('Missing process.env.ADMIN_EMAIL')
+  if (!ADMIN_EMAIL) return res.status(501).send('Missing process.env.ADMIN_EMAIL')
 
   const { election_id } = req.query
   const { email, trustee_auth } = req.body
 
   if (!email) return res.status(404)
-  if (!email.endsWith('dsernst.com')) return res.status(401)
+  if (!email.endsWith('dsernst.com')) return res.status(401).send('Not authorized to reset keygen')
 
   const electionDoc = firebase
     .firestore()
@@ -24,14 +24,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Is election_id in DB?
   const election = await electionDoc.get()
-  if (!election.exists) return res.status(400).end('Unknown Election ID.')
+  if (!election.exists) return res.status(400).send('Unknown Election ID.')
 
   // Grab claimed trustee
   const trusteeDoc = electionDoc.collection('trustees').doc(email)
   const trustee = { ...(await trusteeDoc.get()).data() }
 
   // Authenticate by checking if trustee_auth token matches
-  if (trustee.auth_token !== trustee_auth) return res.status(401).end('Bad trustee_auth token')
+  if (trustee.auth_token !== trustee_auth) return res.status(401).send('Bad trustee_auth token')
 
   const all_trustee_initial_fields = ['auth_token', 'index', 'email']
 
@@ -78,8 +78,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   await Promise.all([reset_pub_key, reset_admin(), reset_other_trustees()])
+  const success_msg = `Successfully reset db for election/${election_id}/keygen`
+  console.log(success_msg)
 
-  res.status(204).end()
+  res.status(204).send(success_msg)
 
   // Notify all participants to reset
   pusher.trigger('keygen', 'reset', `${email} trigged reset`)
