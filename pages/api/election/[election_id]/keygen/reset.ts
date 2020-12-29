@@ -22,13 +22,19 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     .collection('elections')
     .doc(election_id as string)
 
+  // Begin preloading these docs
+  const trusteeDoc = electionDoc.collection('trustees').doc(email)
+  const adminDoc = electionDoc.collection('trustees').doc(ADMIN_EMAIL)
+  const loadTrustee = trusteeDoc.get()
+  const loadAdmin = adminDoc.get()
+  const loadTrustees = electionDoc.collection('trustees').get()
+
   // Is election_id in DB?
   const election = await electionDoc.get()
   if (!election.exists) return res.status(400).send('Unknown Election ID.')
 
   // Grab claimed trustee
-  const trusteeDoc = electionDoc.collection('trustees').doc(email)
-  const trustee = { ...(await trusteeDoc.get()).data() }
+  const trustee = { ...(await loadTrustee).data() }
 
   // Authenticate by checking if trustee_auth token matches
   if (trustee.auth_token !== trustee_auth) return res.status(401).send('Bad trustee_auth token')
@@ -40,8 +46,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Reset db info about Admin
   const reset_admin = async () => {
-    const adminDoc = electionDoc.collection('trustees').doc(ADMIN_EMAIL)
-    const admin = (await adminDoc.get()).data()
+    const admin = (await loadAdmin).data()
 
     const admin_initial_fields = [
       'recipient_key',
@@ -63,7 +68,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const reset_other_trustees = async () => {
     // Get all trustees
     const trustees: Trustee[] = []
-    ;(await electionDoc.collection('trustees').get()).forEach((doc) => trustees.push({ ...doc.data() } as Trustee))
+    ;(await loadTrustees).forEach((doc) => trustees.push({ ...doc.data() } as Trustee))
 
     return Promise.all(
       trustees.map((t) => {
