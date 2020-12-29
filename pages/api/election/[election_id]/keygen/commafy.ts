@@ -1,4 +1,4 @@
-import { mapKeys, mapValues } from 'lodash-es'
+import { mapKeys, mapValues } from '../../../../../src/utils'
 
 export function commafy(email: string) {
   return email.replace(/\./g, ',')
@@ -23,6 +23,6 @@ export function transform_email_keys(data: Record<string, object>, direction: 'c
     if (!is_commafy_field(fieldName)) {
       return field
     }
-    return mapKeys(field, (_, key) => transform(key))
+    return mapKeys(field as Record<string, string>, (_, key) => transform(key))
   })
 }
