@@ -11,6 +11,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     .collection('elections')
     .doc(election_id as string)
 
+  // Begin loading trustees immediately, instead of after awaiting election.get()
+  const loadTrustees = election.collection('trustees').orderBy('index', 'asc').get()
+
   // Is election_id in DB?
   const doc = await election.get()
   if (!doc.exists) return res.status(400).send('Unknown Election ID.')
@@ -20,7 +23,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const parameters = { g: data.g, p: data.p, q: data.q, t: data.t }
 
   // Grab trustees
-  const trustees = (await election.collection('trustees').orderBy('index', 'asc').get()).docs.map((doc) => {
+  const trustees = (await loadTrustees).docs.map((doc) => {
     const data = { ...doc.data() }
     // Add you: true if requester's own document
     if (data.auth_token === trustee_auth) {
