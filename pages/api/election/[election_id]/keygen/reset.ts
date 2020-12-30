@@ -86,8 +86,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const success_msg = `Successfully reset db for election/${election_id}/keygen`
   console.log(success_msg)
 
-  res.status(204).send(success_msg)
-
   // Notify all participants to reset
-  pusher.trigger('keygen', 'reset', `${email} trigged reset`)
+  await pusher.trigger('keygen', 'reset', `${email} trigged reset`)
+
+  res.status(204).send(success_msg)
 }
