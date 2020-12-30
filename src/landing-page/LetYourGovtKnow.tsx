@@ -37,7 +37,7 @@ export function LetYourGovtKnow({ idKey }: { idKey: string }): JSX.Element {
           <Field label="ZIP" {...fieldProps} style={{ maxWidth: 80 }} />
         </Row>
         <Row>
-          <Field fullWidth label="Your Email (optional)" {...fieldProps} />
+          <Field fullWidth id="email" label="Your Email (optional)" {...fieldProps} />
         </Row>
         <Row>
           <Field fullWidth multiline id="message" label="Your Message (optional)" rows={4} {...fieldProps} />
