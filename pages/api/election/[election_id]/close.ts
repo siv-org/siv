@@ -21,9 +21,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     .doc(election_id as string)
 
   // Is election_id in DB?
-  if (!(await election.get()).exists) {
-    return res.status(400).end('Unknown Election ID.')
-  }
+  if (!(await election.get()).exists) return res.status(400).end('Unknown Election ID.')
 
   // Mark election as closed
   election.update({ closed_at: new Date() })
@@ -44,7 +42,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Anonymize votes
   const decrypted = shuffle(votes)
 
-  election.update({ decrypted })
+  await election.update({ decrypted })
 
-  res.status(201).end()
+  res.status(201).send('Closed')
 }
