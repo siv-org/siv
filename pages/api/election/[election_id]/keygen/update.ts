@@ -34,13 +34,18 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     .collection('elections')
     .doc(election_id as string)
 
+  // Begin preloading these docs
+  const trusteeDoc = electionDoc.collection('trustees').doc(email)
+  const adminDoc = electionDoc.collection('trustees').doc(ADMIN_EMAIL)
+  const loadTrustee = trusteeDoc.get()
+  const loadAdmin = adminDoc.get()
+
   // Is election_id in DB?
   const election = await electionDoc.get()
   if (!election.exists) return res.status(400).send('Unknown Election ID.')
 
   // Grab claimed trustee
-  const trusteeDoc = electionDoc.collection('trustees').doc(email)
-  const trustee = { ...(await trusteeDoc.get()).data() }
+  const trustee = { ...(await loadTrustee).data() }
 
   // Authenticate by checking if trustee_auth token matches
   if (trustee.auth_token !== trustee_auth) return res.status(401).send('Bad trustee_auth token')
@@ -66,8 +71,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // If they provided encrypted shares, admin can decrypt their own and verify them.
   if (body.recipient_key || body.encrypted_pairwise_shares_for) {
     // Get admin's private data
-    const adminDoc = electionDoc.collection('trustees').doc(ADMIN_EMAIL)
-    const admin = { ...(await adminDoc.get()).data() } as Required<State> & {
+    const admin = { ...(await loadAdmin).data() } as Required<State> & {
       decryption_key: string
       recipient_key: string
     }
