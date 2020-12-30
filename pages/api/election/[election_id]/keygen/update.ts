@@ -57,10 +57,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   await trusteeDoc.update(commafied)
   console.log('Saved update to', email, commafied)
 
-  // Notify all participants there's been an update
-  pusher.trigger('keygen', 'update', { [email]: body })
+  const promises: Promise<unknown>[] = []
 
-  res.status(201).send(`Updated ${email} object`)
+  // Notify all participants there's been an update
+  promises.push(pusher.trigger('keygen', 'update', { [email]: body }))
 
   // If they provided their public key, admin can now encrypt pairwise shares for them.
   // If they provided encrypted shares, admin can decrypt their own and verify them.
@@ -111,9 +111,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       console.log('Updated admin:', admin_update)
 
       // Notify all participants there's been an update
-      pusher.trigger('keygen', 'update', {
-        [ADMIN_EMAIL]: { encrypted_pairwise_shares_for: { [email]: encrypted_pairwise_share } },
-      })
+      promises.push(
+        pusher.trigger('keygen', 'update', {
+          [ADMIN_EMAIL]: { encrypted_pairwise_shares_for: { [email]: encrypted_pairwise_share } },
+        }),
+      )
     }
 
     // Logic for new encrypted shares
@@ -147,7 +149,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       console.log('Updated admin:', admin_update)
 
       // Notify all participants there's been an update
-      pusher.trigger('keygen', 'update', { [ADMIN_EMAIL]: { verification: { [email]: verification } } })
+      promises.push(pusher.trigger('keygen', 'update', { [ADMIN_EMAIL]: { verification: { [email]: verification } } }))
 
       // If admin has verified all shares, they can now (1) calculate their own private keyshare, (2) the public threshold key, and (3) encrypt and then (4) partially decrypt a test message.
 
@@ -185,7 +187,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       console.log('Updated admin:', admin_update_2)
 
       // Notify all participants there's been an update
-      pusher.trigger('keygen', 'update', { [ADMIN_EMAIL]: { partial_decryption } })
+      promises.push(pusher.trigger('keygen', 'update', { [ADMIN_EMAIL]: { partial_decryption } }))
     }
   }
+
+  // Wait for all pending promises to finish
+  await Promise.all(promises)
+
+  res.status(201).send(`Updated ${email} object`)
 }
