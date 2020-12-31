@@ -38,8 +38,8 @@ export const Content = () => (
       <div>
         <h4>SIV is led by David Ernst</h4>
         <p>
-          David believes people should be able to vote without being afraid they will get sick in a pandemic. This
-          drives him to give governments the opportunity to let citizens safely vote online.
+          David believes people should be able to vote as easily and securely as possible. This drives him to help
+          governments give citizens the opportunity to safely vote online.
         </p>
         <p>
           Originally from Dallas, Texas, David left high school early to pursue a degree in Mathematics and Philosophy
@@ -47,7 +47,7 @@ export const Content = () => (
         </p>
         <p>
           Over the years he’s built software for education, personal health, finance, commercial construction, and more,
-          used by thousands of people worldwide.
+          used by hundreds of thousands of people worldwide.
         </p>
         <p>He’s passionate about political reform, and even ran for office in California in the 2018 election.</p>
       </div>
