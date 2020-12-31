@@ -4,9 +4,9 @@ import { JumboBlue } from '../landing-page/JumboBlue'
 
 export const AboveFold = ({ height, showButton = true }: { height?: number; showButton?: boolean }): JSX.Element => (
   <JumboBlue height={height}>
-    <h1 style={{ margin: '4rem 0 0', padding: 17, textAlign: 'center' }}>
+    <h2 style={{ margin: '4rem 0 0', padding: 17, textAlign: 'center' }}>
       Drastically improve the election process for administrators and voters alike
-    </h1>
+    </h2>
     <>
       {showButton && (
         <Link id="above-fold-btn" offset={-25} smooth={true} to="give-your-voters">

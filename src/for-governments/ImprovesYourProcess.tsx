@@ -4,8 +4,8 @@ const darkBlue = '#002868'
 
 export const ImprovesYourProcess = (): JSX.Element => (
   <Section>
-    <h2>SIV</h2>
-    <h2>conforms with and improves your election process</h2>
+    <h3>SIV</h3>
+    <h3>conforms with and improves your election process</h3>
     <Row>
       <Feature
         headline="Quicker Results"
@@ -22,12 +22,12 @@ export const ImprovesYourProcess = (): JSX.Element => (
     </Row>
 
     <style jsx>{`
-      h2 {
+      h3 {
         margin: 0rem;
       }
 
       h4,
-      h2 {
+      h3 {
         text-align: center;
       }
 

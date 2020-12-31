@@ -7,7 +7,7 @@ export const TransparentProtocol = (): JSX.Element => (
 
     <style jsx>{`
       div {
-        padding: 30px;
+        padding: 30px 30px 60px;
         text-align: center;
         max-width: 1240px;
         margin: 0 auto;
