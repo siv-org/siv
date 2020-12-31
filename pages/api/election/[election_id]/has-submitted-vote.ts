@@ -6,29 +6,28 @@ import { firebase } from '../../_services'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { election_id, password } = req.query
-  if (password !== ADMIN_PASSWORD) {
-    return res.status(401).send('Invalid Password.')
-  }
+  if (password !== ADMIN_PASSWORD) return res.status(401).send('Invalid Password.')
 
-  const election = firebase
+  const electionDoc = firebase
     .firestore()
     .collection('elections')
     .doc(election_id as string)
 
+  // Begin preloading these docs
+  const loadVoters = electionDoc.collection('voters').get()
+  const loadVotes = electionDoc.collection('votes').get()
+
   // Is election_id in DB?
-  if (!(await election.get()).exists) return res.status(400).send('Unknown Election ID.')
+  if (!(await electionDoc.get()).exists) return res.status(400).send('Unknown Election ID.')
 
   // Grab voters list for indices
-  const voters_by_auth: Record<string, { index: number }> = (await election.collection('voters').get()).docs.reduce(
-    (memo, doc) => {
-      const data = doc.data()
-      return { ...memo, [data.auth_token]: data }
-    },
-    {},
-  )
+  const voters_by_auth: Record<string, { index: number }> = (await loadVoters).docs.reduce((memo, doc) => {
+    const data = doc.data()
+    return { ...memo, [data.auth_token]: data }
+  }, {})
 
   // Build array of who submitted their vote already
-  const submitted = (await election.collection('votes').get()).docs.reduce((memo, doc) => {
+  const submitted = (await loadVotes).docs.reduce((memo, doc) => {
     const data = doc.data()
     const { index } = voters_by_auth[data.auth]
     memo[index] = true
