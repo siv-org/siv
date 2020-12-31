@@ -10,22 +10,23 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // 1. Validate auth token
   let validated = false
   await validateAuthToken(auth, election_id, {
-    fail: (message) => res.status(400).end(message),
+    fail: (message) => res.status(400).send(message),
     pass: () => (validated = true),
   })
   // Stop if validation failed
-  if (!validated) {
-    return pushover('SIV submission: Auth Token failure', ' ')
-  }
+  if (!validated) return pushover('SIV submission: Auth Token failure', `${{ auth, election_id }}`)
 
   const election = firebase.firestore().collection('elections').doc(election_id)
+
+  // Begin preloading
+  const voter = election.collection('voters').where('auth_token', '==', auth).get()
 
   // 2. Store the encrypted vote in db
   await election.collection('votes').add({ auth, created_at: new Date(), encrypted_vote, headers: req.headers })
 
   // 3. Email the voter their submission receipt
   const link = `${req.headers.origin}/election/${election_id}`
-  const { email } = (await election.collection('voters').where('auth_token', '==', auth).get()).docs[0].data()
+  const { email } = (await voter).docs[0].data()
 
   await sendEmail({
     recipient: email,
@@ -43,5 +44,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   <em style="font-size:13px">You can press reply if you have a problem.</em>`,
   })
 
-  res.status(200).end('Success.')
+  res.status(200).send('Success.')
 }

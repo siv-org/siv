@@ -2,7 +2,6 @@ import Firebase from 'firebase-admin'
 import Mailgun from 'mailgun-js'
 
 const {
-  ADMIN_EMAIL,
   FIREBASE_CLIENT_EMAIL,
   FIREBASE_DATABASE_URL,
   FIREBASE_PRIVATE_KEY,
@@ -48,10 +47,10 @@ export const sendEmail = ({ recipient, subject, text }: { recipient: string; sub
         </tr>
       </table></body>`,
     subject,
-    to: ADMIN_EMAIL || recipient,
+    to: recipient,
   })
 
-/** Helper function to use Pushover */
+/** Helper function to use Pushover (admin push notifs) */
 export const pushover = (title: string, message: string) =>
   fetch('https://api.pushover.net/1/messages.json', {
     body: JSON.stringify({ message, title, token: PUSHOVER_APP_TOKEN, user: PUSHOVER_USER_KEY }),

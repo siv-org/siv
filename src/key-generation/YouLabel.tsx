@@ -9,6 +9,8 @@ export const YouLabel = () => (
         font-size: 11px;
         font-weight: 600;
         padding: 2px 4px;
+        margin-left: 5px;
+        margin-right: 2px;
       }
     `}</style>
   </span>

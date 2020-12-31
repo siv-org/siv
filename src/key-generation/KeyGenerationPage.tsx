@@ -3,11 +3,11 @@ import { useRouter } from 'next/router'
 import { HeaderBar } from '../create/HeaderBar'
 import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
-import { AuthenticatedContent } from './AuthenticatedContent'
+import { AuthedContent } from './_AuthedContent'
 
 export const KeyGenerationPage = (): JSX.Element => {
   // Grab election parameters from URL
-  const { auth, election_id } = useRouter().query as { auth?: string; election_id?: string }
+  const { election_id, trustee_auth } = useRouter().query as { election_id?: string; trustee_auth?: string }
 
   return (
     <>
@@ -16,8 +16,10 @@ export const KeyGenerationPage = (): JSX.Element => {
       <HeaderBar />
       <main>
         <h1>Threshold Key Generation</h1>
-        <h4>Election ID: {election_id}</h4>
-        {election_id && auth && <AuthenticatedContent {...{ auth, election_id }} />}
+        <p>
+          Election ID: <b>{election_id}</b>
+        </p>
+        {election_id && trustee_auth && <AuthedContent {...{ election_id, trustee_auth }} />}
       </main>
 
       <style jsx>{`

@@ -2,7 +2,7 @@ import { randomBytes } from 'crypto'
 
 import { Big, big } from './types'
 
-/** Picks a random integer less than max, using a secure source of randomness. */
+/** Picks a random integer less than max and greater than 0, using a secure source of randomness. */
 export default function pick_random_integer(max: Big): Big {
   const bits = max.bitLength()
 
