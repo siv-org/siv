@@ -8,7 +8,7 @@ export const ForGovernments = (): JSX.Element => (
       button={{ href: '/for-governments#give-your-voters', text: 'Schedule Consultation' }}
       graphic="voting-machines.jpg"
       headline="The US spends over $500M/year to run elections"
-      text="SIV can dramatically reduce election costs, while offering a far better process for everyone involved."
+      text="SIV can dramatically reduce election administration costs, while offering a far better process for everyone involved."
     />
 
     <SideBySide
