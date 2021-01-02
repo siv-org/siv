@@ -1,7 +1,6 @@
 import { NoSsr } from '@material-ui/core'
 import { map } from 'lodash-es'
 
-import { public_key } from '../protocol/election-parameters'
 import { Paper } from '../protocol/Paper'
 import { State } from './useVoteState'
 
@@ -24,7 +23,7 @@ Encryption Formula
   unlock = (generator ^ randomizer) % modulo
 
 Public Key
-  ${map(public_key, (v, k) => `${k}: ${v.toString()}`).join('\n  ')}
+  ${map(state.public_key, (v, k) => `${k}: ${v}`).join('\n  ')}
 
 ${Object.keys(state.plaintext)
   .map(

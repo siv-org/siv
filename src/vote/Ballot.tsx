@@ -1,32 +1,30 @@
 import { NoSsr } from '@material-ui/core'
 import { Dispatch } from 'react'
 
+import { big } from '../crypto/types'
 import { Paper } from '../protocol/Paper'
 import { Item } from './Item'
-import { useBallotDesign } from './useBallotDesign'
 import { State } from './useVoteState'
 
 export const Ballot = ({
   dispatch,
-  election_id,
-  max_string_length,
   state,
 }: {
   dispatch: Dispatch<Record<string, string>>
   election_id?: string
-  max_string_length: number
   state: State
 }): JSX.Element => {
-  const ballot = useBallotDesign(election_id)
-
-  if (!ballot) {
+  if (!state.ballot_design || !state.public_key) {
     return <p>Loading ballot...</p>
   }
+
+  // Calculate maximum write-in string length
+  const max_string_length = Math.floor(big(state.public_key.modulo).bitLength() / 6)
 
   return (
     <NoSsr>
       <Paper noFade>
-        {ballot.map((item, index) => (
+        {state.ballot_design.map((item, index) => (
           <Item {...{ ...item, dispatch, max_string_length, state }} key={index} />
         ))}
       </Paper>

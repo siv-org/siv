@@ -2,7 +2,7 @@ import { FormControlLabel, Radio, RadioGroup, TextField } from '@material-ui/cor
 import { Dispatch, useState } from 'react'
 
 import { encode } from '../crypto/encode'
-import { Item as ItemType } from './useBallotDesign'
+import { Item as ItemType } from './useElectionInfo'
 import { State } from './useVoteState'
 
 export const Item = ({

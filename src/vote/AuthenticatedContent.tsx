@@ -1,9 +1,9 @@
 import { GlobalCSS } from '../GlobalCSS'
-import { public_key } from '../protocol/election-parameters'
 import { Ballot } from './Ballot'
 import { EncryptionReceipt } from './EncryptionReceipt'
 import { Instructions } from './Instructions'
 import { SubmitButton } from './SubmitButton'
+import { useElectionInfo } from './useElectionInfo'
 import { useVoteState } from './useVoteState'
 import { YourAuthToken } from './YourAuthToken'
 
@@ -11,8 +11,7 @@ export const AuthenticatedContent = ({ auth, election_id }: { auth: string; elec
   // Initialize local vote state on client
   const [state, dispatch] = useVoteState(`store-${election_id}-${auth}`)
 
-  // Calculate maximum write-in string length
-  const max_string_length = Math.floor(public_key.modulo.bitLength() / 6)
+  useElectionInfo(dispatch, election_id)
 
   return (
     <>
@@ -27,7 +26,7 @@ export const AuthenticatedContent = ({ auth, election_id }: { auth: string; elec
           <YourAuthToken {...{ auth, election_id }} />
           <div className="fade-in">
             <Instructions />
-            <Ballot {...{ dispatch, election_id, max_string_length, state }} />
+            <Ballot {...{ dispatch, election_id, state }} />
             <SubmitButton {...{ auth, dispatch, election_id, state }} />
           </div>
         </>

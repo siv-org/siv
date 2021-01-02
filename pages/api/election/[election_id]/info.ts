@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 
+import { pick } from '../../../../src/utils'
 import { firebase } from '../../_services'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -18,6 +19,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(400).end('Unknown Election ID.')
   }
 
-  // Return ballot design field
-  res.status(200).json(election.ballot_design)
+  // Return public election fields
+  res.status(200).json(pick(election, ['ballot_design', 'g', 'p', 'threshold_public_key']))
 }

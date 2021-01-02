@@ -3,17 +3,19 @@ import { mapValues, merge } from 'lodash-es'
 import { encode } from '../crypto/encode'
 import encrypt from '../crypto/encrypt'
 import pickRandomInteger from '../crypto/pick-random-integer'
-import { big } from '../crypto/types'
-import { public_key } from '../protocol/election-parameters'
+import { big, bigPubKey } from '../crypto/types'
 import { generateTrackingNum } from './tracking-num'
+import { Item } from './useElectionInfo'
 import { useLocalStorageReducer } from './useLocalStorage'
 
 // Define our types
 type Map = Record<string, string>
 export type State = {
+  ballot_design?: Item[]
   encoded: Map
   encrypted: Record<string, { encrypted: string; unlock: string }>
   plaintext: Map
+  public_key: { generator: string; modulo: string; recipient: string }
   randomizer: Map
   submitted_at?: Date
 }
@@ -23,6 +25,11 @@ function reducer(prev: State, payload: Map) {
   // Special handler for the "submit" payload
   if (payload.submit) {
     return { ...prev, submitted_at: new Date() }
+  }
+
+  // Special handler for "election info" payload
+  if (payload.ballot_design) {
+    return { ...prev, ...payload }
   }
 
   // Merge in new state from payload
@@ -50,11 +57,12 @@ function reducer(prev: State, payload: Map) {
     encoded[key] = encode(value)
 
     // Generate & store a randomizer
-    const random = pickRandomInteger(public_key.modulo)
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const random = pickRandomInteger(big(prev.public_key!.modulo))
     randomizer[key] = random.toString()
 
     // Encrypt the encoded value w/ its randomizer
-    const cipher = encrypt(public_key, random, big(encoded[key]))
+    const cipher = encrypt(bigPubKey(prev.public_key), random, big(encoded[key]))
 
     // Store the encrypted cipher as strings
     return mapValues(cipher, (c) => c.toString())
