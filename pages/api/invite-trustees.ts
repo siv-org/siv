@@ -23,32 +23,64 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // This will hold all our async tasks
   const promises: Promise<unknown>[] = []
 
-  // 1. Check for password
+  // Check for password
   const { password, trustees } = req.body
   if (password !== ADMIN_PASSWORD) return res.status(401).send('Invalid Password.')
 
-  // 2. Generate a safe prime of the right bit size
+  // admin@ is required
+  if (!trustees.some((t: string) => t === ADMIN_EMAIL))
+    return res.status(400).send(`${ADMIN_EMAIL} is a required trustee`)
+
+  // Generate a safe prime of the right bit size
   const safe_prime_bigs = generate_safe_prime(40)
   const safe_prime = mapValues(safe_prime_bigs, (v) => v.toString())
 
-  // 3. Create a new election
+  // Create a new election
   const election_id = Number(new Date()).toString()
   const election = firebase.firestore().collection('elections').doc(election_id)
   await election.set({ created_at: new Date(), ...safe_prime, t: trustees.length })
 
-  // 4. Generate auth token for each trustee
+  // Generate admin's keypair
+  const pair = generate_key_pair(safe_prime_bigs.p)
+
+  // If admin is only trustees, we can skip the keygen ceremony
+  if (trustees.length === 1) {
+    const threshold_public_key = pair.public_key.recipient.toString()
+
+    // Save private key on admin
+    promises.push(
+      election.collection('trustees').doc(ADMIN_EMAIL).set({
+        email: ADMIN_EMAIL,
+        index: 0,
+        private_keyshare: pair.decryption_key.toString(),
+      }),
+    )
+
+    // Save pub key on election
+    promises.push(election.update({ threshold_public_key }))
+
+    await Promise.all(promises)
+
+    // Send back election creation success
+    return res.status(201).send(election_id)
+  }
+
+  // Generate auth token for each trustee
   const auth_tokens = trustees.map(() => generateAuthToken())
 
-  // 5. Store auth tokens in db
+  // Store auth tokens in db
   promises.push(
     Promise.all(
       trustees.map((trustee: string, index: number) =>
-        election.collection('trustees').doc(trustee).set({ auth_token: auth_tokens[index], email: trustee, index }),
+        election
+          .collection('trustees')
+          .doc(trustee)
+          .set({ auth_token: auth_tokens[index], email: trustee, index }, { merge: true }),
       ),
     ),
   )
 
-  // 6. Email each trustee their auth token
+  // Email each trustee their auth token
   promises.push(
     Promise.all(
       trustees.map((trustee: string, index: number) => {
@@ -75,17 +107,14 @@ Click here to join:
     ),
   )
 
-  // 7. Send Admin push notification
+  // Send Admin push notification
   promises.push(pushover(`Invited ${trustees.length} trustees`, trustees.join(', ')))
 
-  // 8. Generate admin's keypair
-  const pair = generate_key_pair(safe_prime_bigs.p)
-
-  // 9. Generate admin's private coefficients and public commitments
+  // Generate admin's private coefficients and public commitments
   const private_coefficients = pick_private_coefficients(trustees.length, safe_prime_bigs)
   const commitments = generate_public_coefficients(private_coefficients, safe_prime_bigs)
 
-  // 10. Generate admins own keyshare for themselves
+  // Generate admins own keyshare for themselves
   const pairwise_shares_for = {
     [ADMIN_EMAIL]: evaluate_private_polynomial(
       1,
@@ -95,19 +124,22 @@ Click here to join:
   }
   const decrypted_shares_from = { ...pairwise_shares_for }
 
-  // 11. Store all this new admin data
+  // Store all this new admin data
   promises.push(
     election
       .collection('trustees')
       .doc(ADMIN_EMAIL)
-      .update({
-        commitments,
-        decrypted_shares_from,
-        decryption_key: pair.decryption_key.toString(),
-        pairwise_shares_for,
-        private_coefficients: private_coefficients.map((c) => c.toString()),
-        recipient_key: pair.public_key.recipient.toString(),
-      })
+      .set(
+        {
+          commitments,
+          decrypted_shares_from,
+          decryption_key: pair.decryption_key.toString(),
+          pairwise_shares_for,
+          private_coefficients: private_coefficients.map((c) => c.toString()),
+          recipient_key: pair.public_key.recipient.toString(),
+        },
+        { merge: true },
+      )
       .then(() => pusher.trigger('keygen', 'update', `${ADMIN_EMAIL} created their initial data`)),
   )
 
