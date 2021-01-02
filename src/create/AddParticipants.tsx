@@ -2,21 +2,25 @@ import { useState } from 'react'
 
 import { api } from '../api-helper'
 import { OnClickButton } from '../landing-page/Button'
-import { public_key } from '../protocol/election-parameters'
 import { AddGroup } from './AddGroup'
+import { initPusher } from './pusher-helper'
 
 export const AddParticipants = () => {
   const [closed, setClosed] = useState(false)
-  const [pubKey, setPubKey] = useState(false)
+  const [pub_key, setPubKey] = useState<string>()
+  const [voted, setVoted] = useState<boolean[]>([])
   const [election_id, setElectionID] = useState<string>()
+
+  // Subscribe to updates
+  initPusher({ election_id, setPubKey, setVoted })
 
   return (
     <>
       <div>
         <AddGroup
           defaultValue="admin@secureinternetvoting.org&#13;&#10;"
-          disabled={pubKey}
-          message={`Trustees made pub key ${public_key.recipient.toString()}`}
+          disabled={!!election_id}
+          message={!pub_key ? 'Trustees invited to create public threshold key' : `Trustees made pub key ${pub_key}`}
           type="trustees"
           onSubmit={async () => {
             // Grab trustees from textarea
@@ -29,9 +33,13 @@ export const AddParticipants = () => {
 
             // Success case
             if (response.status === 201) {
-              setElectionID(await response.text())
+              const { election_id, threshold_public_key } = await response.json()
 
-              setPubKey(true)
+              setElectionID(election_id)
+
+              if (threshold_public_key) {
+                setPubKey(threshold_public_key)
+              }
               return true
             }
 
@@ -44,12 +52,10 @@ export const AddParticipants = () => {
           }}
         />
         <AddGroup
-          disabled={!pubKey || !!election_id}
-          message={!pubKey ? 'Waiting on Trustees' : !election_id ? '' : `Created election ${election_id}`}
-          statusURL={
-            election_id ? `api/election/${election_id}/has-submitted-vote?password=${localStorage.password}` : undefined
-          }
+          disabled={!pub_key}
+          message={!pub_key ? 'Waiting on Trustees' : !election_id ? '' : `Created election ${election_id}`}
           type="voters"
+          voted={voted}
           onSubmit={async () => {
             // Grab voters from textarea
             const voters = (document.getElementById('voters-input') as HTMLInputElement).value

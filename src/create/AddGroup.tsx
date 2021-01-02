@@ -1,40 +1,35 @@
 import { useEffect, useState } from 'react'
-import useSWR from 'swr'
 
 import { OnClickButton } from '../landing-page/Button'
-
-const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
 export const AddGroup = ({
   defaultValue,
   disabled,
   message,
   onSubmit,
-  statusURL,
   type,
+  voted,
 }: {
   defaultValue?: string
   disabled?: boolean
   message: string
   onSubmit: () => boolean | Promise<boolean>
-  statusURL?: string
   type: string
+  voted?: boolean[]
 }) => {
   const [status, setStatus] = useState<string>()
   const textarea_id = `${type}-input`
 
-  // Check if they've submitted
-  const { data } = useSWR(statusURL ? statusURL : null, fetcher)
   // Show which have submitted already
   useEffect(() => {
-    if (!data) return
+    if (!voted) return
     const textarea = document.getElementById(textarea_id) as HTMLInputElement
     const newContent = textarea.value
       .split('\n')
-      .map((line, index) => (data[index] && !line.includes('·') ? line + ' · ✔ Voted' : line))
+      .map((line, index) => (voted[index] && !line.includes('·') ? line + ' · ✔ Voted' : line))
       .join('\n')
     textarea.value = newContent
-  }, [data])
+  }, [voted])
 
   return (
     <div className="container">
