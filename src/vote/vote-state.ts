@@ -33,7 +33,7 @@ function reducer(prev: State, payload: Map) {
   }
 
   // Merge in new state from payload
-  const newState = merge({ ...prev }, { plaintext: payload })
+  const newState = merge({ ...prev }, { last_modified_at: new Date(), plaintext: payload })
 
   // Filter out empty values
   Object.keys(newState.plaintext).forEach((key) => {
