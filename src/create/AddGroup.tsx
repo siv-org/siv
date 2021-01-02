@@ -1,4 +1,3 @@
-import ms from 'ms'
 import { useEffect, useState } from 'react'
 import useSWR from 'swr'
 
@@ -25,9 +24,7 @@ export const AddGroup = ({
   const textarea_id = `${type}-input`
 
   // Check if they've submitted
-  const { data } = useSWR(statusURL ? statusURL : null, fetcher, {
-    refreshInterval: ms('5s'),
-  })
+  const { data } = useSWR(statusURL ? statusURL : null, fetcher)
   // Show which have submitted already
   useEffect(() => {
     if (!data) return
