@@ -4,7 +4,7 @@ import { Dispatch } from 'react'
 import { big } from '../crypto/types'
 import { Paper } from '../protocol/Paper'
 import { Item } from './Item'
-import { State } from './useVoteState'
+import { State } from './vote-state'
 
 export const Ballot = ({
   dispatch,

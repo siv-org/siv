@@ -2,7 +2,7 @@ import { NoSsr } from '@material-ui/core'
 import { map } from 'lodash-es'
 
 import { Paper } from '../protocol/Paper'
-import { State } from './useVoteState'
+import { State } from './vote-state'
 
 export function EncryptionReceipt({ state }: { state: State & { submitted_at: Date } }): JSX.Element {
   return (

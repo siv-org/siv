@@ -3,7 +3,7 @@ import { Dispatch, useState } from 'react'
 
 import { encode } from '../crypto/encode'
 import { Item as ItemType } from './useElectionInfo'
-import { State } from './useVoteState'
+import { State } from './vote-state'
 
 export const Item = ({
   description,

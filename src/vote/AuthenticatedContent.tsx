@@ -4,7 +4,7 @@ import { EncryptionReceipt } from './EncryptionReceipt'
 import { Instructions } from './Instructions'
 import { SubmitButton } from './SubmitButton'
 import { useElectionInfo } from './useElectionInfo'
-import { useVoteState } from './useVoteState'
+import { useVoteState } from './vote-state'
 import { YourAuthToken } from './YourAuthToken'
 
 export const AuthenticatedContent = ({ auth, election_id }: { auth: string; election_id: string }): JSX.Element => {

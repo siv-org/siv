@@ -2,7 +2,7 @@ import { Dispatch, useState } from 'react'
 
 import { api } from '../api-helper'
 import { OnClickButton } from '../landing-page/Button'
-import { State } from './useVoteState'
+import { State } from './vote-state'
 
 export const SubmitButton = ({
   auth,
