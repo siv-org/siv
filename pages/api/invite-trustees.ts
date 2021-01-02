@@ -62,7 +62,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     await Promise.all(promises)
 
     // Send back election creation success
-    return res.status(201).send(election_id)
+    return res.status(201).json({ election_id, threshold_public_key })
   }
 
   // Generate auth token for each trustee
@@ -146,5 +146,5 @@ Click here to join:
   await Promise.all(promises)
 
   // Finally, send http success back to frontend
-  res.status(201).send(election_id)
+  res.status(201).json({ election_id })
 }
