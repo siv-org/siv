@@ -18,7 +18,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // 3. Store auth tokens in db
   const election = firebase.firestore().collection('elections').doc(election_id)
-  promises.push(election.set({ ballot_design }))
+  promises.push(election.update({ ballot_design }))
   promises.push(
     Promise.all(
       voters.map((voter: string, index: number) =>
