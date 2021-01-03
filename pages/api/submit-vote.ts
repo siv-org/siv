@@ -11,11 +11,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // 1. Validate auth token
   let validated = false
   await validateAuthToken(auth, election_id, {
-    fail: (message) => res.status(400).send(message),
+    fail: async (message) => {
+      await pushover('SIV submission: Bad Auth Token', `election: ${election_id}\nauth: ${auth}\nmessage: ${message}`)
+      res.status(400).send(message)
+    },
     pass: () => (validated = true),
   })
   // Stop if validation failed
-  if (!validated) return pushover('SIV submission: Auth Token failure', `${{ auth, election_id }}`)
+  if (!validated) return
 
   const election = firebase.firestore().collection('elections').doc(election_id)
 
