@@ -1,14 +1,16 @@
-import { useState } from 'react'
+import { useReducer, useState } from 'react'
 
 import { api } from '../api-helper'
 import { OnClickButton } from '../landing-page/Button'
 import { AddGroup } from './AddGroup'
 import { initPusher } from './pusher-helper'
 
+type Voted = Record<string, boolean>
+
 export const AddParticipants = () => {
   const [closed, setClosed] = useState(false)
   const [pub_key, setPubKey] = useState<string>()
-  const [voted, setVoted] = useState<boolean[]>([])
+  const [voted, setVoted] = useReducer((prev: Voted, payload: Voted) => ({ ...prev, ...payload }), {})
   const [election_id, setElectionID] = useState<string>()
 
   // Subscribe to updates
@@ -52,10 +54,10 @@ export const AddParticipants = () => {
           }}
         />
         <AddGroup
+          {...{ voted }}
           disabled={!pub_key}
           message={!pub_key ? 'Waiting on Trustees' : !election_id ? '' : `Created election ${election_id}`}
           type="voters"
-          voted={voted}
           onSubmit={async () => {
             // Grab voters from textarea
             const voters = (document.getElementById('voters-input') as HTMLInputElement).value

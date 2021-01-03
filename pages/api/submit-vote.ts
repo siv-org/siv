@@ -3,6 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { stringifyEncryptedVote } from '../../src/status/AcceptedVotes'
 import { firebase, pushover, sendEmail } from './_services'
 import { validateAuthToken } from './check-auth-token'
+import { pusher } from './pusher'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { auth, election_id, encrypted_vote } = req.body
@@ -28,10 +29,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const link = `${req.headers.origin}/election/${election_id}`
   const { email } = (await voter).docs[0].data()
 
-  await sendEmail({
-    recipient: email,
-    subject: 'Vote Confirmation',
-    text: `<h2 style="margin: 0">Your vote was successfully submitted. Thank you.</h2>
+  const promises: Promise<unknown>[] = []
+
+  promises.push(
+    sendEmail({
+      recipient: email,
+      subject: 'Vote Confirmation',
+      text: `<h2 style="margin: 0">Your vote was successfully submitted. Thank you.</h2>
   The tallied results will be posted at <a href="${link}">${link}</a> when the election closes.
 
   <hr />
@@ -42,7 +46,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 <code style="margin: 0 30px;">${stringifyEncryptedVote({ auth, ...encrypted_vote })}</code>
 
   <em style="font-size:13px">You can press reply if you have a problem.</em>`,
-  })
+    }),
+  )
+
+  promises.push(pusher.trigger(`create-${election_id}`, 'votes', email))
+
+  await Promise.all(promises)
 
   res.status(200).send('Success.')
 }

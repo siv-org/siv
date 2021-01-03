@@ -15,7 +15,7 @@ export const AddGroup = ({
   message: string
   onSubmit: () => boolean | Promise<boolean>
   type: string
-  voted?: boolean[]
+  voted?: Record<string, boolean>
 }) => {
   const [status, setStatus] = useState<string>()
   const textarea_id = `${type}-input`
@@ -26,7 +26,7 @@ export const AddGroup = ({
     const textarea = document.getElementById(textarea_id) as HTMLInputElement
     const newContent = textarea.value
       .split('\n')
-      .map((line, index) => (voted[index] && !line.includes('·') ? line + ' · ✔ Voted' : line))
+      .map((line) => `${line}${voted[line] ? ' · ✔ Voted' : ''}`)
       .join('\n')
     textarea.value = newContent
   }, [voted])

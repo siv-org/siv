@@ -1,5 +1,5 @@
 import Pusher from 'pusher-js'
-import { useEffect } from 'react'
+import { Dispatch, useEffect } from 'react'
 
 export function initPusher({
   election_id,
@@ -8,7 +8,7 @@ export function initPusher({
 }: {
   election_id?: string
   setPubKey: (pub_key: string) => void
-  setVoted: (voted: boolean[]) => void
+  setVoted: Dispatch<Record<string, boolean>>
 }) {
   function subscribe() {
     // Enable pusher logging - don't include this in production
@@ -22,9 +22,9 @@ export function initPusher({
       setPubKey(data)
     })
 
-    channel.bind(`votes`, (data: boolean[]) => {
-      console.log('🆕 Pusher new votes', data)
-      setVoted(data)
+    channel.bind(`votes`, (email: string) => {
+      console.log('🆕 Pusher new vote submitted', email)
+      setVoted({ [email]: true })
     })
 
     // Return cleanup code
