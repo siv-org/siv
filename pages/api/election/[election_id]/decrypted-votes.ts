@@ -16,5 +16,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(400).end('Unknown Election ID.')
   }
 
-  res.status(200).json(election.data()?.decrypted)
+  res.status(200).json(election.data()?.decrypted || [])
 }

@@ -7,6 +7,7 @@ import decrypt from '../../../../src/crypto/decrypt'
 import { decode } from '../../../../src/crypto/encode'
 import { big, bigPubKey } from '../../../../src/crypto/types'
 import { firebase } from '../../_services'
+import { pusher } from '../../pusher'
 
 const { ADMIN_EMAIL } = process.env
 
@@ -55,6 +56,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const decrypted = shuffle(votes)
 
   await electionDoc.update({ closed_at: new Date(), decrypted })
+
+  await pusher.trigger(election_id, 'decrypted', '')
 
   res.status(201).send('Closed')
 }

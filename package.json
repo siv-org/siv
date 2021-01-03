@@ -55,7 +55,6 @@
     "jsbn": "^1.1.0",
     "lodash-es": "^4.17.15",
     "mailgun-js": "^0.22.0",
-    "ms": "^2.1.2",
     "next": "latest",
     "next-transpile-modules": "^4.0.3",
     "pusher": "^4.0.2",
@@ -64,8 +63,7 @@
     "react-dom": "^16.13.1",
     "react-flip-move": "^3.0.4",
     "react-scroll": "^1.8.1",
-    "react-signature-pad-wrapper": "^1.3.0",
-    "swr": "^0.3.0"
+    "react-signature-pad-wrapper": "^1.3.0"
   },
   "devDependencies": {
     "@types/mailgun-js": "^0.22.10",

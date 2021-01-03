@@ -1,20 +1,28 @@
-import ms from 'ms'
 import { useRouter } from 'next/router'
-import useSWR from 'swr'
+import Pusher from 'pusher-js'
+import { useEffect, useState } from 'react'
 
 import { Totals } from './Totals'
 
-const fetcher = (url: string) => fetch(url).then((r) => r.json())
-
 export const DecryptedVotes = (): JSX.Element => {
   const { election_id } = useRouter().query
+  const [votes, setVotes] = useState<[]>()
 
-  // Grab votes from api
-  const { data: votes } = useSWR(election_id ? `/api/election/${election_id}/decrypted-votes` : null, fetcher, {
-    refreshInterval: ms('10s'),
-  })
+  const loadVotes = () =>
+    election_id &&
+    fetch(`/api/election/${election_id}/decrypted-votes`)
+      .then((res) => res.json())
+      .then(setVotes)
 
-  if (!votes) return <></>
+  // Load votes when election_id is first set
+  useEffect(() => {
+    loadVotes()
+  }, [election_id])
+
+  // Subscribe to pusher updates of new votes
+  subscribeToUpdates(loadVotes, election_id)
+
+  if (!votes || !votes.length) return <></>
 
   return (
     <div>
@@ -45,4 +53,30 @@ export const DecryptedVotes = (): JSX.Element => {
       `}</style>
     </div>
   )
+}
+
+function subscribeToUpdates(loadVotes: () => void, election_id?: string | string[]) {
+  function subscribe() {
+    if (!election_id) return
+
+    // Enable pusher logging - don't include this in production
+    // Pusher.logToConsole = true
+
+    const pusher = new Pusher('9718ba0612df1a49e52b', { cluster: 'us3' })
+
+    const channel = pusher.subscribe(election_id as string)
+
+    channel.bind(`decrypted`, () => {
+      console.log('🆕 [Pusher] New decrypted votes')
+      loadVotes()
+    })
+
+    // Return cleanup code
+    return () => {
+      channel.unbind()
+    }
+  }
+
+  // Subscribe when we get election_id
+  useEffect(subscribe, [election_id])
 }
