@@ -36,6 +36,10 @@ export const ImprovesYourProcess = (): JSX.Element => (
         h2 {
           text-align: left;
         }
+
+        h3:first-child {
+          margin-top: 30px;
+        }
       }
     `}</style>
   </Section>
