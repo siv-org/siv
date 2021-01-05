@@ -53,8 +53,9 @@ export const SIVFeatures = (): JSX.Element => (
   </Section>
 )
 
-const Feature = ({ headline, text }: { headline: string | JSX.Element; text: string }) => (
+const Feature = ({ headline, text }: { headline: string; text: string }) => (
   <div className="container">
+    <img src={`/landing-page/${headline.toLowerCase().replace(/ /g, '-')}.png`} />
     <h4>{headline}</h4>
     <p>{text}</p>
 
@@ -63,6 +64,12 @@ const Feature = ({ headline, text }: { headline: string | JSX.Element; text: str
         padding: 17px;
         flex: 1;
         text-align: center;
+      }
+
+      img {
+        max-height: 60px;
+        margin-bottom: 25px;
+        opacity: 0.85;
       }
 
       h4 {
