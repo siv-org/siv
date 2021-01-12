@@ -21,7 +21,9 @@ Built upon 1976's "New Directions in Cryptography" by Dr. Martin Hellman and Dr.
   },
 
   {
-    history: `Based on 2001's "A Verifiable Secret Shuffle and its Application to E-Voting" by Dr. Andrew Neff, Princeton University.`,
+    history: `Based on 2001's "A Verifiable Secret Shuffle and its Application to E-Voting" by Dr. Andrew Neff, Princeton University.
+
+Improved by 1986's "How To Prove Yourself: Practical Solutions to Identification and Signature Problems" by Dr. Amos Fiat, Tel Aviv University, and Dr. Adi Shamir, Weizmann Institute and Massachusetts Institute of Technology`,
     tech: `Anonymization Mixnet`,
   },
 ]
