@@ -19,7 +19,8 @@ export function EncryptionReceipt({ state }: { state: State & { submitted_at: Da
           {`Submitted @ ${new Date(state.submitted_at)}
 
 Encryption Formula
-  message = encoded * (recipient ^ randomizer) % modulo
+  https://en.wikipedia.org/wiki/ElGamal_encryption
+  encrypted = encoded * (recipient ^ randomizer) % modulo
   unlock = (generator ^ randomizer) % modulo
 
 Public Key
