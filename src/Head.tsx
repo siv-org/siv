@@ -7,7 +7,7 @@ export const Head = ({ children = <></>, title }: { children?: JSX.Element; titl
 
   return (
     <_Head>
-      <title>{full_title}</title>
+      <title key="title">{full_title}</title>
       <link href="/favicon.png" rel="icon" />
 
       <meta content="minimum-scale=1, initial-scale=1, width=device-width" name="viewport" />
