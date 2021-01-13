@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import Pusher from 'pusher-js'
-import { useEffect, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 
 import { Cipher_Text } from '../crypto/types'
 
@@ -27,17 +27,73 @@ export const AcceptedVotes = (): JSX.Element => {
 
   if (!votes) return <div>Loading...</div>
 
+  const columns = Object.keys(votes[0]).filter((c) => c !== 'auth')
+
   return (
     <div>
       <h3>All Accepted Votes</h3>
-      <ol>
-        {votes.map((vote: Vote, index: number) => (
-          <li key={index}>{stringifyEncryptedVote(vote)}</li>
-        ))}
-      </ol>
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>auth</th>
+            {columns.map((c) => (
+              <th colSpan={2} key={c}>
+                {c}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {/* Column subheadings */}
+          <tr className="subheading">
+            <td></td>
+            <td></td>
+            {columns.map((c) => (
+              <Fragment key={c}>
+                <td>encrypted</td>
+                <td>unlock</td>
+              </Fragment>
+            ))}
+          </tr>
+          {votes.map((vote, index) => (
+            <tr key={index}>
+              <td>{index + 1}.</td>
+              <td>{vote.auth}</td>
+              {Object.keys(vote).map((key) => {
+                if (key !== 'auth') {
+                  return (
+                    <Fragment key={key}>
+                      <td>{vote[key].encrypted}</td>
+                      <td>{vote[key].unlock}</td>
+                    </Fragment>
+                  )
+                }
+              })}
+            </tr>
+          ))}
+        </tbody>
+      </table>
       <style jsx>{`
-        li {
-          white-space: pre-wrap;
+        table {
+          border-collapse: collapse;
+          display: block;
+          overflow: scroll;
+          border: 1px solid #ddd;
+        }
+
+        th,
+        td {
+          border: 1px solid #ddd;
+          padding: 3px 10px;
+          margin: 0;
+          max-width: 360px;
+        }
+
+        th,
+        .subheading td {
+          font-size: 11px;
+          font-weight: 700;
         }
       `}</style>
     </div>

@@ -43,7 +43,7 @@ export const DecryptedVotes = (): JSX.Element => {
           </tr>
         </thead>
         <tbody>
-          {votes.map((vote: NodeJS.Dict<string>, index: number) => (
+          {votes.map((vote, index) => (
             <tr key={index}>
               <td>{index + 1}.</td>
               <td>{vote.tracking?.padStart(14, '0')}</td>
