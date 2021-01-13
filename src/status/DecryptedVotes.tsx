@@ -6,7 +6,7 @@ import { Totals } from './Totals'
 
 export const DecryptedVotes = (): JSX.Element => {
   const { election_id } = useRouter().query
-  const [votes, setVotes] = useState<[]>()
+  const [votes, setVotes] = useState<Record<string, string>[]>()
 
   const loadVotes = () =>
     election_id &&
@@ -24,22 +24,38 @@ export const DecryptedVotes = (): JSX.Element => {
 
   if (!votes || !votes.length) return <></>
 
+  const columns = Object.keys(votes[0]).filter((c) => c !== 'tracking')
+
   return (
     <div>
       <Totals {...{ votes }} />
       <br />
       <h3>Decrypted Votes</h3>
       <p>Order has been randomized.</p>
-      <ol>
-        {votes.map((vote: NodeJS.Dict<string>, index: number) => (
-          <li key={index}>
-            tracking: {vote.tracking}
-            {Object.keys(vote).map((key) => {
-              if (key !== 'tracking') return `, ${key}: ${vote[key]}`
-            })}
-          </li>
-        ))}
-      </ol>
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>tracking #</th>
+            {columns.map((c) => (
+              <th key={c}>{c}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {votes.map((vote: NodeJS.Dict<string>, index: number) => (
+            <tr key={index}>
+              <td>{index + 1}.</td>
+              <td>{vote.tracking?.padStart(14, '0')}</td>
+              {Object.keys(vote).map((key) => {
+                if (key !== 'tracking') {
+                  return <td key={key}>{vote[key]}</td>
+                }
+              })}
+            </tr>
+          ))}
+        </tbody>
+      </table>
       <style jsx>{`
         h3 {
           margin-bottom: 5px;
@@ -49,6 +65,21 @@ export const DecryptedVotes = (): JSX.Element => {
           margin-top: 0px;
           font-size: 13px;
           font-style: italic;
+        }
+
+        table {
+          border-collapse: collapse;
+        }
+
+        th,
+        td {
+          border: 1px solid #bbb;
+          padding: 3px 10px;
+          margin: 0;
+        }
+
+        th {
+          font-size: 11px;
         }
       `}</style>
     </div>
