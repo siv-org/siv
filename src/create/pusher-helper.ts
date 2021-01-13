@@ -17,9 +17,9 @@ export function initPusher({
     const pusher = new Pusher('9718ba0612df1a49e52b', { cluster: 'us3' })
 
     const channel = pusher.subscribe(`create-${election_id}`)
-    channel.bind('pub_key', (data: string) => {
-      console.log('🆕 Pusher pub_key', data)
-      setPubKey(data)
+    channel.bind('pub_key', ({ threshold_public_key }: { threshold_public_key: string }) => {
+      console.log('🆕 Pusher pub_key', threshold_public_key)
+      setPubKey(threshold_public_key)
     })
 
     channel.bind(`votes`, (email: string) => {
