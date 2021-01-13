@@ -1,6 +1,8 @@
 import Pusher from 'pusher-js'
 import { Dispatch, useEffect } from 'react'
 
+import { Voted } from './AddParticipants'
+
 export function initPusher({
   election_id,
   setPubKey,
@@ -8,7 +10,7 @@ export function initPusher({
 }: {
   election_id?: string
   setPubKey: (pub_key: string) => void
-  setVoted: Dispatch<Record<string, boolean>>
+  setVoted: Dispatch<Voted>
 }) {
   function subscribe() {
     // Enable pusher logging - don't include this in production

@@ -3,9 +3,10 @@ import { useReducer, useState } from 'react'
 import { api } from '../api-helper'
 import { OnClickButton } from '../landing-page/Button'
 import { AddGroup } from './AddGroup'
+import { load_existing_election } from './load-existing'
 import { initPusher } from './pusher-helper'
 
-type Voted = Record<string, boolean>
+export type Voted = Record<string, boolean>
 
 export const AddParticipants = () => {
   const [closed, setClosed] = useState(false)
@@ -15,6 +16,9 @@ export const AddParticipants = () => {
 
   // Subscribe to updates
   initPusher({ election_id, setPubKey, setVoted })
+
+  // Add option to load existing election
+  load_existing_election({ election_id, setElectionID, setPubKey, setVoted })
 
   return (
     <>
@@ -66,8 +70,6 @@ export const AddParticipants = () => {
 
             // Grab ballot design from textarea
             const ballot_design = (document.getElementById('ballot-design') as HTMLInputElement).value
-              .replace(/\n/g, '') // remove new lines
-              .replace(/ {2,}/, ' ') // remove extra spaces
 
             // Call backend endpoint
             const response = await api(`invite-voters`, {
