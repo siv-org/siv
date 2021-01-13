@@ -32,7 +32,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(400).send(`${ADMIN_EMAIL} is a required trustee`)
 
   // Generate a safe prime of the right bit size
-  const safe_prime_bigs = generate_safe_prime(128)
+  const safe_prime_bigs = generate_safe_prime(256, 20)
   const safe_prime = mapValues(safe_prime_bigs, (v) => v.toString())
 
   // Create a new election

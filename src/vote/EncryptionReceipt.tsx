@@ -8,7 +8,7 @@ export function EncryptionReceipt({ state }: { state: State & { submitted_at: Da
   return (
     <NoSsr>
       <p>
-        Your secret Tracking #: <b>{state.plaintext.tracking}</b>
+        Your secret Tracking #: <b>{state.tracking}</b>
         <br />
         <em>Use this to verify your vote was counted correctly.</em>
       </p>
@@ -26,10 +26,14 @@ Encryption Formula
 Public Key
   ${map(state.public_key, (v, k) => `${k}: ${v}`).join('\n  ')}
 
+YOUR VOTE DATA:
+
+Your secret tracking number: ${state.tracking}
+
 ${Object.keys(state.plaintext)
   .map(
     (key) => `${key}
-  plaintext: ${state.plaintext[key]}
+  plaintext: ${state.tracking}:${state.plaintext[key]}
   encoded: ${state.encoded[key]}
   randomizer: ${state.randomizer[key]}
     encrypted: ${state.encrypted[key].encrypted}

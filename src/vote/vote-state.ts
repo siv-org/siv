@@ -18,6 +18,7 @@ export type State = {
   public_key: { generator: string; modulo: string; recipient: string }
   randomizer: Map
   submitted_at?: Date
+  tracking?: string
 }
 
 // Core state logic
@@ -45,7 +46,7 @@ function reducer(prev: State, payload: Map) {
   })
 
   // Generate a new tracking number
-  newState.plaintext.tracking = generateTrackingNum()
+  newState.tracking = generateTrackingNum()
 
   // Initialize empty dicts for intermediary steps
   const randomizer: Map = {}
@@ -54,7 +55,7 @@ function reducer(prev: State, payload: Map) {
   // For each key in plaintext
   const encrypted = mapValues(newState.plaintext, (value, key) => {
     // Encode the string into an integer
-    encoded[key] = encode(value)
+    encoded[key] = encode(`${newState.tracking}:${value}`)
 
     // Generate & store a randomizer
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

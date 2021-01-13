@@ -26,6 +26,7 @@ export const ElectionStatusPage = (): JSX.Element => {
           width: 100%;
           margin: 0 auto;
           padding: 1rem;
+          overflow-wrap: break-word;
         }
       `}</style>
       <GlobalCSS />
