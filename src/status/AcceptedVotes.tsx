@@ -60,12 +60,12 @@ export const AcceptedVotes = (): JSX.Element => {
             <tr key={index}>
               <td>{index + 1}.</td>
               <td>{vote.auth}</td>
-              {Object.keys(vote).map((key) => {
+              {columns.map((key) => {
                 if (key !== 'auth') {
                   return (
                     <Fragment key={key}>
-                      <td>{vote[key].encrypted}</td>
-                      <td>{vote[key].unlock}</td>
+                      <td>{vote[key]?.encrypted}</td>
+                      <td>{vote[key]?.unlock}</td>
                     </Fragment>
                   )
                 }

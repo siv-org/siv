@@ -47,7 +47,7 @@ export const DecryptedVotes = (): JSX.Element => {
             <tr key={index}>
               <td>{index + 1}.</td>
               <td>{vote.tracking?.padStart(14, '0')}</td>
-              {Object.keys(vote).map((key) => {
+              {columns.map((key) => {
                 if (key !== 'tracking') {
                   return <td key={key}>{vote[key]}</td>
                 }
