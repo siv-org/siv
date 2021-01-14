@@ -16,7 +16,7 @@ export const moduloLambda = (index: number, points: Big[][], modulo: Big, debug?
     log({ j: j.toString() })
 
     const numerator = big(0).subtract(j).mod(modulo)
-    const denominator = j.subtract(i).mod(modulo)
+    const denominator = i.subtract(j).mod(modulo)
     log({ denominator: denominator.toString() })
 
     const term = numerator.multiply(denominator.modInverse(modulo))
