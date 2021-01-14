@@ -34,7 +34,7 @@ export async function validateAuthToken(
   if (!election_id) return fail('Missing Election ID.')
 
   // Is election_id in DB?
-  if (!(await election).exists) return fail('Unknown Election ID.')
+  if (!(await election).exists) return fail('Unknown Election ID. It may have been deleted.')
 
   // Is there a voter w/ this Auth Token?
   const [voter] = (await voters).docs

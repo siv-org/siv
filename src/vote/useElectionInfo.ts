@@ -16,7 +16,9 @@ export function useElectionInfo(dispatch: Dispatch<Record<string, unknown>>, ele
     if (!election_id) return // Get info from API
     ;(async () => {
       const response = await fetch(`/api/election/${election_id}/info`)
-      const { ballot_design, g, p, threshold_public_key } = await response.json()
+      const { ballot_design, error, g, p, threshold_public_key } = await response.json()
+
+      if (error) return
 
       dispatch({
         ballot_design: JSON.parse(ballot_design),
