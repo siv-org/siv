@@ -1,4 +1,3 @@
-import { GlobalCSS } from '../GlobalCSS'
 import { ResetButton } from './_ResetButton'
 import { Trustees } from './1-Trustees'
 import { PublicThresholdKey } from './10-PublicThresholdKey'
@@ -47,9 +46,6 @@ export const AuthedContent = ({
       <PublicThresholdKey {...{ dispatch, state }} />
       <PartialDecryptionTest {...{ dispatch, state }} />
       <CombinePartials {...{ dispatch, state }} />
-
-      <style jsx>{``}</style>
-      <GlobalCSS />
     </>
   )
 }
