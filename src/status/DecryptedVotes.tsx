@@ -8,12 +8,21 @@ import { Totals } from './Totals'
 export const DecryptedVotes = ({ ballot_design }: { ballot_design?: Item[] }): JSX.Element => {
   const { election_id } = useRouter().query
   const [votes, setVotes] = useState<Record<string, string>[]>()
+  const [last_decrypted_at, set_last_decrypted_at] = useState<Date>()
 
   const loadVotes = () =>
     election_id &&
-    fetch(`/api/election/${election_id}/decrypted-votes`)
-      .then((res) => res.json())
-      .then(setVotes)
+    Promise.all([
+      fetch(`/api/election/${election_id}/decrypted-votes`)
+        .then((res) => res.json())
+        .then(setVotes),
+      fetch(`/api/election/${election_id}/info`)
+        .then((res) => res.json())
+        .then(
+          ({ last_decrypted_at }) =>
+            last_decrypted_at && set_last_decrypted_at(new Date(last_decrypted_at._seconds * 1000)),
+        ),
+    ])
 
   // Load votes when election_id is first set
   useEffect(() => {
@@ -27,7 +36,7 @@ export const DecryptedVotes = ({ ballot_design }: { ballot_design?: Item[] }): J
 
   return (
     <div>
-      <Totals {...{ ballot_design, votes }} />
+      <Totals {...{ ballot_design, last_decrypted_at, votes }} />
       <br />
       <h3>Decrypted Votes</h3>
       <p>Order has been randomized.</p>

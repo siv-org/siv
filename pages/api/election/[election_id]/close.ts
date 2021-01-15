@@ -103,7 +103,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     // Store decrypteds as an array
     const decrypted = Object.values(decrypteds_by_tracking)
 
-    await electionDoc.update({ closed_at: new Date(), decrypted })
+    await electionDoc.update({ decrypted, last_decrypted_at: new Date() })
 
     await pusher.trigger(election_id, 'decrypted', '')
   }

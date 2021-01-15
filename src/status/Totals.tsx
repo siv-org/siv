@@ -1,13 +1,16 @@
 import { orderBy } from 'lodash-es'
+import TimeAgo from 'timeago-react'
 
 import { mapValues } from '../utils'
 import { Item } from '../vote/useElectionInfo'
 
 export const Totals = ({
   ballot_design,
+  last_decrypted_at,
   votes,
 }: {
   ballot_design: Item[]
+  last_decrypted_at?: Date
   votes: Record<string, string>[]
 }): JSX.Element => {
   const tallies: Record<string, Record<string, number>> = {}
@@ -35,7 +38,14 @@ export const Totals = ({
 
   return (
     <div className="totals">
-      <h3>Vote Totals:</h3>
+      <div className="title-line">
+        <h3>Vote Totals:</h3>
+        {last_decrypted_at && (
+          <span>
+            Last Updated: <TimeAgo datetime={last_decrypted_at} opts={{ minInterval: 60 }} />
+          </span>
+        )}
+      </div>
       {ballot_design.map(({ id = 'vote', title }) => (
         <div key={id}>
           {Object.keys(tallies).length > 1 && <h4>{title}</h4>}
@@ -56,8 +66,17 @@ export const Totals = ({
           padding: 1rem;
         }
 
+        .title-line {
+          display: flex;
+          justify-content: space-between;
+        }
+
         h3 {
           margin-top: 0;
+        }
+
+        span {
+          font-size: 11px;
         }
       `}</style>
     </div>
