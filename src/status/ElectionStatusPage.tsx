@@ -10,7 +10,7 @@ import { useBallotDesign } from './use-ballot-design'
 
 export const ElectionStatusPage = (): JSX.Element => {
   const { election_id } = useRouter().query as { election_id?: string }
-  const ballot_design = useBallotDesign(election_id)
+  const { ballot_design, has_decrypted_votes } = useBallotDesign(election_id)
   const [show_encrypteds, toggle_encrypteds] = useReducer((state) => !state, false)
 
   return (
@@ -23,12 +23,21 @@ export const ElectionStatusPage = (): JSX.Element => {
           ID: <b>{election_id}</b>
         </p>
         <DecryptedVotes {...{ ballot_design }} />
-        <p className="toggle">
-          <a onClick={toggle_encrypteds}>{show_encrypteds ? '[-] Hide' : '[+] Show'} Encrypted Submissions</a>
-        </p>
-        <div style={{ display: show_encrypteds ? 'block' : 'none' }}>
+
+        {/* Display simple list of Encrypted Votes if we haven't unlocked any yet */}
+        {/* If we have unlocked, display Collapsible */}
+        {!has_decrypted_votes ? (
           <AcceptedVotes {...{ ballot_design }} />
-        </div>
+        ) : (
+          <>
+            <p className="toggle">
+              <a onClick={toggle_encrypteds}>{show_encrypteds ? '[-] Hide' : '[+] Show'} Encrypted Submissions</a>
+            </p>
+            <div style={{ display: show_encrypteds ? 'block' : 'none' }}>
+              <AcceptedVotes {...{ ballot_design }} />
+            </div>{' '}
+          </>
+        )}
         <Footer />
       </main>
 
