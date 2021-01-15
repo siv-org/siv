@@ -6,6 +6,8 @@ import { useLocalStorageReducer } from '../vote/useLocalStorage'
 import { diff } from './diff-objects'
 
 // Define our types
+export type Shuffled = Record<string, string[]>
+
 export type Trustee = {
   commitments: string[]
   email: string
@@ -13,6 +15,7 @@ export type Trustee = {
   index: number
   partial_decryption?: string
   recipient_key?: string
+  shuffled?: Shuffled
   verified?: Record<string, boolean>
   you?: boolean
 }
@@ -35,13 +38,15 @@ export type State = {
   verified?: Record<string, boolean>
 }
 
+export type Dispatch = ReturnType<typeof useLocalStorageReducer>[1]
+
 /**
  * Typescript helper w/ State and Dispatch
  * @property dispatch - Takes {key: value} and sticks it in local storage
  * @property state - The current state, persisted in localstorage against refreshes, window closes, etc
  */
 export type StateAndDispatch = {
-  dispatch: ReturnType<typeof useLocalStorageReducer>[1]
+  dispatch: Dispatch
   state: State
 }
 

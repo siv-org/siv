@@ -7,7 +7,13 @@ import { Item } from '../vote/useElectionInfo'
 
 type Vote = { auth: string } & { [index: string]: Cipher_Text }
 
-export const AcceptedVotes = ({ ballot_design }: { ballot_design?: Item[] }): JSX.Element => {
+export const AcceptedVotes = ({
+  ballot_design,
+  title_prefix = '',
+}: {
+  ballot_design?: Item[]
+  title_prefix: string
+}): JSX.Element => {
   const { election_id } = useRouter().query
 
   const [votes, setVotes] = useState<Vote[]>()
@@ -32,7 +38,7 @@ export const AcceptedVotes = ({ ballot_design }: { ballot_design?: Item[] }): JS
 
   return (
     <div>
-      <h3>All Accepted Votes</h3>
+      <h3>{title_prefix}All Accepted Votes</h3>
       <table>
         <thead>
           <tr>

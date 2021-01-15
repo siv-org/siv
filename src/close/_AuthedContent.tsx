@@ -1,0 +1,50 @@
+import { Trustees } from '../key-generation/1-Trustees'
+import { getTrusteesOnInit } from '../key-generation/get-latest-from-server'
+import { Dispatch, State, useKeyGenState } from '../key-generation/keygen-state'
+import { AcceptedVotes } from '../status/AcceptedVotes'
+import { VotesToShuffle } from './VotesToShuffle'
+
+export const AuthedContent = ({
+  election_id,
+  trustee_auth,
+}: {
+  election_id: string
+  trustee_auth: string
+}): JSX.Element => {
+  // Initialize local state on client
+  const [state, dispatch] = useKeyGenState({ election_id, trustee_auth }) as [State, Dispatch]
+
+  console.log(state)
+
+  const { private_keyshare } = state
+
+  // Get initial Trustee info
+  getTrusteesOnInit({ dispatch, state })
+
+  //   // Activate Pusher to get updates from the server on new data
+  //   initPusher({ dispatch, state })
+
+  if (!private_keyshare) {
+    return <p>Error: No `private_keyshare` found in localStorage.</p>
+  }
+
+  return (
+    <>
+      {/* Trustees */}
+      <Trustees {...{ state }} />
+
+      {/* Do we have a private keyshare stored? */}
+      <p>Your Private keyshare is: {private_keyshare}</p>
+
+      {/* All Accepted Votes */}
+      <AcceptedVotes ballot_design={[{ id: 'tracking' }, { id: 'vote' }]} title_prefix="II. " />
+
+      {/* Are there new votes shuffled from the trustee ahead of us that we need to shuffle? */}
+      <VotesToShuffle {...{ dispatch, state }} />
+
+      {/* Are there fully shuffled votes we need to partially decrypt? */}
+
+      <style jsx>{``}</style>
+    </>
+  )
+}
