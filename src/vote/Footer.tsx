@@ -1,5 +1,5 @@
-export const Footer = () => (
-  <p>
+export const Footer = ({ style }: { style?: React.CSSProperties }) => (
+  <p style={style}>
     <b>
       This election is powered by{' '}
       <a href="https://secureinternetvoting.org" rel="noreferrer" target="_blank">
