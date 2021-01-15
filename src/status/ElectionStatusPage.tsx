@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router'
+import { useReducer } from 'react'
 
 import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
@@ -10,6 +11,7 @@ import { useBallotDesign } from './use-ballot-design'
 export const ElectionStatusPage = (): JSX.Element => {
   const { election_id } = useRouter().query as { election_id?: string }
   const ballot_design = useBallotDesign(election_id)
+  const [show_encrypteds, toggle_encrypteds] = useReducer((state) => !state, false)
 
   return (
     <>
@@ -21,7 +23,12 @@ export const ElectionStatusPage = (): JSX.Element => {
           ID: <b>{election_id}</b>
         </p>
         <DecryptedVotes {...{ ballot_design }} />
-        <AcceptedVotes {...{ ballot_design }} />
+        <p className="toggle">
+          <a onClick={toggle_encrypteds}>{show_encrypteds ? '[-] Hide' : '[+] Show'} Encrypted Submissions</a>
+        </p>
+        <div style={{ display: show_encrypteds ? 'block' : 'none' }}>
+          <AcceptedVotes {...{ ballot_design }} />
+        </div>
         <Footer />
       </main>
 
@@ -32,6 +39,12 @@ export const ElectionStatusPage = (): JSX.Element => {
           margin: 0 auto;
           padding: 1rem;
           overflow-wrap: break-word;
+        }
+
+        p.toggle {
+          cursor: pointer;
+          font-size: 12px;
+          margin-top: 45px;
         }
       `}</style>
       <GlobalCSS />
