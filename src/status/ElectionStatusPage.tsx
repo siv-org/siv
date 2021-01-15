@@ -28,19 +28,15 @@ export const ElectionStatusPage = (): JSX.Element => {
           <DecryptedVotes {...{ ballot_design }} />
 
           {/* Display simple list of Encrypted Votes if we haven't unlocked any yet */}
-          {!has_decrypted_votes ? (
-            <AcceptedVotes {...{ ballot_design }} />
-          ) : (
-            <>
-              {/* If we have unlocked, display Collapsible */}
-              <p className="toggle">
-                <a onClick={toggle_encrypteds}>{show_encrypteds ? '[-] Hide' : '[+] Show'} Encrypted Submissions</a>
-              </p>
-              <div style={{ display: show_encrypteds ? 'block' : 'none' }}>
-                <AcceptedVotes {...{ ballot_design }} />
-              </div>{' '}
-            </>
+          {/* If we have unlocked, display Collapsible */}
+          {has_decrypted_votes && (
+            <p className="toggle">
+              <a onClick={toggle_encrypteds}>{show_encrypteds ? '[-] Hide' : '[+] Show'} Encrypted Submissions</a>
+            </p>
           )}
+          <div style={{ display: show_encrypteds || !has_decrypted_votes ? 'block' : 'none' }}>
+            <AcceptedVotes {...{ ballot_design }} />
+          </div>
         </div>
         <Footer style={{ fontSize: 11 }} />
       </main>
