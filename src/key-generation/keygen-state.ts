@@ -25,6 +25,7 @@ export type State = {
   election_id: string
   encrypted_pairwise_shares_for?: Record<string, string>
   own_email: string
+  own_index: number
   pairwise_randomizers_for?: Record<string, string>
   pairwise_shares_for?: Record<string, string>
   parameters?: { g: string; p: string; q: string; t: number }

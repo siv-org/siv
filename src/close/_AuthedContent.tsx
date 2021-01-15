@@ -1,6 +1,7 @@
 import { Trustees } from '../key-generation/1-Trustees'
 import { getTrusteesOnInit } from '../key-generation/get-latest-from-server'
 import { Dispatch, State, useKeyGenState } from '../key-generation/keygen-state'
+import { initPusher } from '../key-generation/pusher-helper'
 import { AcceptedVotes } from '../status/AcceptedVotes'
 import { VotesToShuffle } from './VotesToShuffle'
 
@@ -14,15 +15,13 @@ export const AuthedContent = ({
   // Initialize local state on client
   const [state, dispatch] = useKeyGenState({ election_id, trustee_auth }) as [State, Dispatch]
 
-  console.log(state)
-
   const { private_keyshare } = state
 
   // Get initial Trustee info
   getTrusteesOnInit({ dispatch, state })
 
-  //   // Activate Pusher to get updates from the server on new data
-  //   initPusher({ dispatch, state })
+  // Activate Pusher to get updates from the server on new data
+  initPusher({ dispatch, state })
 
   if (!private_keyshare) {
     return <p>Error: No `private_keyshare` found in localStorage.</p>

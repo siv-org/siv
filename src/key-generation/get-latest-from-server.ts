@@ -23,10 +23,10 @@ export async function getLatestFromServer({ dispatch, state }: StateAndDispatch)
     const data = await response.json()
     dispatch(data)
 
-    // Find your own email and store it to local state
+    // Find own_email & own_index and store it to local state
     data.trustees.some((trustee: Trustee) => {
       if (trustee.you) {
-        dispatch({ own_email: trustee.email })
+        dispatch({ own_email: trustee.email, own_index: trustee.index })
         return true
       }
     })
