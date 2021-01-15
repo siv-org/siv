@@ -71,6 +71,7 @@ export const DecryptedVotes = ({ ballot_design }: { ballot_design?: Item[] }): J
           margin-top: 0px;
           font-size: 13px;
           font-style: italic;
+          opacity: 0.7;
         }
 
         table {

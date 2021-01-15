@@ -58,8 +58,13 @@ export const ElectionStatusPage = (): JSX.Element => {
           justify-content: space-between;
         }
 
+        p {
+          opacity: 0.75;
+        }
+
         p.toggle {
           font-size: 12px;
+          opacity: 0.7;
           margin-top: 45px;
         }
 

@@ -66,7 +66,7 @@ export const Totals = ({
         .totals {
           background: #f9f9f9;
           border: 2px solid #ddd;
-          border-radius: 7px;
+          border-radius: 5px;
           padding: 1rem;
         }
 
