@@ -2,6 +2,7 @@ import { useRouter } from 'next/router'
 
 import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
+import { Footer } from '../vote/Footer'
 import { AcceptedVotes } from './AcceptedVotes'
 import { DecryptedVotes } from './DecryptedVotes'
 import { useBallotDesign } from './use-ballot-design'
@@ -21,6 +22,7 @@ export const ElectionStatusPage = (): JSX.Element => {
         </p>
         <DecryptedVotes {...{ ballot_design }} />
         <AcceptedVotes {...{ ballot_design }} />
+        <Footer />
       </main>
 
       <style jsx>{`
