@@ -19,10 +19,12 @@ export const ElectionStatusPage = (): JSX.Element => {
 
       <main>
         <div>
-          <h1>Election Status</h1>
-          <p>
-            ID: <b>{election_id}</b>
-          </p>
+          <div className="title-line">
+            <h1>Election Status</h1>
+            <p>
+              ID: <b>{election_id}</b>
+            </p>
+          </div>
           <DecryptedVotes {...{ ballot_design }} />
 
           {/* Display simple list of Encrypted Votes if we haven't unlocked any yet */}
@@ -58,8 +60,15 @@ export const ElectionStatusPage = (): JSX.Element => {
           justify-content: space-between;
         }
 
-        p {
-          opacity: 0.75;
+        .title-line {
+          display: flex;
+          justify-content: space-between;
+          align-items: baseline;
+        }
+
+        .title-line p {
+          opacity: 0.7;
+          text-align: right;
         }
 
         p.toggle {

@@ -46,7 +46,7 @@ export const Totals = ({
         <h3>Vote Totals:</h3>
         {last_decrypted_at && (
           <span>
-            Last Updated: <TimeAgo datetime={last_decrypted_at} opts={{ minInterval: 60 }} />
+            Last updated: <TimeAgo datetime={last_decrypted_at} opts={{ minInterval: 60 }} />
           </span>
         )}
       </div>
@@ -73,6 +73,7 @@ export const Totals = ({
         .title-line {
           display: flex;
           justify-content: space-between;
+          align-items: baseline;
         }
 
         h3 {
@@ -83,6 +84,7 @@ export const Totals = ({
           font-size: 11px;
           opacity: 0.5;
           text-align: right;
+          font-style: italic;
         }
       `}</style>
     </div>
