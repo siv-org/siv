@@ -43,14 +43,14 @@ export function big(input: number | Big | string | number[], radix = 10): Big {
     return new Big(String(input))
   }
 
-  // Is input a string of a number?
-  if (typeof input === 'string' && (Number.isInteger(Number(input)) || Number(input) === Infinity)) {
-    return new Big(input, radix)
-  }
-
   // Can also pass in an array of bytes
   if (Array.isArray(input)) {
     return new Big(input)
+  }
+
+  // Is input a string of a number?
+  if (typeof input === 'string') {
+    return new Big(input, radix)
   }
 
   throw new TypeError(`${input} is not a number or string of an integer`)

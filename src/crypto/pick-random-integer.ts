@@ -15,19 +15,11 @@ export default function pick_random_integer(max: Big): Big {
     // Uses crypto.randomBytes, a cryptographically secure source of randomness
     const bytes = randomBytes(bytesNeeded)
     const buffer = new Uint8Array(bytes)
-
-    const joined = buffer.join('')
+    const hex_string = buffer.reduce((memo, b) => memo + b.toString(16), '')
 
     // Add one because we don't accept zero
-    randomInteger = big(joined).add(Big.ONE)
+    randomInteger = big(hex_string, 16).add(Big.ONE)
   }
-
-  // console.log({
-  //   buffer,
-  //   bufferZero,
-  //   randomInteger,
-  //   joined,
-  // })
 
   return randomInteger
 }
