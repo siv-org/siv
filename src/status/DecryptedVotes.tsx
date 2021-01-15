@@ -39,7 +39,7 @@ export const DecryptedVotes = ({ ballot_design }: { ballot_design?: Item[] }): J
       <Totals {...{ ballot_design, last_decrypted_at, votes }} />
       <br />
       <h3>Decrypted Votes</h3>
-      <p>Order has been randomized.</p>
+      <p>Order randomized for vote secrecy.</p>
       <table>
         <thead>
           <tr>
