@@ -1,3 +1,6 @@
+import { orderBy } from 'lodash-es'
+
+import { mapValues } from '../utils'
 import { Item } from '../vote/useElectionInfo'
 
 export const Totals = ({
@@ -7,7 +10,7 @@ export const Totals = ({
   ballot_design: Item[]
   votes: Record<string, string>[]
 }): JSX.Element => {
-  const tallies: { [index: string]: { [index: string]: number } } = {}
+  const tallies: Record<string, Record<string, number>> = {}
   // Sum up votes
   votes.forEach((vote) => {
     Object.keys(vote).forEach((key) => {
@@ -25,22 +28,21 @@ export const Totals = ({
     })
   })
 
-  // Sort from highest to lowest
-  // const tuples = mapValues(vote_counts, (votes, name) => ({ name, votes }))
-  // const ordered = orderBy(tuples, 'votes', 'desc')
-
-  const columns = ballot_design.map((i) => i.id || 'vote')
+  // Sort each item's totals from highest to lowest
+  const ordered = mapValues(tallies, (item_totals, item_id) =>
+    orderBy(Object.keys(item_totals as Record<string, number>), (selection) => tallies[item_id][selection], 'desc'),
+  ) as Record<string, string[]>
 
   return (
     <div className="totals">
       <h3>Vote Totals:</h3>
-      {columns.map((item) => (
-        <div key={item}>
-          {Object.keys(tallies).length > 1 && <h4>On `{item}`</h4>}
+      {ballot_design.map(({ id = 'vote', title }) => (
+        <div key={id}>
+          {Object.keys(tallies).length > 1 && <h4>{title}</h4>}
           <ul>
-            {Object.keys(tallies[item]).map((selection) => (
+            {ordered[id].map((selection) => (
               <li key={selection}>
-                {selection}: {tallies[item][selection]}
+                {selection}: {tallies[id][selection]}
               </li>
             ))}
           </ul>
