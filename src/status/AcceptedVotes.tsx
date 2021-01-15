@@ -80,12 +80,11 @@ export const AcceptedVotes = ({ ballot_design }: { ballot_design?: Item[] }): JS
           border-collapse: collapse;
           display: block;
           overflow: scroll;
-          border: 1px solid #ddd;
         }
 
         th,
         td {
-          border: 1px solid #ddd;
+          border: 1px solid #ccc;
           padding: 3px 10px;
           margin: 0;
           max-width: 360px;

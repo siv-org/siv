@@ -76,11 +76,13 @@ export const DecryptedVotes = ({ ballot_design }: { ballot_design?: Item[] }): J
 
         table {
           border-collapse: collapse;
+          display: block;
+          overflow: scroll;
         }
 
         th,
         td {
-          border: 1px solid #bbb;
+          border: 1px solid #ccc;
           padding: 3px 10px;
           margin: 0;
         }
