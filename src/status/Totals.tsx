@@ -81,6 +81,7 @@ export const Totals = ({
 
         span {
           font-size: 11px;
+          opacity: 0.5;
         }
       `}</style>
     </div>
