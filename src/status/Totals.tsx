@@ -31,9 +31,13 @@ export const Totals = ({
     })
   })
 
-  // Sort each item's totals from highest to lowest
+  // Sort each item's totals from highest to lowest, with ties sorted alphabetically
   const ordered = mapValues(tallies, (item_totals, item_id) =>
-    orderBy(Object.keys(item_totals as Record<string, number>), (selection) => tallies[item_id][selection], 'desc'),
+    orderBy(
+      orderBy(Object.keys(item_totals as Record<string, number>)),
+      (selection) => tallies[item_id][selection],
+      'desc',
+    ),
   ) as Record<string, string[]>
 
   return (
