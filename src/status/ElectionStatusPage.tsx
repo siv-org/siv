@@ -18,26 +18,28 @@ export const ElectionStatusPage = (): JSX.Element => {
       <Head title="Election Status" />
 
       <main>
-        <h1>Election Status</h1>
-        <p>
-          ID: <b>{election_id}</b>
-        </p>
-        <DecryptedVotes {...{ ballot_design }} />
+        <div>
+          <h1>Election Status</h1>
+          <p>
+            ID: <b>{election_id}</b>
+          </p>
+          <DecryptedVotes {...{ ballot_design }} />
 
-        {/* Display simple list of Encrypted Votes if we haven't unlocked any yet */}
-        {/* If we have unlocked, display Collapsible */}
-        {!has_decrypted_votes ? (
-          <AcceptedVotes {...{ ballot_design }} />
-        ) : (
-          <>
-            <p className="toggle">
-              <a onClick={toggle_encrypteds}>{show_encrypteds ? '[-] Hide' : '[+] Show'} Encrypted Submissions</a>
-            </p>
-            <div style={{ display: show_encrypteds ? 'block' : 'none' }}>
-              <AcceptedVotes {...{ ballot_design }} />
-            </div>{' '}
-          </>
-        )}
+          {/* Display simple list of Encrypted Votes if we haven't unlocked any yet */}
+          {/* If we have unlocked, display Collapsible */}
+          {!has_decrypted_votes ? (
+            <AcceptedVotes {...{ ballot_design }} />
+          ) : (
+            <>
+              <p className="toggle">
+                <a onClick={toggle_encrypteds}>{show_encrypteds ? '[-] Hide' : '[+] Show'} Encrypted Submissions</a>
+              </p>
+              <div style={{ display: show_encrypteds ? 'block' : 'none' }}>
+                <AcceptedVotes {...{ ballot_design }} />
+              </div>{' '}
+            </>
+          )}
+        </div>
         <Footer />
       </main>
 
@@ -48,6 +50,12 @@ export const ElectionStatusPage = (): JSX.Element => {
           margin: 0 auto;
           padding: 1rem;
           overflow-wrap: break-word;
+
+          /* Push footer to bottom */
+          display: flex;
+          flex-direction: column;
+          min-height: 100vh;
+          justify-content: space-between;
         }
 
         p.toggle {
