@@ -2,7 +2,7 @@ import { mapValues } from 'lodash-es'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import { generate_key_pair } from '../../src/crypto/generate-key-pair'
-import { generate_safe_prime } from '../../src/crypto/generate-safe-prime'
+import { get_safe_prime } from '../../src/crypto/generate-safe-prime'
 import {
   evaluate_private_polynomial,
   generate_public_coefficients,
@@ -32,7 +32,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(400).send(`${ADMIN_EMAIL} is a required trustee`)
 
   // Generate a safe prime of the right bit size
-  const safe_prime_bigs = generate_safe_prime(256, 20)
+  const safe_prime_bigs = get_safe_prime(256, 20)
   const safe_prime = mapValues(safe_prime_bigs, (v) => v.toString())
 
   // Create a new election

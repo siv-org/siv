@@ -44,3 +44,17 @@ export function generate_safe_prime(bit_size: number, timeout_seconds = 10) {
 
   throw new Error(`Couldn't generate_safe_primes within ${timeout_seconds}s timeout`)
 }
+
+export function get_safe_prime(bit_size: number, timeout_seconds = 10) {
+  const precalculated_primes: Record<string, ReturnType<typeof generate_safe_prime>> = {
+    256: {
+      g: big(4),
+      p: big('84490233071588324613543045838826431628034872330024413446004719838344478256747'),
+      q: big('42245116535794162306771522919413215814017436165012206723002359919172239128373'),
+    },
+  }
+
+  // Do we already have precalculated primes for this size?
+  const precalculated = precalculated_primes[bit_size]
+  return precalculated ? precalculated : generate_safe_prime(bit_size, timeout_seconds)
+}
