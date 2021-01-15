@@ -1,4 +1,12 @@
-export const Totals = ({ votes }: { votes: Record<string, string>[] }): JSX.Element => {
+import { Item } from '../vote/useElectionInfo'
+
+export const Totals = ({
+  ballot_design,
+  votes,
+}: {
+  ballot_design: Item[]
+  votes: Record<string, string>[]
+}): JSX.Element => {
   const tallies: { [index: string]: { [index: string]: number } } = {}
   // Sum up votes
   votes.forEach((vote) => {
@@ -21,10 +29,12 @@ export const Totals = ({ votes }: { votes: Record<string, string>[] }): JSX.Elem
   // const tuples = mapValues(vote_counts, (votes, name) => ({ name, votes }))
   // const ordered = orderBy(tuples, 'votes', 'desc')
 
+  const columns = ballot_design.map((i) => i.id || 'vote')
+
   return (
     <div className="totals">
       <h3>Vote Totals:</h3>
-      {Object.keys(tallies).map((item) => (
+      {columns.map((item) => (
         <div key={item}>
           {Object.keys(tallies).length > 1 && <h4>On `{item}`</h4>}
           <ul>

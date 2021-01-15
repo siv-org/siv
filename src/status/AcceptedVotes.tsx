@@ -3,10 +3,11 @@ import Pusher from 'pusher-js'
 import { Fragment, useEffect, useState } from 'react'
 
 import { Cipher_Text } from '../crypto/types'
+import { Item } from '../vote/useElectionInfo'
 
 type Vote = { auth: string } & { [index: string]: Cipher_Text }
 
-export const AcceptedVotes = (): JSX.Element => {
+export const AcceptedVotes = ({ ballot_design }: { ballot_design?: Item[] }): JSX.Element => {
   const { election_id } = useRouter().query
 
   const [votes, setVotes] = useState<Vote[]>()
@@ -25,9 +26,9 @@ export const AcceptedVotes = (): JSX.Element => {
   // Subscribe to pusher updates of new votes
   subscribeToUpdates(loadVotes, election_id)
 
-  if (!votes) return <div>Loading...</div>
+  if (!votes || !ballot_design) return <div>Loading...</div>
 
-  const columns = Object.keys(votes[0]).filter((c) => c !== 'auth')
+  const columns = ballot_design.map((i) => i.id || 'vote')
 
   return (
     <div>

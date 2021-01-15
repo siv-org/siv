@@ -2,9 +2,10 @@ import { useRouter } from 'next/router'
 import Pusher from 'pusher-js'
 import { useEffect, useState } from 'react'
 
+import { Item } from '../vote/useElectionInfo'
 import { Totals } from './Totals'
 
-export const DecryptedVotes = (): JSX.Element => {
+export const DecryptedVotes = ({ ballot_design }: { ballot_design?: Item[] }): JSX.Element => {
   const { election_id } = useRouter().query
   const [votes, setVotes] = useState<Record<string, string>[]>()
 
@@ -22,13 +23,11 @@ export const DecryptedVotes = (): JSX.Element => {
   // Subscribe to pusher updates of new votes
   subscribeToUpdates(loadVotes, election_id)
 
-  if (!votes || !votes.length) return <></>
-
-  const columns = Object.keys(votes[0]).filter((c) => c !== 'tracking')
+  if (!votes || !votes.length || !ballot_design) return <></>
 
   return (
     <div>
-      <Totals {...{ votes }} />
+      <Totals {...{ ballot_design, votes }} />
       <br />
       <h3>Decrypted Votes</h3>
       <p>Order has been randomized.</p>
@@ -37,8 +36,8 @@ export const DecryptedVotes = (): JSX.Element => {
           <tr>
             <th></th>
             <th>tracking #</th>
-            {columns.map((c) => (
-              <th key={c}>{c}</th>
+            {ballot_design.map(({ id = 'vote' }) => (
+              <th key={id}>{id}</th>
             ))}
           </tr>
         </thead>
@@ -47,11 +46,9 @@ export const DecryptedVotes = (): JSX.Element => {
             <tr key={index}>
               <td>{index + 1}.</td>
               <td>{vote.tracking?.padStart(14, '0')}</td>
-              {columns.map((key) => {
-                if (key !== 'tracking') {
-                  return <td key={key}>{vote[key]}</td>
-                }
-              })}
+              {ballot_design.map(({ id = 'vote' }) => (
+                <td key={id}>{vote[id]}</td>
+              ))}
             </tr>
           ))}
         </tbody>

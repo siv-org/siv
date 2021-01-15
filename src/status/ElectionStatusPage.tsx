@@ -4,9 +4,12 @@ import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
 import { AcceptedVotes } from './AcceptedVotes'
 import { DecryptedVotes } from './DecryptedVotes'
+import { useBallotDesign } from './use-ballot-design'
 
 export const ElectionStatusPage = (): JSX.Element => {
-  const { election_id } = useRouter().query
+  const { election_id } = useRouter().query as { election_id?: string }
+  const ballot_design = useBallotDesign(election_id)
+
   return (
     <>
       <Head title="Election Status" />
@@ -16,8 +19,8 @@ export const ElectionStatusPage = (): JSX.Element => {
         <p>
           ID: <b>{election_id}</b>
         </p>
-        <DecryptedVotes />
-        <AcceptedVotes />
+        <DecryptedVotes {...{ ballot_design }} />
+        <AcceptedVotes {...{ ballot_design }} />
       </main>
 
       <style jsx>{`

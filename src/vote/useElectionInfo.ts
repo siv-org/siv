@@ -12,9 +12,9 @@ export type Item = {
 export function useElectionInfo(dispatch: Dispatch<Record<string, unknown>>, election_id?: string) {
   // Download info when election_id is first loaded
   useEffect(() => {
-    // Wait for election_id
-    if (!election_id) return // Get info from API
+    if (!election_id) return
     ;(async () => {
+      // Get info from API
       const response = await fetch(`/api/election/${election_id}/info`)
       const { ballot_design, error, g, p, threshold_public_key } = await response.json()
 
