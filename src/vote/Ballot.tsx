@@ -4,6 +4,7 @@ import { Dispatch } from 'react'
 import { big } from '../crypto/types'
 import { Paper } from '../protocol/Paper'
 import { Item } from './Item'
+import { MultiVoteItem } from './MultiVoteItem'
 import { State } from './vote-state'
 
 export const Ballot = ({
@@ -24,9 +25,13 @@ export const Ballot = ({
   return (
     <NoSsr>
       <Paper noFade>
-        {state.ballot_design.map((item, index) => (
-          <Item {...{ ...item, dispatch, max_string_length, state }} key={index} />
-        ))}
+        {state.ballot_design.map((item, index) =>
+          item.multiple_votes_allowed && item.multiple_votes_allowed > 1 ? (
+            <MultiVoteItem {...{ ...item, dispatch, max_string_length, state }} key={index} />
+          ) : (
+            <Item {...{ ...item, dispatch, max_string_length, state }} key={index} />
+          ),
+        )}
       </Paper>
       <style jsx>{`
         .title {

@@ -3,6 +3,7 @@ import { Dispatch, useEffect } from 'react'
 export type Item = {
   description?: string
   id?: string
+  multiple_votes_allowed?: number
   options: { name: string; sub?: string; value?: string }[]
   question?: string
   title: string
