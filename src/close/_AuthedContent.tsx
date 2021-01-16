@@ -3,6 +3,7 @@ import { getTrusteesOnInit } from '../key-generation/get-latest-from-server'
 import { Dispatch, State, useKeyGenState } from '../key-generation/keygen-state'
 import { initPusher } from '../key-generation/pusher-helper'
 import { AcceptedVotes } from '../status/AcceptedVotes'
+import { useBallotDesign } from '../status/use-ballot-design'
 import { VotesToDecrypt } from './VotesToDecrypt'
 import { VotesToShuffle } from './VotesToShuffle'
 
@@ -24,6 +25,8 @@ export const AuthedContent = ({
   // Activate Pusher to get updates from the server on new data
   initPusher({ dispatch, state })
 
+  const { ballot_design } = useBallotDesign(election_id)
+
   if (!private_keyshare) {
     return <p>Error: No `private_keyshare` found in localStorage.</p>
   }
@@ -37,7 +40,7 @@ export const AuthedContent = ({
       <p>Your Private keyshare is: {private_keyshare}</p>
 
       {/* All Accepted Votes */}
-      <AcceptedVotes ballot_design={[{ id: 'tracking' }, { id: 'vote' }]} title_prefix="II. " />
+      <AcceptedVotes {...{ ballot_design }} title_prefix="II. " />
 
       {/* Are there new votes shuffled from the trustee ahead of us that we need to shuffle? */}
       <VotesToShuffle {...{ dispatch, state }} />

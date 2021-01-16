@@ -12,7 +12,7 @@ export const AcceptedVotes = ({
   title_prefix = '',
 }: {
   ballot_design?: Item[]
-  title_prefix: string
+  title_prefix?: string
 }): JSX.Element => {
   const { election_id } = useRouter().query
 
