@@ -41,8 +41,8 @@ export const MultiVoteItem = ({
   return (
     <>
       <p className="title">{title}</p>
-      <p className="description">{description}</p>
-      <p className="question">{question}</p>
+      {description && <p className="description">{description}</p>}
+      {question && <p className="question">{question}</p>}
       <p className="remaining">Remaining votes: {multiple_votes_allowed - selected.size}</p>
       <FormGroup style={{ paddingLeft: '1.5rem' }}>
         {options.map(({ name, sub, value }) => {
@@ -82,7 +82,7 @@ export const MultiVoteItem = ({
         .title {
           font-size: 16px;
           font-weight: bold;
-          margin-bottom: 10;
+          margin-bottom: 5px;
           padding: 5px 13px;
           white-space: pre;
         }

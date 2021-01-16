@@ -93,7 +93,7 @@ export const Item = ({
         .title {
           font-size: 16px;
           font-weight: bold;
-          margin-bottom: 10;
+          margin-bottom: 10px;
           padding: 5px 13px;
           white-space: pre;
         }
