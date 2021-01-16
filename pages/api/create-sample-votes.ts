@@ -11,6 +11,9 @@ import { generateAuthToken } from './invite-voters'
 import { pusher } from './pusher'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
+  // Disable this endpoint
+  return res.status(401).end()
+
   const election_id = '1610777062403'
   const p = '84490233071588324613543045838826431628034872330024413446004719838344478256747'
   const threshold_key = '9634851030654637484180832422863293041136054844586992867984961075284329440070'
