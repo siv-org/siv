@@ -21,21 +21,14 @@ export const MultiVoteItem = ({
   multiple_votes_allowed: number
   state: State
 }): JSX.Element => {
-  const [selected, setState] = useState(
-    options.reduce(
-      (acc: Record<string, boolean>, opt) => ({ ...acc, [opt.value || opt.name.slice(0, max_string_length)]: false }),
-      {},
-    ),
-  )
-
-  const num_selected = Object.values(selected).filter((v) => v).length
+  const [selected, setState] = useState(new Set())
 
   return (
     <>
       <p className="title">{title}</p>
       <p className="description">{description}</p>
       <p className="question">{question}</p>
-      <p className="remaining">Remaining votes: {multiple_votes_allowed - num_selected}</p>
+      <p className="remaining">Remaining votes: {multiple_votes_allowed - selected.size}</p>
       <FormGroup style={{ paddingLeft: '1.5rem' }}>
         {options.map(({ name, sub, value }) => {
           const val = value || name.slice(0, max_string_length)
@@ -44,15 +37,21 @@ export const MultiVoteItem = ({
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={selected[val]}
+                  checked={selected.has(val)}
                   color="primary"
                   onChange={(event) => {
-                    // If we've already used all our votes
-                    if (num_selected >= multiple_votes_allowed) {
-                      // Prevent them from using another
-                      if (event.target.checked) return
+                    // If they're trying to add
+                    if (event.target.checked) {
+                      // Allow if they still have votes remaining
+                      if (selected.size < multiple_votes_allowed) {
+                        setState(new Set([...selected, val]))
+                      }
+                    } else {
+                      // Otherwise remove
+                      const newSet = new Set([...selected])
+                      newSet.delete(val)
+                      setState(newSet)
                     }
-                    setState({ ...selected, [event.target.name]: event.target.checked })
                   }}
                 />
               }
