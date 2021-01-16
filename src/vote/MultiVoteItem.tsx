@@ -43,7 +43,9 @@ export const MultiVoteItem = ({
       <p className="title">{title}</p>
       {description && <p className="description">{description}</p>}
       {question && <p className="question">{question}</p>}
-      <p className="remaining">Remaining votes: {multiple_votes_allowed - selected.size}</p>
+      <p className="remaining">
+        Remaining votes: {multiple_votes_allowed - selected.size} of {multiple_votes_allowed}
+      </p>
       <FormGroup style={{ paddingLeft: '1.5rem' }}>
         {options.map(({ name, sub, value }) => {
           const val = value || name.slice(0, max_string_length)
