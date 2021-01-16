@@ -1,4 +1,4 @@
-import { orderBy } from 'lodash-es'
+import { keyBy, orderBy } from 'lodash-es'
 import TimeAgo from 'timeago-react'
 
 import { mapValues } from '../utils'
@@ -14,20 +14,34 @@ export const Totals = ({
   votes: Record<string, string>[]
 }): JSX.Element => {
   const tallies: Record<string, Record<string, number>> = {}
+
+  const items_by_id = keyBy(ballot_design, 'id')
+  const multi_vote_regex = /_\d+$/
+
   // Sum up votes
   votes.forEach((vote) => {
     Object.keys(vote).forEach((key) => {
       // Skip 'tracking' key
       if (key === 'tracking') return
 
+      let item = key
+
+      // Is this item the multiple_votes_allowed format?
+      const multi_suffix = key.match(multi_vote_regex)
+      // We'll also check that it's not on the ballot schema, just to be safe
+      if (multi_suffix && !items_by_id[key]) {
+        // If so, we need to add all tallies to seed id, not the derived keys
+        item = key.slice(0, -(multi_suffix.length + 1))
+      }
+
       // Init item if new
-      tallies[key] = tallies[key] || {}
+      tallies[item] = tallies[item] || {}
 
       // Init selection if new
-      tallies[key][vote[key]] = tallies[key][vote[key]] || 0
+      tallies[item][vote[key]] = tallies[item][vote[key]] || 0
 
       // Increment by 1
-      tallies[key][vote[key]]++
+      tallies[item][vote[key]]++
     })
   })
 
