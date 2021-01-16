@@ -1,3 +1,4 @@
+import { flatten } from 'lodash-es'
 import { useRouter } from 'next/router'
 import Pusher from 'pusher-js'
 import { useEffect, useState } from 'react'
@@ -34,6 +35,14 @@ export const DecryptedVotes = ({ ballot_design }: { ballot_design?: Item[] }): J
 
   if (!votes || !votes.length || !ballot_design) return <></>
 
+  const columns = flatten(
+    ballot_design.map(({ id, multiple_votes_allowed }) => {
+      return multiple_votes_allowed
+        ? new Array(multiple_votes_allowed).fill('').map((_, index) => `${id}_${index + 1}`)
+        : id || 'vote'
+    }),
+  )
+
   return (
     <div>
       <Totals {...{ ballot_design, last_decrypted_at, votes }} />
@@ -45,8 +54,8 @@ export const DecryptedVotes = ({ ballot_design }: { ballot_design?: Item[] }): J
           <tr>
             <th></th>
             <th>tracking #</th>
-            {ballot_design.map(({ id = 'vote' }) => (
-              <th key={id}>{id}</th>
+            {columns.map((c) => (
+              <th key={c}>{c}</th>
             ))}
           </tr>
         </thead>
@@ -55,8 +64,8 @@ export const DecryptedVotes = ({ ballot_design }: { ballot_design?: Item[] }): J
             <tr key={index}>
               <td>{index + 1}.</td>
               <td>{vote.tracking?.padStart(14, '0')}</td>
-              {ballot_design.map(({ id = 'vote' }) => (
-                <td key={id}>{vote[id]}</td>
+              {columns.map((c) => (
+                <td key={c}>{vote[c]}</td>
               ))}
             </tr>
           ))}
