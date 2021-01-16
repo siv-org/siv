@@ -10,7 +10,7 @@ import { useBallotDesign } from './use-ballot-design'
 
 export const ElectionStatusPage = (): JSX.Element => {
   const { election_id } = useRouter().query as { election_id?: string }
-  const { ballot_design, has_decrypted_votes } = useBallotDesign(election_id)
+  const { ballot_design, election_title, has_decrypted_votes } = useBallotDesign(election_id)
   const [show_encrypteds, toggle_encrypteds] = useReducer((state) => !state, false)
 
   return (
@@ -25,6 +25,8 @@ export const ElectionStatusPage = (): JSX.Element => {
               ID: <b>{election_id}</b>
             </p>
           </div>
+
+          {election_title && <h2>{election_title}</h2>}
           <DecryptedVotes {...{ ballot_design }} />
 
           {/* Display simple list of Encrypted Votes if we haven't unlocked any yet */}
