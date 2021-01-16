@@ -11,8 +11,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   if (!election_id) return res.status(404).json({ error: 'Missing election_id' })
 
-  // ** ADD VOTERS HERE
-  const voters_to_add: string[] = ['another_voter@dsernst.com', 'd@dsernst.com']
+  // ** ADD VOTERS HERE **
+  const voters_to_add: string[] = []
 
   // 1. Check for password
   if (password !== ADMIN_PASSWORD) return res.status(401).json({ error: 'Invalid Password.' })
@@ -51,7 +51,15 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   promises.push(
     Promise.all(
       new_voters.map((voter: string, index: number) =>
-        electionDoc.collection('voters').doc(voter).set({ auth_token: auth_tokens[index], email: voter, index }),
+        electionDoc
+          .collection('voters')
+          .doc(voter)
+          .set({
+            added_at: new Date(),
+            auth_token: auth_tokens[index],
+            email: voter,
+            index: index + existing_voters.size,
+          }),
       ),
     ),
   )
