@@ -1,3 +1,4 @@
+import { flatten } from 'lodash-es'
 import { useRouter } from 'next/router'
 import Pusher from 'pusher-js'
 import { Fragment, useEffect, useState } from 'react'
@@ -34,7 +35,13 @@ export const AcceptedVotes = ({
 
   if (!votes || !ballot_design) return <div>Loading...</div>
 
-  const columns = ballot_design.map((i) => i.id || 'vote')
+  const columns = flatten(
+    ballot_design.map(({ id, multiple_votes_allowed }) => {
+      return multiple_votes_allowed
+        ? new Array(multiple_votes_allowed).fill('').map((_, index) => `${id}_${index + 1}`)
+        : id || 'vote'
+    }),
+  )
 
   return (
     <div>
