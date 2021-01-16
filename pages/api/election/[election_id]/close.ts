@@ -90,6 +90,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const decrypteds_by_tracking = Object.keys(decrypted_and_split).reduce((acc: Recombined, key) => {
       decrypted_and_split[key].forEach((value) => {
         const [tracking, vote] = value.split(':')
+
+        // Skip if 'BLANK'
+        if (vote === 'BLANK') return
+
         // Create vote obj if needed
         if (!acc[tracking]) {
           acc[tracking] = { tracking }
