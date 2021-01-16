@@ -18,5 +18,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (!election) return res.status(400).json({ error: 'Unknown Election ID.' })
 
   // Return public election fields
-  res.status(200).json(pick(election, ['ballot_design', 'g', 'p', 'threshold_public_key', 'last_decrypted_at']))
+  res
+    .status(200)
+    .json(pick(election, ['ballot_design', 'g', 'p', 'threshold_public_key', 'last_decrypted_at', 'election_title']))
 }

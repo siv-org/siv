@@ -25,26 +25,29 @@ export const Ballot = ({
   return (
     <NoSsr>
       <Paper noFade>
-        {state.ballot_design.map((item, index) =>
-          item.multiple_votes_allowed && item.multiple_votes_allowed > 1 ? (
-            <MultiVoteItem {...{ ...item, dispatch, max_string_length, state }} key={index} />
-          ) : (
-            <Item {...{ ...item, dispatch, max_string_length, state }} key={index} />
-          ),
-        )}
+        <>
+          {state.election_title && <h2>{state.election_title}</h2>}
+          {state.ballot_design.map((item, index) =>
+            item.multiple_votes_allowed && item.multiple_votes_allowed > 1 ? (
+              <MultiVoteItem
+                {...{
+                  ...item,
+                  dispatch,
+                  max_string_length,
+                  multiple_votes_allowed: item.multiple_votes_allowed,
+                  state,
+                }}
+                key={index}
+              />
+            ) : (
+              <Item {...{ ...item, dispatch, max_string_length, state }} key={index} />
+            ),
+          )}
+        </>
       </Paper>
       <style jsx>{`
-        .title {
-          font-size: 16px;
-          font-weight: bold;
-          margin-bottom: 10;
-          padding: 5px 13px;
-          white-space: pre;
-        }
-
-        .description,
-        .question {
-          margin: 13px;
+        h2 {
+          margin-left: 13px;
         }
       `}</style>
     </NoSsr>

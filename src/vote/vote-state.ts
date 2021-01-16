@@ -12,6 +12,7 @@ import { useLocalStorageReducer } from './useLocalStorage'
 type Map = Record<string, string>
 export type State = {
   ballot_design?: Item[]
+  election_title?: string
   encoded: Map
   encrypted: Record<string, { encrypted: string; unlock: string }>
   plaintext: Map
