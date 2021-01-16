@@ -1,18 +1,17 @@
 import { Checkbox, FormControlLabel, FormGroup } from '@material-ui/core'
-import { Dispatch, useState } from 'react'
+import { Dispatch, useEffect, useState } from 'react'
 
 import { Item as ItemType } from './useElectionInfo'
 import { State } from './vote-state'
 
 export const MultiVoteItem = ({
   description,
-  // dispatch,
-  // id = 'vote',
+  dispatch,
+  id = 'vote',
   max_string_length,
   multiple_votes_allowed,
   options,
   question,
-  // state,
   title,
 }: ItemType & {
   dispatch: Dispatch<Record<string, string>>
@@ -21,7 +20,23 @@ export const MultiVoteItem = ({
   multiple_votes_allowed: number
   state: State
 }): JSX.Element => {
-  const [selected, setState] = useState(new Set())
+  const [selected, setState] = useState(new Set<string>())
+
+  // Store changes in localstorage state
+  useEffect(() => {
+    const selections = [...selected].sort()
+
+    // Pad selections array up to `multiple_votes_allowed`, to prevent encryption holes
+    for (let i = selected.size; i < multiple_votes_allowed; i++) {
+      selections.push('BLANK')
+    }
+
+    // Convert selections array to object like:
+    // { [item.id_1]: selection_1, [item.id_2]: selection_2 }
+    const obj = selections.reduce((acc, choice, index) => ({ ...acc, [`${id}_${index + 1}`]: choice }), {})
+
+    dispatch(obj)
+  }, [selected.size])
 
   return (
     <>
