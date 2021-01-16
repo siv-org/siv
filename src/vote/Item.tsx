@@ -95,7 +95,7 @@ export const Item = ({
           font-weight: bold;
           margin-bottom: 10px;
           padding: 5px 13px;
-          white-space: pre;
+          white-space: pre-line;
         }
 
         .description,

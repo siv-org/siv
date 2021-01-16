@@ -86,7 +86,7 @@ export const MultiVoteItem = ({
           font-weight: bold;
           margin-bottom: 5px;
           padding: 5px 13px;
-          white-space: pre;
+          white-space: pre-line;
         }
 
         .description,
