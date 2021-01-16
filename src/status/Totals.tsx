@@ -66,7 +66,7 @@ export const Totals = ({
       </div>
       {ballot_design.map(({ id = 'vote', title }) => (
         <div key={id}>
-          {Object.keys(tallies).length > 1 && <h4>{title}</h4>}
+          <h4>{title}</h4>
           <ul>
             {ordered[id].map((selection) => (
               <li key={selection}>
