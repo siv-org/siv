@@ -96,8 +96,8 @@ export const compute_pub_key = product_bigs
 /** Each party Pⱼ of Q broadcast
     dⱼ = c[1]^(sⱼ)
 similar to DKG scheme */
-export const partial_decrypt = (sealing_factor: Big, private_key_share: Big, { p }: Parameters) =>
-  sealing_factor.modPow(private_key_share, p)
+export const partial_decrypt = (unlock: Big, private_key_share: Big, { p }: Parameters) =>
+  unlock.modPow(private_key_share, p)
 
 /** then compute:
     d = d[1]^λ[1] ... d[t]^λ[t]

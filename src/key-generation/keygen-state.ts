@@ -14,6 +14,7 @@ export type Trustee = {
   encrypted_pairwise_shares_for: Record<string, string>
   index: number
   partial_decryption?: string
+  partials?: Record<string, string[]>
   recipient_key?: string
   shuffled?: Shuffled
   verified?: Record<string, boolean>

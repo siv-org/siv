@@ -3,6 +3,7 @@ import { getTrusteesOnInit } from '../key-generation/get-latest-from-server'
 import { Dispatch, State, useKeyGenState } from '../key-generation/keygen-state'
 import { initPusher } from '../key-generation/pusher-helper'
 import { AcceptedVotes } from '../status/AcceptedVotes'
+import { VotesToDecrypt } from './VotesToDecrypt'
 import { VotesToShuffle } from './VotesToShuffle'
 
 export const AuthedContent = ({
@@ -42,6 +43,7 @@ export const AuthedContent = ({
       <VotesToShuffle {...{ dispatch, state }} />
 
       {/* Are there fully shuffled votes we need to partially decrypt? */}
+      <VotesToDecrypt {...{ dispatch, state }} />
 
       <style jsx>{``}</style>
     </>
