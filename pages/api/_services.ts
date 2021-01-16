@@ -25,7 +25,7 @@ export const firebase = !Firebase.apps.length
   : Firebase.app()
 
 /** Init mailgun */
-const mailgun = Mailgun({
+export const mailgun = Mailgun({
   apiKey: MAILGUN_API_KEY as string,
   domain: MAILGUN_DOMAIN || 'secureinternetvoting.org',
 })
