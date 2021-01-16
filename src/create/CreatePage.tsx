@@ -2,6 +2,7 @@ import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
 import { AddParticipants } from './AddParticipants'
 import { BallotDesigner } from './BallotDesigner'
+import { ElectionTitleInput } from './ElectionTitleInput'
 import { HeaderBar } from './HeaderBar'
 
 export const CreatePage = (): JSX.Element => {
@@ -12,6 +13,7 @@ export const CreatePage = (): JSX.Element => {
       <HeaderBar />
       <main>
         <h1>Create a New Election</h1>
+        <ElectionTitleInput />
         <BallotDesigner />
         <AddParticipants />
       </main>

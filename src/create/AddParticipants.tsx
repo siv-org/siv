@@ -71,10 +71,14 @@ export const AddParticipants = () => {
             // Grab ballot design from textarea
             const ballot_design = (document.getElementById('ballot-design') as HTMLInputElement).value
 
+            // Grab election_title from input
+            const election_title = (document.getElementById('election-title') as HTMLInputElement).value
+
             // Call backend endpoint
             const response = await api(`invite-voters`, {
               ballot_design,
               election_id,
+              election_title,
               password: localStorage.password,
               voters,
             })

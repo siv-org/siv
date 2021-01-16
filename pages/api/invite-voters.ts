@@ -5,7 +5,7 @@ import { firebase, pushover, sendEmail } from './_services'
 const { ADMIN_PASSWORD } = process.env
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { ballot_design, election_id, password, voters } = req.body
+  const { ballot_design, election_id, election_title, password, voters } = req.body
 
   // 1. Check for password
   if (password !== ADMIN_PASSWORD) return res.status(401).send('Invalid Password.')
@@ -18,7 +18,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // 3. Store auth tokens in db
   const election = firebase.firestore().collection('elections').doc(election_id)
-  promises.push(election.update({ ballot_design }))
+  promises.push(election.update({ ballot_design, election_title }))
   promises.push(
     Promise.all(
       voters.map((voter: string, index: number) =>
@@ -33,10 +33,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       voters.map((voter: string, index: number) => {
         const link = `${req.headers.origin}/election/${election_id}/vote?auth=${auth_tokens[index]}`
 
+        const subject_line = `Vote Invitation${election_title ? `: ${election_title}` : ''}`
+
         return sendEmail({
           recipient: voter,
-          subject: 'Vote Invitation',
-          text: `<h2 style="margin: 0">Vote Invitation</h2>
+          subject: subject_line,
+          text: `<h2 style="margin: 0">${subject_line}</h2>
 Click here to securely cast your vote:
 <a href="${link}">${link}</a>
 
