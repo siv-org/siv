@@ -1,3 +1,4 @@
+import bluebird from 'bluebird'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import { firebase, pushover, sendEmail } from './_services'
@@ -29,8 +30,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // 4. Email each voter their auth token
   promises.push(
-    Promise.all(
-      voters.map((voter: string, index: number) => {
+    bluebird.map(
+      voters,
+      (voter: string, index: number) => {
         const link = `${req.headers.origin}/election/${election_id}/vote?auth=${auth_tokens[index]}`
 
         const subject_line = `Vote Invitation${election_title ? `: ${election_title}` : ''}`
@@ -43,8 +45,13 @@ Click here to securely cast your vote:
 <a href="${link}">${link}</a>
 
 <em style="font-size:13px; opacity: 0.6;">This link is unique for you. Don't share it with anyone.</em>`,
+        }).then((result) => {
+          console.log(voter, result)
+          // Wait a second after sending to not overload Mailgun
+          return new Promise((res) => setTimeout(res, 1000))
         })
-      }),
+      },
+      { concurrency: 10 },
     ),
   )
 
