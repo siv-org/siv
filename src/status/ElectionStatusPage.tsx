@@ -45,7 +45,6 @@ export const ElectionStatusPage = (): JSX.Element => {
 
       <style jsx>{`
         main {
-          max-width: 750px;
           width: 100%;
           margin: 0 auto;
           padding: 1rem;
