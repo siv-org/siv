@@ -38,7 +38,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   if (!vote) console.log({ existing_voter })
 
-  electionDoc.collection('voters').doc(voter)
+  electionDoc.collection('voters').doc(voter_to_invalidate)
 
   // 5. Send Admin push notification
   promises.push(pushover(`Invalidated voter`, voter_to_invalidate))
