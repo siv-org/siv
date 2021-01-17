@@ -37,15 +37,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
         const subject_line = `Vote Invitation${election_title ? `: ${election_title}` : ''}`
 
-        return sendEmail({
-          recipient: voter,
-          subject: subject_line,
-          text: `<h2 style="margin: 0">${subject_line}</h2>
-Click here to securely cast your vote:
-<a href="${link}">${link}</a>
-
-<em style="font-size:13px; opacity: 0.6;">This link is unique for you. Don't share it with anyone.</em>`,
-        }).then((result) => {
+        return send_invitation_email({ link, subject_line, voter }).then((result) => {
           console.log(voter, result)
           // Wait a second after sending to not overload Mailgun
           return new Promise((res) => setTimeout(res, 1000))
@@ -62,6 +54,25 @@ Click here to securely cast your vote:
 
   return res.status(201).end(election_id)
 }
+
+export const send_invitation_email = ({
+  link,
+  subject_line,
+  voter,
+}: {
+  link: string
+  subject_line: string
+  voter: string
+}) =>
+  sendEmail({
+    recipient: voter,
+    subject: subject_line,
+    text: `<h2 style="margin: 0">${subject_line}</h2>
+Click here to securely cast your vote:
+<a href="${link}">${link}</a>
+
+<em style="font-size:13px; opacity: 0.6;">This link is unique for you. Don't share it with anyone.</em>`,
+  })
 
 export function generateAuthToken() {
   const random = Math.random()
