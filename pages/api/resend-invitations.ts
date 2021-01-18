@@ -9,10 +9,11 @@ const { ADMIN_PASSWORD } = process.env
 
 // Run me by visiting http://localhost:3000/api/resend-invitations?password=INSERT_PASSWORD
 
-// Script parameters
+// *** Script parameters ***
 const election_id = ''
 const batch_limit = 100
 const vote_page_url = `https://secureinternetvoting.org/election/${election_id}/vote`
+// *************************
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { password } = req.query

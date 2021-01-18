@@ -4,18 +4,17 @@ import { firebase, pushover } from './_services'
 
 const { ADMIN_PASSWORD } = process.env
 
+// *** Script parameters ***
+const election_id = ''
+const voter_to_invalidate = ''
+// *************************
+
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { password } = req.query
 
-  // *** EDIT THESE ***
-  const election_id = ''
-  const voter_to_invalidate = ''
-  // ******************
-
-  if (!election_id) return res.status(404).json({ error: 'Missing election_id' })
-
-  // 1. Check for password
+  // Check for required params
   if (password !== ADMIN_PASSWORD) return res.status(401).json({ error: 'Invalid Password.' })
+  if (!election_id) return res.status(401).json({ error: 'Missing election_id' })
 
   // This will hold all our async tasks
   const promises: Promise<unknown>[] = []
@@ -39,6 +38,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (!vote) console.log({ existing_voter })
 
   electionDoc.collection('voters').doc(voter_to_invalidate)
+
+  // TODO finish me....
+  // Stick existing vote if they have on on voter object, then stick voter object into invalidated collection
+  // Remove vote
 
   // 5. Send Admin push notification
   promises.push(pushover(`Invalidated voter`, voter_to_invalidate))

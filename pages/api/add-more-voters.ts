@@ -1,21 +1,22 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 
-import { firebase, pushover, sendEmail } from './_services'
-import { generateAuthToken } from './invite-voters'
+import { firebase, pushover } from './_services'
+import { generateAuthToken, send_invitation_email } from './invite-voters'
 
 const { ADMIN_PASSWORD } = process.env
 
+// *** Script parameters ***
+const election_id = ''
+const voters_to_add: string[] = []
+const vote_page_url = `https://secureinternetvoting.org/election/${election_id}/vote`
+// *************************
+
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { password } = req.query
-  const election_id = ''
 
-  if (!election_id) return res.status(404).json({ error: 'Missing election_id' })
-
-  // ** ADD VOTERS HERE **
-  const voters_to_add: string[] = []
-
-  // 1. Check for password
+  // 1. Check for required params
   if (password !== ADMIN_PASSWORD) return res.status(401).json({ error: 'Invalid Password.' })
+  if (!election_id) return res.status(401).json({ error: 'Missing election_id' })
 
   // 2. Generate auth token for each voter
   const auth_tokens = voters_to_add.map(() => generateAuthToken())
@@ -68,19 +69,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   promises.push(
     Promise.all(
       new_voters.map((voter: string, index: number) => {
-        const link = `https://secureinternetvoting.org/election/${election_id}/vote?auth=${auth_tokens[index]}`
+        const link = `${vote_page_url}?auth=${auth_tokens[index]}`
 
         const subject_line = `Vote Invitation${election_title ? `: ${election_title}` : ''}`
 
-        return sendEmail({
-          recipient: voter,
-          subject: subject_line,
-          text: `<h2 style="margin: 0">${subject_line}</h2>
-Click here to securely cast your vote:
-<a href="${link}">${link}</a>
-
-<em style="font-size:13px; opacity: 0.6;">This link is unique for you. Don't share it with anyone.</em>`,
-        })
+        return send_invitation_email({ link, subject_line, voter })
       }),
     ),
   )
