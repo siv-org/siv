@@ -38,7 +38,7 @@ export const AcceptedVotes = ({
   const columns = flatten(
     ballot_design.map(({ id, multiple_votes_allowed }) => {
       return multiple_votes_allowed
-        ? new Array(multiple_votes_allowed).fill('').map((_, index) => `${id}_${index + 1}`)
+        ? new Array(multiple_votes_allowed).fill('').map((_, index) => `${id || 'vote'}_${index + 1}`)
         : id || 'vote'
     }),
   )
