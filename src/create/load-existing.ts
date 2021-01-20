@@ -25,9 +25,12 @@ export async function load_existing_election({
   const trustees_input = document.getElementById('trustees-input') as HTMLInputElement
   const voters_input = document.getElementById('voters-input') as HTMLInputElement
   const ballot_design_input = document.getElementById('ballot-design') as HTMLInputElement
+  const election_title_input = document.getElementById('election-title') as HTMLInputElement
 
   // Show 'Loading...' message
-  ;[trustees_input, voters_input, ballot_design_input].forEach((input) => (input.value = 'Loading...'))
+  ;[trustees_input, voters_input, ballot_design_input, election_title_input].forEach(
+    (input) => (input.value = 'Loading...'),
+  )
 
   const response = await fetch(`api/election/${election_id_in_url}/load-admin?password=${localStorage.password}`)
 
@@ -43,7 +46,8 @@ export async function load_existing_election({
   console.log(json)
 
   // Parse data into UI
-  const { ballot_design, threshold_public_key, trustees, voters } = json
+  const { ballot_design, election_title, threshold_public_key, trustees, voters } = json
+  if (election_title) election_title_input.value = election_title
   if (ballot_design) ballot_design_input.value = ballot_design
   if (trustees) trustees_input.value = trustees.join('\n')
   if (voters) {
