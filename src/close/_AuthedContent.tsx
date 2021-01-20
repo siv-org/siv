@@ -4,6 +4,7 @@ import { Dispatch, State, useKeyGenState } from '../key-generation/keygen-state'
 import { initPusher } from '../key-generation/pusher-helper'
 import { AcceptedVotes } from '../status/AcceptedVotes'
 import { useBallotDesign } from '../status/use-ballot-design'
+import { ResetButton } from './_ResetButton'
 import { VotesToDecrypt } from './VotesToDecrypt'
 import { VotesToShuffle } from './VotesToShuffle'
 
@@ -33,6 +34,8 @@ export const AuthedContent = ({
 
   return (
     <>
+      <ResetButton {...{ state }} />
+
       {/* Trustees */}
       <Trustees {...{ state }} />
 

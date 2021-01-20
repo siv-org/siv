@@ -67,6 +67,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Store admins shuffled lists
   await adminDoc.update({ shuffled })
+  await pusher.trigger('keygen', 'update', { 'admin@secureintervoting.org': { shuffled } })
 
   // Is admin the only trustee?
   if (t === 1) {
