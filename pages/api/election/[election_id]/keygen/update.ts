@@ -12,7 +12,8 @@ import {
   partial_decrypt,
 } from '../../../../../src/crypto/threshold-keygen'
 import { big, bigCipher, bigPubKey, toStrings } from '../../../../../src/crypto/types'
-import { State, Trustee } from '../../../../../src/key-generation/keygen-state'
+import { Shuffled, State, Trustee } from '../../../../../src/key-generation/keygen-state'
+import { mapValues } from '../../../../../src/utils'
 import { firebase } from '../../../_services'
 import { pusher } from '../../../pusher'
 import { commafy, transform_email_keys } from './commafy'
@@ -69,13 +70,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // If they provided their public key, admin can now encrypt pairwise shares for them.
   // If they provided encrypted shares, admin can decrypt their own and verify them.
-  if (body.recipient_key || body.encrypted_pairwise_shares_for) {
+  // If they provided the final shuffled votes, admin can partially decrypt
+  if (body.recipient_key || body.encrypted_pairwise_shares_for || body.shuffled) {
     // Get admin's private data
     const admin = { ...(await loadAdmin).data() } as Required<State> & {
       decryption_key: string
       recipient_key: string
     }
-    const { decryption_key, private_coefficients, recipient_key } = admin
+    const { decryption_key, private_coefficients, private_keyshare, recipient_key } = admin
 
     // Get election parameters
     const parameters = { ...election.data() }
@@ -194,6 +196,27 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
       // Notify all participants there's been an update
       promises.push(pusher.trigger('keygen', 'update', { [ADMIN_EMAIL]: { partial_decryption } }))
+    }
+
+    // Logic for final shuffled votes
+    if (body.shuffled) {
+      // If this is the last trustee, we can begin partially decrypting
+      if (trustee.index === parameters.t - 1) {
+        // Partially decrypt each item in every list
+        const partials = mapValues(body.shuffled as Shuffled, (list) =>
+          (list as string[]).map((cipher_string) => {
+            const { unlock } = JSON.parse(cipher_string)
+            return partial_decrypt(big(unlock), big(private_keyshare), big_parameters).toString()
+          }),
+        )
+
+        // Store partials
+        await adminDoc.update({ partials })
+        console.log('Updated admin partials:', partials)
+
+        // Notify all participants there's been an update
+        promises.push(pusher.trigger('keygen', 'update', { [ADMIN_EMAIL]: { partials } }))
+      }
     }
   }
 
