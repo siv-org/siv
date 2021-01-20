@@ -2,6 +2,7 @@ import { sumBy } from 'lodash-es'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import decrypt from '../../../../../src/crypto/decrypt'
+import { decode } from '../../../../../src/crypto/encode'
 import encrypt from '../../../../../src/crypto/encrypt'
 import pickRandomInteger from '../../../../../src/crypto/pick-random-integer'
 import {
@@ -247,7 +248,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
             // 2. Then we can unlock each messages
             const { encrypted } = JSON.parse(shuffled_vote)
-            return unlock_message_with_shared_secret(shared_secret, big(encrypted), big_parameters.p)
+            const unlocked = unlock_message_with_shared_secret(shared_secret, big(encrypted), big_parameters.p)
+            return decode(unlocked)
           })
         }) as Record<string, string[]>
 
