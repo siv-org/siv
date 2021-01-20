@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
 
-import { api } from '../api-helper'
-import { generate_public_coefficients } from '../crypto/threshold-keygen'
-import { big } from '../crypto/types'
+import { api } from '../../api-helper'
+import { generate_public_coefficients } from '../../crypto/threshold-keygen'
+import { big } from '../../crypto/types'
 import { StateAndDispatch, getParameters } from './keygen-state'
 import { PrivateBox } from './PrivateBox'
 import { YouLabel } from './YouLabel'

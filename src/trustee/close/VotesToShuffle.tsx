@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Fragment, useEffect } from 'react'
 
-import { api } from '../api-helper'
-import { shuffle } from '../crypto/shuffle'
-import { bigCipher, bigPubKey, toStrings } from '../crypto/types'
-import { Shuffled, StateAndDispatch } from '../key-generation/keygen-state'
-import { YouLabel } from '../key-generation/YouLabel'
-import { mapValues } from '../utils'
+import { api } from '../../api-helper'
+import { shuffle } from '../../crypto/shuffle'
+import { bigCipher, bigPubKey, toStrings } from '../../crypto/types'
+import { mapValues } from '../../utils'
+import { Shuffled, StateAndDispatch } from '../keygen/keygen-state'
+import { YouLabel } from '../keygen/YouLabel'
 
 export const VotesToShuffle = ({ state }: StateAndDispatch) => {
   const { own_index, trustees = [], parameters, threshold_public_key } = state

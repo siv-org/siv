@@ -1,5 +1,5 @@
-import { api } from '../api-helper'
-import { State } from '../key-generation/keygen-state'
+import { api } from '../../api-helper'
+import { State } from './keygen-state'
 export function ResetButton({ state }: { state: State }) {
   // Only show for 'dsernst.com' trustees
   if (!state.own_email.endsWith('dsernst.com')) {
@@ -9,7 +9,7 @@ export function ResetButton({ state }: { state: State }) {
   return (
     <div
       onClick={() => {
-        api(`election/${state.election_id}/keygen/reset-close`, {
+        api(`election/${state.election_id}/keygen/reset-keygen`, {
           email: state.own_email,
           trustee_auth: state.trustee_auth,
         })

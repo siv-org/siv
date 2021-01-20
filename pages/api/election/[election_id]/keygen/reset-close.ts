@@ -1,7 +1,7 @@
 import { firestore } from 'firebase-admin'
 import { NextApiRequest, NextApiResponse } from 'next'
 
-import { Trustee } from '../../../../../src/key-generation/keygen-state'
+import { Trustee } from '../../../../../src/trustee/keygen/keygen-state'
 import { firebase } from '../../../_services'
 import { pusher } from '../../../pusher'
 

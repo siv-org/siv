@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 
-import { compute_pub_key } from '../crypto/threshold-keygen'
-import { big } from '../crypto/types'
+import { compute_pub_key } from '../../crypto/threshold-keygen'
+import { big } from '../../crypto/types'
 import { StateAndDispatch } from './keygen-state'
 
 export const PublicThresholdKey = ({ dispatch, state }: StateAndDispatch) => {

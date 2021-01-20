@@ -1,8 +1,8 @@
 import { sumBy } from 'lodash-es'
 import { useEffect } from 'react'
 
-import decrypt from '../crypto/decrypt'
-import { big, bigCipher, bigPubKey } from '../crypto/types'
+import decrypt from '../../crypto/decrypt'
+import { big, bigCipher, bigPubKey } from '../../crypto/types'
 import { StateAndDispatch } from './keygen-state'
 import { PrivateBox } from './PrivateBox'
 

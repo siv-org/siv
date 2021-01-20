@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Fragment, useEffect } from 'react'
 
-import { api } from '../api-helper'
-import { partial_decrypt } from '../crypto/threshold-keygen'
-import { big } from '../crypto/types'
-import { Shuffled, StateAndDispatch, getParameters } from '../key-generation/keygen-state'
-import { YouLabel } from '../key-generation/YouLabel'
-import { mapValues } from '../utils'
+import { api } from '../../api-helper'
+import { partial_decrypt } from '../../crypto/threshold-keygen'
+import { big } from '../../crypto/types'
+import { mapValues } from '../../utils'
+import { Shuffled, StateAndDispatch, getParameters } from '../keygen/keygen-state'
+import { YouLabel } from '../keygen/YouLabel'
 
 export const VotesToDecrypt = ({ state }: StateAndDispatch) => {
   const { own_index, trustees = [], private_keyshare } = state

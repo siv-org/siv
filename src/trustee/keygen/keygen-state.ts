@@ -1,8 +1,8 @@
 import { merge } from 'lodash-es'
 
-import { Parameters } from '../crypto/threshold-keygen'
-import { big } from '../crypto/types'
-import { useLocalStorageReducer } from '../vote/useLocalStorage'
+import { Parameters } from '../../crypto/threshold-keygen'
+import { big } from '../../crypto/types'
+import { useLocalStorageReducer } from '../../vote/useLocalStorage'
 import { diff } from './diff-objects'
 
 // Define our types

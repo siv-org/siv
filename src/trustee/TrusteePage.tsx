@@ -1,13 +1,18 @@
+import { Tab, Tabs } from '@material-ui/core'
 import { useRouter } from 'next/router'
+import { useState } from 'react'
 
 import { HeaderBar } from '../create/HeaderBar'
 import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
-import { AuthedContent } from './_AuthedContent'
+import { ShuffleAndDecrypt } from './close/ShuffleAndDecrypt'
+import { Keygen } from './keygen/_Keygen'
 
-export const ClosePage = (): JSX.Element => {
+export const TrusteePage = (): JSX.Element => {
   // Grab election parameters from URL
   const { election_id, trustee_auth } = useRouter().query as { election_id?: string; trustee_auth?: string }
+
+  const [tab, setTab] = useState(0)
 
   return (
     <>
@@ -15,14 +20,30 @@ export const ClosePage = (): JSX.Element => {
 
       <HeaderBar />
       <main>
-        <h1>Anonymizing &amp; Unlocking Votes</h1>
         <p>
           Election ID: <b>{election_id}</b>
           <br />
           Trustee auth: <b>{trustee_auth}</b>
         </p>
 
-        {election_id && trustee_auth && <AuthedContent {...{ election_id, trustee_auth }} />}
+        <Tabs
+          indicatorColor="primary"
+          style={{ margin: '1rem 0' }}
+          textColor="primary"
+          value={tab}
+          onChange={(_, newValue) => setTab(newValue)}
+        >
+          <Tab label="Before Election" />
+          <Tab label="After Election" />
+        </Tabs>
+
+        {!(election_id && trustee_auth) ? (
+          <p>Need election_id and trustee_auth</p>
+        ) : tab === 0 ? (
+          <Keygen {...{ election_id, trustee_auth }} />
+        ) : (
+          <ShuffleAndDecrypt {...{ election_id, trustee_auth }} />
+        )}
       </main>
 
       <style jsx>{`
@@ -32,15 +53,6 @@ export const ClosePage = (): JSX.Element => {
           margin: 0 auto;
           padding: 1rem;
           overflow-wrap: break-word;
-        }
-
-        h1 {
-          margin-top: 0;
-          font-size: 22px;
-        }
-
-        h2 {
-          font-size: 18px;
         }
       `}</style>
       <style global jsx>{`

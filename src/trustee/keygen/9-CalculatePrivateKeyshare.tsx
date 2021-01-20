@@ -1,8 +1,8 @@
 import { sumBy } from 'lodash-es'
 import { useEffect } from 'react'
 
-import { compute_keyshare } from '../crypto/threshold-keygen'
-import { big } from '../crypto/types'
+import { compute_keyshare } from '../../crypto/threshold-keygen'
+import { big } from '../../crypto/types'
 import { StateAndDispatch } from './keygen-state'
 import { PrivateBox } from './PrivateBox'
 

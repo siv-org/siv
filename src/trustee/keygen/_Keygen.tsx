@@ -15,13 +15,7 @@ import { getTrusteesOnInit } from './get-latest-from-server'
 import { useKeyGenState } from './keygen-state'
 import { initPusher } from './pusher-helper'
 
-export const AuthedContent = ({
-  election_id,
-  trustee_auth,
-}: {
-  election_id: string
-  trustee_auth: string
-}): JSX.Element => {
+export const Keygen = ({ election_id, trustee_auth }: { election_id: string; trustee_auth: string }): JSX.Element => {
   // Initialize local vote state on client
   const [state, dispatch] = useKeyGenState({ election_id, trustee_auth })
 
@@ -33,6 +27,7 @@ export const AuthedContent = ({
 
   return (
     <>
+      <h2>Threshold Key Generation</h2>
       <ResetButton {...{ state }} />
       <Trustees {...{ state }} />
       <Parameters {...{ state }} />

@@ -1,4 +1,4 @@
-import { big } from '../crypto/types'
+import { big } from '../../crypto/types'
 import { State } from './keygen-state'
 
 export const Parameters = ({ state }: { state: State }) => {

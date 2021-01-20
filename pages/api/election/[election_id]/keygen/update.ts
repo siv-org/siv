@@ -15,7 +15,7 @@ import {
   unlock_message_with_shared_secret,
 } from '../../../../../src/crypto/threshold-keygen'
 import { big, bigCipher, bigPubKey, toStrings } from '../../../../../src/crypto/types'
-import { Shuffled, State, Trustee } from '../../../../../src/key-generation/keygen-state'
+import { Shuffled, State, Trustee } from '../../../../../src/trustee/keygen/keygen-state'
 import { mapValues } from '../../../../../src/utils'
 import { firebase } from '../../../_services'
 import { pusher } from '../../../pusher'

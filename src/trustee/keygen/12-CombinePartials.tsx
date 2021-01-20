@@ -1,8 +1,8 @@
 import { range } from 'lodash-es'
 
-import { moduloLambda } from '../crypto/lagrange'
-import { combine_partials } from '../crypto/threshold-keygen'
-import { big } from '../crypto/types'
+import { moduloLambda } from '../../crypto/lagrange'
+import { combine_partials } from '../../crypto/threshold-keygen'
+import { big } from '../../crypto/types'
 import { StateAndDispatch, getParameters } from './keygen-state'
 
 export const CombinePartials = ({ state }: StateAndDispatch) => {

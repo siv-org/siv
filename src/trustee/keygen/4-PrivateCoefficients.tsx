@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import { pick_private_coefficients } from '../crypto/threshold-keygen'
+import { pick_private_coefficients } from '../../crypto/threshold-keygen'
 import { StateAndDispatch, getParameters } from './keygen-state'
 import { PrivateBox } from './PrivateBox'
 

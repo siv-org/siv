@@ -1,14 +1,14 @@
-import { Trustees } from '../key-generation/1-Trustees'
-import { getTrusteesOnInit } from '../key-generation/get-latest-from-server'
-import { Dispatch, State, useKeyGenState } from '../key-generation/keygen-state'
-import { initPusher } from '../key-generation/pusher-helper'
-import { AcceptedVotes } from '../status/AcceptedVotes'
-import { useBallotDesign } from '../status/use-ballot-design'
+import { AcceptedVotes } from '../../status/AcceptedVotes'
+import { useBallotDesign } from '../../status/use-ballot-design'
+import { Trustees } from '../keygen/1-Trustees'
+import { getTrusteesOnInit } from '../keygen/get-latest-from-server'
+import { Dispatch, State, useKeyGenState } from '../keygen/keygen-state'
+import { initPusher } from '../keygen/pusher-helper'
 import { ResetButton } from './_ResetButton'
 import { VotesToDecrypt } from './VotesToDecrypt'
 import { VotesToShuffle } from './VotesToShuffle'
 
-export const AuthedContent = ({
+export const ShuffleAndDecrypt = ({
   election_id,
   trustee_auth,
 }: {
@@ -34,6 +34,8 @@ export const AuthedContent = ({
 
   return (
     <>
+      <h2>Anonymizing &amp; Unlocking Votes</h2>
+
       <ResetButton {...{ state }} />
 
       {/* Trustees */}

@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
 
-import { api } from '../api-helper'
-import { partial_decrypt } from '../crypto/threshold-keygen'
-import { big } from '../crypto/types'
+import { api } from '../../api-helper'
+import { partial_decrypt } from '../../crypto/threshold-keygen'
+import { big } from '../../crypto/types'
 import { EncryptionNote } from './EncryptionNote'
 import { StateAndDispatch, getParameters } from './keygen-state'
 import { PrivateBox } from './PrivateBox'
