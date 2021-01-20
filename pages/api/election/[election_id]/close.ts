@@ -85,24 +85,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       )
     })
 
-    // Recombine the columns back together via tracking numbers
-    type Recombined = Record<string, Record<string, string>>
-    const decrypteds_by_tracking = Object.keys(decrypted_and_split).reduce((acc: Recombined, key) => {
-      decrypted_and_split[key].forEach((value) => {
-        const [tracking, vote] = value.split(':')
-
-        // Skip if 'BLANK'
-        if (vote === 'BLANK') return
-
-        // Create vote obj if needed
-        if (!acc[tracking]) {
-          acc[tracking] = { tracking }
-        }
-
-        acc[tracking] = { ...acc[tracking], [key]: vote }
-      })
-      return acc
-    }, {})
+    const decrypteds_by_tracking = recombine_decrypteds(decrypted_and_split)
 
     // Store decrypteds as an array
     const decrypted = Object.values(decrypteds_by_tracking)
@@ -113,4 +96,27 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   res.status(201).json({ message: 'Triggered close' })
+}
+
+/** Recombine the columns back together via tracking numbers */
+export const recombine_decrypteds = (decrypted_and_split: Record<string, string[]>) => {
+  type Recombined = Record<string, Record<string, string>>
+  const decrypteds_by_tracking = Object.keys(decrypted_and_split).reduce((acc: Recombined, key) => {
+    decrypted_and_split[key].forEach((value) => {
+      const [tracking, vote] = value.split(':')
+
+      // Skip if 'BLANK'
+      if (vote === 'BLANK') return
+
+      // Create vote obj if needed
+      if (!acc[tracking]) {
+        acc[tracking] = { tracking }
+      }
+
+      acc[tracking] = { ...acc[tracking], [key]: vote }
+    })
+    return acc
+  }, {})
+
+  return decrypteds_by_tracking
 }

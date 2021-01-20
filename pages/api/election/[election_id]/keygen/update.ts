@@ -5,17 +5,20 @@ import decrypt from '../../../../../src/crypto/decrypt'
 import encrypt from '../../../../../src/crypto/encrypt'
 import pickRandomInteger from '../../../../../src/crypto/pick-random-integer'
 import {
+  combine_partials,
   compute_keyshare,
   compute_pub_key,
   evaluate_private_polynomial,
   is_received_share_valid,
   partial_decrypt,
+  unlock_message_with_shared_secret,
 } from '../../../../../src/crypto/threshold-keygen'
 import { big, bigCipher, bigPubKey, toStrings } from '../../../../../src/crypto/types'
 import { Shuffled, State, Trustee } from '../../../../../src/key-generation/keygen-state'
 import { mapValues } from '../../../../../src/utils'
 import { firebase } from '../../../_services'
 import { pusher } from '../../../pusher'
+import { recombine_decrypteds } from '../close'
 import { commafy, transform_email_keys } from './commafy'
 
 const { ADMIN_EMAIL } = process.env
@@ -71,7 +74,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // If they provided their public key, admin can now encrypt pairwise shares for them.
   // If they provided encrypted shares, admin can decrypt their own and verify them.
   // If they provided the final shuffled votes, admin can partially decrypt
-  if (body.recipient_key || body.encrypted_pairwise_shares_for || body.shuffled) {
+  // If they provided the final partial, admin can combine partials
+  if (body.recipient_key || body.encrypted_pairwise_shares_for || body.shuffled || body.partials) {
     // Get admin's private data
     const admin = { ...(await loadAdmin).data() } as Required<State> & {
       decryption_key: string
@@ -216,6 +220,46 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
         // Notify all participants there's been an update
         promises.push(pusher.trigger('keygen', 'update', { [ADMIN_EMAIL]: { partials } }))
+      }
+    }
+
+    // Logic for final partial
+    if (body.partials) {
+      // Get all trustees
+      const trustees = (await electionDoc.collection('trustees').orderBy('index').get()).docs.map((doc) => ({
+        ...doc.data(),
+      }))
+
+      // Have all trustees now uploaded partials for the last shuffled list?
+      const last_shuffled = trustees[trustees.length - 1].shuffled as Shuffled
+      const columns = Object.keys(last_shuffled)
+      const last_shuffled_length = last_shuffled[columns[0]].length
+      if (trustees.every((t) => t.partials && t.partials[columns[0]].length >= last_shuffled_length)) {
+        // Ok, ready to decrypt...
+
+        // For each column
+        const decrypted_and_split = mapValues(last_shuffled, (list, key) => {
+          // For each row
+          return (list as string[]).map((shuffled_vote, index) => {
+            // 1. First we combine the partials to get the ElGamal shared secret
+            const partials = trustees.map((t) => big(t.partials[key][index]))
+            const shared_secret = combine_partials(partials, big_parameters)
+
+            // 2. Then we can unlock each messages
+            const { encrypted } = JSON.parse(shuffled_vote)
+            return unlock_message_with_shared_secret(shared_secret, big(encrypted), big_parameters.p)
+          })
+        }) as Record<string, string[]>
+
+        // 3. Finally we recombine the separated columns back together via tracking numbers
+        const decrypteds_by_tracking = recombine_decrypteds(decrypted_and_split)
+
+        // Store decrypteds as an array
+        const decrypted = Object.values(decrypteds_by_tracking)
+        // 4. And save the results to election.decrypted
+        await electionDoc.update({ decrypted, last_decrypted_at: new Date() })
+        // And notify everyone we have new decrypted
+        await pusher.trigger(election_id, 'decrypted', '')
       }
     }
   }
