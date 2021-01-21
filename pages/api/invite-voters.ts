@@ -69,7 +69,7 @@ export const send_invitation_email = ({
     subject: subject_line,
     text: `<h2 style="margin: 0">${subject_line}</h2>
 Click here to securely cast your vote:
-<a href="${link}">${link}</a>
+<a href="${link}" style="font-weight: bold;">${link}</a>
 
 <em style="font-size:13px; opacity: 0.6;">This link is unique for you. Don't share it with anyone.</em>`,
   })
