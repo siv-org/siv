@@ -5,7 +5,7 @@ import { generate_key_pair } from '../../crypto/generate-key-pair'
 import { big } from '../../crypto/types'
 import { PrivateBox } from '../PrivateBox'
 import { StateAndDispatch } from '../trustee-state'
-import { YouLabel } from './YouLabel'
+import { YouLabel } from '../YouLabel'
 
 export const MessagingKeys = ({ dispatch, state }: StateAndDispatch) => {
   useEffect(() => {

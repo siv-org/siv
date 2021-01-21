@@ -5,8 +5,8 @@ import { api } from '../../api-helper'
 import { partial_decrypt } from '../../crypto/threshold-keygen'
 import { big } from '../../crypto/types'
 import { mapValues } from '../../utils'
-import { YouLabel } from '../keygen/YouLabel'
 import { Shuffled, StateAndDispatch, getParameters } from '../trustee-state'
+import { YouLabel } from '../YouLabel'
 
 export const VotesToDecrypt = ({ state }: StateAndDispatch) => {
   const { own_index, trustees = [], private_keyshare } = state

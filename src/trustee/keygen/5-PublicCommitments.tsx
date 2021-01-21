@@ -5,7 +5,7 @@ import { generate_public_coefficients } from '../../crypto/threshold-keygen'
 import { big } from '../../crypto/types'
 import { PrivateBox } from '../PrivateBox'
 import { StateAndDispatch, getParameters } from '../trustee-state'
-import { YouLabel } from './YouLabel'
+import { YouLabel } from '../YouLabel'
 
 export const PublicCommitments = ({ dispatch, state }: StateAndDispatch) => {
   const { private_coefficients: coeffs, trustees } = state

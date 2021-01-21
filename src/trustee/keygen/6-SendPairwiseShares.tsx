@@ -8,8 +8,8 @@ import { evaluate_private_polynomial } from '../../crypto/threshold-keygen'
 import { big, bigPubKey, toStrings } from '../../crypto/types'
 import { PrivateBox } from '../PrivateBox'
 import { StateAndDispatch, getParameters } from '../trustee-state'
+import { YouLabel } from '../YouLabel'
 import { EncryptionNote } from './EncryptionNote'
-import { YouLabel } from './YouLabel'
 
 export const SendPairwiseShares = ({ dispatch, state }: StateAndDispatch) => {
   const {

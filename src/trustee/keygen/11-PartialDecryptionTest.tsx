@@ -5,8 +5,8 @@ import { partial_decrypt } from '../../crypto/threshold-keygen'
 import { big } from '../../crypto/types'
 import { PrivateBox } from '../PrivateBox'
 import { StateAndDispatch, getParameters } from '../trustee-state'
+import { YouLabel } from '../YouLabel'
 import { EncryptionNote } from './EncryptionNote'
-import { YouLabel } from './YouLabel'
 
 export const PartialDecryptionTest = ({ dispatch, state }: StateAndDispatch) => {
   const { parameters, partial_decryption: partial, private_keyshare, threshold_public_key, trustees = [] } = state

@@ -5,7 +5,7 @@ import { is_received_share_valid } from '../../crypto/threshold-keygen'
 import { big } from '../../crypto/types'
 import { PrivateBox } from '../PrivateBox'
 import { StateAndDispatch, getParameters } from '../trustee-state'
-import { YouLabel } from './YouLabel'
+import { YouLabel } from '../YouLabel'
 
 export const VerifyShares = ({ dispatch, state }: StateAndDispatch) => {
   const { decrypted_shares_from = {}, trustees = [], verified = {} } = state

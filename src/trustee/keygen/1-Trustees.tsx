@@ -1,5 +1,5 @@
 import { State } from '../trustee-state'
-import { YouLabel } from './YouLabel'
+import { YouLabel } from '../YouLabel'
 
 export const Trustees = ({ state }: { state: State }) => {
   return (
