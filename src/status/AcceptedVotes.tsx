@@ -1,12 +1,14 @@
 import { flatten } from 'lodash-es'
 import { useRouter } from 'next/router'
 import Pusher from 'pusher-js'
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment, useEffect } from 'react'
+import useSWR from 'swr'
 
 import { Cipher_Text } from '../crypto/types'
 import { Item } from '../vote/useElectionInfo'
 
 type Vote = { auth: string } & { [index: string]: Cipher_Text }
+const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
 export const AcceptedVotes = ({
   ballot_design,
@@ -17,21 +19,13 @@ export const AcceptedVotes = ({
 }): JSX.Element => {
   const { election_id } = useRouter().query
 
-  const [votes, setVotes] = useState<Vote[]>()
-
-  const loadVotes = () =>
-    election_id &&
-    fetch(`/api/election/${election_id}/accepted-votes`)
-      .then((res) => res.json())
-      .then(setVotes)
-
-  // Load votes when election_id is first set
-  useEffect(() => {
-    loadVotes()
-  }, [election_id])
+  const { data: votes, mutate } = useSWR<Vote[]>(
+    !election_id ? null : `/api/election/${election_id}/accepted-votes`,
+    fetcher,
+  )
 
   // Subscribe to pusher updates of new votes
-  subscribeToUpdates(loadVotes, election_id)
+  subscribeToUpdates(mutate, election_id)
 
   if (!votes || !ballot_design) return <div>Loading...</div>
 
