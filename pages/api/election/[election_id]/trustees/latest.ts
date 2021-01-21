@@ -4,7 +4,7 @@ import { firebase } from '../../../_services'
 import { transform_email_keys } from './commafy'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { election_id, trustee_auth } = req.query
+  const { auth, election_id } = req.query
 
   const election = firebase
     .firestore()
@@ -26,7 +26,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const trustees = (await loadTrustees).docs.map((doc) => {
     const data = { ...doc.data() }
     // Add you: true if requester's own document
-    if (data.auth_token === trustee_auth) {
+    if (data.auth_token === auth) {
       data.you = true
     }
 

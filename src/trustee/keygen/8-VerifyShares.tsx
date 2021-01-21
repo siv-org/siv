@@ -50,8 +50,8 @@ export const VerifyShares = ({ dispatch, state }: StateAndDispatch) => {
 
     // Tell admin verification results
     api(`election/${state.election_id}/trustees/update`, {
+      auth: state.auth,
       email: state.own_email,
-      trustee_auth: state.trustee_auth,
       verified,
     })
   }, [Object.keys(decrypted_shares_from).join()])

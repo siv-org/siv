@@ -33,9 +33,9 @@ export const VotesToDecrypt = ({ state }: StateAndDispatch) => {
 
       // Tell admin our new partials list
       api(`election/${state.election_id}/trustees/update`, {
+        auth: state.auth,
         email: state.own_email,
         partials,
-        trustee_auth: state.trustee_auth,
       })
     }
   }, [num_last_shuffled])

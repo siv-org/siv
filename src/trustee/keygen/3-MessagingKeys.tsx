@@ -29,9 +29,9 @@ export const MessagingKeys = ({ dispatch, state }: StateAndDispatch) => {
 
     // Tell admin the new public key you created
     api(`election/${state.election_id}/trustees/update`, {
+      auth: state.auth,
       email: state.own_email,
       recipient_key: personal_key_pair.public_key.recipient,
-      trustee_auth: state.trustee_auth,
     })
   }, [state.parameters?.p, state.own_email])
 

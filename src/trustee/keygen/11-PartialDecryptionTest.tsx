@@ -29,9 +29,9 @@ export const PartialDecryptionTest = ({ dispatch, state }: StateAndDispatch) => 
 
     // Send partial to admin
     api(`election/${state.election_id}/trustees/update`, {
+      auth: state.auth,
       email: state.own_email,
       partial_decryption,
-      trustee_auth: state.trustee_auth,
     })
   }, [threshold_public_key])
 

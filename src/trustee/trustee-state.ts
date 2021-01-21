@@ -21,6 +21,7 @@ export type Trustee = {
   you?: boolean
 }
 export type State = {
+  auth: string
   commitments?: string[]
   decrypted_shares_from?: Record<string, string>
   election_id: string
@@ -35,7 +36,6 @@ export type State = {
   private_coefficients?: string[]
   private_keyshare?: string
   threshold_public_key?: string
-  trustee_auth: string
   trustees?: Trustee[]
   verified?: Record<string, boolean>
 }
@@ -71,8 +71,8 @@ function reducer(prev: State, payload: Record<string, unknown>) {
 }
 
 // Export consumable hook that returns [state, dispatch]
-export const useTrusteeState = ({ election_id, trustee_auth }: { election_id: string; trustee_auth: string }) =>
-  useLocalStorageReducer(`keygen-${election_id}-${trustee_auth}`, reducer, { election_id, own_email: '', trustee_auth })
+export const useTrusteeState = ({ auth, election_id }: { auth: string; election_id: string }) =>
+  useLocalStorageReducer(`keygen-${election_id}-${auth}`, reducer, { auth, election_id, own_email: '' })
 
 /** Helper function to create Parameter from state.parameters */
 export function getParameters(state: State): Parameters {

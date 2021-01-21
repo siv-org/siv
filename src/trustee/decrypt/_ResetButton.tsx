@@ -10,8 +10,8 @@ export function ResetButton({ state }: { state: State }) {
     <div
       onClick={() => {
         api(`election/${state.election_id}/trustees/reset-close`, {
+          auth: state.auth,
           email: state.own_email,
-          trustee_auth: state.trustee_auth,
         })
       }}
     >

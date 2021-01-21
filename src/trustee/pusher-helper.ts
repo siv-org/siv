@@ -19,11 +19,11 @@ export function initPusher({ dispatch, state }: StateAndDispatch) {
 
     channel.bind('reset-keygen', (data: unknown) => {
       console.log('🤡 Pusher reset', data)
-      const { election_id, trustee_auth } = state
-      const storage_key = `keygen-${election_id}-${trustee_auth}`
+      const { auth, election_id } = state
+      const storage_key = `keygen-${election_id}-${auth}`
       localStorage.removeItem(storage_key)
-      console.log(`Cleared localStorage[${`keygen-${state.election_id}-${state.trustee_auth}`}]`)
-      dispatch({ reset: { election_id, own_email: '', trustee_auth } })
+      console.log(`Cleared localStorage[${`keygen-${state.election_id}-${state.auth}`}]`)
+      dispatch({ reset: { auth, election_id, own_email: '' } })
     })
 
     channel.bind('reset-close', (data: unknown) => {

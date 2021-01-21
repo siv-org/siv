@@ -11,7 +11,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (!ADMIN_EMAIL) return res.status(501).json({ error: 'Missing process.env.ADMIN_EMAIL' })
 
   const { election_id } = req.query
-  const { email, trustee_auth } = req.body
+  const { auth, email } = req.body
 
   if (!email) return res.status(404)
   if (!email.endsWith('dsernst.com')) return res.status(401).json({ error: 'Not authorized to reset keygen' })
@@ -33,8 +33,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Grab claimed trustee
   const trustee = { ...(await loadTrustee).data() }
 
-  // Authenticate by checking if trustee_auth token matches
-  if (trustee.auth_token !== trustee_auth) return res.status(401).json({ error: 'Bad trustee_auth token' })
+  // Authenticate by checking if auth token matches
+  if (trustee.auth_token !== auth) return res.status(401).json({ error: 'Bad auth token' })
 
   // Delete election decrypted
   const reset_decrypted = electionDoc.update({ decrypted: firestore.FieldValue.delete() })

@@ -86,7 +86,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       trustees.map((trustee: string, index: number) => {
         if (trustee === ADMIN_EMAIL) return
 
-        const link = `${req.headers.origin}/election/${election_id}/trustee?trustee_auth=${auth_tokens[index]}`
+        const link = `${req.headers.origin}/election/${election_id}/trustee?auth=${auth_tokens[index]}`
 
         return sendEmail({
           recipient: trustee,

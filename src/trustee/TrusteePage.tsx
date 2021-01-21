@@ -13,7 +13,7 @@ import { useTrusteeState } from './trustee-state'
 
 export const TrusteePage = (): JSX.Element => {
   // Grab election parameters from URL
-  const { election_id, trustee_auth } = useRouter().query as { election_id: string; trustee_auth: string }
+  const { auth, election_id } = useRouter().query as { auth: string; election_id: string }
 
   const [tab, setTab] = useState(0)
 
@@ -26,7 +26,7 @@ export const TrusteePage = (): JSX.Element => {
         <p>
           Election ID: <b>{election_id}</b>
           <br />
-          Trustee auth: <b>{trustee_auth}</b>
+          Auth: <b>{auth}</b>
         </p>
 
         <Tabs
@@ -40,11 +40,7 @@ export const TrusteePage = (): JSX.Element => {
           <Tab label="After Election" />
         </Tabs>
 
-        {!(election_id && trustee_auth) ? (
-          <p>Need election_id and trustee_auth</p>
-        ) : (
-          <ClientOnly {...{ election_id, tab, trustee_auth }} />
-        )}
+        {!(election_id && auth) ? <p>Need election_id and auth</p> : <ClientOnly {...{ auth, election_id, tab }} />}
       </main>
 
       <style jsx>{`
@@ -66,9 +62,9 @@ export const TrusteePage = (): JSX.Element => {
   )
 }
 
-const ClientOnly = ({ election_id, tab, trustee_auth }: { election_id: string; tab: number; trustee_auth: string }) => {
+const ClientOnly = ({ auth, election_id, tab }: { auth: string; election_id: string; tab: number }) => {
   // Initialize local vote state on client
-  const [state, dispatch] = useTrusteeState({ election_id, trustee_auth })
+  const [state, dispatch] = useTrusteeState({ auth, election_id })
 
   // Get initial Trustee info
   getTrusteesOnInit({ dispatch, state })

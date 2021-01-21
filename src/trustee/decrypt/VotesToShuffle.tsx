@@ -37,9 +37,9 @@ export const VotesToShuffle = ({ state }: StateAndDispatch) => {
 
       // Tell admin our new shuffled list
       api(`election/${state.election_id}/trustees/update`, {
+        auth: state.auth,
         email: state.own_email,
         shuffled,
-        trustee_auth: state.trustee_auth,
       })
     }
   }, [num_prev_shuffled])
