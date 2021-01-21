@@ -40,7 +40,7 @@ export const ElectionStatusPage = (): JSX.Element => {
             <AcceptedVotes {...{ ballot_design }} />
           </div>
         </div>
-        <Footer style={{ fontSize: 11 }} />
+        <Footer />
       </main>
 
       <style jsx>{`

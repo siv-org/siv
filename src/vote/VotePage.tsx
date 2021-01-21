@@ -15,11 +15,13 @@ export const VotePage = (): JSX.Element => {
       <Head title="Cast Your Vote" />
 
       <main>
-        {election_id && auth && (
-          <NoSsr>
-            <AuthenticatedContent {...{ auth, election_id }} />
-          </NoSsr>
-        )}
+        <div>
+          {election_id && auth && (
+            <NoSsr>
+              <AuthenticatedContent {...{ auth, election_id }} />
+            </NoSsr>
+          )}
+        </div>
 
         <Footer />
       </main>
@@ -30,6 +32,12 @@ export const VotePage = (): JSX.Element => {
           width: 100%;
           margin: 0 auto;
           padding: 1rem;
+
+          /* Push footer to bottom */
+          display: flex;
+          flex-direction: column;
+          min-height: 100vh;
+          justify-content: space-between;
         }
       `}</style>
       <GlobalCSS />

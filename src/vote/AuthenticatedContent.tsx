@@ -2,9 +2,9 @@ import Head from 'next/head'
 
 import { GlobalCSS } from '../GlobalCSS'
 import { Ballot } from './Ballot'
-import { EncryptionReceipt } from './EncryptionReceipt'
 import { Instructions } from './Instructions'
 import { SubmitButton } from './SubmitButton'
+import { SubmittedScreen } from './submitted/SubmittedScreen'
 import { useElectionInfo } from './useElectionInfo'
 import { useVoteState } from './vote-state'
 import { YourAuthToken } from './YourAuthToken'
@@ -23,7 +23,7 @@ export const AuthenticatedContent = ({ auth, election_id }: { auth: string; elec
             <title key="title">SIV: Vote Submitted</title>
           </Head>
           <h1>Vote Submitted.</h1>
-          <EncryptionReceipt {...{ state }} />
+          <SubmittedScreen {...{ election_id, state }} />
         </>
       ) : (
         <>

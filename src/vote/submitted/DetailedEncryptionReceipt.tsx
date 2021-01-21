@@ -1,20 +1,18 @@
-import { NoSsr } from '@material-ui/core'
 import { map } from 'lodash-es'
+import { useReducer } from 'react'
 
-import { Paper } from '../protocol/Paper'
-import { State } from './vote-state'
+import { Paper } from '../../protocol/Paper'
+import { State } from '../vote-state'
 
-export function EncryptionReceipt({ state }: { state: State & { submitted_at: Date } }): JSX.Element {
+export const DetailedEncryptionReceipt = ({ state }: { state: State & { submitted_at: Date } }) => {
+  const [show, toggle] = useReducer((state) => !state, false)
   return (
-    <NoSsr>
-      <p>
-        Your secret Tracking #: <b>{state.tracking}</b>
-        <br />
-        <em>Use this to verify your vote was counted correctly.</em>
+    <>
+      <p className="toggle">
+        <a onClick={toggle}>{show ? '[-] Hide' : '[+] Show'} Encryption Details</a>
       </p>
-      <br />
-      <p>Your Private Encryption Receipt:</p>
-      <Paper noFade style={{ padding: '1.5rem' }}>
+
+      <Paper noFade style={{ display: show ? 'block' : 'none', padding: '1.5rem' }}>
         <code>
           {`Submitted @ ${new Date(state.submitted_at)}
 
@@ -43,10 +41,15 @@ ${Object.keys(state.plaintext)
   .join('\n')}`}
         </code>
       </Paper>
-
       <style jsx>{`
-        em {
+        p.toggle {
           font-size: 12px;
+          opacity: 0.7;
+          margin-top: 45px;
+        }
+
+        p.toggle a {
+          cursor: pointer;
         }
 
         code {
@@ -55,6 +58,6 @@ ${Object.keys(state.plaintext)
           white-space: pre-wrap;
         }
       `}</style>
-    </NoSsr>
+    </>
   )
 }
