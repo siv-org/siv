@@ -1,31 +1,17 @@
 import { AcceptedVotes } from '../../status/AcceptedVotes'
 import { useBallotDesign } from '../../status/use-ballot-design'
-import { getTrusteesOnInit } from '../get-latest-from-server'
 import { Trustees } from '../keygen/1-Trustees'
-import { initPusher } from '../keygen/pusher-helper'
-import { Dispatch, State, useKeyGenState } from '../trustee-state'
+import { StateAndDispatch } from '../trustee-state'
 import { ResetButton } from './_ResetButton'
 import { VotesToDecrypt } from './VotesToDecrypt'
 import { VotesToShuffle } from './VotesToShuffle'
 
 export const ShuffleAndDecrypt = ({
+  dispatch,
   election_id,
-  trustee_auth,
-}: {
-  election_id: string
-  trustee_auth: string
-}): JSX.Element => {
-  // Initialize local state on client
-  const [state, dispatch] = useKeyGenState({ election_id, trustee_auth }) as [State, Dispatch]
-
+  state,
+}: StateAndDispatch & { election_id: string }): JSX.Element => {
   const { private_keyshare } = state
-
-  // Get initial Trustee info
-  getTrusteesOnInit({ dispatch, state })
-
-  // Activate Pusher to get updates from the server on new data
-  initPusher({ dispatch, state })
-
   const { ballot_design } = useBallotDesign(election_id)
 
   if (!private_keyshare) {

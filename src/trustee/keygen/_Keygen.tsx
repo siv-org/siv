@@ -1,5 +1,4 @@
-import { getTrusteesOnInit } from '../get-latest-from-server'
-import { useKeyGenState } from '../trustee-state'
+import { StateAndDispatch } from '../trustee-state'
 import { ResetButton } from './_ResetButton'
 import { Trustees } from './1-Trustees'
 import { PublicThresholdKey } from './10-PublicThresholdKey'
@@ -13,18 +12,8 @@ import { SendPairwiseShares } from './6-SendPairwiseShares'
 import { ReceivedPairwiseShares } from './7-ReceivedPairwiseShares'
 import { VerifyShares } from './8-VerifyShares'
 import { CalculatePrivateKeyshare } from './9-CalculatePrivateKeyshare'
-import { initPusher } from './pusher-helper'
 
-export const Keygen = ({ election_id, trustee_auth }: { election_id: string; trustee_auth: string }): JSX.Element => {
-  // Initialize local vote state on client
-  const [state, dispatch] = useKeyGenState({ election_id, trustee_auth })
-
-  // Get initial Trustee info
-  getTrusteesOnInit({ dispatch, state })
-
-  // Activate Pusher to get updates from the server on new data
-  initPusher({ dispatch, state })
-
+export const Keygen = ({ dispatch, state }: StateAndDispatch): JSX.Element => {
   return (
     <>
       <h2>Threshold Key Generation</h2>

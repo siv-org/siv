@@ -71,7 +71,7 @@ function reducer(prev: State, payload: Record<string, unknown>) {
 }
 
 // Export consumable hook that returns [state, dispatch]
-export const useKeyGenState = ({ election_id, trustee_auth }: { election_id: string; trustee_auth: string }) =>
+export const useTrusteeState = ({ election_id, trustee_auth }: { election_id: string; trustee_auth: string }) =>
   useLocalStorageReducer(`keygen-${election_id}-${trustee_auth}`, reducer, { election_id, own_email: '', trustee_auth })
 
 /** Helper function to create Parameter from state.parameters */

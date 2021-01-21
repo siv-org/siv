@@ -6,11 +6,14 @@ import { HeaderBar } from '../create/HeaderBar'
 import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
 import { ShuffleAndDecrypt } from './decrypt/ShuffleAndDecrypt'
+import { getTrusteesOnInit } from './get-latest-from-server'
 import { Keygen } from './keygen/_Keygen'
+import { initPusher } from './pusher-helper'
+import { useTrusteeState } from './trustee-state'
 
 export const TrusteePage = (): JSX.Element => {
   // Grab election parameters from URL
-  const { election_id, trustee_auth } = useRouter().query as { election_id?: string; trustee_auth?: string }
+  const { election_id, trustee_auth } = useRouter().query as { election_id: string; trustee_auth: string }
 
   const [tab, setTab] = useState(0)
 
@@ -39,10 +42,8 @@ export const TrusteePage = (): JSX.Element => {
 
         {!(election_id && trustee_auth) ? (
           <p>Need election_id and trustee_auth</p>
-        ) : tab === 0 ? (
-          <Keygen {...{ election_id, trustee_auth }} />
         ) : (
-          <ShuffleAndDecrypt {...{ election_id, trustee_auth }} />
+          <ClientOnly {...{ election_id, tab, trustee_auth }} />
         )}
       </main>
 
@@ -62,5 +63,20 @@ export const TrusteePage = (): JSX.Element => {
       `}</style>
       <GlobalCSS />
     </>
+  )
+}
+
+const ClientOnly = ({ election_id, tab, trustee_auth }: { election_id: string; tab: number; trustee_auth: string }) => {
+  // Initialize local vote state on client
+  const [state, dispatch] = useTrusteeState({ election_id, trustee_auth })
+
+  // Get initial Trustee info
+  getTrusteesOnInit({ dispatch, state })
+
+  // Activate Pusher to get updates from the server on new data
+  initPusher({ dispatch, state })
+
+  return (
+    <>{tab === 0 ? <Keygen {...{ dispatch, state }} /> : <ShuffleAndDecrypt {...{ dispatch, election_id, state }} />}</>
   )
 }
