@@ -20,7 +20,8 @@ export const Ballot = ({
   }
 
   // Calculate maximum write-in string length
-  const max_string_length = Math.floor(big(state.public_key.modulo).bitLength() / 6)
+  const verification_num_length = 15
+  const max_string_length = Math.floor(big(state.public_key.modulo).bitLength() / 6) - verification_num_length
 
   return (
     <NoSsr>
