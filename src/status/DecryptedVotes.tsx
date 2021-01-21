@@ -1,3 +1,4 @@
+import { orderBy } from 'lodash-es'
 import { flatten } from 'lodash-es'
 import { useRouter } from 'next/router'
 import Pusher from 'pusher-js'
@@ -35,6 +36,8 @@ export const DecryptedVotes = ({ ballot_design }: { ballot_design?: Item[] }): J
 
   if (!votes || !votes.length || !ballot_design) return <></>
 
+  const sorted_votes = orderBy(votes, 'tracking')
+
   const columns = flatten(
     ballot_design.map(({ id, multiple_votes_allowed }) => {
       return multiple_votes_allowed
@@ -48,7 +51,7 @@ export const DecryptedVotes = ({ ballot_design }: { ballot_design?: Item[] }): J
       <Totals {...{ ballot_design, last_decrypted_at, votes }} />
       <br />
       <h3>Decrypted Votes</h3>
-      <p>Order randomized for vote secrecy.</p>
+      <p>Anonymized for vote secrecy.</p>
       <table>
         <thead>
           <tr>
@@ -60,7 +63,7 @@ export const DecryptedVotes = ({ ballot_design }: { ballot_design?: Item[] }): J
           </tr>
         </thead>
         <tbody>
-          {votes.map((vote, index) => (
+          {sorted_votes.map((vote, index) => (
             <tr key={index}>
               <td>{index + 1}.</td>
               <td>{vote.tracking?.padStart(14, '0')}</td>
