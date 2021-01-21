@@ -1,6 +1,6 @@
 import { big } from './types'
 
-const Alphabet = '0123456789 ABCDEFGHIJKLMNOPQRSTUVWXYZ.-():'.split('')
+const Alphabet = '0123456789 ABCDEFGHIJKLMNOPQRSTUVWXYZ.,-():'.split('')
 
 const AlphabetToIndex: { [index: string]: number } = Alphabet.reduce(
   (memo, letter, index) => ({
