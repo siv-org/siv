@@ -51,21 +51,17 @@ export function SubmittedScreen({
       <Link href={`/election/${election_id}`}>
         <a id="status-page" target="_blank">
           <img src="/vote/externallinkicon.jpg" width="12px" />
-          Click here to visit the Election status page.
+          Click here to visit the Election Status page.
         </a>
       </Link>
 
       <p>
-        Before your vote was encrypted, this secret Tracking # was generated: <b>{state.tracking}</b>.
-        <br />{' '}
-        <span className="small">
-          It is a random number, generated on your own device. No one else can possibly know it.
-        </span>
+        Before your vote was encrypted, a secret Verification # was generated. It is a random number, generated on your
+        own device. No one else can possibly know it.
       </p>
-      <br />
       <p>
-        Once the election closes, you can <em>verify that your vote was counted correctly</em> by finding it with this
-        tracking number:
+        Once the election closes, you can <em>verify that your vote was counted correctly</em> by finding it on the
+        Election Status page with this Verification #:
       </p>
 
       <UnlockedVote {...{ columns, state }} />

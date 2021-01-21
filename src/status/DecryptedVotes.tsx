@@ -53,7 +53,7 @@ export const DecryptedVotes = ({ ballot_design }: { ballot_design?: Item[] }): J
         <thead>
           <tr>
             <th></th>
-            <th>tracking #</th>
+            <th>verification #</th>
             {columns.map((c) => (
               <th key={c}>{c}</th>
             ))}

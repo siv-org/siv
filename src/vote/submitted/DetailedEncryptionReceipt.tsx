@@ -24,9 +24,9 @@ Encryption Formula
 Public Key
   ${map(state.public_key, (v, k) => `${k}: ${v}`).join('\n  ')}
 
-YOUR VOTE DATA:
+---------
 
-Tracking #: ${state.tracking}
+Verification #: ${state.tracking}
 
 ${Object.keys(state.plaintext)
   .map(

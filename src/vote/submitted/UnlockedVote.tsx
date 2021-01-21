@@ -5,7 +5,7 @@ export const UnlockedVote = ({ columns, state }: { columns: string[]; state: Sta
     <table>
       <thead>
         <tr>
-          <th>tracking #</th>
+          <th>verification #</th>
           {columns.map((c) => (
             <th key={c}>{c}</th>
           ))}
