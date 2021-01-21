@@ -17,7 +17,11 @@ export function useBallotDesign(election_id?: string) {
 
       if (error) return
 
-      set_info({ ballot_design: JSON.parse(ballot_design), election_title, has_decrypted_votes: !!last_decrypted_at })
+      set_info({
+        ballot_design: ballot_design ? JSON.parse(ballot_design) : undefined,
+        election_title,
+        has_decrypted_votes: !!last_decrypted_at,
+      })
     })()
   }, [election_id])
 
