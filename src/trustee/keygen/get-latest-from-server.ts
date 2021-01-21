@@ -18,7 +18,9 @@ export async function getLatestFromServer({ dispatch, state }: StateAndDispatch)
   // Ask API
   try {
     const response = await fetch(
-      `/api/election/${state.election_id}/keygen/latest?trustee_auth=${state.trustee_auth}&cache_bust=${Math.random()}`,
+      `/api/election/${state.election_id}/trustees/latest?trustee_auth=${
+        state.trustee_auth
+      }&cache_bust=${Math.random()}`,
     )
     const data = await response.json()
     dispatch(data)

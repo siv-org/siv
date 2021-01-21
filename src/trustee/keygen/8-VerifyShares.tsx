@@ -49,7 +49,7 @@ export const VerifyShares = ({ dispatch, state }: StateAndDispatch) => {
     dispatch({ verified })
 
     // Tell admin verification results
-    api(`election/${state.election_id}/keygen/update`, {
+    api(`election/${state.election_id}/trustees/update`, {
       email: state.own_email,
       trustee_auth: state.trustee_auth,
       verified,

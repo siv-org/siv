@@ -74,7 +74,7 @@ export const SendPairwiseShares = ({ dispatch, state }: StateAndDispatch) => {
     })
 
     // Send encrypted_pairwise_shares to admin to broadcast
-    api(`election/${state.election_id}/keygen/update`, {
+    api(`election/${state.election_id}/trustees/update`, {
       email: state.own_email,
       encrypted_pairwise_shares_for,
       trustee_auth: state.trustee_auth,

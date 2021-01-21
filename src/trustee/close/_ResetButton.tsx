@@ -9,7 +9,7 @@ export function ResetButton({ state }: { state: State }) {
   return (
     <div
       onClick={() => {
-        api(`election/${state.election_id}/keygen/reset-close`, {
+        api(`election/${state.election_id}/trustees/reset-close`, {
           email: state.own_email,
           trustee_auth: state.trustee_auth,
         })
