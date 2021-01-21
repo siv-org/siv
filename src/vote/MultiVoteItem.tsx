@@ -1,6 +1,7 @@
 import { Checkbox, FormControlLabel, FormGroup } from '@material-ui/core'
 import { Dispatch, useEffect, useState } from 'react'
 
+import { Label, TitleDescriptionQuestion } from './Item'
 import { Item as ItemType } from './useElectionInfo'
 import { State } from './vote-state'
 
@@ -40,9 +41,7 @@ export const MultiVoteItem = ({
 
   return (
     <>
-      <p className="title">{title}</p>
-      {description && <p className="description">{description}</p>}
-      {question && <p className="question">{question}</p>}
+      <TitleDescriptionQuestion {...{ description, question, title }} />
       <p className="remaining">
         Remaining votes: {multiple_votes_allowed - selected.size} of {multiple_votes_allowed}
       </p>
@@ -81,41 +80,10 @@ export const MultiVoteItem = ({
       </FormGroup>
       <br />
       <style jsx>{`
-        .title {
-          font-size: 16px;
-          font-weight: bold;
-          margin-bottom: 5px;
-          padding: 5px 13px;
-          white-space: pre-line;
-        }
-
-        .description,
-        .question,
         .remaining {
           margin: 13px;
         }
       `}</style>
     </>
-  )
-}
-
-function Label({ name, sub }: { name: string; sub?: string }) {
-  return (
-    <div>
-      {name}
-      {sub && <p>{sub}</p>}
-      <style jsx>{`
-        div {
-          position: relative;
-          margin: 8px 0;
-        }
-
-        p {
-          margin: 0 0 0px;
-          font-size: 12px;
-          opacity: 0.85;
-        }
-      `}</style>
-    </div>
   )
 }

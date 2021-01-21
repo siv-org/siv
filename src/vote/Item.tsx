@@ -26,9 +26,7 @@ export const Item = ({
 
   return (
     <>
-      <p className="title">{title}</p>
-      <p className="description">{description}</p>
-      <p className="question">{question}</p>
+      <TitleDescriptionQuestion {...{ description, question, title }} />
       <RadioGroup
         style={{ paddingLeft: '1.5rem' }}
         value={state.plaintext[id] || ''}
@@ -89,41 +87,56 @@ export const Item = ({
         )}
       </RadioGroup>
       <br />
-      <style jsx>{`
-        .title {
-          font-size: 16px;
-          font-weight: bold;
-          margin-bottom: 10px;
-          padding: 5px 13px;
-          white-space: pre-line;
-        }
-
-        .description,
-        .question {
-          margin: 13px;
-        }
-      `}</style>
     </>
   )
 }
 
-function Label({ name, sub }: { name: string; sub?: string }) {
-  return (
-    <div>
-      {name}
-      {sub && <p>{sub}</p>}
-      <style jsx>{`
-        div {
-          position: relative;
-          margin: 8px 0;
-        }
+export const Label = ({ name, sub }: { name: string; sub?: string }) => (
+  <div>
+    {name}
+    {sub && <p>{sub}</p>}
+    <style jsx>{`
+      div {
+        position: relative;
+        margin: 8px 0;
+      }
 
-        p {
-          margin: 0 0 0px;
-          font-size: 12px;
-          opacity: 0.85;
-        }
-      `}</style>
-    </div>
-  )
-}
+      p {
+        margin: 0 0 0px;
+        font-size: 12px;
+        opacity: 0.85;
+      }
+    `}</style>
+  </div>
+)
+
+export const TitleDescriptionQuestion = ({
+  description,
+  question,
+  title,
+}: {
+  description?: string
+  question?: string
+  title?: string
+}) => (
+  <>
+    <p className="title">{title}</p>
+    {description && <p className="description">{description}</p>}
+    {question && <p className="question">{question}</p>}
+    <style jsx>{`
+      .title {
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        padding: 5px 13px;
+        white-space: pre-line;
+      }
+
+      .description,
+      .question {
+        margin: 13px;
+        white-space: pre-wrap;
+      }
+    `}</style>
+  </>
+)
