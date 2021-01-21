@@ -43,7 +43,7 @@ export function SubmittedScreen({
       <EncryptedVote {...{ auth, columns, state }} />
 
       <p>
-        It&apos;s contents will only be unlocked once the election closes, after all votes have been shuffled for safe
+        It&apos;s contents will only be unlocked after the election closes and all votes have been shuffled for safe
         anonymization.
       </p>
 
@@ -56,14 +56,18 @@ export function SubmittedScreen({
 
       <p>
         Before your vote was encrypted, this secret Tracking # was generated: <b>{state.tracking}</b>.
-        <br /> It is a random number, generated on your own device. No one else can possibly know it.
+        <br />{' '}
+        <span className="small">
+          It is a random number, generated on your own device. No one else can possibly know it.
+        </span>
       </p>
+      <br />
       <p>
-        Once the election closes, you can <em>personally verify that your vote was counted correctly</em> by finding it
-        with this tracking number:
+        Once the election closes, you can <em>verify that your vote was counted correctly</em> by finding it with this
+        tracking number:
       </p>
 
-      <UnlockedVote />
+      <UnlockedVote {...{ columns, state }} />
 
       <DetailedEncryptionReceipt {...{ state }} />
 
@@ -86,6 +90,10 @@ export function SubmittedScreen({
           position: relative;
           top: 1px;
           opacity: 0.8;
+        }
+
+        .small {
+          font-size: 12px;
         }
       `}</style>
     </NoSsr>

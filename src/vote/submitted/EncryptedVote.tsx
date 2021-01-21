@@ -1,9 +1,6 @@
 import { Fragment } from 'react'
 
-import { Cipher_Text } from '../../crypto/types'
 import { State } from '../vote-state'
-
-type Vote = { auth: string } & { [index: string]: Cipher_Text }
 
 export const EncryptedVote = ({ auth, columns, state }: { auth: string; columns: string[]; state: State }) => (
   <div>
@@ -54,9 +51,6 @@ export const EncryptedVote = ({ auth, columns, state }: { auth: string; columns:
         padding: 3px 10px;
         margin: 0;
         max-width: 360px;
-         {
-          /* overflow: auto; */
-        }
       }
 
       th,

@@ -26,7 +26,7 @@ Public Key
 
 YOUR VOTE DATA:
 
-Your secret tracking number: ${state.tracking}
+Tracking #: ${state.tracking}
 
 ${Object.keys(state.plaintext)
   .map(
