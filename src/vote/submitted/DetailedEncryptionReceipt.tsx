@@ -12,7 +12,7 @@ export const DetailedEncryptionReceipt = ({ state }: { state: State & { submitte
         <a onClick={toggle}>{show ? '[-] Hide' : '[+] Show'} Encryption Details</a>
       </p>
 
-      <Paper noFade style={{ display: show ? 'block' : 'none', padding: '1.5rem' }}>
+      <Paper noFade style={{ display: show ? 'block' : 'none', maxWidth: 815, padding: '1.5rem' }}>
         <code>
           {`Submitted @ ${new Date(state.submitted_at)}
 
@@ -45,7 +45,6 @@ ${Object.keys(state.plaintext)
         p.toggle {
           font-size: 12px;
           opacity: 0.7;
-          margin-top: 45px;
         }
 
         p.toggle a {

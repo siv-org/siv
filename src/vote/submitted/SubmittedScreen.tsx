@@ -41,6 +41,7 @@ export function SubmittedScreen({
       </p>
 
       <EncryptedVote {...{ auth, columns, state }} />
+      <DetailedEncryptionReceipt {...{ state }} />
 
       <p>
         It&apos;s contents will only be unlocked after the election closes and all votes have been shuffled for safe
@@ -68,8 +69,6 @@ export function SubmittedScreen({
       </p>
 
       <UnlockedVote {...{ columns, state }} />
-
-      <DetailedEncryptionReceipt {...{ state }} />
 
       <style jsx>{`
         #lock-icon {
