@@ -60,13 +60,13 @@ export function SubmittedScreen({
 
       <h3>How to verify your vote:</h3>
       <p>
-        Once the election closes, you can verify your vote is correct by finding it on the{' '}
+        Once the election closes, verify your vote is correct by finding it on the{' '}
         <Link href={`/election/${election_id}`}>
           <a style={{ color: 'black' }} target="_blank">
             Election Status page
           </a>
         </Link>{' '}
-        using this <em>Verification #</em>:
+        using its <em>Verification #</em>:
       </p>
 
       <UnlockedVote {...{ columns, state }} />
