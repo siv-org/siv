@@ -1,3 +1,5 @@
+import { getTrusteesOnInit } from '../get-latest-from-server'
+import { useKeyGenState } from '../trustee-state'
 import { ResetButton } from './_ResetButton'
 import { Trustees } from './1-Trustees'
 import { PublicThresholdKey } from './10-PublicThresholdKey'
@@ -11,8 +13,6 @@ import { SendPairwiseShares } from './6-SendPairwiseShares'
 import { ReceivedPairwiseShares } from './7-ReceivedPairwiseShares'
 import { VerifyShares } from './8-VerifyShares'
 import { CalculatePrivateKeyshare } from './9-CalculatePrivateKeyshare'
-import { getTrusteesOnInit } from './get-latest-from-server'
-import { useKeyGenState } from './keygen-state'
 import { initPusher } from './pusher-helper'
 
 export const Keygen = ({ election_id, trustee_auth }: { election_id: string; trustee_auth: string }): JSX.Element => {

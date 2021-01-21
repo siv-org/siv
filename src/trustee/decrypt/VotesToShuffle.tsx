@@ -5,8 +5,8 @@ import { api } from '../../api-helper'
 import { shuffle } from '../../crypto/shuffle'
 import { bigCipher, bigPubKey, toStrings } from '../../crypto/types'
 import { mapValues } from '../../utils'
-import { Shuffled, StateAndDispatch } from '../keygen/keygen-state'
 import { YouLabel } from '../keygen/YouLabel'
+import { Shuffled, StateAndDispatch } from '../trustee-state'
 
 export const VotesToShuffle = ({ state }: StateAndDispatch) => {
   const { own_index, trustees = [], parameters, threshold_public_key } = state

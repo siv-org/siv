@@ -1,5 +1,5 @@
 import { big } from '../../crypto/types'
-import { State } from './keygen-state'
+import { State } from '../trustee-state'
 
 export const Parameters = ({ state }: { state: State }) => {
   if (!state.parameters) return <></>

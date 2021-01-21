@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { HeaderBar } from '../create/HeaderBar'
 import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
-import { ShuffleAndDecrypt } from './close/ShuffleAndDecrypt'
+import { ShuffleAndDecrypt } from './decrypt/ShuffleAndDecrypt'
 import { Keygen } from './keygen/_Keygen'
 
 export const TrusteePage = (): JSX.Element => {

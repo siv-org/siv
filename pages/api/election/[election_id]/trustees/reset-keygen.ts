@@ -2,7 +2,7 @@ import { firestore } from 'firebase-admin'
 import { pick } from 'lodash-es'
 import { NextApiRequest, NextApiResponse } from 'next'
 
-import { Trustee } from '../../../../../src/trustee/keygen/keygen-state'
+import { Trustee } from '../../../../../src/trustee/trustee-state'
 import { firebase } from '../../../_services'
 import { pusher } from '../../../pusher'
 

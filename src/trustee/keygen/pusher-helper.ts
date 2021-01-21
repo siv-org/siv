@@ -1,8 +1,8 @@
 import Pusher from 'pusher-js'
 import { useEffect } from 'react'
 
-import { getLatestFromServer } from './get-latest-from-server'
-import { StateAndDispatch } from './keygen-state'
+import { getLatestFromServer } from '../get-latest-from-server'
+import { StateAndDispatch } from '../trustee-state'
 
 export function initPusher({ dispatch, state }: StateAndDispatch) {
   function subscribe() {

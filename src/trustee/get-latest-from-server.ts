@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import { StateAndDispatch, Trustee } from './keygen-state'
+import { StateAndDispatch, Trustee } from './trustee-state'
 
 export function getTrusteesOnInit({ dispatch, state }: StateAndDispatch) {
   // Download when election_id is first loaded
