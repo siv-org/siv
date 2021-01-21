@@ -46,7 +46,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   For your records, here is the encrypted vote you submitted.
   You can confirm it matches your private Encryption Receipt.
 
-<code style="margin: 0 30px;">${stringifyEncryptedVote({ auth, ...encrypted_vote })}</code>
+<code style="font-size: 11px; margin: 0 30px;">${stringifyEncryptedVote({ auth, ...encrypted_vote })}</code>
 
   <em style="font-size:13px">You can press reply if you have a problem.</em>`,
     }),
