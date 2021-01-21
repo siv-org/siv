@@ -24,7 +24,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const promises: Promise<unknown>[] = []
 
   // Check for password
-  const { password, trustees } = req.body
+  const { election_title, password, trustees } = req.body
   if (password !== ADMIN_PASSWORD) return res.status(401).json({ error: 'Invalid Password.' })
 
   // admin@ is required
@@ -90,18 +90,17 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
         return sendEmail({
           recipient: trustee,
-          subject: `Key Generation for Election ${election_id}`,
+          subject: `Key Generation for ${election_title || `Election ${election_id}`}`,
           text: `Dear ${trustee},
-
-You're invited to join a SIV Multiparty Key Generation.
-
-This helps thoroughly anonymize election votes.
+<h3>You're invited to join a SIV Multiparty Key Generation${
+            election_title ? `: ${election_title}` : ''
+          }.</h3>This helps thoroughly anonymize election votes.
 Each Trustee adds an extra layer of vote privacy.
 
 Click here to join:
-<a href="${link}">${link}</a>
+<a href="${link}" style="font-weight: bold;">${link}</a>
 
-<em style="font-size:10px; opacity: 0.6;">This link is unique for you. Don't share it with anyone, or they'll be able to impersonate you.</em>`,
+<em style="font-size:10px; opacity: 0.6;">This link is unique for you. Don't share it with anyone.</em>`,
         })
       }),
     ),

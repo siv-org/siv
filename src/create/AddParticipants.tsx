@@ -34,8 +34,11 @@ export const AddParticipants = () => {
               .split('\n')
               .filter((v) => v !== '')
 
+            // Grab election_title from input
+            const election_title = (document.getElementById('election-title') as HTMLInputElement).value
+
             // Call backend endpoint
-            const response = await api('invite-trustees', { password: localStorage.password, trustees })
+            const response = await api('invite-trustees', { election_title, password: localStorage.password, trustees })
 
             // Success case
             if (response.status === 201) {
