@@ -35,6 +35,15 @@ export function SubmittedScreen({
 
   return (
     <NoSsr>
+      <Link href={`/election/${election_id}`}>
+        <a id="status-page" target="_blank">
+          <img src="/vote/externallinkicon.jpg" width="12px" />
+          Click here to visit the Election Status page.
+        </a>
+      </Link>
+
+      <h3>How your vote was submitted:</h3>
+
       <p>
         <img id="lock-icon" src="/vote/lock.png" width="12px" />
         To protect your privacy, your vote was encrypted:
@@ -44,24 +53,22 @@ export function SubmittedScreen({
       <DetailedEncryptionReceipt {...{ state }} />
 
       <p>
-        It&apos;s contents will only be unlocked after the election closes and all votes have been shuffled for safe
+        Its contents will only be unlocked after the election closes and all votes have been shuffled for safe
         anonymization.
       </p>
+      <br />
 
-      <Link href={`/election/${election_id}`}>
-        <a id="status-page" target="_blank">
-          <img src="/vote/externallinkicon.jpg" width="12px" />
-          Click here to visit the Election Status page.
-        </a>
-      </Link>
+      <h3>How to verify your vote:</h3>
 
       <p>
-        Before your vote was encrypted, a secret Verification # was generated. It is a random number, generated on your
-        own device. No one else can possibly know it.
+        Before your vote was encrypted, a secret Verification # was created. <br />
+        <span className="small">
+          It is a random number, generated on your own device. No one else can possibly know it.
+        </span>
       </p>
       <p>
-        Once the election closes, you can <em>verify that your vote was counted correctly</em> by finding it on the
-        Election Status page with this Verification #:
+        Once the election closes, you can verify your vote is correct by finding it on the Election Status page using
+        this Verification #:
       </p>
 
       <UnlockedVote {...{ columns, state }} />
@@ -75,7 +82,7 @@ export function SubmittedScreen({
         }
 
         #status-page {
-          margin: 3rem 0;
+          margin: 1rem 0 3rem;
           display: block;
           font-weight: bold;
         }

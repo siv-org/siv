@@ -14,9 +14,10 @@ export const UnlockedVote = ({ columns, state }: { columns: string[]; state: Sta
       <tbody>
         <tr>
           <td>{state.tracking?.padStart(14, '0')}</td>
-          {columns.map((c) => (
-            <td key={c}>{state.plaintext[c]?.toUpperCase()}</td>
-          ))}
+          {columns.map((c) => {
+            const vote = state.plaintext[c]
+            return <td key={c}>{vote === 'BLANK' ? '' : vote?.toUpperCase()}</td>
+          })}
         </tr>
       </tbody>
     </table>
