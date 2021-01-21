@@ -59,13 +59,6 @@ export function SubmittedScreen({
       <br />
 
       <h3>How to verify your vote:</h3>
-
-      <p>
-        Before your vote was encrypted, a secret Verification # was created. <br />
-        <span className="small">
-          It is a random number, generated on your own device. No one else can possibly know it.
-        </span>
-      </p>
       <p>
         Once the election closes, you can verify your vote is correct by finding it on the{' '}
         <Link href={`/election/${election_id}`}>
@@ -73,17 +66,22 @@ export function SubmittedScreen({
             Election Status page
           </a>
         </Link>{' '}
-        using this Verification #:
+        using this <em>Verification #</em>:
       </p>
 
       <UnlockedVote {...{ columns, state }} />
+      <p className="small">
+        This secret <em>Verification #</em> is a random number, generated and encrypted on your own device.
+        <br />
+        No one else can possibly know it.
+      </p>
 
       <style jsx>{`
         #lock-icon {
           margin-right: 7px;
           position: relative;
           top: 3px;
-          opacity: 0.9;
+          opacity: 0.8;
         }
 
         #status-page {
