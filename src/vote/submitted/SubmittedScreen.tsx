@@ -67,8 +67,13 @@ export function SubmittedScreen({
         </span>
       </p>
       <p>
-        Once the election closes, you can verify your vote is correct by finding it on the Election Status page using
-        this Verification #:
+        Once the election closes, you can verify your vote is correct by finding it on the{' '}
+        <Link href={`/election/${election_id}`}>
+          <a style={{ color: 'black' }} target="_blank">
+            Election Status page
+          </a>
+        </Link>{' '}
+        using this Verification #:
       </p>
 
       <UnlockedVote {...{ columns, state }} />
