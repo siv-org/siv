@@ -3,8 +3,8 @@ import { useEffect } from 'react'
 
 import decrypt from '../../crypto/decrypt'
 import { big, bigCipher, bigPubKey } from '../../crypto/types'
+import { PrivateBox } from '../PrivateBox'
 import { StateAndDispatch } from '../trustee-state'
-import { PrivateBox } from './PrivateBox'
 
 export const ReceivedPairwiseShares = ({ dispatch, state }: StateAndDispatch) => {
   const {

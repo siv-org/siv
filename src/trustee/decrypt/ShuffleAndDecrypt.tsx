@@ -1,6 +1,7 @@
 import { AcceptedVotes } from '../../status/AcceptedVotes'
 import { useBallotDesign } from '../../status/use-ballot-design'
 import { Trustees } from '../keygen/1-Trustees'
+import { PrivateBox } from '../PrivateBox'
 import { StateAndDispatch } from '../trustee-state'
 import { ResetButton } from './_ResetButton'
 import { VotesToDecrypt } from './VotesToDecrypt'
@@ -28,7 +29,10 @@ export const ShuffleAndDecrypt = ({
       <Trustees {...{ state }} />
 
       {/* Do we have a private keyshare stored? */}
-      <p>Your Private keyshare is: {private_keyshare}</p>
+      <br />
+      <PrivateBox>
+        <p>Your Private keyshare is: {private_keyshare}</p>
+      </PrivateBox>
 
       {/* All Accepted Votes */}
       <AcceptedVotes {...{ ballot_design }} title_prefix="II. " />

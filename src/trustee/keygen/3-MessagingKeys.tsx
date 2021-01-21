@@ -3,8 +3,8 @@ import { useEffect } from 'react'
 import { api } from '../../api-helper'
 import { generate_key_pair } from '../../crypto/generate-key-pair'
 import { big } from '../../crypto/types'
+import { PrivateBox } from '../PrivateBox'
 import { StateAndDispatch } from '../trustee-state'
-import { PrivateBox } from './PrivateBox'
 import { YouLabel } from './YouLabel'
 
 export const MessagingKeys = ({ dispatch, state }: StateAndDispatch) => {

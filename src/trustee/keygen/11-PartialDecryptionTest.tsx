@@ -3,9 +3,9 @@ import { useEffect } from 'react'
 import { api } from '../../api-helper'
 import { partial_decrypt } from '../../crypto/threshold-keygen'
 import { big } from '../../crypto/types'
+import { PrivateBox } from '../PrivateBox'
 import { StateAndDispatch, getParameters } from '../trustee-state'
 import { EncryptionNote } from './EncryptionNote'
-import { PrivateBox } from './PrivateBox'
 import { YouLabel } from './YouLabel'
 
 export const PartialDecryptionTest = ({ dispatch, state }: StateAndDispatch) => {

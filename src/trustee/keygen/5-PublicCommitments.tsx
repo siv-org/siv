@@ -3,8 +3,8 @@ import { useEffect } from 'react'
 import { api } from '../../api-helper'
 import { generate_public_coefficients } from '../../crypto/threshold-keygen'
 import { big } from '../../crypto/types'
+import { PrivateBox } from '../PrivateBox'
 import { StateAndDispatch, getParameters } from '../trustee-state'
-import { PrivateBox } from './PrivateBox'
 import { YouLabel } from './YouLabel'
 
 export const PublicCommitments = ({ dispatch, state }: StateAndDispatch) => {

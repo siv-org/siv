@@ -6,9 +6,9 @@ import encrypt from '../../crypto/encrypt'
 import pickRandomInteger from '../../crypto/pick-random-integer'
 import { evaluate_private_polynomial } from '../../crypto/threshold-keygen'
 import { big, bigPubKey, toStrings } from '../../crypto/types'
+import { PrivateBox } from '../PrivateBox'
 import { StateAndDispatch, getParameters } from '../trustee-state'
 import { EncryptionNote } from './EncryptionNote'
-import { PrivateBox } from './PrivateBox'
 import { YouLabel } from './YouLabel'
 
 export const SendPairwiseShares = ({ dispatch, state }: StateAndDispatch) => {

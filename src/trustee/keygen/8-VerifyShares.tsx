@@ -3,8 +3,8 @@ import { useEffect } from 'react'
 import { api } from '../../api-helper'
 import { is_received_share_valid } from '../../crypto/threshold-keygen'
 import { big } from '../../crypto/types'
+import { PrivateBox } from '../PrivateBox'
 import { StateAndDispatch, getParameters } from '../trustee-state'
-import { PrivateBox } from './PrivateBox'
 import { YouLabel } from './YouLabel'
 
 export const VerifyShares = ({ dispatch, state }: StateAndDispatch) => {

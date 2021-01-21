@@ -3,8 +3,8 @@ import { useEffect } from 'react'
 
 import { compute_keyshare } from '../../crypto/threshold-keygen'
 import { big } from '../../crypto/types'
+import { PrivateBox } from '../PrivateBox'
 import { StateAndDispatch } from '../trustee-state'
-import { PrivateBox } from './PrivateBox'
 
 export const CalculatePrivateKeyshare = ({ dispatch, state }: StateAndDispatch) => {
   const { trustees = [], decrypted_shares_from = {}, parameters, private_keyshare = '...' } = state
