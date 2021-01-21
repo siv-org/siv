@@ -1,5 +1,7 @@
 import { NoSsr } from '@material-ui/core'
+import { flatten } from 'lodash-es'
 import Link from 'next/link'
+import { useEffect } from 'react'
 
 import { State } from '../vote-state'
 import { DetailedEncryptionReceipt } from './DetailedEncryptionReceipt'
@@ -7,12 +9,30 @@ import { EncryptedVote } from './EncryptedVote'
 import { UnlockedVote } from './UnlockedVote'
 
 export function SubmittedScreen({
+  auth,
   election_id,
   state,
 }: {
+  auth: string
   election_id: string
   state: State & { submitted_at: Date }
 }): JSX.Element {
+  // Widen the page for the tables
+  useEffect(() => {
+    const mainEl = document.getElementsByTagName('main')[0]
+    if (mainEl) {
+      mainEl.style.maxWidth = '880px'
+    }
+  })
+
+  const columns = flatten(
+    state.ballot_design?.map(({ id, multiple_votes_allowed }) => {
+      return multiple_votes_allowed
+        ? new Array(multiple_votes_allowed).fill('').map((_, index) => `${id || 'vote'}_${index + 1}`)
+        : id || 'vote'
+    }),
+  )
+
   return (
     <NoSsr>
       <p>
@@ -20,7 +40,7 @@ export function SubmittedScreen({
         To protect your privacy, your vote was encrypted:
       </p>
 
-      <EncryptedVote />
+      <EncryptedVote {...{ auth, columns, state }} />
 
       <p>
         It&apos;s contents will only be unlocked once the election closes, after all votes have been shuffled for safe
