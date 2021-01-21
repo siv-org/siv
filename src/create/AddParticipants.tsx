@@ -108,7 +108,7 @@ export const AddParticipants = () => {
             if (status === 201) setClosed(true)
           }}
         >
-          {!closed ? `Close Election` : `Election Closed.`}
+          {!closed ? `Unlock Votes` : `Votes Unlocked.`}
         </OnClickButton>
       )}
 
