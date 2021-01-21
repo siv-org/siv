@@ -1,5 +1,6 @@
 import { FormControlLabel, Radio, RadioGroup, TextField } from '@material-ui/core'
 import { Dispatch, useState } from 'react'
+import Linkify from 'react-linkify'
 
 import { encode } from '../crypto/encode'
 import { Item as ItemType } from './useElectionInfo'
@@ -120,9 +121,18 @@ export const TitleDescriptionQuestion = ({
   title?: string
 }) => (
   <>
-    <p className="title">{title}</p>
-    {description && <p className="description">{description}</p>}
-    {question && <p className="question">{question}</p>}
+    <Linkify
+      componentDecorator={(decoratedHref, decoratedText, key) => (
+        <a href={decoratedHref} key={key} target="blank">
+          {/* Shorten to domain name only if possible */}
+          {(decoratedText.match(/\w*?\.(com|org)/) || [decoratedText])[0]}
+        </a>
+      )}
+    >
+      <p className="title">{title}</p>
+      {description && <p className="description">{description}</p>}
+      {question && <p className="question">{question}</p>}
+    </Linkify>
     <style jsx>{`
       .title {
         font-size: 16px;
