@@ -19,7 +19,7 @@ export const TrusteePage = (): JSX.Element => {
 
   return (
     <>
-      <Head title="Unlock Votes" />
+      <Head title="Trustee" />
 
       <HeaderBar />
       <main>
