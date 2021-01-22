@@ -90,7 +90,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
         return sendEmail({
           recipient: trustee,
-          subject: `Key Generation for ${election_title || `Election ${election_id}`}`,
+          subject: `Trustee Invitation: ${election_title || `Election ${election_id}`}`,
           text: `Dear ${trustee},
 <h3>You're invited to join a SIV Multiparty Key Generation${
             election_title ? `: ${election_title}` : ''
