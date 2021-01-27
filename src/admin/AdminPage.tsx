@@ -2,14 +2,14 @@ import { Dispatch, SetStateAction, useState } from 'react'
 
 import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
-import { AddVoters } from './AddVoters'
 import { BallotDesign } from './BallotDesign/BallotDesign'
 import { ElectionID } from './ElectionID'
-import { ExistingVoters } from './ExistingVoters'
 import { HeaderBar } from './HeaderBar'
 import { load_stage } from './load-existing'
 import { ElectionTitle } from './Title/ElectionTitle'
 import { AddTrustees } from './Trustees/AddTrustees'
+import { AddVoters } from './Voters/AddVoters'
+import { ExistingVoters } from './Voters/ExistingVoters'
 
 export type StageAndSetter = { set_stage: Dispatch<SetStateAction<number>>; stage: number }
 
