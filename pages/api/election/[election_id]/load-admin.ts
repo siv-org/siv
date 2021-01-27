@@ -6,6 +6,15 @@ const { ADMIN_PASSWORD } = process.env
 
 export type Voters = [string, boolean][]
 
+export type LoadAdminResponse = {
+  ballot_design?: string
+  election_id?: string
+  election_title?: string
+  threshold_public_key?: string
+  trustees?: string[]
+  voters?: Voters
+}
+
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { election_id, password } = req.query
 
@@ -48,5 +57,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     return [...acc, [email, !!votesByAuth[auth_token]]]
   }, [])
 
-  return res.status(200).send({ ballot_design, election_id, election_title, threshold_public_key, trustees, voters })
+  return res
+    .status(200)
+    .send({ ballot_design, election_id, election_title, threshold_public_key, trustees, voters } as LoadAdminResponse)
 }

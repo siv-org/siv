@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import use_swr, { mutate } from 'swr'
 
+import { LoadAdminResponse } from '../../pages/api/election/[election_id]/load-admin'
 import { checkPassword } from '../create/AddGroup'
 import { StageAndSetter } from './AdminPage'
 import { useElectionID } from './ElectionID'
@@ -17,7 +18,7 @@ export const load_stage = async ({ set_stage, stage }: StageAndSetter) => {
   }, [election_title, threshold_public_key])
 }
 
-export function use_stored_info(): { election_title?: string; threshold_public_key?: string } {
+export function use_stored_info(): LoadAdminResponse {
   const election_id = useElectionID()
 
   const { data } = use_swr(
