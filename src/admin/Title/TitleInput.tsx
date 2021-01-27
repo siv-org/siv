@@ -1,15 +1,15 @@
 import { useState } from 'react'
 
-import { api } from '../api-helper'
-import { StageAndSetter } from './AdminPage'
-import { SaveButton } from './SaveButton'
+import { api } from '../../api-helper'
+import { StageAndSetter } from '../AdminPage'
+import { revalidate } from '../load-existing'
+import { SaveButton } from '../SaveButton'
 
-export const ElectionTitleInput = ({ set_stage, stage }: StageAndSetter) => {
+export const TitleInput = ({ set_stage, stage }: StageAndSetter) => {
   const [election_title, set_title] = useState('')
 
   return (
     <>
-      <h3>Election Title:</h3>
       <input
         id="election-title"
         placeholder="Give your election a name your voters will recognize"
@@ -27,6 +27,8 @@ export const ElectionTitleInput = ({ set_stage, stage }: StageAndSetter) => {
           id="election-title-save"
           onPress={async () => {
             const response = await api('create-election', { election_title, password: localStorage.password })
+            revalidate()
+
             if (response.status === 201) {
               const { election_id } = await response.json()
 

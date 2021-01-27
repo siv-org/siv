@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 export const ElectionID = () => {
-  const { election_id } = useRouter().query
+  const election_id = useElectionID()
 
   if (!election_id) return null
 
@@ -19,3 +19,5 @@ export const ElectionID = () => {
     </div>
   )
 }
+
+export const useElectionID = () => useRouter().query.election_id
