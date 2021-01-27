@@ -1,11 +1,14 @@
-import { useState } from 'react'
+import { Dispatch, SetStateAction, useState } from 'react'
 
 import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
+import { AddTrustees } from './AddTrustees'
 import { AddVoters } from './AddVoters'
 import { ElectionTitleInput } from './ElectionTitleInput'
 import { ExistingVoters } from './ExistingVoters'
 import { HeaderBar } from './HeaderBar'
+
+export type StageAndSetter = { set_stage: Dispatch<SetStateAction<number>>; stage: number }
 
 export const AdminPage = (): JSX.Element => {
   const [stage, set_stage] = useState(0)
@@ -18,7 +21,8 @@ export const AdminPage = (): JSX.Element => {
       <main>
         <h1>Create New Election</h1>
         <ElectionTitleInput {...{ set_stage, stage }} />
-        {stage >= 1 && (
+        {stage >= 1 && <AddTrustees {...{ set_stage, stage }} />}
+        {stage >= 2 && (
           <>
             <AddVoters />
             <ExistingVoters />
@@ -38,9 +42,11 @@ export const AdminPage = (): JSX.Element => {
           margin-top: 0;
           font-size: 22px;
         }
-
-        h2 {
-          font-size: 18px;
+      `}</style>
+      <style global jsx>{`
+        h3 {
+          margin-top: 30px;
+          margin-bottom: 0;
         }
       `}</style>
       <GlobalCSS />

@@ -1,20 +1,23 @@
-import { Dispatch, SetStateAction } from 'react'
-
+import { StageAndSetter } from './AdminPage'
 import { SaveButton } from './SaveButton'
 
-export const ElectionTitleInput = ({
-  set_stage,
-  stage,
-}: {
-  set_stage: Dispatch<SetStateAction<number>>
-  stage: number
-}) => {
+export const ElectionTitleInput = ({ set_stage, stage }: StageAndSetter) => {
   return (
     <>
-      <p>Election Title:</p>
-      <input id="election-title" placeholder="Give your election a name your voters will recognize" />
+      <h3>Election Title:</h3>
+      <input
+        id="election-title"
+        placeholder="Give your election a name your voters will recognize"
+        onKeyPress={(event) => {
+          if (event.key === 'Enter') {
+            document.getElementById('election-title')?.blur()
+            document.getElementById('election-title-save')?.click()
+          }
+        }}
+      />
       {stage === 0 && (
         <SaveButton
+          id="election-title-save"
           onPress={async () => {
             await new Promise((res) => setTimeout(res, 1000))
             set_stage(stage + 1)
@@ -23,10 +26,6 @@ export const ElectionTitleInput = ({
       )}
 
       <style jsx>{`
-        p {
-          margin-bottom: 0px;
-        }
-
         input {
           border: 1px solid #ccc;
           border-radius: 4px;

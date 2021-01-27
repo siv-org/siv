@@ -47,13 +47,15 @@ export const OnClickButton = ({
   children,
   disabled,
   onClick,
+  id,
   background,
   style = {},
 }: ButtonProps & {
   disabled?: boolean
+  id?: string
   onClick: () => void
 }): JSX.Element => (
-  <a className={disabled ? 'disabled' : ''} style={style} onClick={() => !disabled && onClick()}>
+  <a className={disabled ? 'disabled' : ''} id={id} style={style} onClick={() => !disabled && onClick()}>
     {children}
     <style jsx>{`
       a {
