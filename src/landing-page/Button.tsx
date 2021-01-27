@@ -4,7 +4,7 @@ const darkBlue = '#002868'
 
 type ButtonProps = {
   background?: string
-  children: string
+  children: string | JSX.Element
   invertColor?: boolean
   style?: React.CSSProperties
 }

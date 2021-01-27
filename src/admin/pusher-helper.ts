@@ -1,7 +1,7 @@
 import Pusher from 'pusher-js'
 import { Dispatch, useEffect } from 'react'
 
-import { Voted } from './AddParticipants'
+import { Voted } from './AddVoters'
 
 export function initPusher({
   election_id,

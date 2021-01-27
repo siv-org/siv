@@ -106,7 +106,7 @@ export const AddGroup = ({
   )
 }
 
-function checkPassword() {
+export function checkPassword() {
   if (!localStorage.password) {
     localStorage.password = prompt('Admin password?')
   }

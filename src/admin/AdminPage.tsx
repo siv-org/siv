@@ -1,17 +1,29 @@
+import { useState } from 'react'
+
 import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
-import { AddParticipants } from './AddParticipants'
+import { AddVoters } from './AddVoters'
+import { ElectionTitleInput } from './ElectionTitleInput'
+import { ExistingVoters } from './ExistingVoters'
 import { HeaderBar } from './HeaderBar'
 
 export const AdminPage = (): JSX.Element => {
+  const [stage, set_stage] = useState(0)
+
   return (
     <>
       <Head title="Create new election" />
 
       <HeaderBar />
       <main>
-        <h1>Add Voters</h1>
-        <AddParticipants />
+        <h1>Create New Election</h1>
+        <ElectionTitleInput {...{ set_stage, stage }} />
+        {stage >= 1 && (
+          <>
+            <AddVoters />
+            <ExistingVoters />
+          </>
+        )}
       </main>
 
       <style jsx>{`

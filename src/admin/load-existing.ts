@@ -2,7 +2,7 @@ import { useRouter } from 'next/router'
 import { Dispatch } from 'react'
 
 import { Voters } from '../../pages/api/election/[election_id]/load-admin'
-import { Voted } from './AddParticipants'
+import { Voted } from './AddVoters'
 
 export async function load_existing_election({
   election_id,
