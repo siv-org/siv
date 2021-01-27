@@ -2,10 +2,7 @@ import { useState } from 'react'
 import Editor from 'react-simple-code-editor'
 
 export const AddParticipants = () => {
-  const [content, set_content] = useState(`example@dsernst.com
-another@dsernst.com
-morevoters@dsernst.com
-andsomeonelse@dsernst.com`)
+  const [content, set_content] = useState('')
   return (
     <>
       <label>Add voters by email address:</label>
@@ -35,6 +32,11 @@ andsomeonelse@dsernst.com`)
 
         .editor {
           line-height: 22px;
+
+          /* Striped background */
+          background-image: linear-gradient(#fff 50%, #f6f6f6 50%);
+          background-size: 100% 44px; /* 2x line-height */
+          background-position: left 5px;
         }
 
         .editor #textarea,
