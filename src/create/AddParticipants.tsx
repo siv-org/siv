@@ -38,7 +38,11 @@ export const AddParticipants = () => {
             const election_title = (document.getElementById('election-title') as HTMLInputElement).value
 
             // Call backend endpoint
-            const response = await api('invite-trustees', { election_title, password: localStorage.password, trustees })
+            const response = await api('invite-trustees-old', {
+              election_title,
+              password: localStorage.password,
+              trustees,
+            })
 
             // Success case
             if (response.status === 201) {

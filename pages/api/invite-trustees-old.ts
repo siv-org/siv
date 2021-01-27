@@ -15,6 +15,8 @@ import { pusher } from './pusher'
 
 const { ADMIN_EMAIL, ADMIN_PASSWORD } = process.env
 
+// Deprecated on Tues Jan 16 2021, as part of new-admin UI
+
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Ensure env-vars are set
   if (!ADMIN_EMAIL) return res.status(501).json({ error: 'Missing process.env.ADMIN_EMAIL' })
