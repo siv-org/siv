@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction, useState } from 'react'
 import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
 import { AddVoters } from './AddVoters'
-import { BallotDesigner } from './BallotDesigner'
+import { BallotDesign } from './BallotDesign/BallotDesign'
 import { ElectionID } from './ElectionID'
 import { ExistingVoters } from './ExistingVoters'
 import { HeaderBar } from './HeaderBar'
@@ -28,7 +28,7 @@ export const AdminPage = (): JSX.Element => {
         <ElectionID />
         <ElectionTitle {...{ set_stage, stage }} />
         {stage >= 1 && <AddTrustees {...{ set_stage, stage }} />}
-        {stage >= 2 && <BallotDesigner {...{ set_stage, stage }} />}
+        {stage >= 2 && <BallotDesign {...{ set_stage, stage }} />}
         {stage >= 3 && (
           <>
             <AddVoters />

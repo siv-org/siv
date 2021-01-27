@@ -1,18 +1,22 @@
 import { use_stored_info } from '../load-existing'
 
-export const StoredTitle = () => {
-  const { election_title } = use_stored_info()
+export const StoredDesign = () => {
+  const { ballot_design } = use_stored_info()
 
   return (
     <div>
-      {election_title || 'Error loading election'}
+      {ballot_design || 'Error loading election'}
       <style jsx>{`
         div {
           border: 1px solid #ccc;
           border-radius: 4px;
-          font-size: 14px;
+          font-family: monospace;
+          font-size: 12px;
+          height: 200px;
           padding: 8px;
+          resize: vertical;
           width: 100%;
+          white-space: pre;
         }
 
         div:hover {

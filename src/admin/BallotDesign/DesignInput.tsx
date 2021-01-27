@@ -1,16 +1,14 @@
 import { useState } from 'react'
 
-import { StageAndSetter } from './AdminPage'
-import { SaveButton } from './SaveButton'
+import { api } from '../../api-helper'
+import { StageAndSetter } from '../AdminPage'
+import { useElectionID } from '../ElectionID'
+import { revalidate } from '../load-existing'
+import { SaveButton } from '../SaveButton'
 
-export const BallotDesigner = ({ set_stage, stage }: StageAndSetter) => {
+export const DesignInput = ({ stage }: StageAndSetter) => {
   const [error, setError] = useState<string | null>()
-
-  return (
-    <>
-      <h3>Ballot design: {error && <span className="error">⚠️ &nbsp;{error}</span>}</h3>
-      <textarea
-        defaultValue={`[
+  const [ballot_design, set_ballot_design] = useState(`[
   {
     "title": "Who should become President?",
     "options": [
@@ -20,9 +18,17 @@ export const BallotDesigner = ({ set_stage, stage }: StageAndSetter) => {
     ],
     "write_in_allowed": true
   }
-]`}
+]`)
+  const election_id = useElectionID()
+
+  return (
+    <>
+      {error && <span className="error">⚠️ &nbsp;{error}</span>}
+      <textarea
         id="ballot-design"
+        value={ballot_design}
         onChange={(event) => {
+          set_ballot_design(event.target.value)
           try {
             JSON.parse(event.target.value)
             setError(null)
@@ -35,17 +41,21 @@ export const BallotDesigner = ({ set_stage, stage }: StageAndSetter) => {
       {stage === 2 && (
         <SaveButton
           onPress={async () => {
-            await new Promise((res) => setTimeout(res, 1000))
-            set_stage(stage + 1)
+            const response = await api(`election/${election_id}/save-ballot-design`, {
+              ballot_design,
+              password: localStorage.password,
+            })
+
+            if (response.status === 201) {
+              revalidate(election_id)
+            } else {
+              throw await response.json()
+            }
           }}
         />
       )}
 
       <style jsx>{`
-        p {
-          margin-bottom: 0px;
-        }
-
         textarea {
           border-color: #ccc;
           border-radius: 4px;
