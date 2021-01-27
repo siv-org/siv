@@ -8,7 +8,7 @@ import { BallotDesigner } from './BallotDesigner'
 import { ElectionID } from './ElectionID'
 import { ExistingVoters } from './ExistingVoters'
 import { HeaderBar } from './HeaderBar'
-import { load_existing_election } from './load-existing'
+import { load_stage } from './load-existing'
 import { ElectionTitle } from './Title/ElectionTitle'
 
 export type StageAndSetter = { set_stage: Dispatch<SetStateAction<number>>; stage: number }
@@ -16,7 +16,7 @@ export type StageAndSetter = { set_stage: Dispatch<SetStateAction<number>>; stag
 export const AdminPage = (): JSX.Element => {
   const [stage, set_stage] = useState(0)
 
-  load_existing_election({ set_stage, stage })
+  load_stage({ set_stage, stage })
 
   return (
     <>

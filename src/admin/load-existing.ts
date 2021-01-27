@@ -7,7 +7,7 @@ import { useElectionID } from './ElectionID'
 /** On page load, check if we're supposed to be loading an existing election
  *  If so, set the appropriate stage.
  */
-export const load_existing_election = async ({ set_stage, stage }: StageAndSetter) => {
+export const load_stage = async ({ set_stage, stage }: StageAndSetter) => {
   const { election_title } = use_stored_info()
 
   if (election_title && stage === 0) {
@@ -20,10 +20,8 @@ const fetcher = (url: string) => fetch(url).then((r) => r.json())
 export function use_stored_info() {
   const election_id = useElectionID()
 
-  checkPassword()
-
   const { data } = use_swr(
-    election_id ? `api/election/${election_id}/load-admin?password=${localStorage.password}` : null,
+    checkPassword() && election_id ? `api/election/${election_id}/load-admin?password=${localStorage.password}` : null,
     fetcher,
   )
 
