@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import use_swr, { mutate } from 'swr'
 
 import { checkPassword } from '../create/AddGroup'
@@ -10,9 +11,11 @@ const fetcher = (url: string) => fetch(url).then((r) => r.json())
 export const load_stage = async ({ set_stage, stage }: StageAndSetter) => {
   const { election_title } = use_stored_info()
 
-  if (election_title && stage === 0) {
-    set_stage(1)
-  }
+  useEffect(() => {
+    if (election_title && stage === 0) {
+      set_stage(1)
+    }
+  }, [election_title])
 }
 
 export function use_stored_info() {
@@ -26,8 +29,6 @@ export function use_stored_info() {
   return data || {}
 }
 
-export function revalidate() {
-  const election_id = useElectionID()
-
+export function revalidate(election_id: string) {
   mutate(`api/election/${election_id}/load-admin?password=${localStorage.password}`)
 }

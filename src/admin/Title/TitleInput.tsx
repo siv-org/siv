@@ -1,11 +1,11 @@
+import router from 'next/router'
 import { useState } from 'react'
 
 import { api } from '../../api-helper'
 import { StageAndSetter } from '../AdminPage'
-import { revalidate } from '../load-existing'
 import { SaveButton } from '../SaveButton'
 
-export const TitleInput = ({ set_stage, stage }: StageAndSetter) => {
+export const TitleInput = ({ stage }: StageAndSetter) => {
   const [election_title, set_title] = useState('')
 
   return (
@@ -27,7 +27,6 @@ export const TitleInput = ({ set_stage, stage }: StageAndSetter) => {
           id="election-title-save"
           onPress={async () => {
             const response = await api('create-election', { election_title, password: localStorage.password })
-            revalidate()
 
             if (response.status === 201) {
               const { election_id } = await response.json()
@@ -35,9 +34,7 @@ export const TitleInput = ({ set_stage, stage }: StageAndSetter) => {
               // Set election_id in URL
               const url = new URL(window.location.toString())
               url.searchParams.set('election_id', election_id)
-              window.history.pushState({}, '', url.toString())
-
-              set_stage(stage + 1)
+              router.push(url)
             } else {
               throw await response.json()
             }
