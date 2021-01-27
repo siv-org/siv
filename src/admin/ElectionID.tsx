@@ -20,4 +20,4 @@ export const ElectionID = () => {
   )
 }
 
-export const useElectionID = () => useRouter().query.election_id
+export const useElectionID = () => useRouter().query.election_id as string | undefined

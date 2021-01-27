@@ -9,16 +9,15 @@ const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
 /** On page load, set the appropriate stage for existing elections. */
 export const load_stage = async ({ set_stage, stage }: StageAndSetter) => {
-  const { election_title } = use_stored_info()
+  const { election_title, threshold_public_key } = use_stored_info()
 
   useEffect(() => {
-    if (election_title && stage === 0) {
-      set_stage(1)
-    }
-  }, [election_title])
+    if (threshold_public_key && stage < 2) return set_stage(2)
+    if (election_title && stage < 1) return set_stage(1)
+  }, [election_title, threshold_public_key])
 }
 
-export function use_stored_info() {
+export function use_stored_info(): { election_title?: string; threshold_public_key?: string } {
   const election_id = useElectionID()
 
   const { data } = use_swr(
@@ -29,6 +28,6 @@ export function use_stored_info() {
   return data || {}
 }
 
-export function revalidate(election_id: string) {
+export function revalidate(election_id?: string) {
   mutate(`api/election/${election_id}/load-admin?password=${localStorage.password}`)
 }
