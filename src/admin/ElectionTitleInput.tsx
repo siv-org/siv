@@ -1,13 +1,20 @@
+import { useState } from 'react'
+
+import { api } from '../api-helper'
 import { StageAndSetter } from './AdminPage'
 import { SaveButton } from './SaveButton'
 
 export const ElectionTitleInput = ({ set_stage, stage }: StageAndSetter) => {
+  const [election_title, set_title] = useState('')
+
   return (
     <>
       <h3>Election Title:</h3>
       <input
         id="election-title"
         placeholder="Give your election a name your voters will recognize"
+        value={election_title}
+        onChange={(event) => set_title(event.target.value)}
         onKeyPress={(event) => {
           if (event.key === 'Enter') {
             document.getElementById('election-title')?.blur()
@@ -19,8 +26,19 @@ export const ElectionTitleInput = ({ set_stage, stage }: StageAndSetter) => {
         <SaveButton
           id="election-title-save"
           onPress={async () => {
-            await new Promise((res) => setTimeout(res, 1000))
-            set_stage(stage + 1)
+            const response = await api('create-election', { election_title, password: localStorage.password })
+            if (response.status === 201) {
+              const { election_id } = await response.json()
+
+              // Set election_id in URL
+              const url = new URL(window.location.toString())
+              url.searchParams.set('election_id', election_id)
+              window.history.pushState({}, '', url.toString())
+
+              set_stage(stage + 1)
+            } else {
+              throw await response.json()
+            }
           }}
         />
       )}

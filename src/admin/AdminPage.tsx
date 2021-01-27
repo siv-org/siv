@@ -5,6 +5,7 @@ import { Head } from '../Head'
 import { AddTrustees } from './AddTrustees'
 import { AddVoters } from './AddVoters'
 import { BallotDesigner } from './BallotDesigner'
+import { ElectionID } from './ElectionID'
 import { ElectionTitleInput } from './ElectionTitleInput'
 import { ExistingVoters } from './ExistingVoters'
 import { HeaderBar } from './HeaderBar'
@@ -21,6 +22,7 @@ export const AdminPage = (): JSX.Element => {
       <HeaderBar />
       <main>
         <h1>Create New Election</h1>
+        <ElectionID />
         <ElectionTitleInput {...{ set_stage, stage }} />
         {stage >= 1 && <AddTrustees {...{ set_stage, stage }} />}
         {stage >= 2 && <BallotDesigner {...{ set_stage, stage }} />}
