@@ -14,6 +14,7 @@ export const ExistingVoters = () => {
   const num_voted = voters?.filter((v) => v.has_voted).length
   const [unlocking, toggle_unlocking] = useReducer((state) => !state, false)
   const [sending, toggle_sending] = useReducer((state) => !state, false)
+  const [error, set_error] = useState('')
 
   const { last_selected, pressing_shift, set_last_selected } = use_multi_select()
 
@@ -74,16 +75,23 @@ export const ExistingVoters = () => {
               return acc
             }, [])
 
-            const response = await api(`election/${election_id}/admin/invite-voters`, {
-              password: localStorage.password,
-              voters: voters_to_invite,
-            })
+            try {
+              const response = await api(`election/${election_id}/admin/invite-voters`, {
+                password: localStorage.password,
+                voters: voters_to_invite,
+              })
 
-            if (response.status === 201) {
-              revalidate(election_id)
-            } else {
-              console.error(response.json())
+              if (response.status === 201) {
+                revalidate(election_id)
+              } else {
+                const json = await response.json()
+                console.error(json)
+                set_error(json?.error)
+              }
+            } catch (e) {
+              set_error(e.message)
             }
+
             toggle_sending()
           }}
         >
@@ -92,6 +100,13 @@ export const ExistingVoters = () => {
             Send{sending ? 'ing' : ''} {num_checked} Invitation{num_checked === 1 ? '' : 's'}
           </>
         </OnClickButton>
+
+        {error && (
+          <span className="error">
+            <b> ⚠️ Error:</b> {error}
+            <a onClick={() => set_error('')}>x</a>
+          </span>
+        )}
 
         {/* Unlock Votes btn */}
         <OnClickButton
@@ -206,7 +221,16 @@ export const ExistingVoters = () => {
         </tbody>
       </table>
       <style jsx>{`
-        a {
+        .error {
+          align-self: center;
+          border: 1px solid rgba(131, 1, 1, 0.776);
+          border-radius: 3px;
+          padding: 3px 10px;
+          background: rgb(255, 246, 246);
+        }
+
+        .error a {
+          margin-left: 10px;
           cursor: pointer;
         }
 
