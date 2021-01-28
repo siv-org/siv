@@ -123,7 +123,7 @@ export const ExistingVoters = () => {
                 </span>
               </td>
               <td style={{ fontFamily: 'monospace' }}>{mask_tokens ? mask(auth_token) : auth_token}</td>
-              <td>{has_voted}</td>
+              <td style={{ fontWeight: 700, textAlign: 'center' }}>{has_voted ? '✓' : ''}</td>
             </tr>
           ))}
         </tbody>
