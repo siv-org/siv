@@ -8,14 +8,16 @@ export const ExistingVoters = () => {
         <tr>
           <th></th>
           <th>email</th>
+          <th>auth token</th>
           <th>voted</th>
         </tr>
       </thead>
       <tbody>
-        {voters?.map(([email, has_voted], index) => (
+        {voters?.map(({ auth_token, email, has_voted }, index) => (
           <tr key={email}>
             <td>{index + 1}</td>
             <td>{email}</td>
+            <td>{mask(auth_token)}</td>
             <td>{has_voted}</td>
           </tr>
         ))}
@@ -42,3 +44,5 @@ export const ExistingVoters = () => {
     </table>
   )
 }
+
+const mask = (string: string) => `${string.slice(0, 3)}....${string.slice(-2)}`

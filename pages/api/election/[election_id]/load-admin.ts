@@ -4,7 +4,7 @@ import { firebase } from '../../_services'
 
 const { ADMIN_PASSWORD } = process.env
 
-export type Voters = [string, boolean][]
+export type Voters = { auth_token: string; email: string; has_voted: boolean }[]
 
 export type LoadAdminResponse = {
   ballot_design?: string
@@ -54,7 +54,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Build voters tuple array [email, has_voted][]
   const voters: Voters = (await loadVoters).docs.reduce((acc: Voters, doc) => {
     const { auth_token, email } = { ...doc.data() } as { auth_token: string; email: string }
-    return [...acc, [email, !!votesByAuth[auth_token]]]
+    return [...acc, { auth_token, email, has_voted: !!votesByAuth[auth_token] }]
   }, [])
 
   return res

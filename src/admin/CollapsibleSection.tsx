@@ -30,7 +30,7 @@ export const CollapsibleSection = ({
         h3 {
           background-color: rgba(244, 244, 255, 0.8);
           border: 1px solid rgba(190, 185, 255, 0.4);
-          border-radius: 4px;
+          border-radius: 2px;
           cursor: pointer;
           margin-bottom: 5px;
           padding: 5px;
