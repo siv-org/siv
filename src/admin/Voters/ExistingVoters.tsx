@@ -138,7 +138,7 @@ export const ExistingVoters = () => {
         </thead>
         <tbody>
           {voters?.map(({ auth_token, email, has_voted, invite_queued, mailgun_events }, index) => (
-            <tr key={email}>
+            <tr className={`${checked[index] ? 'checked' : ''}`} key={email}>
               <td
                 className="hoverable"
                 onClick={() => {
@@ -220,6 +220,10 @@ export const ExistingVoters = () => {
         th {
           background: #f9f9f9;
           font-size: 11px;
+        }
+
+        tr.checked {
+          background: #f1f1f1;
         }
 
         .hoverable:hover {
