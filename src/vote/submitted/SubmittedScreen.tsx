@@ -37,14 +37,14 @@ export function SubmittedScreen({
     <NoSsr>
       <Link href={`/election/${election_id}`}>
         <a id="status-page" target="_blank">
-          <img src="/vote/externallinkicon.jpg" width="12px" />
+          <img src="/vote/externallinkicon.jpg" width="15px" />
           Click here to visit the Election Status page.
         </a>
       </Link>
 
       <h3>How to verify your vote:</h3>
       <p>
-        Once the election closes and votes are unlocked, you can verify your vote by finding it on the{' '}
+        Once the election closes and votes are unlocked, you can verify yours by finding it on the{' '}
         <Link href={`/election/${election_id}`}>
           <a style={{ color: 'black' }} target="_blank">
             Election Status page
@@ -67,7 +67,7 @@ export function SubmittedScreen({
 
       <p>
         <img id="lock-icon" src="/vote/lock.png" width="12px" />
-        To protect your privacy, your vote was encrypted:
+        To protect your privacy, your vote was encrypted before submission:
       </p>
 
       <EncryptedVote {...{ auth, columns, state }} />
@@ -90,6 +90,7 @@ export function SubmittedScreen({
           margin: 1rem 0 3rem;
           display: block;
           font-weight: bold;
+          font-size: 19px;
         }
 
         #status-page img {

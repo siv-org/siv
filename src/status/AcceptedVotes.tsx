@@ -40,7 +40,7 @@ export const AcceptedVotes = ({
   return (
     <div>
       <h3>{title_prefix}All Submitted Votes</h3>
-      <p>Ordered oldest to newest. These votes will be reordered and unlocked once the election closes.</p>
+      <p>Ordered oldest to newest. When the election closes, these votes will be shuffled and then unlocked.</p>
       <table>
         <thead>
           <tr>

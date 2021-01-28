@@ -28,6 +28,7 @@ export const ElectionStatusPage = (): JSX.Element => {
 
           {election_title && <h2>{election_title}</h2>}
           <DecryptedVotes {...{ ballot_design }} />
+          <br />
 
           {/* Display simple list of Encrypted Votes if we haven't unlocked any yet */}
           {/* If we have unlocked, display Collapsible */}
