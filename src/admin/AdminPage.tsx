@@ -9,7 +9,6 @@ import { load_stage } from './load-existing'
 import { ElectionTitle } from './Title/ElectionTitle'
 import { AddTrustees } from './Trustees/AddTrustees'
 import { AddVoters } from './Voters/AddVoters'
-import { ExistingVoters } from './Voters/ExistingVoters'
 
 export type StageAndSetter = { set_stage: Dispatch<SetStateAction<number>>; stage: number }
 
@@ -29,12 +28,7 @@ export const AdminPage = (): JSX.Element => {
         <ElectionTitle {...{ set_stage, stage }} />
         {stage >= 1 && <AddTrustees {...{ set_stage, stage }} />}
         {stage >= 2 && <BallotDesign {...{ set_stage, stage }} />}
-        {stage >= 3 && (
-          <>
-            <AddVoters />
-            <ExistingVoters />
-          </>
-        )}
+        {stage >= 3 && <AddVoters />}
       </main>
 
       <style jsx>{`
@@ -48,12 +42,6 @@ export const AdminPage = (): JSX.Element => {
         h1 {
           margin-top: 0;
           font-size: 22px;
-        }
-      `}</style>
-      <style global jsx>{`
-        h3 {
-          margin-top: 30px;
-          margin-bottom: 0;
         }
       `}</style>
       <GlobalCSS />
