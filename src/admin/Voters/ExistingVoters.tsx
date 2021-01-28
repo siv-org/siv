@@ -42,6 +42,31 @@ export const ExistingVoters = () => {
     }
   }, [voters?.length])
 
+  // Auto run api/check-invite-status when there are pending invites
+  const num_invited = voters?.reduce(
+    (acc: { delivered: number; queued: number }, voter) => {
+      if (voter.invite_queued) acc.queued++
+      if (voter.mailgun_events?.delivered) acc.delivered++
+      return acc
+    },
+    { delivered: 0, queued: 0 },
+  )
+  const pending_invites = num_invited && num_invited?.queued > num_invited?.delivered
+  useEffect(() => {
+    if (pending_invites) {
+      const interval = setInterval(() => {
+        console.log('Checking pending invites...')
+        api(`election/${election_id}/admin/check-invite-status?password=${localStorage.password}`).then(() =>
+          revalidate(election_id),
+        )
+      }, 1000)
+      return () => {
+        console.log('All invites delivered 👍')
+        clearInterval(interval)
+      }
+    }
+  }, [pending_invites])
+
   // Don't show anything if we don't have any voters yet
   if (!voters?.length) return null
 
