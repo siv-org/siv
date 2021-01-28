@@ -65,6 +65,7 @@ export const DesignInput = ({ stage }: StageAndSetter) => {
           padding: 8px;
           resize: vertical;
           width: 100%;
+          line-height: 17px;
         }
 
         .error {

@@ -17,6 +17,7 @@ export const StoredDesign = () => {
           resize: vertical;
           width: 100%;
           white-space: pre;
+          letter-spacing: normal;
         }
 
         div:hover {
