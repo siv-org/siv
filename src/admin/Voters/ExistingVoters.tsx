@@ -15,6 +15,24 @@ export const ExistingVoters = () => {
   const [unlocking, toggle_unlocking] = useReducer((state) => !state, false)
   const [sending, toggle_sending] = useReducer((state) => !state, false)
 
+  // Logic to handle multi-select (holding shift)
+  const [pressing_shift, set_shift] = useState(false)
+  const [last_selected, set_last_selected] = useState<number>()
+  function handleKeyUp(e: KeyboardEvent) {
+    if (e.key === 'Shift') set_shift(false)
+  }
+  function handleKeyDown(e: KeyboardEvent) {
+    if (e.key === 'Shift') set_shift(true)
+  }
+  useEffect(() => {
+    document.addEventListener('keyup', handleKeyUp, false)
+    document.addEventListener('keydown', handleKeyDown, false)
+    return () => {
+      document.removeEventListener('keyup', handleKeyUp)
+      document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [])
+
   // Grow checked array to match voters list
   useEffect(() => {
     if (voters && checked.length !== voters.length) {
@@ -87,17 +105,19 @@ export const ExistingVoters = () => {
           <tr>
             <th>
               <input
+                style={{ cursor: 'pointer' }}
                 type="checkbox"
                 onChange={(event) => {
                   const new_checked = [...checked]
                   new_checked.fill(event.target.checked)
                   set_checked(new_checked)
+                  set_last_selected(undefined)
                 }}
               />
             </th>
             <th>#</th>
             <th>email</th>
-            <th className="auth-header" onClick={toggle_tokens}>
+            <th className="hoverable" onClick={toggle_tokens}>
               {mask_tokens ? 'masked' : 'full'}
               <br />
               auth token
@@ -109,16 +129,24 @@ export const ExistingVoters = () => {
         <tbody>
           {voters?.map(({ auth_token, email, has_voted, invite_queued }, index) => (
             <tr key={email}>
-              <td>
-                <input
-                  checked={checked[index]}
-                  type="checkbox"
-                  onChange={() => {
-                    const new_checked = [...checked]
+              <td
+                className="hoverable"
+                onClick={() => {
+                  const new_checked = [...checked]
+                  if (pressing_shift && last_selected !== undefined) {
+                    // If they're holding shift, set all between last_selected and this index to !checked[index]
+                    for (let i = Math.min(index, last_selected); i <= Math.max(index, last_selected); i += 1) {
+                      new_checked[i] = !checked[index]
+                    }
+                  } else {
                     new_checked[index] = !checked[index]
-                    set_checked(new_checked)
-                  }}
-                />
+                  }
+
+                  set_last_selected(index)
+                  set_checked(new_checked)
+                }}
+              >
+                <input readOnly checked={checked[index]} className="hoverable" type="checkbox" />
               </td>
               <td>{index + 1}</td>
               <td>
@@ -182,7 +210,7 @@ export const ExistingVoters = () => {
           font-size: 11px;
         }
 
-        .auth-header:hover {
+        .hoverable:hover {
           cursor: pointer;
           background-color: #f2f2f2;
         }
