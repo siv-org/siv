@@ -42,6 +42,27 @@ export function SubmittedScreen({
         </a>
       </Link>
 
+      <h3>How to verify your vote:</h3>
+      <p>
+        Once the election closes and votes are unlocked, you can verify your vote by finding it on the{' '}
+        <Link href={`/election/${election_id}`}>
+          <a style={{ color: 'black' }} target="_blank">
+            Election Status page
+          </a>
+        </Link>{' '}
+        using its <em>Verification #</em>:
+      </p>
+
+      <UnlockedVote {...{ columns, state }} />
+      <p className="small grey">
+        This secret <em>Verification #</em> is a random number, generated and encrypted on your own device.
+        <br />
+        No one else can possibly know it.
+      </p>
+
+      <br />
+      <br />
+
       <h3>How your vote was submitted:</h3>
 
       <p>
@@ -52,28 +73,9 @@ export function SubmittedScreen({
       <EncryptedVote {...{ auth, columns, state }} />
       <DetailedEncryptionReceipt {...{ state }} />
 
-      <p>
+      <p className="small grey">
         Its contents will only be unlocked after the election closes and all votes have been shuffled for safe
         anonymization.
-      </p>
-      <br />
-
-      <h3>How to verify your vote:</h3>
-      <p>
-        Once the election closes, verify your vote is correct by finding it on the{' '}
-        <Link href={`/election/${election_id}`}>
-          <a style={{ color: 'black' }} target="_blank">
-            Election Status page
-          </a>
-        </Link>{' '}
-        using its <em>Verification #</em>:
-      </p>
-
-      <UnlockedVote {...{ columns, state }} />
-      <p className="small">
-        This secret <em>Verification #</em> is a random number, generated and encrypted on your own device.
-        <br />
-        No one else can possibly know it.
       </p>
 
       <style jsx>{`
@@ -99,6 +101,10 @@ export function SubmittedScreen({
 
         .small {
           font-size: 12px;
+        }
+
+        .grey {
+          opacity: 0.6;
         }
       `}</style>
     </NoSsr>
