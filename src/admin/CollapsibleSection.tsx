@@ -36,6 +36,10 @@ export const CollapsibleSection = ({
           padding: 5px;
         }
 
+        h3:hover {
+          background-color: rgb(230, 230, 252, 0.9);
+        }
+
         h3 span {
           color: #051537bb;
         }
