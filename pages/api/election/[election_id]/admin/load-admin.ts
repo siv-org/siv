@@ -1,10 +1,11 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import { firebase } from '../../../_services'
+import { QueueLog } from './invite-voters'
 
 const { ADMIN_PASSWORD } = process.env
 
-export type Voters = { auth_token: string; email: string; has_voted: boolean }[]
+export type Voters = { auth_token: string; email: string; has_voted: boolean; invite_queued?: QueueLog[] }[]
 
 export type LoadAdminResponse = {
   ballot_design?: string
@@ -51,10 +52,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     {},
   )
 
-  // Build voters tuple array [email, has_voted][]
+  // Build voters objects
   const voters: Voters = (await loadVoters).docs.reduce((acc: Voters, doc) => {
-    const { auth_token, email } = { ...doc.data() } as { auth_token: string; email: string }
-    return [...acc, { auth_token, email, has_voted: !!votesByAuth[auth_token] }]
+    const { auth_token, email, invite_queued } = { ...doc.data() } as {
+      auth_token: string
+      email: string
+      invite_queued: QueueLog[]
+    }
+    return [...acc, { auth_token, email, has_voted: !!votesByAuth[auth_token], invite_queued }]
   }, [])
 
   return res

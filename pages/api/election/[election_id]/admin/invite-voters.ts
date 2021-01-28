@@ -6,7 +6,7 @@ import { send_invitation_email } from '../../../invite-voters'
 
 const { ADMIN_PASSWORD } = process.env
 
-type QueueLog = { result: string; time: Date }
+export type QueueLog = { result: string; time: Date }
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { election_id } = req.query as { election_id: string }

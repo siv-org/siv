@@ -102,11 +102,12 @@ export const ExistingVoters = () => {
               <br />
               auth token
             </th>
+            <th style={{ width: 50 }}>invite queued</th>
             <th>voted</th>
           </tr>
         </thead>
         <tbody>
-          {voters?.map(({ auth_token, email, has_voted }, index) => (
+          {voters?.map(({ auth_token, email, has_voted, invite_queued }, index) => (
             <tr key={email}>
               <td>
                 <input
@@ -152,6 +153,7 @@ export const ExistingVoters = () => {
                 </span>
               </td>
               <td style={{ fontFamily: 'monospace' }}>{mask_tokens ? mask(auth_token) : auth_token}</td>
+              <td style={{ textAlign: 'center' }}>{invite_queued?.length}</td>
               <td style={{ fontWeight: 700, textAlign: 'center' }}>{has_voted ? '✓' : ''}</td>
             </tr>
           ))}
