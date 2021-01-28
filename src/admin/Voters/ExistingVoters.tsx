@@ -56,7 +56,7 @@ export const ExistingVoters = () => {
 
   return (
     <>
-      <div style={{ marginBottom: 5 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
         {/* Send Invitations btn */}
         <OnClickButton
           disabled={!num_checked}
@@ -108,7 +108,6 @@ export const ExistingVoters = () => {
           </>
         </OnClickButton>
       </div>
-
       <table>
         <thead>
           <tr>
