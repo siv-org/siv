@@ -14,7 +14,8 @@ export const CollapsibleSection = ({
   return (
     <div className="container">
       <h3 onClick={toggle}>
-        <span>{collapsed ? <CaretRightOutlined /> : <CaretDownOutlined />}</span> {title}
+        <>{title}</>
+        <span>{collapsed ? <CaretRightOutlined /> : <CaretDownOutlined />}</span>
       </h3>
       {!collapsed && (
         <div className="expanded">
@@ -34,6 +35,11 @@ export const CollapsibleSection = ({
           cursor: pointer;
           margin-bottom: 5px;
           padding: 5px;
+          padding-left: 15px;
+          padding-right: 10px;
+          display: flex;
+          justify-content: space-between;
+          width: 100%;
         }
 
         h3:hover {
@@ -41,7 +47,8 @@ export const CollapsibleSection = ({
         }
 
         h3 span {
-          color: #051537bb;
+          color: #051537;
+          opacity: 0.5;
         }
 
         label {
