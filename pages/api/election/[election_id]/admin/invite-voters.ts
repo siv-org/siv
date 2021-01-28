@@ -32,6 +32,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
       const link = `${req.headers.origin}/election/${election_id}/vote?auth=${auth_token}`
 
+      // Don't send localhost emails to non-admins
+      if (link.includes('localhost') && !email.endsWith('@dsernst.com')) {
+        const error = `Blocking sending 'localhost' email link to ${email}`
+        res.status(400).json({ error })
+        throw error
+      }
+
       return send_invitation_email({ link, subject_line, voter: email }).then((result) => {
         console.log(email, result)
         // Store queued_log in DB
