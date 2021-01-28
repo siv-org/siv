@@ -1,17 +1,9 @@
 import Pusher from 'pusher-js'
-import { Dispatch, useEffect } from 'react'
+import { useEffect } from 'react'
 
-import { Voted } from './AddVoters'
+import { revalidate } from './load-existing'
 
-export function initPusher({
-  election_id,
-  setPubKey,
-  setVoted,
-}: {
-  election_id?: string
-  setPubKey: (pub_key: string) => void
-  setVoted: Dispatch<Voted>
-}) {
+export function subscribe_to_pusher(election_id?: string) {
   function subscribe() {
     // Enable pusher logging - don't include this in production
     // Pusher.logToConsole = true
@@ -21,12 +13,12 @@ export function initPusher({
     const channel = pusher.subscribe(`create-${election_id}`)
     channel.bind('pub_key', ({ threshold_public_key }: { threshold_public_key: string }) => {
       console.log('🆕 Pusher pub_key', threshold_public_key)
-      setPubKey(threshold_public_key)
+      revalidate(election_id)
     })
 
     channel.bind(`votes`, (email: string) => {
       console.log('🆕 Pusher new vote submitted', email)
-      setVoted({ [email]: true })
+      revalidate(election_id)
     })
 
     // Return cleanup code

@@ -1,8 +1,12 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
+import { subscribe_to_pusher } from './subscribe-to-pusher'
+
 export const ElectionID = () => {
   const election_id = useElectionID()
+
+  subscribe_to_pusher(election_id)
 
   if (!election_id) return null
 
