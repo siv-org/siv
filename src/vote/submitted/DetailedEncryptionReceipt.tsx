@@ -19,7 +19,7 @@ export const DetailedEncryptionReceipt = ({ state }: { state: State & { submitte
 Encryption Formula
   https://en.wikipedia.org/wiki/ElGamal_encryption
   encrypted = encoded * (recipient ^ randomizer) % modulo
-  unlock = (generator ^ randomizer) % modulo
+  lock = (generator ^ randomizer) % modulo
 
 Public Key
   ${map(state.public_key, (v, k) => `${k}: ${v}`).join('\n  ')}
