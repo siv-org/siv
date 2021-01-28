@@ -6,6 +6,8 @@ import { send_invitation_email } from '../../../invite-voters'
 
 const { ADMIN_PASSWORD } = process.env
 
+type QueueLog = { result: string; time: Date }
+
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { election_id } = req.query as { election_id: string }
   const { password, voters } = req.body
@@ -23,15 +25,17 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     voters,
     async (email: string) => {
       // Lookup voter info
-      const voter_doc = await electionDoc.collection('voters').doc(email).get()
-      if (!voter_doc.exists) return { error: `Can't find voter ${email}` }
-      const { auth_token } = { ...voter_doc.data() } as { auth_token: string }
+      const voter_doc = electionDoc.collection('voters').doc(email)
+      const voter = await voter_doc.get()
+      if (!voter.exists) return { error: `Can't find voter ${email}` }
+      const { auth_token, invite_queued } = { ...voter.data() } as { auth_token: string; invite_queued?: QueueLog[] }
 
       const link = `${req.headers.origin}/election/${election_id}/vote?auth=${auth_token}`
 
       return send_invitation_email({ link, subject_line, voter: email }).then((result) => {
         console.log(email, result)
-        // TODO: Store queued_at in DB (if success)
+        // Store queued_log in DB
+        voter_doc.update({ invite_queued: [...(invite_queued || []), { result, time: new Date() }] })
 
         // Wait a second after sending to not overload Mailgun
         return new Promise((res) => setTimeout(res, 1000))
