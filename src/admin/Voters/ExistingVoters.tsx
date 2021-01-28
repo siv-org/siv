@@ -4,12 +4,15 @@ import { useEffect, useReducer, useState } from 'react'
 import { api } from '../../api-helper'
 import { OnClickButton } from '../../landing-page/Button'
 import { revalidate, use_stored_info } from '../load-existing'
+import { Spinner } from '../Spinner'
 
 export const ExistingVoters = () => {
   const { election_id, voters } = use_stored_info()
   const [mask_tokens, toggle_tokens] = useReducer((state) => !state, true)
   const [checked, set_checked] = useState(new Array(voters?.length).fill(false))
   const num_checked = checked.filter((c) => c).length
+  const num_voted = voters?.filter((v) => v.has_voted).length
+  const [unlocking, toggle_unlocking] = useReducer((state) => !state, false)
 
   // Grow checked array to match voters list
   useEffect(() => {
@@ -26,6 +29,7 @@ export const ExistingVoters = () => {
   return (
     <>
       <div style={{ marginBottom: 5 }}>
+        {/* Send Invitations btn */}
         <OnClickButton
           disabled={!num_checked}
           style={{ margin: 0, padding: '5px 10px' }}
@@ -49,6 +53,27 @@ export const ExistingVoters = () => {
         >
           <>
             Send {num_checked} Invitation{num_checked === 1 ? '' : 's'}
+          </>
+        </OnClickButton>
+
+        {/* Unlock Votes btn */}
+        <OnClickButton
+          disabled={!num_voted}
+          style={{ margin: 0, marginLeft: 5, padding: '5px 10px' }}
+          onClick={async () => {
+            toggle_unlocking()
+            const response = await api(`election/${election_id}/admin/unlock?password=${localStorage.password}`)
+            if (response.status !== 201) {
+              const json = await response.json()
+              alert(json)
+              console.error('Unlocking error:', json)
+            }
+            toggle_unlocking()
+          }}
+        >
+          <>
+            {unlocking && <Spinner />}
+            Unlock{unlocking ? 'ing' : ''} {num_voted} Vote{num_voted === 1 ? '' : 's'}
           </>
         </OnClickButton>
       </div>

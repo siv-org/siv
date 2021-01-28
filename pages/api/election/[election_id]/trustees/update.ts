@@ -19,7 +19,7 @@ import { Shuffled, State, Trustee } from '../../../../../src/trustee/trustee-sta
 import { mapValues } from '../../../../../src/utils'
 import { firebase } from '../../../_services'
 import { pusher } from '../../../pusher'
-import { recombine_decrypteds } from '../close'
+import { recombine_decrypteds } from '../admin/unlock'
 import { commafy, transform_email_keys } from './commafy'
 
 const { ADMIN_EMAIL } = process.env

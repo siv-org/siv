@@ -3,12 +3,12 @@ const { ADMIN_PASSWORD } = process.env
 import { mapValues } from 'lodash-es'
 import { NextApiRequest, NextApiResponse } from 'next'
 
-import decrypt from '../../../../src/crypto/decrypt'
-import { decode } from '../../../../src/crypto/encode'
-import { shuffle } from '../../../../src/crypto/shuffle'
-import { big, bigCipher, bigPubKey, toStrings } from '../../../../src/crypto/types'
-import { firebase } from '../../_services'
-import { pusher } from '../../pusher'
+import decrypt from '../../../../../src/crypto/decrypt'
+import { decode } from '../../../../../src/crypto/encode'
+import { shuffle } from '../../../../../src/crypto/shuffle'
+import { big, bigCipher, bigPubKey, toStrings } from '../../../../../src/crypto/types'
+import { firebase } from '../../../_services'
+import { pusher } from '../../../pusher'
 
 const { ADMIN_EMAIL } = process.env
 
@@ -96,7 +96,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     await pusher.trigger(election_id, 'decrypted', '')
   }
 
-  res.status(201).json({ message: 'Triggered close' })
+  res.status(201).json({ message: 'Triggered unlock' })
 }
 
 /** Recombine the columns back together via tracking numbers */
