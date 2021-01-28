@@ -36,13 +36,19 @@ export const ExistingVoters = () => {
     { delivered: 0, queued: 0 },
   )
   const pending_invites = num_invited && num_invited?.queued > num_invited?.delivered
+  const [last_num_events, set_last_num_events] = useState(0)
   useEffect(() => {
     if (pending_invites) {
       const interval = setInterval(() => {
         console.log('Checking pending invites...')
-        api(`election/${election_id}/admin/check-invite-status?password=${localStorage.password}`).then(() =>
-          revalidate(election_id),
-        )
+        api(`election/${election_id}/admin/check-invite-status?password=${localStorage.password}`)
+          .then((response) => response.json())
+          .then(({ num_events }) => {
+            if (num_events !== last_num_events) {
+              revalidate(election_id)
+              set_last_num_events(num_events)
+            }
+          })
       }, 1000)
       return () => {
         console.log('All invites delivered 👍')

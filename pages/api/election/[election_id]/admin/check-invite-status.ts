@@ -32,7 +32,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     })
   }
 
-  let num_items = 0
+  let num_events = 0
 
   // Tail through the events until we're out
   let mgEventsList = await getMgEvents()
@@ -41,7 +41,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       .map(
         mgEventsList.items,
         (item: { event: string; recipient: string }) => {
-          num_items++
+          num_events++
           // Store new items on voters' docs
           return electionDoc
             .collection('voters')
@@ -57,5 +57,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     mgEventsList = await getMgEvents(mgEventsList.paging.next.split('https://api.mailgun.net/v3')[1])
   }
 
-  return res.json({ message: `Found ${num_items} mailgun events` })
+  return res.json({ num_events })
 }
