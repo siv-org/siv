@@ -1,9 +1,11 @@
+import { EditOutlined } from '@ant-design/icons'
 import { useReducer, useState } from 'react'
 
-import { use_stored_info } from '../load-existing'
+import { api } from '../../api-helper'
+import { revalidate, use_stored_info } from '../load-existing'
 
 export const ExistingVoters = () => {
-  const { voters } = use_stored_info()
+  const { election_id, voters } = use_stored_info()
   const [mask_tokens, toggle_tokens] = useReducer((state) => !state, true)
   const [checked, set_checked] = useState(new Array(voters?.length).fill(false))
 
@@ -47,7 +49,37 @@ export const ExistingVoters = () => {
                 />
               </td>
               <td>{index + 1}</td>
-              <td>{email}</td>
+              <td>
+                <span style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <span>{email}</span>
+                  <span
+                    className="visible-on-parent-hover"
+                    onClick={async () => {
+                      const new_email = prompt('Edit email?', email)
+
+                      // TODO: check if is_valid_email(new_email)
+                      if (!new_email || new_email === email) return
+
+                      // Store new email in API
+                      const response = await api(`election/${election_id}/edit-email`, {
+                        new_email,
+                        old_email: email,
+                        password: localStorage.password,
+                      })
+
+                      if (response.status === 201) {
+                        revalidate(election_id)
+                      } else {
+                        console.error(response.json())
+                        // throw await response.json()
+                      }
+                    }}
+                  >
+                    &nbsp;
+                    <EditOutlined />
+                  </span>
+                </span>
+              </td>
               <td style={{ fontFamily: 'monospace' }}>{mask_tokens ? mask(auth_token) : auth_token}</td>
               <td>{has_voted}</td>
             </tr>
@@ -80,6 +112,18 @@ export const ExistingVoters = () => {
         .auth-header:hover {
           cursor: pointer;
           background-color: #f2f2f2;
+        }
+
+        td .visible-on-parent-hover {
+          opacity: 0;
+        }
+        td:hover .visible-on-parent-hover {
+          opacity: 0.5;
+        }
+
+        .visible-on-parent-hover:hover {
+          cursor: pointer;
+          opacity: 1 !important;
         }
       `}</style>
     </>
