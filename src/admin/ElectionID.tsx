@@ -9,7 +9,7 @@ export const ElectionID = () => {
   return (
     <div>
       Election ID:{' '}
-      <Link href={`/election/${election_id}`}>
+      <Link as={`/election/${election_id}`} href="/election/[election_id]">
         <a target="_blank">{election_id}</a>
       </Link>
       <style jsx>{`
