@@ -1,18 +1,58 @@
 import { EditOutlined } from '@ant-design/icons'
-import { useReducer, useState } from 'react'
+import { useEffect, useReducer, useState } from 'react'
 
 import { api } from '../../api-helper'
+import { OnClickButton } from '../../landing-page/Button'
 import { revalidate, use_stored_info } from '../load-existing'
 
 export const ExistingVoters = () => {
   const { election_id, voters } = use_stored_info()
   const [mask_tokens, toggle_tokens] = useReducer((state) => !state, true)
   const [checked, set_checked] = useState(new Array(voters?.length).fill(false))
+  const num_checked = checked.filter((c) => c).length
 
+  // Grow checked array to match voters list
+  useEffect(() => {
+    if (voters && checked.length !== voters.length) {
+      const new_checked = [...checked]
+      new_checked.length = voters.length
+      set_checked(new_checked)
+    }
+  }, [voters?.length])
+
+  // Don't show anything if we don't have any voters yet
   if (!voters?.length) return null
 
   return (
     <>
+      <div style={{ marginBottom: 5 }}>
+        <OnClickButton
+          disabled={!num_checked}
+          style={{ margin: 0, padding: '5px 10px' }}
+          onClick={async () => {
+            const voters_to_invite = checked.reduce((acc: string[], is_checked, index) => {
+              if (is_checked) acc.push(voters[index].email)
+              return acc
+            }, [])
+
+            const response = await api(`election/${election_id}/admin/invite-voters`, {
+              password: localStorage.password,
+              voters: voters_to_invite,
+            })
+
+            if (response.status === 201) {
+              revalidate(election_id)
+            } else {
+              console.error(response.json())
+            }
+          }}
+        >
+          <>
+            Send {num_checked} Invitation{num_checked === 1 ? '' : 's'}
+          </>
+        </OnClickButton>
+      </div>
+
       <table>
         <thead>
           <tr>
