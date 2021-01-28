@@ -39,8 +39,8 @@ export const AcceptedVotes = ({
 
   return (
     <div>
-      <h3>{title_prefix}All Accepted Votes</h3>
-      <p>Ordered oldest to newest. This order will be lost during the anonymization step.</p>
+      <h3>{title_prefix}All Submitted Votes</h3>
+      <p>Ordered oldest to newest. These votes will be reordered and unlocked once the election closes.</p>
       <table>
         <thead>
           <tr>
