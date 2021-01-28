@@ -9,6 +9,8 @@ export const ExistingVoters = () => {
   const [mask_tokens, toggle_tokens] = useReducer((state) => !state, true)
   const [checked, set_checked] = useState(new Array(voters?.length).fill(false))
 
+  if (!voters?.length) return null
+
   return (
     <>
       <table>
