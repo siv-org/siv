@@ -5,7 +5,15 @@ import { QueueLog } from './invite-voters'
 
 const { ADMIN_PASSWORD } = process.env
 
-export type Voters = { auth_token: string; email: string; has_voted: boolean; invite_queued?: QueueLog[] }[]
+export type Voter = {
+  auth_token: string
+  email: string
+  has_voted: boolean
+  invite_queued?: QueueLog[]
+  mailgun_events: { accepted?: MgEvent[]; delivered?: MgEvent[] }
+}
+
+type MgEvent = Record<string, unknown>
 
 export type LoadAdminResponse = {
   ballot_design?: string
@@ -13,7 +21,7 @@ export type LoadAdminResponse = {
   election_title?: string
   threshold_public_key?: string
   trustees?: string[]
-  voters?: Voters
+  voters?: Voter[]
 }
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -53,13 +61,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   )
 
   // Build voters objects
-  const voters: Voters = (await loadVoters).docs.reduce((acc: Voters, doc) => {
-    const { auth_token, email, invite_queued } = { ...doc.data() } as {
+  const voters: Voter[] = (await loadVoters).docs.reduce((acc: Voter[], doc) => {
+    const { auth_token, email, invite_queued, mailgun_events } = { ...doc.data() } as {
       auth_token: string
       email: string
       invite_queued: QueueLog[]
+      mailgun_events: { accepted: MgEvent[]; delivered: MgEvent[] }
     }
-    return [...acc, { auth_token, email, has_voted: !!votesByAuth[auth_token], invite_queued }]
+    return [...acc, { auth_token, email, has_voted: !!votesByAuth[auth_token], invite_queued, mailgun_events }]
   }, [])
 
   return res

@@ -123,11 +123,13 @@ export const ExistingVoters = () => {
               auth token
             </th>
             <th style={{ width: 50 }}>invite queued</th>
+            <th style={{ width: 50 }}>invite accepted</th>
+            <th style={{ width: 50 }}>invite delivered</th>
             <th>voted</th>
           </tr>
         </thead>
         <tbody>
-          {voters?.map(({ auth_token, email, has_voted, invite_queued }, index) => (
+          {voters?.map(({ auth_token, email, has_voted, invite_queued, mailgun_events }, index) => (
             <tr key={email}>
               <td
                 className="hoverable"
@@ -182,6 +184,8 @@ export const ExistingVoters = () => {
               </td>
               <td style={{ fontFamily: 'monospace' }}>{mask_tokens ? mask(auth_token) : auth_token}</td>
               <td style={{ textAlign: 'center' }}>{invite_queued?.length}</td>
+              <td style={{ textAlign: 'center' }}>{mailgun_events?.accepted?.length}</td>
+              <td style={{ textAlign: 'center' }}>{mailgun_events?.delivered?.length}</td>
               <td style={{ fontWeight: 700, textAlign: 'center' }}>{has_voted ? '✓' : ''}</td>
             </tr>
           ))}
