@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 
-import { firebase } from '../../_services'
-import { generateAuthToken } from '../../invite-voters'
+import { firebase } from '../../../_services'
+import { generateAuthToken } from '../../../invite-voters'
 
 const { ADMIN_PASSWORD } = process.env
 

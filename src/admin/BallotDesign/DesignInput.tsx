@@ -41,7 +41,7 @@ export const DesignInput = ({ stage }: StageAndSetter) => {
       {stage === 2 && (
         <SaveButton
           onPress={async () => {
-            const response = await api(`election/${election_id}/save-ballot-design`, {
+            const response = await api(`election/${election_id}/admin/save-ballot-design`, {
               ballot_design,
               password: localStorage.password,
             })

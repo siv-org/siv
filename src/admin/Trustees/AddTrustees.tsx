@@ -26,7 +26,7 @@ export const AddTrustees = ({ stage }: StageAndSetter) => {
             <a>+ Add trustees</a>
             <SaveButton
               onPress={async () => {
-                const response = await api(`election/${election_id}/add-trustees`, {
+                const response = await api(`election/${election_id}/admin/add-trustees`, {
                   password: localStorage.password,
                   trustees: ['admin@secureinternetvoting.org'],
                 })

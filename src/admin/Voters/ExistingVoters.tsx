@@ -61,7 +61,7 @@ export const ExistingVoters = () => {
                       if (!new_email || new_email === email) return
 
                       // Store new email in API
-                      const response = await api(`election/${election_id}/edit-email`, {
+                      const response = await api(`election/${election_id}/admin/edit-email`, {
                         new_email,
                         old_email: email,
                         password: localStorage.password,

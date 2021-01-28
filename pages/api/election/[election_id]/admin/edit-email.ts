@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 
-import { firebase } from '../../_services'
+import { firebase } from '../../../_services'
 
 const { ADMIN_PASSWORD } = process.env
 
