@@ -13,6 +13,7 @@ export const ExistingVoters = () => {
   const num_checked = checked.filter((c) => c).length
   const num_voted = voters?.filter((v) => v.has_voted).length
   const [unlocking, toggle_unlocking] = useReducer((state) => !state, false)
+  const [sending, toggle_sending] = useReducer((state) => !state, false)
 
   // Grow checked array to match voters list
   useEffect(() => {
@@ -34,6 +35,7 @@ export const ExistingVoters = () => {
           disabled={!num_checked}
           style={{ margin: 0, padding: '5px 10px' }}
           onClick={async () => {
+            toggle_sending()
             const voters_to_invite = checked.reduce((acc: string[], is_checked, index) => {
               if (is_checked) acc.push(voters[index].email)
               return acc
@@ -49,10 +51,12 @@ export const ExistingVoters = () => {
             } else {
               console.error(response.json())
             }
+            toggle_sending()
           }}
         >
           <>
-            Send {num_checked} Invitation{num_checked === 1 ? '' : 's'}
+            {sending && <Spinner />}
+            Send{sending ? 'ing' : ''} {num_checked} Invitation{num_checked === 1 ? '' : 's'}
           </>
         </OnClickButton>
 
