@@ -22,7 +22,7 @@ export const MultilineInput = ({ state, update }: { state: string; update: Dispa
           overflow: auto;
           border: 1px solid #ced4da;
           border-radius: 3px;
-          margin: 0.5rem 0;
+          margin-top: 5px;
           padding: 5px 0;
         }
 

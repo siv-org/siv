@@ -16,7 +16,11 @@ export const AddVoters = () => {
     <CollapsibleSection subtitle="Add new voters by email address:" title="Voters">
       <>
         <MultilineInput state={new_voters} update={set_new_voters} />
-        {new_voters !== '' && (
+
+        {/* Show save button if there are new voters to add */}
+        {new_voters === '' ? (
+          <div style={{ height: 74 }} />
+        ) : (
           <SaveButton
             onPress={async () => {
               const response = await api(`election/${election_id}/add-voters`, {
