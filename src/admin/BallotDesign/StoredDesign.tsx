@@ -18,6 +18,7 @@ export const StoredDesign = () => {
           width: 100%;
           white-space: pre;
           letter-spacing: normal;
+          overflow: auto;
         }
 
         div:hover {
