@@ -29,8 +29,8 @@ export const ExistingVoters = () => {
   // Auto run api/check-invite-status when there are pending invites
   const num_invited = voters?.reduce(
     (acc: { delivered: number; queued: number }, voter) => {
-      if (voter.invite_queued) acc.queued++
-      if (voter.mailgun_events?.delivered) acc.delivered++
+      if (voter.invite_queued) acc.queued += voter.invite_queued.length
+      if (voter.mailgun_events?.delivered) acc.delivered += voter.mailgun_events.delivered.length
       return acc
     },
     { delivered: 0, queued: 0 },
