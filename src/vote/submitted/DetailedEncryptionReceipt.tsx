@@ -35,7 +35,7 @@ ${Object.keys(state.plaintext)
   encoded: ${state.encoded[key]}
   randomizer: ${state.randomizer[key]}
     encrypted: ${state.encrypted[key].encrypted}
-    unlock: ${state.encrypted[key].unlock}
+    lock: ${state.encrypted[key].unlock}
 `,
   )
   .join('\n')}`}

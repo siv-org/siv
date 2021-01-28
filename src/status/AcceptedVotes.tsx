@@ -61,7 +61,7 @@ export const AcceptedVotes = ({
             {columns.map((c) => (
               <Fragment key={c}>
                 <td>encrypted</td>
-                <td>unlock</td>
+                <td>lock</td>
               </Fragment>
             ))}
           </tr>
@@ -122,7 +122,7 @@ export const AcceptedVotes = ({
 export const stringifyEncryptedVote = (vote: Vote) =>
   `{ auth: ${vote.auth}${Object.keys(vote)
     .map((key) =>
-      key === 'auth' ? '' : `, ${key}: { encrypted: '${vote[key].encrypted}', unlock: '${vote[key].unlock}' }`,
+      key === 'auth' ? '' : `, ${key}: { encrypted: '${vote[key].encrypted}', lock: '${vote[key].unlock}' }`,
     )
     .join('')} }`
 
