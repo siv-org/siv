@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import { Dispatch } from 'react'
 
-import { Voters } from '../../pages/api/election/[election_id]/admin/load-admin'
+import { Voter } from '../../pages/api/election/[election_id]/admin/load-admin'
 import { Voted } from './AddParticipants'
 
 export async function load_existing_election({
@@ -51,9 +51,9 @@ export async function load_existing_election({
   if (ballot_design) ballot_design_input.value = ballot_design
   if (trustees) trustees_input.value = trustees.join('\n')
   if (voters) {
-    voters_input.value = voters.map(([email]: Voters) => email).join('\n')
+    voters_input.value = voters.map(([email]: Voter[]) => email).join('\n')
     const voted: Voted = voters.reduce(
-      (acc: Voted, [email, has_voted]: Voters[0]) => ({ ...acc, [email]: has_voted }),
+      (acc: Voted, { email, has_voted }: Voter) => ({ ...acc, [email]: has_voted }),
       {},
     )
     setVoted(voted)
