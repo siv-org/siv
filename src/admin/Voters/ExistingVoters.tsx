@@ -1,3 +1,14 @@
+import { use_stored_info } from '../load-existing'
+
 export const ExistingVoters = () => {
-  return <>I am ExistingVoters component</>
+  const { voters } = use_stored_info()
+  return (
+    <>
+      {voters?.map(([email, has_voted], index) => (
+        <p key={email}>
+          {index + 1}. {email} {has_voted ? '— Voted' : ''}
+        </p>
+      ))}
+    </>
+  )
 }
