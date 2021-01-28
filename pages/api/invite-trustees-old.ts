@@ -99,8 +99,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           }.</h3>This helps thoroughly anonymize election votes.
 Each Trustee adds an extra layer of vote privacy.
 
-Click here to join:
-<a href="${link}" style="font-weight: bold;">${link}</a>
+Click here to join: 
+<a href="${link}" style="font-weight: bold;">${link}</a> 
 
 <em style="font-size:10px; opacity: 0.6;">This link is unique for you. Don't share it with anyone.</em>`,
         })
