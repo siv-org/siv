@@ -5,6 +5,7 @@ import { api } from '../../api-helper'
 import { OnClickButton } from '../../landing-page/Button'
 import { revalidate, use_stored_info } from '../load-existing'
 import { Spinner } from '../Spinner'
+import { DeliveredFailureCell } from './DeliveredFailureCell'
 
 export const ExistingVoters = () => {
   const { election_id, voters } = use_stored_info()
@@ -63,6 +64,7 @@ export const ExistingVoters = () => {
 
   return (
     <>
+      {/* Top bar buttons */}
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
         {/* Send Invitations btn */}
         <OnClickButton
@@ -160,6 +162,7 @@ export const ExistingVoters = () => {
         <tbody>
           {voters?.map(({ auth_token, email, has_voted, invite_queued, mailgun_events }, index) => (
             <tr className={`${checked[index] ? 'checked' : ''}`} key={email}>
+              {/* Checkbox cell */}
               <td
                 className="hoverable"
                 onClick={() => {
@@ -214,7 +217,9 @@ export const ExistingVoters = () => {
               <td style={{ fontFamily: 'monospace' }}>{mask_tokens ? mask(auth_token) : auth_token}</td>
               <td style={{ textAlign: 'center' }}>{invite_queued?.length}</td>
               <td style={{ textAlign: 'center' }}>{mailgun_events?.accepted?.length}</td>
-              <td style={{ textAlign: 'center' }}>{mailgun_events?.delivered?.length}</td>
+
+              <DeliveredFailureCell {...mailgun_events} />
+
               <td style={{ fontWeight: 700, textAlign: 'center' }}>{has_voted ? '✓' : ''}</td>
             </tr>
           ))}

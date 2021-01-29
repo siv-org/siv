@@ -10,7 +10,7 @@ export type Voter = {
   email: string
   has_voted: boolean
   invite_queued?: QueueLog[]
-  mailgun_events: { accepted?: MgEvent[]; delivered?: MgEvent[] }
+  mailgun_events: { accepted?: MgEvent[]; delivered?: MgEvent[]; failed?: MgEvent[] }
 }
 
 type MgEvent = Record<string, unknown>
