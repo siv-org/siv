@@ -7,7 +7,7 @@ export const DeliveredFailureCell = ({ delivered, failed }: { delivered?: unknow
         interactive
         placement="top"
         title={
-          failed ? (
+          failed || delivered ? (
             <>
               {(failed as {
                 'delivery-status': { message: string }
@@ -16,6 +16,14 @@ export const DeliveredFailureCell = ({ delivered, failed }: { delivered?: unknow
               }[])?.map((event) => (
                 <div key={event.id} style={{ fontSize: 14 }}>
                   <b>{event.severity} failure</b>: {event['delivery-status'].message.replace(/5.1.1 /g, '')}
+                </div>
+              ))}
+              {(delivered as {
+                id: string
+                timestamp: number
+              }[])?.map((event) => (
+                <div key={event.id} style={{ fontSize: 14 }}>
+                  {new Date(event.timestamp * 1000).toLocaleString()}
                 </div>
               ))}
             </>
