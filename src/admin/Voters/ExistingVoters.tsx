@@ -7,6 +7,7 @@ import { revalidate, use_stored_info } from '../load-existing'
 import { Spinner } from '../Spinner'
 import { AcceptedCell } from './AcceptedCell'
 import { DeliveredFailureCell } from './DeliveredFailureCell'
+import { QueuedCell } from './QueuedCell'
 
 export const ExistingVoters = () => {
   const { election_id, voters } = use_stored_info()
@@ -217,8 +218,8 @@ export const ExistingVoters = () => {
                 </span>
               </td>
               <td style={{ fontFamily: 'monospace' }}>{mask_tokens ? mask(auth_token) : auth_token}</td>
-              <td style={{ textAlign: 'center' }}>{invite_queued?.length}</td>
 
+              <QueuedCell {...{ invite_queued }} />
               <AcceptedCell {...mailgun_events} />
               <DeliveredFailureCell {...mailgun_events} />
 
