@@ -2,11 +2,11 @@ import { Dispatch, SetStateAction, useState } from 'react'
 
 import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
+import { ElectionLabel } from './1-Label/ElectionLabel'
 import { BallotDesign } from './BallotDesign/BallotDesign'
 import { ElectionID } from './ElectionID'
 import { HeaderBar } from './HeaderBar'
 import { load_stage } from './load-existing'
-import { ElectionTitle } from './Title/ElectionTitle'
 import { AddTrustees } from './Trustees/AddTrustees'
 import { AddVoters } from './Voters/AddVoters'
 
@@ -25,7 +25,7 @@ export const AdminPage = (): JSX.Element => {
       <main>
         <h1>Create New Election</h1>
         <ElectionID />
-        <ElectionTitle {...{ set_stage, stage }} />
+        <ElectionLabel {...{ set_stage, stage }} />
         {stage >= 1 && <AddTrustees {...{ set_stage, stage }} />}
         {stage >= 2 && <BallotDesign {...{ set_stage, stage }} />}
         {stage >= 3 && <AddVoters />}

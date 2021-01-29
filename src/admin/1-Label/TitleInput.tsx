@@ -2,10 +2,9 @@ import router from 'next/router'
 import { useState } from 'react'
 
 import { api } from '../../api-helper'
-import { StageAndSetter } from '../AdminPage'
 import { SaveButton } from '../SaveButton'
 
-export const TitleInput = ({ stage }: StageAndSetter) => {
+export const TitleInput = () => {
   const [election_title, set_title] = useState('')
 
   return (
@@ -22,25 +21,23 @@ export const TitleInput = ({ stage }: StageAndSetter) => {
           }
         }}
       />
-      {stage === 0 && (
-        <SaveButton
-          id="election-title-save"
-          onPress={async () => {
-            const response = await api('create-election', { election_title, password: localStorage.password })
+      <SaveButton
+        id="election-title-save"
+        onPress={async () => {
+          const response = await api('create-election', { election_title, password: localStorage.password })
 
-            if (response.status === 201) {
-              const { election_id } = await response.json()
+          if (response.status === 201) {
+            const { election_id } = await response.json()
 
-              // Set election_id in URL
-              const url = new URL(window.location.toString())
-              url.searchParams.set('election_id', election_id)
-              router.push(url)
-            } else {
-              throw await response.json()
-            }
-          }}
-        />
-      )}
+            // Set election_id in URL
+            const url = new URL(window.location.toString())
+            url.searchParams.set('election_id', election_id)
+            router.push(url)
+          } else {
+            throw await response.json()
+          }
+        }}
+      />
 
       <style jsx>{`
         input {

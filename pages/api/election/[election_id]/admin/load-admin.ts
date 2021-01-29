@@ -18,6 +18,7 @@ type MgEvent = Record<string, unknown>
 export type LoadAdminResponse = {
   ballot_design?: string
   election_id?: string
+  election_manager?: string
   election_title?: string
   threshold_public_key?: string
   trustees?: string[]
@@ -45,8 +46,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const electionDoc = await loadElection
   if (!electionDoc.exists) return res.status(400).json({ error: `Unknown Election ID: '${election_id}'` })
 
-  const { ballot_design, election_title, threshold_public_key } = { ...electionDoc.data() } as {
+  const { ballot_design, election_manager, election_title, threshold_public_key } = { ...electionDoc.data() } as {
     ballot_design?: string
+    election_manager?: string
     election_title?: string
     threshold_public_key?: string
   }
@@ -71,7 +73,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     return [...acc, { auth_token, email, has_voted: !!votesByAuth[auth_token], invite_queued, mailgun_events }]
   }, [])
 
-  return res
-    .status(200)
-    .send({ ballot_design, election_id, election_title, threshold_public_key, trustees, voters } as LoadAdminResponse)
+  return res.status(200).send({
+    ballot_design,
+    election_id,
+    election_manager,
+    election_title,
+    threshold_public_key,
+    trustees,
+    voters,
+  } as LoadAdminResponse)
 }
