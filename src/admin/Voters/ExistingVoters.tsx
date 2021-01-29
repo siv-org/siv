@@ -30,14 +30,15 @@ export const ExistingVoters = () => {
 
   // Auto run api/check-invite-status when there are pending invites
   const num_invited = voters?.reduce(
-    (acc: { delivered: number; queued: number }, voter) => {
+    (acc: { delivered: number; failed: number; queued: number }, voter) => {
       if (voter.invite_queued) acc.queued += voter.invite_queued.length
       if (voter.mailgun_events?.delivered) acc.delivered += voter.mailgun_events.delivered.length
+      if (voter.mailgun_events?.failed) acc.failed += voter.mailgun_events.failed.length
       return acc
     },
-    { delivered: 0, queued: 0 },
+    { delivered: 0, failed: 0, queued: 0 },
   )
-  const pending_invites = num_invited && num_invited?.queued > num_invited?.delivered
+  const pending_invites = num_invited && num_invited.queued > num_invited.delivered + num_invited.failed
   const [last_num_events, set_last_num_events] = useState(0)
   useEffect(() => {
     if (pending_invites) {
