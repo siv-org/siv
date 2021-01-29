@@ -5,6 +5,7 @@ import { api } from '../../api-helper'
 import { OnClickButton } from '../../landing-page/Button'
 import { revalidate, use_stored_info } from '../load-existing'
 import { Spinner } from '../Spinner'
+import { AcceptedCell } from './AcceptedCell'
 import { DeliveredFailureCell } from './DeliveredFailureCell'
 
 export const ExistingVoters = () => {
@@ -217,8 +218,8 @@ export const ExistingVoters = () => {
               </td>
               <td style={{ fontFamily: 'monospace' }}>{mask_tokens ? mask(auth_token) : auth_token}</td>
               <td style={{ textAlign: 'center' }}>{invite_queued?.length}</td>
-              <td style={{ textAlign: 'center' }}>{mailgun_events?.accepted?.length}</td>
 
+              <AcceptedCell {...mailgun_events} />
               <DeliveredFailureCell {...mailgun_events} />
 
               <td style={{ fontWeight: 700, textAlign: 'center' }}>{has_voted ? '✓' : ''}</td>
