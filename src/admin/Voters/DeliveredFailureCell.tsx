@@ -4,7 +4,7 @@ export const DeliveredFailureCell = ({ delivered, failed }: { delivered?: unknow
   return (
     <>
       <Tooltip
-        interactive
+        interactive={!!failed}
         placement="top"
         title={
           failed || delivered ? (

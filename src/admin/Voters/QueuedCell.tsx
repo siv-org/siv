@@ -4,7 +4,6 @@ export const QueuedCell = ({ invite_queued }: { invite_queued?: unknown[] }) => 
   return (
     <>
       <Tooltip
-        interactive
         placement="top"
         title={
           invite_queued ? (

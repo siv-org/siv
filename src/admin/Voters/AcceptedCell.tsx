@@ -4,7 +4,6 @@ export const AcceptedCell = ({ accepted }: { accepted?: unknown[] }) => {
   return (
     <>
       <Tooltip
-        interactive
         placement="top"
         title={
           accepted ? (
