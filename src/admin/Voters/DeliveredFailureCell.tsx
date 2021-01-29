@@ -15,7 +15,7 @@ export const DeliveredFailureCell = ({ delivered, failed }: { delivered?: unknow
                 severity: string
               }[])?.map((event) => (
                 <div key={event.id} style={{ fontSize: 14 }}>
-                  <b>{event.severity} failure</b>: {event['delivery-status'].message}
+                  <b>{event.severity} failure</b>: {event['delivery-status'].message.replace(/5.1.1 /g, '')}
                 </div>
               ))}
             </>
