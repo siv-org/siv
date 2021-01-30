@@ -1,11 +1,11 @@
 import { api } from '../../api-helper'
 import { CollapsibleSection } from '../CollapsibleSection'
-import { revalidate, use_stored_info } from '../load-existing'
+import { revalidate, useStored } from '../load-existing'
 import { SaveButton } from '../SaveButton'
 import { EncryptionAddress } from './EncryptionAddress'
 
 export const AddTrustees = () => {
-  const { election_id, threshold_public_key } = use_stored_info()
+  const { election_id, threshold_public_key } = useStored()
 
   return (
     <CollapsibleSection subtitle="Each Trustee adds extra assurance of vote privacy." title="Trustees">

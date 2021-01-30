@@ -1,7 +1,7 @@
-import { use_stored_info } from '../load-existing'
+import { useStored } from '../load-existing'
 
 export const StoredManager = () => {
-  const { election_manager } = use_stored_info()
+  const { election_manager } = useStored()
 
   return (
     <div>

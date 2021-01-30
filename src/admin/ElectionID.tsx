@@ -2,11 +2,11 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
-import { use_stored_info } from './load-existing'
+import { useStored } from './load-existing'
 import { subscribe_to_pusher } from './subscribe-to-pusher'
 
 export const ElectionID = () => {
-  const { election_id, election_title } = use_stored_info()
+  const { election_id, election_title } = useStored()
 
   subscribe_to_pusher(election_id)
 

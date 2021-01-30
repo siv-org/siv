@@ -1,7 +1,7 @@
-import { use_stored_info } from '../load-existing'
+import { useStored } from '../load-existing'
 
 export const EncryptionAddress = () => {
-  const { threshold_public_key } = use_stored_info()
+  const { threshold_public_key } = useStored()
 
   if (!threshold_public_key) return null
 

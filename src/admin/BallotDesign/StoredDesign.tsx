@@ -1,7 +1,7 @@
-import { use_stored_info } from '../load-existing'
+import { useStored } from '../load-existing'
 
 export const StoredDesign = () => {
-  const { ballot_design } = use_stored_info()
+  const { ballot_design } = useStored()
 
   return (
     <div>

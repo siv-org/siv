@@ -3,14 +3,14 @@ import { useEffect, useReducer, useState } from 'react'
 
 import { api } from '../../api-helper'
 import { OnClickButton } from '../../landing-page/Button'
-import { revalidate, use_stored_info } from '../load-existing'
+import { revalidate, useStored } from '../load-existing'
 import { Spinner } from '../Spinner'
 import { AcceptedCell } from './AcceptedCell'
 import { DeliveredFailureCell } from './DeliveredFailureCell'
 import { QueuedCell } from './QueuedCell'
 
 export const ExistingVoters = () => {
-  const { election_id, voters } = use_stored_info()
+  const { election_id, voters } = useStored()
   const [mask_tokens, toggle_tokens] = useReducer((state) => !state, true)
   const [checked, set_checked] = useState(new Array(voters?.length).fill(false))
   const num_checked = checked.filter((c) => c).length

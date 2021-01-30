@@ -6,7 +6,7 @@ import { useElectionID } from './ElectionID'
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
-export function use_stored_info(): LoadAdminResponse {
+export function useStored(): LoadAdminResponse {
   const election_id = useElectionID()
 
   const { data } = use_swr(
