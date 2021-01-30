@@ -56,10 +56,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 }
 
 export const send_invitation_email = ({
+  from,
   link,
   subject_line,
   voter,
 }: {
+  from?: string
   link: string
   subject_line: string
   voter: string
@@ -72,6 +74,7 @@ export const send_invitation_email = ({
   if (!/auth=(\d|[a-f]){10}$/.test(link)) throw `Blocking sending malformed auth invite ${link} to ${voter}`
 
   return sendEmail({
+    from,
     recipient: voter,
     subject: subject_line,
     text: `<h2 style="margin: 0">${subject_line}</h2>

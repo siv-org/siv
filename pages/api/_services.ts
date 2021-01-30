@@ -30,9 +30,19 @@ export const mailgun = Mailgun({
   domain: MAILGUN_DOMAIN || 'secureinternetvoting.org',
 })
 
-export const sendEmail = ({ recipient, subject, text }: { recipient: string; subject: string; text: string }) =>
+export const sendEmail = ({
+  from,
+  recipient,
+  subject,
+  text,
+}: {
+  from?: string
+  recipient: string
+  subject: string
+  text: string
+}) =>
   mailgun.messages().send({
-    from: 'SIV Admin <admin@secureinternetvoting.org>',
+    from: `${from || 'SIV Admin'} <election@secureinternetvoting.org>`,
     html: `<body style="background-color: #f5f5f5; padding: 2em 0.5em;">
     <table align="center" style="text-align: left; max-width: 600px; background-color: white;">
         <tr>

@@ -20,22 +20,28 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Stop if validation failed
   if (!validated) return
 
-  const election = firebase.firestore().collection('elections').doc(election_id)
+  const electionDoc = firebase.firestore().collection('elections').doc(election_id)
 
   // Begin preloading
-  const voter = election.collection('voters').where('auth_token', '==', auth).get()
+  const voter = electionDoc.collection('voters').where('auth_token', '==', auth).get()
+  const election = electionDoc.get()
 
   // 2. Store the encrypted vote in db
-  await election.collection('votes').add({ auth, created_at: new Date(), encrypted_vote, headers: req.headers })
+  await electionDoc.collection('votes').add({ auth, created_at: new Date(), encrypted_vote, headers: req.headers })
 
   // 3. Email the voter their submission receipt
   const link = `${req.headers.origin}/election/${election_id}`
   const { email } = (await voter).docs[0].data()
+  const { election_manager } = (await election).data() as {
+    election_manager?: string
+    election_title?: string
+  }
 
   const promises: Promise<unknown>[] = []
 
   promises.push(
     sendEmail({
+      from: election_manager,
       recipient: email,
       subject: 'Vote Confirmation',
       text: `<h2 style="margin: 0">Your vote was successfully submitted. Thank you.</h2>
