@@ -8,19 +8,24 @@ import { pusher } from './pusher'
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { auth, election_id, encrypted_vote } = req.body
 
+  const electionDoc = firebase.firestore().collection('elections').doc(election_id)
+
   // 1. Validate auth token
   let validated = false
   await validateAuthToken(auth, election_id, {
     fail: async (message) => {
-      await pushover('SIV submission: Bad Auth Token', `election: ${election_id}\nauth: ${auth}\nmessage: ${message}`)
+      await Promise.all([
+        electionDoc
+          .collection('votes-rejected')
+          .add({ auth, created_at: new Date(), encrypted_vote, headers: req.headers, rejection: message }),
+        pushover('SIV submission: Bad Auth Token', `election: ${election_id}\nauth: ${auth}\nmessage: ${message}`),
+      ])
       res.status(400).json({ error: message })
     },
     pass: () => (validated = true),
   })
   // Stop if validation failed
   if (!validated) return
-
-  const electionDoc = firebase.firestore().collection('elections').doc(election_id)
 
   // Begin preloading
   const voter = electionDoc.collection('voters').where('auth_token', '==', auth).get()
