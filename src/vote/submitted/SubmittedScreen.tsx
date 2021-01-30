@@ -87,8 +87,8 @@ export function SubmittedScreen({
         }
 
         #status-page {
-          margin: 1rem 0 3rem;
-          display: block;
+          margin: 0 0 2rem;
+          display: inline-block;
           font-weight: bold;
           font-size: 19px;
         }
