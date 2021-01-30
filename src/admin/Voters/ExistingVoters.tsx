@@ -13,7 +13,7 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
   const [mask_tokens, toggle_tokens] = useReducer((state) => !state, true)
   const [checked, set_checked] = useState(new Array(voters?.length).fill(false))
   const num_checked = checked.filter((c) => c).length
-  const num_voted = voters?.filter((v) => v.has_voted).length
+  const num_voted = voters?.filter((v) => v.has_voted).length || 0
   const [unlocking, toggle_unlocking] = useReducer((state) => !state, false)
   const [sending, toggle_sending] = useReducer((state) => !state, false)
   const [error, set_error] = useState('')
@@ -135,6 +135,12 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
           </OnClickButton>
         </div>
       )}
+
+      <p>
+        <i>
+          {num_voted} of {voters.length} voted ({Math.round((num_voted / voters.length) * 100)}%)
+        </i>
+      </p>
 
       <table>
         <thead>
