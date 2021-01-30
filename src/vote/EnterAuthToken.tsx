@@ -39,7 +39,7 @@ export const EnterAuthToken = () => {
           onClick={async () => {
             // Update auth in URL
             const url = new URL(window.location.toString())
-            url.searchParams.set('auth', text)
+            url.searchParams.set('auth', text.toLowerCase())
             router.push(url)
           }}
         >
