@@ -1,12 +1,11 @@
-import { StageAndSetter } from '../AdminPage'
 import { CollapsibleSection } from '../CollapsibleSection'
+import { use_stored_info } from '../load-existing'
 import { DesignInput } from './DesignInput'
 import { StoredDesign } from './StoredDesign'
 
-export const BallotDesign = ({ set_stage, stage }: StageAndSetter) => {
+export const BallotDesign = () => {
+  const { ballot_design } = use_stored_info()
   return (
-    <CollapsibleSection title="Ballot Design">
-      {stage === 2 ? <DesignInput {...{ set_stage, stage }} /> : <StoredDesign />}
-    </CollapsibleSection>
+    <CollapsibleSection title="Ballot Design">{!ballot_design ? <DesignInput /> : <StoredDesign />}</CollapsibleSection>
   )
 }

@@ -1,13 +1,11 @@
 import { api } from '../../api-helper'
-import { StageAndSetter } from '../AdminPage'
 import { CollapsibleSection } from '../CollapsibleSection'
-import { useElectionID } from '../ElectionID'
-import { revalidate } from '../load-existing'
+import { revalidate, use_stored_info } from '../load-existing'
 import { SaveButton } from '../SaveButton'
 import { EncryptionAddress } from './EncryptionAddress'
 
-export const AddTrustees = ({ stage }: StageAndSetter) => {
-  const election_id = useElectionID()
+export const AddTrustees = () => {
+  const { election_id, threshold_public_key } = use_stored_info()
 
   return (
     <CollapsibleSection subtitle="Each Trustee adds extra assurance of vote privacy." title="Trustees">
@@ -21,7 +19,7 @@ export const AddTrustees = ({ stage }: StageAndSetter) => {
         </ol>
         <EncryptionAddress />
 
-        {stage === 1 && (
+        {!threshold_public_key && (
           <div>
             <a>+ Add trustees</a>
             <SaveButton

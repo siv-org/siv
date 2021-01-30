@@ -1,12 +1,11 @@
 import { useState } from 'react'
 
 import { api } from '../../api-helper'
-import { StageAndSetter } from '../AdminPage'
 import { useElectionID } from '../ElectionID'
 import { revalidate } from '../load-existing'
 import { SaveButton } from '../SaveButton'
 
-export const DesignInput = ({ stage }: StageAndSetter) => {
+export const DesignInput = () => {
   const [error, setError] = useState<string | null>()
   const [ballot_design, set_ballot_design] = useState(`[
   {
@@ -38,22 +37,20 @@ export const DesignInput = ({ stage }: StageAndSetter) => {
           }
         }}
       />
-      {stage === 2 && (
-        <SaveButton
-          onPress={async () => {
-            const response = await api(`election/${election_id}/admin/save-ballot-design`, {
-              ballot_design,
-              password: localStorage.password,
-            })
+      <SaveButton
+        onPress={async () => {
+          const response = await api(`election/${election_id}/admin/save-ballot-design`, {
+            ballot_design,
+            password: localStorage.password,
+          })
 
-            if (response.status === 201) {
-              revalidate(election_id)
-            } else {
-              throw await response.json()
-            }
-          }}
-        />
-      )}
+          if (response.status === 201) {
+            revalidate(election_id)
+          } else {
+            throw await response.json()
+          }
+        }}
+      />
 
       <style jsx>{`
         textarea {

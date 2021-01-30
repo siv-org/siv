@@ -6,16 +6,14 @@ import { ElectionLabel } from './1-Label/ElectionLabel'
 import { BallotDesign } from './BallotDesign/BallotDesign'
 import { ElectionID } from './ElectionID'
 import { HeaderBar } from './HeaderBar'
-import { load_stage } from './load-existing'
+import { use_stored_info } from './load-existing'
 import { AddTrustees } from './Trustees/AddTrustees'
 import { AddVoters } from './Voters/AddVoters'
 
 export type StageAndSetter = { set_stage: Dispatch<SetStateAction<number>>; stage: number }
 
 export const AdminPage = (): JSX.Element => {
-  const [stage, set_stage] = useState(0)
-
-  load_stage({ set_stage, stage })
+  const { ballot_design, election_manager, threshold_public_key } = use_stored_info()
 
   return (
     <>
@@ -25,10 +23,10 @@ export const AdminPage = (): JSX.Element => {
       <main>
         <h1>Create New Election</h1>
         <ElectionID />
-        <ElectionLabel {...{ set_stage, stage }} />
-        {stage >= 1 && <AddTrustees {...{ set_stage, stage }} />}
-        {stage >= 2 && <BallotDesign {...{ set_stage, stage }} />}
-        {stage >= 3 && <AddVoters />}
+        <ElectionLabel />
+        {election_manager && <AddTrustees />}
+        {threshold_public_key && <BallotDesign />}
+        {ballot_design && <AddVoters />}
       </main>
 
       <style jsx>{`
