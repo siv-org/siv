@@ -9,7 +9,7 @@ import { AcceptedCell } from './AcceptedCell'
 import { DeliveredFailureCell } from './DeliveredFailureCell'
 import { QueuedCell } from './QueuedCell'
 
-export const ExistingVoters = () => {
+export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
   const { election_id, voters } = useStored()
   const [mask_tokens, toggle_tokens] = useReducer((state) => !state, true)
   const [checked, set_checked] = useState(new Array(voters?.length).fill(false))
@@ -68,87 +68,92 @@ export const ExistingVoters = () => {
   return (
     <>
       {/* Top bar buttons */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
-        {/* Send Invitations btn */}
-        <OnClickButton
-          disabled={!num_checked}
-          style={{ margin: 0, padding: '5px 10px' }}
-          onClick={async () => {
-            toggle_sending()
-            const voters_to_invite = checked.reduce((acc: string[], is_checked, index) => {
-              if (is_checked) acc.push(voters[index].email)
-              return acc
-            }, [])
+      {!readOnly && (
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
+          {/* Send Invitations btn */}
+          <OnClickButton
+            disabled={!num_checked}
+            style={{ margin: 0, padding: '5px 10px' }}
+            onClick={async () => {
+              toggle_sending()
+              const voters_to_invite = checked.reduce((acc: string[], is_checked, index) => {
+                if (is_checked) acc.push(voters[index].email)
+                return acc
+              }, [])
 
-            try {
-              const response = await api(`election/${election_id}/admin/invite-voters`, {
-                password: localStorage.password,
-                voters: voters_to_invite,
-              })
+              try {
+                const response = await api(`election/${election_id}/admin/invite-voters`, {
+                  password: localStorage.password,
+                  voters: voters_to_invite,
+                })
 
-              if (response.status === 201) {
-                revalidate(election_id)
-              } else {
-                const json = await response.json()
-                console.error(json)
-                set_error(json?.error)
+                if (response.status === 201) {
+                  revalidate(election_id)
+                } else {
+                  const json = await response.json()
+                  console.error(json)
+                  set_error(json?.error)
+                }
+              } catch (e) {
+                set_error(e.message)
               }
-            } catch (e) {
-              set_error(e.message)
-            }
 
-            toggle_sending()
-          }}
-        >
-          <>
-            {sending && <Spinner />}
-            Send{sending ? 'ing' : ''} {num_checked} Invitation{num_checked === 1 ? '' : 's'}
-          </>
-        </OnClickButton>
+              toggle_sending()
+            }}
+          >
+            <>
+              {sending && <Spinner />}
+              Send{sending ? 'ing' : ''} {num_checked} Invitation{num_checked === 1 ? '' : 's'}
+            </>
+          </OnClickButton>
 
-        {error && (
-          <span className="error">
-            <b> ⚠️ Error:</b> {error}
-            <a onClick={() => set_error('')}>x</a>
-          </span>
-        )}
+          {error && (
+            <span className="error">
+              <b> ⚠️ Error:</b> {error}
+              <a onClick={() => set_error('')}>x</a>
+            </span>
+          )}
 
-        {/* Unlock Votes btn */}
-        <OnClickButton
-          disabled={!num_voted}
-          style={{ margin: 0, marginLeft: 5, padding: '5px 10px' }}
-          onClick={async () => {
-            toggle_unlocking()
-            const response = await api(`election/${election_id}/admin/unlock?password=${localStorage.password}`)
-            if (response.status !== 201) {
-              const json = await response.json()
-              alert(json)
-              console.error('Unlocking error:', json)
-            }
-            toggle_unlocking()
-          }}
-        >
-          <>
-            {unlocking && <Spinner />}
-            Unlock{unlocking ? 'ing' : ''} {num_voted} Vote{num_voted === 1 ? '' : 's'}
-          </>
-        </OnClickButton>
-      </div>
+          {/* Unlock Votes btn */}
+          <OnClickButton
+            disabled={!num_voted}
+            style={{ margin: 0, marginLeft: 5, padding: '5px 10px' }}
+            onClick={async () => {
+              toggle_unlocking()
+              const response = await api(`election/${election_id}/admin/unlock?password=${localStorage.password}`)
+              if (response.status !== 201) {
+                const json = await response.json()
+                alert(json)
+                console.error('Unlocking error:', json)
+              }
+              toggle_unlocking()
+            }}
+          >
+            <>
+              {unlocking && <Spinner />}
+              Unlock{unlocking ? 'ing' : ''} {num_voted} Vote{num_voted === 1 ? '' : 's'}
+            </>
+          </OnClickButton>
+        </div>
+      )}
+
       <table>
         <thead>
           <tr>
-            <th>
-              <input
-                style={{ cursor: 'pointer' }}
-                type="checkbox"
-                onChange={(event) => {
-                  const new_checked = [...checked]
-                  new_checked.fill(event.target.checked)
-                  set_checked(new_checked)
-                  set_last_selected(undefined)
-                }}
-              />
-            </th>
+            {!readOnly && (
+              <th>
+                <input
+                  style={{ cursor: 'pointer' }}
+                  type="checkbox"
+                  onChange={(event) => {
+                    const new_checked = [...checked]
+                    new_checked.fill(event.target.checked)
+                    set_checked(new_checked)
+                    set_last_selected(undefined)
+                  }}
+                />
+              </th>
+            )}
             <th>#</th>
             <th>email</th>
             <th className="hoverable" onClick={toggle_tokens}>
@@ -166,55 +171,60 @@ export const ExistingVoters = () => {
           {voters?.map(({ auth_token, email, has_voted, invite_queued, mailgun_events }, index) => (
             <tr className={`${checked[index] ? 'checked' : ''}`} key={email}>
               {/* Checkbox cell */}
-              <td
-                className="hoverable"
-                onClick={() => {
-                  const new_checked = [...checked]
-                  if (pressing_shift && last_selected !== undefined) {
-                    // If they're holding shift, set all between last_selected and this index to !checked[index]
-                    for (let i = Math.min(index, last_selected); i <= Math.max(index, last_selected); i += 1) {
-                      new_checked[i] = !checked[index]
+              {!readOnly && (
+                <td
+                  className="hoverable"
+                  onClick={() => {
+                    const new_checked = [...checked]
+                    if (pressing_shift && last_selected !== undefined) {
+                      // If they're holding shift, set all between last_selected and this index to !checked[index]
+                      for (let i = Math.min(index, last_selected); i <= Math.max(index, last_selected); i += 1) {
+                        new_checked[i] = !checked[index]
+                      }
+                    } else {
+                      new_checked[index] = !checked[index]
                     }
-                  } else {
-                    new_checked[index] = !checked[index]
-                  }
 
-                  set_last_selected(index)
-                  set_checked(new_checked)
-                }}
-              >
-                <input readOnly checked={checked[index]} className="hoverable" type="checkbox" />
-              </td>
+                    set_last_selected(index)
+                    set_checked(new_checked)
+                  }}
+                >
+                  <input readOnly checked={checked[index]} className="hoverable" type="checkbox" />
+                </td>
+              )}
               <td>{index + 1}</td>
               <td>
                 <span style={{ display: 'flex', justifyContent: 'space-between' }}>
                   <span>{email}</span>
-                  <span
-                    className="visible-on-parent-hover"
-                    onClick={async () => {
-                      const new_email = prompt('Edit email?', email)
+                  {/* Edit email btn */}
+                  {!readOnly && (
+                    <span
+                      className="visible-on-parent-hover"
+                      onClick={async () => {
+                        const new_email = prompt('Edit email?', email)
 
-                      // TODO: check if is_valid_email(new_email)
-                      if (!new_email || new_email === email) return
+                        // TODO: check if is_valid_email(new_email)
+                        if (!new_email || new_email === email) return
 
-                      // Store new email in API
-                      const response = await api(`election/${election_id}/admin/edit-email`, {
-                        new_email,
-                        old_email: email,
-                        password: localStorage.password,
-                      })
+                        // Store new email in API
+                        const response = await api(`election/${election_id}/admin/edit-email`, {
+                          new_email,
+                          old_email: email,
+                          password: localStorage.password,
+                        })
 
-                      if (response.status === 201) {
-                        revalidate(election_id)
-                      } else {
-                        console.error(response.json())
-                        // throw await response.json()
-                      }
-                    }}
-                  >
-                    &nbsp;
-                    <EditOutlined />
-                  </span>
+                        if (response.status === 201) {
+                          revalidate(election_id)
+                        } else {
+                          console.error(response.json())
+                          // throw await response.json()
+                        }
+                      }}
+                    >
+                      &nbsp;
+                      <EditOutlined />
+                    </span>
+                  )}
                 </span>
               </td>
               <td style={{ fontFamily: 'monospace' }}>{mask_tokens ? mask(auth_token) : auth_token}</td>
@@ -246,6 +256,7 @@ export const ExistingVoters = () => {
           border-collapse: collapse;
           display: block;
           overflow: scroll;
+          width: 100%;
         }
 
         th,
