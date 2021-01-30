@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
 import { AuthenticatedContent } from './AuthenticatedContent'
+import { EnterAuthToken } from './EnterAuthToken'
 import { Footer } from './Footer'
 
 export const VotePage = (): JSX.Element => {
@@ -16,11 +17,14 @@ export const VotePage = (): JSX.Element => {
 
       <main>
         <div>
-          {election_id && auth && (
-            <NoSsr>
-              <AuthenticatedContent {...{ auth, election_id }} />
-            </NoSsr>
-          )}
+          {election_id &&
+            (auth ? (
+              <NoSsr>
+                <AuthenticatedContent {...{ auth, election_id }} />
+              </NoSsr>
+            ) : (
+              <EnterAuthToken />
+            ))}
         </div>
 
         <Footer />
