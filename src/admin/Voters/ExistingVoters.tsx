@@ -91,10 +91,10 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
                 } else {
                   const json = await response.json()
                   console.error(json)
-                  set_error(json?.error)
+                  set_error(json?.error || 'Error w/o message ')
                 }
               } catch (e) {
-                set_error(e.message)
+                set_error(e.message || 'Caught error w/o message')
               }
 
               toggle_sending()
