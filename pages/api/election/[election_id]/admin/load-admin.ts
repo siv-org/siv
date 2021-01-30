@@ -28,9 +28,17 @@ export type AdminData = {
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { election_id, password } = req.query as { election_id?: string; password?: string }
 
-  // Check admin password
+  // Check required params
+  if (!election_id) return res.status(401).json({ error: `Missing election_id` })
   if (!password || ![ADMIN_PASSWORD, MANAGER_PASSWORD].includes(password))
     return res.status(401).json({ error: `Invalid Password: '${password}'` })
+
+  // Only allow manager for whitelisted elections
+  const manager_allowed = [
+    '1611997618605', // Cache County Sample Election
+  ]
+  if (password === MANAGER_PASSWORD && !manager_allowed.includes(election_id))
+    return res.status(401).json({ error: `Manager not enabled for this election` })
 
   const election = firebase
     .firestore()
