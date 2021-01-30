@@ -37,6 +37,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const manager_allowed = [
     '1611997618605', // Cache County Sample Election
     '1612028266931', // Cache County Executive Round 1
+    '1612031971385', // Cache County Executive Round 2
   ]
   if (password === MANAGER_PASSWORD && !manager_allowed.includes(election_id))
     return res.status(401).json({ error: `Manager not enabled for this election` })
