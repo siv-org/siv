@@ -10,11 +10,11 @@ export const ManagerPage = (): JSX.Element => {
 
   return (
     <>
-      <Head title="Create new election" />
+      <Head title="Election Manager" />
 
       <HeaderBar />
       <main>
-        <h1>{election_title ? `Manage: ${election_title}` : 'Create New Election'}</h1>
+        <h1>{election_title ? `Manage: ${election_title}` : 'Election Manager'}</h1>
         <ElectionID />
         <ExistingVoters readOnly />
       </main>
