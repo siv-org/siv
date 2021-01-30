@@ -44,7 +44,7 @@ export function SubmittedScreen({
 
       <h3>How to verify your vote:</h3>
       <p>
-        Once the election closes and votes are unlocked, you can verify yours by finding it on the{' '}
+        Once the election closes and votes are unlocked, you can find yours on the{' '}
         <Link href={`/election/${election_id}`}>
           <a style={{ color: 'black' }} target="_blank">
             Election Status page
