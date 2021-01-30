@@ -9,6 +9,7 @@ export type Voter = {
   auth_token: string
   email: string
   has_voted: boolean
+  index: number
   invite_queued?: QueueLog[]
   mailgun_events: { accepted?: MgEvent[]; delivered?: MgEvent[]; failed?: MgEvent[] }
 }
@@ -76,13 +77,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Build voters objects
   const voters: Voter[] = (await loadVoters).docs.reduce((acc: Voter[], doc) => {
-    const { auth_token, email, invite_queued, mailgun_events } = { ...doc.data() } as {
+    const { auth_token, email, index, invite_queued, mailgun_events } = { ...doc.data() } as {
       auth_token: string
       email: string
+      index: number
       invite_queued: QueueLog[]
       mailgun_events: { accepted: MgEvent[]; delivered: MgEvent[] }
     }
-    return [...acc, { auth_token, email, has_voted: !!votesByAuth[auth_token], invite_queued, mailgun_events }]
+    return [...acc, { auth_token, email, has_voted: !!votesByAuth[auth_token], index, invite_queued, mailgun_events }]
   }, [])
 
   return res.status(200).send({

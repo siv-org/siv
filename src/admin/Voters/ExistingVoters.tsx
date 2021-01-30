@@ -16,6 +16,7 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
   const num_voted = voters?.filter((v) => v.has_voted).length || 0
   const [unlocking, toggle_unlocking] = useReducer((state) => !state, false)
   const [sending, toggle_sending] = useReducer((state) => !state, false)
+  const [hide_voted, toggle_hide_voted] = useReducer((state) => !state, false)
   const [error, set_error] = useState('')
 
   const { last_selected, pressing_shift, set_last_selected } = use_multi_select()
@@ -140,6 +141,10 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
         <i>
           {num_voted} of {voters.length} voted ({Math.round((num_voted / voters.length) * 100)}%)
         </i>
+        {/* Toggle hide voted */}
+        <a style={{ cursor: 'pointer', fontSize: 12, marginLeft: 10 }} onClick={toggle_hide_voted}>
+          <>{hide_voted ? 'Show' : 'Hide'} Voted</>
+        </a>
       </p>
 
       <table>
@@ -172,73 +177,75 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
           </tr>
         </thead>
         <tbody>
-          {voters?.map(({ auth_token, email, has_voted, invite_queued, mailgun_events }, index) => (
-            <tr className={`${checked[index] ? 'checked' : ''}`} key={email}>
-              {/* Checkbox cell */}
-              {!readOnly && (
-                <td
-                  className="hoverable"
-                  onClick={() => {
-                    const new_checked = [...checked]
-                    if (pressing_shift && last_selected !== undefined) {
-                      // If they're holding shift, set all between last_selected and this index to !checked[index]
-                      for (let i = Math.min(index, last_selected); i <= Math.max(index, last_selected); i += 1) {
-                        new_checked[i] = !checked[index]
-                      }
-                    } else {
-                      new_checked[index] = !checked[index]
-                    }
-
-                    set_last_selected(index)
-                    set_checked(new_checked)
-                  }}
-                >
-                  <input readOnly checked={checked[index]} className="hoverable" type="checkbox" />
-                </td>
-              )}
-              <td>{index + 1}</td>
-              <td>
-                <span style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <span>{email}</span>
-                  {/* Edit email btn */}
-                  {!readOnly && (
-                    <span
-                      className="visible-on-parent-hover"
-                      onClick={async () => {
-                        const new_email = prompt('Edit email?', email)
-
-                        // TODO: check if is_valid_email(new_email)
-                        if (!new_email || new_email === email) return
-
-                        // Store new email in API
-                        const response = await api(`election/${election_id}/admin/edit-email`, {
-                          new_email,
-                          old_email: email,
-                          password: localStorage.password,
-                        })
-
-                        if (response.status === 201) {
-                          revalidate(election_id)
-                        } else {
-                          console.error(response.json())
-                          // throw await response.json()
+          {voters
+            ?.filter(({ has_voted }) => !has_voted || !hide_voted)
+            .map(({ auth_token, email, has_voted, index, invite_queued, mailgun_events }) => (
+              <tr className={`${checked[index] ? 'checked' : ''}`} key={email}>
+                {/* Checkbox cell */}
+                {!readOnly && (
+                  <td
+                    className="hoverable"
+                    onClick={() => {
+                      const new_checked = [...checked]
+                      if (pressing_shift && last_selected !== undefined) {
+                        // If they're holding shift, set all between last_selected and this index to !checked[index]
+                        for (let i = Math.min(index, last_selected); i <= Math.max(index, last_selected); i += 1) {
+                          new_checked[i] = !checked[index]
                         }
-                      }}
-                    >
-                      &nbsp;
-                      <EditOutlined />
-                    </span>
-                  )}
-                </span>
-              </td>
-              <td style={{ fontFamily: 'monospace' }}>{mask_tokens ? mask(auth_token) : auth_token}</td>
+                      } else {
+                        new_checked[index] = !checked[index]
+                      }
 
-              <QueuedCell {...{ invite_queued }} />
-              <DeliveredFailureCell {...mailgun_events} />
+                      set_last_selected(index)
+                      set_checked(new_checked)
+                    }}
+                  >
+                    <input readOnly checked={checked[index]} className="hoverable" type="checkbox" />
+                  </td>
+                )}
+                <td>{index + 1}</td>
+                <td>
+                  <span style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <span>{email}</span>
+                    {/* Edit email btn */}
+                    {!readOnly && (
+                      <span
+                        className="visible-on-parent-hover"
+                        onClick={async () => {
+                          const new_email = prompt('Edit email?', email)
 
-              <td style={{ fontWeight: 700, textAlign: 'center' }}>{has_voted ? '✓' : ''}</td>
-            </tr>
-          ))}
+                          // TODO: check if is_valid_email(new_email)
+                          if (!new_email || new_email === email) return
+
+                          // Store new email in API
+                          const response = await api(`election/${election_id}/admin/edit-email`, {
+                            new_email,
+                            old_email: email,
+                            password: localStorage.password,
+                          })
+
+                          if (response.status === 201) {
+                            revalidate(election_id)
+                          } else {
+                            console.error(response.json())
+                            // throw await response.json()
+                          }
+                        }}
+                      >
+                        &nbsp;
+                        <EditOutlined />
+                      </span>
+                    )}
+                  </span>
+                </td>
+                <td style={{ fontFamily: 'monospace' }}>{mask_tokens ? mask(auth_token) : auth_token}</td>
+
+                <QueuedCell {...{ invite_queued }} />
+                <DeliveredFailureCell {...mailgun_events} />
+
+                <td style={{ fontWeight: 700, textAlign: 'center' }}>{has_voted ? '✓' : ''}</td>
+              </tr>
+            ))}
         </tbody>
       </table>
       <style jsx>{`
