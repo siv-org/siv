@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/browser'
 import { Dispatch, useState } from 'react'
 
 import { api } from '../api-helper'
@@ -25,10 +26,21 @@ export const SubmitButton = ({
         onClick={async () => {
           setButtonText('Submitting...')
 
-          const { status } = await api('submit-vote', { auth, election_id, encrypted_vote: state.encrypted })
+          const response = await api('submit-vote', { auth, election_id, encrypted_vote: state.encrypted })
 
           // Stop if there was there an error
-          if (status !== 200) return setButtonText('Error')
+          if (response.status !== 200) {
+            const { error } = (await response.json()) as { error: string }
+            Sentry.captureMessage(error, {
+              extra: { auth, election_id, encrypted_vote: state.encrypted },
+              level: Sentry.Severity.Error,
+            })
+            console.log(error)
+
+            if (error.startsWith('Vote already recorded')) return setButtonText('Submitted.')
+
+            return setButtonText('Error')
+          }
 
           dispatch({ submit: 'true' })
 

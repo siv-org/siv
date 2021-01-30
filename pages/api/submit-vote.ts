@@ -13,7 +13,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   await validateAuthToken(auth, election_id, {
     fail: async (message) => {
       await pushover('SIV submission: Bad Auth Token', `election: ${election_id}\nauth: ${auth}\nmessage: ${message}`)
-      res.status(400).send(message)
+      res.status(400).json({ error: message })
     },
     pass: () => (validated = true),
   })
