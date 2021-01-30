@@ -2,8 +2,8 @@ import { useState } from 'react'
 
 import { api } from '../../api-helper'
 import { CollapsibleSection } from '../CollapsibleSection'
-import { revalidate, useStored } from '../load-existing'
 import { SaveButton } from '../SaveButton'
+import { revalidate, useStored } from '../useStored'
 import { ExistingVoters } from './ExistingVoters'
 import { MultilineInput } from './MultilineInput'
 

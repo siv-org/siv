@@ -1,13 +1,12 @@
 import Head from 'next/head'
 import Link from 'next/link'
 
-import { useStored } from './load-existing'
-import { subscribe_to_pusher } from './subscribe-to-pusher'
+import { usePusher } from './usePusher'
+import { useStored } from './useStored'
 
 export const ElectionID = () => {
   const { election_id, election_title } = useStored()
-
-  subscribe_to_pusher(election_id)
+  usePusher(election_id)
 
   if (!election_id) return null
 

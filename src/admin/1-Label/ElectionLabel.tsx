@@ -1,5 +1,5 @@
 import { CollapsibleSection } from '../CollapsibleSection'
-import { useStored } from '../load-existing'
+import { useStored } from '../useStored'
 import { ManagerInput } from './ManagerInput'
 import { StoredManager } from './StoredManager'
 import { StoredTitle } from './StoredTitle'

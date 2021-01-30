@@ -1,9 +1,9 @@
 import Pusher from 'pusher-js'
 import { useEffect } from 'react'
 
-import { revalidate } from './load-existing'
+import { revalidate } from './useStored'
 
-export function subscribe_to_pusher(election_id?: string) {
+export function usePusher(election_id?: string) {
   function subscribe() {
     // Enable pusher logging - don't include this in production
     // Pusher.logToConsole = true

@@ -6,8 +6,8 @@ import { ElectionLabel } from './1-Label/ElectionLabel'
 import { BallotDesign } from './BallotDesign/BallotDesign'
 import { ElectionID } from './ElectionID'
 import { HeaderBar } from './HeaderBar'
-import { useStored } from './load-existing'
 import { AddTrustees } from './Trustees/AddTrustees'
+import { useStored } from './useStored'
 import { AddVoters } from './Voters/AddVoters'
 
 export type StageAndSetter = { set_stage: Dispatch<SetStateAction<number>>; stage: number }

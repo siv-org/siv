@@ -1,4 +1,4 @@
-import { useStored } from '../load-existing'
+import { useStored } from '../useStored'
 
 export const StoredManager = () => {
   const { election_manager } = useStored()

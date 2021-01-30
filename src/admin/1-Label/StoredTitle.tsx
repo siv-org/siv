@@ -1,4 +1,4 @@
-import { useStored } from '../load-existing'
+import { useStored } from '../useStored'
 
 export const StoredTitle = () => {
   const { election_title } = useStored()

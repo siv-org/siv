@@ -1,7 +1,7 @@
 import { api } from '../../api-helper'
 import { CollapsibleSection } from '../CollapsibleSection'
-import { revalidate, useStored } from '../load-existing'
 import { SaveButton } from '../SaveButton'
+import { revalidate, useStored } from '../useStored'
 import { EncryptionAddress } from './EncryptionAddress'
 
 export const AddTrustees = () => {

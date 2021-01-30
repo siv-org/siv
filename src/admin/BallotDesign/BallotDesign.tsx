@@ -1,5 +1,5 @@
 import { CollapsibleSection } from '../CollapsibleSection'
-import { useStored } from '../load-existing'
+import { useStored } from '../useStored'
 import { DesignInput } from './DesignInput'
 import { StoredDesign } from './StoredDesign'
 
