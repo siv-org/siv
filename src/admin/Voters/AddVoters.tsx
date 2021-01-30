@@ -23,7 +23,7 @@ export const AddVoters = () => {
           <SaveButton
             onPress={async () => {
               const response = await api(`election/${election_id}/admin/add-voters`, {
-                new_voters: new_voters.split('\n'),
+                new_voters: new_voters.split('\n').map((s) => s.trim()),
                 password: localStorage.password,
               })
 
