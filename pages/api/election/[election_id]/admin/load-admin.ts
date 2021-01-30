@@ -15,7 +15,7 @@ export type Voter = {
 
 type MgEvent = Record<string, unknown>
 
-export type LoadAdminResponse = {
+export type AdminData = {
   ballot_design?: string
   election_id?: string
   election_manager?: string
@@ -81,5 +81,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     threshold_public_key,
     trustees,
     voters,
-  } as LoadAdminResponse)
+  } as AdminData)
 }
