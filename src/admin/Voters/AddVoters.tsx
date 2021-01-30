@@ -2,15 +2,14 @@ import { useState } from 'react'
 
 import { api } from '../../api-helper'
 import { CollapsibleSection } from '../CollapsibleSection'
-import { useElectionID } from '../ElectionID'
-import { revalidate } from '../load-existing'
+import { revalidate, useStored } from '../load-existing'
 import { SaveButton } from '../SaveButton'
 import { ExistingVoters } from './ExistingVoters'
 import { MultilineInput } from './MultilineInput'
 
 export const AddVoters = () => {
   const [new_voters, set_new_voters] = useState('')
-  const election_id = useElectionID()
+  const { election_id } = useStored()
 
   return (
     <CollapsibleSection subtitle="Add new voters by email address:" title="Voters">

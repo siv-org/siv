@@ -1,8 +1,7 @@
 import { useState } from 'react'
 
 import { api } from '../../api-helper'
-import { useElectionID } from '../ElectionID'
-import { revalidate } from '../load-existing'
+import { revalidate, useStored } from '../load-existing'
 import { SaveButton } from '../SaveButton'
 
 export const DesignInput = () => {
@@ -18,7 +17,7 @@ export const DesignInput = () => {
     "write_in_allowed": true
   }
 ]`)
-  const election_id = useElectionID()
+  const { election_id } = useStored()
 
   return (
     <>

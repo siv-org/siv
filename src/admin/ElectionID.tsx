@@ -1,6 +1,5 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
 
 import { useStored } from './load-existing'
 import { subscribe_to_pusher } from './subscribe-to-pusher'
@@ -38,5 +37,3 @@ export const ElectionID = () => {
     </div>
   )
 }
-
-export const useElectionID = () => useRouter().query.election_id as string | undefined

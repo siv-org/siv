@@ -1,12 +1,11 @@
 import { useState } from 'react'
 
 import { api } from '../../api-helper'
-import { useElectionID } from '../ElectionID'
-import { revalidate } from '../load-existing'
+import { revalidate, useStored } from '../load-existing'
 import { SaveButton } from '../SaveButton'
 
 export const ManagerInput = () => {
-  const election_id = useElectionID()
+  const { election_id } = useStored()
   const [election_manager, set_manager] = useState('')
 
   return (
