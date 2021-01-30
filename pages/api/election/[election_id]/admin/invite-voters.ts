@@ -34,7 +34,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         if (!voter.exists) return { error: `Can't find voter ${email}` }
         const { auth_token, invite_queued } = { ...voter.data() } as { auth_token: string; invite_queued?: QueueLog[] }
 
-        const link = `${req.headers.origin}/election/${election_id}/vote?auth=${auth_token}`
+        // const link = `${req.headers.origin}/election/${election_id}/vote?auth=${auth_token}`
+        const link = `https://secureinternetvoting.org/election/${election_id}/vote?auth=${auth_token}`
 
         return send_invitation_email({ from: election_manager, link, subject_line, voter: email }).then((result) => {
           console.log(email, result)
