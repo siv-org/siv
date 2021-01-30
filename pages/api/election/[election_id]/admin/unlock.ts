@@ -7,7 +7,7 @@ import decrypt from '../../../../../src/crypto/decrypt'
 import { decode } from '../../../../../src/crypto/encode'
 import { shuffle } from '../../../../../src/crypto/shuffle'
 import { big, bigCipher, bigPubKey, toStrings } from '../../../../../src/crypto/types'
-import { firebase } from '../../../_services'
+import { firebase, pushover } from '../../../_services'
 import { pusher } from '../../../pusher'
 
 const { ADMIN_EMAIL } = process.env
@@ -67,7 +67,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Store admins shuffled lists
   await adminDoc.update({ shuffled })
-  await pusher.trigger('keygen', 'update', { 'admin@secureintervoting.org': { shuffled } })
+  try {
+    await pusher.trigger('keygen', 'update', { 'admin@secureintervoting.org': { shuffled } })
+  } catch (e) {
+    await pushover('Failed to Pusher.trigger(keygen, update, admin@, shuffled)', JSON.stringify(e))
+  }
 
   // Is admin the only trustee?
   if (t === 1) {
