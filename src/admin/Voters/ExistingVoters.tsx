@@ -5,7 +5,6 @@ import { api } from '../../api-helper'
 import { OnClickButton } from '../../landing-page/Button'
 import { Spinner } from '../Spinner'
 import { revalidate, useStored } from '../useStored'
-import { AcceptedCell } from './AcceptedCell'
 import { DeliveredFailureCell } from './DeliveredFailureCell'
 import { QueuedCell } from './QueuedCell'
 
@@ -162,7 +161,6 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
               auth token
             </th>
             <th style={{ width: 50 }}>invite queued</th>
-            <th style={{ width: 50 }}>invite accepted</th>
             <th style={{ width: 50 }}>invite delivered</th>
             <th>voted</th>
           </tr>
@@ -230,7 +228,6 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
               <td style={{ fontFamily: 'monospace' }}>{mask_tokens ? mask(auth_token) : auth_token}</td>
 
               <QueuedCell {...{ invite_queued }} />
-              <AcceptedCell {...mailgun_events} />
               <DeliveredFailureCell {...mailgun_events} />
 
               <td style={{ fontWeight: 700, textAlign: 'center' }}>{has_voted ? '✓' : ''}</td>
