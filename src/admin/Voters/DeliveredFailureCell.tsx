@@ -33,8 +33,13 @@ export const DeliveredFailureCell = ({ delivered, failed }: { delivered?: unknow
         }
       >
         <td style={{ textAlign: 'center' }}>
-          <span className="failed-events">{failed?.length ? 'X ' : ''}</span>
+          <span className="failed-events">
+            {(failed as { severity?: string }[])?.filter((e) => e.severity === 'temporary').length ? '⚠️ ' : ''}
+          </span>
           {delivered?.length}
+          <span className="failed-events">
+            {(failed as { severity?: string }[])?.filter(({ severity }) => severity === 'permanent').length ? ' X' : ''}
+          </span>
         </td>
       </Tooltip>
       <style jsx>{`
