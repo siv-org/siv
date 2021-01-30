@@ -41,6 +41,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       .map(
         mgEventsList.items,
         (item: { event: string; recipient: string }) => {
+          // Skip replies to us
+          if (item.recipient === 'election@secureinternetvoting.org') return
+
           num_events++
           // Store new items on voters' docs
           return electionDoc
