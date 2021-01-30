@@ -7,9 +7,16 @@ import { checkPassword } from '../create/AddGroup'
 export function useStored(): AdminData {
   const election_id = useRouter().query.election_id as string | undefined
 
-  const { data } = useSWR(checkPassword() && election_id ? url(election_id) : null, (url: string) =>
-    fetch(url).then((r) => r.json()),
+  const { data, error } = useSWR(checkPassword() && election_id ? url(election_id) : null, (url: string) =>
+    fetch(url).then(async (r) => {
+      if (!r.ok) throw await r.json()
+      return await r.json()
+    }),
   )
+
+  if (error?.error?.startsWith('Invalid Password')) {
+    localStorage.password = null
+  }
 
   return data || {}
 }

@@ -3,7 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { firebase } from '../../../_services'
 import { QueueLog } from './invite-voters'
 
-const { ADMIN_PASSWORD } = process.env
+const { ADMIN_PASSWORD, MANAGER_PASSWORD } = process.env
 
 export type Voter = {
   auth_token: string
@@ -26,10 +26,11 @@ export type AdminData = {
 }
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { election_id, password } = req.query
+  const { election_id, password } = req.query as { election_id?: string; password?: string }
 
   // Check admin password
-  if (password !== ADMIN_PASSWORD) return res.status(401).json({ error: `Invalid Password: '${password}'` })
+  if (!password || ![ADMIN_PASSWORD, MANAGER_PASSWORD].includes(password))
+    return res.status(401).json({ error: `Invalid Password: '${password}'` })
 
   const election = firebase
     .firestore()
