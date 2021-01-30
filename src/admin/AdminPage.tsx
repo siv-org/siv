@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from 'react'
+import { Dispatch, SetStateAction } from 'react'
 
 import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
@@ -13,7 +13,7 @@ import { AddVoters } from './Voters/AddVoters'
 export type StageAndSetter = { set_stage: Dispatch<SetStateAction<number>>; stage: number }
 
 export const AdminPage = (): JSX.Element => {
-  const { ballot_design, election_manager, threshold_public_key } = use_stored_info()
+  const { ballot_design, election_manager, election_title, threshold_public_key } = use_stored_info()
 
   return (
     <>
@@ -21,7 +21,7 @@ export const AdminPage = (): JSX.Element => {
 
       <HeaderBar />
       <main>
-        <h1>Create New Election</h1>
+        <h1>{election_title ? `Manage: ${election_title}` : 'Create New Election'}</h1>
         <ElectionID />
         <ElectionLabel />
         {election_manager && <AddTrustees />}
