@@ -35,7 +35,7 @@ export function SubmittedScreen({
 
   return (
     <NoSsr>
-      <Link href={`/election/${election_id}`}>
+      <Link as={`/election/${election_id}`} href="/election/[election_id]">
         <a id="status-page" target="_blank">
           <img src="/vote/externallinkicon.jpg" width="15px" />
           Click here to visit the Election Status page.
@@ -45,7 +45,7 @@ export function SubmittedScreen({
       <h3>How to verify your vote:</h3>
       <p>
         Once the election closes and votes are unlocked, you can find yours on the{' '}
-        <Link href={`/election/${election_id}`}>
+        <Link as={`/election/${election_id}`} href="/election/[election_id]">
           <a style={{ color: 'black' }} target="_blank">
             Election Status page
           </a>
