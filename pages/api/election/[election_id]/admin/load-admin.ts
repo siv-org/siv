@@ -36,6 +36,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Only allow manager for whitelisted elections
   const manager_allowed = [
     '1611997618605', // Cache County Sample Election
+    '1612028266931', // Cache County Executive Round 1
   ]
   if (password === MANAGER_PASSWORD && !manager_allowed.includes(election_id))
     return res.status(401).json({ error: `Manager not enabled for this election` })
