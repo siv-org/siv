@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
+import { format } from 'timeago.js'
 
 import { firebase } from './_services'
 
@@ -42,7 +43,10 @@ export async function validateAuthToken(
 
   // Has Auth Token already been used?
   const [vote] = (await votes).docs
-  if (vote) return fail('Auth Token already used.')
+  if (vote) {
+    const previous_at = new Date(vote.data().created_at?._seconds * 1000)
+    return fail(`Vote already recorded. (${format(previous_at)})`)
+  }
 
   // TODO Has Auth Token been invalidated?
 
