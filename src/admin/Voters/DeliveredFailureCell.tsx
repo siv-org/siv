@@ -33,8 +33,8 @@ export const DeliveredFailureCell = ({ delivered, failed }: { delivered?: unknow
         }
       >
         <td style={{ textAlign: 'center' }}>
+          <span className="failed-events">{failed?.length ? 'X ' : ''}</span>
           {delivered?.length}
-          <span className="failed-events">{failed?.length ? 'X' : ''}</span>
         </td>
       </Tooltip>
       <style jsx>{`
