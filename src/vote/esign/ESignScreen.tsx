@@ -1,33 +1,37 @@
+import Head from 'next/head'
 import { useRef, useState } from 'react'
 import SignaturePad from 'react-signature-pad-wrapper'
 
-import { GlobalCSS } from '../GlobalCSS'
-import { Head } from '../Head'
-import { Footer } from './Footer'
+import { GlobalCSS } from '../../GlobalCSS'
+import { OnClickButton } from '../../landing-page/Button'
 
 type Pad = {
   clear: () => void
 }
 
-export const ESignPage = (): JSX.Element => {
+export const ESignScreen = (): JSX.Element => {
   const signaturePad = useRef<Pad>(null)
   const [submitted, setSubmitted] = useState(false)
 
   return (
     <>
-      <Head title="Cast Your Vote" />
+      <Head>
+        <title key="title">SIV: Add Your Signature</title>
+      </Head>
 
       <main>
-        <p>
-          This vote is intended exclusively for <b>David Ernst</b>. Sign your name in the box below.
-        </p>
+        <h1>Add Your Signature</h1>
+        <p>The election manager has requested your esignature. Please sign your name in the box below.</p>
         <SignaturePad redrawOnResize ref={signaturePad} />
         <div className="buttons">
-          <button onClick={() => signaturePad.current?.clear() || setSubmitted(false)}>Clear</button>
-          <button onClick={() => setSubmitted(true)}>Submit</button>
+          <OnClickButton style={{ marginLeft: 0 }} onClick={() => signaturePad.current?.clear() || setSubmitted(false)}>
+            Clear
+          </OnClickButton>
+          <OnClickButton style={{ marginRight: 0 }} onClick={() => setSubmitted(true)}>
+            Submit
+          </OnClickButton>
         </div>
         {submitted && <p style={{ float: 'right' }}>Just a demo 🙂</p>}
-        <Footer />
       </main>
 
       <style global jsx>{`

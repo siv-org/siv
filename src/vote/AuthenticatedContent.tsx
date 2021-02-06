@@ -2,6 +2,7 @@ import Head from 'next/head'
 
 import { GlobalCSS } from '../GlobalCSS'
 import { Ballot } from './Ballot'
+import { ESignScreen } from './esign/ESignScreen'
 import { Instructions } from './Instructions'
 import { SubmitButton } from './SubmitButton'
 import { SubmittedScreen } from './submitted/SubmittedScreen'
@@ -11,9 +12,12 @@ import { YourAuthToken } from './YourAuthToken'
 
 export const AuthenticatedContent = ({ auth, election_id }: { auth: string; election_id: string }): JSX.Element => {
   // Initialize local vote state on client
-  const [state, dispatch] = useVoteState(`store-${election_id}-${auth}`)
+  const [state, dispatch] = useVoteState(`voter-${election_id}-${auth}`)
 
   useElectionInfo(dispatch, election_id)
+
+  // TODO: After marking choices, before showing SubmittedScreen
+  const showSignatureScreen = true
 
   return (
     <>
@@ -25,6 +29,8 @@ export const AuthenticatedContent = ({ auth, election_id }: { auth: string; elec
           <h1>Vote Submitted.</h1>
           <SubmittedScreen {...{ auth, election_id, state }} />
         </>
+      ) : showSignatureScreen ? (
+        <ESignScreen />
       ) : (
         <>
           <h1>Cast Your Vote</h1>
