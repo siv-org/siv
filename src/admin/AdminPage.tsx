@@ -4,7 +4,7 @@ import { ElectionLabel } from './1-Label/ElectionLabel'
 import { BallotDesign } from './BallotDesign/BallotDesign'
 import { ElectionID } from './ElectionID'
 import { HeaderBar } from './HeaderBar'
-import { AddTrustees } from './Trustees/AddTrustees'
+import { Trustees } from './Trustees/Trustees'
 import { useStored } from './useStored'
 import { AddVoters } from './Voters/AddVoters'
 
@@ -20,7 +20,7 @@ export const AdminPage = (): JSX.Element => {
         <h1>{election_title ? `Manage: ${election_title}` : 'Create New Election'}</h1>
         <ElectionID />
         <ElectionLabel />
-        {election_manager && <AddTrustees />}
+        {election_manager && <Trustees />}
         {threshold_public_key && <BallotDesign />}
         {ballot_design && <AddVoters />}
       </main>
