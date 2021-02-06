@@ -7,6 +7,7 @@ import { OnClickButton } from '../../landing-page/Button'
 
 type Pad = {
   clear: () => void
+  toDataURL: () => string
 }
 
 export const ESignScreen = (): JSX.Element => {
@@ -27,7 +28,14 @@ export const ESignScreen = (): JSX.Element => {
           <OnClickButton style={{ marginLeft: 0 }} onClick={() => signaturePad.current?.clear() || setSubmitted(false)}>
             Clear
           </OnClickButton>
-          <OnClickButton style={{ marginRight: 0 }} onClick={() => setSubmitted(true)}>
+          <OnClickButton
+            style={{ marginRight: 0 }}
+            onClick={() => {
+              setSubmitted(true)
+              const data = signaturePad.current?.toDataURL()
+              console.log('data:', data)
+            }}
+          >
             Submit
           </OnClickButton>
         </div>
