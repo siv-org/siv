@@ -8,6 +8,7 @@ const { ADMIN_PASSWORD, MANAGER_PASSWORD } = process.env
 export type Voter = {
   auth_token: string
   email: string
+  esignature?: string
   has_voted: boolean
   index: number
   invite_queued?: QueueLog[]
@@ -74,10 +75,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const trustees = (await loadTrustees).docs.reduce((acc: string[], doc) => [...acc, { ...doc.data() }.email], [])
 
   // Gather who's voted already
-  const votesByAuth: Record<string, boolean> = (await loadVotes).docs.reduce(
-    (acc, doc) => ({ ...acc, [doc.data().auth]: true }),
-    {},
-  )
+  const votesByAuth: Record<string, [boolean, string?]> = (await loadVotes).docs.reduce((acc, doc) => {
+    const data = doc.data()
+    return { ...acc, [data.auth]: [true, data.esignature] }
+  }, {})
 
   // Build voters objects
   const voters: Voter[] = (await loadVoters).docs.reduce((acc: Voter[], doc) => {
@@ -88,7 +89,18 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       invite_queued: QueueLog[]
       mailgun_events: { accepted: MgEvent[]; delivered: MgEvent[] }
     }
-    return [...acc, { auth_token, email, has_voted: !!votesByAuth[auth_token], index, invite_queued, mailgun_events }]
+    return [
+      ...acc,
+      {
+        auth_token,
+        email,
+        esignature: votesByAuth[auth_token][1],
+        has_voted: !!votesByAuth[auth_token],
+        index,
+        invite_queued,
+        mailgun_events,
+      },
+    ]
   }, [])
 
   return res.status(200).send({

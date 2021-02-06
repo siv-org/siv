@@ -12,7 +12,6 @@ export const Trustees = () => {
   const [new_trustees, set_new_trustees] = useState('')
 
   const admin_email = 'admin@secureinternetvoting.org'
-  console.log('trustees:', trustees)
 
   return (
     <CollapsibleSection subtitle="Each Trustee adds extra assurance of vote privacy." title="Trustees">

@@ -9,7 +9,7 @@ import { DeliveredFailureCell } from './DeliveredFailureCell'
 import { QueuedCell } from './QueuedCell'
 
 export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
-  const { election_id, voters } = useStored()
+  const { election_id, esignature_requested, voters } = useStored()
   const [mask_tokens, toggle_tokens] = useReducer((state) => !state, true)
   const [checked, set_checked] = useState(new Array(voters?.length).fill(false))
   const num_checked = checked.filter((c) => c).length
@@ -64,6 +64,8 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
 
   // Don't show anything if we don't have any voters yet
   if (!voters?.length) return null
+
+  console.log(voters)
 
   return (
     <>
@@ -174,12 +176,13 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
             <th style={{ width: 50 }}>invite queued</th>
             <th style={{ width: 50 }}>invite delivered</th>
             <th>voted</th>
+            {esignature_requested && <th>signature</th>}
           </tr>
         </thead>
         <tbody>
           {voters
             ?.filter(({ has_voted }) => !has_voted || !hide_voted)
-            .map(({ auth_token, email, has_voted, index, invite_queued, mailgun_events }) => (
+            .map(({ auth_token, email, esignature, has_voted, index, invite_queued, mailgun_events }) => (
               <tr className={`${checked[index] ? 'checked' : ''}`} key={email}>
                 {/* Checkbox cell */}
                 {!readOnly && (
@@ -244,6 +247,8 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
                 <DeliveredFailureCell {...mailgun_events} />
 
                 <td style={{ fontWeight: 700, textAlign: 'center' }}>{has_voted ? '✓' : ''}</td>
+
+                {esignature_requested && <td>{esignature ? 'Submitted' : ''}</td>}
               </tr>
             ))}
         </tbody>
