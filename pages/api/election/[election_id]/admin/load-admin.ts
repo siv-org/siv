@@ -21,6 +21,7 @@ export type AdminData = {
   election_id?: string
   election_manager?: string
   election_title?: string
+  esignature_requested?: boolean
   threshold_public_key?: string
   trustees?: string[]
   voters?: Voter[]
@@ -59,10 +60,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const electionDoc = await loadElection
   if (!electionDoc.exists) return res.status(400).json({ error: `Unknown Election ID: '${election_id}'` })
 
-  const { ballot_design, election_manager, election_title, threshold_public_key } = { ...electionDoc.data() } as {
+  const { ballot_design, election_manager, election_title, esignature_requested, threshold_public_key } = {
+    ...electionDoc.data(),
+  } as {
     ballot_design?: string
     election_manager?: string
     election_title?: string
+    esignature_requested?: boolean
     threshold_public_key?: string
   }
 
@@ -92,6 +96,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     election_id,
     election_manager,
     election_title,
+    esignature_requested,
     threshold_public_key,
     trustees,
     voters,

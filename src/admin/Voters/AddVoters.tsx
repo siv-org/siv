@@ -6,6 +6,7 @@ import { SaveButton } from '../SaveButton'
 import { revalidate, useStored } from '../useStored'
 import { ExistingVoters } from './ExistingVoters'
 import { MultilineInput } from './MultilineInput'
+import { RequestEsignatures } from './RequestEsignatures'
 
 export const AddVoters = () => {
   const [new_voters, set_new_voters] = useState('')
@@ -36,6 +37,7 @@ export const AddVoters = () => {
             }}
           />
         )}
+        <RequestEsignatures />
         <ExistingVoters />
       </>
     </CollapsibleSection>
