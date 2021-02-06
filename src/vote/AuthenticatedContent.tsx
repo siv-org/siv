@@ -20,7 +20,7 @@ export const AuthenticatedContent = ({ auth, election_id }: { auth: string; elec
     <>
       {state.submitted_at ? (
         state.esignature_requested && !state.esigned_at ? (
-          <ESignScreen />
+          <ESignScreen {...{ auth, dispatch, election_id }} />
         ) : (
           <>
             <Head>

@@ -1,7 +1,9 @@
+import * as Sentry from '@sentry/browser'
 import Head from 'next/head'
-import { useRef, useState } from 'react'
+import { Dispatch, useRef, useState } from 'react'
 import SignaturePad from 'react-signature-pad-wrapper'
 
+import { api } from '../../api-helper'
 import { GlobalCSS } from '../../GlobalCSS'
 import { OnClickButton } from '../../landing-page/Button'
 
@@ -10,9 +12,17 @@ type Pad = {
   toDataURL: () => string
 }
 
-export const ESignScreen = (): JSX.Element => {
+export const ESignScreen = ({
+  auth,
+  dispatch,
+  election_id,
+}: {
+  auth?: string
+  dispatch: Dispatch<Record<string, string>>
+  election_id?: string
+}): JSX.Element => {
   const signaturePad = useRef<Pad>(null)
-  const [submitted, setSubmitted] = useState(false)
+  const [buttonText, setButtonText] = useState('Submit')
 
   return (
     <>
@@ -25,21 +35,37 @@ export const ESignScreen = (): JSX.Element => {
         <p>The election manager has requested your esignature. Please sign your name in the box below.</p>
         <SignaturePad redrawOnResize ref={signaturePad} />
         <div className="buttons">
-          <OnClickButton style={{ marginLeft: 0 }} onClick={() => signaturePad.current?.clear() || setSubmitted(false)}>
+          <OnClickButton
+            style={{ marginLeft: 0 }}
+            onClick={() => signaturePad.current?.clear() || setButtonText('Submit')}
+          >
             Clear
           </OnClickButton>
           <OnClickButton
             style={{ marginRight: 0 }}
-            onClick={() => {
-              setSubmitted(true)
-              const data = signaturePad.current?.toDataURL()
-              console.log('data:', data)
+            onClick={async () => {
+              setButtonText('Submitting...')
+              const esignature = signaturePad.current?.toDataURL()
+              console.log('esignature:', esignature)
+
+              const response = await api('submit-esignature', { auth, election_id, esignature })
+              if (response.status === 200) {
+                dispatch({ esigned_at: new Date().toString() })
+              } else {
+                setButtonText('Error')
+                console.log('response', response)
+                const json = await response.json()
+                console.log('response.json', json)
+                Sentry.captureMessage(json.error, {
+                  extra: { auth, election_id, esignature },
+                  level: Sentry.Severity.Error,
+                })
+              }
             }}
           >
-            Submit
+            {buttonText}
           </OnClickButton>
         </div>
-        {submitted && <p style={{ float: 'right' }}>Just a demo 🙂</p>}
       </main>
 
       <style global jsx>{`

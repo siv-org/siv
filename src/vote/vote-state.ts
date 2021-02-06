@@ -24,8 +24,9 @@ export type State = {
 
 // Core state logic
 function reducer(prev: State, payload: Map) {
-  // Special handler for "election info" && "submitted_at" payload
-  if (payload.ballot_design || payload.submitted_at) {
+  // Special handler for other state updates
+  // that don't require encryption
+  if (payload.ballot_design || payload.submitted_at || payload.esigned_at) {
     return { ...prev, ...payload }
   }
 
