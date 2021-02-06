@@ -17,13 +17,22 @@ export function useElectionInfo(dispatch: Dispatch<Record<string, unknown>>, ele
     ;(async () => {
       // Get info from API
       const response = await fetch(`/api/election/${election_id}/info`)
-      const { ballot_design, election_title, error, g, p, threshold_public_key } = await response.json()
+      const {
+        ballot_design,
+        election_title,
+        error,
+        esignature_requested,
+        g,
+        p,
+        threshold_public_key,
+      } = await response.json()
 
       if (error) return
 
       dispatch({
         ballot_design: JSON.parse(ballot_design),
         election_title,
+        esignature_requested,
         public_key: { generator: g, modulo: p, recipient: threshold_public_key },
       })
     })()

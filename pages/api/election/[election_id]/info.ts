@@ -20,5 +20,15 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Return public election fields
   res
     .status(200)
-    .json(pick(election, ['ballot_design', 'g', 'p', 'threshold_public_key', 'last_decrypted_at', 'election_title']))
+    .json(
+      pick(election, [
+        'ballot_design',
+        'g',
+        'p',
+        'threshold_public_key',
+        'last_decrypted_at',
+        'election_title',
+        'esignature_requested',
+      ]),
+    )
 }

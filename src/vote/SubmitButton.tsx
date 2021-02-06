@@ -42,7 +42,7 @@ export const SubmitButton = ({
             return setButtonText('Error')
           }
 
-          dispatch({ submit: 'true' })
+          dispatch({ submitted_at: new Date().toString() })
 
           // Scroll page to top
           window.scrollTo(0, 0)

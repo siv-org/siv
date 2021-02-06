@@ -24,13 +24,8 @@ export type State = {
 
 // Core state logic
 function reducer(prev: State, payload: Map) {
-  // Special handler for the "submit" payload
-  if (payload.submit) {
-    return { ...prev, submitted_at: new Date() }
-  }
-
-  // Special handler for "election info" payload
-  if (payload.ballot_design) {
+  // Special handler for "election info" && "submitted_at" payload
+  if (payload.ballot_design || payload.submitted_at) {
     return { ...prev, ...payload }
   }
 

@@ -16,21 +16,20 @@ export const AuthenticatedContent = ({ auth, election_id }: { auth: string; elec
 
   useElectionInfo(dispatch, election_id)
 
-  // TODO: After marking choices, before showing SubmittedScreen
-  const showSignatureScreen = true
-
   return (
     <>
       {state.submitted_at ? (
-        <>
-          <Head>
-            <title key="title">SIV: Vote Submitted</title>
-          </Head>
-          <h1>Vote Submitted.</h1>
-          <SubmittedScreen {...{ auth, election_id, state }} />
-        </>
-      ) : showSignatureScreen ? (
-        <ESignScreen />
+        state.esignature_requested && !state.esigned_at ? (
+          <ESignScreen />
+        ) : (
+          <>
+            <Head>
+              <title key="title">SIV: Vote Submitted</title>
+            </Head>
+            <h1>Vote Submitted.</h1>
+            <SubmittedScreen {...{ auth, election_id, state }} />
+          </>
+        )
       ) : (
         <>
           <h1>Cast Your Vote</h1>
