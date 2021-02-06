@@ -306,7 +306,7 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
   )
 }
 
-const mask = (string: string) => `${string.slice(0, 2)}......${string.slice(-2)}`
+export const mask = (string: string) => `${string.slice(0, 2)}......${string.slice(-2)}`
 
 /** Logic for checkbox multi-select (holding shift) */
 const use_multi_select = () => {

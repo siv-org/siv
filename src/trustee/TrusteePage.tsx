@@ -1,7 +1,8 @@
 import { Tab, Tabs } from '@material-ui/core'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useReducer, useState } from 'react'
 
+import { mask as maskFunc } from '../admin/Voters/ExistingVoters'
 import { HeaderBar } from '../create/HeaderBar'
 import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
@@ -14,6 +15,9 @@ import { useTrusteeState } from './trustee-state'
 export const TrusteePage = (): JSX.Element => {
   // Grab election parameters from URL
   const { auth, election_id } = useRouter().query as { auth: string; election_id: string }
+  const [masked, toggle_masked] = useReducer((state) => !state, true)
+
+  const mask = masked ? maskFunc : (s: string) => s
 
   const [tab, setTab] = useState(0)
 
@@ -26,7 +30,10 @@ export const TrusteePage = (): JSX.Element => {
         <p>
           Election ID: <b>{election_id}</b>
           <br />
-          Auth: <b>{auth}</b>
+          Auth:{' '}
+          <b className="clickable" onClick={toggle_masked}>
+            {mask(auth || '')}
+          </b>
         </p>
 
         <Tabs
@@ -50,6 +57,10 @@ export const TrusteePage = (): JSX.Element => {
           margin: 0 auto;
           padding: 1rem;
           overflow-wrap: break-word;
+        }
+
+        .clickable {
+          cursor: pointer;
         }
       `}</style>
       <style global jsx>{`
