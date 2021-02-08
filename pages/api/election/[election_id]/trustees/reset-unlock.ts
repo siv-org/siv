@@ -14,7 +14,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { auth, email } = req.body
 
   if (!email) return res.status(404)
-  if (!email.endsWith('dsernst.com')) return res.status(401).json({ error: 'Not authorized to reset' })
+  if (!['@dsernst.com', 'david@secureinternetvoting.org'].includes(email))
+    return res.status(401).json({ error: 'Not authorized to reset' })
 
   const electionDoc = firebase
     .firestore()

@@ -1,8 +1,8 @@
 import { api } from '../../api-helper'
 import { State } from '../trustee-state'
 export function ResetButton({ state }: { state: State }) {
-  // Only show for 'dsernst.com' trustees
-  if (!state.own_email.endsWith('dsernst.com')) {
+  // Only show for David
+  if (!['@dsernst.com', 'david@secureinternetvoting.org'].includes(state.own_email)) {
     return <></>
   }
 

@@ -9,13 +9,14 @@ import { pusher } from '../../../pusher'
 const { ADMIN_EMAIL } = process.env
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  if (!ADMIN_EMAIL) return res.status(501).send('Missing process.env.ADMIN_EMAIL')
+  if (!ADMIN_EMAIL) return res.status(501).json({ error: 'Missing process.env.ADMIN_EMAIL' })
 
   const { election_id } = req.query
   const { auth, email } = req.body
 
   if (!email) return res.status(404)
-  if (!email.endsWith('dsernst.com')) return res.status(401).send('Not authorized to reset keygen')
+  if (!['@dsernst.com', 'david@secureinternetvoting.org'].includes(email))
+    return res.status(401).json({ error: 'Not authorized to reset keygen' })
 
   const electionDoc = firebase
     .firestore()
@@ -31,13 +32,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Is election_id in DB?
   const election = await electionDoc.get()
-  if (!election.exists) return res.status(400).send('Unknown Election ID.')
+  if (!election.exists) return res.status(400).json({ error: 'Unknown Election ID.' })
 
   // Grab claimed trustee
   const trustee = { ...(await loadTrustee).data() }
 
   // Authenticate by checking if auth token matches
-  if (trustee.auth_token !== auth) return res.status(401).send('Bad auth token')
+  if (trustee.auth_token !== auth) return res.status(401).json({ error: 'Bad auth token' })
 
   const all_trustee_initial_fields = ['auth_token', 'index', 'email']
 
