@@ -57,7 +57,7 @@ export const Signature = ({
             </div>
           </div>
         }
-        onClick={() => setOpen(true)}
+        onClick={() => setOpen(!open)}
         onClose={() => setOpen(false)}
         onOpen={() => status || setOpen(true)}
       >
