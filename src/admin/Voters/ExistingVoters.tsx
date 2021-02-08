@@ -71,6 +71,11 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
   // Don't show anything if we don't have any voters yet
   if (!voters?.length) return null
 
+  const shown_voters = voters?.filter(
+    ({ esignature_review, has_voted }) =>
+      (!has_voted || !hide_voted) && (getStatus(esignature_review) !== 'approve' || !hide_approved),
+  )
+
   return (
     <>
       {/* Top bar buttons */}
@@ -195,95 +200,96 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
             <th style={{ width: 50 }}>invite queued</th>
             <th style={{ width: 50 }}>invite delivered</th>
             <th>voted</th>
-            {esignature_requested && <th>signature</th>}
+            {esignature_requested && (
+              <th
+                className="hoverable"
+                onClick={() => {
+                  if (confirm('Do you want to approve all signatures?')) {
+                    api(`election/${election_id}/admin/review-signature`, {
+                      emails: shown_voters.map((v) => v.email),
+                      password: localStorage.password,
+                      review: 'approve',
+                    })
+                  }
+                }}
+              >
+                signature
+              </th>
+            )}
           </tr>
         </thead>
         <tbody>
-          {voters
-            ?.filter(
-              ({ esignature_review, has_voted }) =>
-                (!has_voted || !hide_voted) && (getStatus(esignature_review) !== 'approve' || !hide_approved),
-            )
-            .map(
-              ({
-                auth_token,
-                email,
-                esignature,
-                esignature_review,
-                has_voted,
-                index,
-                invite_queued,
-                mailgun_events,
-              }) => (
-                <tr className={`${checked[index] ? 'checked' : ''}`} key={email}>
-                  {/* Checkbox cell */}
-                  {!readOnly && (
-                    <td
-                      className="hoverable"
-                      onClick={() => {
-                        const new_checked = [...checked]
-                        if (pressing_shift && last_selected !== undefined) {
-                          // If they're holding shift, set all between last_selected and this index to !checked[index]
-                          for (let i = Math.min(index, last_selected); i <= Math.max(index, last_selected); i += 1) {
-                            new_checked[i] = !checked[index]
-                          }
-                        } else {
-                          new_checked[index] = !checked[index]
+          {shown_voters.map(
+            ({ auth_token, email, esignature, esignature_review, has_voted, index, invite_queued, mailgun_events }) => (
+              <tr className={`${checked[index] ? 'checked' : ''}`} key={email}>
+                {/* Checkbox cell */}
+                {!readOnly && (
+                  <td
+                    className="hoverable"
+                    onClick={() => {
+                      const new_checked = [...checked]
+                      if (pressing_shift && last_selected !== undefined) {
+                        // If they're holding shift, set all between last_selected and this index to !checked[index]
+                        for (let i = Math.min(index, last_selected); i <= Math.max(index, last_selected); i += 1) {
+                          new_checked[i] = !checked[index]
                         }
+                      } else {
+                        new_checked[index] = !checked[index]
+                      }
 
-                        set_last_selected(index)
-                        set_checked(new_checked)
-                      }}
-                    >
-                      <input readOnly checked={checked[index]} className="hoverable" type="checkbox" />
-                    </td>
-                  )}
-                  <td>{index + 1}</td>
-                  <td>
-                    <span style={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <span>{email}</span>
-                      {/* Edit email btn */}
-                      {!readOnly && (
-                        <span
-                          className="visible-on-parent-hover"
-                          onClick={async () => {
-                            const new_email = prompt('Edit email?', email)
-
-                            // TODO: check if is_valid_email(new_email)
-                            if (!new_email || new_email === email) return
-
-                            // Store new email in API
-                            const response = await api(`election/${election_id}/admin/edit-email`, {
-                              new_email,
-                              old_email: email,
-                              password: localStorage.password,
-                            })
-
-                            if (response.status === 201) {
-                              revalidate(election_id)
-                            } else {
-                              console.error(response.json())
-                              // throw await response.json()
-                            }
-                          }}
-                        >
-                          &nbsp;
-                          <EditOutlined />
-                        </span>
-                      )}
-                    </span>
+                      set_last_selected(index)
+                      set_checked(new_checked)
+                    }}
+                  >
+                    <input readOnly checked={checked[index]} className="hoverable" type="checkbox" />
                   </td>
-                  <td style={{ fontFamily: 'monospace' }}>{mask_tokens ? mask(auth_token) : auth_token}</td>
+                )}
+                <td>{index + 1}</td>
+                <td>
+                  <span style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <span>{email}</span>
+                    {/* Edit email btn */}
+                    {!readOnly && (
+                      <span
+                        className="visible-on-parent-hover"
+                        onClick={async () => {
+                          const new_email = prompt('Edit email?', email)
 
-                  <QueuedCell {...{ invite_queued }} />
-                  <DeliveredFailureCell {...mailgun_events} />
+                          // TODO: check if is_valid_email(new_email)
+                          if (!new_email || new_email === email) return
 
-                  <td style={{ fontWeight: 700, textAlign: 'center' }}>{has_voted ? '✓' : ''}</td>
+                          // Store new email in API
+                          const response = await api(`election/${election_id}/admin/edit-email`, {
+                            new_email,
+                            old_email: email,
+                            password: localStorage.password,
+                          })
 
-                  {esignature_requested && <Signature {...{ election_id, email, esignature, esignature_review }} />}
-                </tr>
-              ),
-            )}
+                          if (response.status === 201) {
+                            revalidate(election_id)
+                          } else {
+                            console.error(response.json())
+                            // throw await response.json()
+                          }
+                        }}
+                      >
+                        &nbsp;
+                        <EditOutlined />
+                      </span>
+                    )}
+                  </span>
+                </td>
+                <td style={{ fontFamily: 'monospace' }}>{mask_tokens ? mask(auth_token) : auth_token}</td>
+
+                <QueuedCell {...{ invite_queued }} />
+                <DeliveredFailureCell {...mailgun_events} />
+
+                <td style={{ fontWeight: 700, textAlign: 'center' }}>{has_voted ? '✓' : ''}</td>
+
+                {esignature_requested && <Signature {...{ election_id, email, esignature, esignature_review }} />}
+              </tr>
+            ),
+          )}
         </tbody>
       </table>
       <style jsx>{`

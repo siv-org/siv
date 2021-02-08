@@ -30,7 +30,7 @@ export const Signature = ({
 
   const storeReview = (review: 'approve' | 'reject') => async () => {
     await api(`election/${election_id}/admin/review-signature`, {
-      email,
+      emails: [email],
       password: localStorage.password,
       review,
     })
