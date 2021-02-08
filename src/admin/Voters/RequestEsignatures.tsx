@@ -9,7 +9,7 @@ export const RequestEsignatures = () => {
   const [updating, setUpdating] = useState(false)
   const { election_id, esignature_requested } = useStored()
   return (
-    <>
+    <div>
       <label>Request eSignatures?</label>
       <Switch
         checked={esignature_requested}
@@ -30,6 +30,11 @@ export const RequestEsignatures = () => {
         }}
       />
       {updating && <Spinner />}
-    </>
+      <style jsx>{`
+        div {
+          margin-bottom: 30px;
+        }
+      `}</style>
+    </div>
   )
 }
