@@ -27,7 +27,7 @@ export const AdminPage = (): JSX.Element => {
 
       <style jsx>{`
         main {
-          max-width: 750px;
+          max-width: 770px;
           width: 100%;
           margin: 0 auto;
           padding: 1rem;
