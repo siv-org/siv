@@ -70,7 +70,7 @@ export const AcceptedVotes = ({
         {votes.map((vote, index) => (
           <tr key={index}>
             <td>{index + 1}.</td>
-            {esignature_requested && <td></td>}
+            {esignature_requested && <td className="approved">{vote.signature_approved ? '✓' : ''}</td>}
             <td>{vote.auth}</td>
             {columns.map((key) => {
               if (key !== 'auth') {
@@ -115,6 +115,11 @@ export const AcceptedVotes = ({
         .subheading td {
           font-size: 11px;
           font-weight: 700;
+        }
+
+        .approved {
+          font-weight: bold;
+          text-align: center;
         }
       `}</style>
     </div>
