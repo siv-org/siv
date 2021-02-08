@@ -15,7 +15,7 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
   const [checked, set_checked] = useState(new Array(voters?.length).fill(false))
   const num_checked = checked.filter((c) => c).length
   const num_voted = voters?.filter((v) => v.has_voted).length || 0
-  const num_approved = !esignature_requested ? num_voted : voters?.filter((v) => false).length || 0
+  const num_approved = !esignature_requested ? num_voted : voters?.filter(() => false).length || 0
 
   const [unlocking, toggle_unlocking] = useReducer((state) => !state, false)
   const [sending, toggle_sending] = useReducer((state) => !state, false)

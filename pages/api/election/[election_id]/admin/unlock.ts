@@ -32,7 +32,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Is election_id in DB?
   if (!(await election).exists) return res.status(400).json({ error: `Unknown Election ID: '${election_id}'` })
 
-  const { g, p, t, threshold_public_key } = { ...(await election).data() } as {
+  const { esignature_requested, g, p, t, threshold_public_key } = { ...(await election).data() } as {
+    esignature_requested: boolean
     g: string
     p: string
     t: number
@@ -40,10 +41,21 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }
   const public_key = bigPubKey({ generator: g, modulo: p, recipient: threshold_public_key })
 
-  // First admin removes the auth tokens
-  const encrypteds_without_auth_tokens = (await loadVotes).docs.map((doc) => doc.data().encrypted_vote)
-
   type Cipher = { encrypted: string; unlock: string }
+
+  // First admin removes the auth tokens
+  const encrypteds_without_auth_tokens = (await loadVotes).docs.reduce((acc: Record<string, Cipher>[], doc) => {
+    const data = doc.data()
+
+    // Filter out non-approved
+    const is_approved = false // FIX ME
+    if (esignature_requested && !is_approved) {
+      return [...acc]
+    }
+
+    return [...acc, data.encrypted_vote]
+  }, [])
+
   // Then we split up the votes into individual lists for each item
   // input: [
   //   { item1: Cipher, item2: Cipher },
@@ -54,7 +66,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   //   item1: [Cipher, Cipher, Cipher],
   //   item2: [Cipher, Cipher, Cipher],
   // }
-  const split: Record<string, Cipher[]> = encrypteds_without_auth_tokens.reduce((acc, encrypted) => {
+  const split = encrypteds_without_auth_tokens.reduce((acc: Record<string, Cipher[]>, encrypted) => {
     Object.keys(encrypted).forEach((key) => {
       if (!acc[key]) acc[key] = []
       acc[key].push(encrypted[key])
