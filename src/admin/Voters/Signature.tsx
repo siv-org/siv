@@ -4,7 +4,6 @@ import { useState } from 'react'
 
 import { ReviewLog } from '../../../pages/api/election/[election_id]/admin/load-admin'
 import { api } from '../../api-helper'
-import { revalidate } from '../useStored'
 
 const useStyles = makeStyles(() => ({
   customWidth: {
@@ -36,7 +35,6 @@ export const Signature = ({
       review,
     })
     setOpen(false)
-    revalidate(election_id)
   }
 
   const status = getStatus(esignature_review)
