@@ -1,4 +1,4 @@
-import { Tooltip } from '@material-ui/core'
+import { Tooltip } from './Tooltip'
 
 export const AcceptedCell = ({ accepted }: { accepted?: unknown[] }) => {
   return (

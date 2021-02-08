@@ -1,4 +1,4 @@
-import { Tooltip } from '@material-ui/core'
+import { Tooltip } from './Tooltip'
 
 export const DeliveredFailureCell = ({ delivered, failed }: { delivered?: unknown[]; failed?: unknown[] }) => {
   return (
@@ -52,14 +52,6 @@ export const DeliveredFailureCell = ({ delivered, failed }: { delivered?: unknow
         .failed-events {
           color: red;
           font-weight: bold;
-        }
-      `}</style>
-      <style global jsx>{`
-        .MuiTooltip-tooltip {
-          background: #fffe;
-          color: #222;
-          box-shadow: 0px 1px 3px #0006;
-          padding: 5px 10px;
         }
       `}</style>
     </>

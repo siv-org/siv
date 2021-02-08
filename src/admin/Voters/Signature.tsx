@@ -1,9 +1,9 @@
-import { Tooltip } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { useState } from 'react'
 
 import { ReviewLog } from '../../../pages/api/election/[election_id]/admin/load-admin'
 import { api } from '../../api-helper'
+import { Tooltip } from './Tooltip'
 
 const useStyles = makeStyles(() => ({
   customWidth: {

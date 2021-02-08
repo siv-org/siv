@@ -1,4 +1,4 @@
-import { Tooltip } from '@material-ui/core'
+import { Tooltip } from './Tooltip'
 
 export const QueuedCell = ({ invite_queued }: { invite_queued?: unknown[] }) => {
   return (
