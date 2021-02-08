@@ -12,6 +12,9 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
+export const getStatus = (esignature_review?: ReviewLog[]) =>
+  esignature_review ? esignature_review[esignature_review.length - 1]?.review : undefined
+
 export const Signature = ({
   election_id,
   email,
@@ -21,7 +24,7 @@ export const Signature = ({
   election_id?: string
   email: string
   esignature?: string
-  esignature_review: ReviewLog[]
+  esignature_review?: ReviewLog[]
 }) => {
   const classes = useStyles()
   const [open, setOpen] = useState(false)
@@ -36,7 +39,7 @@ export const Signature = ({
     revalidate(election_id)
   }
 
-  const status = esignature_review ? esignature_review[esignature_review.length - 1]?.review : undefined
+  const status = getStatus(esignature_review)
 
   return (
     <td>
