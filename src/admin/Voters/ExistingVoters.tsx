@@ -15,9 +15,12 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
   const [checked, set_checked] = useState(new Array(voters?.length).fill(false))
   const num_checked = checked.filter((c) => c).length
   const num_voted = voters?.filter((v) => v.has_voted).length || 0
+  const num_approved = !esignature_requested ? num_voted : voters?.filter((v) => false).length || 0
+
   const [unlocking, toggle_unlocking] = useReducer((state) => !state, false)
   const [sending, toggle_sending] = useReducer((state) => !state, false)
   const [hide_voted, toggle_hide_voted] = useReducer((state) => !state, false)
+  const [hide_approved, toggle_hide_approved] = useReducer((state) => !state, false)
   const [error, set_error] = useState('')
 
   const { last_selected, pressing_shift, set_last_selected } = use_multi_select()
@@ -65,8 +68,6 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
 
   // Don't show anything if we don't have any voters yet
   if (!voters?.length) return null
-
-  console.log(voters)
 
   return (
     <>
@@ -119,7 +120,7 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
 
           {/* Unlock Votes btn */}
           <OnClickButton
-            disabled={!num_voted}
+            disabled={!num_approved}
             style={{ margin: 0, marginLeft: 5, padding: '5px 10px' }}
             onClick={async () => {
               toggle_unlocking()
@@ -134,20 +135,35 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
           >
             <>
               {unlocking && <Spinner />}
-              Unlock{unlocking ? 'ing' : ''} {num_voted} Vote{num_voted === 1 ? '' : 's'}
+              Unlock{unlocking ? 'ing' : ''} {num_approved} Vote{num_approved === 1 ? '' : 's'}
             </>
           </OnClickButton>
         </div>
       )}
 
-      <p>
-        <i>
-          {num_voted} of {voters.length} voted ({Math.round((num_voted / voters.length) * 100)}%)
-        </i>
-        {/* Toggle hide voted */}
-        <a style={{ cursor: 'pointer', fontSize: 12, marginLeft: 10 }} onClick={toggle_hide_voted}>
-          <>{hide_voted ? 'Show' : 'Hide'} Voted</>
-        </a>
+      <p className="num-voted-row">
+        <span>
+          <i>
+            {num_voted} of {voters.length} voted ({Math.round((num_voted / voters.length) * 100)}%)
+          </i>
+          {/* Toggle hide voted */}
+          <a style={{ cursor: 'pointer', fontSize: 12, marginLeft: 10 }} onClick={toggle_hide_voted}>
+            <>{hide_voted ? 'Show' : 'Hide'} Voted</>
+          </a>
+        </span>
+
+        {esignature_requested && (
+          <span>
+            <i>
+              {num_approved} of {voters.length} signatures approved ({Math.round((num_approved / voters.length) * 100)}
+              %)
+            </i>
+            {/* Toggle hide approved */}
+            <a style={{ cursor: 'pointer', fontSize: 12, marginLeft: 10 }} onClick={toggle_hide_approved}>
+              <>{hide_approved ? 'Show' : 'Hide'} Approved</>
+            </a>
+          </span>
+        )}
       </p>
 
       <table>
@@ -266,6 +282,11 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
         .error a {
           margin-left: 10px;
           cursor: pointer;
+        }
+
+        .num-voted-row {
+          display: flex;
+          justify-content: space-between;
         }
 
         table {
