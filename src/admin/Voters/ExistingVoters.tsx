@@ -265,7 +265,7 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
 
                 <td style={{ fontWeight: 700, textAlign: 'center' }}>{has_voted ? '✓' : ''}</td>
 
-                {esignature_requested && <Signature {...{ esignature }} />}
+                {esignature_requested && <Signature {...{ election_id, email, esignature }} />}
               </tr>
             ))}
         </tbody>
