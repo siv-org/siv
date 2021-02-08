@@ -88,7 +88,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Store admins shuffled lists
   await adminDoc.update({ shuffled })
   try {
-    await pusher.trigger('keygen', 'update', { 'admin@secureintervoting.org': { shuffled } })
+    await pusher.trigger('keygen', 'update', { 'admin@secureintervoting.org': { shuffled: shuffled.length } })
   } catch (e) {
     await pushover('Failed to Pusher.trigger(keygen, update, admin@, shuffled)', JSON.stringify(e))
   }

@@ -70,7 +70,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const promises: Promise<unknown>[] = []
 
   // Notify all participants there's been an update
-  promises.push(pusher.trigger('keygen', 'update', { [email]: body }))
+  promises.push(pusher.trigger('keygen', 'update', { [email]: Object.keys(body) }))
 
   // If they provided their public key, admin can now encrypt pairwise shares for them.
   // If they provided encrypted shares, admin can decrypt their own and verify them.
@@ -220,7 +220,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         console.log('Updated admin partials:', partials)
 
         // Notify all participants there's been an update
-        promises.push(pusher.trigger('keygen', 'update', { [ADMIN_EMAIL]: { partials } }))
+        promises.push(pusher.trigger('keygen', 'update', { [ADMIN_EMAIL]: { partials: partials.length } }))
       }
     }
 
