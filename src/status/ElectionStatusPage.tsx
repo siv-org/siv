@@ -63,10 +63,19 @@ export const ElectionStatusPage = (): JSX.Element => {
           justify-content: space-between;
           align-items: baseline;
         }
+        @media (max-width: 600px) {
+          .title-line {
+            flex-direction: column;
+          }
+          h1 {
+            margin-bottom: 0;
+          }
+        }
 
         .title-line p {
           opacity: 0.7;
           text-align: right;
+          margin-top: 0;
         }
 
         p.toggle {
