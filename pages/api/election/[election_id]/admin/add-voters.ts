@@ -26,7 +26,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const unique_new_voters: string[] = []
   const already_added: string[] = []
   new_voters.forEach((v: string) => {
-    existing_voters.has(v) ? already_added.push(v) : unique_new_voters.push(v)
+    if (v) {
+      existing_voters.has(v) ? already_added.push(v) : unique_new_voters.push(v)
+    }
   })
 
   console.log({ already_added, unique_new_voters })
