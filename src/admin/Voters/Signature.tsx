@@ -1,5 +1,6 @@
 import { Tooltip } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
+import { useState } from 'react'
 
 import { ReviewLog } from '../../../pages/api/election/[election_id]/admin/load-admin'
 import { api } from '../../api-helper'
@@ -23,6 +24,7 @@ export const Signature = ({
   esignature_review: ReviewLog[]
 }) => {
   const classes = useStyles()
+  const [open, setOpen] = useState(false)
 
   const storeReview = (review: 'approve' | 'reject') => async () => {
     await api(`election/${election_id}/admin/review-signature`, {
@@ -30,6 +32,7 @@ export const Signature = ({
       password: localStorage.password,
       review,
     })
+    setOpen(false)
     revalidate(election_id)
   }
 
@@ -40,6 +43,7 @@ export const Signature = ({
       <Tooltip
         interactive
         className={classes.customWidth}
+        open={open}
         placement="top"
         title={
           <div className="tooltip">
@@ -50,6 +54,8 @@ export const Signature = ({
             </div>
           </div>
         }
+        onClose={() => setOpen(false)}
+        onOpen={() => setOpen(true)}
       >
         <img className={`small ${status || ''}`} src={esignature} />
       </Tooltip>
