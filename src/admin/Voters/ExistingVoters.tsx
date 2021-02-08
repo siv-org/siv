@@ -200,7 +200,10 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
         </thead>
         <tbody>
           {voters
-            ?.filter(({ has_voted }) => !has_voted || !hide_voted)
+            ?.filter(
+              ({ esignature_review, has_voted }) =>
+                (!has_voted || !hide_voted) && (getStatus(esignature_review) !== 'approve' || !hide_approved),
+            )
             .map(
               ({
                 auth_token,
