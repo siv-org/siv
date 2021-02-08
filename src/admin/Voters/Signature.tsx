@@ -50,7 +50,7 @@ export const Signature = ({
         placement="top"
         title={
           <div className="tooltip">
-            <img src={esignature} />
+            {esignature ? <img src={esignature} /> : <p>Signature missing</p>}
             <div className="row">
               <a onClick={storeReview('reject')}>👎 Reject</a>
               <a onClick={storeReview('approve')}>👍 Approve</a>
@@ -74,6 +74,7 @@ export const Signature = ({
         }
 
         img.small {
+          min-height: 20px;
           max-width: 100px;
           overflow: hidden;
         }
@@ -98,6 +99,10 @@ export const Signature = ({
         .tooltip a {
           cursor: pointer;
           font-size: 12px;
+        }
+
+        .tooltip a:first-child {
+          margin-right: 2rem;
         }
       `}</style>
     </td>
