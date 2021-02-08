@@ -159,7 +159,7 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
           </a>
         </span>
 
-        {esignature_requested && (
+        {esignature_requested && !!num_voted && (
           <span>
             <i>
               {num_approved} of {num_voted} signatures approved ({Math.round((num_approved / num_voted) * 100)}
