@@ -54,13 +54,13 @@ export const Signature = ({
                 className={status === 'reject' ? 'bold' : ''}
                 onClick={storeReview(status === 'reject' ? 'pending' : 'reject')}
               >
-                👎 Reject{status === 'reject' ? 'ed' : ''}
+                ❌ Reject{status === 'reject' ? 'ed' : ''}
               </a>
               <a
                 className={status === 'approve' ? 'bold' : ''}
                 onClick={storeReview(status === 'approve' ? 'pending' : 'approve')}
               >
-                👍 Approve{status === 'approve' ? 'd' : ''}
+                ✅ Approve{status === 'approve' ? 'd' : ''}
               </a>
             </div>
           </div>
