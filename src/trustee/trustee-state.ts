@@ -56,7 +56,7 @@ export type StateAndDispatch = {
 function reducer(prev: State, payload: Record<string, unknown>) {
   // Special handler for reset
   if (payload.reset) return payload.reset
-  if (payload.reset_close) return { ...prev, trustees: [] }
+  if (payload.reset_unlock) return { ...prev, trustees: [] }
 
   // Otherwise merge in new state from payload
   const newState = merge({ ...prev }, { ...payload })

@@ -14,7 +14,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { auth, email } = req.body
 
   if (!email) return res.status(404)
-  if (!email.endsWith('dsernst.com')) return res.status(401).json({ error: 'Not authorized to reset keygen' })
+  if (!email.endsWith('dsernst.com')) return res.status(401).json({ error: 'Not authorized to reset' })
 
   const electionDoc = firebase
     .firestore()
@@ -37,7 +37,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (trustee.auth_token !== auth) return res.status(401).json({ error: 'Bad auth token' })
 
   // Delete election decrypted
-  const reset_decrypted = electionDoc.update({ decrypted: firestore.FieldValue.delete() })
+  const reset_decrypted = electionDoc.update({
+    decrypted: firestore.FieldValue.delete(),
+    last_decrypted_at: firestore.FieldValue.delete(),
+  })
 
   // Reset all trustee's shuffled & partials
   const reset_trustees = async () => {
@@ -56,11 +59,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   await Promise.all([reset_decrypted, reset_trustees()])
-  const success_msg = `Successfully reset db for election/${election_id}/close`
+  const success_msg = `Successfully reset db for election/${election_id}/unlock`
   console.log(success_msg)
 
   // Notify all participants to reset
-  await pusher.trigger('keygen', 'reset-close', `${email} trigged reset`)
+  await pusher.trigger('keygen', 'reset-unlock', `${email} trigged reset`)
 
   res.status(204).json({ message: success_msg })
 }

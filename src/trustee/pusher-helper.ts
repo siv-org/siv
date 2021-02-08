@@ -26,9 +26,9 @@ export function initPusher({ dispatch, state }: StateAndDispatch) {
       dispatch({ reset: { auth, election_id, own_email: '' } })
     })
 
-    channel.bind('reset-close', (data: unknown) => {
-      console.log('🤡 Pusher reset-close', data)
-      dispatch({ reset_close: true })
+    channel.bind('reset-unlock', (data: unknown) => {
+      console.log('🤡 Pusher reset-unlock', data)
+      dispatch({ reset_unlock: true })
       getLatestFromServer({ dispatch, state })
     })
 
