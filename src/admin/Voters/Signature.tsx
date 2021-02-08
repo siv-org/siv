@@ -76,6 +76,7 @@ export const Signature = ({
         td {
           border: 1px solid #ccc;
           margin: 0;
+          padding: 2px;
         }
 
         td:hover {
@@ -88,6 +89,7 @@ export const Signature = ({
           max-width: 100px;
           overflow: hidden;
           border: 2px solid #fff0;
+          margin-bottom: -6px;
         }
 
         img.small.approve {
