@@ -86,14 +86,15 @@ export const Signature = ({
           min-height: 20px;
           max-width: 100px;
           overflow: hidden;
+          border: 2px solid #fff0;
         }
 
         img.small.approve {
-          border: 2px solid green;
+          border-color: green;
         }
 
         img.small.reject {
-          border: 2px solid red;
+          border-color: red;
         }
 
         .tooltip img {
