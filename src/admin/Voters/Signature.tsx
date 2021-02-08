@@ -28,7 +28,7 @@ export const Signature = ({
   const classes = useStyles()
   const [open, setOpen] = useState(false)
 
-  const storeReview = (review: 'approve' | 'reject') => async () => {
+  const storeReview = (review: 'approve' | 'reject' | 'pending') => async () => {
     await api(`election/${election_id}/admin/review-signature`, {
       emails: [email],
       password: localStorage.password,
@@ -50,8 +50,18 @@ export const Signature = ({
           <div className="tooltip">
             {esignature ? <img src={esignature} /> : <p>Signature missing</p>}
             <div className="row">
-              <a onClick={storeReview('reject')}>👎 Reject</a>
-              <a onClick={storeReview('approve')}>👍 Approve</a>
+              <a
+                className={status === 'reject' ? 'bold' : ''}
+                onClick={storeReview(status === 'reject' ? 'pending' : 'reject')}
+              >
+                👎 Reject{status === 'reject' ? 'ed' : ''}
+              </a>
+              <a
+                className={status === 'approve' ? 'bold' : ''}
+                onClick={storeReview(status === 'approve' ? 'pending' : 'approve')}
+              >
+                👍 Approve{status === 'approve' ? 'd' : ''}
+              </a>
             </div>
           </div>
         }
@@ -102,6 +112,10 @@ export const Signature = ({
 
         .tooltip a:first-child {
           margin-right: 2rem;
+        }
+
+        .bold {
+          font-weight: bold;
         }
       `}</style>
     </td>
