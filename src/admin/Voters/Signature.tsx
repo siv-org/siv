@@ -57,8 +57,9 @@ export const Signature = ({
             </div>
           </div>
         }
+        onClick={() => setOpen(true)}
         onClose={() => setOpen(false)}
-        onOpen={() => setOpen(true)}
+        onOpen={() => status || setOpen(true)}
       >
         <img className={`small ${status || ''}`} src={esignature} />
       </Tooltip>
