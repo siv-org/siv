@@ -128,7 +128,9 @@ export const recombine_decrypteds = (decrypted_and_split: Record<string, string[
   type Recombined = Record<string, Record<string, string>>
   const decrypteds_by_tracking = Object.keys(decrypted_and_split).reduce((acc: Recombined, key) => {
     decrypted_and_split[key].forEach((value) => {
-      const [tracking, vote] = value.split(':')
+      const [unpadded_tracking, vote] = value.split(':')
+
+      const tracking = unpadded_tracking.padStart(14, '0')
 
       // Skip if 'BLANK'
       if (vote === 'BLANK') return
