@@ -44,6 +44,7 @@ export const Signature = ({
       <Tooltip
         interactive
         className={classes.customWidth}
+        enterDelay={200}
         open={open}
         placement="top"
         title={
