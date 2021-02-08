@@ -28,10 +28,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Grab public votes fields
   const votes = (await loadVotes).docs.map((doc) => {
     const { auth, encrypted_vote } = doc.data()
+    const voter = votersByAuth[auth]
     return {
       auth,
       ...encrypted_vote,
-      signature_approved: getStatus(votersByAuth[auth].esignature_review) === 'approve',
+      signature_approved: getStatus(voter?.esignature_review) === 'approve',
     }
   })
 
