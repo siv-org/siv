@@ -94,7 +94,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       {
         auth_token,
         email,
-        esignature: votesByAuth[auth_token][1],
+        esignature: (votesByAuth[auth_token] || [])[1],
         has_voted: !!votesByAuth[auth_token],
         index,
         invite_queued,
