@@ -3,12 +3,14 @@ const { ADMIN_PASSWORD } = process.env
 import { mapValues } from 'lodash-es'
 import { NextApiRequest, NextApiResponse } from 'next'
 
+import { getStatus } from '../../../../../src/admin/Voters/Signature'
 import decrypt from '../../../../../src/crypto/decrypt'
 import { decode } from '../../../../../src/crypto/encode'
 import { shuffle } from '../../../../../src/crypto/shuffle'
 import { big, bigCipher, bigPubKey, toStrings } from '../../../../../src/crypto/types'
 import { firebase, pushover } from '../../../_services'
 import { pusher } from '../../../pusher'
+import { ReviewLog } from './load-admin'
 
 const { ADMIN_EMAIL } = process.env
 
@@ -25,6 +27,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Begin preloading these requests
   const loadVotes = electionDoc.collection('votes').get()
+  const loadVoters = electionDoc.collection('voters').get()
   const election = electionDoc.get()
   const adminDoc = electionDoc.collection('trustees').doc(ADMIN_EMAIL)
   const admin = adminDoc.get()
@@ -43,18 +46,23 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   type Cipher = { encrypted: string; unlock: string }
 
-  // First admin removes the auth tokens
-  const encrypteds_without_auth_tokens = (await loadVotes).docs.reduce((acc: Record<string, Cipher>[], doc) => {
-    const data = doc.data()
+  // If esignature_requested, filter for only approved
+  let votes_to_unlock = (await loadVotes).docs
+  if (esignature_requested) {
+    type VotersByAuth = Record<string, { esignature_review: ReviewLog[] }>
+    const votersByAuth: VotersByAuth = (await loadVoters).docs.reduce((acc: VotersByAuth, doc) => {
+      const data = doc.data()
+      return { ...acc, [data.auth_token]: data }
+    }, {})
 
-    // Filter out non-approved
-    const is_approved = false // FIX ME
-    if (esignature_requested && !is_approved) {
-      return [...acc]
-    }
+    votes_to_unlock = votes_to_unlock.filter((doc) => {
+      const { auth } = doc.data() as { auth: string }
+      return getStatus(votersByAuth[auth].esignature_review) === 'approve'
+    })
+  }
 
-    return [...acc, data.encrypted_vote]
-  }, [])
+  // Admin removes the auth tokens
+  const encrypteds_without_auth_tokens = votes_to_unlock.map((doc) => doc.data().encrypted_vote)
 
   // Then we split up the votes into individual lists for each item
   // input: [
