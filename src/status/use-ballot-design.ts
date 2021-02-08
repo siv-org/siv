@@ -3,9 +3,12 @@ import { useEffect, useState } from 'react'
 import { Item } from '../vote/useElectionInfo'
 
 export function useBallotDesign(election_id?: string) {
-  const [info, set_info] = useState<{ ballot_design?: Item[]; election_title?: string; has_decrypted_votes?: boolean }>(
-    {},
-  )
+  const [info, set_info] = useState<{
+    ballot_design?: Item[]
+    election_title?: string
+    esignature_requested?: boolean
+    has_decrypted_votes?: boolean
+  }>({})
 
   // Download info once we load election_id
   useEffect(() => {
@@ -13,13 +16,14 @@ export function useBallotDesign(election_id?: string) {
     ;(async () => {
       // Get info from API
       const response = await fetch(`/api/election/${election_id}/info`)
-      const { ballot_design, election_title, error, last_decrypted_at } = await response.json()
+      const { ballot_design, election_title, error, esignature_requested, last_decrypted_at } = await response.json()
 
       if (error) return
 
       set_info({
         ballot_design: ballot_design ? JSON.parse(ballot_design) : undefined,
         election_title,
+        esignature_requested,
         has_decrypted_votes: !!last_decrypted_at,
       })
     })()
