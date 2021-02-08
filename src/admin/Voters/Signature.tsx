@@ -67,7 +67,7 @@ export const Signature = ({
         }
         onClick={() => setOpen(!open)}
         onClose={() => setOpen(false)}
-        onOpen={() => status || setOpen(true)}
+        onOpen={() => ['approve', 'reject'].includes(status || '') || setOpen(true)}
       >
         <img className={`small ${status || ''}`} src={esignature} />
       </Tooltip>
