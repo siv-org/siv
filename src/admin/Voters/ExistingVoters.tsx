@@ -7,6 +7,7 @@ import { Spinner } from '../Spinner'
 import { revalidate, useStored } from '../useStored'
 import { DeliveredFailureCell } from './DeliveredFailureCell'
 import { QueuedCell } from './QueuedCell'
+import { Signature } from './Signature'
 
 export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
   const { election_id, esignature_requested, voters } = useStored()
@@ -248,7 +249,7 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
 
                 <td style={{ fontWeight: 700, textAlign: 'center' }}>{has_voted ? '✓' : ''}</td>
 
-                {esignature_requested && <td>{esignature ? 'Submitted' : ''}</td>}
+                {esignature_requested && <Signature {...{ esignature }} />}
               </tr>
             ))}
         </tbody>

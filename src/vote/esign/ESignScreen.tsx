@@ -46,7 +46,7 @@ export const ESignScreen = ({
             onClick={async () => {
               setButtonText('Submitting...')
               const esignature = signaturePad.current?.toDataURL()
-              console.log('esignature:', esignature)
+              // console.log('esignature:', esignature)
 
               const response = await api('submit-esignature', { auth, election_id, esignature })
               if (response.status === 200) {
