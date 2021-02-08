@@ -5,10 +5,13 @@ import { QueueLog } from './invite-voters'
 
 const { ADMIN_PASSWORD, MANAGER_PASSWORD } = process.env
 
+export type ReviewLog = { review: 'approve' | 'reject' }
+
 export type Voter = {
   auth_token: string
   email: string
   esignature?: string
+  esignature_review: ReviewLog[]
   has_voted: boolean
   index: number
   invite_queued?: QueueLog[]
@@ -82,9 +85,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Build voters objects
   const voters: Voter[] = (await loadVoters).docs.reduce((acc: Voter[], doc) => {
-    const { auth_token, email, index, invite_queued, mailgun_events } = { ...doc.data() } as {
+    const { auth_token, email, esignature_review, index, invite_queued, mailgun_events } = { ...doc.data() } as {
       auth_token: string
       email: string
+      esignature_review: ReviewLog[]
       index: number
       invite_queued: QueueLog[]
       mailgun_events: { accepted: MgEvent[]; delivered: MgEvent[] }
@@ -95,6 +99,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         auth_token,
         email,
         esignature: (votesByAuth[auth_token] || [])[1],
+        esignature_review,
         has_voted: !!votesByAuth[auth_token],
         index,
         invite_queued,

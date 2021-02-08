@@ -1,7 +1,9 @@
 import { Tooltip } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
+import { ReviewLog } from '../../../pages/api/election/[election_id]/admin/load-admin'
 import { api } from '../../api-helper'
+import { revalidate } from '../useStored'
 
 const useStyles = makeStyles(() => ({
   customWidth: {
@@ -13,19 +15,25 @@ export const Signature = ({
   election_id,
   email,
   esignature,
+  esignature_review,
 }: {
   election_id?: string
   email: string
   esignature?: string
+  esignature_review: ReviewLog[]
 }) => {
   const classes = useStyles()
 
-  const storeReview = (review: 'approve' | 'reject') =>
-    api(`election/${election_id}/admin/review-signature`, {
+  const storeReview = (review: 'approve' | 'reject') => async () => {
+    await api(`election/${election_id}/admin/review-signature`, {
       email,
       password: localStorage.password,
       review,
     })
+    revalidate(election_id)
+  }
+
+  const status = esignature_review ? esignature_review[esignature_review.length - 1]?.review : undefined
 
   return (
     <td>
@@ -37,30 +45,17 @@ export const Signature = ({
           <div className="tooltip">
             <img src={esignature} />
             <div className="row">
-              <a
-                onClick={() => {
-                  storeReview('reject')
-                }}
-              >
-                👎 Reject
-              </a>
-              <a
-                onClick={() => {
-                  storeReview('approve')
-                }}
-              >
-                👍 Approve
-              </a>
+              <a onClick={storeReview('reject')}>👎 Reject</a>
+              <a onClick={storeReview('approve')}>👍 Approve</a>
             </div>
           </div>
         }
       >
-        <img className="small" src={esignature} />
+        <img className={`small ${status || ''}`} src={esignature} />
       </Tooltip>
       <style jsx>{`
         td {
           border: 1px solid #ccc;
-          padding: 3px 10px;
           margin: 0;
         }
 
@@ -71,6 +66,15 @@ export const Signature = ({
 
         img.small {
           max-width: 100px;
+          overflow: hidden;
+        }
+
+        img.small.approve {
+          border: 2px solid green;
+        }
+
+        img.small.reject {
+          border: 2px solid red;
         }
 
         .tooltip img {
