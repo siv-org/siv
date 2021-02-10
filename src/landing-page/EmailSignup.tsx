@@ -1,6 +1,5 @@
 import { NoSsr, TextField } from '@material-ui/core'
 import { createClient } from '@supabase/supabase-js'
-import { firestore } from 'firebase/app'
 import { useState } from 'react'
 
 import { api } from '../api-helper'
