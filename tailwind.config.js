@@ -1,8 +1,8 @@
 module.exports = {
-  darkMode: false,
+  darkMode: false, // or 'media' or 'class'
   plugins: [],
-  purge: [],
-  // or 'media' or 'class'
+  purge: ['./pages/**/*.tsx', './src/**/*.tsx'],
+
   theme: {
     extend: {},
   },
