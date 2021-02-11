@@ -60,7 +60,7 @@
     "jsbn": "^1.1.0",
     "lodash-es": "^4.17.15",
     "mailgun-js": "^0.22.0",
-    "next": "latest",
+    "next": "10",
     "next-transpile-modules": "^4.0.3",
     "pusher": "^4.0.2",
     "pusher-js": "^7.0.2",
