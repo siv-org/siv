@@ -21,7 +21,7 @@ export const LoginPage = () => {
             <input
               required
               autoComplete="email"
-              className="relative block w-full px-3 py-2 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-md appearance-none focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10"
+              className="relative block w-full px-3 py-2 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-md appearance-none focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10"
               id="email-address"
               name="email"
               placeholder="Email address"
@@ -31,10 +31,10 @@ export const LoginPage = () => {
             />
           </div>
 
-          <p className="text-xs italic text-gray-400">You will be emailed a login link.</p>
+          <p className="text-xs italic font-medium text-gray-400">You will be emailed a login link.</p>
 
           <button
-            className="relative flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md group disabled:opacity-50 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            className="relative flex justify-center w-full px-4 py-2 text-sm font-semibold text-white bg-blue-800 border border-transparent rounded-md group disabled:opacity-50 hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             disabled={status !== ''}
             onClick={async () => {
               setStatus('pending')
@@ -48,7 +48,7 @@ export const LoginPage = () => {
               {/* Heroicon name: solid/lock-closed */}
               <svg
                 aria-hidden="true"
-                className="w-5 h-5 text-indigo-500 group-hover:text-indigo-400"
+                className="w-5 h-5 text-blue-500 group-hover:text-blue-400"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
