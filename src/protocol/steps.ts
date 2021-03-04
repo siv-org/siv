@@ -361,6 +361,16 @@ export const groupedSteps: Group[] = [
                 p: 'Their shuffled + re-encrypted list is now published publicly.',
               },
               '',
+              {
+                html: `${light(
+                  `Each Trustee also provides a ${em(
+                    `Zero-Knowledge Proof of a Valid Shuffle`,
+                  )}. The SIV Shuffling software generates this for them automatically. This proof allows anyone to verify vote accuracy, even if a Trustee is dishonest or compromised.`,
+                )}`,
+              },
+              '',
+              '',
+              '',
               '',
             ],
           },
@@ -376,16 +386,6 @@ export const groupedSteps: Group[] = [
               },
               {
                 p: `Total privacy is ensured as long as at least a single Trustee refuses to share their record of how they shuffled.`,
-              },
-              '',
-              '',
-              '',
-              {
-                html: `${light(
-                  `Each Trustee also provides a ${em(
-                    `Zero-Knowledge Proof of a Valid Shuffle`,
-                  )}. The SIV Shuffling software can generate this for them automatically. This proof allows anyone to verify vote accuracy, even if a Trustee is dishonest or compromised.`,
-                )}`,
               },
             ],
             right: ['', '', { image: 'step-4-shuffle.png', maxWidth: 490 }],
