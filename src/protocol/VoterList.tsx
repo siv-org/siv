@@ -10,7 +10,7 @@ export function VoterList(): JSX.Element {
         <Table size="small">
           <TableHead>
             <TableRow>
-              {['Name', 'Date of Birth', 'Mailing Address', 'Email Address'].map((text: string, index: number) => (
+              {['Name', 'Mailing Address', 'Email Address'].map((text: string, index: number) => (
                 <TableCell
                   align={index === 0 ? 'left' : 'center'}
                   colSpan={index === 1 ? 6 : 1}
@@ -28,7 +28,7 @@ export function VoterList(): JSX.Element {
                 <TableCell colSpan={6} style={{ fontSize: 12 }}>
                   {name}
                 </TableCell>
-                {range(3).map((col) => (
+                {range(2).map((col) => (
                   <TableCell align="center" key={col}>
                     ...
                   </TableCell>

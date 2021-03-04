@@ -51,11 +51,7 @@ export const groupedSteps: Group[] = [
                   'Individuals voters should opt-in to SIV by registering an email address with their election administrator.',
               },
             ],
-            right: [
-              { html: light("For this demo, we'll pretend you're a voter named 'Adam Barton'.") },
-              '',
-              { react: VoterList },
-            ],
+            right: [{ react: VoterList }],
           },
         ],
       },
