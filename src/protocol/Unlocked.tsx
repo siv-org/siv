@@ -1,9 +1,9 @@
 import { countBy, mapValues, orderBy } from 'lodash-es'
 import { useMemo } from 'react'
 
+import { generateTrackingNum } from '../vote/tracking-num'
 import { candidates, voters } from './election-parameters'
 import { Paper } from './Paper'
-import { generateVerificationSecret } from './VerificationSecret'
 import { useVoteContext } from './VoteContext'
 
 export function Unlocked(): JSX.Element {
@@ -13,7 +13,7 @@ export function Unlocked(): JSX.Element {
 
   const votes = useMemo(
     () => [
-      ...voters.slice(1).map(() => ({ mayor_vote: randomCandidate(), verification: generateVerificationSecret() })),
+      ...voters.slice(1).map(() => ({ mayor_vote: randomCandidate(), verification: generateTrackingNum() })),
       state.plaintext,
     ],
     [voters],

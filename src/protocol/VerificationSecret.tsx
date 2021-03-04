@@ -1,6 +1,7 @@
 import { Button, NoSsr, TextField } from '@material-ui/core'
 import { useEffect } from 'react'
 
+import { generateTrackingNum } from '../vote/tracking-num'
 import { Paper } from './Paper'
 import { useWindowDimensions } from './useWindowDimensions'
 import { useVoteContext } from './VoteContext'
@@ -10,7 +11,7 @@ export function VerificationSecret(): JSX.Element {
   const { width } = useWindowDimensions()
 
   const generate = () => {
-    dispatch({ verification: generateVerificationSecret() })
+    dispatch({ verification: generateTrackingNum() })
   }
 
   useEffect(generate, [])
@@ -54,12 +55,4 @@ export function VerificationSecret(): JSX.Element {
       </Paper>
     </>
   )
-}
-
-export function generateVerificationSecret() {
-  const random = Math.random()
-  const integer = String(random).slice(2)
-  const hex = Number(integer).toString(16)
-  const id = `${hex.slice(0, 4)} ${hex.slice(4, 8)} ${hex.slice(8, 12)}`
-  return id
 }
