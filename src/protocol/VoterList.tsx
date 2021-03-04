@@ -44,9 +44,9 @@ export function VoterList(): JSX.Element {
         }
       `}</style>
 
-      <div style={{ height: 55, marginTop: 13, position: 'relative' }}>
-        <img src="./protocol/pre-a-arrow.png" style={{ position: 'absolute', right: '11%', width: 20 }} />
-        <p style={{ color: '#4154af', fontWeight: 'bold', position: 'absolute', right: '12%', top: 22 }}>New</p>
+      <div style={{ height: 55, marginTop: 13, position: 'relative', right: '14%' }}>
+        <img src="./protocol/pre-a-arrow.png" style={{ position: 'absolute', right: '0%', width: 20 }} />
+        <p style={{ color: '#4154af', fontWeight: 'bold', position: 'absolute', right: '0%', top: 22 }}>New</p>
       </div>
     </>
   )
