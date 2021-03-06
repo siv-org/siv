@@ -23,6 +23,7 @@ export function LetYourGovtKnow({ idKey }: { idKey: string }): JSX.Element {
   return (
     <div className="container">
       <div className="column">
+        <a id="let-your-govt-know" />
         <Element name="let-your-govt-know" />
         <h3 style={{ color: darkBlue, margin: '1.5rem 0' }}>
           Let your local government know you want Secure Internet Voting

@@ -47,8 +47,8 @@ export const groupedSteps: Group[] = [
               '',
               '',
               {
-                p:
-                  'Individuals voters should opt-in to SIV by registering an email address with their election administrator.',
+                html:
+                  'Individuals voters should <a href="/#let-your-govt-know" target="_blank">opt-in to SIV</a> by registering an email address with their election administrator.',
               },
             ],
             right: [{ react: VoterList }],
