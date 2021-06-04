@@ -26,6 +26,12 @@ export const SubmitButton = ({
         onClick={async () => {
           setButtonText('Submitting...')
 
+          // Add plaintext "BLANK" for questions left blank
+          state.ballot_design?.map((item) => {
+            const id = item.id || 'vote'
+            if (!state.plaintext[id]) dispatch({ [id]: 'BLANK' })
+          })
+
           const response = await api('submit-vote', { auth, election_id, encrypted_vote: state.encrypted })
 
           // Stop if there was there an error
