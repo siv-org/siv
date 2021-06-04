@@ -81,7 +81,7 @@ const ShuffledVotesTable = ({ shuffled }: { shuffled: Shuffled }): JSX.Element =
           {columns.map((c) => (
             <Fragment key={c}>
               <td>encrypted</td>
-              <td>unlock</td>
+              <td>lock</td>
             </Fragment>
           ))}
         </tr>
