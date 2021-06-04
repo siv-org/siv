@@ -27,6 +27,7 @@ export function EncryptedVote(): JSX.Element {
         pre {
           margin: 0 15px;
           tab-size: 2;
+          white-space: normal;
         }
 
         span {
