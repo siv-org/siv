@@ -28,11 +28,24 @@ export const DesignInput = () => {
         onChange={(event) => {
           set_ballot_design(event.target.value)
           try {
-            JSON.parse(event.target.value)
+            const parsed = JSON.parse(event.target.value)
+
+            // Ballot must be an array
+            if (!Array.isArray(parsed)) throw 'Must be an array'
+
+            // Ensure there are no duplicate IDs
+            const ids: Record<string, boolean> = {}
+            parsed.forEach((question) => {
+              const id = question.id || 'vote'
+              if (ids[id]) throw 'Each question must have a unique ID'
+              ids[id] = true
+            })
+
+            // Passed validation
             setError(null)
           } catch (err) {
-            console.log(err.message)
-            setError(err.message)
+            console.warn(err)
+            setError(err.message || err)
           }
         }}
       />
