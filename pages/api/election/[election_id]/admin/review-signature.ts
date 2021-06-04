@@ -26,7 +26,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     ),
   )
 
-  await pusher.trigger(`create-${election_id}`, 'votes', '')
+  await pusher.trigger(`status-${election_id}`, 'votes', '')
 
   await res.status(201).json({ message: 'Done' })
 }

@@ -140,7 +140,7 @@ function subscribeToUpdates(loadVotes: () => void, election_id?: string | string
 
     const pusher = new Pusher('9718ba0612df1a49e52b', { cluster: 'us3' })
 
-    const channel = pusher.subscribe(`create-${election_id}`)
+    const channel = pusher.subscribe(`status-${election_id}`)
 
     channel.bind(`votes`, () => {
       console.log('🆕 Pusher new vote submitted')

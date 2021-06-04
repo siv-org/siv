@@ -50,7 +50,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     }),
   )
 
-  await pusher.trigger(`create-${election_id}`, 'votes', 'foo')
+  await pusher.trigger(`status-${election_id}`, 'votes', 'sample-votes')
 
   return res.status(200).json({ message: `Inserted ${num_samples} sample vote` })
 }

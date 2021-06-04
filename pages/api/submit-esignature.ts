@@ -16,7 +16,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   await electionDoc.collection('votes').doc(voteDoc.id).update({ esignature, esigned_at: new Date() })
 
-  await pusher.trigger(`create-${election_id}`, 'votes', auth)
+  await pusher.trigger(`status-${election_id}`, 'votes', auth)
 
   res.status(200).send('Success.')
 }
