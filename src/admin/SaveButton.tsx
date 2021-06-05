@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
-import { checkPassword } from '../create/AddGroup'
 import { OnClickButton } from '../landing-page/Button'
+import { checkPassword } from './checkPassword'
 import { Spinner } from './Spinner'
 
 export const SaveButton = ({ id, onPress }: { id?: string; onPress: () => void }) => {

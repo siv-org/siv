@@ -12,6 +12,7 @@ export const ForGovernments = (): JSX.Element => (
     />
 
     <SideBySide
+      noDarkFilter
       graphic="i-voted-on-phone.png"
       headline="A New Option"
       text="SIV is an addition to existing approaches, not a replacement. Any voter who prefers traditional methods can still use them."

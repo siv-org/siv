@@ -27,10 +27,8 @@ export function GiveYourVoters({ idKey }: { idKey: string }): JSX.Element {
         <Element name="give-your-voters" />
         <h3 style={{ color: darkBlue, margin: '1.5rem 0' }}>Give your voters the future of democracy</h3>
 
-        <p>
-          In early 2021, SIV will begin low-cost pilots around the country. Join the 6 local jurisdictions already
-          interested. Fill out the following information and we&apos;ll get back to you as soon as possible.
-        </p>
+        <p>Join the many local jurisdictions already interested.</p>
+        <p>Fill out the following information and we&apos;ll get back to you as soon as possible.</p>
       </div>
 
       <form autoComplete="off" className="column">

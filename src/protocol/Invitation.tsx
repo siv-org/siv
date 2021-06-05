@@ -28,7 +28,7 @@ export const Invitation = () => (
     <p>
       Click here to securely cast your vote: <br />
       <a style={{ cursor: 'pointer' }}>
-        www.local.gov/2020election?auth=
+        www.local.gov/vote?auth=
         <Highlight>{voters[0].auth}</Highlight>
       </a>
     </p>

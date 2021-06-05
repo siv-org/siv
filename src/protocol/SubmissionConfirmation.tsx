@@ -16,8 +16,8 @@ export const SubmissionConfirmation = () => {
       </p>
       <p>Your vote for mayor has been received. Thank you.</p>
       <p>
-        The final results will be posted at <a style={{ cursor: 'pointer' }}>www.local.gov/2020-election-results</a>{' '}
-        when the election closes.
+        The final results will be posted at <a style={{ cursor: 'pointer' }}>www.local.gov/election-results</a> when the
+        election closes.
       </p>
       <p>Here is the encrypted vote you submitted:</p>
       <code style={{ display: 'block', lineHeight: '16px', padding: '0 6%' }}>

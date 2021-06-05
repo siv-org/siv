@@ -63,7 +63,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     }),
   )
 
-  promises.push(pusher.trigger(`create-${election_id}`, 'votes', email))
+  promises.push(pusher.trigger(`status-${election_id}`, 'votes', auth))
 
   await Promise.all(promises)
 

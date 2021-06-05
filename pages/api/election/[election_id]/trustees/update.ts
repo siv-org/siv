@@ -185,7 +185,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       const threshold_public_key = compute_pub_key(constant_commitments, big_parameters.p).toString()
       await electionDoc.update({ threshold_public_key })
       // Notify admin panel the pub key was created
-      promises.push(pusher.trigger(`create-${election_id}`, 'pub_key', { threshold_public_key }))
+      promises.push(pusher.trigger(`status-${election_id}`, 'pub_key', { threshold_public_key }))
 
       // (3) Encrypt test message
       const randomizer = '108'

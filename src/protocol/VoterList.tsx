@@ -10,7 +10,7 @@ export function VoterList(): JSX.Element {
         <Table size="small">
           <TableHead>
             <TableRow>
-              {['Name', 'Date of Birth', 'Mailing Address', 'Email Address'].map((text: string, index: number) => (
+              {['Name', 'Mailing Address', 'Email Address'].map((text: string, index: number) => (
                 <TableCell
                   align={index === 0 ? 'left' : 'center'}
                   colSpan={index === 1 ? 6 : 1}
@@ -28,7 +28,7 @@ export function VoterList(): JSX.Element {
                 <TableCell colSpan={6} style={{ fontSize: 12 }}>
                   {name}
                 </TableCell>
-                {range(3).map((col) => (
+                {range(2).map((col) => (
                   <TableCell align="center" key={col}>
                     ...
                   </TableCell>
@@ -44,9 +44,9 @@ export function VoterList(): JSX.Element {
         }
       `}</style>
 
-      <div style={{ height: 55, marginTop: 13, position: 'relative' }}>
-        <img src="./protocol/pre-a-arrow.png" style={{ position: 'absolute', right: '11%', width: 20 }} />
-        <p style={{ color: '#4154af', fontWeight: 'bold', position: 'absolute', right: '12%', top: 22 }}>New</p>
+      <div style={{ height: 55, marginTop: 13, position: 'relative', right: '14%' }}>
+        <img src="./protocol/pre-a-arrow.png" style={{ position: 'absolute', right: '0%', width: 20 }} />
+        <p style={{ color: '#4154af', fontWeight: 'bold', position: 'absolute', right: '0%', top: 22 }}>New</p>
       </div>
     </>
   )
