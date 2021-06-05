@@ -13,7 +13,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Is this email an approved election manager?
   const adminDoc = await firebase.firestore().collection('admins').doc(email).get()
 
-  // Store in 'failed-logins' db if not
+  // Store 'failed-logins' in db
   if (!adminDoc.exists) {
     await firebase
       .firestore()

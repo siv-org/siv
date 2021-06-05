@@ -11,11 +11,11 @@ export const LoginPage = () => {
 
   return (
     <main className="flex items-center justify-center min-h-screen px-4 py-12 bg-gray-50 sm:px-6 lg:px-8">
-      <p className="request-access-link">
+      <p className="request-access-link text-blue-800">
         <a href="/for-governments#give-your-voters">
           <b>New user?</b>
           <br />
-          Request access
+          <span className="text-xs">Request access</span>
         </a>
       </p>
       <div className="w-full max-w-md space-y-8">
@@ -111,8 +111,6 @@ export const LoginPage = () => {
 
         .request-access-link {
           font-size: 14px;
-          color: rgb(65, 65, 247);
-          opacity: 0.8;
           position: absolute;
           top: 10px;
           right: 10px;
