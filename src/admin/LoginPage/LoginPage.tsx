@@ -2,11 +2,12 @@ import 'tailwindcss/tailwind.css'
 
 import { useState } from 'react'
 
-import { supabase } from '../supabase'
+import { api } from '../../api-helper'
 
 export const LoginPage = () => {
   const [email, setEmail] = useState('')
-  const [status, setStatus] = useState<'' | 'pending' | 'sent'>('')
+  const [error, setError] = useState('')
+  const [status, setStatus] = useState<'' | 'pending' | 'sent' | 'error'>('')
 
   return (
     <main className="flex items-center justify-center min-h-screen px-4 py-12 bg-gray-50 sm:px-6 lg:px-8">
@@ -15,6 +16,7 @@ export const LoginPage = () => {
 
         <div className="mt-8 space-y-6">
           <div className="-space-y-px rounded-md shadow-sm">
+            {error && <label className="error">⚠️&nbsp; {error}</label>}
             <label className="sr-only" htmlFor="email-address">
               Email address
             </label>
@@ -27,7 +29,11 @@ export const LoginPage = () => {
               placeholder="Email address"
               type="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => {
+                setEmail(e.target.value)
+                setStatus('')
+                setError('')
+              }}
             />
           </div>
 
@@ -38,8 +44,17 @@ export const LoginPage = () => {
             disabled={status !== ''}
             onClick={async () => {
               setStatus('pending')
-              const response = await supabase.auth.signIn({ email }, { redirectTo: 'http://localhost:3000/admin' })
-              setStatus('sent')
+
+              // Send login request to backend
+              const response = await api('admin-login', { email })
+
+              if (response.status === 400) {
+                setError('Invalid email address')
+                setStatus('error')
+              } else {
+                setStatus('sent')
+              }
+              //
 
               console.log('response', response)
             }}
@@ -63,9 +78,17 @@ export const LoginPage = () => {
             {status === '' && 'Sign in'}
             {status === 'pending' && 'Sending...'}
             {status === 'sent' && 'Sent.'}
+            {status === 'error' && 'Error.'}
           </button>
         </div>
       </div>
+      <style jsx>{`
+        .error {
+          color: red;
+          opacity: 0.7;
+          font-size: 12px;
+        }
+      `}</style>
     </main>
   )
 }
