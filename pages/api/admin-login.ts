@@ -30,15 +30,20 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const auth_token = generateAuthToken()
   adminDoc.collection('logins').doc(new Date().toISOString()).set({ auth_token, created_at: new Date() })
 
-  const link = `${req.headers.origin}/admin?auth=${auth_token}`
+  const link = `${req.headers.origin}/admin?email=${email}&auth=${auth_token}`
   sendEmail({
+    from: 'Secure Internet Voting',
     recipient: email,
     subject: 'SIV Admin Login',
     text: `A request was made to access your SIV Admin Dashboard.
-<h3>Click here to login: <a href="${link}">${link}</a></h3>
 
-<em style="font-size:10px; opacity: 0.6;">If you did not authorize this request, please reply to let us know.</em>`,
+${button(link, 'Click Here to Login')}
+
+<em style="font-size:10px; opacity: 0.6;">If you did not authorize this request, press reply to let us know.</em>`,
   })
 
   res.status(200).send('Success')
 }
+
+const button = (link: string, text: string) =>
+  `<table width="100%" cellspacing="0" cellpadding="0"><tr><td align="center"><table cellspacing="0" cellpadding="0"><tr><td style="border-radius: 8px;" bgcolor="#072054"><a href="${link}" target="_blank" style="padding: 8px 22px; border: 1px solid #072054;border-radius: 8px;font-family: Helvetica, Arial, sans-serif;font-size: 14px; color: #ffffff;text-decoration: none;font-weight:bold;display: inline-block;">${text}</a></td></tr></table></td></tr></table>`
