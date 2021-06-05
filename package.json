@@ -50,7 +50,6 @@
     "@nandorojo/swr-firestore": "^0.10.0",
     "@sentry/browser": "^6.0.2",
     "@sentry/tracing": "^6.0.2",
-    "@supabase/supabase-js": "^1.4.2",
     "@types/bluebird": "^3.5.33",
     "@types/jsbn": "^1.2.29",
     "@types/lodash-es": "^4.17.3",
