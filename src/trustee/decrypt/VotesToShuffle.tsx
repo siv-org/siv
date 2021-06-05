@@ -48,14 +48,29 @@ export const VotesToShuffle = ({ state }: StateAndDispatch) => {
     <>
       <h3>III. Votes to Shuffle</h3>
       <ol>
-        {trustees?.map(({ email, shuffled, you }) => (
+        {trustees?.map(({ email, shuffle_proof = true, shuffled, you }) => (
           <li key={email}>
             {email}
             {you && <YouLabel />} shuffled {!shuffled ? '0' : Object.values(shuffled)[0].length} votes.
             {shuffled && <ShuffledVotesTable {...{ shuffled }} />}
+            {shuffle_proof && (
+              <i>
+                {email}
+                {you && <YouLabel />} provided a ZK Proof of a Shuffle. Validating...
+              </i>
+            )}
           </li>
         ))}
       </ol>
+      <style jsx>{`
+        li {
+          margin-bottom: 1rem;
+        }
+
+        i {
+          font-size: 11px;
+        }
+      `}</style>
     </>
   )
 }
@@ -105,7 +120,7 @@ const ShuffledVotesTable = ({ shuffled }: { shuffled: Shuffled }): JSX.Element =
           border-collapse: collapse;
           display: block;
           overflow: scroll;
-          margin-bottom: 15px;
+          margin-bottom: 10px;
         }
 
         th,

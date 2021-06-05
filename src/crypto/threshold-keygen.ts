@@ -14,10 +14,11 @@ import { Big, big } from './types'
 export type Parameters = { g: Big; p: Big; q: Big }
 
 /** Sum up an array of Bigs */
-const sum_bigs = (bigs: Big[], modulo: Big): Big => bigs.reduce((memo, term) => memo.add(term).mod(modulo))
+export const sum_bigs = (bigs: Big[], modulo: Big): Big => bigs.reduce((memo, term) => memo.add(term).mod(modulo))
 
 /** Multiply up an array of Bigs */
-const product_bigs = (bigs: Big[], modulo: Big): Big => bigs.reduce((memo, term) => memo.multiply(term).mod(modulo))
+export const product_bigs = (bigs: Big[], modulo: Big): Big =>
+  bigs.reduce((memo, term) => memo.multiply(term).mod(modulo))
 
 /**
    Each party Pᵢ (as a dealer) chooses a random polynomial fᵢ(z) over Z[q] of degree t-1:
@@ -96,8 +97,8 @@ export const compute_pub_key = product_bigs
 /** Each party Pⱼ of Q broadcast
     dⱼ = c[1]^(sⱼ)
 similar to DKG scheme */
-export const partial_decrypt = (unlock: Big, private_key_share: Big, { p }: Parameters) =>
-  unlock.modPow(private_key_share, p)
+export const partial_decrypt = (lock: Big, private_key_share: Big, { p }: Parameters) =>
+  lock.modPow(private_key_share, p)
 
 /** then compute:
     d = d[1]^λ[1] ... d[t]^λ[t]
