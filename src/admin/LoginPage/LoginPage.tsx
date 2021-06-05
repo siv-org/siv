@@ -12,7 +12,7 @@ export const LoginPage = () => {
   return (
     <main className="flex items-center justify-center min-h-screen px-4 py-12 bg-gray-50 sm:px-6 lg:px-8">
       <p className="request-access-link">
-        <a href="">
+        <a href="/for-governments#give-your-voters">
           <b>New user?</b>
           <br />
           Request access
@@ -52,6 +52,11 @@ export const LoginPage = () => {
             className="relative flex justify-center w-full px-4 py-2 text-sm font-semibold text-white bg-blue-800 border border-transparent rounded-md group disabled:opacity-50 hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             disabled={!['', 'unapproved'].includes(status)}
             onClick={async () => {
+              // Redirect to 'Request Access'
+              if (status === 'unapproved') {
+                return window.location.assign('/for-governments#give-your-voters')
+              }
+
               setStatus('pending')
 
               // Send login request to backend
