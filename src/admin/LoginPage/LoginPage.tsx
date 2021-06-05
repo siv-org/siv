@@ -7,10 +7,17 @@ import { api } from '../../api-helper'
 export const LoginPage = () => {
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
-  const [status, setStatus] = useState<'' | 'pending' | 'sent' | 'error'>('')
+  const [status, setStatus] = useState<'' | 'pending' | 'sent' | 'error' | 'unapproved'>('')
 
   return (
     <main className="flex items-center justify-center min-h-screen px-4 py-12 bg-gray-50 sm:px-6 lg:px-8">
+      <p className="request-access-link">
+        <a href="">
+          <b>New user?</b>
+          <br />
+          Request access
+        </a>
+      </p>
       <div className="w-full max-w-md space-y-8">
         <h2 className="mt-6 text-3xl font-extrabold text-center text-gray-900">Sign in to your secure account</h2>
 
@@ -37,11 +44,13 @@ export const LoginPage = () => {
             />
           </div>
 
-          <p className="text-xs italic font-medium text-gray-400">You will be emailed a login link.</p>
+          {status !== 'unapproved' && (
+            <p className="text-xs italic font-medium text-gray-400">You will be emailed a login link.</p>
+          )}
 
           <button
             className="relative flex justify-center w-full px-4 py-2 text-sm font-semibold text-white bg-blue-800 border border-transparent rounded-md group disabled:opacity-50 hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-            disabled={status !== ''}
+            disabled={!['', 'unapproved'].includes(status)}
             onClick={async () => {
               setStatus('pending')
 
@@ -51,6 +60,11 @@ export const LoginPage = () => {
               if (response.status === 400) {
                 setError('Invalid email address')
                 setStatus('error')
+              } else if (response.status === 404) {
+                setError(
+                  'The email you entered is not an approved SIV Election Manager. If you believe this is an error, you can try again with another email address.',
+                )
+                setStatus('unapproved')
               } else {
                 setStatus('sent')
               }
@@ -79,6 +93,7 @@ export const LoginPage = () => {
             {status === 'pending' && 'Sending...'}
             {status === 'sent' && 'Sent.'}
             {status === 'error' && 'Error.'}
+            {status === 'unapproved' && 'Request Access'}
           </button>
         </div>
       </div>
@@ -87,6 +102,19 @@ export const LoginPage = () => {
           color: red;
           opacity: 0.7;
           font-size: 12px;
+        }
+
+        .request-access-link {
+          font-size: 14px;
+          color: rgb(65, 65, 247);
+          opacity: 0.8;
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          text-align: right;
+        }
+        .request-access-link:hover {
+          text-decoration: underline;
         }
       `}</style>
     </main>
