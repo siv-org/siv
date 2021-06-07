@@ -73,7 +73,6 @@ export const LoginPage = () => {
               } else {
                 setStatus('sent')
               }
-              //
 
               console.log('response', response)
             }}

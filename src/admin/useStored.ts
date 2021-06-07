@@ -2,12 +2,13 @@ import { useRouter } from 'next/router'
 import useSWR, { mutate } from 'swr'
 
 import { AdminData } from '../../pages/api/election/[election_id]/admin/load-admin'
-import { checkPassword } from './checkPassword'
+
+// import { checkPassword } from './checkPassword'
 
 export function useStored(): AdminData {
   const election_id = useRouter().query.election_id as string | undefined
 
-  const { data, error } = useSWR(checkPassword() && election_id ? url(election_id) : null, (url: string) =>
+  const { data, error } = useSWR(election_id ? url(election_id) : null, (url: string) =>
     fetch(url).then(async (r) => {
       if (!r.ok) throw await r.json()
       return await r.json()

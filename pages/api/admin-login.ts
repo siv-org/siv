@@ -12,7 +12,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (!email.includes('@') || !email.includes('.')) return res.status(400).send('Malformed')
 
   // Is this email an approved election manager?
-  const adminDoc = await firebase.firestore().collection('admins').doc(email)
+  const adminDoc = firebase.firestore().collection('admins').doc(email)
 
   // Store 'failed-logins' in db
   if (!(await adminDoc.get()).exists) {

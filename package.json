@@ -58,6 +58,7 @@
     "firebase": "^7.17.2",
     "firebase-admin": "^9.0.0",
     "jsbn": "^1.1.0",
+    "jsonwebtoken": "^8.5.1",
     "lodash-es": "^4.17.15",
     "mailgun-js": "^0.22.0",
     "next": "10",
@@ -78,6 +79,7 @@
     "timeago.js": "^4.0.2"
   },
   "devDependencies": {
+    "@types/jsonwebtoken": "^8.5.1",
     "@types/mailgun-js": "^0.22.10",
     "@types/ms": "^0.7.31",
     "@types/node": "^13.9.5",
