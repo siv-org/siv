@@ -7,8 +7,9 @@ import { api } from '../api-helper'
 const cookie_name = 'siv-jwt'
 
 export function login(jwt: string) {
-  // add cookie
-  document.cookie = `${cookie_name}=${jwt};`
+  // Add session cookie
+  document.cookie = `${cookie_name}=${jwt}; expires=Tue, 19 Jan 2038 03:14:07 UTC;`
+  // Remove url parameters
   Router.replace('/admin')
 }
 export function logout() {
@@ -22,7 +23,6 @@ export function useLoginRequired(loggedOut: boolean) {
     if (loggedOut) {
       // Do they have an email & auth token in URL?
       const { auth, email } = Router.query
-      console.log('line 25')
       if (email && auth) {
         // Validate login auth token on backend
         api('admin-check-login-code', { auth, email }).then((response) => {
@@ -47,7 +47,6 @@ export function useUser() {
 
   const loading = !data && !error
   const loggedOut = error && error.status === 403
-  console.log({ data, error, loading, loggedOut })
 
   return {
     loading,
