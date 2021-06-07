@@ -30,10 +30,8 @@ export function useLoginRequired(loggedOut: boolean) {
             // Set valid session JWT cookie
             return response.json().then(({ jwt }) => login(jwt))
           } else if (response.status === 412) {
-            // TODO: Expired session
-            // Redirect back to login page, with "This login link has expired, click below to create another."
-            // Ideally with their email pre-filled
-            return
+            // Expired session, redirects back to login page
+            Router.push(`/login?expired=true&email=${email}`)
           } else {
             // Invalid, redirect them to login
             Router.push('/login')

@@ -1,6 +1,7 @@
 import 'tailwindcss/tailwind.css'
 
-import { useState } from 'react'
+import Router from 'next/router'
+import { useEffect, useState } from 'react'
 
 import { api } from '../../api-helper'
 
@@ -8,6 +9,13 @@ export const LoginPage = () => {
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
   const [status, setStatus] = useState<'' | 'pending' | 'sent' | 'error' | 'unapproved'>('')
+
+  // Check if there's a redirect message in URL
+  useEffect(() => {
+    const { email, expired } = Router.query
+    if (email) setEmail(email as string)
+    if (expired) setError('This login link has expired, click Sign In below to create another.')
+  }, [])
 
   return (
     <main className="flex items-center justify-center min-h-screen px-4 py-12 bg-gray-50 sm:px-6 lg:px-8">
