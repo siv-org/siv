@@ -16,6 +16,7 @@ export function login(jwt: string) {
 export function logout() {
   // Delete cookie
   document.cookie = `${cookie_name}=; expires=Thu, 01 Jan 1970 00:00:01 GMT;`
+  Router.push('/login')
 }
 
 export function useLoginRequired(loggedOut: boolean) {

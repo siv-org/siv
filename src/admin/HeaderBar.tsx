@@ -1,14 +1,29 @@
+import { UserOutlined } from '@ant-design/icons'
 import Link from 'next/link'
+
+import { logout } from './auth'
 
 export const HeaderBar = (): JSX.Element => (
   <div className="container">
     <div>
-      <Link href="/">
-        <a className="big">Secure Internet Voting</a>
-      </Link>
-      <Link href="/protocol">
-        <a>Protocol</a>
-      </Link>
+      <div className="left">
+        <Link href="/">
+          <a className="big">Secure Internet Voting</a>
+        </Link>
+        <Link href="/protocol">
+          <a>Protocol</a>
+        </Link>
+      </div>
+      <div
+        className="login-status"
+        onClick={() => {
+          const pressed_ok = confirm('Do you wish to logout?')
+          if (pressed_ok) logout()
+        }}
+      >
+        <UserOutlined />
+        &nbsp; David Ernst
+      </div>
     </div>
     <style jsx>{`
       .container {
@@ -21,17 +36,18 @@ export const HeaderBar = (): JSX.Element => (
       }
 
       .container > div {
-        max-width: 750px;
         width: 100%;
         margin: 0 auto;
-        padding: 1rem;
+        padding: 1rem 3rem;
 
         display: flex;
         align-items: baseline;
+
+        justify-content: space-between;
       }
 
       .big {
-        font-size: calc(0.9vw + 0.9rem);
+        font-size: 24px;
         font-weight: 700;
         color: white;
       }
@@ -61,6 +77,17 @@ export const HeaderBar = (): JSX.Element => (
         div {
           flex-direction: column;
         }
+      }
+
+      .login-status {
+        font-size: 16px;
+        padding: 3px 10px;
+        border-radius: 4px;
+      }
+
+      .login-status:hover {
+        background: #fff2;
+        cursor: pointer;
       }
     `}</style>
   </div>
