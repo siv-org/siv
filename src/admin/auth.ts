@@ -6,7 +6,7 @@ import useSWR from 'swr'
 
 import { api } from '../api-helper'
 
-const cookie_name = 'siv-jwt'
+export const cookie_name = 'siv-jwt'
 
 export function login(jwt: string) {
   // Add session cookie
@@ -55,7 +55,7 @@ export function useUser() {
   const { data, error, mutate } = useSWR('/api/validate-admin-jwt', fetcher)
 
   const loading = !data && !error
-  const loggedOut = !jwt_cookie || (error && error.status === 403)
+  const loggedOut = !jwt_cookie || (error && error.status === 401)
 
   const decoded_jwt = jwt.decode(jwt_cookie) as Record<string, string>
 

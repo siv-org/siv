@@ -1,9 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import { firebase } from '../../../_services'
+import { checkJwt } from '../../../validate-admin-jwt'
 import { QueueLog } from './invite-voters'
-
-const { ADMIN_PASSWORD, MANAGER_PASSWORD } = process.env
 
 export type ReviewLog = { review: 'approve' | 'reject' }
 
@@ -32,22 +31,13 @@ export type AdminData = {
 }
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { election_id, password } = req.query as { election_id?: string; password?: string }
+  const { election_id } = req.query as { election_id?: string; password?: string }
 
   // Check required params
   if (!election_id) return res.status(401).json({ error: `Missing election_id` })
-  if (!password || ![ADMIN_PASSWORD, MANAGER_PASSWORD].includes(password))
-    return res.status(401).json({ error: `Invalid Password: '${password}'` })
 
-  // Only allow manager for whitelisted elections
-  const manager_allowed = [
-    '1611997618605', // Cache County Sample Election
-    '1612028266931', // Cache County Executive Round 1
-    '1612031971385', // Cache County Executive Round 2
-    '1612033630381', // Cache County Executive Round 3
-  ]
-  if (password === MANAGER_PASSWORD && !manager_allowed.includes(election_id))
-    return res.status(401).json({ error: `Manager not enabled for this election` })
+  // Confirm they're a valid admin
+  if (!checkJwt(req, res).valid) return
 
   const election = firebase
     .firestore()

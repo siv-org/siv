@@ -24,7 +24,7 @@ export const TitleInput = () => {
       <SaveButton
         id="election-title-save"
         onPress={async () => {
-          const response = await api('create-election', { election_title, password: localStorage.password })
+          const response = await api('create-election', { election_title })
 
           if (response.status === 201) {
             const { election_id } = await response.json()

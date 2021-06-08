@@ -5,6 +5,11 @@ import { firebase } from './_services'
 
 const JWT_SECRET = 'foobar'
 
+export type JWT_Payload = {
+  email: string
+  name: string
+}
+
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { auth, email }: { auth: string; email: string } = req.body
 
@@ -23,9 +28,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       const minutes_since = diff / 1000 / 60
       if (minutes_since < 30) {
         // Valid session
-        return res
-          .status(200)
-          .send({ jwt: jwt.sign({ email, name: admin?.data()?.name || 'MissingName' }, JWT_SECRET) })
+
+        const payload: JWT_Payload = { email, name: admin?.data()?.name || 'MissingName' }
+
+        return res.status(200).send({ jwt: jwt.sign(payload, JWT_SECRET) })
       } else {
         // Expired session
         return res.status(412).send({ error: 'Expired session' })
