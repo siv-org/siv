@@ -50,13 +50,14 @@ export function useLoginRequired(loggedOut: boolean) {
 }
 
 export function useUser() {
-  const { data, error, mutate } = useSWR('/api/validate-admin-jwt', fetcher)
   const [cookies] = useCookies()
+  const jwt_cookie = cookies[cookie_name]
+  const { data, error, mutate } = useSWR('/api/validate-admin-jwt', fetcher)
 
   const loading = !data && !error
-  const loggedOut = error && error.status === 403
+  const loggedOut = !jwt_cookie || (error && error.status === 403)
 
-  const decoded_jwt = jwt.decode(cookies[cookie_name]) as Record<string, string>
+  const decoded_jwt = jwt.decode(jwt_cookie) as Record<string, string>
 
   return {
     loading,

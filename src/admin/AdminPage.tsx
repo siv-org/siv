@@ -10,12 +10,12 @@ import { useStored } from './useStored'
 import { AddVoters } from './Voters/AddVoters'
 
 export const AdminPage = (): JSX.Element => {
-  const { loggedOut } = useUser()
+  const { loading, loggedOut } = useUser()
   const { ballot_design, election_manager, election_title, threshold_public_key } = useStored()
 
   useLoginRequired(loggedOut)
 
-  if (loggedOut) return <p style={{ fontSize: 21, padding: '1rem' }}>Loading...</p>
+  if (loading || loggedOut) return <p style={{ fontSize: 21, padding: '1rem' }}>Loading...</p>
   return (
     <>
       <Head title="Create new election" />
