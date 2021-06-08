@@ -67,6 +67,7 @@
     "pusher": "^4.0.2",
     "pusher-js": "^7.0.2",
     "react": "^16.13.1",
+    "react-cookie": "^4.0.3",
     "react-dom": "^16.13.1",
     "react-flip-move": "^3.0.4",
     "react-linkify": "^1.0.0-alpha",

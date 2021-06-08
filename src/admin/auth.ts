@@ -1,5 +1,7 @@
+import jwt from 'jsonwebtoken'
 import Router from 'next/router'
 import { useEffect } from 'react'
+import { useCookies } from 'react-cookie'
 import useSWR from 'swr'
 
 import { api } from '../api-helper'
@@ -49,15 +51,18 @@ export function useLoginRequired(loggedOut: boolean) {
 
 export function useUser() {
   const { data, error, mutate } = useSWR('/api/validate-admin-jwt', fetcher)
+  const [cookies] = useCookies()
 
   const loading = !data && !error
   const loggedOut = error && error.status === 403
+
+  const decoded_jwt = jwt.decode(cookies[cookie_name]) as Record<string, string>
 
   return {
     loading,
     loggedOut,
     mutate,
-    user: data,
+    user: { ...data, ...decoded_jwt },
   }
 }
 
