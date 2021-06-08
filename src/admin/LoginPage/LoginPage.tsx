@@ -4,6 +4,7 @@ import Router from 'next/router'
 import { useEffect, useState } from 'react'
 
 import { api } from '../../api-helper'
+import { Head } from '../../Head'
 
 export const LoginPage = () => {
   const [email, setEmail] = useState('')
@@ -12,13 +13,15 @@ export const LoginPage = () => {
 
   // Check if there's a redirect message in URL
   useEffect(() => {
-    const { email, expired } = Router.query
+    const { email, expired, invalid } = Router.query
     if (email) setEmail(email as string)
     if (expired) setError('This login link has expired, click Sign In below to create another.')
+    if (invalid) setError('This login link appears invalid, click Sign In below to create another.')
   }, [])
 
   return (
     <main className="flex items-center justify-center min-h-screen px-4 py-12 bg-gray-50 sm:px-6 lg:px-8">
+      <Head title="Admin Login" />
       <p className="request-access-link text-blue-800">
         <a href="/for-governments#give-your-voters">
           <b>New user?</b>

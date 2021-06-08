@@ -8,37 +8,41 @@ const cookie_name = 'siv-jwt'
 
 export function login(jwt: string) {
   // Add session cookie
+  // 2038 is max 32-bit date: https://stackoverflow.com/questions/532635/javascript-cookie-with-no-expiration-date
   document.cookie = `${cookie_name}=${jwt}; expires=Tue, 19 Jan 2038 03:14:07 UTC;`
   // Remove url parameters
   Router.replace('/admin')
 }
 export function logout() {
-  // delete cookie
+  // Delete cookie
   document.cookie = `${cookie_name}=; expires=Thu, 01 Jan 1970 00:00:01 GMT;`
 }
 
 export function useLoginRequired(loggedOut: boolean) {
-  // If logged out, redirect to Login Screen
-  useEffect(() => {
+  async function checkLoginStatus() {
+    // If logged out...
     if (loggedOut) {
-      // Do they have an email & auth token in URL?
       const { auth, email } = Router.query
-      if (email && auth) {
-        // Validate login auth token on backend
-        api('admin-check-login-code', { auth, email }).then((response) => {
-          if (response.status === 200) {
-            // Set valid session JWT cookie
-            return response.json().then(({ jwt }) => login(jwt))
-          } else if (response.status === 412) {
-            // Expired session, redirects back to login page
-            Router.push(`/login?expired=true&email=${email}`)
-          } else {
-            // Invalid, redirect them to login
-            Router.push('/login')
-          }
-        })
-      }
+
+      // Redirect to /login if missing `email` or `auth token` in URL
+      if (!email || !auth) return Router.push('/login')
+
+      // Ask backend if login auth token is valid
+      const response = await api('admin-check-login-code', { auth, email })
+
+      // Passed! Set session JWT cookie
+      if (response.status === 200) return response.json().then(({ jwt }) => login(jwt))
+
+      // Expired session: redirects back to login page w/ custom error
+      if (response.status === 412) return Router.push(`/login?expired=true&email=${email}`)
+
+      // Else, Invalid login token: redirect back to login w/ error message
+      Router.push('/login?invalid=true')
     }
+  }
+
+  useEffect(() => {
+    checkLoginStatus()
   }, [loggedOut])
 }
 
