@@ -122,8 +122,8 @@ export const LoginPage = () => {
         .request-access-link {
           font-size: 14px;
           position: absolute;
-          top: 10px;
-          right: 10px;
+          top: 15px;
+          right: 20px;
           text-align: right;
         }
         .request-access-link:hover {
