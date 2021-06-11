@@ -13,7 +13,7 @@ export const SaveButton = ({ id, onPress }: { id?: string; onPress: () => void }
           style={{ marginRight: 0, padding: '8px 17px' }}
           onClick={async () => {
             set_pending(true)
-            await onPress()
+            onPress()
           }}
         >
           {!pending ? (
