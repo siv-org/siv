@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-import Router from 'next/router'
+import Router, { NextRouter, useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { useCookies } from 'react-cookie'
 import useSWR from 'swr'
@@ -22,13 +22,14 @@ export function logout() {
 }
 
 export function useLoginRequired(loggedOut: boolean) {
-  async function checkLoginStatus() {
+  const router = useRouter()
+  async function checkLoginStatus(router: NextRouter) {
     // If logged out...
     if (loggedOut) {
-      const { auth, email } = Router.query
+      const { auth, email } = router.query
 
       // Redirect to /login if missing `email` or `auth token` in URL
-      if (!email || !auth) return Router.push('/login')
+      if (!email || !auth) return router.push('/login')
 
       // Ask backend if login auth token is valid
       const response = await api('admin-check-login-code', { auth, email })
@@ -37,16 +38,16 @@ export function useLoginRequired(loggedOut: boolean) {
       if (response.status === 200) return response.json().then(({ jwt }) => login(jwt))
 
       // Expired session: redirects back to login page w/ custom error
-      if (response.status === 412) return Router.push(`/login?expired=true&email=${email}`)
+      if (response.status === 412) return router.push(`/login?expired=true&email=${email}`)
 
       // Else, Invalid login token: redirect back to login w/ error message
-      Router.push('/login?invalid=true')
+      router.push('/login?invalid=true')
     }
   }
 
   useEffect(() => {
-    checkLoginStatus()
-  }, [loggedOut])
+    if (router.isReady) checkLoginStatus(router)
+  }, [loggedOut, router.isReady])
 }
 
 export function useUser() {
