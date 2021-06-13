@@ -262,7 +262,6 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
                           const response = await api(`election/${election_id}/admin/edit-email`, {
                             new_email,
                             old_email: email,
-                            password: localStorage.password,
                           })
 
                           if (response.status === 201) {
