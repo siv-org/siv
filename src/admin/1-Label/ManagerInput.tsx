@@ -25,10 +25,7 @@ export const ManagerInput = () => {
       <SaveButton
         id="election-manager-save"
         onPress={async () => {
-          const response = await api(`election/${election_id}/admin/save-election-manager`, {
-            election_manager,
-            password: localStorage.password,
-          })
+          const response = await api(`election/${election_id}/admin/save-election-manager`, { election_manager })
 
           if (response.status === 201) {
             revalidate(election_id)
