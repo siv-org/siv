@@ -3,15 +3,15 @@ import { firestore } from 'firebase-admin'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import { firebase, mailgun, pushover } from '../../../_services'
-
-const { ADMIN_PASSWORD } = process.env
+import { checkJwtOwnsElection } from '../../../validate-admin-jwt'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { election_id, password } = req.query as { election_id: string; password?: string }
-
-  // Check for required params
-  if (password !== ADMIN_PASSWORD) return res.status(401).json({ error: 'Invalid Password.' })
+  const { election_id } = req.query as { election_id: string; password?: string }
   if (!election_id) return res.status(401).json({ error: 'Missing election_id' })
+
+  // Confirm they're a valid admin that created this election
+  const jwt = await checkJwtOwnsElection(req, res, election_id)
+  if (!jwt.valid) return
 
   const electionDoc = firebase.firestore().collection('elections').doc(election_id)
 

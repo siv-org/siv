@@ -52,7 +52,7 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
     if (pending_invites) {
       const interval = setInterval(() => {
         console.log('Checking pending invites...')
-        api(`election/${election_id}/admin/check-invite-status?password=${localStorage.password}`)
+        api(`election/${election_id}/admin/check-invite-status`)
           .then((response) => response.json())
           .then(({ num_events }) => {
             if (num_events !== last_num_events) {
