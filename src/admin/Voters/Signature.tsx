@@ -31,7 +31,6 @@ export const Signature = ({
   const storeReview = (review: 'approve' | 'reject' | 'pending') => async () => {
     await api(`election/${election_id}/admin/review-signature`, {
       emails: [email],
-      password: localStorage.password,
       review,
     })
     setOpen(false)

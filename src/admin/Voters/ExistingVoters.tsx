@@ -204,7 +204,6 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
                   if (confirm(`Do you want to approve all ${num_voted} signatures?`)) {
                     api(`election/${election_id}/admin/review-signature`, {
                       emails: shown_voters.filter(({ has_voted }) => has_voted).map((v) => v.email),
-                      password: localStorage.password,
                       review: 'approve',
                     })
                   }
