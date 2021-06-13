@@ -2,15 +2,16 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 import { firebase } from '../../../_services'
 import { generateAuthToken } from '../../../invite-voters'
-
-const { ADMIN_PASSWORD } = process.env
+import { checkJwtOwnsElection } from '../../../validate-admin-jwt'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { new_voters, password } = req.body
+  const { new_voters } = req.body
   const { election_id } = req.query as { election_id: string }
 
-  // Check for required params
-  if (password !== ADMIN_PASSWORD) return res.status(401).json({ error: 'Invalid Password.' })
+  // Confirm they're a valid admin that created this election
+  const jwt = await checkJwtOwnsElection(req, res, election_id)
+  if (!jwt.valid) return
+
   if (!election_id) return res.status(401).json({ error: 'Missing election_id' })
 
   // Generate auth token for each voter
