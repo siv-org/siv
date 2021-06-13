@@ -12,20 +12,22 @@ import { big } from '../../../../../src/crypto/types'
 import { firebase, pushover, sendEmail } from '../../../_services'
 import { generateAuthToken } from '../../../invite-voters'
 import { pusher } from '../../../pusher'
+import { checkJwt } from '../../../validate-admin-jwt'
 
-const { ADMIN_EMAIL, ADMIN_PASSWORD } = process.env
+const { ADMIN_EMAIL } = process.env
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Ensure env-vars are set
   if (!ADMIN_EMAIL) return res.status(501).json({ error: 'Missing process.env.ADMIN_EMAIL' })
-  if (!ADMIN_PASSWORD) return res.status(501).json({ error: 'Missing process.env.ADMIN_PASSWORD' })
 
   // This will hold all our async tasks
   const promises: Promise<unknown>[] = []
 
-  // Check for password
-  const { election_title, password, trustees } = req.body
-  if (password !== ADMIN_PASSWORD) return res.status(401).json({ error: 'Invalid Password.' })
+  // Confirm they're a valid admin
+  const jwt = checkJwt(req, res)
+  if (!jwt.valid) return
+
+  const { election_title, trustees } = req.body
 
   // admin@ is required
   if (!trustees.some((t: string) => t === ADMIN_EMAIL))
