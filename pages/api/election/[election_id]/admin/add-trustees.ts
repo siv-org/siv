@@ -12,7 +12,7 @@ import { big } from '../../../../../src/crypto/types'
 import { firebase, pushover, sendEmail } from '../../../_services'
 import { generateAuthToken } from '../../../invite-voters'
 import { pusher } from '../../../pusher'
-import { checkJwt } from '../../../validate-admin-jwt'
+import { checkJwtOwnsElection } from '../../../validate-admin-jwt'
 
 const { ADMIN_EMAIL } = process.env
 
@@ -23,8 +23,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // This will hold all our async tasks
   const promises: Promise<unknown>[] = []
 
-  // Confirm they're a valid admin
-  const jwt = checkJwt(req, res)
+  const { election_id } = req.query as { election_id: string }
+
+  // Confirm they're a valid admin that created this election
+  const jwt = await checkJwtOwnsElection(req, res, election_id)
   if (!jwt.valid) return
 
   const { election_title, trustees } = req.body
@@ -38,7 +40,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const safe_prime = mapValues(safe_prime_bigs, (v) => v.toString())
 
   // Update election
-  const { election_id } = req.query as { election_id: string }
   const election = firebase.firestore().collection('elections').doc(election_id)
   await election.update({ ...safe_prime, t: trustees.length })
 
