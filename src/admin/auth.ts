@@ -2,27 +2,26 @@ import jwt from 'jsonwebtoken'
 import Router, { NextRouter, useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { useCookies } from 'react-cookie'
-import useSWR from 'swr'
+import useSWR, { mutate } from 'swr'
 
 import { api } from '../api-helper'
 
 export const cookie_name = 'siv-jwt'
+const jwt_api_path = '/api/validate-admin-jwt'
 
-export function login(jwt: string) {
-  // Add session cookie
-  // 2038 is max 32-bit date: https://stackoverflow.com/questions/532635/javascript-cookie-with-no-expiration-date
-  document.cookie = `${cookie_name}=${jwt}; expires=Tue, 19 Jan 2038 03:14:07 UTC;`
-  // Remove url parameters
-  Router.replace('/admin')
-}
 export function logout() {
   // Delete cookie
   document.cookie = `${cookie_name}=; expires=Thu, 01 Jan 1970 00:00:01 GMT;`
+
+  // Invalidate jwt cache
+  mutate(jwt_api_path)
+
   Router.push('/login')
 }
 
 export function useLoginRequired(loggedOut: boolean) {
   const router = useRouter()
+  const [, setCookie] = useCookies()
   async function checkLoginStatus(router: NextRouter) {
     // If logged out...
     if (loggedOut) {
@@ -35,7 +34,17 @@ export function useLoginRequired(loggedOut: boolean) {
       const response = await api('admin-check-login-code', { auth, email })
 
       // Passed! Set session JWT cookie
-      if (response.status === 200) return response.json().then(({ jwt }) => login(jwt))
+      if (response.status === 200) {
+        const { jwt } = await response.json()
+        // Add session cookie
+        // 2038 is max 32-bit date: https://stackoverflow.com/questions/532635/javascript-cookie-with-no-expiration-date
+        setCookie(cookie_name, jwt, { expires: new Date('Tue, 19 Jan 2038 03:14:07 UTC') })
+        // Invalidate jwt cache
+        mutate(jwt_api_path)
+
+        // Remove url parameters
+        return router.replace('/admin')
+      }
 
       // Expired session: redirects back to login page w/ custom error
       if (response.status === 412) return router.push(`/login?expired=true&email=${email}`)
@@ -53,7 +62,7 @@ export function useLoginRequired(loggedOut: boolean) {
 export function useUser() {
   const [cookies] = useCookies()
   const jwt_cookie = cookies[cookie_name]
-  const { data, error, mutate } = useSWR('/api/validate-admin-jwt', fetcher)
+  const { data, error, mutate } = useSWR(jwt_api_path, fetcher)
 
   const loading = !data && !error
   const loggedOut = !jwt_cookie || (error && error.status === 401)
