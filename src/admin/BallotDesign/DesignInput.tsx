@@ -51,10 +51,7 @@ export const DesignInput = () => {
       />
       <SaveButton
         onPress={async () => {
-          const response = await api(`election/${election_id}/admin/save-ballot-design`, {
-            ballot_design,
-            password: localStorage.password,
-          })
+          const response = await api(`election/${election_id}/admin/save-ballot-design`, { ballot_design })
 
           if (response.status === 201) {
             revalidate(election_id)
