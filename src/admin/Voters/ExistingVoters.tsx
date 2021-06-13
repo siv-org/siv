@@ -93,10 +93,7 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
               }, [])
 
               try {
-                const response = await api(`election/${election_id}/admin/invite-voters`, {
-                  password: localStorage.password,
-                  voters: voters_to_invite,
-                })
+                const response = await api(`election/${election_id}/admin/invite-voters`, { voters: voters_to_invite })
 
                 if (response.status === 201) {
                   revalidate(election_id)

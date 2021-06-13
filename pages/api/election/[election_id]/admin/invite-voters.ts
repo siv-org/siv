@@ -3,17 +3,17 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 import { firebase } from '../../../_services'
 import { send_invitation_email } from '../../../invite-voters'
-
-const { ADMIN_PASSWORD } = process.env
+import { checkJwtOwnsElection } from '../../../validate-admin-jwt'
 
 export type QueueLog = { result: string; time: Date }
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { election_id } = req.query as { election_id: string }
-  const { password, voters } = req.body
+  const { voters } = req.body
 
-  // Check password
-  if (password !== ADMIN_PASSWORD) return res.status(401).json({ error: 'Invalid Password.' })
+  // Confirm they're a valid admin that created this election
+  const jwt = await checkJwtOwnsElection(req, res, election_id)
+  if (!jwt.valid) return
 
   // Lookup election title
   const electionDoc = firebase.firestore().collection('elections').doc(election_id)
