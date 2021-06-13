@@ -128,11 +128,11 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
             style={{ margin: 0, marginLeft: 5, padding: '5px 10px' }}
             onClick={async () => {
               toggle_unlocking()
-              const response = await api(`election/${election_id}/admin/unlock?password=${localStorage.password}`)
+              const response = await api(`election/${election_id}/admin/unlock`)
               if (response.status !== 201) {
                 const json = await response.json()
-                alert(json)
                 console.error('Unlocking error:', json)
+                alert(json.error)
               }
               toggle_unlocking()
             }}
