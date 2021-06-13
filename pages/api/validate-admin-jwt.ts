@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import { cookie_name } from '../../src/admin/auth'
+import { firebase } from './_services'
 import { JWT_Payload } from './admin-check-login-code'
 
 const JWT_SECRET = 'foobar'
@@ -26,4 +27,22 @@ export function checkJwt(
 
   // Otherwise, it passes
   return { ...payload, valid: true }
+}
+
+export async function checkJwtOwnsElection(req: NextApiRequest, res: NextApiResponse, election_id: string) {
+  const jwt_status = checkJwt(req, res)
+
+  // Fail immediately if checkJwt failed
+  if (!jwt_status.valid) return jwt_status
+
+  // Grab this election info
+  const election = await firebase.firestore().collection('elections').doc(election_id).get()
+
+  // Check if this this admin is the creator of the given election
+  if (jwt_status.email !== election.data()?.creator) {
+    return { res: res.status(401).send({ error: `This user did not create election ${election_id}` }), valid: false }
+  }
+
+  // Other it passes
+  return jwt_status
 }

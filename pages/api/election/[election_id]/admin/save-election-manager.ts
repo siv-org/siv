@@ -1,14 +1,14 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import { firebase } from '../../../_services'
-import { checkJwt } from '../../../validate-admin-jwt'
+import { checkJwtOwnsElection } from '../../../validate-admin-jwt'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { election_manager } = req.body
   const { election_id } = req.query as { election_id: string }
 
-  // Confirm they're a valid admin
-  const jwt = checkJwt(req, res)
+  // Confirm they're a valid admin that created this election
+  const jwt = await checkJwtOwnsElection(req, res, election_id)
   if (!jwt.valid) return
 
   // Store election_manager in db
