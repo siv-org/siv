@@ -18,7 +18,6 @@ export const RequestEsignatures = () => {
           setUpdating(true)
           const response = await api(`election/${election_id}/admin/set-esignature-requested`, {
             esignature_requested: !esignature_requested,
-            password: localStorage.password,
           })
 
           if (response.status === 201) {

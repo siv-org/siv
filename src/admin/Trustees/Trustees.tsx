@@ -45,10 +45,7 @@ export const Trustees = () => {
                     .filter((s) => s), // Remove blanks
                 ]
 
-                const response = await api(`election/${election_id}/admin/add-trustees`, {
-                  password: localStorage.password,
-                  trustees,
-                })
+                const response = await api(`election/${election_id}/admin/add-trustees`, { trustees })
 
                 if (response.status === 201) {
                   const { threshold_public_key } = await response.json()

@@ -12,20 +12,24 @@ import { big } from '../../../../../src/crypto/types'
 import { firebase, pushover, sendEmail } from '../../../_services'
 import { generateAuthToken } from '../../../invite-voters'
 import { pusher } from '../../../pusher'
+import { checkJwtOwnsElection } from '../../../validate-admin-jwt'
 
-const { ADMIN_EMAIL, ADMIN_PASSWORD } = process.env
+const { ADMIN_EMAIL } = process.env
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Ensure env-vars are set
   if (!ADMIN_EMAIL) return res.status(501).json({ error: 'Missing process.env.ADMIN_EMAIL' })
-  if (!ADMIN_PASSWORD) return res.status(501).json({ error: 'Missing process.env.ADMIN_PASSWORD' })
 
   // This will hold all our async tasks
   const promises: Promise<unknown>[] = []
 
-  // Check for password
-  const { election_title, password, trustees } = req.body
-  if (password !== ADMIN_PASSWORD) return res.status(401).json({ error: 'Invalid Password.' })
+  const { election_id } = req.query as { election_id: string }
+
+  // Confirm they're a valid admin that created this election
+  const jwt = await checkJwtOwnsElection(req, res, election_id)
+  if (!jwt.valid) return
+
+  const { election_title, trustees } = req.body
 
   // admin@ is required
   if (!trustees.some((t: string) => t === ADMIN_EMAIL))
@@ -36,7 +40,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const safe_prime = mapValues(safe_prime_bigs, (v) => v.toString())
 
   // Update election
-  const { election_id } = req.query as { election_id: string }
   const election = firebase.firestore().collection('elections').doc(election_id)
   await election.update({ ...safe_prime, t: trustees.length })
 

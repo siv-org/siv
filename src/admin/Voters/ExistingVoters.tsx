@@ -52,7 +52,7 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
     if (pending_invites) {
       const interval = setInterval(() => {
         console.log('Checking pending invites...')
-        api(`election/${election_id}/admin/check-invite-status?password=${localStorage.password}`)
+        api(`election/${election_id}/admin/check-invite-status`)
           .then((response) => response.json())
           .then(({ num_events }) => {
             if (num_events !== last_num_events) {
@@ -93,10 +93,7 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
               }, [])
 
               try {
-                const response = await api(`election/${election_id}/admin/invite-voters`, {
-                  password: localStorage.password,
-                  voters: voters_to_invite,
-                })
+                const response = await api(`election/${election_id}/admin/invite-voters`, { voters: voters_to_invite })
 
                 if (response.status === 201) {
                   revalidate(election_id)
@@ -131,11 +128,11 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
             style={{ margin: 0, marginLeft: 5, padding: '5px 10px' }}
             onClick={async () => {
               toggle_unlocking()
-              const response = await api(`election/${election_id}/admin/unlock?password=${localStorage.password}`)
+              const response = await api(`election/${election_id}/admin/unlock`)
               if (response.status !== 201) {
                 const json = await response.json()
-                alert(json)
                 console.error('Unlocking error:', json)
+                alert(json.error)
               }
               toggle_unlocking()
             }}
@@ -207,7 +204,6 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
                   if (confirm(`Do you want to approve all ${num_voted} signatures?`)) {
                     api(`election/${election_id}/admin/review-signature`, {
                       emails: shown_voters.filter(({ has_voted }) => has_voted).map((v) => v.email),
-                      password: localStorage.password,
                       review: 'approve',
                     })
                   }
@@ -262,7 +258,6 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
                           const response = await api(`election/${election_id}/admin/edit-email`, {
                             new_email,
                             old_email: email,
-                            password: localStorage.password,
                           })
 
                           if (response.status === 201) {

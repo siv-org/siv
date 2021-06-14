@@ -1,67 +1,98 @@
+import { UserOutlined } from '@ant-design/icons'
 import Link from 'next/link'
 
-export const HeaderBar = (): JSX.Element => (
-  <div className="container">
-    <div>
-      <Link href="/">
-        <a className="big">Secure Internet Voting</a>
-      </Link>
-      <Link href="/protocol">
-        <a>Protocol</a>
-      </Link>
-    </div>
-    <style jsx>{`
-      .container {
-        background: rgb(1, 5, 11);
-        background: linear-gradient(90deg, #010b26 0%, #072054 100%);
+import { logout, useUser } from './auth'
 
-        color: #fff;
+export const HeaderBar = (): JSX.Element => {
+  const { user } = useUser()
+  return (
+    <div className="container">
+      <div>
+        <div className="left">
+          <Link href="/">
+            <a className="big">Secure Internet Voting</a>
+          </Link>
+          <Link href="/protocol">
+            <a>Protocol</a>
+          </Link>
+        </div>
 
-        cursor: default;
-      }
+        <div
+          className="login-status"
+          onClick={() => {
+            const pressed_ok = confirm('Do you wish to logout?')
+            if (pressed_ok) logout()
+          }}
+        >
+          <UserOutlined />
+          &nbsp; {user.name}
+        </div>
+      </div>
+      <style jsx>{`
+        .container {
+          background: rgb(1, 5, 11);
+          background: linear-gradient(90deg, #010b26 0%, #072054 100%);
 
-      .container > div {
-        max-width: 750px;
-        width: 100%;
-        margin: 0 auto;
-        padding: 1rem;
+          color: #fff;
 
-        display: flex;
-        align-items: baseline;
-      }
+          cursor: default;
+        }
 
-      .big {
-        font-size: calc(0.9vw + 0.9rem);
-        font-weight: 700;
-        color: white;
-      }
+        .container > div {
+          width: 100%;
+          margin: 0 auto;
+          padding: 1rem 3rem;
 
-      a:not(:first-child) {
-        margin-left: 3rem;
-        color: white;
-        font-size: 16px;
-        text-decoration: none;
-        font-weight: 400;
-      }
+          display: flex;
+          align-items: baseline;
 
-      a:hover {
-        text-decoration: underline;
-      }
+          justify-content: space-between;
+        }
 
-      a.big:hover {
-        text-decoration: none;
-      }
+        .big {
+          font-size: 24px;
+          font-weight: 700;
+          color: white;
+        }
 
-      @media (max-width: 480px) {
         a:not(:first-child) {
-          margin-left: 0;
-          margin-top: 0.5rem;
+          margin-left: 3rem;
+          color: white;
+          font-size: 16px;
+          text-decoration: none;
+          font-weight: 400;
         }
 
-        div {
-          flex-direction: column;
+        a:hover {
+          text-decoration: underline;
         }
-      }
-    `}</style>
-  </div>
-)
+
+        a.big:hover {
+          text-decoration: none;
+        }
+
+        @media (max-width: 480px) {
+          a:not(:first-child) {
+            margin-left: 0;
+            margin-top: 0.5rem;
+          }
+
+          div {
+            flex-direction: column;
+          }
+        }
+
+        .login-status {
+          font-size: 16px;
+          padding: 3px 10px;
+          border-radius: 4px;
+        }
+
+        .login-status:hover {
+          background: #fff2;
+          cursor: pointer;
+        }
+      `}</style>
+    </div>
+  )
+}

@@ -1,18 +1,17 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import { firebase } from '../../../_services'
-
-const { ADMIN_PASSWORD } = process.env
+import { checkJwtOwnsElection } from '../../../validate-admin-jwt'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { new_email, old_email, password } = req.body
+  const { new_email, old_email } = req.body
   if (new_email === old_email) return res.status(401).json({ error: 'new_email must be different from old_email' })
 
   const { election_id } = req.query as { election_id: string }
 
-  // Check password
-  if (!ADMIN_PASSWORD) return res.status(501).json({ error: 'Missing process.env.ADMIN_PASSWORD' })
-  if (password !== ADMIN_PASSWORD) return res.status(401).json({ error: 'Invalid Password.' })
+  // Confirm they're a valid admin that created this election
+  const jwt = await checkJwtOwnsElection(req, res, election_id)
+  if (!jwt.valid) return
 
   const votersCollection = firebase.firestore().collection('elections').doc(election_id).collection('voters')
 

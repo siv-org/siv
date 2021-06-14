@@ -1,5 +1,3 @@
-const { ADMIN_PASSWORD } = process.env
-
 import { mapValues } from 'lodash-es'
 import { NextApiRequest, NextApiResponse } from 'next'
 
@@ -10,6 +8,7 @@ import { shuffle } from '../../../../../src/crypto/shuffle'
 import { big, bigCipher, bigPubKey, toStrings } from '../../../../../src/crypto/types'
 import { firebase, pushover } from '../../../_services'
 import { pusher } from '../../../pusher'
+import { checkJwtOwnsElection } from '../../../validate-admin-jwt'
 import { ReviewLog } from './load-admin'
 
 const { ADMIN_EMAIL } = process.env
@@ -17,8 +16,11 @@ const { ADMIN_EMAIL } = process.env
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (!ADMIN_EMAIL) return res.status(501).json({ error: 'Missing process.env.ADMIN_EMAIL' })
 
-  const { election_id, password } = req.query
-  if (password !== ADMIN_PASSWORD) return res.status(401).json({ error: `Invalid Password: '${password}'` })
+  const { election_id } = req.query as { election_id: string }
+
+  // Confirm they're a valid admin that created this election
+  const jwt = await checkJwtOwnsElection(req, res, election_id)
+  if (!jwt.valid) return
 
   const electionDoc = firebase
     .firestore()

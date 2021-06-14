@@ -3,6 +3,9 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { firebase, pushover } from './_services'
 import { generateAuthToken, send_invitation_email } from './invite-voters'
 
+// DEPRECATION NOTICE (added 6/11/21): I don't think this script is necessary any more.
+// Planning to delete by August 11, 2021 if still unused.
+
 const { ADMIN_PASSWORD } = process.env
 
 // *** Script parameters ***

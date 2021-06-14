@@ -2,7 +2,7 @@ import Link from 'next/link'
 
 export const HeaderBar = (): JSX.Element => (
   <div>
-    Secure Internet Voting
+    <span>Secure Internet Voting</span>
     <Link href="/for-governments">
       <a>For Governments</a>
     </Link>
@@ -15,7 +15,9 @@ export const HeaderBar = (): JSX.Element => (
         cursor: default;
 
         display: flex;
-        align-items: baseline;
+
+        justify-content: space-between;
+        width: 100%;
 
         position: absolute;
         top: 0;
@@ -31,15 +33,23 @@ export const HeaderBar = (): JSX.Element => (
       }
 
       a {
-        margin-left: 3rem;
-        color: white;
-        font-size: 18px;
+        background: none;
+        border: 1px solid #fff;
+        border-radius: 0.4rem;
+        color: #fff;
+        display: inline-block;
+        font-weight: bold;
+        font-size: 16px;
+        padding: 0.7rem 1.2rem;
+        width: 175px;
         text-decoration: none;
-        font-weight: 400;
+        transition: 0.1s background-color linear, 0.1s color linear;
       }
 
       a:hover {
-        text-decoration: underline;
+        background-color: #fff;
+        color: #000;
+        cursor: pointer;
       }
 
       @media (max-width: 480px) {

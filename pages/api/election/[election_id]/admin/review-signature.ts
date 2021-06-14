@@ -3,15 +3,15 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 import { firebase } from '../../../_services'
 import { pusher } from '../../../pusher'
-
-const { ADMIN_PASSWORD } = process.env
+import { checkJwtOwnsElection } from '../../../validate-admin-jwt'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { election_id } = req.query as { election_id: string }
-  const { emails, password, review } = req.body
+  const { emails, review } = req.body
 
-  // Check password
-  if (password !== ADMIN_PASSWORD) return res.status(401).json({ error: 'Invalid Password.' })
+  // Confirm they're a valid admin that created this election
+  const jwt = await checkJwtOwnsElection(req, res, election_id)
+  if (!jwt.valid) return
 
   // Update voter w/ review
   await Promise.all(

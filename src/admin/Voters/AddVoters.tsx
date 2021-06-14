@@ -25,7 +25,6 @@ export const AddVoters = () => {
             onPress={async () => {
               const response = await api(`election/${election_id}/admin/add-voters`, {
                 new_voters: new_voters.split('\n').map((s) => s.trim().toLowerCase()),
-                password: localStorage.password,
               })
 
               if (response.status === 201) {

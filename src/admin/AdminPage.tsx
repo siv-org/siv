@@ -1,6 +1,7 @@
 import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
 import { ElectionLabel } from './1-Label/ElectionLabel'
+import { useLoginRequired, useUser } from './auth'
 import { BallotDesign } from './BallotDesign/BallotDesign'
 import { ElectionID } from './ElectionID'
 import { HeaderBar } from './HeaderBar'
@@ -9,8 +10,12 @@ import { useStored } from './useStored'
 import { AddVoters } from './Voters/AddVoters'
 
 export const AdminPage = (): JSX.Element => {
+  const { loading, loggedOut } = useUser()
   const { ballot_design, election_manager, election_title, threshold_public_key } = useStored()
 
+  useLoginRequired(loggedOut)
+
+  if (loading || loggedOut) return <p style={{ fontSize: 21, padding: '1rem' }}>Loading...</p>
   return (
     <>
       <Head title="Create new election" />
