@@ -93,3 +93,28 @@ export function bigs_to_strs(o: unknown | unknown[] | Record<string, unknown>): 
   }
   return o
 }
+
+export function to_bigs(o: unknown | unknown[] | Record<string, unknown>): unknown {
+  if (typeof o === 'object') {
+    if (o === null) {
+      throw new TypeError('No support for `null`')
+    }
+    if (Array.isArray(o)) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+      return o.map((v) => {
+        if (typeof v === 'string' || typeof v === 'number') return big(v)
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+        return to_bigs(v)
+      })
+    }
+
+    const returnValue: Record<string, unknown> = {}
+    Object.entries(o).forEach(([k, v]) => {
+      if (typeof v === 'string' || typeof v === 'number') returnValue[k] = big(v)
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      else returnValue[k] = to_bigs(v)
+    })
+    return returnValue
+  }
+  return o
+}

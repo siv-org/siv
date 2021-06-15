@@ -1,11 +1,13 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { LoadingOutlined } from '@ant-design/icons'
 import bluebird from 'bluebird'
 import { mapValues } from 'lodash-es'
 import { Fragment, useEffect, useState } from 'react'
 
 import { api } from '../../api-helper'
 import { shuffle } from '../../crypto/shuffle'
-import { bigCipher, bigPubKey, bigs_to_strs } from '../../crypto/types'
+import { Shuffle_Proof, verify_shuffle_proof } from '../../crypto/shuffle-proof'
+import { bigCipher, bigPubKey, bigs_to_strs, to_bigs } from '../../crypto/types'
 import { Shuffled, StateAndDispatch } from '../trustee-state'
 import { YouLabel } from '../YouLabel'
 
@@ -65,7 +67,7 @@ export const VotesToShuffle = ({ state }: StateAndDispatch) => {
                   >
                     {proofs_shown[email] ? '- Hide' : '+ Show'}
                   </a>
-                  ) Validating...
+                  ) <ProofValidation {...{ shuffled }} />
                 </i>
                 {proofs_shown[email] && <ShuffleProof {...{ shuffled }} />}
               </>
@@ -172,3 +174,31 @@ const ShuffleProof = ({ shuffled }: { shuffled: Shuffled }) => (
     `}</style>
   </>
 )
+
+const ProofValidation = ({ shuffled }: { shuffled: Shuffled }) => {
+  type ValidationState = 'validating' | 'valid' | 'invalid'
+
+  const [state, setState] = useState<ValidationState>('validating')
+
+  useEffect(() => {
+    const is_valid = Object.keys(shuffled).every((column) =>
+      verify_shuffle_proof(to_bigs(shuffled[column].proof) as Shuffle_Proof),
+    )
+
+    setState(is_valid ? 'valid' : 'invalid')
+  }, [])
+
+  return (
+    <>
+      {state === 'validating' && (
+        <>
+          &nbsp;
+          <LoadingOutlined />
+          &nbsp;&nbsp; Validating...
+        </>
+      )}
+      {state === 'valid' && '  ✅ Validated'}
+      {state === 'invalid' && '  ❌ Invalid!'}
+    </>
+  )
+}
