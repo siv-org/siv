@@ -67,3 +67,29 @@ export const bigPubKey = (obj: { [P in keyof Public_Key]: string | number }) =>
 /** Converts an object of bigs to strings */
 export const toStrings = (object: Cipher_Text | Public_Key) =>
   JSON.stringify(mapValues(object, (v: Big) => v.toString()))
+
+/** Recursively converts deep objects of Bigs to strings */
+export function bigs_to_strs(o: unknown | unknown[] | Record<string, unknown>): unknown {
+  if (typeof o === 'object') {
+    if (o === null) {
+      throw new TypeError('No support for `null`')
+    }
+    if (Array.isArray(o)) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+      return o.map((v) => {
+        if (v instanceof Big) return v.toString()
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+        return bigs_to_strs(v)
+      })
+    }
+
+    const returnValue: Record<string, unknown> = {}
+    Object.entries(o).forEach(([k, v]) => {
+      if (v instanceof Big) returnValue[k] = v.toString()
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      else returnValue[k] = bigs_to_strs(v)
+    })
+    return returnValue
+  }
+  return o
+}

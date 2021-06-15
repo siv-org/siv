@@ -17,7 +17,7 @@ type Simple_Shuffle_Proof = {
   parameters: Parameters
 }
 
-type Shuffle_Proof = {
+export type Shuffle_Proof = {
   As: Big[]
   Cs: Big[]
   Ds: Big[]
@@ -28,7 +28,7 @@ type Shuffle_Proof = {
   Ws: Big[]
   inputs: SequencesOfPairs
   outputs: SequencesOfPairs
-  parameters: Parameters
+  parameters: ParametersWithH
   sigmas: Big[]
   simple_shuffle_proof: Simple_Shuffle_Proof
   tau: Big
@@ -36,9 +36,12 @@ type Shuffle_Proof = {
 
 type Parameters = {
   g: Big
-  h?: Big // Public_Threshold_Key aka Encryption_Address
   p: Big // Safe Prime
   q: Big // Sophie-Germain Prime
+}
+
+type ParametersWithH = Parameters & {
+  h: Big // Public_Threshold_Key aka Encryption_Address
 }
 
 export async function generate_shuffle_proof(
@@ -46,7 +49,7 @@ export async function generate_shuffle_proof(
   outputs: SequencesOfPairs,
   reencrypts: Big[],
   permutes: number[],
-  { g, h, p, q }: Parameters,
+  { g, h, p, q }: ParametersWithH,
 ): Promise<Shuffle_Proof> {
   // All 4 input arrays need the same length
   const { length } = inputs
@@ -137,35 +140,41 @@ export async function generate_shuffle_proof(
   }
 }
 
-export async function verify_shuffle_proof({
-  As,
-  Cs,
-  Ds,
-  Gamma,
-  Lambda1,
-  Lambda2,
-  Us,
-  Ws,
-  inputs,
-  outputs,
-  parameters,
-  sigmas,
-  simple_shuffle_proof,
-  tau,
-}: Shuffle_Proof): Promise<boolean> {
+export async function verify_shuffle_proof(
+  {
+    As,
+    Cs,
+    Ds,
+    Gamma,
+    Lambda1,
+    Lambda2,
+    Us,
+    Ws,
+    inputs,
+    outputs,
+    parameters,
+    sigmas,
+    simple_shuffle_proof,
+    tau,
+  }: Shuffle_Proof,
+  { debug } = { debug: false },
+): Promise<boolean> {
+  const log = debug ? console.log : () => {}
   const { g, h, p, q } = parameters
 
   // Recalculate Deterministic PRNG values
   const rhos = await prng.rhos(As, Cs, Us, Ws, Gamma, Lambda1, Lambda2, q)
+  log(`rhos = ${rhos.join(', ')}`)
   const lambda = await prng.lambda(Ds, q)
+  log(`lambda = ${lambda}`)
 
   const Bs = rhos.map((rho, i) => g.modPow(rho, p).multiply(Us[i].modInverse(p)).mod(p))
 
   const Rs = As.map((A, i) => A.multiply(Bs[i].modPow(lambda, p)).mod(p))
   const Ss = Cs.map((C, i) => C.multiply(Ds[i].modPow(lambda, p)).mod(p))
 
-  // console.log(`Rs = ${Rs.join(', ')}`)
-  // console.log(`Ss = ${Ss.join(', ')}`)
+  log(`Rs = ${Rs.join(', ')}`)
+  log(`Ss = ${Ss.join(', ')}`)
 
   // Check all the simple_shuffle_proof values match
   if (!p.equals(simple_shuffle_proof.parameters.p)) return false
@@ -176,9 +185,11 @@ export async function verify_shuffle_proof({
   if (Ss.length !== simple_shuffle_proof.Ys.length) return false
   if (!Rs.every((r, i) => r.equals(simple_shuffle_proof.Xs[i]))) return false
   if (!Ss.every((S, i) => S.equals(simple_shuffle_proof.Ys[i]))) return false
+  log('all simple_shuffle_proof values match')
 
   const is_simple_shuffle_proof_valid = await verify_simple_shuffle_proof(simple_shuffle_proof)
   if (!is_simple_shuffle_proof_valid) return false
+  log('simple_shuffle_proof is valid')
 
   const Phi1 = outputs.reduce(
     (accum, output, i) =>
@@ -207,30 +218,30 @@ export async function verify_shuffle_proof({
     big(1),
   )
 
-  // console.log('more checks..')
+  // Sigma equality checks
   if (
     !sigmas.every((sigma, i) => {
       const left = Gamma.modPow(sigma, p)
       const right = Ws[i].multiply(Ds[i]).mod(p)
-      // console.log(`${left} ==? ${right}`)
+      log(`Sigma ${i}: ${left} ==? ${right}`)
       return left.equals(right)
     })
   ) {
     return false
   }
 
-  // console.log('even more checks..')
+  // Lambda equality checks
   {
     const left = Lambda1.multiply(g.modPow(tau, p)).mod(p)
     const right = Phi1
-    // console.log(`${left} ==? ${right}`)
+    log(`Lambda1: ${left} ==? ${right}`)
     if (!left.equals(right)) return false
   }
 
   {
     const left = Lambda2.multiply(h.modPow(tau, p)).mod(p)
     const right = Phi2
-    // console.log(`${left} ==? ${right}`)
+    log(`Lambda2: ${left} ==? ${right}`)
     if (!left.equals(right)) return false
   }
 

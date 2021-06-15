@@ -1,8 +1,8 @@
-// import { Crypto } from '@peculiar/webcrypto'
+import { Crypto } from '@peculiar/webcrypto'
 
 import { Big, big } from './types'
 
-// const crypto = new Crypto()
+const crypto = new Crypto()
 
 /**
  * Deterministically generate a pseudorandom integer less than `max`, from a given `seed` string.

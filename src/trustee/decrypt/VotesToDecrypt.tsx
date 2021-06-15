@@ -12,7 +12,7 @@ export const VotesToDecrypt = ({ state }: StateAndDispatch) => {
   const { own_index, trustees = [], private_keyshare } = state
 
   const last_trustees_shuffled = trustees[trustees.length - 1]?.shuffled || {}
-  const num_last_shuffled = Object.values(last_trustees_shuffled)[0]?.length
+  const num_last_shuffled = Object.values(last_trustees_shuffled)[0]?.shuffled.length
   const num_we_decrypted = Object.values(trustees[own_index]?.partials || {})[0]?.length || 0
 
   useEffect(() => {

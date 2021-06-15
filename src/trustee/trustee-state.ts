@@ -6,7 +6,7 @@ import { useLocalStorageReducer } from '../vote/useLocalStorage'
 import { diff } from './diff-objects'
 
 // Define our types
-export type Shuffled = Record<string, string[]>
+export type Shuffled = Record<string, { proof: unknown; shuffled: { encrypted: string; unlock: string }[] }>
 
 export type Trustee = {
   commitments: string[]

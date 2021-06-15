@@ -234,7 +234,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       // Have all trustees now uploaded partials for the last shuffled list?
       const last_shuffled = trustees[trustees.length - 1].shuffled as Shuffled
       const columns = Object.keys(last_shuffled)
-      const last_shuffled_length = last_shuffled[columns[0]].length
+      const last_shuffled_length = last_shuffled[columns[0]].shuffled.length
       if (trustees.every((t) => t.partials && t.partials[columns[0]].length >= last_shuffled_length)) {
         // Ok, ready to decrypt...
 
