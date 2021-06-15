@@ -47,43 +47,47 @@ export const AcceptedVotes = ({
         be shuffled and then unlocked.
       </p>
       <table>
-        <tr>
-          <td rowSpan={2}></td>
-          {esignature_requested && <th rowSpan={2}>signature approved</th>}
-          <th rowSpan={2}>auth</th>
-          {columns.map((c) => (
-            <th colSpan={2} key={c}>
-              {c}
-            </th>
-          ))}
-        </tr>
-
-        <tr className="subheading">
-          {columns.map((c) => (
-            <Fragment key={c}>
-              <th>encrypted</th>
-              <th>lock</th>
-            </Fragment>
-          ))}
-        </tr>
-
-        {votes.map((vote, index) => (
-          <tr key={index}>
-            <td>{index + 1}.</td>
-            {esignature_requested && <td className="approved">{vote.signature_approved ? '✓' : ''}</td>}
-            <td>{vote.auth}</td>
-            {columns.map((key) => {
-              if (key !== 'auth') {
-                return (
-                  <Fragment key={key}>
-                    <td>{vote[key]?.encrypted}</td>
-                    <td>{vote[key]?.unlock}</td>
-                  </Fragment>
-                )
-              }
-            })}
+        <thead>
+          <tr>
+            <td rowSpan={2}></td>
+            {esignature_requested && <th rowSpan={2}>signature approved</th>}
+            <th rowSpan={2}>auth</th>
+            {columns.map((c) => (
+              <th colSpan={2} key={c}>
+                {c}
+              </th>
+            ))}
           </tr>
-        ))}
+
+          <tr className="subheading">
+            {columns.map((c) => (
+              <Fragment key={c}>
+                <th>encrypted</th>
+                <th>lock</th>
+              </Fragment>
+            ))}
+          </tr>
+        </thead>
+
+        <tbody>
+          {votes.map((vote, index) => (
+            <tr key={index}>
+              <td>{index + 1}.</td>
+              {esignature_requested && <td className="approved">{vote.signature_approved ? '✓' : ''}</td>}
+              <td>{vote.auth}</td>
+              {columns.map((key) => {
+                if (key !== 'auth') {
+                  return (
+                    <Fragment key={key}>
+                      <td>{vote[key]?.encrypted}</td>
+                      <td>{vote[key]?.unlock}</td>
+                    </Fragment>
+                  )
+                }
+              })}
+            </tr>
+          ))}
+        </tbody>
       </table>
       <style jsx>{`
         h3 {
