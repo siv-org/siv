@@ -1,7 +1,7 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import bluebird from 'bluebird'
 import { mapValues } from 'lodash-es'
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { Fragment, useEffect } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 
 import { api } from '../../api-helper'
 import { shuffle } from '../../crypto/shuffle'
@@ -11,6 +11,7 @@ import { YouLabel } from '../YouLabel'
 
 export const VotesToShuffle = ({ state }: StateAndDispatch) => {
   const { own_index, trustees = [], parameters, threshold_public_key } = state
+  const [proofs_shown, set_proofs_shown] = useState<Record<string, boolean>>({})
   const { g, p } = parameters!
 
   const previous_trustees_shuffled = trustees[own_index - 1]?.shuffled || {}
@@ -53,8 +54,22 @@ export const VotesToShuffle = ({ state }: StateAndDispatch) => {
           <li key={email}>
             {email}
             {you && <YouLabel />} shuffled {!shuffled ? '0' : Object.values(shuffled)[0].shuffled.length} votes.
-            {shuffled && <ShuffledVotesTable {...{ shuffled }} />}
-            {shuffled && <i>They provided a ZK Proof of a Valid Shuffle. Validating...</i>}
+            {shuffled && (
+              <>
+                <ShuffledVotesTable {...{ shuffled }} />
+                <i>
+                  They provided a ZK Proof of a Valid Shuffle. (
+                  <a
+                    className="show-proof"
+                    onClick={() => set_proofs_shown({ ...proofs_shown, [email]: !proofs_shown[email] })}
+                  >
+                    {proofs_shown[email] ? '- Hide' : '+ Show'}
+                  </a>
+                  ) Validating...
+                </i>
+                {proofs_shown[email] && <ShuffleProof {...{ shuffled }} />}
+              </>
+            )}
           </li>
         ))}
       </ol>
@@ -65,6 +80,10 @@ export const VotesToShuffle = ({ state }: StateAndDispatch) => {
 
         i {
           font-size: 11px;
+        }
+
+        .show-proof {
+          cursor: pointer;
         }
       `}</style>
     </>
@@ -136,3 +155,20 @@ const ShuffledVotesTable = ({ shuffled }: { shuffled: Shuffled }): JSX.Element =
     </table>
   )
 }
+
+const ShuffleProof = ({ shuffled }: { shuffled: Shuffled }) => (
+  <>
+    {Object.keys(shuffled).map((column) => (
+      <>
+        <h4>{column}</h4>
+        <code>{JSON.stringify(shuffled[column].proof)}</code>
+      </>
+    ))}
+    <style jsx>{`
+      code {
+        white-space: pre;
+        font-size: 13px;
+      }
+    `}</style>
+  </>
+)
