@@ -42,8 +42,9 @@ export const VotesToShuffle = ({ state }: StateAndDispatch) => {
 
   useEffect(() => {
     // If trustee before us has shuffled more than us,
-    // we should shuffle the list they provided.
-    if (num_prev_shuffled > num_we_shuffled) {
+    // AND their previous shuffle includes a valid ZK Proof,
+    // THEN: we should shuffle the list they provided.
+    if (num_prev_shuffled > num_we_shuffled && isProofValid(previous_trustees_shuffled)) {
       shuffleFromPrevious()
     }
   }, [num_prev_shuffled])
@@ -181,11 +182,7 @@ const ProofValidation = ({ shuffled }: { shuffled: Shuffled }) => {
   const [state, setState] = useState<ValidationState>('validating')
 
   useEffect(() => {
-    const is_valid = Object.keys(shuffled).every((column) =>
-      verify_shuffle_proof(to_bigs(shuffled[column].proof) as Shuffle_Proof),
-    )
-
-    setState(is_valid ? 'valid' : 'invalid')
+    setState(isProofValid(shuffled) ? 'valid' : 'invalid')
   }, [])
 
   return (
@@ -201,4 +198,8 @@ const ProofValidation = ({ shuffled }: { shuffled: Shuffled }) => {
       {state === 'invalid' && '  ❌ Invalid!'}
     </>
   )
+}
+
+export function isProofValid(shuffled: Shuffled): boolean {
+  return Object.keys(shuffled).every((column) => verify_shuffle_proof(to_bigs(shuffled[column].proof) as Shuffle_Proof))
 }

@@ -7,6 +7,7 @@ import { big } from '../../crypto/types'
 import { mapValues } from '../../utils'
 import { Shuffled, StateAndDispatch, getParameters } from '../trustee-state'
 import { YouLabel } from '../YouLabel'
+import { isProofValid } from './VotesToShuffle'
 
 export const VotesToDecrypt = ({ state }: StateAndDispatch) => {
   const { own_index, trustees = [], private_keyshare } = state
@@ -17,8 +18,9 @@ export const VotesToDecrypt = ({ state }: StateAndDispatch) => {
 
   useEffect(() => {
     // If the last trustee has shuffled more than we've decrypted,
+    // AND provided valid ZK Proof,
     // we should decrypt their final shuffled list.
-    if (num_last_shuffled > num_we_decrypted) {
+    if (num_last_shuffled > num_we_decrypted && isProofValid(last_trustees_shuffled)) {
       console.log(
         `Last trusteee has shuffled: ${num_last_shuffled}, We decrypted: ${num_we_decrypted}. Beginning partial decryption...`,
       )
