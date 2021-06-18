@@ -208,11 +208,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       // If this is the last trustee, we can begin partially decrypting
       if (trustee.index === parameters.t - 1) {
         // Partially decrypt each item in every list
-        const partials = mapValues(body.shuffled as Shuffled, (list) =>
-          (list as string[]).map((cipher_string) => {
-            const { unlock } = JSON.parse(cipher_string)
-            return partial_decrypt(big(unlock), big(private_keyshare), big_parameters).toString()
+        const partials = Object.keys(body.shuffled).reduce(
+          (acc: Record<string, string[]>, column) => ({
+            ...acc,
+            [column]: (body.shuffled as Shuffled)[column].shuffled.map(({ unlock }) =>
+              partial_decrypt(big(unlock), big(private_keyshare), big_parameters).toString(),
+            ),
           }),
+          {},
         )
 
         // Store partials
