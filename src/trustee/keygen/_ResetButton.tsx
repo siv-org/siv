@@ -1,10 +1,7 @@
 import { api } from '../../api-helper'
 import { State } from '../trustee-state'
 export function ResetButton({ state }: { state: State }) {
-  // Only show for David
-  if (!['@dsernst.com', 'david@secureinternetvoting.org'].includes(state.own_email)) {
-    return <></>
-  }
+  if (!showResetButton(state)) return <></>
 
   return (
     <div
@@ -42,4 +39,9 @@ export function ResetButton({ state }: { state: State }) {
       </style>
     </div>
   )
+}
+
+// Only show for David
+export function showResetButton(state: State): boolean {
+  return 'david@secureinternetvoting.org' === state.own_email || state.own_email.includes('@dsernst.com')
 }

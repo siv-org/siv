@@ -1,10 +1,8 @@
 import { api } from '../../api-helper'
+import { showResetButton } from '../keygen/_ResetButton'
 import { State } from '../trustee-state'
 export function ResetButton({ state }: { state: State }) {
-  // Only show for David
-  if (!['@dsernst.com', 'david@secureinternetvoting.org'].includes(state.own_email)) {
-    return <></>
-  }
+  if (!showResetButton(state)) return <></>
 
   return (
     <div
