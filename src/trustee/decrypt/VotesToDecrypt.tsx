@@ -4,8 +4,7 @@ import { Fragment, useEffect } from 'react'
 import { api } from '../../api-helper'
 import { partial_decrypt } from '../../crypto/threshold-keygen'
 import { big } from '../../crypto/types'
-import { mapValues } from '../../utils'
-import { Shuffled, StateAndDispatch, getParameters } from '../trustee-state'
+import { StateAndDispatch, getParameters } from '../trustee-state'
 import { YouLabel } from '../YouLabel'
 import { isProofValid } from './VotesToShuffle'
 
@@ -26,11 +25,14 @@ export const VotesToDecrypt = ({ state }: StateAndDispatch) => {
       )
 
       // Partially decrypt each item in every list
-      const partials = mapValues(last_trustees_shuffled as Shuffled, (list) =>
-        (list as string[]).map((cipher_string) => {
-          const { unlock } = JSON.parse(cipher_string)
-          return partial_decrypt(big(unlock), big(private_keyshare!), getParameters(state)).toString()
+      const partials = Object.keys(last_trustees_shuffled).reduce(
+        (acc: Record<string, string[]>, column) => ({
+          ...acc,
+          [column]: last_trustees_shuffled[column].shuffled.map(({ unlock }) =>
+            partial_decrypt(big(unlock), big(private_keyshare!), getParameters(state)).toString(),
+          ),
         }),
+        {},
       )
 
       // Tell admin our new partials list
