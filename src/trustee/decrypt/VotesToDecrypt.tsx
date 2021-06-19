@@ -143,7 +143,9 @@ export const VotesToDecrypt = ({ state }: StateAndDispatch) => {
                 {you && <YouLabel />} partially decrypted {!partials ? 0 : Object.values(partials)[0].length} votes.
               </span>
 
-              {partials && <ValidationSummary {...{ email, partials, proofs_shown, set_proofs_shown }} />}
+              {partials && (
+                <ValidationSummary {...{ email, partials, proofs_shown, set_proofs_shown, validated_proofs }} />
+              )}
             </div>
 
             {partials && (
@@ -197,7 +199,7 @@ const PartialsTable = ({
                   <td>
                     <div>
                       {partials[key][index].partial}{' '}
-                      <span>{validated === null ? <LoadingOutlined /> : validated ? '✅' : '❌'}</span>
+                      <span>{validated === null ? <LoadingOutlined /> : validated ? '' : '❌'}</span>
                     </div>
                   </td>
                 </Fragment>
@@ -266,14 +268,21 @@ const ValidationSummary = ({
   partials,
   proofs_shown,
   set_proofs_shown,
+  validated_proofs,
 }: {
   email: string
   partials: Partials
   proofs_shown: Record<string, boolean>
   set_proofs_shown: Dispatch<SetStateAction<Record<string, boolean>>>
+  validated_proofs: Validations_Table
 }) => {
   const num_votes_decrypted = !partials ? 0 : Object.values(partials)[0].length
-  const num_partials_passed = 0
+  const num_partials_passed = !validated_proofs[email]
+    ? 0
+    : Object.values(validated_proofs[email]).reduce(
+        (sum, list) => sum + list.reduce((listSum, item) => listSum + Number(item), 0),
+        0,
+      )
   const num_total_partials = !partials ? 0 : num_votes_decrypted * Object.keys(partials).length
 
   return (
