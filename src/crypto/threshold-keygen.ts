@@ -115,6 +115,33 @@ export const combine_partials = (partial_decrypts: Big[], { p, q }: Parameters) 
   return product_bigs(partials_to_lambdas, p)
 }
 
+/** Each keyshare holder has their own private key...
+ *  In order to validate Partial Decryption Proofs,
+ *  the verifier requires that trustee's "g_to_trustees_keyshare" value.
+ *
+ *  This can be calculated publicly by anyone,
+ *  just via the Public Broadcasts Commitments.
+ *
+ *  e.g. for "received_shares" rs_1, rs_2, rs_3
+ *  their private keyshare is the sum: ks = rs_1 + rs_2 + rs_3.
+ *
+ *  Anyone can calculate each g^rs_1, g^rs_2, g^rs_3
+ *  as Product( c from 0 to t-1 ){ Ac ^receivers_index ^c % p }
+ *  as in is_received_share_valid() func.
+ *
+ *  Thus anyone can calculate:
+ *  g^ks = g ^ (rs_1 + rs_2 + rs_3) = g^rs_1 * g^rs_2 * g^rs_3
+ */
+export function compute_g_to_keyshare(receivers_index_j: number, broadcasts: string[][], { p }: Parameters) {
+  const g_to_rss = broadcasts.map((broadcast) => {
+    const multiplicands = broadcast.map((b, k) => big(b).modPow(big(receivers_index_j).pow(k), p))
+
+    return product_bigs(multiplicands, p)
+  })
+
+  return product_bigs(g_to_rss, p)
+}
+
 /** Creates non-interactive Zero Knowledge proof of a valid partial decryption
  *  by proving these two logs are equivalent:
  *
@@ -137,10 +164,10 @@ export async function generate_partial_decryption_proof(
   // Prover picks a secret random integer less than q
   const secret_r = pickRandomInteger(q)
 
-  const g_to_trustees_secret = g.modPow(trustees_secret, p)
+  const g_to_trustees_keyshare = g.modPow(trustees_secret, p)
 
   // Calculates Verifier's deterministic random number (Fiat-Shamir technique):
-  const public_r = await integer_from_seed(`${ciphertext_unlock} ${g_to_trustees_secret}`, q)
+  const public_r = await integer_from_seed(`${ciphertext_unlock} ${g_to_trustees_keyshare}`, q)
 
   // Prover creates and sends:
   const obfuscated_trustee_secret = secret_r.add(public_r.multiply(trustees_secret))
@@ -160,7 +187,8 @@ export async function generate_partial_decryption_proof(
  *  which are both equal to trustees_secret
  *
  *  @param ciphertext_unlock c[0] of the encrypted ciphertext (g ^ randomizer)
- *  @param trustees_secret
+ *  @param g_to_trustees_keyshare - See `compute_g_to_keyshare()` func above
+ *  @param partial_decryption - partial decryption to prove is valid
  *  @param {g, p, q} - Safe prime parameters
  *
  *  Based on Chaum-Pedersen ZK Proof of Discrete Logs
@@ -168,7 +196,7 @@ export async function generate_partial_decryption_proof(
  */
 export async function verify_partial_decryption_proof(
   ciphertext_unlock: Big,
-  g_to_trustees_secret: Big,
+  g_to_trustees_keyshare: Big,
   partial_decryption: Big,
   {
     g_to_secret_r,
@@ -178,13 +206,13 @@ export async function verify_partial_decryption_proof(
   { g, p, q }: Parameters,
 ): Promise<boolean> {
   // Recalculate deterministic verifier nonce
-  const public_r = await integer_from_seed(`${ciphertext_unlock} ${g_to_trustees_secret}`, q)
+  const public_r = await integer_from_seed(`${ciphertext_unlock} ${g_to_trustees_keyshare}`, q)
 
   // Verifier checks:
   // g ^ obfuscated_trustee_secret
   const left_side_1 = g.modPow(obfuscated_trustee_secret, p)
   //   == g_to_secret_r * (g ^ trustee_secret ^ public_r)
-  const right_side_1 = g_to_secret_r.multiply(g_to_trustees_secret.modPow(public_r, p)).mod(p)
+  const right_side_1 = g_to_secret_r.multiply(g_to_trustees_keyshare.modPow(public_r, p)).mod(p)
   const check1 = left_side_1.equals(right_side_1)
 
   // And Verifier checks:

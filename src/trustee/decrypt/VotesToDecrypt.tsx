@@ -6,6 +6,7 @@ import { Dispatch, Fragment, SetStateAction, useEffect, useReducer, useState } f
 
 import { api } from '../../api-helper'
 import {
+  compute_g_to_keyshare,
   generate_partial_decryption_proof,
   partial_decrypt,
   verify_partial_decryption_proof,
@@ -54,8 +55,9 @@ export const VotesToDecrypt = ({ state }: StateAndDispatch) => {
     {},
   )
   const num_partials_from_trustees = trustees.map(({ partials = {} }) => Object.values(partials)[0].length)
+  const all_broadcasts = trustees.map(({ commitments }) => commitments)
   useEffect(() => {
-    trustees.forEach(({ email, partials = {} }) => {
+    trustees.forEach(({ email, partials = {} }, index) => {
       const num_partials = Object.values(partials)[0].length
 
       // Stop if we already checked this trustee
@@ -65,8 +67,7 @@ export const VotesToDecrypt = ({ state }: StateAndDispatch) => {
       const trustee_validations = mapValues(partials, (column) => column.map(() => null))
       set_validated_proofs({ email, payload: trustee_validations, type: 'RESET' })
 
-      // TODO: Fix me!!!
-      const g_to_trustees_secret = '7'
+      const g_to_trustees_keyshare = compute_g_to_keyshare(index + 1, all_broadcasts, parameters)
 
       // Begin (async) validating each proof...
       Object.keys(trustee_validations).forEach((column) => {
@@ -74,7 +75,7 @@ export const VotesToDecrypt = ({ state }: StateAndDispatch) => {
           const { partial, proof } = partials[column][voteIndex]
           verify_partial_decryption_proof(
             big(last_trustees_shuffled[column].shuffled[voteIndex].unlock),
-            big(g_to_trustees_secret),
+            big(g_to_trustees_keyshare),
             big(partial),
             to_bigs(proof) as { g_to_secret_r: Big; obfuscated_trustee_secret: Big; unlock_to_secret_r: Big },
             parameters,
