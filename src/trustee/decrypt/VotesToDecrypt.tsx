@@ -2,11 +2,15 @@
 import { LoadingOutlined } from '@ant-design/icons'
 import bluebird from 'bluebird'
 import { mapValues } from 'lodash-es'
-import { Dispatch, Fragment, SetStateAction, useEffect, useState } from 'react'
+import { Dispatch, Fragment, SetStateAction, useEffect, useReducer, useState } from 'react'
 
 import { api } from '../../api-helper'
-import { generate_partial_decryption_proof, partial_decrypt } from '../../crypto/threshold-keygen'
-import { big, bigs_to_strs } from '../../crypto/types'
+import {
+  generate_partial_decryption_proof,
+  partial_decrypt,
+  verify_partial_decryption_proof,
+} from '../../crypto/threshold-keygen'
+import { Big, big, bigs_to_strs, to_bigs } from '../../crypto/types'
 import { Partial, StateAndDispatch, getParameters } from '../trustee-state'
 import { YouLabel } from '../YouLabel'
 import { isProofValid as isShuffleProofValid } from './VotesToShuffle'
@@ -31,18 +35,54 @@ export const VotesToDecrypt = ({ state }: StateAndDispatch) => {
     },
   }
   */
-  const [validated_proofs, set_validated_proofs] = useState<Validations_Table>({})
+  const [validated_proofs, set_validated_proofs] = useReducer(
+    (
+      prev: Validations_Table,
+      action:
+        | { email: string; payload: Record<string, null[]>; type: 'RESET' }
+        | { column: string; email: string; result: boolean; type: 'UPDATE'; voteIndex: number },
+    ): Validations_Table => {
+      if (action.type === 'RESET') return { ...prev, [action.email]: action.payload }
+      if (action.type === 'UPDATE') {
+        const update = { ...prev }
+        update[action.email][action.column][action.voteIndex] = action.result
+        return update
+      }
+
+      throw new TypeError('Decryption Validation Table: Unknown Action.type')
+    },
+    {},
+  )
   const num_partials_from_trustees = trustees.map(({ partials = {} }) => Object.values(partials)[0].length)
   useEffect(() => {
     trustees.forEach(({ email, partials = {} }) => {
       const num_partials = Object.values(partials)[0].length
-      console.log(`${email} provided ${num_partials} partials`)
 
-      // Stop if we already check this trustee
-      if (validated_proofs[email] && Object.values(validated_proofs[email])[0].length === num_partials)
-        return console.log("We've already begun validating all of their decryption proofs")
+      // Stop if we already checked this trustee
+      if (validated_proofs[email] && Object.values(validated_proofs[email])[0].length === num_partials) return
 
-      set_validated_proofs({ ...validated_proofs, [email]: mapValues(partials, (column) => column.map(() => null)) })
+      console.log(`${email} provided ${num_partials} partials, validating...`)
+      const trustee_validations = mapValues(partials, (column) => column.map(() => null))
+      set_validated_proofs({ email, payload: trustee_validations, type: 'RESET' })
+
+      // TODO: Fix me!!!
+      const g_to_trustees_secret = '7'
+
+      // Begin (async) validating each proof...
+      Object.keys(trustee_validations).forEach((column) => {
+        trustee_validations[column].forEach((_, voteIndex) => {
+          const { partial, proof } = partials[column][voteIndex]
+          verify_partial_decryption_proof(
+            big(last_trustees_shuffled[column].shuffled[voteIndex].unlock),
+            big(g_to_trustees_secret),
+            big(partial),
+            to_bigs(proof) as { g_to_secret_r: Big; obfuscated_trustee_secret: Big; unlock_to_secret_r: Big },
+            parameters,
+          ).then((result) => {
+            set_validated_proofs({ column, email, result, type: 'UPDATE', voteIndex })
+          })
+        })
+      })
     })
   }, [num_partials_from_trustees])
 
@@ -102,11 +142,7 @@ export const VotesToDecrypt = ({ state }: StateAndDispatch) => {
                 {you && <YouLabel />} partially decrypted {!partials ? 0 : Object.values(partials)[0].length} votes.
               </span>
 
-              {partials && (
-                <ProofValidation
-                  {...{ email, last_trustees_shuffled, parameters, partials, proofs_shown, set_proofs_shown }}
-                />
-              )}
+              {partials && <ValidationSummary {...{ email, partials, proofs_shown, set_proofs_shown }} />}
             </div>
 
             {partials && (
@@ -137,6 +173,7 @@ const PartialsTable = ({
   validated_proofs: Validations_Table
 }): JSX.Element => {
   const trustees_validations = validated_proofs[email]
+  if (!trustees_validations) return <></>
   const columns = Object.keys(partials)
   return (
     <table>
@@ -153,7 +190,7 @@ const PartialsTable = ({
           <tr key={index}>
             <td>{index + 1}.</td>
             {columns.map((key) => {
-              const validated = (trustees_validations || {})[key][index]
+              const validated = trustees_validations[key][index]
               return (
                 <Fragment key={key}>
                   <td>
@@ -193,6 +230,7 @@ const PartialsTable = ({
           top: 1px;
           right: -16px;
           font-size: 10px;
+          opacity: 0.3;
         }
 
         th,
@@ -222,7 +260,7 @@ const DecryptionProof = ({ partials }: { partials: Partials }) => (
   </>
 )
 
-const ProofValidation = ({
+const ValidationSummary = ({
   email,
   partials,
   proofs_shown,
@@ -259,19 +297,3 @@ const ProofValidation = ({
     </i>
   )
 }
-
-// const g_to_trustees_secret = '10'
-
-// export function isProofValid(last_trustees_shuffled: Shuffled, partials: Partials, parameters: Parameters): boolean {
-//   return Object.keys(partials).every((column) =>
-//     partials[column].every((cell, rowIndex) => {
-//       return verify_partial_decryption_proof(
-//         big(last_trustees_shuffled[column].shuffled[rowIndex].unlock),
-//         big(g_to_trustees_secret),
-//         big(cell.partial),
-//         to_bigs(cell.proof) as { g_to_secret_r: Big; obfuscated_trustee_secret: Big; unlock_to_secret_r: Big },
-//         parameters,
-//       )
-//     }),
-//   )
-// }
