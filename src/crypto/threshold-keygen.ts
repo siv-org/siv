@@ -176,7 +176,7 @@ export async function verify_partial_decryption_proof(
     unlock_to_secret_r,
   }: AsyncReturnType<typeof generate_partial_decryption_proof>,
   { g, p, q }: Parameters,
-) {
+): Promise<boolean> {
   // Recalculate deterministic verifier nonce
   const public_r = await integer_from_seed(`${ciphertext_unlock} ${g_to_trustees_secret}`, q)
 
