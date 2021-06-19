@@ -7,6 +7,14 @@ import { diff } from './diff-objects'
 
 // Define our types
 export type Shuffled = Record<string, { proof: unknown; shuffled: { encrypted: string; unlock: string }[] }>
+export type Partial = {
+  partial: string
+  proof: {
+    g_to_secret_r: string
+    obfuscated_trustee_secret: string
+    unlock_to_secret_r: string
+  }
+}
 
 export type Trustee = {
   commitments: string[]
@@ -14,7 +22,7 @@ export type Trustee = {
   encrypted_pairwise_shares_for: Record<string, string>
   index: number
   partial_decryption?: string
-  partials?: Record<string, string[]>
+  partials?: Record<string, Partial[]>
   recipient_key?: string
   shuffled?: Shuffled
   verified?: Record<string, boolean>

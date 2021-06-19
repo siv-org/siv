@@ -17,8 +17,7 @@ import {
   unlock_message_with_shared_secret,
 } from '../../../../../src/crypto/threshold-keygen'
 import { big, bigCipher, bigPubKey, bigs_to_strs, toStrings } from '../../../../../src/crypto/types'
-import { Partial } from '../../../../../src/trustee/decrypt/VotesToDecrypt'
-import { Shuffled, State, Trustee } from '../../../../../src/trustee/trustee-state'
+import { Partial, Shuffled, State, Trustee } from '../../../../../src/trustee/trustee-state'
 import { mapValues } from '../../../../../src/utils'
 import { firebase } from '../../../_services'
 import { pusher } from '../../../pusher'

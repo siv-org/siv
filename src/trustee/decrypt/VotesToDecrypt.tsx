@@ -5,18 +5,9 @@ import { Fragment, useEffect } from 'react'
 import { api } from '../../api-helper'
 import { generate_partial_decryption_proof, partial_decrypt } from '../../crypto/threshold-keygen'
 import { big, bigs_to_strs } from '../../crypto/types'
-import { StateAndDispatch, getParameters } from '../trustee-state'
+import { Partial, StateAndDispatch, getParameters } from '../trustee-state'
 import { YouLabel } from '../YouLabel'
 import { isProofValid } from './VotesToShuffle'
-
-export type Partial = {
-  partial: string
-  proof: {
-    g_to_secret_r: string
-    obfuscated_trustee_secret: string
-    unlock_to_secret_r: string
-  }
-}
 
 export const VotesToDecrypt = ({ state }: StateAndDispatch) => {
   const { own_index, trustees = [], private_keyshare } = state
@@ -79,7 +70,7 @@ export const VotesToDecrypt = ({ state }: StateAndDispatch) => {
   )
 }
 
-const PartialsTable = ({ partials }: { partials: Record<string, string[]> }): JSX.Element => {
+const PartialsTable = ({ partials }: { partials: Record<string, Partial[]> }): JSX.Element => {
   const columns = Object.keys(partials)
   return (
     <table>
@@ -98,7 +89,7 @@ const PartialsTable = ({ partials }: { partials: Record<string, string[]> }): JS
             {columns.map((key) => {
               return (
                 <Fragment key={key}>
-                  <td>{partials[key][index]}</td>
+                  <td>{partials[key][index].partial}</td>
                 </Fragment>
               )
             })}
