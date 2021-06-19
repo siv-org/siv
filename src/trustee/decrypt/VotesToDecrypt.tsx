@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { LoadingOutlined } from '@ant-design/icons'
 import bluebird from 'bluebird'
+import { mapValues } from 'lodash-es'
 import { Dispatch, Fragment, SetStateAction, useEffect, useState } from 'react'
 
 import { api } from '../../api-helper'
@@ -10,10 +12,39 @@ import { YouLabel } from '../YouLabel'
 import { isProofValid as isShuffleProofValid } from './VotesToShuffle'
 
 type Partials = Record<string, Partial[]>
+type Validations_Table = Record<string, Record<string, (boolean | null)[]>>
 
 export const VotesToDecrypt = ({ state }: StateAndDispatch) => {
   const { own_index, trustees = [], private_keyshare } = state
   const [proofs_shown, set_proofs_shown] = useState<Record<string, boolean>>({})
+
+  /* Object to track which proofs have been validated
+  KEY: null=tbd, true=valid, false=invalid
+  {
+    'admin@secureinternetvoting.org': {
+      president: [null, null, null, null],
+      mayor: [null, null, null, null]
+    },
+    'trustee_1@': {
+      president: [true, false, null, null],
+      mayor: [null, null, null, null]
+    },
+  }
+  */
+  const [validated_proofs, set_validated_proofs] = useState<Validations_Table>({})
+  const num_partials_from_trustees = trustees.map(({ partials = {} }) => Object.values(partials)[0].length)
+  useEffect(() => {
+    trustees.forEach(({ email, partials = {} }) => {
+      const num_partials = Object.values(partials)[0].length
+      console.log(`${email} provided ${num_partials} partials`)
+
+      // Stop if we already check this trustee
+      if (validated_proofs[email] && Object.values(validated_proofs[email])[0].length === num_partials)
+        return console.log("We've already begun validating all of their decryption proofs")
+
+      set_validated_proofs({ ...validated_proofs, [email]: mapValues(partials, (column) => column.map(() => null)) })
+    })
+  }, [num_partials_from_trustees])
 
   const last_trustees_shuffled = trustees[trustees.length - 1]?.shuffled || {}
   const num_last_shuffled = Object.values(last_trustees_shuffled)[0]?.shuffled.length
@@ -80,7 +111,7 @@ export const VotesToDecrypt = ({ state }: StateAndDispatch) => {
 
             {partials && (
               <>
-                <PartialsTable {...{ partials }} />
+                <PartialsTable {...{ email, partials, validated_proofs }} />
                 {proofs_shown[email] && <DecryptionProof {...{ partials }} />}
               </>
             )}
@@ -96,7 +127,16 @@ export const VotesToDecrypt = ({ state }: StateAndDispatch) => {
   )
 }
 
-const PartialsTable = ({ partials }: { partials: Partials }): JSX.Element => {
+const PartialsTable = ({
+  email,
+  partials,
+  validated_proofs,
+}: {
+  email: string
+  partials: Partials
+  validated_proofs: Validations_Table
+}): JSX.Element => {
+  const trustees_validations = validated_proofs[email]
   const columns = Object.keys(partials)
   return (
     <table>
@@ -113,9 +153,15 @@ const PartialsTable = ({ partials }: { partials: Partials }): JSX.Element => {
           <tr key={index}>
             <td>{index + 1}.</td>
             {columns.map((key) => {
+              const validated = (trustees_validations || {})[key][index]
               return (
                 <Fragment key={key}>
-                  <td>{partials[key][index].partial}</td>
+                  <td>
+                    <div>
+                      {partials[key][index].partial}{' '}
+                      <span>{validated === null ? <LoadingOutlined /> : validated ? '✅' : '❌'}</span>
+                    </div>
+                  </td>
                 </Fragment>
               )
             })}
@@ -134,8 +180,19 @@ const PartialsTable = ({ partials }: { partials: Partials }): JSX.Element => {
         td {
           border: 1px solid #ccc;
           padding: 3px 10px;
+          padding-right: 20px;
           margin: 0;
-          max-width: 360px;
+          max-width: 367px;
+        }
+        td div {
+          position: relative;
+        }
+
+        td span {
+          position: absolute;
+          top: 1px;
+          right: -16px;
+          font-size: 10px;
         }
 
         th,
