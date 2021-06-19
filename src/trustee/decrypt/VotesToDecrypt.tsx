@@ -1,16 +1,20 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { LoadingOutlined } from '@ant-design/icons'
 import bluebird from 'bluebird'
-import { Fragment, useEffect } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 
 import { api } from '../../api-helper'
 import { generate_partial_decryption_proof, partial_decrypt } from '../../crypto/threshold-keygen'
 import { big, bigs_to_strs } from '../../crypto/types'
 import { Partial, StateAndDispatch, getParameters } from '../trustee-state'
 import { YouLabel } from '../YouLabel'
-import { isProofValid } from './VotesToShuffle'
+import { isProofValid as isShuffleProofValid } from './VotesToShuffle'
+
+type Partials = Record<string, Partial[]>
 
 export const VotesToDecrypt = ({ state }: StateAndDispatch) => {
   const { own_index, trustees = [], private_keyshare } = state
+  const [proofs_shown, set_proofs_shown] = useState<Record<string, boolean>>({})
 
   const last_trustees_shuffled = trustees[trustees.length - 1]?.shuffled || {}
   const num_last_shuffled = Object.values(last_trustees_shuffled)[0]?.shuffled.length
@@ -24,7 +28,7 @@ export const VotesToDecrypt = ({ state }: StateAndDispatch) => {
     // Partially decrypt each item in every list
     const partials = await bluebird.reduce(
       Object.keys(last_trustees_shuffled),
-      (acc: Record<string, Partial[]>, column) =>
+      (acc: Partials, column) =>
         bluebird.props({
           ...acc,
           [column]: bluebird.map(last_trustees_shuffled[column].shuffled, async ({ unlock }) =>
@@ -49,7 +53,7 @@ export const VotesToDecrypt = ({ state }: StateAndDispatch) => {
     // If the last trustee has shuffled more than we've decrypted,
     // AND provided valid ZK Proof,
     // we should decrypt their final shuffled list.
-    if (num_last_shuffled > num_we_decrypted && isProofValid(last_trustees_shuffled)) {
+    if (num_last_shuffled > num_we_decrypted && isShuffleProofValid(last_trustees_shuffled)) {
       partialDecryptFinalShuffle()
     }
   }, [num_last_shuffled])
@@ -62,15 +66,43 @@ export const VotesToDecrypt = ({ state }: StateAndDispatch) => {
           <li key={email}>
             {email}
             {you && <YouLabel />} partially decrypted {!partials ? '0' : Object.values(partials)[0].length} votes.
-            {partials && <PartialsTable {...{ partials }} />}
+            {partials && (
+              <>
+                <PartialsTable {...{ partials }} />
+                <i>
+                  They provided a ZK Proof of a Valid Partial Decryption. (
+                  <a
+                    className="show-proof"
+                    onClick={() => set_proofs_shown({ ...proofs_shown, [email]: !proofs_shown[email] })}
+                  >
+                    {proofs_shown[email] ? '- Hide' : '+ Show'}
+                  </a>
+                  ) <ProofValidation {...{ partials }} />
+                </i>
+                {proofs_shown[email] && <DecryptionProof {...{ partials }} />}
+              </>
+            )}
           </li>
         ))}
       </ol>
+      <style jsx>{`
+        li {
+          margin-bottom: 1rem;
+        }
+
+        i {
+          font-size: 11px;
+        }
+
+        .show-proof {
+          cursor: pointer;
+        }
+      `}</style>
     </>
   )
 }
 
-const PartialsTable = ({ partials }: { partials: Record<string, Partial[]> }): JSX.Element => {
+const PartialsTable = ({ partials }: { partials: Partials }): JSX.Element => {
   const columns = Object.keys(partials)
   return (
     <table>
@@ -120,4 +152,50 @@ const PartialsTable = ({ partials }: { partials: Record<string, Partial[]> }): J
       `}</style>
     </table>
   )
+}
+
+const DecryptionProof = ({ partials }: { partials: Partials }) => (
+  <>
+    {Object.keys(partials).map((column) => (
+      <>
+        <h4>{column}</h4>
+        <code>{JSON.stringify(partials[column])}</code>
+      </>
+    ))}
+    <style jsx>{`
+      code {
+        white-space: pre;
+        font-size: 13px;
+      }
+    `}</style>
+  </>
+)
+
+const ProofValidation = ({ partials }: { partials: Record<string, Partial[]> }) => {
+  type ValidationState = 'validating' | 'valid' | 'invalid'
+
+  const [state, setState] = useState<ValidationState>('validating')
+
+  useEffect(() => {
+    setState(isProofValid(partials) ? 'valid' : 'invalid')
+  }, [])
+
+  return (
+    <>
+      {state === 'validating' && (
+        <>
+          &nbsp;
+          <LoadingOutlined />
+          &nbsp;&nbsp; Validating...
+        </>
+      )}
+      {state === 'valid' && '  ✅ Validated'}
+      {state === 'invalid' && '  ❌ Invalid!'}
+    </>
+  )
+}
+
+export function isProofValid(partials: Record<string, Partial[]>): boolean {
+  return false
+  return Object.keys(partials).every((column) => verify_shuffle_proof(to_bigs(shuffled[column].proof) as Shuffle_Proof))
 }
