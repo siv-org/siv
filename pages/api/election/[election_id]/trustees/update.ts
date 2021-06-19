@@ -253,7 +253,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           // For each row
           return (list as { shuffled: { encrypted: string }[] }).shuffled.map(({ encrypted }, index) => {
             // 1. First we combine the partials to get the ElGamal shared secret
-            const partials = trustees.map((t) => big(t.partials[key][index]))
+            const partials = trustees.map((t) => big(t.partials[key][index].partial))
             const shared_secret = combine_partials(partials, big_parameters)
 
             // 2. Then we can unlock each messages
