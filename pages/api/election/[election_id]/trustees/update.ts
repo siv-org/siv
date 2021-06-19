@@ -1,3 +1,4 @@
+import bluebird from 'bluebird'
 import { sumBy } from 'lodash-es'
 import { NextApiRequest, NextApiResponse } from 'next'
 
@@ -10,11 +11,12 @@ import {
   compute_keyshare,
   compute_pub_key,
   evaluate_private_polynomial,
+  generate_partial_decryption_proof,
   is_received_share_valid,
   partial_decrypt,
   unlock_message_with_shared_secret,
 } from '../../../../../src/crypto/threshold-keygen'
-import { big, bigCipher, bigPubKey, toStrings } from '../../../../../src/crypto/types'
+import { big, bigCipher, bigPubKey, bigs_to_strs, toStrings } from '../../../../../src/crypto/types'
 import { Shuffled, State, Trustee } from '../../../../../src/trustee/trustee-state'
 import { mapValues } from '../../../../../src/utils'
 import { firebase } from '../../../_services'
@@ -208,13 +210,29 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       // If this is the last trustee, we can begin partially decrypting
       if (trustee.index === parameters.t - 1) {
         // Partially decrypt each item in every list
-        const partials = Object.keys(body.shuffled).reduce(
-          (acc: Record<string, string[]>, column) => ({
-            ...acc,
-            [column]: (body.shuffled as Shuffled)[column].shuffled.map(({ unlock }) =>
-              partial_decrypt(big(unlock), big(private_keyshare), big_parameters).toString(),
-            ),
-          }),
+        type Partial = {
+          partial: string
+          proof: {
+            g_to_secret_r: string
+            obfuscated_trustee_secret: string
+            unlock_to_secret_r: string
+          }
+        }
+
+        const partials = await bluebird.reduce(
+          Object.keys(body.shuffled),
+          (acc: Record<string, Partial[]>, column) =>
+            bluebird.props({
+              ...acc,
+              [column]: bluebird.map(
+                (body.shuffled as Shuffled)[column].shuffled,
+                async ({ unlock }) =>
+                  bigs_to_strs({
+                    partial: partial_decrypt(big(unlock), big(private_keyshare), big_parameters),
+                    proof: await generate_partial_decryption_proof(big(unlock), big(private_keyshare), big_parameters),
+                  }) as Partial,
+              ),
+            }),
           {},
         )
 
