@@ -1,12 +1,22 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
+import bluebird from 'bluebird'
 import { Fragment, useEffect } from 'react'
 
 import { api } from '../../api-helper'
-import { partial_decrypt } from '../../crypto/threshold-keygen'
-import { big } from '../../crypto/types'
+import { generate_partial_decryption_proof, partial_decrypt } from '../../crypto/threshold-keygen'
+import { big, bigs_to_strs } from '../../crypto/types'
 import { StateAndDispatch, getParameters } from '../trustee-state'
 import { YouLabel } from '../YouLabel'
 import { isProofValid } from './VotesToShuffle'
+
+export type Partial = {
+  partial: string
+  proof: {
+    g_to_secret_r: string
+    obfuscated_trustee_secret: string
+    unlock_to_secret_r: string
+  }
+}
 
 export const VotesToDecrypt = ({ state }: StateAndDispatch) => {
   const { own_index, trustees = [], private_keyshare } = state
@@ -15,32 +25,41 @@ export const VotesToDecrypt = ({ state }: StateAndDispatch) => {
   const num_last_shuffled = Object.values(last_trustees_shuffled)[0]?.shuffled.length
   const num_we_decrypted = Object.values(trustees[own_index]?.partials || {})[0]?.length || 0
 
+  async function partialDecryptFinalShuffle() {
+    console.log(
+      `Last trusteee has shuffled: ${num_last_shuffled}, We decrypted: ${num_we_decrypted}. Beginning partial decryption...`,
+    )
+
+    // Partially decrypt each item in every list
+    const partials = await bluebird.reduce(
+      Object.keys(last_trustees_shuffled),
+      (acc: Record<string, Partial[]>, column) =>
+        bluebird.props({
+          ...acc,
+          [column]: bluebird.map(last_trustees_shuffled[column].shuffled, async ({ unlock }) =>
+            bigs_to_strs({
+              partial: partial_decrypt(big(unlock), big(private_keyshare!), getParameters(state)),
+              proof: await generate_partial_decryption_proof(big(unlock), big(private_keyshare!), getParameters(state)),
+            }),
+          ),
+        }),
+      {},
+    )
+
+    // Tell admin our new partials list
+    api(`election/${state.election_id}/trustees/update`, {
+      auth: state.auth,
+      email: state.own_email,
+      partials,
+    })
+  }
+
   useEffect(() => {
     // If the last trustee has shuffled more than we've decrypted,
     // AND provided valid ZK Proof,
     // we should decrypt their final shuffled list.
     if (num_last_shuffled > num_we_decrypted && isProofValid(last_trustees_shuffled)) {
-      console.log(
-        `Last trusteee has shuffled: ${num_last_shuffled}, We decrypted: ${num_we_decrypted}. Beginning partial decryption...`,
-      )
-
-      // Partially decrypt each item in every list
-      const partials = Object.keys(last_trustees_shuffled).reduce(
-        (acc: Record<string, string[]>, column) => ({
-          ...acc,
-          [column]: last_trustees_shuffled[column].shuffled.map(({ unlock }) =>
-            partial_decrypt(big(unlock), big(private_keyshare!), getParameters(state)).toString(),
-          ),
-        }),
-        {},
-      )
-
-      // Tell admin our new partials list
-      api(`election/${state.election_id}/trustees/update`, {
-        auth: state.auth,
-        email: state.own_email,
-        partials,
-      })
+      partialDecryptFinalShuffle()
     }
   }, [num_last_shuffled])
 

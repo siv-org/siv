@@ -17,6 +17,7 @@ import {
   unlock_message_with_shared_secret,
 } from '../../../../../src/crypto/threshold-keygen'
 import { big, bigCipher, bigPubKey, bigs_to_strs, toStrings } from '../../../../../src/crypto/types'
+import { Partial } from '../../../../../src/trustee/decrypt/VotesToDecrypt'
 import { Shuffled, State, Trustee } from '../../../../../src/trustee/trustee-state'
 import { mapValues } from '../../../../../src/utils'
 import { firebase } from '../../../_services'
@@ -210,27 +211,16 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       // If this is the last trustee, we can begin partially decrypting
       if (trustee.index === parameters.t - 1) {
         // Partially decrypt each item in every list
-        type Partial = {
-          partial: string
-          proof: {
-            g_to_secret_r: string
-            obfuscated_trustee_secret: string
-            unlock_to_secret_r: string
-          }
-        }
-
         const partials = await bluebird.reduce(
           Object.keys(body.shuffled),
           (acc: Record<string, Partial[]>, column) =>
             bluebird.props({
               ...acc,
-              [column]: bluebird.map(
-                (body.shuffled as Shuffled)[column].shuffled,
-                async ({ unlock }) =>
-                  bigs_to_strs({
-                    partial: partial_decrypt(big(unlock), big(private_keyshare), big_parameters),
-                    proof: await generate_partial_decryption_proof(big(unlock), big(private_keyshare), big_parameters),
-                  }) as Partial,
+              [column]: bluebird.map((body.shuffled as Shuffled)[column].shuffled, async ({ unlock }) =>
+                bigs_to_strs({
+                  partial: partial_decrypt(big(unlock), big(private_keyshare), big_parameters),
+                  proof: await generate_partial_decryption_proof(big(unlock), big(private_keyshare), big_parameters),
+                }),
               ),
             }),
           {},
