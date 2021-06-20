@@ -6,7 +6,8 @@ import { useLocalStorageReducer } from '../vote/useLocalStorage'
 import { diff } from './diff-objects'
 
 // Define our types
-export type Shuffled = Record<string, { proof: unknown; shuffled: { encrypted: string; unlock: string }[] }>
+type Cipher = { encrypted: string; unlock: string }
+export type Shuffled = Record<string, { proof: unknown; shuffled: Cipher[] }>
 export type Partial = {
   partial: string
   proof: {
@@ -23,6 +24,7 @@ export type Trustee = {
   index: number
   partial_decryption?: string
   partials?: Record<string, Partial[]>
+  preshuffled?: Record<string, Cipher[]> // admin only
   recipient_key?: string
   shuffled?: Shuffled
   verified?: Record<string, boolean>

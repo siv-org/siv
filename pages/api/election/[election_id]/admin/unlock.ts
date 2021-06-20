@@ -92,7 +92,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   )) as Shuffled
 
   // Store admins shuffled lists
-  await adminDoc.update({ shuffled })
+  await adminDoc.update({ preshuffled: split, shuffled })
   try {
     await pusher.trigger('keygen', 'update', { 'admin@secureintervoting.org': { shuffled: shuffled.length } })
   } catch (e) {

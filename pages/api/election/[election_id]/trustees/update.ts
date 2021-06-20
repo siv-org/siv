@@ -6,6 +6,7 @@ import decrypt from '../../../../../src/crypto/decrypt'
 import { decode } from '../../../../../src/crypto/encode'
 import encrypt from '../../../../../src/crypto/encrypt'
 import pickRandomInteger from '../../../../../src/crypto/pick-random-integer'
+import { rename_to_c1_and_2 } from '../../../../../src/crypto/shuffle'
 import { Shuffle_Proof, verify_shuffle_proof } from '../../../../../src/crypto/shuffle-proof'
 import {
   combine_partials,
@@ -19,7 +20,16 @@ import {
   unlock_message_with_shared_secret,
   verify_partial_decryption_proof,
 } from '../../../../../src/crypto/threshold-keygen'
-import { Big, big, bigCipher, bigPubKey, bigs_to_strs, toStrings, to_bigs } from '../../../../../src/crypto/types'
+import {
+  Big,
+  Cipher_Text,
+  big,
+  bigCipher,
+  bigPubKey,
+  bigs_to_strs,
+  toStrings,
+  to_bigs,
+} from '../../../../../src/crypto/types'
 import { Partial, Shuffled, State, Trustee } from '../../../../../src/trustee/trustee-state'
 import { mapValues } from '../../../../../src/utils'
 import { firebase } from '../../../_services'
@@ -214,9 +224,17 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       if (trustee.index === parameters.t - 1) {
         const { shuffled } = body
 
+        const trustees = (await electionDoc.collection('trustees').orderBy('index').get()).docs.map((doc) => ({
+          ...doc.data(),
+        }))
+
         // Confirm that every column's shuffle proof is valid
         const checks = await bluebird.map(Object.keys(shuffled), (column) =>
-          verify_shuffle_proof(to_bigs(shuffled[column].proof) as Shuffle_Proof),
+          verify_shuffle_proof(
+            rename_to_c1_and_2(to_bigs(trustees[trustee.index - 1].shuffled[column].shuffled) as Cipher_Text[]),
+            rename_to_c1_and_2(to_bigs(shuffled[column].shuffled) as Cipher_Text[]),
+            to_bigs(shuffled[column].proof) as Shuffle_Proof,
+          ),
         )
         if (!checks.length || !checks.every((x) => x)) {
           console.log("Final shuffle proof didn't fully pass")

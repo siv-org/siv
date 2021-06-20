@@ -5,9 +5,9 @@ import { mapValues } from 'lodash-es'
 import { Dispatch, Fragment, SetStateAction, useEffect, useReducer, useState } from 'react'
 
 import { api } from '../../api-helper'
-import { shuffle } from '../../crypto/shuffle'
+import { rename_to_c1_and_2, shuffle } from '../../crypto/shuffle'
 import { Shuffle_Proof, verify_shuffle_proof } from '../../crypto/shuffle-proof'
-import { bigCipher, bigPubKey, bigs_to_strs, to_bigs } from '../../crypto/types'
+import { Cipher_Text, bigCipher, bigPubKey, bigs_to_strs, to_bigs } from '../../crypto/types'
 import { Shuffled, StateAndDispatch } from '../trustee-state'
 import { YouLabel } from '../YouLabel'
 
@@ -75,7 +75,15 @@ export const VotesToShuffle = ({
 
       // Begin (async) validating each proof...
       Object.keys(trustee_validations).forEach((column) => {
-        verify_shuffle_proof(to_bigs(shuffled[column].proof) as Shuffle_Proof).then((result) => {
+        // Inputs are the previous trustee's outputs
+        // except for admin, who provides the original split list.
+        const inputs = index > 0 ? trustees[index - 1].shuffled![column].shuffled : trustees[0].preshuffled![column]
+
+        verify_shuffle_proof(
+          rename_to_c1_and_2(to_bigs(inputs) as Cipher_Text[]),
+          rename_to_c1_and_2(to_bigs(shuffled[column].shuffled) as Cipher_Text[]),
+          to_bigs(shuffled[column].proof) as Shuffle_Proof,
+        ).then((result) => {
           set_validated_proofs({ column, email, result, type: 'UPDATE' })
         })
       })

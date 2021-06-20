@@ -26,8 +26,6 @@ export type Shuffle_Proof = {
   Lambda2: Big
   Us: Big[]
   Ws: Big[]
-  inputs: SequencesOfPairs
-  outputs: SequencesOfPairs
   parameters: ParametersWithH
   sigmas: Big[]
   simple_shuffle_proof: Simple_Shuffle_Proof
@@ -131,8 +129,6 @@ export async function generate_shuffle_proof(
     Lambda2,
     Us,
     Ws,
-    inputs,
-    outputs,
     parameters: { g, h, p, q },
     sigmas,
     simple_shuffle_proof,
@@ -141,22 +137,9 @@ export async function generate_shuffle_proof(
 }
 
 export async function verify_shuffle_proof(
-  {
-    As,
-    Cs,
-    Ds,
-    Gamma,
-    Lambda1,
-    Lambda2,
-    Us,
-    Ws,
-    inputs,
-    outputs,
-    parameters,
-    sigmas,
-    simple_shuffle_proof,
-    tau,
-  }: Shuffle_Proof,
+  inputs: SequencesOfPairs,
+  outputs: SequencesOfPairs,
+  { As, Cs, Ds, Gamma, Lambda1, Lambda2, Us, Ws, parameters, sigmas, simple_shuffle_proof, tau }: Shuffle_Proof,
   { debug } = { debug: false },
 ): Promise<boolean> {
   const log = debug ? console.log : () => {}

@@ -63,5 +63,5 @@ function permute<T>(input: T[], permutation_array: number[]) {
   return input.map((_, index) => input[permutation_array[index]])
 }
 
-const rename_to_c1_and_2 = (inputs: Cipher_Text[]) =>
+export const rename_to_c1_and_2 = (inputs: Cipher_Text[]) =>
   inputs.map(({ encrypted, unlock }) => ({ c1: unlock, c2: encrypted }))
