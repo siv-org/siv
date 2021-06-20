@@ -13,7 +13,10 @@ import { YouLabel } from '../YouLabel'
 
 type Validations_Table = Record<string, { columns: Record<string, boolean | null>; num_votes: number }>
 
-export const VotesToShuffle = ({ state }: StateAndDispatch) => {
+export const VotesToShuffle = ({
+  set_final_shuffle_verifies,
+  state,
+}: StateAndDispatch & { set_final_shuffle_verifies: Dispatch<SetStateAction<boolean>> }) => {
   const { own_index, trustees = [], parameters, threshold_public_key } = state
   const [proofs_shown, set_proofs_shown] = useState<Record<string, boolean>>({})
 
@@ -115,6 +118,12 @@ export const VotesToShuffle = ({ state }: StateAndDispatch) => {
       shuffleFromPrevious()
     }
   }, [prev_proofs_all_passed])
+
+  // Update final_shuffle_verifies for VotesToDecrypt
+  const final_proofs_all_passed = all_proofs_passed(validated_proofs[trustees[trustees.length - 1]?.email || ''])
+  useEffect(() => {
+    set_final_shuffle_verifies(final_proofs_all_passed)
+  }, [final_proofs_all_passed])
 
   return (
     <>

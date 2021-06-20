@@ -1,3 +1,5 @@
+import { useState } from 'react'
+
 import { AcceptedVotes } from '../../status/AcceptedVotes'
 import { useBallotDesign } from '../../status/use-ballot-design'
 import { Trustees } from '../keygen/1-Trustees'
@@ -14,6 +16,7 @@ export const ShuffleAndDecrypt = ({
 }: StateAndDispatch & { election_id: string }): JSX.Element => {
   const { private_keyshare } = state
   const { ballot_design } = useBallotDesign(election_id)
+  const [final_shuffle_verifies, set_final_shuffle_verifies] = useState(false)
 
   if (!private_keyshare) {
     return <p>Error: No `private_keyshare` found in localStorage.</p>
@@ -38,10 +41,10 @@ export const ShuffleAndDecrypt = ({
       <AcceptedVotes {...{ ballot_design }} title_prefix="II. " />
 
       {/* Are there new votes shuffled from the trustee ahead of us that we need to shuffle? */}
-      <VotesToShuffle {...{ dispatch, state }} />
+      <VotesToShuffle {...{ dispatch, final_shuffle_verifies, set_final_shuffle_verifies, state }} />
 
       {/* Are there fully shuffled votes we need to partially decrypt? */}
-      <VotesToDecrypt {...{ dispatch, state }} />
+      <VotesToDecrypt {...{ dispatch, final_shuffle_verifies, state }} />
 
       <style jsx>{``}</style>
     </>

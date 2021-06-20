@@ -14,12 +14,14 @@ import {
 import { Big, big, bigs_to_strs, to_bigs } from '../../crypto/types'
 import { Partial, StateAndDispatch, getParameters } from '../trustee-state'
 import { YouLabel } from '../YouLabel'
-import { areAllShuffleProofsValid } from './VotesToShuffle'
 
 type Partials = Record<string, Partial[]>
 type Validations_Table = Record<string, Record<string, (boolean | null)[]>>
 
-export const VotesToDecrypt = ({ state }: StateAndDispatch) => {
+export const VotesToDecrypt = ({
+  final_shuffle_verifies,
+  state,
+}: StateAndDispatch & { final_shuffle_verifies: boolean }) => {
   const { own_index, trustees = [], private_keyshare } = state
   const [proofs_shown, set_proofs_shown] = useState<Record<string, boolean>>({})
 
@@ -131,10 +133,10 @@ export const VotesToDecrypt = ({ state }: StateAndDispatch) => {
     // If the last trustee has shuffled more than we've decrypted,
     // AND provided valid ZK Proof,
     // we should decrypt their final shuffled list.
-    if (num_last_shuffled > num_we_decrypted && areAllShuffleProofsValid(trustees.length - 1)) {
+    if (num_last_shuffled > num_we_decrypted && final_shuffle_verifies) {
       partialDecryptFinalShuffle()
     }
-  }, [num_last_shuffled])
+  }, [final_shuffle_verifies])
 
   return (
     <>
