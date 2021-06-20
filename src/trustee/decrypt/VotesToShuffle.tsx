@@ -126,7 +126,7 @@ export const VotesToShuffle = ({ state }: StateAndDispatch) => {
             )}
             {shuffled && (
               <>
-                <ShuffledVotesTable {...{ shuffled }} />
+                <ShuffledVotesTable {...{ email, shuffled, validated_proofs }} />
                 {proofs_shown[email] && <ShuffleProof {...{ shuffled }} />}
               </>
             )}
@@ -150,18 +150,30 @@ export const VotesToShuffle = ({ state }: StateAndDispatch) => {
   )
 }
 
-const ShuffledVotesTable = ({ shuffled }: { shuffled: Shuffled }): JSX.Element => {
+const ShuffledVotesTable = ({
+  email,
+  shuffled,
+  validated_proofs,
+}: {
+  email: string
+  shuffled: Shuffled
+  validated_proofs: Validations_Table
+}): JSX.Element => {
+  const trustees_validations = validated_proofs && validated_proofs[email]
   const columns = Object.keys(shuffled)
   return (
     <table>
       <thead>
         <tr>
           <th></th>
-          {columns.map((c) => (
-            <th colSpan={2} key={c}>
-              {c}
-            </th>
-          ))}
+          {columns.map((c) => {
+            const verified = trustees_validations ? trustees_validations.columns[c] : null
+            return (
+              <th colSpan={2} key={c}>
+                {c} <span>{verified === null ? <LoadingOutlined /> : verified ? '' : '❌'}</span>
+              </th>
+            )
+          })}
         </tr>
       </thead>
       <tbody>
@@ -210,6 +222,11 @@ const ShuffledVotesTable = ({ shuffled }: { shuffled: Shuffled }): JSX.Element =
         .subheading td {
           font-size: 11px;
           font-weight: 700;
+        }
+
+        th span {
+          padding-left: 5px;
+          opacity: 0.6;
         }
       `}</style>
     </table>
