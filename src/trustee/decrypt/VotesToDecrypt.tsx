@@ -137,17 +137,11 @@ export const VotesToDecrypt = ({ state }: StateAndDispatch) => {
       <ol>
         {trustees?.map(({ email, partials, you }) => (
           <li key={email}>
-            <div>
-              <span className="left">
-                {email}
-                {you && <YouLabel />} partially decrypted {!partials ? 0 : Object.values(partials)[0].length} votes.
-              </span>
-
-              {partials && (
-                <ValidationSummary {...{ email, partials, proofs_shown, set_proofs_shown, validated_proofs }} />
-              )}
-            </div>
-
+            {email}
+            {you && <YouLabel />} partially decrypted {!partials ? 0 : Object.values(partials)[0].length} votes.
+            {partials && (
+              <ValidationSummary {...{ email, partials, proofs_shown, set_proofs_shown, validated_proofs }} />
+            )}
             {partials && (
               <>
                 <PartialsTable {...{ email, partials, validated_proofs }} />
@@ -286,7 +280,7 @@ const ValidationSummary = ({
   const num_total_partials = !partials ? 0 : num_votes_decrypted * Object.keys(partials).length
 
   return (
-    <i className="right">
+    <i>
       {!!num_partials_passed && num_partials_passed === num_total_partials && '✅ '}
       {num_partials_passed} of {num_total_partials} Decryption Proofs validated (
       <a className="show-proof" onClick={() => set_proofs_shown({ ...proofs_shown, [email]: !proofs_shown[email] })}>

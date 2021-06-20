@@ -2,7 +2,7 @@
 import { LoadingOutlined } from '@ant-design/icons'
 import bluebird from 'bluebird'
 import { mapValues } from 'lodash-es'
-import { Fragment, useEffect, useReducer, useState } from 'react'
+import { Dispatch, Fragment, SetStateAction, useEffect, useReducer, useState } from 'react'
 
 import { api } from '../../api-helper'
 import { shuffle } from '../../crypto/shuffle'
@@ -122,18 +122,11 @@ export const VotesToShuffle = ({ state }: StateAndDispatch) => {
             {email}
             {you && <YouLabel />} shuffled {!shuffled ? '0' : Object.values(shuffled)[0].shuffled.length} votes.
             {shuffled && (
+              <ValidationSummary {...{ email, proofs_shown, set_proofs_shown, shuffled, validated_proofs }} />
+            )}
+            {shuffled && (
               <>
                 <ShuffledVotesTable {...{ shuffled }} />
-                <i>
-                  They provided a ZK Proof of a Valid Shuffle. (
-                  <a
-                    className="show-proof"
-                    onClick={() => set_proofs_shown({ ...proofs_shown, [email]: !proofs_shown[email] })}
-                  >
-                    {proofs_shown[email] ? '- Hide' : '+ Show'}
-                  </a>
-                  ) <ProofValidation {...{ shuffled }} />
-                </i>
                 {proofs_shown[email] && <ShuffleProof {...{ shuffled }} />}
               </>
             )}
@@ -240,27 +233,43 @@ const ShuffleProof = ({ shuffled }: { shuffled: Shuffled }) => (
   </>
 )
 
-const ProofValidation = ({ shuffled }: { shuffled: Shuffled }) => {
-  type ValidationState = 'validating' | 'valid' | 'invalid'
-
-  const [state, setState] = useState<ValidationState>('validating')
-
-  // useEffect(() => {
-  //   setState(isProofValid(shuffled) ? 'valid' : 'invalid')
-  // }, [])
+const ValidationSummary = ({
+  email,
+  proofs_shown,
+  set_proofs_shown,
+  validated_proofs,
+}: {
+  email: string
+  proofs_shown: Record<string, boolean>
+  set_proofs_shown: Dispatch<SetStateAction<Record<string, boolean>>>
+  validated_proofs: Validations_Table
+}) => {
+  const validations = validated_proofs[email]
+  const num_proofs_passed = !validations
+    ? 0
+    : Object.values(validations.columns).reduce((sum, column) => sum + Number(column), 0)
+  const num_total_proofs = (validations && Object.keys(validations.columns).length) || 0
 
   return (
-    <>
-      {state === 'validating' && (
-        <>
-          &nbsp;
-          <LoadingOutlined />
-          &nbsp;&nbsp; Validating...
-        </>
-      )}
-      {state === 'valid' && '  ✅ Validated'}
-      {state === 'invalid' && '  ❌ Invalid!'}
-    </>
+    <i>
+      {!!num_proofs_passed && num_proofs_passed === num_total_proofs && '✅ '}
+      {num_proofs_passed} of {num_total_proofs} Shuffle Proofs validated (
+      <a className="show-proof" onClick={() => set_proofs_shown({ ...proofs_shown, [email]: !proofs_shown[email] })}>
+        {proofs_shown[email] ? '-Hide' : '+Show'}
+      </a>
+      )
+      <style jsx>{`
+        i {
+          font-size: 11px;
+          float: right;
+        }
+
+        .show-proof {
+          cursor: pointer;
+          font-family: monospace;
+        }
+      `}</style>
+    </i>
   )
 }
 
