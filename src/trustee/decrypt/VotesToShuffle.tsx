@@ -248,10 +248,10 @@ const ShuffledVotesTable = ({
 const ShuffleProof = ({ shuffled }: { shuffled: Shuffled }) => (
   <>
     {Object.keys(shuffled).map((column) => (
-      <>
+      <div key={column}>
         <h4>{column}</h4>
         <code>{JSON.stringify(shuffled[column].proof)}</code>
-      </>
+      </div>
     ))}
     <style jsx>{`
       code {

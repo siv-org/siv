@@ -250,10 +250,10 @@ const PartialsTable = ({
 const DecryptionProof = ({ partials }: { partials: Partials }) => (
   <>
     {Object.keys(partials).map((column) => (
-      <>
+      <div key={column}>
         <h4>{column}</h4>
         <code>{JSON.stringify(partials[column])}</code>
-      </>
+      </div>
     ))}
     <style jsx>{`
       code {
