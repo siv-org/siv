@@ -282,7 +282,7 @@ const ValidationSummary = ({
   return (
     <i>
       {!!num_partials_passed && num_partials_passed === num_total_partials && '✅ '}
-      {num_partials_passed} of {num_total_partials} Decryption Proofs validated (
+      {num_partials_passed} of {num_total_partials} Decryption Proofs verified (
       <a className="show-proof" onClick={() => set_proofs_shown({ ...proofs_shown, [email]: !proofs_shown[email] })}>
         {proofs_shown[email] ? '-Hide' : '+Show'}
       </a>

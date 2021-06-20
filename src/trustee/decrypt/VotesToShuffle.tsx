@@ -253,7 +253,7 @@ const ValidationSummary = ({
   return (
     <i>
       {!!num_proofs_passed && num_proofs_passed === num_total_proofs && '✅ '}
-      {num_proofs_passed} of {num_total_proofs} Shuffle Proofs validated (
+      {num_proofs_passed} of {num_total_proofs} Shuffle Proofs verified (
       <a className="show-proof" onClick={() => set_proofs_shown({ ...proofs_shown, [email]: !proofs_shown[email] })}>
         {proofs_shown[email] ? '-Hide' : '+Show'}
       </a>
