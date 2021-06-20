@@ -6,6 +6,7 @@ import decrypt from '../../../../../src/crypto/decrypt'
 import { decode } from '../../../../../src/crypto/encode'
 import encrypt from '../../../../../src/crypto/encrypt'
 import pickRandomInteger from '../../../../../src/crypto/pick-random-integer'
+import { Shuffle_Proof, verify_shuffle_proof } from '../../../../../src/crypto/shuffle-proof'
 import {
   combine_partials,
   compute_keyshare,
@@ -16,7 +17,7 @@ import {
   partial_decrypt,
   unlock_message_with_shared_secret,
 } from '../../../../../src/crypto/threshold-keygen'
-import { big, bigCipher, bigPubKey, bigs_to_strs, toStrings } from '../../../../../src/crypto/types'
+import { big, bigCipher, bigPubKey, bigs_to_strs, toStrings, to_bigs } from '../../../../../src/crypto/types'
 import { Partial, Shuffled, State, Trustee } from '../../../../../src/trustee/trustee-state'
 import { mapValues } from '../../../../../src/utils'
 import { firebase } from '../../../_services'
@@ -209,28 +210,38 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     if (body.shuffled) {
       // If this is the last trustee, we can begin partially decrypting
       if (trustee.index === parameters.t - 1) {
-        // Partially decrypt each item in every list
-        const partials = await bluebird.reduce(
-          Object.keys(body.shuffled),
-          (acc: Record<string, Partial[]>, column) =>
-            bluebird.props({
-              ...acc,
-              [column]: bluebird.map((body.shuffled as Shuffled)[column].shuffled, async ({ unlock }) =>
-                bigs_to_strs({
-                  partial: partial_decrypt(big(unlock), big(private_keyshare), big_parameters),
-                  proof: await generate_partial_decryption_proof(big(unlock), big(private_keyshare), big_parameters),
-                }),
-              ),
-            }),
-          {},
+        const { shuffled } = body
+
+        // Confirm that every column's shuffle proof is valid
+        const checks = await Promise.all(
+          Object.keys(shuffled).map((column) => verify_shuffle_proof(to_bigs(shuffled[column].proof) as Shuffle_Proof)),
         )
+        if (!checks.length || !checks.every((x) => x)) {
+          console.log("Final shuffle proof didn't fully pass")
+        } else {
+          // Partially decrypt each item in every list
+          const partials = await bluebird.reduce(
+            Object.keys(shuffled),
+            (acc: Record<string, Partial[]>, column) =>
+              bluebird.props({
+                ...acc,
+                [column]: bluebird.map((shuffled as Shuffled)[column].shuffled, async ({ unlock }) =>
+                  bigs_to_strs({
+                    partial: partial_decrypt(big(unlock), big(private_keyshare), big_parameters),
+                    proof: await generate_partial_decryption_proof(big(unlock), big(private_keyshare), big_parameters),
+                  }),
+                ),
+              }),
+            {},
+          )
 
-        // Store partials
-        await adminDoc.update({ partials })
-        console.log('Updated admin partials:', partials)
+          // Store partials
+          await adminDoc.update({ partials })
+          console.log('Updated admin partials:', partials)
 
-        // Notify all participants there's been an update
-        promises.push(pusher.trigger('keygen', 'update', { [ADMIN_EMAIL]: { partials: partials.length } }))
+          // Notify all participants there's been an update
+          promises.push(pusher.trigger('keygen', 'update', { [ADMIN_EMAIL]: { partials: partials.length } }))
+        }
       }
     }
 
