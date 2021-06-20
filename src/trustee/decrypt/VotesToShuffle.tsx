@@ -65,7 +65,8 @@ export const VotesToShuffle = ({ state }: StateAndDispatch) => {
       // Stop if we already checked this trustee
       if (validated_proofs[email] && validated_proofs[email].num_votes === num_shuffled) return
 
-      console.log(`${email} provided ${num_shuffled} shuffled votes, validating...`)
+      if (num_shuffled) console.log(`${email} provided ${num_shuffled} shuffled votes, validating...`)
+
       const trustee_validations = mapValues(shuffled, () => null)
       set_validated_proofs({ columns: trustee_validations, email, num_votes: num_shuffled, type: 'RESET' })
 
