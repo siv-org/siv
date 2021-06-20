@@ -81,7 +81,9 @@ export const VotesToShuffle = ({ state }: StateAndDispatch) => {
 
   const { g, p } = parameters!
 
-  const previous_trustees_shuffled = trustees[own_index - 1]?.shuffled || {}
+  const prev_email = trustees[own_index - 1]?.email || ''
+  const prev_trustees_shuffled = trustees[own_index - 1]?.shuffled || {}
+  const prev_proofs_all_passed = all_proofs_passed(validated_proofs[prev_email])
   const num_prev_shuffled = num_shuffled_from_trustees[own_index - 1]
   const num_we_shuffled = num_shuffled_from_trustees[own_index]
 
@@ -92,7 +94,7 @@ export const VotesToShuffle = ({ state }: StateAndDispatch) => {
 
     // Do a SIV shuffle (permute + re-encryption) for each item's list
     const shuffled = await bluebird.props(
-      mapValues(previous_trustees_shuffled, async (list) =>
+      mapValues(prev_trustees_shuffled, async (list) =>
         bigs_to_strs(await shuffle(public_key, list.shuffled.map(bigCipher))),
       ),
     )
@@ -109,10 +111,10 @@ export const VotesToShuffle = ({ state }: StateAndDispatch) => {
     // If trustee before us has shuffled more than us,
     // AND their previous shuffle includes a valid ZK Proof,
     // THEN: we should shuffle the list they provided.
-    if (num_prev_shuffled > num_we_shuffled && isProofValid(previous_trustees_shuffled)) {
+    if (num_prev_shuffled > num_we_shuffled && prev_proofs_all_passed) {
       shuffleFromPrevious()
     }
-  }, [num_prev_shuffled])
+  }, [prev_proofs_all_passed])
 
   return (
     <>
@@ -255,15 +257,11 @@ const ValidationSummary = ({
   validated_proofs: Validations_Table
 }) => {
   const validations = validated_proofs[email]
-  const num_proofs_passed = !validations
-    ? 0
-    : Object.values(validations.columns).reduce((sum, column) => sum + Number(column), 0)
-  const num_total_proofs = (validations && Object.keys(validations.columns).length) || 0
 
   return (
     <i>
-      {!!num_proofs_passed && num_proofs_passed === num_total_proofs && '✅ '}
-      {num_proofs_passed} of {num_total_proofs} Shuffle Proofs verified (
+      {all_proofs_passed(validations) && '✅ '}
+      {num_proofs_passed(validations)} of {num_total_proofs(validations)} Shuffle Proofs verified (
       <a className="show-proof" onClick={() => set_proofs_shown({ ...proofs_shown, [email]: !proofs_shown[email] })}>
         {proofs_shown[email] ? '-Hide' : '+Show'}
       </a>
@@ -283,4 +281,11 @@ const ValidationSummary = ({
   )
 }
 
-export const isProofValid = (): boolean => false
+const num_proofs_passed = (validations: Validations_Table['email']) =>
+  !validations ? 0 : Object.values(validations.columns).reduce((sum, column) => sum + Number(column), 0)
+
+const num_total_proofs = (validations: Validations_Table['email']) =>
+  (validations && Object.keys(validations.columns).length) || 0
+
+const all_proofs_passed = (validations: Validations_Table['email']) =>
+  !!num_proofs_passed(validations) && num_proofs_passed(validations) === num_total_proofs(validations)
