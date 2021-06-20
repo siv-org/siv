@@ -286,7 +286,13 @@ const ValidationSummary = ({
       <style jsx>{`
         i {
           font-size: 11px;
-          float: right;
+          display: block;
+        }
+
+        @media (min-width: 600px) {
+          i {
+            float: right;
+          }
         }
 
         .show-proof {
