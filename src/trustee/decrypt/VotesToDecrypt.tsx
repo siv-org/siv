@@ -54,16 +54,21 @@ export const VotesToDecrypt = ({ state }: StateAndDispatch) => {
     },
     {},
   )
-  const num_partials_from_trustees = trustees.map(({ partials = {} }) => Object.values(partials)[0].length)
+  const num_partials_from_trustees = trustees.map(({ partials = {} }) => (Object.values(partials)[0] || []).length)
   const all_broadcasts = trustees.map(({ commitments }) => commitments)
   useEffect(() => {
     trustees.forEach(({ email, partials = {} }, index) => {
-      const num_partials = Object.values(partials)[0].length
+      const num_partials = num_partials_from_trustees[index]
 
       // Stop if we already checked this trustee
-      if (validated_proofs[email] && Object.values(validated_proofs[email])[0].length === num_partials) return
+      if (
+        !num_partials ||
+        (validated_proofs[email] && Object.values(validated_proofs[email])[0].length === num_partials)
+      )
+        return
 
-      console.log(`${email} provided ${num_partials} partials, validating...`)
+      if (num_partials) console.log(`${email} provided ${num_partials} partials, validating...`)
+
       const trustee_validations = mapValues(partials, (column) => column.map(() => null))
       set_validated_proofs({ email, payload: trustee_validations, type: 'RESET' })
 
