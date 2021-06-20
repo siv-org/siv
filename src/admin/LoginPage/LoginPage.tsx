@@ -22,7 +22,7 @@ export const LoginPage = () => {
   return (
     <main className="flex items-center justify-center min-h-screen px-4 py-12 bg-gray-50 sm:px-6 lg:px-8">
       <Head title="Admin Login" />
-      <p className="request-access-link text-blue-800">
+      <p className="text-blue-800 request-access-link">
         <a href="/for-governments#give-your-voters">
           <b>New user?</b>
           <br />
@@ -52,6 +52,12 @@ export const LoginPage = () => {
                 setStatus('')
                 setError('')
               }}
+              onKeyPress={(event) => {
+                if (event.key === 'Enter') {
+                  document.getElementById('email-address')?.blur()
+                  document.getElementById('login-button')?.click()
+                }
+              }}
             />
           </div>
 
@@ -62,6 +68,7 @@ export const LoginPage = () => {
           <button
             className="relative flex justify-center w-full px-4 py-2 text-sm font-semibold text-white bg-blue-800 border border-transparent rounded-md group disabled:opacity-50 hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             disabled={!['', 'unapproved'].includes(status)}
+            id="login-button"
             onClick={async () => {
               // Redirect to 'Request Access'
               if (status === 'unapproved') {
