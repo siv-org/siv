@@ -158,7 +158,7 @@ export const VotesToDecrypt = ({ state }: StateAndDispatch) => {
       </ol>
       <style jsx>{`
         li {
-          margin-bottom: 3rem;
+          margin-bottom: 2rem;
         }
       `}</style>
     </>

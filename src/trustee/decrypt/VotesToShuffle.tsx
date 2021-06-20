@@ -136,15 +136,7 @@ export const VotesToShuffle = ({ state }: StateAndDispatch) => {
       </ol>
       <style jsx>{`
         li {
-          margin-bottom: 1rem;
-        }
-
-        i {
-          font-size: 11px;
-        }
-
-        .show-proof {
-          cursor: pointer;
+          margin-bottom: 2rem;
         }
       `}</style>
     </>
