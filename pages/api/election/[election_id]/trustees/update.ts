@@ -9,6 +9,7 @@ import pickRandomInteger from '../../../../../src/crypto/pick-random-integer'
 import { Shuffle_Proof, verify_shuffle_proof } from '../../../../../src/crypto/shuffle-proof'
 import {
   combine_partials,
+  compute_g_to_keyshare,
   compute_keyshare,
   compute_pub_key,
   evaluate_private_polynomial,
@@ -16,8 +17,9 @@ import {
   is_received_share_valid,
   partial_decrypt,
   unlock_message_with_shared_secret,
+  verify_partial_decryption_proof,
 } from '../../../../../src/crypto/threshold-keygen'
-import { big, bigCipher, bigPubKey, bigs_to_strs, toStrings, to_bigs } from '../../../../../src/crypto/types'
+import { Big, big, bigCipher, bigPubKey, bigs_to_strs, toStrings, to_bigs } from '../../../../../src/crypto/types'
 import { Partial, Shuffled, State, Trustee } from '../../../../../src/trustee/trustee-state'
 import { mapValues } from '../../../../../src/utils'
 import { firebase } from '../../../_services'
@@ -213,8 +215,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         const { shuffled } = body
 
         // Confirm that every column's shuffle proof is valid
-        const checks = await Promise.all(
-          Object.keys(shuffled).map((column) => verify_shuffle_proof(to_bigs(shuffled[column].proof) as Shuffle_Proof)),
+        const checks = await bluebird.map(Object.keys(shuffled), (column) =>
+          verify_shuffle_proof(to_bigs(shuffled[column].proof) as Shuffle_Proof),
         )
         if (!checks.length || !checks.every((x) => x)) {
           console.log("Final shuffle proof didn't fully pass")
@@ -256,32 +258,61 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       const last_shuffled = trustees[trustees.length - 1].shuffled as Shuffled
       const columns = Object.keys(last_shuffled)
       const last_shuffled_length = last_shuffled[columns[0]].shuffled.length
+
       if (trustees.every((t) => t.partials && t.partials[columns[0]].length >= last_shuffled_length)) {
-        // Ok, ready to decrypt...
+        // Verify that all partials have passing ZK Proofs
+        const all_broadcasts = trustees.map(({ commitments }) => commitments)
+        const last_trustees_shuffled = trustees[trustees.length - 1].shuffled
+        let any_failed = false
+        // For all trustees...
+        await bluebird.map(trustees, ({ partials }, index) => {
+          const g_to_trustees_keyshare = compute_g_to_keyshare(index + 1, all_broadcasts, big_parameters)
+          // For all columns...
+          return bluebird.map(
+            Object.keys(partials),
+            // For all votes
+            (column) =>
+              bluebird.map(partials[column], async ({ partial, proof }: Partial, voteIndex) => {
+                const result = await verify_partial_decryption_proof(
+                  big(last_trustees_shuffled[column].shuffled[voteIndex].unlock),
+                  big(g_to_trustees_keyshare),
+                  big(partial),
+                  to_bigs(proof) as { g_to_secret_r: Big; obfuscated_trustee_secret: Big; unlock_to_secret_r: Big },
+                  big_parameters,
+                )
+                if (!result) any_failed = true
+              }),
+          )
+        })
+        if (any_failed) {
+          console.log('⚠️  Not all Partial proofs passed, refusing to combine')
+        } else {
+          // Ok, now ready to combine partials and finish decryption...
 
-        // For each column
-        const decrypted_and_split = mapValues(last_shuffled, (list, key) => {
-          // For each row
-          return (list as { shuffled: { encrypted: string }[] }).shuffled.map(({ encrypted }, index) => {
-            // 1. First we combine the partials to get the ElGamal shared secret
-            const partials = trustees.map((t) => big(t.partials[key][index].partial))
-            const shared_secret = combine_partials(partials, big_parameters)
+          // For each column
+          const decrypted_and_split = mapValues(last_shuffled, (list, key) => {
+            // For each row
+            return (list as { shuffled: { encrypted: string }[] }).shuffled.map(({ encrypted }, index) => {
+              // 1. First we combine the partials to get the ElGamal shared secret
+              const partials = trustees.map((t) => big(t.partials[key][index].partial))
+              const shared_secret = combine_partials(partials, big_parameters)
 
-            // 2. Then we can unlock each messages
-            const unlocked = unlock_message_with_shared_secret(shared_secret, big(encrypted), big_parameters.p)
-            return decode(unlocked)
-          })
-        }) as Record<string, string[]>
+              // 2. Then we can unlock each messages
+              const unlocked = unlock_message_with_shared_secret(shared_secret, big(encrypted), big_parameters.p)
+              return decode(unlocked)
+            })
+          }) as Record<string, string[]>
 
-        // 3. Finally we recombine the separated columns back together via tracking numbers
-        const decrypteds_by_tracking = recombine_decrypteds(decrypted_and_split)
+          // 3. Finally we recombine the separated columns back together via tracking numbers
+          const decrypteds_by_tracking = recombine_decrypteds(decrypted_and_split)
 
-        // Store decrypteds as an array
-        const decrypted = Object.values(decrypteds_by_tracking)
-        // 4. And save the results to election.decrypted
-        await electionDoc.update({ decrypted, last_decrypted_at: new Date() })
-        // And notify everyone we have new decrypted
-        await pusher.trigger(election_id, 'decrypted', '')
+          // Store decrypteds as an array
+          const decrypted = Object.values(decrypteds_by_tracking)
+          // 4. And save the results to election.decrypted
+          await electionDoc.update({ decrypted, last_decrypted_at: new Date() })
+          // And notify everyone we have new decrypted
+          await pusher.trigger(election_id, 'decrypted', '')
+        }
       }
     }
   }
