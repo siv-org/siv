@@ -2,7 +2,7 @@
 import { LoadingOutlined } from '@ant-design/icons'
 import bluebird from 'bluebird'
 import { mapValues } from 'lodash-es'
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment, useEffect, useReducer, useState } from 'react'
 
 import { api } from '../../api-helper'
 import { shuffle } from '../../crypto/shuffle'
@@ -11,14 +11,78 @@ import { bigCipher, bigPubKey, bigs_to_strs, to_bigs } from '../../crypto/types'
 import { Shuffled, StateAndDispatch } from '../trustee-state'
 import { YouLabel } from '../YouLabel'
 
+type Validations_Table = Record<string, { columns: Record<string, boolean | null>; num_votes: number }>
+
 export const VotesToShuffle = ({ state }: StateAndDispatch) => {
   const { own_index, trustees = [], parameters, threshold_public_key } = state
   const [proofs_shown, set_proofs_shown] = useState<Record<string, boolean>>({})
+
+  /* Object to track which proofs have been validated
+  KEY: null=tbd, true=valid, false=invalid
+  {
+    'admin@secureinternetvoting.org': {
+      num_votes: 4,
+      columns: {
+        president: true,
+        mayor: true,
+      },
+    },
+    'trustee_1@': {
+      num_votes: 4,
+      columns: {
+        president: null,
+        mayor: false,
+      },
+    },
+  }
+  */
+  const [validated_proofs, set_validated_proofs] = useReducer(
+    (
+      prev: Validations_Table,
+      action:
+        | { columns: Record<string, null>; email: string; num_votes: number; type: 'RESET' }
+        | { column: string; email: string; result: boolean; type: 'UPDATE' },
+    ): Validations_Table => {
+      if (action.type === 'RESET')
+        return { ...prev, [action.email]: { columns: action.columns, num_votes: action.num_votes } }
+      if (action.type === 'UPDATE') {
+        const update = { ...prev }
+        update[action.email].columns[action.column] = action.result
+        return update
+      }
+
+      throw new TypeError('Decryption Validation Table: Unknown Action.type')
+    },
+    {},
+  )
+  const num_shuffled_from_trustees = trustees.map(
+    ({ shuffled = {} }) => Object.values(shuffled)[0]?.shuffled.length || 0,
+  )
+  useEffect(() => {
+    trustees.forEach(({ email, shuffled = {} }, index) => {
+      const num_shuffled = num_shuffled_from_trustees[index]
+
+      // Stop if we already checked this trustee
+      if (validated_proofs[email] && validated_proofs[email].num_votes === num_shuffled) return
+
+      console.log(`${email} provided ${num_shuffled} shuffled votes, validating...`)
+      const trustee_validations = mapValues(shuffled, () => null)
+      set_validated_proofs({ columns: trustee_validations, email, num_votes: num_shuffled, type: 'RESET' })
+
+      // Begin (async) validating each proof...
+      Object.keys(trustee_validations).forEach((column) => {
+        verify_shuffle_proof(to_bigs(shuffled[column].proof) as Shuffle_Proof).then((result) => {
+          set_validated_proofs({ column, email, result, type: 'UPDATE' })
+        })
+      })
+    })
+  }, [num_shuffled_from_trustees])
+
   const { g, p } = parameters!
 
   const previous_trustees_shuffled = trustees[own_index - 1]?.shuffled || {}
-  const num_prev_shuffled = Object.values(previous_trustees_shuffled)[0]?.shuffled.length
-  const num_we_shuffled = Object.values(trustees[own_index]?.shuffled || {})[0]?.shuffled.length || 0
+  const num_prev_shuffled = num_shuffled_from_trustees[own_index - 1]
+  const num_we_shuffled = num_shuffled_from_trustees[own_index]
 
   async function shuffleFromPrevious() {
     console.log(`Prev shuffled: ${num_prev_shuffled}, We shuffled: ${num_we_shuffled}. Shuffling...`)
@@ -181,9 +245,9 @@ const ProofValidation = ({ shuffled }: { shuffled: Shuffled }) => {
 
   const [state, setState] = useState<ValidationState>('validating')
 
-  useEffect(() => {
-    setState(isProofValid(shuffled) ? 'valid' : 'invalid')
-  }, [])
+  // useEffect(() => {
+  //   setState(isProofValid(shuffled) ? 'valid' : 'invalid')
+  // }, [])
 
   return (
     <>
@@ -200,6 +264,4 @@ const ProofValidation = ({ shuffled }: { shuffled: Shuffled }) => {
   )
 }
 
-export function isProofValid(shuffled: Shuffled): boolean {
-  return Object.keys(shuffled).every((column) => verify_shuffle_proof(to_bigs(shuffled[column].proof) as Shuffle_Proof))
-}
+export const isProofValid = (): boolean => false
