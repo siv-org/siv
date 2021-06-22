@@ -31,7 +31,7 @@ export const HeaderBar = (): JSX.Element => (
       }
 
       .big {
-        font-size: calc(0.9vw + 0.9rem);
+        font-size: 24px;
         font-weight: 700;
         color: white;
       }

@@ -8,7 +8,7 @@ export const HeaderBar = (): JSX.Element => (
     <style jsx>{`
       div {
         color: #fff;
-        font-size: calc(1.2vw + 1rem);
+        font-size: 28px;
         font-weight: 700;
 
         cursor: default;
