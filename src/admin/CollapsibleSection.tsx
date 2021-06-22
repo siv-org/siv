@@ -53,6 +53,7 @@ export const CollapsibleSection = ({
 
         label {
           opacity: 0.5;
+          white-space: pre-line;
         }
 
         .expanded {

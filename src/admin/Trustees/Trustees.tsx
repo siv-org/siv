@@ -14,7 +14,7 @@ export const Trustees = () => {
   const admin_email = 'admin@secureinternetvoting.org'
 
   return (
-    <CollapsibleSection subtitle="Each Trustee adds extra assurance of vote privacy." title="Trustees">
+    <CollapsibleSection subtitle="Each Trustee adds extra redundancy for vote privacy." title="Trustees">
       <>
         <ol>
           <li>
