@@ -125,6 +125,12 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
           {/* Unlock Votes btn */}
           <OnClickButton
             disabled={!num_approved}
+            disabledExplanation={
+              !num_approved &&
+              esignature_requested &&
+              !!num_voted &&
+              "No votes with approved signatures.\n\nHover over individual signatures to Approve/Reject them, or click 'Signature' column header to Approve All."
+            }
             style={{ margin: 0, marginLeft: 5, padding: '5px 10px' }}
             onClick={async () => {
               toggle_unlocking()
