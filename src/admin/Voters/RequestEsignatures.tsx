@@ -12,7 +12,7 @@ export const RequestEsignatures = () => {
     <div>
       <label>Request eSignatures?</label>
       <Switch
-        checked={esignature_requested}
+        checked={!!esignature_requested}
         color="primary"
         onClick={async () => {
           setUpdating(true)
