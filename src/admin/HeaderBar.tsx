@@ -71,17 +71,6 @@ export const HeaderBar = (): JSX.Element => {
           text-decoration: none;
         }
 
-        @media (max-width: 480px) {
-          a:not(:first-child) {
-            margin-left: 0;
-            margin-top: 0.5rem;
-          }
-
-          div {
-            flex-direction: column;
-          }
-        }
-
         .login-status {
           font-size: 16px;
           padding: 3px 10px;
@@ -91,6 +80,28 @@ export const HeaderBar = (): JSX.Element => {
         .login-status:hover {
           background: #fff2;
           cursor: pointer;
+        }
+
+        @media (max-width: 480px) {
+          a:not(:first-child) {
+            margin-left: 0;
+            margin-top: 0.5rem;
+          }
+
+          .left {
+            display: flex;
+            flex-direction: column;
+          }
+
+          .container > div {
+            flex-direction: column;
+            padding: 1rem;
+          }
+
+          .login-status {
+            margin-top: 0.5rem;
+            padding-left: 0;
+          }
         }
       `}</style>
     </div>
