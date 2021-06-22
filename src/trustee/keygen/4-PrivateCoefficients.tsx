@@ -11,6 +11,9 @@ export const PrivateCoefficients = ({ dispatch, state }: StateAndDispatch) => {
     // This effect will run once all trustees have broadcast a recipient key
     if (!state.trustees || !state.parameters || trustees_w_recipient_keys?.length !== state.trustees.length) return
 
+    // Don't run if we don't have our own local private keys (already joined from another device)
+    if (!state.personal_key_pair) return
+
     // Don't run more than once
     if (state.private_coefficients) return
 
