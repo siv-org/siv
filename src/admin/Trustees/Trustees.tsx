@@ -36,6 +36,7 @@ export const Trustees = () => {
               update={set_new_trustees}
             />
             <SaveButton
+              text={!new_trustees.length ? 'Skip' : 'Save'}
               onPress={async () => {
                 const trustees = [
                   admin_email,

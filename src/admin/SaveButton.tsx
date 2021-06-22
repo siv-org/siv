@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { OnClickButton } from '../landing-page/Button'
 import { Spinner } from './Spinner'
 
-export const SaveButton = ({ id, onPress }: { id?: string; onPress: () => void }) => {
+export const SaveButton = ({ id, onPress, text }: { id?: string; onPress: () => void; text?: string }) => {
   const [pending, set_pending] = useState(false)
   return (
     <>
@@ -17,7 +17,7 @@ export const SaveButton = ({ id, onPress }: { id?: string; onPress: () => void }
           }}
         >
           {!pending ? (
-            ' Save'
+            text || 'Save'
           ) : (
             <>
               <Spinner /> Saving...
