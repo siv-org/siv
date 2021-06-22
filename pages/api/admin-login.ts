@@ -31,7 +31,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   adminDoc.collection('logins').doc(new Date().toISOString()).set({ auth_token, created_at: new Date() })
 
   const link = `${req.headers.origin}/admin?email=${email}&auth=${auth_token}`
-  sendEmail({
+  await sendEmail({
     from: 'Secure Internet Voting',
     recipient: email,
     subject: 'SIV Admin Login',
