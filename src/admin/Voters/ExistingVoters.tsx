@@ -163,7 +163,7 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
         </span>
 
         {esignature_requested && !!num_voted && (
-          <span>
+          <span style={{ textAlign: 'right' }}>
             <i>
               {num_approved} of {num_voted} signatures approved ({Math.round((num_approved / num_voted) * 100)}
               %)
