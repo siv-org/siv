@@ -12,12 +12,12 @@ export const MessagingKeys = ({ dispatch, state }: StateAndDispatch) => {
     // These effects will run once we've received parameters.p and identified ourselves
     if (!state.parameters?.p || !state.own_email) return
 
+    // Don't run more than once
+    if (state.personal_key_pair) return
+
     // Don't run if admin already has a different pub_key for us
     if (state.trustees && state.trustees[state.own_index].recipient_key)
       return alert('Another device has already joined this ceremony using this Trustee Token. Refusing to override.')
-
-    // Don't run more than once
-    if (state.personal_key_pair) return
 
     // Generate your keypair
     const personal_key_pair_bigs = generate_key_pair(big(state.parameters.p))
