@@ -1,6 +1,7 @@
 import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
 import { ElectionLabel } from './1-Label/ElectionLabel'
+import { AllYourElections } from './AllYourElections'
 import { useLoginRequired, useUser } from './auth'
 import { BallotDesign } from './BallotDesign/BallotDesign'
 import { ElectionID } from './ElectionID'
@@ -22,6 +23,7 @@ export const AdminPage = (): JSX.Element => {
 
       <HeaderBar />
       <main>
+        <AllYourElections />
         <h1>{election_title ? `Manage: ${election_title}` : 'Create New Election'}</h1>
         <ElectionID />
         <ElectionLabel />
