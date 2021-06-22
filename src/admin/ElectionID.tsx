@@ -32,6 +32,13 @@ export const ElectionID = () => {
           font-weight: bold;
           color: black;
         }
+
+        @media (max-width: 480px) {
+          div {
+            float: none;
+            bottom: 0;
+          }
+        }
       `}</style>
     </div>
   )
