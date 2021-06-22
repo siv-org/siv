@@ -29,7 +29,8 @@ export const LoginPage = () => {
           <span className="text-xs">Request access</span>
         </a>
       </p>
-      <div className="w-full max-w-md space-y-8">
+      <div className="w-full max-w-md mb-24 space-y-8">
+        <h1 className="mb-16 text-2xl font-bold text-center gradient-background">Secure Internet Voting</h1>
         <h2 className="mt-6 text-3xl font-extrabold text-center text-gray-900">Sign in to your secure account</h2>
 
         <div className="mt-8 space-y-6">
@@ -120,6 +121,12 @@ export const LoginPage = () => {
         </div>
       </div>
       <style jsx>{`
+        .gradient-background {
+          background: linear-gradient(90deg, #010b26 0%, #072054 100%);
+          color: #fff;
+          padding: 8px;
+        }
+
         .error {
           color: red;
           opacity: 0.7;
