@@ -100,7 +100,7 @@ export const HeaderBar = (): JSX.Element => {
 
           .login-status {
             margin-top: 0.5rem;
-            padding-left: 0;
+            margin-left: -10px;
           }
         }
       `}</style>
