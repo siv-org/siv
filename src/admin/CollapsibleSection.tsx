@@ -13,7 +13,7 @@ export const CollapsibleSection = ({
   const [collapsed, toggle] = useReducer((state) => !state, false)
   return (
     <div className="container">
-      <h3 onClick={toggle}>
+      <h3 className={collapsed ? 'collapsed' : ''} onClick={toggle}>
         <>{title}</>
         <span>{collapsed ? <CaretRightOutlined /> : <CaretDownOutlined />}</span>
       </h3>
@@ -29,9 +29,9 @@ export const CollapsibleSection = ({
         }
 
         h3 {
-          background-color: rgba(244, 244, 255, 0.8);
-          border: 1px solid rgba(190, 185, 255, 0.4);
-          border-radius: 2px;
+          background-color: #eaeaea;
+          border: 2px solid #0000;
+          border-radius: 3px;
           cursor: pointer;
           margin-bottom: 5px;
           padding: 5px;
@@ -42,8 +42,12 @@ export const CollapsibleSection = ({
           width: 100%;
         }
 
+        h3.collapsed {
+          border-color: #ccc;
+        }
+
         h3:hover {
-          background-color: rgb(230, 230, 252, 0.9);
+          background-color: rgb(220, 220, 255);
         }
 
         h3 span {
