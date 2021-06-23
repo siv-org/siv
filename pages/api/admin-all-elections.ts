@@ -7,6 +7,8 @@ export type Election = {
   created_at: { _seconds: number }
   election_title: string
   id: string
+  num_voters?: number
+  num_votes?: number
 }
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {

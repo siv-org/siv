@@ -1,3 +1,4 @@
+import { firestore } from 'firebase-admin'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import { firebase } from '../../../_services'
@@ -36,17 +37,20 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Add uniques to DB
   await Promise.all(
-    unique_new_voters.map((voter: string, index: number) =>
-      electionDoc
-        .collection('voters')
-        .doc(voter)
-        .set({
-          added_at: new Date(),
-          auth_token: auth_tokens[index],
-          email: voter,
-          index: index + existing_voters.size,
-        }),
-    ),
+    unique_new_voters
+      .map((voter: string, index: number) =>
+        electionDoc
+          .collection('voters')
+          .doc(voter)
+          .set({
+            added_at: new Date(),
+            auth_token: auth_tokens[index],
+            email: voter,
+            index: index + existing_voters.size,
+          }),
+      )
+      // Increment electionDoc's num_voters cached tally
+      .concat(electionDoc.update({ num_voters: firestore.FieldValue.increment(unique_new_voters.length) })),
   )
 
   return res.status(201).json({ already_added, unique_new_voters })

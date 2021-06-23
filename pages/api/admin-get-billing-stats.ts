@@ -19,8 +19,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const jwt = checkJwt(req, res)
   if (!jwt.valid) return
 
+  // Begin preloading
+  const adminDoc = firebase.firestore().collection('admins').doc(jwt.email).get()
+  const electionsDocs = firebase.firestore().collection('elections').where('creator', '==', jwt.email).get()
+
   // Get any grants given to this admin
-  const { grants } = { ...(await firebase.firestore().collection('admins').doc(jwt.email).get()).data() } as Account
+  const { grants } = { ...(await adminDoc).data() } as Account
 
   const history: History[] = []
   let total_credits = 0
@@ -35,16 +39,39 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     })
   })
 
-  // Find all elections created by this admin
-  const elections = (
-    await firebase.firestore().collection('elections').where('creator', '==', jwt.email).get()
-  ).docs.reduce((acc: Election[], doc) => [{ id: doc.id, ...doc.data() } as Election, ...acc], [])
+  let credits_on_hold = 0
+  let credits_used = 0
+  let num_total_elections = 0
 
-  const credits_on_hold = 0
-  const credits_used = 0
+  // Find all elections created by this admin
+  await Promise.all(
+    (await electionsDocs).docs.map(async (doc) => {
+      num_total_elections += 1
+
+      const e = { id: doc.id, ...doc.data() } as Election
+
+      const eDoc = firebase.firestore().collection('elections').doc(e.id)
+
+      // Calculate num invited
+      if (!e.num_voters) {
+        const voters = await eDoc.collection('voters').get()
+        e.num_voters = voters.docs.length
+        await eDoc.update({ num_voters: voters.docs.length })
+      }
+
+      // Calculate votes used
+      if (!e.num_votes) {
+        const votes = await eDoc.collection('votes').get()
+        e.num_votes = votes.docs.length
+        await eDoc.update({ num_votes: votes.docs.length })
+      }
+
+      credits_on_hold += e.num_voters - e.num_votes
+      credits_used += e.num_votes
+    }),
+  )
 
   const credits_remaining = total_credits - credits_used - credits_on_hold
-  const num_total_elections = elections.length
   // const history: History[] = [
   //   {
   //     amount: 100,

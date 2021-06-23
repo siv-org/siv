@@ -1,3 +1,4 @@
+import { firestore } from 'firebase-admin'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import { stringifyEncryptedVote } from '../../src/status/AcceptedVotes'
@@ -31,8 +32,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const voter = electionDoc.collection('voters').where('auth_token', '==', auth).get()
   const election = electionDoc.get()
 
-  // 2. Store the encrypted vote in db
-  await electionDoc.collection('votes').add({ auth, created_at: new Date(), encrypted_vote, headers: req.headers })
+  await Promise.all([
+    // 2a. Store the encrypted vote in db
+    electionDoc.collection('votes').add({ auth, created_at: new Date(), encrypted_vote, headers: req.headers }),
+    // 2b. Update elections cached tally of num_votes
+    electionDoc.update({ num_votes: firestore.FieldValue.increment(1) }),
+  ])
 
   // 3. Email the voter their submission receipt
   const link = `${req.headers.origin}/election/${election_id}`
