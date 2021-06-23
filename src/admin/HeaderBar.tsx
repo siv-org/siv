@@ -82,7 +82,7 @@ export const HeaderBar = (): JSX.Element => {
           cursor: pointer;
         }
 
-        @media (max-width: 480px) {
+        @media (max-width: 600px) {
           a:not(:first-child) {
             margin-left: 0;
             margin-top: 0.5rem;
