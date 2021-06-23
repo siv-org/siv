@@ -1,35 +1,12 @@
 import { useState } from 'react'
+import useSWR from 'swr'
 
+import { BillingStats } from '../../pages/api/admin-get-billing-stats'
 import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
 import { useLoginRequired, useUser } from './auth'
 import { CollapsibleSection } from './CollapsibleSection'
 import { HeaderBar } from './HeaderBar'
-
-const credits_pending = 36
-const credits_used = 320
-const credits_remaining = 1000 - credits_used - credits_pending
-const num_total_elections = 6
-const history = [
-  {
-    amount: '100',
-    date: '6/3/2021',
-    description: 'Purchased for $200',
-    type: 'purchase',
-  },
-  {
-    amount: '-70',
-    date: '5/27/2021',
-    description: 'Used in *San Francisco Election*',
-    type: 'usage',
-  },
-  {
-    amount: '100',
-    date: '5/26/2021',
-    description: 'From David Ernst: "Enjoy!"',
-    type: 'grant',
-  },
-]
 
 export const BillingPage = (): JSX.Element => {
   const { loading, loggedOut } = useUser()
@@ -37,7 +14,15 @@ export const BillingPage = (): JSX.Element => {
 
   useLoginRequired(loggedOut)
 
+  const { data } = useSWR('/api/admin-get-billing-stats')
+
   if (loading || loggedOut) return <p style={{ fontSize: 21, padding: '1rem' }}>Loading...</p>
+
+  if (!data) {
+    return <>Loading...</>
+  }
+
+  const { credits_on_hold, credits_remaining, credits_used, history, num_total_elections } = data as BillingStats
 
   return (
     <>
@@ -71,7 +56,7 @@ export const BillingPage = (): JSX.Element => {
         <br />
         <p>
           <b>Credits on hold: </b>
-          {credits_pending}
+          {credits_on_hold}
         </p>
         <label>When elections close and stop accepting new votes, credits on hold are returned.</label>
         <br />
@@ -103,7 +88,7 @@ export const BillingPage = (): JSX.Element => {
             <tbody>
               {history.map(({ amount, date, description, type }, index) => (
                 <tr key={index}>
-                  <td>{date}</td>
+                  <td>{new Date(date).toDateString()}</td>
                   <td>{type}</td>
                   <td className={type === 'usage' ? 'red' : 'green'}>{amount}</td>
                   <td className="left">{description}</td>
@@ -133,6 +118,10 @@ export const BillingPage = (): JSX.Element => {
         label a {
           font-weight: 700;
           cursor: pointer;
+        }
+
+        label i {
+          color: #000d;
         }
 
         h3 {
