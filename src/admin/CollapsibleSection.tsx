@@ -29,9 +29,9 @@ export const CollapsibleSection = ({
         }
 
         h3 {
-          background-color: #eaeaea;
-          border: 2px solid #0000;
-          border-radius: 3px;
+          background-color: #ededed;
+          border: 1px solid #00286800;
+          border-radius: 2px;
           cursor: pointer;
           margin-bottom: 5px;
           padding: 5px;
@@ -42,12 +42,17 @@ export const CollapsibleSection = ({
           width: 100%;
         }
 
-        h3.collapsed {
-          border-color: #ccc;
+        h3:hover {
+          background-color: #f1f1ff;
+          border-color: #00286811;
         }
 
-        h3:hover {
-          background-color: rgb(220, 220, 255);
+        h3.collapsed {
+          border-color: #00286844;
+        }
+
+        h3.collapsed:hover {
+          border-color: #00286833;
         }
 
         h3 span {
