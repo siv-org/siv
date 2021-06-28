@@ -17,7 +17,10 @@ export const HeaderBar = (): JSX.Element => {
 
       <section className="right">
         <div className="title">
-          Managing: <i>{election_title}</i> <span>ID: {election_id}</span>
+          <div className="back-btn">←</div>
+          <div className="current-election">
+            Managing: <i>{election_title}</i> <span>ID: {election_id}</span>
+          </div>
         </div>
 
         <div
@@ -43,25 +46,46 @@ export const HeaderBar = (): JSX.Element => {
         }
 
         .left {
-          width: 215px;
+          width: 205px;
           padding: 1rem;
         }
 
-        .title span {
+        .title {
+          display: flex;
+        }
+
+        .back-btn {
+          margin-right: 15px;
+          opacity: 0.4;
+          border-radius: 100px;
+          width: 30px;
+          height: 30px;
+          line-height: 30px;
+          font-weight: 700;
+          text-align: center;
+        }
+
+        .back-btn:hover {
+          opacity: 0.9;
+          background: #fff2;
+          cursor: pointer;
+        }
+
+        .current-election span {
           display: block;
           text-transform: uppercase;
           font-size: 10px;
           opacity: 0.8;
         }
 
-        .title {
+        .current-election {
           font-size: 14px;
         }
 
         .right {
           width: 100%;
           margin: 0 auto;
-          padding: 1rem 3rem;
+          padding: 1rem 0rem;
 
           display: flex;
 
@@ -101,6 +125,8 @@ export const HeaderBar = (): JSX.Element => {
 
           display: flex;
           align-items: center;
+
+          margin-right: 1rem;
         }
 
         .login-status:hover {

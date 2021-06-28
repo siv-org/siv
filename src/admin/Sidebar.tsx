@@ -10,12 +10,6 @@ export const Sidebar = () => {
   return (
     <div className="sidebar">
       <main>
-        <div>
-          <Link href="/admin">
-            <a className="all-elections">← All Elections</a>
-          </Link>
-        </div>
-
         <>
           <label>Election Management</label>
           {sections.map((s) => (
@@ -50,7 +44,6 @@ export const Sidebar = () => {
           min-width: 215px;
           padding: 0px 13px;
           background-color: #eee;
-          padding-top: 1rem;
 
           height: calc(100vh - 66px);
 
