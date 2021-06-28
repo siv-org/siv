@@ -1,3 +1,5 @@
+import { useRouter } from 'next/router'
+
 import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
 import { ElectionLabel } from './1-Label/ElectionLabel'
@@ -14,6 +16,7 @@ import { AddVoters } from './Voters/AddVoters'
 export const AdminPage = (): JSX.Element => {
   const { loading, loggedOut } = useUser()
   const { ballot_design, election_manager, election_title, threshold_public_key } = useStored()
+  const { section } = useRouter().query
 
   useLoginRequired(loggedOut)
 
@@ -29,10 +32,10 @@ export const AdminPage = (): JSX.Element => {
           <AllYourElections />
           <h1>{election_title ? `Manage: ${election_title}` : 'Create New Election'}</h1>
           <ElectionID />
-          <ElectionLabel />
-          {election_manager && <Trustees />}
-          {threshold_public_key && <BallotDesign />}
-          {ballot_design && <AddVoters />}
+          {section === 'overview' && <ElectionLabel />}
+          {section === 'trustees' && <Trustees />}
+          {section === 'ballot-design' && <BallotDesign />}
+          {section === 'voters' && <AddVoters />}
         </div>
       </main>
 
@@ -45,6 +48,7 @@ export const AdminPage = (): JSX.Element => {
 
         .content {
           padding: 1rem;
+          width: 100%;
         }
 
         h1 {

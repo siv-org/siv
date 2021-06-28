@@ -18,7 +18,7 @@ export const Sidebar = () => {
         ))}
       </>
       <>
-        <label>Public pages</label>
+        <label>Public Pages</label>
         <Link href="/voters">
           <a>Vote page</a>
         </Link>
@@ -32,6 +32,7 @@ export const Sidebar = () => {
           min-width: 215px;
           padding: 0px 13px;
           background-color: #eee;
+          height: calc(100vh - 66px);
         }
 
         label {
@@ -47,19 +48,19 @@ export const Sidebar = () => {
           margin: 4px 0;
           font-weight: 500;
           cursor: pointer;
-          color: #000a;
+          color: #000c;
           transition: 0.05s color linear;
           font-size: 16px;
         }
 
         a:hover {
-          color: #000000f3;
+          color: #000;
           background-color: #ffffff58;
           text-decoration: none;
         }
 
         a.current {
-          background-color: #ffffff98;
+          background-color: #fff;
         }
 
         /* Hide for small screens */
