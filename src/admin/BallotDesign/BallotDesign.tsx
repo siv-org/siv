@@ -1,4 +1,3 @@
-import { CollapsibleSection } from '../CollapsibleSection'
 import { useStored } from '../useStored'
 import { DesignInput } from './DesignInput'
 import { StoredDesign } from './StoredDesign'
@@ -6,6 +5,9 @@ import { StoredDesign } from './StoredDesign'
 export const BallotDesign = () => {
   const { ballot_design } = useStored()
   return (
-    <CollapsibleSection title="Ballot Design">{!ballot_design ? <DesignInput /> : <StoredDesign />}</CollapsibleSection>
+    <>
+      <h2>Ballot Design</h2>
+      {!ballot_design ? <DesignInput /> : <StoredDesign />}
+    </>
   )
 }

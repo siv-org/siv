@@ -1,15 +1,7 @@
 import { CaretDownOutlined, CaretRightOutlined } from '@ant-design/icons'
 import { useReducer } from 'react'
 
-export const CollapsibleSection = ({
-  children,
-  subtitle,
-  title,
-}: {
-  children: JSX.Element | JSX.Element[]
-  subtitle?: string
-  title: string
-}) => {
+export const CollapsibleSection = ({ children, title }: { children: JSX.Element | JSX.Element[]; title: string }) => {
   const [collapsed, toggle] = useReducer((state) => !state, false)
   return (
     <div className="container">
@@ -17,12 +9,7 @@ export const CollapsibleSection = ({
         <>{title}</>
         <span>{collapsed ? <CaretRightOutlined /> : <CaretDownOutlined />}</span>
       </h3>
-      {!collapsed && (
-        <div className="expanded">
-          {subtitle && <label>{subtitle}</label>}
-          {children}
-        </div>
-      )}
+      {!collapsed && <div className="expanded">{children}</div>}
       <style jsx>{`
         div {
           margin-bottom: 20px;
@@ -58,11 +45,6 @@ export const CollapsibleSection = ({
         h3 span {
           color: #051537;
           opacity: 0.5;
-        }
-
-        label {
-          opacity: 0.5;
-          white-space: pre-line;
         }
 
         .expanded {
