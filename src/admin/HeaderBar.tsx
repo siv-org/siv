@@ -17,10 +17,16 @@ export const HeaderBar = (): JSX.Element => {
 
       <section className="right">
         <div className="title">
-          <div className="back-btn">←</div>
-          <div className="current-election">
-            Managing: <i>{election_title}</i> <span>ID: {election_id}</span>
-          </div>
+          {election_id && (
+            <>
+              <Link href="/admin">
+                <a className="back-btn">←</a>
+              </Link>
+              <div className="current-election">
+                Managing: <i>{election_title}</i> <span>ID: {election_id}</span>
+              </div>
+            </>
+          )}
         </div>
 
         <div
@@ -56,6 +62,7 @@ export const HeaderBar = (): JSX.Element => {
 
         .back-btn {
           margin-right: 15px;
+          color: #fff;
           opacity: 0.4;
           border-radius: 100px;
           width: 30px;
@@ -69,6 +76,7 @@ export const HeaderBar = (): JSX.Element => {
           opacity: 0.9;
           background: #fff2;
           cursor: pointer;
+          text-decoration: none;
         }
 
         .current-election span {
