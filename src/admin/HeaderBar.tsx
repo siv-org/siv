@@ -2,19 +2,22 @@ import { UserOutlined } from '@ant-design/icons'
 import Link from 'next/link'
 
 import { logout, useUser } from './auth'
+import { useStored } from './useStored'
 
 export const HeaderBar = (): JSX.Element => {
   const { user } = useUser()
+  const { election_id, election_title } = useStored()
   return (
     <div className="container">
-      <div>
-        <div className="left">
-          <Link href="/">
-            <a className="big">Secure Internet Voting</a>
-          </Link>
-          <Link href="/protocol">
-            <a>Protocol</a>
-          </Link>
+      <section className="left">
+        <Link href="/">
+          <a className="big">SIV</a>
+        </Link>
+      </section>
+
+      <section className="right">
+        <div className="title">
+          Managing: <i>{election_title}</i> <span>ID: {election_id}</span>
         </div>
 
         <div
@@ -27,7 +30,7 @@ export const HeaderBar = (): JSX.Element => {
           <UserOutlined />
           &nbsp; {user.name}
         </div>
-      </div>
+      </section>
       <style jsx>{`
         .container {
           background: rgb(1, 5, 11);
@@ -35,16 +38,32 @@ export const HeaderBar = (): JSX.Element => {
 
           color: #fff;
 
-          cursor: default;
+          display: flex;
+          align-content: center;
         }
 
-        .container > div {
+        .left {
+          width: 215px;
+          padding: 1rem;
+        }
+
+        .title span {
+          display: block;
+          text-transform: uppercase;
+          font-size: 10px;
+          opacity: 0.8;
+        }
+
+        .title {
+          font-size: 14px;
+        }
+
+        .right {
           width: 100%;
           margin: 0 auto;
           padding: 1rem 3rem;
 
           display: flex;
-          align-items: baseline;
 
           justify-content: space-between;
         }
@@ -52,7 +71,11 @@ export const HeaderBar = (): JSX.Element => {
         .big {
           font-size: 24px;
           font-weight: 700;
-          color: white;
+          color: #ddd;
+        }
+
+        .big:hover {
+          color: #fff;
         }
 
         a:not(:first-child) {
@@ -75,6 +98,9 @@ export const HeaderBar = (): JSX.Element => {
           font-size: 16px;
           padding: 3px 10px;
           border-radius: 4px;
+
+          display: flex;
+          align-items: center;
         }
 
         .login-status:hover {

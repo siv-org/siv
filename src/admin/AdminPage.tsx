@@ -15,7 +15,7 @@ import { AddVoters } from './Voters/AddVoters'
 
 export const AdminPage = (): JSX.Element => {
   const { loading, loggedOut } = useUser()
-  const { ballot_design, election_manager, election_title, threshold_public_key } = useStored()
+  const { election_title } = useStored()
   const { section } = useRouter().query
 
   useLoginRequired(loggedOut)
@@ -25,13 +25,13 @@ export const AdminPage = (): JSX.Element => {
     <>
       <Head title="Create new election" />
 
-      <HeaderBar />
+      <HeaderBar {...{ election_title }} />
       <main>
         <Sidebar />
         <div className="content">
           <AllYourElections />
-          <h1>{election_title ? `Manage: ${election_title}` : 'Create New Election'}</h1>
-          <ElectionID />
+          {/* <h1>{election_title ? `Manage: ${election_title}` : 'Create New Election'}</h1>
+          <ElectionID /> */}
           {section === 'overview' && <ElectionLabel />}
           {section === 'trustees' && <Trustees />}
           {section === 'ballot-design' && <BallotDesign />}

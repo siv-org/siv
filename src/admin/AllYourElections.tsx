@@ -15,9 +15,19 @@ export const AllYourElections = () => {
 
   if (useRouter().query.election_id)
     return (
-      <Link href="/admin">
-        <a>← All Elections</a>
-      </Link>
+      <div>
+        <Link href="/admin">
+          <a>← All Elections</a>
+        </Link>
+        <style jsx>{`
+          /* Hide when sidebar shown */
+          @media (min-width: 1030px) {
+            div {
+              display: none;
+            }
+          }
+        `}</style>
+      </div>
     )
 
   return (
