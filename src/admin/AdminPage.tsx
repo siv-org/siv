@@ -9,6 +9,7 @@ import { HeaderBar } from './HeaderBar'
 import { ElectionOverview } from './Overview/ElectionOverview'
 import { Sidebar } from './Sidebar'
 import { Trustees } from './Trustees/Trustees'
+import { usePusher } from './usePusher'
 import { AddVoters } from './Voters/AddVoters'
 
 export const AdminPage = (): JSX.Element => {
@@ -16,6 +17,7 @@ export const AdminPage = (): JSX.Element => {
   const { election_id, section } = useRouter().query
 
   useLoginRequired(loggedOut)
+  usePusher(election_id as string | undefined)
 
   if (loading || loggedOut) return <p style={{ fontSize: 21, padding: '1rem' }}>Loading...</p>
   return (
@@ -27,7 +29,6 @@ export const AdminPage = (): JSX.Element => {
         <Sidebar />
         <div className="content">
           <AllYourElections />
-          {/* <ElectionID /> */}
           {(section === 'overview' || !election_id) && <ElectionOverview />}
           {section === 'trustees' && <Trustees />}
           {section === 'ballot-design' && <BallotDesign />}

@@ -1,4 +1,5 @@
 import { UserOutlined } from '@ant-design/icons'
+import Head from 'next/head'
 import Link from 'next/link'
 
 import { logout, useUser } from './auth'
@@ -19,6 +20,9 @@ export const HeaderBar = (): JSX.Element => {
         <div className="title">
           {election_id && (
             <>
+              <Head>
+                <title key="title">SIV: Manage {election_title}</title>
+              </Head>
               <Link href="/admin">
                 <a className="back-btn">←</a>
               </Link>
