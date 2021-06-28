@@ -28,7 +28,7 @@ export const AdminPage = (): JSX.Element => {
         <div className="content">
           <AllYourElections />
           {/* <ElectionID /> */}
-          {section === 'overview' || (!election_id && <ElectionOverview />)}
+          {(section === 'overview' || !election_id) && <ElectionOverview />}
           {section === 'trustees' && <Trustees />}
           {section === 'ballot-design' && <BallotDesign />}
           {section === 'voters' && <AddVoters />}
