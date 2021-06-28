@@ -1,22 +1,21 @@
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 export const Sidebar = () => {
+  const { section } = useRouter().query
+
+  const sections = ['Overview', 'Trustees', 'Ballot Design', 'Voters']
+  const urled = (s: string) => s.toLowerCase().replaceAll(' ', '-')
+
   return (
     <div className="sidebar">
       <>
         <label>Election Management</label>
-        <Link href="/overview">
-          <a>Overview</a>
-        </Link>
-        <Link href="/trustees">
-          <a>Trustees</a>
-        </Link>
-        <Link href="/ballot-design">
-          <a>Ballot Design</a>
-        </Link>
-        <Link href="/voters">
-          <a>Voters</a>
-        </Link>
+        {sections.map((s) => (
+          <Link href={`./${urled(s)}`} key={s}>
+            <a className={urled(s) === section ? 'current' : ''}>{s}</a>
+          </Link>
+        ))}
       </>
       <>
         <label>Public pages</label>
@@ -60,7 +59,7 @@ export const Sidebar = () => {
         }
 
         a.current {
-          background-color: #ffffff28;
+          background-color: #ffffff98;
         }
 
         /* Hide for small screens */
