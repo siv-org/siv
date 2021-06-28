@@ -31,10 +31,10 @@ export const Sidebar = () => {
 
       <div className="bottom">
         <label>Support</label>
-        <Link href="/voters">
-          <a>Protocol Overview</a>
+        <Link href="/protocol">
+          <a target="_blank">Protocol Overview</a>
         </Link>
-        <Link href="/voters">
+        <Link href="mailto:help@secureinternetvoting.org">
           <a>Get Help</a>
         </Link>
       </div>
