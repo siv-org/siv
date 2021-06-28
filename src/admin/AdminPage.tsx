@@ -2,20 +2,17 @@ import { useRouter } from 'next/router'
 
 import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
-import { ElectionLabel } from './1-Label/ElectionLabel'
 import { AllYourElections } from './AllYourElections'
 import { useLoginRequired, useUser } from './auth'
 import { BallotDesign } from './BallotDesign/BallotDesign'
-import { ElectionID } from './ElectionID'
 import { HeaderBar } from './HeaderBar'
+import { ElectionOverview } from './Overview/ElectionOverview'
 import { Sidebar } from './Sidebar'
 import { Trustees } from './Trustees/Trustees'
-import { useStored } from './useStored'
 import { AddVoters } from './Voters/AddVoters'
 
 export const AdminPage = (): JSX.Element => {
   const { loading, loggedOut } = useUser()
-  const { election_title } = useStored()
   const { section } = useRouter().query
 
   useLoginRequired(loggedOut)
@@ -25,14 +22,14 @@ export const AdminPage = (): JSX.Element => {
     <>
       <Head title="Create new election" />
 
-      <HeaderBar {...{ election_title }} />
+      <HeaderBar />
       <main>
         <Sidebar />
         <div className="content">
           <AllYourElections />
           {/* <h1>{election_title ? `Manage: ${election_title}` : 'Create New Election'}</h1>
           <ElectionID /> */}
-          {section === 'overview' && <ElectionLabel />}
+          {section === 'overview' && <ElectionOverview />}
           {section === 'trustees' && <Trustees />}
           {section === 'ballot-design' && <BallotDesign />}
           {section === 'voters' && <AddVoters />}
