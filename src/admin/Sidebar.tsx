@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 export const Sidebar = () => {
-  const { section } = useRouter().query
+  const { election_id, section } = useRouter().query
 
   const sections = ['Overview', 'Trustees', 'Ballot Design', 'Voters']
   const urled = (s: string) => s.toLowerCase().replaceAll(' ', '-')
@@ -20,11 +20,11 @@ export const Sidebar = () => {
         </>
         <>
           <label>Public Pages</label>
-          <Link href="/voters">
-            <a>Cast Vote</a>
+          <Link href={`/election/${election_id}/vote`}>
+            <a target="_blank">Cast Vote</a>
           </Link>
-          <Link href="/voters">
-            <a>Election Status</a>
+          <Link href={`/election/${election_id}`}>
+            <a target="_blank">Election Status</a>
           </Link>
         </>
       </main>
