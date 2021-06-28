@@ -13,7 +13,7 @@ import { AddVoters } from './Voters/AddVoters'
 
 export const AdminPage = (): JSX.Element => {
   const { loading, loggedOut } = useUser()
-  const { section } = useRouter().query
+  const { election_id, section } = useRouter().query
 
   useLoginRequired(loggedOut)
 
@@ -27,9 +27,8 @@ export const AdminPage = (): JSX.Element => {
         <Sidebar />
         <div className="content">
           <AllYourElections />
-          {/* <h1>{election_title ? `Manage: ${election_title}` : 'Create New Election'}</h1>
-          <ElectionID /> */}
-          {section === 'overview' && <ElectionOverview />}
+          {/* <ElectionID /> */}
+          {section === 'overview' || (!election_id && <ElectionOverview />)}
           {section === 'trustees' && <Trustees />}
           {section === 'ballot-design' && <BallotDesign />}
           {section === 'voters' && <AddVoters />}

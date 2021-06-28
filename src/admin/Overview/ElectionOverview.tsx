@@ -9,7 +9,7 @@ export const ElectionOverview = () => {
 
   return (
     <>
-      <h2>Election Overview</h2>
+      <h2>{!election_title ? 'Create New Election' : 'Election Overview'}</h2>
       <label>Election Title:</label>
       {!election_title ? (
         <TitleInput />

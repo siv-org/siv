@@ -9,25 +9,29 @@ export const Sidebar = () => {
 
   return (
     <div className="sidebar">
-      <main>
-        <>
-          <label>Election Management</label>
-          {sections.map((s) => (
-            <Link href={`./${urled(s)}`} key={s}>
-              <a className={urled(s) === section ? 'current' : ''}>{s}</a>
+      {election_id ? (
+        <main>
+          <>
+            <label>Election Management</label>
+            {sections.map((s) => (
+              <Link href={`./${urled(s)}`} key={s}>
+                <a className={urled(s) === section ? 'current' : ''}>{s}</a>
+              </Link>
+            ))}
+          </>
+          <>
+            <label>Public Pages</label>
+            <Link href={`/election/${election_id}/vote`}>
+              <a target="_blank">Cast Vote</a>
             </Link>
-          ))}
-        </>
-        <>
-          <label>Public Pages</label>
-          <Link href={`/election/${election_id}/vote`}>
-            <a target="_blank">Cast Vote</a>
-          </Link>
-          <Link href={`/election/${election_id}`}>
-            <a target="_blank">Election Status</a>
-          </Link>
-        </>
-      </main>
+            <Link href={`/election/${election_id}`}>
+              <a target="_blank">Election Status</a>
+            </Link>
+          </>
+        </main>
+      ) : (
+        <></>
+      )}
 
       <div className="bottom">
         <label>Support</label>
