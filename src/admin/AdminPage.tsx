@@ -6,6 +6,7 @@ import { useLoginRequired, useUser } from './auth'
 import { BallotDesign } from './BallotDesign/BallotDesign'
 import { ElectionID } from './ElectionID'
 import { HeaderBar } from './HeaderBar'
+import { Sidebar } from './Sidebar'
 import { Trustees } from './Trustees/Trustees'
 import { useStored } from './useStored'
 import { AddVoters } from './Voters/AddVoters'
@@ -23,20 +24,26 @@ export const AdminPage = (): JSX.Element => {
 
       <HeaderBar />
       <main>
-        <AllYourElections />
-        <h1>{election_title ? `Manage: ${election_title}` : 'Create New Election'}</h1>
-        <ElectionID />
-        <ElectionLabel />
-        {election_manager && <Trustees />}
-        {threshold_public_key && <BallotDesign />}
-        {ballot_design && <AddVoters />}
+        <Sidebar />
+        <div className="content">
+          <AllYourElections />
+          <h1>{election_title ? `Manage: ${election_title}` : 'Create New Election'}</h1>
+          <ElectionID />
+          <ElectionLabel />
+          {election_manager && <Trustees />}
+          {threshold_public_key && <BallotDesign />}
+          {ballot_design && <AddVoters />}
+        </div>
       </main>
 
       <style jsx>{`
         main {
-          max-width: 775px;
           width: 100%;
           margin: 0 auto;
+          display: flex;
+        }
+
+        .content {
           padding: 1rem;
         }
 
