@@ -52,13 +52,13 @@ export const HeaderBar = (): JSX.Element => {
           color: #fff;
 
           display: flex;
-          align-content: center;
 
           width: 100%;
         }
 
         .left {
-          width: 250px;
+          min-width: 200px;
+          max-width 200px;
           padding: 1rem;
         }
 
