@@ -55,14 +55,14 @@ export const AdminPage = (): JSX.Element => {
         /* When sidebar disappears */
         @media (max-width: 500px) {
           .content {
+            position: relative;
+            top: 0;
             left: 0;
-            right: 0;
-          }
-        }
 
-        h1 {
-          margin-top: 0;
-          font-size: 22px;
+            width: 100%;
+
+            padding: 1rem;
+          }
         }
       `}</style>
       <GlobalCSS />
