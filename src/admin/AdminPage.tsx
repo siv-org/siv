@@ -6,6 +6,7 @@ import { AllYourElections } from './AllYourElections'
 import { useLoginRequired, useUser } from './auth'
 import { BallotDesign } from './BallotDesign/BallotDesign'
 import { HeaderBar } from './HeaderBar'
+import { MobileTopbar } from './MobileTopbar'
 import { ElectionOverview } from './Overview/ElectionOverview'
 import { Sidebar } from './Sidebar'
 import { Trustees } from './Trustees/Trustees'
@@ -28,6 +29,7 @@ export const AdminPage = (): JSX.Element => {
       <main>
         <Sidebar />
         <div className="content">
+          <MobileTopbar />
           <AllYourElections />
           {(section === 'overview' || !election_id) && <ElectionOverview />}
           {section === 'trustees' && <Trustees />}
