@@ -81,7 +81,6 @@ export const HeaderBar = (): JSX.Element => {
 
         .right {
           width: 100%;
-          margin: 0 auto;
           padding: 1rem 0rem;
 
           display: flex;
@@ -139,7 +138,24 @@ export const HeaderBar = (): JSX.Element => {
           cursor: pointer;
         }
 
-        @media (max-width: 600px) {
+        /* When Sidebar disappears */
+        @media (max-width: 500px) {
+          .container {
+            justify-content: space-between;
+          }
+
+          .right {
+            width: initial;
+            margin-right: 1rem;
+          }
+
+          .back-btn {
+            margin-right: 10px;
+          }
+
+          .login-status {
+            display: none;
+          }
         }
       `}</style>
     </div>
