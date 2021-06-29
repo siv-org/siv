@@ -45,7 +45,12 @@ export const AdminPage = (): JSX.Element => {
 
         .content {
           padding: 1rem;
-          width: 100%;
+          overflow: scroll;
+          position: absolute;
+          left: 215px;
+          right: 0;
+          top: 66px;
+          bottom: 0;
         }
 
         h1 {
@@ -54,6 +59,11 @@ export const AdminPage = (): JSX.Element => {
         }
       `}</style>
       <GlobalCSS />
+      <style global jsx>{`
+        body {
+          overflow: hidden;
+        }
+      `}</style>
     </>
   )
 }

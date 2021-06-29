@@ -68,12 +68,14 @@ export const Sidebar = () => {
 
       <style jsx>{`
         .sidebar {
-          min-width: 215px;
+          width: 215px;
           padding: 0px 13px;
           padding-left: 8px;
           background-color: #eee;
 
           height: calc(100vh - 66px);
+
+          overflow-y: scroll;
 
           display: flex;
           flex-direction: column;

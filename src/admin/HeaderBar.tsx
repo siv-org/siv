@@ -53,6 +53,8 @@ export const HeaderBar = (): JSX.Element => {
 
           display: flex;
           align-content: center;
+
+          width: 100%;
         }
 
         .left {
