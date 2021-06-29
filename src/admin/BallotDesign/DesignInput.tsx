@@ -34,12 +34,18 @@ export const DesignInput = () => {
             // Ballot must be an array
             if (!Array.isArray(parsed)) throw 'Must be an array'
 
-            // Ensure there are no duplicate IDs
             const ids: Record<string, boolean> = {}
             parsed.forEach((question) => {
+              // Ensure there are no duplicate IDs
               const id = question.id || 'vote'
               if (ids[id]) throw 'Each question must have a unique ID'
               ids[id] = true
+
+              // Ensure each question has an options array
+              if (!question.options || !Array.isArray(question.options))
+                throw `Question ${question.id ? `'${question.id}'` : ''} is missing an options array`
+
+              // Ensure no question has duplicate options
             })
 
             // Passed validation
