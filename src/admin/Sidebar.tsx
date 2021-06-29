@@ -1,10 +1,18 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
+import { useStored } from './useStored'
+
 export const Sidebar = () => {
   const { election_id, section } = useRouter().query
+  const { ballot_design, election_manager, election_title, threshold_public_key } = useStored()
 
-  const sections = ['Overview', 'Trustees', 'Ballot Design', 'Voters']
+  const sections: [string, boolean][] = [
+    ['Overview', !!election_manager && !!election_title],
+    ['Trustees', !!threshold_public_key],
+    ['Ballot Design', !!ballot_design],
+    ['Voters', true],
+  ]
   const urled = (s: string) => s.toLowerCase().replaceAll(' ', '-')
 
   return (
@@ -13,9 +21,12 @@ export const Sidebar = () => {
         <main>
           <>
             <label>Election Management</label>
-            {sections.map((s) => (
-              <Link href={`./${urled(s)}`} key={s}>
-                <a className={urled(s) === section ? 'current' : ''}>{s}</a>
+            {sections.map(([name, completed]) => (
+              <Link href={`./${urled(name)}`} key={name}>
+                <a className={urled(name) === section ? 'current' : ''}>
+                  {name !== 'Voters' ? <input checked={completed} type="checkbox" /> : <div className="voters-box" />}
+                  {name}
+                </a>
               </Link>
             ))}
           </>
@@ -57,7 +68,7 @@ export const Sidebar = () => {
         }
 
         /* Hide for small screens */
-        @media (max-width: 1030px) {
+        @media (max-width: 500px) {
           .sidebar {
             display: none;
           }
@@ -87,8 +98,15 @@ export const Sidebar = () => {
           text-decoration: none;
         }
 
-        a.current {
-          background-color: #fff;
+        a.current,
+        a.current:hover {
+          background-color: #fff !important;
+        }
+
+        a input {
+          position: relative;
+          bottom: 2px;
+          margin-right: 8px;
         }
 
         .bottom {
