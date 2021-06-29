@@ -10,7 +10,7 @@ import { QueuedCell } from './QueuedCell'
 import { Signature, getStatus } from './Signature'
 
 export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
-  const { election_id, esignature_requested, voters } = useStored()
+  const { ballot_design, election_id, esignature_requested, voters } = useStored()
   const [mask_tokens, toggle_tokens] = useReducer((state) => !state, true)
   const [checked, set_checked] = useState(new Array(voters?.length).fill(false))
   const num_checked = checked.filter((c) => c).length
@@ -86,6 +86,8 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
             disabled={!num_checked}
             style={{ margin: 0, padding: '5px 10px' }}
             onClick={async () => {
+              if (!ballot_design) return alert('You need to save a Ballot Design first.')
+
               toggle_sending()
               const voters_to_invite = checked.reduce((acc: string[], is_checked, index) => {
                 if (is_checked) acc.push(voters[index].email)
