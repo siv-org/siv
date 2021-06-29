@@ -41,7 +41,6 @@ export const AdminPage = (): JSX.Element => {
       <style jsx>{`
         main {
           width: 100%;
-          margin: 0 auto;
           display: flex;
         }
 
@@ -57,8 +56,6 @@ export const AdminPage = (): JSX.Element => {
         /* When sidebar disappears */
         @media (max-width: 500px) {
           .content {
-            position: relative;
-            top: 0;
             left: 0;
 
             width: 100%;
