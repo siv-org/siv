@@ -21,7 +21,7 @@ export const DesignInput = () => {
   const { election_id } = useStored()
 
   return (
-    <>
+    <div style={{ width: 'calc(90vW - 200px)' }}>
       {error && <span className="error">⚠️ &nbsp;{error}</span>}
       <textarea
         id="ballot-design"
@@ -77,7 +77,7 @@ export const DesignInput = () => {
           font-weight: 600;
         }
       `}</style>
-    </>
+    </div>
   )
 }
 

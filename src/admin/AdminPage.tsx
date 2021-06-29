@@ -44,11 +44,10 @@ export const AdminPage = (): JSX.Element => {
         }
 
         .content {
-          padding: 1rem;
+          padding: 1rem 2rem;
           overflow: scroll;
           position: absolute;
           left: 215px;
-          right: 0;
           top: 66px;
           bottom: 0;
         }

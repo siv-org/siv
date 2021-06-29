@@ -58,7 +58,7 @@ export const HeaderBar = (): JSX.Element => {
         }
 
         .left {
-          width: 205px;
+          width: 250px;
           padding: 1rem;
         }
 
@@ -67,7 +67,7 @@ export const HeaderBar = (): JSX.Element => {
         }
 
         .back-btn {
-          margin-right: 15px;
+          margin-right: 18px;
           color: #fff;
           opacity: 0.4;
           border-radius: 100px;
