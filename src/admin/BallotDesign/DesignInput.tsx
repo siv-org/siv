@@ -1,3 +1,4 @@
+import router from 'next/router'
 import { useState } from 'react'
 
 import { api } from '../../api-helper'
@@ -55,6 +56,7 @@ export const DesignInput = () => {
 
           if (response.status === 201) {
             revalidate(election_id)
+            router.push(`${window.location.origin}/admin/${election_id}/voters`)
           } else {
             throw await response.json()
           }
