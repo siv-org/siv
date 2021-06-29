@@ -73,6 +73,10 @@ export const Trustees = () => {
           .container {
             max-width: 100%;
           }
+
+          h2 {
+            display: none;
+          }
         }
 
         span {

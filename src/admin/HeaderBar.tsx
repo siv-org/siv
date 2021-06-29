@@ -2,7 +2,7 @@ import { UserOutlined } from '@ant-design/icons'
 import Head from 'next/head'
 import Link from 'next/link'
 
-import { logout, useUser } from './auth'
+import { promptLogout, useUser } from './auth'
 import { useStored } from './useStored'
 
 export const HeaderBar = (): JSX.Element => {
@@ -33,13 +33,7 @@ export const HeaderBar = (): JSX.Element => {
           )}
         </div>
 
-        <div
-          className="login-status"
-          onClick={() => {
-            const pressed_ok = confirm('Do you wish to logout?')
-            if (pressed_ok) logout()
-          }}
-        >
+        <div className="login-status" onClick={promptLogout}>
           <UserOutlined />
           &nbsp; {user.name}
         </div>

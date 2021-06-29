@@ -1,7 +1,10 @@
 import router, { useRouter } from 'next/router'
 
+import { promptLogout, useUser } from './auth'
+
 export const MobileTopbar = () => {
   const { election_id, section } = useRouter().query
+  const { user } = useUser()
 
   const urled = (s: string) => s.toLowerCase().replaceAll(' ', '-')
 
@@ -26,6 +29,7 @@ export const MobileTopbar = () => {
         ['Get Help', 'mailto:help@secureinternetvoting.org'],
       ],
     },
+    { header: 'Logged in as:', options: [[user.name, 'LOGOUT']] },
   ]
 
   return (
@@ -38,7 +42,8 @@ export const MobileTopbar = () => {
           const url = selected.getAttribute('data-url')
           const sametab = selected.getAttribute('data-sametab')
 
-          console.log({ sametab, url })
+          // Special handling for logout
+          if (url === 'LOGOUT') return promptLogout()
 
           if (!url) return
           sametab ? router.push(url) : window.open(url, '_blank')
@@ -55,7 +60,9 @@ export const MobileTopbar = () => {
         ))}
       </select>
       <style jsx>{`
-        .mobile-topbar {
+        select,
+        optgroup {
+          font-size: 30px;
         }
 
         /* Hide for all but small screens */

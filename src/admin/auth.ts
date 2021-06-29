@@ -9,7 +9,12 @@ import { api } from '../api-helper'
 export const cookie_name = 'siv-jwt'
 const jwt_api_path = '/api/validate-admin-jwt'
 
-export function logout() {
+export function promptLogout() {
+  const pressed_ok = confirm('Do you wish to logout?')
+  if (pressed_ok) logout()
+}
+
+function logout() {
   // Delete cookie
   document.cookie = `${cookie_name}=; expires=Thu, 01 Jan 1970 00:00:01 GMT;`
 
