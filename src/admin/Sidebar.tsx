@@ -1,4 +1,4 @@
-import { ApartmentOutlined, HeartOutlined, LinkOutlined } from '@ant-design/icons'
+import { ApartmentOutlined, LinkOutlined, QuestionCircleOutlined } from '@ant-design/icons'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
@@ -52,7 +52,7 @@ export const Sidebar = () => {
 
       <div className="bottom">
         <label>
-          <HeartOutlined style={{ marginRight: 5 }} />
+          <QuestionCircleOutlined style={{ marginRight: 5 }} />
           Support
         </label>
         <Link href="/protocol">
