@@ -1,3 +1,4 @@
+import { ApartmentOutlined, HeartOutlined, LinkOutlined } from '@ant-design/icons'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
@@ -20,7 +21,9 @@ export const Sidebar = () => {
       {election_id ? (
         <main>
           <>
-            <label>Election Management</label>
+            <label>
+              <ApartmentOutlined style={{ marginRight: 5 }} /> Election Management
+            </label>
             {sections.map(([name, completed]) => (
               <Link href={`./${urled(name)}`} key={name}>
                 <a className={urled(name) === section ? 'current' : ''}>
@@ -31,7 +34,10 @@ export const Sidebar = () => {
             ))}
           </>
           <>
-            <label>Public Pages</label>
+            <label>
+              <LinkOutlined style={{ marginRight: 5 }} />
+              Public Pages
+            </label>
             <Link href={`/election/${election_id}/vote`}>
               <a target="_blank">Cast Vote</a>
             </Link>
@@ -45,7 +51,10 @@ export const Sidebar = () => {
       )}
 
       <div className="bottom">
-        <label>Support</label>
+        <label>
+          <HeartOutlined style={{ marginRight: 5 }} />
+          Support
+        </label>
         <Link href="/protocol">
           <a target="_blank">Protocol Overview</a>
         </Link>
@@ -58,6 +67,7 @@ export const Sidebar = () => {
         .sidebar {
           min-width: 215px;
           padding: 0px 13px;
+          padding-left: 8px;
           background-color: #eee;
 
           height: calc(100vh - 66px);
@@ -78,6 +88,7 @@ export const Sidebar = () => {
           display: block;
           margin-top: 30px;
           opacity: 0.5;
+          padding-left: 8px;
         }
 
         a:not(.all-elections) {
