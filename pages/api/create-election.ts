@@ -13,7 +13,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Create a new election
   const election_id = Number(new Date()).toString()
   const election = firebase.firestore().collection('elections').doc(election_id)
-  await election.set({ created_at: new Date(), creator: jwt.email, election_title, num_voters: 0, num_votes: 0 })
+  await election.set({
+    created_at: new Date(),
+    creator: jwt.email,
+    election_manager: jwt.name,
+    election_title,
+    num_voters: 0,
+    num_votes: 0,
+  })
 
   // Send back our new election_id
   return res.status(201).json({ election_id })

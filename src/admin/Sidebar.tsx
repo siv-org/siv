@@ -6,10 +6,9 @@ import { useStored } from './useStored'
 
 export const Sidebar = () => {
   const { election_id, section } = useRouter().query
-  const { ballot_design, election_manager, election_title, threshold_public_key } = useStored()
+  const { ballot_design, threshold_public_key } = useStored()
 
   const sections: [string, boolean][] = [
-    ['Overview', !!election_manager && !!election_title],
     ['Trustees', !!threshold_public_key],
     ['Ballot Design', !!ballot_design],
     ['Voters', true],
