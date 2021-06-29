@@ -50,6 +50,7 @@ export const AdminPage = (): JSX.Element => {
           position: absolute;
           left: 215px;
           top: 66px;
+          right: 0;
           bottom: 0;
         }
 
