@@ -27,7 +27,11 @@ export const Sidebar = () => {
             {sections.map(([name, completed]) => (
               <Link href={`./${urled(name)}`} key={name}>
                 <a className={urled(name) === section ? 'current' : ''}>
-                  {name !== 'Voters' ? <input checked={completed} type="checkbox" /> : <div className="voters-box" />}
+                  {name !== 'Voters' ? (
+                    <input readOnly checked={completed} type="checkbox" />
+                  ) : (
+                    <div className="voters-box" />
+                  )}
                   {name}
                 </a>
               </Link>
