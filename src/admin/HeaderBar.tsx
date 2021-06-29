@@ -12,7 +12,7 @@ export const HeaderBar = (): JSX.Element => {
     <div className="container">
       <section className="left">
         <Link href="/">
-          <a className="big">SIV</a>
+          <a className="logo">SIV</a>
         </Link>
       </section>
 
@@ -67,6 +67,28 @@ export const HeaderBar = (): JSX.Element => {
           }
         }
 
+        .logo {
+          font-size: 24px;
+          font-weight: 700;
+          color: #ddd;
+          padding: 1rem;
+        }
+
+        .logo:hover {
+          color: #fff;
+          text-decoration: none;
+        }
+
+        .right {
+          width: 100%;
+          margin: 0 auto;
+          padding: 1rem 0rem;
+
+          display: flex;
+
+          justify-content: space-between;
+        }
+
         .title {
           display: flex;
         }
@@ -99,43 +121,6 @@ export const HeaderBar = (): JSX.Element => {
 
         .current-election {
           font-size: 14px;
-        }
-
-        .right {
-          width: 100%;
-          margin: 0 auto;
-          padding: 1rem 0rem;
-
-          display: flex;
-
-          justify-content: space-between;
-        }
-
-        .big {
-          font-size: 24px;
-          font-weight: 700;
-          color: #ddd;
-          padding: 1rem;
-        }
-
-        .big:hover {
-          color: #fff;
-        }
-
-        a:not(:first-child) {
-          margin-left: 3rem;
-          color: white;
-          font-size: 16px;
-          text-decoration: none;
-          font-weight: 400;
-        }
-
-        a:hover {
-          text-decoration: underline;
-        }
-
-        a.big:hover {
-          text-decoration: none;
         }
 
         .login-status {
