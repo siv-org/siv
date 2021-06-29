@@ -58,8 +58,13 @@ export const HeaderBar = (): JSX.Element => {
 
         .left {
           min-width: 200px;
-          max-width 200px;
           padding: 1rem;
+        }
+
+        @media (max-width: 650px) {
+          .left {
+            min-width: 80px;
+          }
         }
 
         .title {
@@ -149,25 +154,6 @@ export const HeaderBar = (): JSX.Element => {
         }
 
         @media (max-width: 600px) {
-          a:not(:first-child) {
-            margin-left: 0;
-            margin-top: 0.5rem;
-          }
-
-          .left {
-            display: flex;
-            flex-direction: column;
-          }
-
-          .container > div {
-            flex-direction: column;
-            padding: 1rem;
-          }
-
-          .login-status {
-            margin-top: 0.5rem;
-            margin-left: -10px;
-          }
         }
       `}</style>
     </div>
