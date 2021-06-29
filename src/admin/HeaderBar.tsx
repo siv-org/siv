@@ -58,7 +58,7 @@ export const HeaderBar = (): JSX.Element => {
 
         .left {
           min-width: 200px;
-          padding: 1rem;
+          padding: 1rem 0;
         }
 
         @media (max-width: 650px) {
@@ -115,6 +115,7 @@ export const HeaderBar = (): JSX.Element => {
           font-size: 24px;
           font-weight: 700;
           color: #ddd;
+          padding: 1rem;
         }
 
         .big:hover {
