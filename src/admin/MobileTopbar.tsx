@@ -8,7 +8,7 @@ export const MobileTopbar = () => {
 
   const urled = (s: string) => s.toLowerCase().replaceAll(' ', '-')
 
-  const menu = [
+  const election_menu = [
     {
       header: 'Election Management',
       options: [['Trustees'], ['Ballot Design'], ['Voters']],
@@ -22,6 +22,9 @@ export const MobileTopbar = () => {
         ['Election Status', `/election/${election_id}`],
       ],
     },
+  ]
+
+  const always_shown = [
     {
       header: 'Support',
       options: [
@@ -31,6 +34,8 @@ export const MobileTopbar = () => {
     },
     { header: 'Logged in as:', options: [[user.name, 'LOGOUT']] },
   ]
+
+  const menu: typeof election_menu = election_id ? [...election_menu, ...always_shown] : always_shown
 
   return (
     <div className="mobile-topbar">
