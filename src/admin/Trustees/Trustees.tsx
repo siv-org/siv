@@ -13,7 +13,7 @@ export const Trustees = () => {
   const admin_email = 'admin@secureinternetvoting.org'
 
   return (
-    <>
+    <div style={{ maxWidth: 'calc(90vw - 200px)' }}>
       <h2>Trustees</h2>
       <h4>Each Trustee adds extra redundancy for vote privacy.</h4>
       <ol>
@@ -73,6 +73,6 @@ export const Trustees = () => {
           margin-bottom: 5px;
         }
       `}</style>
-    </>
+    </div>
   )
 }

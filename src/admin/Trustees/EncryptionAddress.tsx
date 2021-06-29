@@ -14,7 +14,6 @@ export const EncryptionAddress = () => {
           border-radius: 4px;
           font-size: 14px;
           padding: 8px;
-          width: 100%;
 
           word-wrap: break-word;
         }
