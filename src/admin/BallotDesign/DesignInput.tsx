@@ -29,24 +29,7 @@ export const DesignInput = () => {
         onChange={(event) => {
           set_ballot_design(event.target.value)
           try {
-            const parsed = JSON.parse(event.target.value)
-
-            // Ballot must be an array
-            if (!Array.isArray(parsed)) throw 'Must be an array'
-
-            const ids: Record<string, boolean> = {}
-            parsed.forEach((question) => {
-              // Ensure there are no duplicate IDs
-              const id = question.id || 'vote'
-              if (ids[id]) throw 'Each question must have a unique ID'
-              ids[id] = true
-
-              // Ensure each question has an options array
-              if (!question.options || !Array.isArray(question.options))
-                throw `Question ${question.id ? `'${question.id}'` : ''} is missing an options array`
-
-              // Ensure no question has duplicate options
-            })
+            validate_ballot_design(event.target.value)
 
             // Passed validation
             setError(null)
@@ -57,6 +40,7 @@ export const DesignInput = () => {
         }}
       />
       <SaveButton
+        disabled={!!error}
         onPress={async () => {
           const response = await api(`election/${election_id}/admin/save-ballot-design`, { ballot_design })
 
@@ -95,4 +79,35 @@ export const DesignInput = () => {
       `}</style>
     </>
   )
+}
+
+function validate_ballot_design(design: string) {
+  const parsed = JSON.parse(design)
+
+  // Ballot must be an array
+  if (!Array.isArray(parsed)) throw 'Must be an array'
+
+  // Validate each question
+  const ids: Record<string, boolean> = {}
+  parsed.forEach((question) => {
+    // Check for duplicate IDs
+    const id = question.id || 'vote'
+    if (ids[id]) throw 'Each question must have a unique ID'
+    ids[id] = true
+
+    // Check each question has an options array
+    if (!question.options || !Array.isArray(question.options))
+      throw `Question ${question.id ? `'${question.id}'` : ''} is missing an options array`
+
+    // Validate options
+    const options: Record<string, boolean> = {}
+    question.options.forEach(({ name }: { name?: string }) => {
+      // Check for name field
+      if (!name || typeof name !== 'string') throw 'Each option should have a { name: string } field'
+
+      // Check no duplicate options
+      if (options[name]) throw `Question ${question.id ? `'${question.id}'` : ''} has duplicate option: ${name}`
+      options[name] = true
+    })
+  })
 }
