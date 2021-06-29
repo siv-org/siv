@@ -13,7 +13,7 @@ export const Trustees = () => {
   const admin_email = 'admin@secureinternetvoting.org'
 
   return (
-    <div style={{ maxWidth: 'calc(90vw - 200px)' }}>
+    <div className="container">
       <h2>Trustees</h2>
       <h4>Each Trustee adds extra redundancy for vote privacy.</h4>
       <ol>
@@ -64,6 +64,17 @@ export const Trustees = () => {
       )}
       <EncryptionAddress />
       <style jsx>{`
+        .container {
+          max-width: calc(90vw - 200px);
+        }
+
+        /* When sidebar disappears */
+        @media (max-width: 500px) {
+          .container {
+            max-width: 100%;
+          }
+        }
+
         span {
           opacity: 0.5;
         }

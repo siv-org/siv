@@ -21,7 +21,7 @@ export const DesignInput = () => {
   const { election_id } = useStored()
 
   return (
-    <div style={{ width: 'calc(90vW - 200px)' }}>
+    <div className="container">
       {error && <span className="error">⚠️ &nbsp;{error}</span>}
       <textarea
         id="ballot-design"
@@ -54,6 +54,17 @@ export const DesignInput = () => {
       />
 
       <style jsx>{`
+        .container {
+          width: calc(90vw - 200px);
+        }
+
+        /* When sidebar disappears */
+        @media (max-width: 500px) {
+          .container {
+            width: 100%;
+          }
+        }
+
         textarea {
           border-color: #ccc;
           border-radius: 4px;
