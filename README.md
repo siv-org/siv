@@ -19,21 +19,12 @@ yarn dev
 ## Layout
 
 - http://secureinternetvoting.org - Landing page
-- http://secureinternetvoting.org/create - Create New Election
+- http://secureinternetvoting.org/admin - Create New Election
 - http://secureinternetvoting.org/protocol - Protocol Description
 - http://secureinternetvoting.org/faq - FAQ
 
 ## Next steps
 
-For strong privacy:
-
-- [ ] Trustee page to take part in Distribute Key Gen
-- [ ] Trustee interface to shuffle
-- [ ] Trustee interface for partial decryption
-
-After core features complete:
-
-- [ ] Improve Verification instructions
 - [ ] Extra Private Mode (Airplane + Incognito) instructions
 - [ ] Health check on voter's device:
   - [ ] Can they establish a secure connection?
