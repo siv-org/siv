@@ -1,4 +1,3 @@
-import { ElectionID } from '../admin/ElectionID'
 import { HeaderBar } from '../admin/HeaderBar'
 import { useStored } from '../admin/useStored'
 import { ExistingVoters } from '../admin/Voters/ExistingVoters'
@@ -15,7 +14,6 @@ export const ManagerPage = (): JSX.Element => {
       <HeaderBar />
       <main>
         <h1>{election_title ? `Manage: ${election_title}` : 'Election Manager'}</h1>
-        <ElectionID />
         <ExistingVoters readOnly />
       </main>
 
