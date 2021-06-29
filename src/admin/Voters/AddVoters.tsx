@@ -12,7 +12,7 @@ export const AddVoters = () => {
   const { election_id } = useStored()
 
   return (
-    <>
+    <div className="container">
       <h2>Voters</h2>
       <h4>Add new voters by email address:</h4>
       <MultilineInput state={new_voters} update={set_new_voters} />
@@ -38,6 +38,20 @@ export const AddVoters = () => {
       )}
       <RequestEsignatures />
       <ExistingVoters />
-    </>
+      <style jsx>
+        {`
+          .container {
+            max-width: calc(95vw - 230px);
+          }
+
+          /* When sidebar disappears */
+          @media (max-width: 500px) {
+            .container {
+              max-width: 100%;
+            }
+          }
+        `}
+      </style>
+    </div>
   )
 }
