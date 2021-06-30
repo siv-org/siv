@@ -4,15 +4,35 @@ import { useRouter } from 'next/router'
 
 import { useStored } from './useStored'
 
-export const Sidebar = () => {
+export const Sidebar = () => (
+  <div className="sidebar">
+    <SidebarContent />
+    <style jsx>{`
+      .sidebar {
+        height: calc(100vh - 66px);
+      }
+
+      /* Hide for small screens */
+      @media (max-width: 500px) {
+        .sidebar {
+          display: none;
+        }
+      }
+    `}</style>
+  </div>
+)
+
+export const steps = ['Trustees', 'Ballot Design', 'Voters'] as const
+
+export const SidebarContent = () => {
   const { election_id, section } = useRouter().query
   const { ballot_design, threshold_public_key } = useStored()
 
-  const sections: [string, boolean][] = [
-    ['Trustees', !!threshold_public_key],
-    ['Ballot Design', !!ballot_design],
-    ['Voters', true],
-  ]
+  const completed: Record<typeof steps[number], boolean> = {
+    'Ballot Design': !!ballot_design,
+    Trustees: !!threshold_public_key,
+    Voters: true,
+  }
   const urled = (s: string) => s.toLowerCase().replaceAll(' ', '-')
 
   return (
@@ -23,14 +43,10 @@ export const Sidebar = () => {
             <label>
               <ApartmentOutlined style={{ marginRight: 5 }} /> Election Management
             </label>
-            {sections.map(([name, completed]) => (
+            {steps.map((name) => (
               <Link href={`./${urled(name)}`} key={name}>
                 <a className={urled(name) === section ? 'current' : ''}>
-                  {name !== 'Voters' ? (
-                    <input readOnly checked={completed} type="checkbox" />
-                  ) : (
-                    <div className="voters-box" />
-                  )}
+                  {name !== 'Voters' && <input readOnly checked={completed[name]} type="checkbox" />}
                   {name}
                 </a>
               </Link>
@@ -73,20 +89,13 @@ export const Sidebar = () => {
           padding-left: 8px;
           background-color: #eee;
 
-          height: calc(100vh - 66px);
+          height: 100%;
 
           overflow-y: scroll;
 
           display: flex;
           flex-direction: column;
           justify-content: space-between;
-        }
-
-        /* Hide for small screens */
-        @media (max-width: 500px) {
-          .sidebar {
-            display: none;
-          }
         }
 
         label {
