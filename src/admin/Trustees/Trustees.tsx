@@ -64,16 +64,8 @@ export const Trustees = () => {
       )}
       <EncryptionAddress />
       <style jsx>{`
-        .container {
-          max-width: calc(90vw - 200px);
-        }
-
         /* When sidebar disappears */
         @media (max-width: 500px) {
-          .container {
-            max-width: 100%;
-          }
-
           h2 {
             display: none;
           }

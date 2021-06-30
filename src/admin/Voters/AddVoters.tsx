@@ -41,15 +41,11 @@ export const AddVoters = () => {
       <style jsx>
         {`
           .container {
-            max-width: calc(95vw - 230px);
+            max-width: 700px;
           }
 
           /* When sidebar disappears */
           @media (max-width: 500px) {
-            .container {
-              max-width: 100%;
-            }
-
             h2 {
               display: none;
             }
