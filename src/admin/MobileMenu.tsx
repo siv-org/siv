@@ -6,7 +6,7 @@ import { useState } from 'react'
 import { OnClickButton } from '../landing-page/Button'
 import { SidebarContent, steps } from './Sidebar'
 
-export const MobileTopbar = () => {
+export const MobileMenu = () => {
   const { section } = useRouter().query
   const [menu_open, set_menu] = useState(true)
 
