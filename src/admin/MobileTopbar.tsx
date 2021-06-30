@@ -67,7 +67,7 @@ export const MobileTopbar = () => {
       <style jsx>{`
         select,
         optgroup {
-          font-size: 30px;
+          font-size: 20px;
         }
 
         /* Hide for all but small screens */
