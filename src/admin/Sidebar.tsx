@@ -24,7 +24,7 @@ export const Sidebar = () => (
 
 export const steps = ['Trustees', 'Ballot Design', 'Voters'] as const
 
-export const SidebarContent = () => {
+export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => void }) => {
   const { election_id, section } = useRouter().query
   const { ballot_design, threshold_public_key } = useStored()
 
@@ -46,7 +46,7 @@ export const SidebarContent = () => {
             </label>
             {steps.map((name) => (
               <Link href={`./${urled(name)}`} key={name}>
-                <a className={urled(name) === section ? 'current' : ''}>
+                <a className={urled(name) === section ? 'current' : ''} onClick={closeMenu}>
                   {name !== 'Voters' && <input readOnly checked={completed[name]} type="checkbox" />}
                   {name}
                 </a>

@@ -18,7 +18,7 @@ export const MobileMenu = () => {
         {section ? `Step ${steps.indexOf(name as typeof steps[number]) + 1}: ${name}` : 'Menu'}
       </OnClickButton>
       <Drawer anchor="left" open={menu_open} onClose={() => set_menu(false)}>
-        <SidebarContent />
+        <SidebarContent closeMenu={() => set_menu(false)} />
       </Drawer>
       <style jsx>{`
         /* Hide for all but small screens */
