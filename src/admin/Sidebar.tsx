@@ -106,6 +106,13 @@ export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => voi
           margin: 16px 8px;
         }
 
+        /* Rules for persistent sidebar */
+        @media (min-width: 500px) {
+          .logo {
+            display: none;
+          }
+        }
+
         label {
           display: block;
           margin-top: 30px;
