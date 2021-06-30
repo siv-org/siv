@@ -8,7 +8,7 @@ import { SidebarContent, steps } from './Sidebar'
 
 export const MobileTopbar = () => {
   const { section } = useRouter().query
-  const [menu_open, set_menu] = useState(false)
+  const [menu_open, set_menu] = useState(true)
 
   const name = startCase(section as string)
 
@@ -17,7 +17,7 @@ export const MobileTopbar = () => {
       <OnClickButton style={{ marginLeft: 0, padding: '5px 11px' }} onClick={() => set_menu(true)}>
         {section ? `Step ${steps.indexOf(name as typeof steps[number]) + 1}: ${name}` : 'Menu'}
       </OnClickButton>
-      <Drawer anchor={'left'} open={menu_open} onClose={() => set_menu(false)}>
+      <Drawer anchor="left" open={menu_open} onClose={() => set_menu(false)}>
         <SidebarContent />
       </Drawer>
       <style jsx>{`

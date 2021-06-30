@@ -39,6 +39,7 @@ export const SidebarContent = () => {
     <div className="sidebar">
       {election_id ? (
         <main>
+          <h2 className="logo">SIV</h2>
           <>
             <label>
               <ApartmentOutlined style={{ marginRight: 5 }} /> Election Management
@@ -96,6 +97,13 @@ export const SidebarContent = () => {
           display: flex;
           flex-direction: column;
           justify-content: space-between;
+        }
+
+        .logo {
+          font-size: 24px;
+          font-weight: 700;
+          color: #010b26;
+          margin: 16px 8px;
         }
 
         label {

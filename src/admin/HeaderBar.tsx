@@ -148,7 +148,8 @@ export const HeaderBar = (): JSX.Element => {
 
           .right {
             width: initial;
-            margin-right: 1rem;
+            position: relative;
+            right: 2rem;
           }
 
           .back-btn {
