@@ -24,7 +24,15 @@ export const HeaderBar = (): JSX.Element => {
                 <title key="title">SIV: Manage {election_title}</title>
               </Head>
               <Link href="/admin">
-                <a className="back-btn">←</a>
+                <a
+                  className="back-btn"
+                  onClick={() => {
+                    const el = document.getElementById('main-content')
+                    if (el) el.scrollTop = 0
+                  }}
+                >
+                  ←
+                </a>
               </Link>
               <div className="current-election">
                 Managing: <i>{election_title}</i> <span>ID: {election_id}</span>

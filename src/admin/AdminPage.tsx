@@ -28,7 +28,7 @@ export const AdminPage = (): JSX.Element => {
       <HeaderBar />
       <main>
         <Sidebar />
-        <div className="content">
+        <div id="main-content">
           <MobileTopbar />
           <AllYourElections />
           {(section === 'overview' || !election_id) && <ElectionOverview />}
@@ -44,7 +44,7 @@ export const AdminPage = (): JSX.Element => {
           display: flex;
         }
 
-        .content {
+        #main-content {
           padding: 1rem 2rem;
           overflow: scroll;
           position: absolute;
@@ -56,7 +56,7 @@ export const AdminPage = (): JSX.Element => {
 
         /* When sidebar disappears */
         @media (max-width: 500px) {
-          .content {
+          #main-content {
             left: 0;
 
             width: 100%;
