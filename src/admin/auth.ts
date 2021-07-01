@@ -12,14 +12,13 @@ export function promptLogout() {
   if (pressed_ok) logout()
 }
 
-function logout() {
+async function logout() {
   // Delete cookie
-  document.cookie = `${cookie_name}=; expires=Thu, 01 Jan 1970 00:00:01 GMT;`
+  await fetch('/api/admin-logout')
+  Router.push('/login')
 
   // Invalidate jwt cache
   mutate(jwt_api_path)
-
-  Router.push('/login')
 }
 
 export function useLoginRequired(loggedOut: boolean) {
