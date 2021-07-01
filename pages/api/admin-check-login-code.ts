@@ -1,6 +1,8 @@
+import Cookies from 'cookies'
 import jwt from 'jsonwebtoken'
 import { NextApiRequest, NextApiResponse } from 'next'
 
+import { cookie_name } from '../../src/admin/auth'
 import { firebase } from './_services'
 
 const JWT_SECRET = 'foobar'
@@ -21,17 +23,23 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     // Is this a valid auth token for them?
     const [session] = (await adminDoc.collection('logins').where('auth_token', '==', auth).get()).docs
     if (session) {
-      // Is the session within the last 30 minutes?
+      // Is the session within the last hour?
       const { created_at } = { ...session.data() } as { created_at: { toDate: () => Date } }
       const date = created_at.toDate()
       const diff = Number(new Date()) - Number(date)
       const minutes_since = diff / 1000 / 60
-      if (minutes_since < 30) {
+      if (minutes_since < 60) {
         // Valid session
 
         const payload: JWT_Payload = { email, name: admin?.data()?.name || 'MissingName' }
 
-        return res.status(200).send({ jwt: jwt.sign(payload, JWT_SECRET) })
+        // Set authentication cookie
+        const cookies = new Cookies(req, res)
+        const signed_jwt = jwt.sign(payload, JWT_SECRET)
+        // 2038 is max 32-bit date: https://stackoverflow.com/questions/532635/javascript-cookie-with-no-expiration-date
+        cookies.set(cookie_name, signed_jwt, { expires: new Date('Tue, 19 Jan 2038 03:14:07 UTC') })
+
+        return res.status(200).send({ message: 'Success! Setting jwt cookie.' })
       } else {
         // Expired session
         return res.status(412).send({ error: 'Expired session' })

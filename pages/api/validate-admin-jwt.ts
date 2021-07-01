@@ -8,7 +8,8 @@ import { JWT_Payload } from './admin-check-login-code'
 const JWT_SECRET = 'foobar'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  if (checkJwt(req, res).valid) return res.status(200).send({ message: 'Valid JWT ' })
+  const result = checkJwt(req, res)
+  if (result.valid) return res.status(200).send(result)
 }
 
 export function checkJwt(
