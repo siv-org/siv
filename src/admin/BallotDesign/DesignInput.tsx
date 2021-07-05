@@ -2,6 +2,7 @@ import router from 'next/router'
 import { useState } from 'react'
 
 import { api } from '../../api-helper'
+import { encode } from '../../crypto/encode'
 import { SaveButton } from '../SaveButton'
 import { revalidate, useStored } from '../useStored'
 
@@ -108,6 +109,9 @@ function validate_ballot_design(design: string) {
       // Check no duplicate options
       if (options[name]) throw `Question ${question.id ? `'${question.id}'` : ''} has duplicate option: ${name}`
       options[name] = true
+
+      // Check if the name is encodable (throws if input is outside our alphabet)
+      encode(name)
     })
   })
 }
