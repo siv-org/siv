@@ -147,8 +147,7 @@ export const Trustees = () => {
               const response = await api(`election/${election_id}/admin/add-trustees`, { trustees })
 
               if (response.status === 201) {
-                const { threshold_public_key } = await response.json()
-                if (threshold_public_key) revalidate(election_id)
+                revalidate(election_id)
               } else {
                 throw await response.json()
               }
