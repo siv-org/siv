@@ -16,6 +16,11 @@ export type Voter = {
   invite_queued?: QueueLog[]
   mailgun_events: { accepted?: MgEvent[]; delivered?: MgEvent[]; failed?: MgEvent[] }
 }
+type Trustee = {
+  email: string
+  mailgun_events: { accepted?: MgEvent[]; delivered?: MgEvent[]; failed?: MgEvent[] }
+  name?: string
+}
 
 type MgEvent = Record<string, unknown>
 
@@ -26,7 +31,7 @@ export type AdminData = {
   election_title?: string
   esignature_requested?: boolean
   threshold_public_key?: string
-  trustees?: string[]
+  trustees?: Trustee[]
   voters?: Voter[]
 }
 
@@ -64,8 +69,15 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     threshold_public_key?: string
   }
 
-  // Build array of trustees emails
-  const trustees = (await loadTrustees).docs.reduce((acc: string[], doc) => [...acc, { ...doc.data() }.email], [])
+  // Build trustees objects
+  const trustees = (await loadTrustees).docs.reduce((acc: Trustee[], doc) => {
+    const { email, mailgun_events, name } = { ...doc.data() } as {
+      email: string
+      mailgun_events: { accepted: MgEvent[]; delivered: MgEvent[] }
+      name?: string
+    }
+    return [...acc, { email, mailgun_events, name }]
+  }, [])
 
   // Gather who's voted already
   const votesByAuth: Record<string, [boolean, string?]> = (await loadVotes).docs.reduce((acc, doc) => {

@@ -1,3 +1,4 @@
+import { EditOutlined } from '@ant-design/icons'
 import { TextField } from '@material-ui/core'
 import EmailValidator from 'email-validator'
 import { useState } from 'react'
@@ -5,6 +6,7 @@ import { useState } from 'react'
 import { api } from '../../api-helper'
 import { SaveButton } from '../SaveButton'
 import { revalidate, useStored } from '../useStored'
+import { DeliveredFailureCell } from '../Voters/DeliveredFailureCell'
 import { EncryptionAddress } from './EncryptionAddress'
 
 export type Trustee = { email: string; error?: string; name?: string }
@@ -18,18 +20,15 @@ export const Trustees = () => {
     <div className="container">
       <h2>Trustees</h2>
       <h4>Each Trustee adds extra redundancy for vote privacy.</h4>
-      <ol>
-        <li>
-          {admin_email}
-          <br />
-          <span>The SIV server</span>
-        </li>
-        {trustees?.slice(1).map((t) => (
-          <li key={t}>{t}</li>
-        ))}
-      </ol>
-      {!trustees?.length && (
+      {!trustees?.length ? (
         <div>
+          <ol>
+            <li>
+              {admin_email}
+              <br />
+              <span>The SIV server</span>
+            </li>
+          </ol>
           <p>
             <i>Add more trustees:</i>
           </p>
@@ -125,6 +124,61 @@ export const Trustees = () => {
             }}
           />
         </div>
+      ) : (
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>email</th>
+              <th>name</th>
+              <th style={{ width: 50 }}>invite delivered</th>
+              <th>stage</th>
+            </tr>
+          </thead>
+          <tbody>
+            {trustees.map(({ email, mailgun_events, name }, index) => (
+              <tr key={email}>
+                <td>{index + 1}</td>
+                <td>
+                  <span style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <span>{email}</span>
+                    {/* Edit email btn */}
+                    <span
+                      className="visible-on-parent-hover"
+                      onClick={async () => {
+                        const new_email = prompt('Edit email?', email)
+
+                        if (!new_email || new_email === email) return
+
+                        if (!EmailValidator.validate(new_email)) return alert(`Invalid email: '${new_email}'`)
+
+                        // Store new email in API
+                        const response = await api(`election/${election_id}/admin/edit-email`, {
+                          new_email,
+                          old_email: email,
+                        })
+
+                        if (response.status === 201) {
+                          revalidate(election_id)
+                        } else {
+                          console.error(response.json())
+                          // throw await response.json()
+                        }
+                      }}
+                    >
+                      &nbsp;
+                      <EditOutlined />
+                    </span>
+                  </span>
+                </td>
+                <td>{name}</td>
+                <DeliveredFailureCell {...mailgun_events} />
+
+                <td style={{ fontWeight: 700, textAlign: 'center' }}>{'✓'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       )}
       {(trustees?.length || 0) > 1 && !threshold_public_key && (
         <p>
@@ -140,10 +194,6 @@ export const Trustees = () => {
           }
         }
 
-        span {
-          opacity: 0.5;
-        }
-
         li {
           padding-left: 8px;
           margin-bottom: 5px;
@@ -156,7 +206,6 @@ export const Trustees = () => {
         .row span {
           margin-right: 15px;
           margin-left: 20px;
-          opacity: 1;
           position: relative;
           top: 9px;
         }
@@ -175,6 +224,42 @@ export const Trustees = () => {
           display: block;
           margin-left: 20px;
           cursor: pointer;
+        }
+
+        table {
+          border-collapse: collapse;
+          display: block;
+          overflow: scroll;
+          width: 100%;
+        }
+
+        th,
+        td {
+          border: 1px solid #ccc;
+          padding: 3px 10px;
+          margin: 0;
+        }
+
+        th {
+          background: #f9f9f9;
+          font-size: 11px;
+        }
+
+        .hoverable:hover {
+          cursor: pointer;
+          background-color: #f2f2f2;
+        }
+
+        td .visible-on-parent-hover {
+          opacity: 0;
+        }
+        td:hover .visible-on-parent-hover {
+          opacity: 0.5;
+        }
+
+        .visible-on-parent-hover:hover {
+          cursor: pointer;
+          opacity: 1 !important;
         }
       `}</style>
     </div>
