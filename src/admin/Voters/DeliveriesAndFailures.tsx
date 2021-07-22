@@ -1,6 +1,14 @@
 import { Tooltip } from './Tooltip'
 
-export const DeliveredFailureCell = ({ delivered, failed }: { delivered?: unknown[]; failed?: unknown[] }) => {
+export const DeliveriesAndFailures = ({
+  checkmarkOnly,
+  delivered,
+  failed,
+}: {
+  checkmarkOnly?: boolean
+  delivered?: unknown[]
+  failed?: unknown[]
+}) => {
   return (
     <>
       <Tooltip
@@ -36,7 +44,7 @@ export const DeliveredFailureCell = ({ delivered, failed }: { delivered?: unknow
           <span className="failed-events">
             {(failed as { severity?: string }[])?.filter((e) => e.severity === 'temporary').length ? '⚠️ ' : ''}
           </span>
-          {delivered?.length}
+          {checkmarkOnly ? (delivered ? '✓' : '') : delivered?.length}
           <span className="failed-events">
             {(failed as { severity?: string }[])?.filter(({ severity }) => severity === 'permanent').length ? ' X' : ''}
           </span>

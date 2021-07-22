@@ -36,7 +36,7 @@ export type AdminData = {
 }
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { election_id } = req.query as { election_id?: string; password?: string }
+  const { election_id } = req.query as { election_id?: string }
 
   // Check required params
   if (!election_id) return res.status(401).json({ error: `Missing election_id` })

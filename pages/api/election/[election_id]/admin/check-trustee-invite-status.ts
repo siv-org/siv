@@ -6,7 +6,7 @@ import { firebase, mailgun, pushover } from '../../../_services'
 import { checkJwtOwnsElection } from '../../../validate-admin-jwt'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { election_id } = req.query as { election_id: string; password?: string }
+  const { election_id } = req.query as { election_id: string }
   if (!election_id) return res.status(401).json({ error: 'Missing election_id' })
 
   // Confirm they're a valid admin that created this election
@@ -20,7 +20,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     created_at: { _seconds: number }
     election_title?: string
   }
-  const subject_line = `Vote Invitation${election_title ? `: ${election_title}` : ''}`
+  const subject_line = `Trustee Invitation: ${election_title || `Election ${election_id}`}`
 
   // Find one page of mailgun events for this election
   function getMgEvents(next?: string) {
@@ -43,24 +43,21 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         async (item: { event: string; recipient: string }) => {
           // Skip replies to us
           if (item.recipient === 'election@secureinternetvoting.org') return
-          const voterDoc = electionDoc.collection('voters').doc(item.recipient)
-          // Confirm voterDoc exists
-          if (!(await voterDoc.get()).exists) {
-            return console.log(`No voter doc for ${item.recipient}`)
+          const trusteeDoc = electionDoc.collection('trustees').doc(item.recipient)
+          // Confirm trusteeDoc exists
+          if (!(await trusteeDoc.get()).exists) {
+            return console.log(`No trustee doc for ${item.recipient}`)
           }
 
           num_events++
-          // Store new items on voters' docs
-          return electionDoc
-            .collection('voters')
-            .doc(item.recipient)
-            .update({ [`mailgun_events.${item.event}`]: firestore.FieldValue.arrayUnion(item) })
+          // Store new items on trustees' docs
+          return trusteeDoc.update({ [`mailgun_events.${item.event}`]: firestore.FieldValue.arrayUnion(item) })
         },
         { concurrency: 3 },
       )
       .catch((error) => {
         console.log(error)
-        pushover('Mailgun check-invite-status error', error)
+        pushover('Mailgun check-trustee-invite-status error', error)
       })
     mgEventsList = await getMgEvents(mgEventsList.paging.next.split('https://api.mailgun.net/v3')[1])
   }

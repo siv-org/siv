@@ -1,12 +1,12 @@
 import { EditOutlined } from '@ant-design/icons'
 import { TextField } from '@material-ui/core'
 import EmailValidator from 'email-validator'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { api } from '../../api-helper'
 import { SaveButton } from '../SaveButton'
 import { revalidate, useStored } from '../useStored'
-import { DeliveredFailureCell } from '../Voters/DeliveredFailureCell'
+import { DeliveriesAndFailures } from '../Voters/DeliveriesAndFailures'
 import { EncryptionAddress } from './EncryptionAddress'
 
 export type Trustee = { email: string; error?: string; name?: string }
@@ -15,6 +15,37 @@ const admin_email = 'admin@secureinternetvoting.org'
 export const Trustees = () => {
   const { election_id, threshold_public_key, trustees } = useStored()
   const [new_trustees, set_new_trustees] = useState<Trustee[]>([{ email: '' }])
+
+  // Auto run api/check-voter-invite-status when there are pending invites
+  const num_invited = trustees?.reduce(
+    (acc: { delivered: number; failed: number }, trustee) => {
+      if (trustee.mailgun_events?.delivered) acc.delivered += trustee.mailgun_events.delivered.length
+      if (trustee.mailgun_events?.failed) acc.failed += trustee.mailgun_events.failed.length
+      return acc
+    },
+    { delivered: 0, failed: 0 },
+  )
+  const pending_invites = trustees && num_invited && trustees.length > num_invited.delivered + num_invited.failed + 1 // +1 for admin@
+  const [last_num_events, set_last_num_events] = useState(0)
+  useEffect(() => {
+    if (pending_invites) {
+      const interval = setInterval(() => {
+        console.log('Checking pending invites...')
+        api(`election/${election_id}/admin/check-trustee-invite-status`)
+          .then((response) => response.json())
+          .then(({ num_events }) => {
+            if (num_events !== last_num_events) {
+              revalidate(election_id)
+              set_last_num_events(num_events)
+            }
+          })
+      }, 1000)
+      return () => {
+        console.log('All invites delivered 👍')
+        clearInterval(interval)
+      }
+    }
+  }, [pending_invites])
 
   return (
     <div className="container">
@@ -172,9 +203,13 @@ export const Trustees = () => {
                   </span>
                 </td>
                 <td>{name}</td>
-                <DeliveredFailureCell {...mailgun_events} />
+                {email === admin_email ? (
+                  <td style={{ textAlign: 'center' }}>✓</td>
+                ) : (
+                  <DeliveriesAndFailures {...mailgun_events} checkmarkOnly />
+                )}
 
-                <td style={{ fontWeight: 700, textAlign: 'center' }}>{'✓'}</td>
+                <td style={{ textAlign: 'center' }}>0 of 11</td>
               </tr>
             ))}
           </tbody>

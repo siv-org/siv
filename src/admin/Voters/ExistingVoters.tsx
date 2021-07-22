@@ -6,7 +6,7 @@ import { api } from '../../api-helper'
 import { OnClickButton } from '../../landing-page/Button'
 import { Spinner } from '../Spinner'
 import { revalidate, useStored } from '../useStored'
-import { DeliveredFailureCell } from './DeliveredFailureCell'
+import { DeliveriesAndFailures } from './DeliveriesAndFailures'
 import { QueuedCell } from './QueuedCell'
 import { Signature, getStatus } from './Signature'
 
@@ -37,7 +37,7 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
     }
   }, [voters?.length])
 
-  // Auto run api/check-invite-status when there are pending invites
+  // Auto run api/check-voter-invite-status when there are pending invites
   const num_invited = voters?.reduce(
     (acc: { delivered: number; failed: number; queued: number }, voter) => {
       if (voter.invite_queued) acc.queued += voter.invite_queued.length
@@ -53,7 +53,7 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
     if (pending_invites) {
       const interval = setInterval(() => {
         console.log('Checking pending invites...')
-        api(`election/${election_id}/admin/check-invite-status`)
+        api(`election/${election_id}/admin/check-voter-invite-status`)
           .then((response) => response.json())
           .then(({ num_events }) => {
             if (num_events !== last_num_events) {
@@ -288,7 +288,7 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
                 <td style={{ fontFamily: 'monospace' }}>{mask_tokens ? mask(auth_token) : auth_token}</td>
 
                 <QueuedCell {...{ invite_queued }} />
-                <DeliveredFailureCell {...mailgun_events} />
+                <DeliveriesAndFailures {...mailgun_events} />
 
                 <td style={{ fontWeight: 700, textAlign: 'center' }}>{has_voted ? '✓' : ''}</td>
 
