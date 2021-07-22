@@ -30,20 +30,24 @@ export function checkJwt(
   return { ...payload, valid: true }
 }
 
-export async function checkJwtOwnsElection(req: NextApiRequest, res: NextApiResponse, election_id: string) {
+export async function checkJwtOwnsElection(
+  req: NextApiRequest,
+  res: NextApiResponse,
+  election_id: string,
+): Promise<{ res: void; valid: false } | ({ election_title: string; valid: true } & JWT_Payload)> {
   const jwt_status = checkJwt(req, res)
 
   // Fail immediately if checkJwt failed
   if (!jwt_status.valid) return jwt_status
 
   // Grab this election info
-  const election = await firebase.firestore().collection('elections').doc(election_id).get()
+  const election = { ...(await firebase.firestore().collection('elections').doc(election_id).get()).data() }
 
   // Check if this this admin is the creator of the given election
-  if (jwt_status.email !== election.data()?.creator) {
+  if (jwt_status.email !== election.creator) {
     return { res: res.status(401).send({ error: `This user did not create election ${election_id}` }), valid: false }
   }
 
   // Other it passes
-  return jwt_status
+  return { election_title: election.election_title, ...jwt_status }
 }

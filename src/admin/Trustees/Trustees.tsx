@@ -1,4 +1,5 @@
 import { TextField } from '@material-ui/core'
+import EmailValidator from 'email-validator'
 import { useState } from 'react'
 
 import { api } from '../../api-helper'
@@ -6,11 +7,12 @@ import { SaveButton } from '../SaveButton'
 import { revalidate, useStored } from '../useStored'
 import { EncryptionAddress } from './EncryptionAddress'
 
+export type Trustee = { email: string; error?: string; name?: string }
+const admin_email = 'admin@secureinternetvoting.org'
+
 export const Trustees = () => {
   const { election_id, threshold_public_key, trustees } = useStored()
-  const [new_trustees, set_new_trustees] = useState<{ email?: string; name?: string }[]>([{}])
-
-  const admin_email = 'admin@secureinternetvoting.org'
+  const [new_trustees, set_new_trustees] = useState<Trustee[]>([{ email: '' }])
 
   return (
     <div className="container">
@@ -36,6 +38,8 @@ export const Trustees = () => {
               <span>{i + 2}.</span>
               <TextField
                 autoFocus
+                error={!!new_trustees[i].error}
+                helperText={new_trustees[i].error}
                 label="Email"
                 size="small"
                 style={{ marginBottom: 5, marginRight: 10 }}
@@ -44,6 +48,7 @@ export const Trustees = () => {
                 onChange={(event) => {
                   const update = [...new_trustees]
                   update[i].email = event.target.value
+                  delete update[i].error
                   set_new_trustees(update)
                 }}
                 onKeyDown={(event) => {
@@ -72,20 +77,42 @@ export const Trustees = () => {
             </div>
           ))}
 
-          <a id="add-another" onClick={() => set_new_trustees([...new_trustees, {}])}>
+          <a id="add-another" onClick={() => set_new_trustees([...new_trustees, { email: '' }])}>
             + Add another
           </a>
 
           <SaveButton
-            text={!new_trustees.length ? 'Skip' : 'Save'}
+            text={
+              new_trustees.length === 1 && !(new_trustees[0].email || new_trustees[0].name) ? 'Skip' : 'Send Invitation'
+            }
             onPress={async () => {
-              const trustees = [
-                admin_email,
-                ...new_trustees
-                  .split('\n')
-                  .map((s) => s.trim().toLowerCase())
-                  .filter((s) => s), // Remove blanks
-              ]
+              // Remove empty rows
+              const not_empty = new_trustees.filter(({ email, name }) => email || name)
+              set_new_trustees(not_empty)
+
+              // Validate emails
+              let errored = false
+              not_empty.map(({ email }, i) => {
+                if (!email) {
+                  errored = true
+                  const update = [...not_empty]
+                  update[i].error = 'Missing email'
+                  return set_new_trustees(update)
+                }
+
+                if (!EmailValidator.validate(email)) {
+                  errored = true
+                  const update = [...not_empty]
+                  update[i].error = 'Invalid email'
+                  return set_new_trustees(update)
+                }
+              })
+              if (errored) return
+
+              const trustees: Trustee[] = not_empty.map(({ email, name }) => ({
+                email: email.trim().toLowerCase(),
+                name: name?.trim(),
+              }))
 
               const response = await api(`election/${election_id}/admin/add-trustees`, { trustees })
 

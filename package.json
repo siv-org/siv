@@ -57,6 +57,7 @@
     "autoprefixer": "^10.2.4",
     "bluebird": "^3.7.2",
     "cookies": "^0.8.0",
+    "email-validator": "^2.0.4",
     "firebase": "^7.17.2",
     "firebase-admin": "^9.0.0",
     "jsbn": "^1.1.0",

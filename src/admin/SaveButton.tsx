@@ -11,7 +11,7 @@ export const SaveButton = ({
 }: {
   disabled?: boolean
   id?: string
-  onPress: () => void
+  onPress: () => Promise<void>
   text?: string
 }) => {
   const [pending, set_pending] = useState(false)
@@ -23,7 +23,8 @@ export const SaveButton = ({
           style={{ marginRight: 0, padding: '8px 17px' }}
           onClick={async () => {
             set_pending(true)
-            onPress()
+            await onPress()
+            set_pending(false)
           }}
           {...{ disabled }}
         >

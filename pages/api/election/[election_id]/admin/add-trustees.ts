@@ -1,6 +1,7 @@
 import { mapValues } from 'lodash-es'
 import { NextApiRequest, NextApiResponse } from 'next'
 
+import { Trustee } from '../../../../../src/admin/Trustees/Trustees'
 import { generate_key_pair } from '../../../../../src/crypto/generate-key-pair'
 import { get_safe_prime } from '../../../../../src/crypto/generate-safe-prime'
 import {
@@ -29,11 +30,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const jwt = await checkJwtOwnsElection(req, res, election_id)
   if (!jwt.valid) return
 
-  const { election_title, trustees } = req.body
+  const { trustees } = req.body as { trustees: Trustee[] }
+  const { election_title } = jwt
 
-  // admin@ is required
-  if (!trustees.some((t: string) => t === ADMIN_EMAIL))
-    return res.status(400).json({ error: `${ADMIN_EMAIL} is a required trustee` })
+  // Add admin@ email to front of the trustees list
+  trustees.unshift({ email: ADMIN_EMAIL, name: 'The SIV Server' })
 
   // Generate a safe prime of the right bit size
   const safe_prime_bigs = get_safe_prime(256, 20)
@@ -74,11 +75,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Store auth tokens in db
   promises.push(
     Promise.all(
-      trustees.map((trustee: string, index: number) =>
+      trustees.map(({ email, name }: Trustee, index: number) =>
         election
           .collection('trustees')
-          .doc(trustee)
-          .set({ auth_token: auth_tokens[index], email: trustee, index }, { merge: true }),
+          .doc(email)
+          .set({ auth_token: auth_tokens[index], email, index, name }, { merge: true }),
       ),
     ),
   )
@@ -86,15 +87,15 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Email each trustee their auth token
   promises.push(
     Promise.all(
-      trustees.map((trustee: string, index: number) => {
-        if (trustee === ADMIN_EMAIL) return
+      trustees.map(({ email, name }: Trustee, index: number) => {
+        if (email === ADMIN_EMAIL) return
 
         const link = `${req.headers.origin}/election/${election_id}/trustee?auth=${auth_tokens[index]}`
 
         return sendEmail({
-          recipient: trustee,
+          recipient: email,
           subject: `Trustee Invitation: ${election_title || `Election ${election_id}`}`,
-          text: `Dear ${trustee},
+          text: `Dear ${name || email},
 <h3>You're invited to join a SIV Multiparty Key Generation${
             election_title ? `: ${election_title}` : ''
           }.</h3>This helps thoroughly anonymize election votes.
@@ -110,7 +111,7 @@ Click here to join:
   )
 
   // Send Admin push notification
-  promises.push(pushover(`Invited ${trustees.length} trustees`, trustees.join(', ')))
+  promises.push(pushover(`Invited ${trustees.length} trustees`, trustees.map((t) => t.email).join(', ')))
 
   // Generate admin's private coefficients and public commitments
   const private_coefficients = pick_private_coefficients(trustees.length, safe_prime_bigs)
