@@ -266,7 +266,7 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
                           if (!validateEmail(new_email)) return alert(`Invalid email: '${new_email}'`)
 
                           // Store new email in API
-                          const response = await api(`election/${election_id}/admin/edit-email`, {
+                          const response = await api(`election/${election_id}/admin/edit-voter-email`, {
                             new_email,
                             old_email: email,
                           })

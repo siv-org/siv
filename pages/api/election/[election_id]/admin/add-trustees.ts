@@ -92,20 +92,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
         const link = `${req.headers.origin}/election/${election_id}/trustee?auth=${auth_tokens[index]}`
 
-        return sendEmail({
-          recipient: email,
-          subject: `Trustee Invitation: ${election_title || `Election ${election_id}`}`,
-          text: `Dear ${name || email},
-<h3>You're invited to join a SIV Multiparty Key Generation${
-            election_title ? `: ${election_title}` : ''
-          }.</h3>This helps thoroughly anonymize election votes.
-Each Trustee adds an extra layer of vote privacy.
-
-Click here to join:
-<a href="${link}" style="font-weight: bold;">${link}</a>
-
-<em style="font-size:10px; opacity: 0.6;">This link is unique for you. Don't share it with anyone.</em>`,
-        })
+        return sendTrusteeInvite(link, email, election_id, election_title, name)
       }),
     ),
   )
@@ -151,3 +138,25 @@ Click here to join:
   // Finally, send http success back to frontend
   res.status(201).json({ election_id })
 }
+
+export const sendTrusteeInvite = (
+  link: string,
+  email: string,
+  election_id: string,
+  election_title?: string,
+  name?: string,
+) =>
+  sendEmail({
+    recipient: email,
+    subject: `Trustee Invitation: ${election_title || `Election ${election_id}`}`,
+    text: `Dear ${name || email},
+<h3>You're invited to join a SIV Multiparty Key Generation${
+      election_title ? `: ${election_title}` : ''
+    }.</h3>This helps thoroughly anonymize election votes.
+Each Trustee adds an extra layer of vote privacy.
+
+Click here to join:
+<a href="${link}" style="font-weight: bold;">${link}</a>
+
+<em style="font-size:10px; opacity: 0.6;">This link is unique for you. Don't share it with anyone.</em>`,
+  })
