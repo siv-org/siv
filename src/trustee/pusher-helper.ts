@@ -11,7 +11,7 @@ export function initPusher({ dispatch, state }: StateAndDispatch) {
 
     const pusher = new Pusher('9718ba0612df1a49e52b', { cluster: 'us3' })
 
-    const channel = pusher.subscribe('keygen')
+    const channel = pusher.subscribe(`keygen-${state.election_id}`)
     channel.bind('update', (data: unknown) => {
       console.log('🆕 Pusher keygen:update', data)
       getLatestFromServer({ dispatch, state })
@@ -41,5 +41,5 @@ export function initPusher({ dispatch, state }: StateAndDispatch) {
   // Only subscribe on init
   useEffect(() => {
     return subscribe()
-  }, [])
+  }, [state.election_id])
 }

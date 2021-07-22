@@ -13,7 +13,5 @@ export const pusher = new Pusher({
 })
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  pusher.trigger('keygen', 'update', 'hello world')
-
   res.status(200).end('Success.')
 }

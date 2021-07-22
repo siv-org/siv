@@ -10,20 +10,24 @@ export function usePusher(election_id?: string) {
 
     const pusher = new Pusher('9718ba0612df1a49e52b', { cluster: 'us3' })
 
-    const channel = pusher.subscribe(`status-${election_id}`)
-    channel.bind('pub_key', ({ threshold_public_key }: { threshold_public_key: string }) => {
+    const keygenChannel = pusher.subscribe(`keygen-${election_id}`)
+    keygenChannel.bind('update', () => revalidate(election_id))
+
+    const statusChannel = pusher.subscribe(`status-${election_id}`)
+    statusChannel.bind('pub_key', ({ threshold_public_key }: { threshold_public_key: string }) => {
       console.log('🆕 Pusher pub_key', threshold_public_key)
       revalidate(election_id)
     })
 
-    channel.bind(`votes`, (data: string) => {
+    statusChannel.bind(`votes`, (data: string) => {
       console.log('🆕 Pusher new vote submitted', data)
       revalidate(election_id)
     })
 
     // Return cleanup code
     return () => {
-      channel.unbind()
+      keygenChannel.unbind()
+      statusChannel.unbind()
     }
   }
 

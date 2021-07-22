@@ -162,11 +162,11 @@ export const Trustees = () => {
               <th>email</th>
               <th>name</th>
               <th style={{ width: 50 }}>invite delivered</th>
-              <th>stage</th>
+              <th>stage completed</th>
             </tr>
           </thead>
           <tbody>
-            {trustees.map(({ email, mailgun_events, name }, index) => (
+            {trustees.map(({ email, mailgun_events, name, stage = 0 }, index) => (
               <tr key={email}>
                 <td>{index + 1}</td>
                 <td>
@@ -208,7 +208,7 @@ export const Trustees = () => {
                   <DeliveriesAndFailures {...mailgun_events} checkmarkOnly />
                 )}
 
-                <td style={{ textAlign: 'center' }}>0 of 11</td>
+                <td style={{ textAlign: 'center' }}>{stage} of 12</td>
               </tr>
             ))}
           </tbody>

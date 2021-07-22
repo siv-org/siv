@@ -130,7 +130,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         },
         { merge: true },
       )
-      .then(() => pusher.trigger('keygen', 'update', `${ADMIN_EMAIL} created their initial data`)),
+      .then(() => pusher.trigger(`keygen-${election_id}`, 'update', `${ADMIN_EMAIL} created their initial data`)),
   )
 
   await Promise.all(promises)

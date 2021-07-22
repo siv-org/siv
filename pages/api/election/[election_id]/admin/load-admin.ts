@@ -20,6 +20,7 @@ type Trustee = {
   email: string
   mailgun_events: { accepted?: MgEvent[]; delivered?: MgEvent[]; failed?: MgEvent[] }
   name?: string
+  stage: number
 }
 
 type MgEvent = Record<string, unknown>
@@ -70,13 +71,18 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   // Build trustees objects
-  const trustees = (await loadTrustees).docs.reduce((acc: Trustee[], doc) => {
-    const { email, mailgun_events, name } = { ...doc.data() } as {
-      email: string
-      mailgun_events: { accepted: MgEvent[]; delivered: MgEvent[] }
-      name?: string
-    }
-    return [...acc, { email, mailgun_events, name }]
+  const trustees = (await loadTrustees).docs.reduce((acc: Trustee[], doc, _, docs) => {
+    const has_everyone = (obj: Record<string, string>) => Object.keys(obj).length === docs.length - 1
+    const data = { ...doc.data() }
+
+    let stage = 0
+    if (data.recipient_key) stage = 4
+    if (data.commitments) stage = 5
+    if (data.encrypted_pairwise_shares_for && has_everyone(data.encrypted_pairwise_shares_for)) stage = 7
+    if (data.verified && has_everyone(data.verified)) stage = 8
+    if (data.partial_decryption) stage = 12
+
+    return [...acc, { email: data.email, mailgun_events: data.mailgun_events, name: data.name, stage }]
   }, [])
 
   // Gather who's voted already

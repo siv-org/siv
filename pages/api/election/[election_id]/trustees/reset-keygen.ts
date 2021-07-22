@@ -40,7 +40,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Authenticate by checking if auth token matches
   if (trustee.auth_token !== auth) return res.status(401).json({ error: 'Bad auth token' })
 
-  const all_trustee_initial_fields = ['auth_token', 'index', 'email']
+  const all_trustee_initial_fields = ['auth_token', 'index', 'email', 'name', 'mailgun_events', 'email_edits']
 
   // Delete election threshold_pub_key
   const reset_pub_key = electionDoc.update({ threshold_public_key: firestore.FieldValue.delete() })
@@ -88,7 +88,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   console.log(success_msg)
 
   // Notify all participants to reset
-  await pusher.trigger('keygen', 'reset-keygen', `${email} trigged reset`)
+  await pusher.trigger(`keygen-${election_id}`, 'reset-keygen', `${email} trigged reset`)
 
   res.status(204).send(success_msg)
 }

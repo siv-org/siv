@@ -64,7 +64,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   console.log(success_msg)
 
   // Notify all participants to reset
-  await pusher.trigger('keygen', 'reset-unlock', `${email} trigged reset`)
+  await pusher.trigger(`keygen-${election_id}`, 'reset-unlock', `${email} trigged reset`)
 
   res.status(204).json({ message: success_msg })
 }
