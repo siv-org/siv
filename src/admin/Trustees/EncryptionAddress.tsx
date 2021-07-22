@@ -7,13 +7,15 @@ export const EncryptionAddress = () => {
 
   return (
     <div>
-      Trustees created a private key for the encryption address {threshold_public_key}
+      ✅ Trustees created a private key for the encryption address {threshold_public_key}
       <style jsx>{`
         div {
           border: 1px solid #ccc;
           border-radius: 4px;
           font-size: 14px;
           padding: 8px;
+
+          margin-top: 15px;
 
           word-wrap: break-word;
         }
