@@ -1,3 +1,4 @@
+import { validate as validateEmail } from 'email-validator'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import { firebase } from '../../../_services'
@@ -25,7 +26,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if ((await votersCollection.doc(new_email).get()).exists)
     return res.status(401).json({ error: `There's already a voter ${new_email}` })
 
-  // TODO: Validate new_email is a valid email address
+  // Validate new_email is a valid email address
+  if (!validateEmail(new_email)) return res.status(401).json({ error: `Invalid email: ${new_email}` })
 
   // Store record of edit on new voter
   old_voter_data.email_edits = [...(old_voter_data.email_edits || []), { edited_at: new Date(), email: old_email }]
