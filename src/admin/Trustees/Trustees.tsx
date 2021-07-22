@@ -1,6 +1,6 @@
 import { EditOutlined } from '@ant-design/icons'
 import { TextField } from '@material-ui/core'
-import EmailValidator from 'email-validator'
+import { validate as validateEmail } from 'email-validator'
 import { useEffect, useState } from 'react'
 
 import { api } from '../../api-helper'
@@ -130,7 +130,7 @@ export const Trustees = () => {
                   return set_new_trustees(update)
                 }
 
-                if (!EmailValidator.validate(email)) {
+                if (!validateEmail(email)) {
                   errored = true
                   const update = [...not_empty]
                   update[i].error = 'Invalid email'
@@ -181,7 +181,7 @@ export const Trustees = () => {
 
                         if (!new_email || new_email === email) return
 
-                        if (!EmailValidator.validate(new_email)) return alert(`Invalid email: '${new_email}'`)
+                        if (!validateEmail(new_email)) return alert(`Invalid email: '${new_email}'`)
 
                         // Store new email in API
                         const response = await api(`election/${election_id}/admin/edit-email`, {
