@@ -1,4 +1,5 @@
 import { EditOutlined } from '@ant-design/icons'
+import EmailValidator from 'email-validator'
 import { useEffect, useReducer, useState } from 'react'
 
 import { api } from '../../api-helper'
@@ -260,8 +261,9 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
                         onClick={async () => {
                           const new_email = prompt('Edit email?', email)
 
-                          // TODO: check if is_valid_email(new_email)
                           if (!new_email || new_email === email) return
+
+                          if (!EmailValidator.validate(new_email)) return alert(`Invalid email: '${new_email}'`)
 
                           // Store new email in API
                           const response = await api(`election/${election_id}/admin/edit-email`, {
