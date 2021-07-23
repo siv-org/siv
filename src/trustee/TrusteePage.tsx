@@ -1,6 +1,6 @@
 import { Tab, Tabs } from '@material-ui/core'
 import { useRouter } from 'next/router'
-import { useReducer, useState } from 'react'
+import { useReducer } from 'react'
 
 import { mask as maskFunc } from '../admin/Voters/ExistingVoters'
 import { GlobalCSS } from '../GlobalCSS'
@@ -14,12 +14,13 @@ import { useTrusteeState } from './trustee-state'
 
 export const TrusteePage = (): JSX.Element => {
   // Grab election parameters from URL
-  const { auth, election_id } = useRouter().query as { auth: string; election_id: string }
+  const router = useRouter()
+  const { auth, election_id } = router.query as { auth: string; election_id: string }
   const [masked, toggle_masked] = useReducer((state) => !state, true)
 
   const mask = masked ? maskFunc : (s: string) => s
 
-  const [tab, setTab] = useState(0)
+  const tab = router.isReady && document?.location?.hash === '#after' ? 1 : 0
 
   return (
     <>
@@ -41,13 +42,13 @@ export const TrusteePage = (): JSX.Element => {
           style={{ margin: '1rem 0' }}
           textColor="primary"
           value={tab}
-          onChange={(_, newValue) => setTab(newValue)}
+          onChange={(_, newValue) => router.push(`#${newValue ? 'after' : 'before'}`)}
         >
           <Tab label="Before Election" />
           <Tab label="After Election" />
         </Tabs>
 
-        {!(election_id && auth) ? <p>Need election_id and auth</p> : <ClientOnly {...{ auth, election_id, tab }} />}
+        {!(election_id && auth) ? <p>Need election_id and auth</p> : <ClientOnly {...{ auth, election_id }} />}
       </main>
 
       <style jsx>{`
@@ -73,7 +74,7 @@ export const TrusteePage = (): JSX.Element => {
   )
 }
 
-const ClientOnly = ({ auth, election_id, tab }: { auth: string; election_id: string; tab: number }) => {
+const ClientOnly = ({ auth, election_id }: { auth: string; election_id: string }) => {
   // Initialize local vote state on client
   const [state, dispatch] = useTrusteeState({ auth, election_id })
 
@@ -84,6 +85,12 @@ const ClientOnly = ({ auth, election_id, tab }: { auth: string; election_id: str
   initPusher({ dispatch, state })
 
   return (
-    <>{tab === 0 ? <Keygen {...{ dispatch, state }} /> : <ShuffleAndDecrypt {...{ dispatch, election_id, state }} />}</>
+    <>
+      {document.location.hash !== '#after' ? (
+        <Keygen {...{ dispatch, state }} />
+      ) : (
+        <ShuffleAndDecrypt {...{ dispatch, election_id, state }} />
+      )}
+    </>
   )
 }
