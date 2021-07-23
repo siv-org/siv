@@ -257,7 +257,6 @@ const DecryptionProof = ({ partials }: { partials: Partials }) => (
     ))}
     <style jsx>{`
       code {
-        white-space: pre;
         font-size: 13px;
       }
     `}</style>

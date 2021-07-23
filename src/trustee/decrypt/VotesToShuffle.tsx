@@ -255,7 +255,6 @@ const ShuffleProof = ({ shuffled }: { shuffled: Shuffled }) => (
     ))}
     <style jsx>{`
       code {
-        white-space: pre;
         font-size: 13px;
       }
     `}</style>
