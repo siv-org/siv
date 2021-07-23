@@ -24,6 +24,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const old_trustee_data = { ...old_trustee_doc.data() }
   old_trustee_data.email = new_email
 
+  // Only allow editing if they haven't opened their link yet
+  if (old_trustee_data.recipient_key)
+    return res
+      .status(401)
+      .json({ error: `Can't edit: ${old_email}. They already opened their invitation. You can create a new election.` })
+
   // Confirm new trustee doesn't already exist
   if ((await trusteesCollection.doc(new_email).get()).exists)
     return res.status(401).json({ error: `There's already a trustee ${new_email}` })

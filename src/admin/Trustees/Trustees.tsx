@@ -191,8 +191,9 @@ export const Trustees = () => {
                         if (response.status === 201) {
                           revalidate(election_id)
                         } else {
-                          console.error(response.json())
-                          // throw await response.json()
+                          const json = await response.json()
+                          console.error(json)
+                          alert(json.error)
                         }
                       }}
                     >
