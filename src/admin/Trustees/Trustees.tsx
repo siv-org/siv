@@ -88,6 +88,7 @@ export const Trustees = () => {
                 }}
               />
               <TextField
+                className="name-input"
                 id={`name-input-${i}`}
                 label="Name"
                 size="small"
@@ -221,6 +222,14 @@ export const Trustees = () => {
         </p>
       )}
       <EncryptionAddress />
+      <style global jsx>{`
+        @media (max-width: 737px) {
+          .name-input {
+            margin-left: 47px;
+            margin-top: 7px;
+          }
+        }
+      `}</style>
       <style jsx>{`
         /* When sidebar disappears */
         @media (max-width: 500px) {
@@ -249,10 +258,6 @@ export const Trustees = () => {
           margin-right: 15px;
           margin-top: 21px;
           padding: 5px 5px;
-        }
-
-        .email-input {
-          width: 270px;
         }
 
         #add-another {
