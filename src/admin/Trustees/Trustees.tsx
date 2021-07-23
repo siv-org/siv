@@ -55,9 +55,7 @@ export const Trustees = () => {
         <div>
           <ol>
             <li>
-              {admin_email}
-              <br />
-              <span>The SIV server</span>
+              <span id="default-trustee">{admin_email}</span> The SIV server
             </li>
           </ol>
           <p>
@@ -72,7 +70,7 @@ export const Trustees = () => {
                 helperText={new_trustees[i].error}
                 label="Email"
                 size="small"
-                style={{ marginBottom: 5, marginRight: 10 }}
+                style={{ marginBottom: 5, marginRight: 15, width: 220 }}
                 value={new_trustees[i].email || ''}
                 variant="outlined"
                 onChange={(event) => {
@@ -92,6 +90,7 @@ export const Trustees = () => {
                 id={`name-input-${i}`}
                 label="Name"
                 size="small"
+                style={{ width: 220 }}
                 value={new_trustees[i].name || ''}
                 variant="outlined"
                 onChange={(event) => {
@@ -223,10 +222,14 @@ export const Trustees = () => {
       )}
       <EncryptionAddress />
       <style global jsx>{`
-        @media (max-width: 737px) {
+        @media (max-width: 780px) {
           .name-input {
             margin-left: 47px;
             margin-top: 7px;
+          }
+
+          #default-trustee {
+            display: block;
           }
         }
       `}</style>
@@ -241,6 +244,10 @@ export const Trustees = () => {
         li {
           padding-left: 8px;
           margin-bottom: 5px;
+        }
+
+        li span {
+          margin-right: 26px;
         }
 
         .row {
