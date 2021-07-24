@@ -3,12 +3,10 @@ import { useRouter } from 'next/router'
 import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
 import { Footer } from '../vote/Footer'
-import { process } from './process'
+import Process from './process.mdx'
 
 export const ProofsPage = () => {
   const { election_id } = useRouter().query as { election_id?: string }
-
-  let stepCount = 0
 
   return (
     <>
@@ -22,39 +20,37 @@ export const ProofsPage = () => {
               ID: <b>{election_id}</b>
             </p>
           </div>
-          {process.map((step, i) => {
-            if (typeof step === 'string') return <p key={i}>{step}</p>
-
-            if (typeof step === 'object') {
-              if (step.html) return <div dangerouslySetInnerHTML={{ __html: step.html }} key={i} />
-
-              //   if (step.react) {
-              //     const Element = (step.react as ReactLine).react
-              //     return <Element key={i} />
-              //   }
-
-              if (step.section) return <h2 key={i}>{step.section}:</h2>
-
-              if (step.step)
-                return (
-                  <h4 key={i}>
-                    {++stepCount}. {step.step}
-                  </h4>
-                )
-
-              if (step.todo)
-                return (
-                  <p key={i}>
-                    <input type="checkbox" />
-                    <span style={{ color: 'red' }}>(todo)</span>
-                    {step.todo}
-                  </p>
-                )
-            }
-          })}
+          <Process />
         </div>
         <Footer />
       </main>
+
+      {/* Customize the default mdx rendering */}
+      <style global jsx>{`
+        ol {
+          padding-inline-start: 20px;
+        }
+
+        ol li {
+          font-weight: bold;
+        }
+
+        /* Formatting for checkboxes */
+        ul.contains-task-list {
+          padding-inline-start: 0px;
+        }
+        .task-list-item {
+          display: block;
+        }
+        input[type='checkbox'] {
+          width: 50px;
+          text-align: right;
+        }
+        input[type='checkbox']:before {
+          content: '(todo)';
+          color: red;
+        }
+      `}</style>
 
       <style jsx>{`
         main {
@@ -88,15 +84,6 @@ export const ProofsPage = () => {
           opacity: 0.7;
           text-align: right;
           margin-top: 0;
-        }
-
-        p.toggle {
-          font-size: 13px;
-          margin-top: 45px;
-        }
-
-        p.toggle a {
-          cursor: pointer;
         }
       `}</style>
       <GlobalCSS />
