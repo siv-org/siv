@@ -1,12 +1,10 @@
 export const UniversalVerification = () => {
   return (
     <p>
-      <b>✓</b> Universal ZK Proofs Verified
+      <a href={`${window.location.href}/proofs`} rel="noreferrer" target="_blank">
+        <b>✓</b> Universal ZK Proofs Verified
+      </a>
       <style jsx>{`
-        p {
-          opacity: 1;
-        }
-
         b {
           color: green;
           border: 1px solid rgb(50, 140, 50);
