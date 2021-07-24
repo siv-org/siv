@@ -6,6 +6,7 @@ import { Head } from '../Head'
 import { Footer } from '../vote/Footer'
 import { AcceptedVotes } from './AcceptedVotes'
 import { DecryptedVotes } from './DecryptedVotes'
+import { UniversalVerification } from './UniversalVerification'
 import { useBallotDesign } from './use-ballot-design'
 
 export const ElectionStatusPage = (): JSX.Element => {
@@ -26,7 +27,12 @@ export const ElectionStatusPage = (): JSX.Element => {
             </p>
           </div>
 
-          {election_title && <h2>{election_title}</h2>}
+          {election_title && (
+            <div className="title-line">
+              <h2>{election_title}</h2>
+              <UniversalVerification />
+            </div>
+          )}
           <DecryptedVotes {...{ ballot_design }} />
           <br />
 
