@@ -7,8 +7,19 @@ export const Head = ({ children = <></>, title }: { children?: JSX.Element; titl
 
   return (
     <_Head>
-      <title key="title">{full_title}</title>
-      <link href="/favicon.png" rel="icon" />
+      <title key="title">{title}</title>
+
+      {/* Favicons */}
+      <link href="/apple-touch-icon.png?v=2" rel="apple-touch-icon" sizes="180x180" />
+      <link href="/favicon-32x32.png?v=2" rel="icon" sizes="32x32" type="image/png" />
+      <link href="/favicon-16x16.png?v=2" rel="icon" sizes="16x16" type="image/png" />
+      <link href="/site.webmanifest?v=2" rel="manifest" />
+      <link color="#5bbad5" href="/safari-pinned-tab.svg?v=2" rel="mask-icon" />
+      <link href="/favicon.ico?v=2" rel="shortcut icon" />
+      <meta content="Elections" name="apple-mobile-web-app-title" />
+      <meta content="Elections" name="application-name" />
+      <meta content="#2b5797" name="msapplication-TileColor" />
+      <meta content="#ffffff" name="theme-color" />
 
       <meta content="minimum-scale=1, initial-scale=1, width=device-width, user-scalable=no" name="viewport" />
 
