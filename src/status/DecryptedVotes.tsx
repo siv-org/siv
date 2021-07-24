@@ -1,38 +1,13 @@
 import { orderBy } from 'lodash-es'
 import { flatten } from 'lodash-es'
-import { useRouter } from 'next/router'
-import Pusher from 'pusher-js'
-import { useEffect, useState } from 'react'
 
-import { Item } from '../vote/useElectionInfo'
 import { Totals } from './Totals'
+import { useDecryptedVotes } from './use-decrypted-votes'
+import { useElectionInfo } from './use-election-info'
 
-export const DecryptedVotes = ({ ballot_design }: { ballot_design?: Item[] }): JSX.Element => {
-  const { election_id } = useRouter().query
-  const [votes, setVotes] = useState<Record<string, string>[]>()
-  const [last_decrypted_at, set_last_decrypted_at] = useState<Date>()
-
-  const loadVotes = () =>
-    election_id &&
-    Promise.all([
-      fetch(`/api/election/${election_id}/decrypted-votes`)
-        .then((res) => res.json())
-        .then(setVotes),
-      fetch(`/api/election/${election_id}/info`)
-        .then((res) => res.json())
-        .then(
-          ({ last_decrypted_at }) =>
-            last_decrypted_at && set_last_decrypted_at(new Date(last_decrypted_at._seconds * 1000)),
-        ),
-    ])
-
-  // Load votes when election_id is first set
-  useEffect(() => {
-    loadVotes()
-  }, [election_id])
-
-  // Subscribe to pusher updates of new votes
-  subscribeToUpdates(loadVotes, election_id)
+export const DecryptedVotes = (): JSX.Element => {
+  const votes = useDecryptedVotes()
+  const { ballot_design } = useElectionInfo()
 
   if (!votes || !votes.length || !ballot_design) return <></>
 
@@ -48,7 +23,7 @@ export const DecryptedVotes = ({ ballot_design }: { ballot_design?: Item[] }): J
 
   return (
     <div>
-      <Totals {...{ ballot_design, last_decrypted_at, votes }} />
+      <Totals />
       <br />
       <h3>Decrypted Votes</h3>
       <p>Anonymized for vote secrecy.</p>
@@ -105,30 +80,4 @@ export const DecryptedVotes = ({ ballot_design }: { ballot_design?: Item[] }): J
       `}</style>
     </div>
   )
-}
-
-function subscribeToUpdates(loadVotes: () => void, election_id?: string | string[]) {
-  function subscribe() {
-    if (!election_id) return
-
-    // Enable pusher logging - don't include this in production
-    // Pusher.logToConsole = true
-
-    const pusher = new Pusher('9718ba0612df1a49e52b', { cluster: 'us3' })
-
-    const channel = pusher.subscribe(election_id as string)
-
-    channel.bind(`decrypted`, () => {
-      console.log('🆕 [Pusher] New decrypted votes')
-      loadVotes()
-    })
-
-    // Return cleanup code
-    return () => {
-      channel.unbind()
-    }
-  }
-
-  // Subscribe when we get election_id
-  useEffect(subscribe, [election_id])
 }

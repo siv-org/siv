@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 import { AcceptedVotes } from '../../status/AcceptedVotes'
-import { useBallotDesign } from '../../status/use-ballot-design'
+import { useElectionInfo } from '../../status/use-election-info'
 import { Trustees } from '../keygen/1-Trustees'
 import { PrivateBox } from '../PrivateBox'
 import { StateAndDispatch } from '../trustee-state'
@@ -15,7 +15,7 @@ export const ShuffleAndDecrypt = ({
   state,
 }: StateAndDispatch & { election_id: string }): JSX.Element => {
   const { private_keyshare } = state
-  const { ballot_design } = useBallotDesign(election_id)
+  const { ballot_design } = useElectionInfo(election_id)
   const [final_shuffle_verifies, set_final_shuffle_verifies] = useState(false)
 
   if (!private_keyshare) {

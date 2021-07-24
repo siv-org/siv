@@ -2,13 +2,13 @@ import { useRouter } from 'next/router'
 
 import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
-import { useBallotDesign } from '../status/use-ballot-design'
+import { useElectionInfo } from '../status/use-election-info'
 import { Footer } from '../vote/Footer'
 import Process from './process.mdx'
 
 export const ProofsPage = () => {
-  const { election_id } = useRouter().query as { election_id?: string }
-  const { election_title } = useBallotDesign(election_id)
+  const { election_id } = useRouter().query as { election_id: string }
+  const { election_title, has_decrypted_votes } = useElectionInfo()
 
   return (
     <>
@@ -22,7 +22,7 @@ export const ProofsPage = () => {
               ID: <b>{election_id}</b>
             </p>
           </div>
-          <Process />
+          {!has_decrypted_votes ? <p>Votes have not unlocked yet. Check back later.</p> : <Process />}
         </div>
         <Footer />
       </main>

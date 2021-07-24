@@ -1,13 +1,16 @@
+import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
 import { Item } from '../vote/useElectionInfo'
 
-export function useBallotDesign(election_id?: string) {
+export function useElectionInfo() {
+  const election_id = useRouter().query.election_id as string | undefined
   const [info, set_info] = useState<{
     ballot_design?: Item[]
     election_title?: string
     esignature_requested?: boolean
     has_decrypted_votes?: boolean
+    last_decrypted_at?: Date
   }>({})
 
   // Download info once we load election_id
@@ -25,6 +28,7 @@ export function useBallotDesign(election_id?: string) {
         election_title,
         esignature_requested,
         has_decrypted_votes: !!last_decrypted_at,
+        last_decrypted_at: last_decrypted_at ? new Date(last_decrypted_at._seconds * 1000) : undefined,
       })
     })()
   }, [election_id])

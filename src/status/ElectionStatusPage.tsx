@@ -7,11 +7,11 @@ import { Footer } from '../vote/Footer'
 import { AcceptedVotes } from './AcceptedVotes'
 import { DecryptedVotes } from './DecryptedVotes'
 import { UniversalVerification } from './UniversalVerification'
-import { useBallotDesign } from './use-ballot-design'
+import { useElectionInfo } from './use-election-info'
 
 export const ElectionStatusPage = (): JSX.Element => {
-  const { election_id } = useRouter().query as { election_id?: string }
-  const { ballot_design, election_title, esignature_requested, has_decrypted_votes } = useBallotDesign(election_id)
+  const { election_id } = useRouter().query as { election_id: string }
+  const { ballot_design, election_title, esignature_requested, has_decrypted_votes } = useElectionInfo()
   const [show_encrypteds, toggle_encrypteds] = useReducer((state) => !state, false)
 
   return (
@@ -33,7 +33,7 @@ export const ElectionStatusPage = (): JSX.Element => {
               <UniversalVerification />
             </div>
           )}
-          <DecryptedVotes {...{ ballot_design }} />
+          <DecryptedVotes />
           <br />
 
           {/* Display simple list of Encrypted Votes if we haven't unlocked any yet */}

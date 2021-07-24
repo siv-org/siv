@@ -2,23 +2,21 @@ import { keyBy, orderBy } from 'lodash-es'
 import TimeAgo from 'timeago-react'
 
 import { mapValues } from '../utils'
-import { Item } from '../vote/useElectionInfo'
+import { useDecryptedVotes } from './use-decrypted-votes'
+import { useElectionInfo } from './use-election-info'
 
-export const Totals = ({
-  ballot_design,
-  last_decrypted_at,
-  votes,
-}: {
-  ballot_design: Item[]
-  last_decrypted_at?: Date
-  votes: Record<string, string>[]
-}): JSX.Element => {
-  const tallies: Record<string, Record<string, number>> = {}
+export const Totals = (): JSX.Element => {
+  const { ballot_design, last_decrypted_at } = useElectionInfo()
+  const votes = useDecryptedVotes()
+
+  // Stop if we don't have enough data yet
+  if (!ballot_design || !votes) return <></>
 
   const items_by_id = keyBy(ballot_design, 'id')
   const multi_vote_regex = /_\d+$/
 
   // Sum up votes
+  const tallies: Record<string, Record<string, number>> = {}
   votes.forEach((vote) => {
     Object.keys(vote).forEach((key) => {
       // Skip 'tracking' key

@@ -1,4 +1,11 @@
+import { useElectionInfo } from './use-election-info'
+
 export const UniversalVerification = () => {
+  const { last_decrypted_at } = useElectionInfo()
+
+  // Don't show if votes haven't been decrypted yet.
+  if (!last_decrypted_at) return <></>
+
   return (
     <p>
       <a href={`${window.location.href}/proofs`} rel="noreferrer" target="_blank">
