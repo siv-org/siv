@@ -2,11 +2,13 @@ import { useRouter } from 'next/router'
 
 import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
+import { useBallotDesign } from '../status/use-ballot-design'
 import { Footer } from '../vote/Footer'
 import Process from './process.mdx'
 
 export const ProofsPage = () => {
   const { election_id } = useRouter().query as { election_id?: string }
+  const { election_title } = useBallotDesign(election_id)
 
   return (
     <>
@@ -15,7 +17,7 @@ export const ProofsPage = () => {
       <main>
         <div>
           <div className="title-line">
-            <h1>Election Proofs</h1>
+            <h1>Election `{election_title}` Proofs</h1>
             <p>
               ID: <b>{election_id}</b>
             </p>
