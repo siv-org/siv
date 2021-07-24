@@ -2,7 +2,7 @@ export const UniversalVerification = () => {
   return (
     <p>
       <a href={`${window.location.href}/proofs`} rel="noreferrer" target="_blank">
-        <b>✓</b> Universal ZK Proofs Verified
+        <b>✓</b>Universal ZK Proofs Verified
       </a>
       <style jsx>{`
         b {
@@ -12,6 +12,7 @@ export const UniversalVerification = () => {
           width: 22px;
           display: inline-block;
           text-align: center;
+          margin-right: 5px;
         }
       `}</style>
     </p>
