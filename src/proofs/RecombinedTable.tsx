@@ -1,10 +1,10 @@
 import { orderBy } from 'lodash-es'
 import { flatten } from 'lodash-es'
 
-import { useDecryptedVotes } from './use-decrypted-votes'
-import { useElectionInfo } from './use-election-info'
+import { useDecryptedVotes } from '../status/use-decrypted-votes'
+import { useElectionInfo } from '../status/use-election-info'
 
-export const DecryptedVotes = ({ proofsPage }: { proofsPage?: boolean }): JSX.Element => {
+export const RecombinedTable = (): JSX.Element => {
   const votes = useDecryptedVotes()
   const { ballot_design } = useElectionInfo()
 
@@ -22,13 +22,10 @@ export const DecryptedVotes = ({ proofsPage }: { proofsPage?: boolean }): JSX.El
 
   return (
     <div>
-      <h3>Decrypted Votes</h3>
-      {!proofsPage && <p>Anonymized for vote secrecy.</p>}
       <table>
         <thead>
           <tr>
             <th></th>
-            <th>verification #</th>
             {columns.map((c) => (
               <th key={c}>{c}</th>
             ))}
@@ -38,26 +35,16 @@ export const DecryptedVotes = ({ proofsPage }: { proofsPage?: boolean }): JSX.El
           {sorted_votes.map((vote, index) => (
             <tr key={index}>
               <td>{index + 1}.</td>
-              <td>{vote.tracking?.padStart(14, '0')}</td>
               {columns.map((c) => (
-                <td key={c}>{vote[c]}</td>
+                <td key={c}>
+                  {vote.tracking}:{vote[c]}
+                </td>
               ))}
             </tr>
           ))}
         </tbody>
       </table>
       <style jsx>{`
-        h3 {
-          margin-bottom: 5px;
-        }
-
-        p {
-          margin-top: 0px;
-          font-size: 13px;
-          font-style: italic;
-          opacity: 0.7;
-        }
-
         table {
           border-collapse: collapse;
           display: block;

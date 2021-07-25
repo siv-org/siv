@@ -1,4 +1,6 @@
+import { DecryptedVotes } from '../status/DecryptedVotes'
 import { Totals } from '../status/Totals'
+import { RecombinedTable } from './RecombinedTable'
 
 This page lays out how anyone can confirm the complete accuracy of this <a href="https://secureinternetvoting.org" target="_blank">SecureInternetVoting.org</a> Election.
 
@@ -6,17 +8,21 @@ This page lays out how anyone can confirm the complete accuracy of this <a href=
 
 <Totals />
 
-- [ ] Include Vote Totals
-
 1. Vote totals are the sums of each unique option from the Decrypted Votes table.
 
 These sums are being automatically recounted in every visitor's browser.
 
-Anyone can verify these numbers themselves by hand or spreadsheet.
+You can verify these numbers yourself by hand or spreadsheet.
+
+<DecryptedVotes proofsPage />
 
 2. Combine the tracking number and each vote column like this: [tracking]:[vote].
 
+<RecombinedTable />
+
 3. Encode the alphanumeric votes into an integer.
+
+- [ ] Table illustrating encodeds
 
 4. The decrypted votes are the Lagrangian Interpolations of the Partial Decryptions provided by the Trustees.
 
