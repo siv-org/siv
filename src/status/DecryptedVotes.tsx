@@ -22,8 +22,11 @@ export const DecryptedVotes = ({ proofsPage }: { proofsPage?: boolean }): JSX.El
 
   return (
     <div>
-      <h3>Decrypted Votes</h3>
-      {!proofsPage && <p>Anonymized for vote secrecy.</p>}
+      {!proofsPage && (
+        <>
+          <h3>Decrypted Votes</h3> <p>Anonymized for vote secrecy.</p>
+        </>
+      )}
       <table>
         <thead>
           <tr>

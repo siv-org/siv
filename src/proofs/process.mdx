@@ -5,19 +5,17 @@ import { RecombinedTable } from './RecombinedTable'
 
 This page lays out how anyone can confirm the complete accuracy of this <a href="https://secureinternetvoting.org" target="_blank">SecureInternetVoting.org</a> Election.
 
-## Work backwards from Vote Totals:
+<Totals proofsPage />
 
-<Totals />
+## Working backwards from the Vote Totals...
 
 1. Vote totals are the sums of each unique option from the Decrypted Votes table.
 
-These sums are being automatically recounted in every visitor's browser.
+<DecryptedVotes proofsPage />
 
 You can verify these numbers yourself by hand or spreadsheet.
 
-<DecryptedVotes proofsPage />
-
-2. Combine the tracking number and each vote column like this: [tracking]:[vote].
+2. Combine the verification # and each vote column like this: [verification]:[vote].
 
 <RecombinedTable />
 

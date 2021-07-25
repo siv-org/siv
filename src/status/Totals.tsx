@@ -5,7 +5,7 @@ import { mapValues } from '../utils'
 import { useDecryptedVotes } from './use-decrypted-votes'
 import { useElectionInfo } from './use-election-info'
 
-export const Totals = (): JSX.Element => {
+export const Totals = ({ proofsPage }: { proofsPage?: boolean }): JSX.Element => {
   const { ballot_design, last_decrypted_at } = useElectionInfo()
   const votes = useDecryptedVotes()
 
@@ -53,10 +53,10 @@ export const Totals = (): JSX.Element => {
   ) as Record<string, string[]>
 
   return (
-    <div className="totals">
+    <div className="totals" style={{ display: proofsPage ? 'inline-block' : undefined }}>
       <div className="title-line">
         <h3>Vote Totals:</h3>
-        {last_decrypted_at && (
+        {last_decrypted_at && !proofsPage && (
           <span>
             Last updated: <TimeAgo datetime={last_decrypted_at} opts={{ minInterval: 60 }} />
           </span>
