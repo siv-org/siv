@@ -4,8 +4,8 @@ import { encode } from '../crypto/encode'
 import encrypt from '../crypto/encrypt'
 import pickRandomInteger from '../crypto/pick-random-integer'
 import { big, bigPubKey } from '../crypto/types'
+import { Item } from './storeElectionInfo'
 import { generateTrackingNum } from './tracking-num'
-import { Item } from './useElectionInfo'
 import { useLocalStorageReducer } from './useLocalStorage'
 
 // Define our types

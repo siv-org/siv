@@ -89,7 +89,7 @@ const ClientOnly = ({ auth, election_id }: { auth: string; election_id: string }
       {document.location.hash !== '#after' ? (
         <Keygen {...{ dispatch, state }} />
       ) : (
-        <ShuffleAndDecrypt {...{ dispatch, election_id, state }} />
+        <ShuffleAndDecrypt {...{ dispatch, state }} />
       )}
     </>
   )

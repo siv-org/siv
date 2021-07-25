@@ -3,7 +3,7 @@ import { Dispatch, useState } from 'react'
 import Linkify from 'react-linkify'
 
 import { encode } from '../crypto/encode'
-import { Item as ItemType } from './useElectionInfo'
+import { Item as ItemType } from './storeElectionInfo'
 import { State } from './vote-state'
 
 export const Item = ({

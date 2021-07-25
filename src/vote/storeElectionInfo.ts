@@ -12,7 +12,7 @@ export type Item = {
   write_in_allowed: boolean
 }
 
-export function useElectionInfo(dispatch: Dispatch<Record<string, unknown>>, election_id?: string) {
+export function storeElectionInfo(dispatch: Dispatch<Record<string, unknown>>, election_id?: string) {
   // Download info when election_id is first loaded
   useEffect(() => {
     if (!election_id) return

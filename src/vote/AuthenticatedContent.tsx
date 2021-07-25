@@ -4,9 +4,9 @@ import { GlobalCSS } from '../GlobalCSS'
 import { Ballot } from './Ballot'
 import { ESignScreen } from './esign/ESignScreen'
 import { Instructions } from './Instructions'
+import { storeElectionInfo } from './storeElectionInfo'
 import { SubmitButton } from './SubmitButton'
 import { SubmittedScreen } from './submitted/SubmittedScreen'
-import { useElectionInfo } from './useElectionInfo'
 import { useVoteState } from './vote-state'
 import { YourAuthToken } from './YourAuthToken'
 
@@ -14,7 +14,7 @@ export const AuthenticatedContent = ({ auth, election_id }: { auth: string; elec
   // Initialize local vote state on client
   const [state, dispatch] = useVoteState(`voter-${election_id}-${auth}`)
 
-  useElectionInfo(dispatch, election_id)
+  storeElectionInfo(dispatch, election_id)
 
   return (
     <>

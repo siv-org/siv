@@ -9,13 +9,9 @@ import { ResetButton } from './_ResetButton'
 import { VotesToDecrypt } from './VotesToDecrypt'
 import { VotesToShuffle } from './VotesToShuffle'
 
-export const ShuffleAndDecrypt = ({
-  dispatch,
-  election_id,
-  state,
-}: StateAndDispatch & { election_id: string }): JSX.Element => {
+export const ShuffleAndDecrypt = ({ dispatch, state }: StateAndDispatch): JSX.Element => {
   const { private_keyshare } = state
-  const { ballot_design } = useElectionInfo(election_id)
+  const { ballot_design } = useElectionInfo()
   const [final_shuffle_verifies, set_final_shuffle_verifies] = useState(false)
 
   if (!private_keyshare) {

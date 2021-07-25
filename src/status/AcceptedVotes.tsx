@@ -5,7 +5,7 @@ import { Fragment, useEffect } from 'react'
 import useSWR from 'swr'
 
 import { Cipher_Text } from '../crypto/types'
-import { Item } from '../vote/useElectionInfo'
+import { Item } from '../vote/storeElectionInfo'
 
 type Vote = { auth: string } & { [index: string]: Cipher_Text }
 const fetcher = (url: string) => fetch(url).then((r) => r.json())

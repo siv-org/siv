@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 
-import { Item } from '../../../../src/vote/useElectionInfo'
+import { Item } from '../../../../src/vote/storeElectionInfo'
 import { firebase } from '../../_services'
 
 export type ElectionInfo = {

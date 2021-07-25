@@ -2,7 +2,7 @@ import { Checkbox, FormControlLabel, FormGroup } from '@material-ui/core'
 import { Dispatch, useEffect, useState } from 'react'
 
 import { Label, TitleDescriptionQuestion } from './Item'
-import { Item as ItemType } from './useElectionInfo'
+import { Item as ItemType } from './storeElectionInfo'
 import { State } from './vote-state'
 
 export const MultiVoteItem = ({
