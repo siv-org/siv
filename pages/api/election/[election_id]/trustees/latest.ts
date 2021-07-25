@@ -1,9 +1,12 @@
 import { pick } from 'lodash-es'
 import { NextApiRequest, NextApiResponse } from 'next'
 
+import { Trustee } from '../../../../../src/trustee/trustee-state'
 import { firebase } from '../../../_services'
 import { transform_email_keys } from './commafy'
 
+export type ParametersString = { g: string; p: string; q: string; t: number }
+export type TrusteesLatest = { parameters: ParametersString; trustees: Trustee[] }
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { auth, election_id } = req.query
 
@@ -52,10 +55,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     // Convert commas back into dots
     const decommafied = transform_email_keys(public_data, 'decommafy')
 
-    return sortObject(decommafied)
+    return sortObject(decommafied) as Trustee
   })
 
-  res.status(200).json({ parameters, trustees })
+  const response: TrusteesLatest = { parameters, trustees }
+
+  res.status(200).json(response)
 }
 
 const sortObject = (obj: Record<string, unknown>) =>

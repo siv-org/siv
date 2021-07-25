@@ -18,7 +18,9 @@ export const api = (route: string, body?: Record<string, unknown>) =>
 
 const channelCache: Record<string, Channel> = {}
 
-export const useData = (key: string, [channelName, eventName]: [string | undefined, string]) => {
+export const useData = (key: string, pusherChannel?: [string | undefined, string]) => {
+  const [channelName, eventName] = pusherChannel || []
+
   // If given pusher channel & event names, revalidate on activity
   useEffect(() => {
     if (channelName && eventName) {
