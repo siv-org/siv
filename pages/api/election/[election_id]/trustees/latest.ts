@@ -1,3 +1,4 @@
+import { pick } from 'lodash-es'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import { firebase } from '../../../_services'
@@ -30,17 +31,26 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       data.you = true
     }
 
-    // Keep these fields private
-    delete data.auth_token
-    delete data.decryption_key
-    delete data.private_coefficients
-    delete data.pairwise_shares_for
-    delete data.pairwise_randomizers_for
-    delete data.decrypted_shares_from
-    delete data.private_keyshare
+    // Fields to keep
+    const public_fields = [
+      'commitments',
+      'email',
+      'encrypted_pairwise_shares_for',
+      'index',
+      'name',
+      'partial_decryption',
+      'partials',
+      'preshuffled',
+      'recipient_key',
+      'shuffled',
+      'verified',
+      'you',
+    ]
+
+    const public_data = pick(data, public_fields)
 
     // Convert commas back into dots
-    const decommafied = transform_email_keys(data, 'decommafy')
+    const decommafied = transform_email_keys(public_data, 'decommafy')
 
     return sortObject(decommafied)
   })
