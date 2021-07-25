@@ -1,12 +1,23 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 
-import { pick } from '../../../../src/utils'
+import { Item } from '../../../../src/vote/useElectionInfo'
 import { firebase } from '../../_services'
+
+export type ElectionInfo = {
+  ballot_design?: Item[]
+  election_title?: string
+  esignature_requested?: boolean
+  g?: string
+  has_decrypted_votes?: boolean
+  last_decrypted_at?: Date
+  p?: string
+  threshold_public_key?: string
+}
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { election_id } = req.query
 
-  const election = (
+  const data = (
     await firebase
       .firestore()
       .collection('elections')
@@ -15,20 +26,21 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   ).data()
 
   // Is election_id in DB?
-  if (!election) return res.status(400).json({ error: 'Unknown Election ID.' })
+  if (!data) return res.status(400).json({ error: 'Unknown Election ID.' })
+
+  const { ballot_design, election_title, esignature_requested, g, last_decrypted_at, p, threshold_public_key } = data
+
+  const info: ElectionInfo = {
+    ballot_design: ballot_design ? JSON.parse(ballot_design) : undefined,
+    election_title,
+    esignature_requested,
+    g,
+    has_decrypted_votes: !!last_decrypted_at,
+    last_decrypted_at: last_decrypted_at ? new Date(last_decrypted_at._seconds * 1000) : undefined,
+    p,
+    threshold_public_key,
+  }
 
   // Return public election fields
-  res
-    .status(200)
-    .json(
-      pick(election, [
-        'ballot_design',
-        'g',
-        'p',
-        'threshold_public_key',
-        'last_decrypted_at',
-        'election_title',
-        'esignature_requested',
-      ]),
-    )
+  res.status(200).json(info)
 }

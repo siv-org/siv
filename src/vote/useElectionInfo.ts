@@ -1,5 +1,7 @@
 import { Dispatch, useEffect } from 'react'
 
+import { ElectionInfo } from '../../pages/api/election/[election_id]/info'
+
 export type Item = {
   description?: string
   id?: string
@@ -17,20 +19,18 @@ export function useElectionInfo(dispatch: Dispatch<Record<string, unknown>>, ele
     ;(async () => {
       // Get info from API
       const response = await fetch(`/api/election/${election_id}/info`)
+
       const {
         ballot_design,
         election_title,
-        error,
         esignature_requested,
         g,
         p,
         threshold_public_key,
-      } = await response.json()
-
-      if (error) return
+      }: ElectionInfo = await response.json()
 
       dispatch({
-        ballot_design: JSON.parse(ballot_design),
+        ballot_design,
         election_title,
         esignature_requested,
         public_key: { generator: g, modulo: p, recipient: threshold_public_key },

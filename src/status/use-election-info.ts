@@ -1,37 +1,11 @@
-import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { ElectionInfo } from '../../pages/api/election/[election_id]/info'
+import { useData } from '../api-helper'
+import { useElectionId } from './use-election-id'
 
-import { Item } from '../vote/useElectionInfo'
+export function useElectionInfo(): ElectionInfo {
+  const e_id = useElectionId()
 
-export function useElectionInfo() {
-  const election_id = useRouter().query.election_id as string | undefined
-  const [info, set_info] = useState<{
-    ballot_design?: Item[]
-    election_title?: string
-    esignature_requested?: boolean
-    has_decrypted_votes?: boolean
-    last_decrypted_at?: Date
-  }>({})
+  const data = useData(`election/${e_id}/info`, [e_id, 'decrypted'])
 
-  // Download info once we load election_id
-  useEffect(() => {
-    if (!election_id) return
-    ;(async () => {
-      // Get info from API
-      const response = await fetch(`/api/election/${election_id}/info`)
-      const { ballot_design, election_title, error, esignature_requested, last_decrypted_at } = await response.json()
-
-      if (error) return
-
-      set_info({
-        ballot_design: ballot_design ? JSON.parse(ballot_design) : undefined,
-        election_title,
-        esignature_requested,
-        has_decrypted_votes: !!last_decrypted_at,
-        last_decrypted_at: last_decrypted_at ? new Date(last_decrypted_at._seconds * 1000) : undefined,
-      })
-    })()
-  }, [election_id])
-
-  return info
+  return !data ? {} : data
 }
