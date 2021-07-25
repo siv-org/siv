@@ -10,7 +10,7 @@ export const Totals = ({ proofsPage }: { proofsPage?: boolean }): JSX.Element =>
   const votes = useDecryptedVotes()
 
   // Stop if we don't have enough data yet
-  if (!ballot_design || !votes) return <></>
+  if (!ballot_design || !votes || !votes.length) return <></>
 
   const items_by_id = keyBy(ballot_design, 'id')
   const multi_vote_regex = /_\d+$/
