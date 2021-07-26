@@ -1,8 +1,9 @@
 import { firestore } from 'firebase-admin'
 import { NextApiRequest, NextApiResponse } from 'next'
+import pick_random_integer from 'src/crypto/pick-random-integer'
+import { big } from 'src/crypto/types'
 
 import { firebase, sendEmail } from './_services'
-import { generateAuthToken } from './invite-voters'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { email }: { email: string } = req.body
@@ -26,24 +27,32 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Otherwise trigger their login email...
 
-  // First we'll make & store a login auth token for them.
-  const auth_token = generateAuthToken()
-  adminDoc.collection('logins').doc(new Date().toISOString()).set({ auth_token, created_at: new Date() })
+  // First we'll make & store a login code for them.
+  const login_code = generateAdminLoginCode()
+  adminDoc.collection('logins').doc(new Date().toISOString()).set({ created_at: new Date(), login_code })
 
-  const link = `${req.headers.origin}/admin?email=${email}&auth=${auth_token}`
+  const link = `${req.headers.origin}/admin?email=${email}&code=${login_code}`
   await sendEmail({
     from: 'Secure Internet Voting',
     recipient: email,
     subject: 'SIV Admin Login',
     text: `A request was made to access your SIV Admin Dashboard.
 
-${button(link, 'Click Here to Login')}
+You can enter this code: ${login_code}
+
+${button(link, 'Or Click Here to Login Directly')}
 
 <em style="font-size:10px; opacity: 0.6;">If you did not authorize this request, press reply to let us know.</em>`,
   })
 
   res.status(200).send('Success')
 }
+
+/** Pick a cryptographically-secure random number
+ * greater than 100,000
+ * less than 999,999.
+ */
+const generateAdminLoginCode = () => pick_random_integer(big(1_000_000)).add(big(100_000)).toString().slice(0, 6)
 
 const button = (link: string, text: string) =>
   `<table width="100%" cellspacing="0" cellpadding="0"><tr><td align="center"><table cellspacing="0" cellpadding="0"><tr><td style="border-radius: 8px;" bgcolor="#072054"><a href="${link}" target="_blank" style="padding: 8px 22px; border: 1px solid #072054;border-radius: 8px;font-family: Helvetica, Arial, sans-serif;font-size: 14px; color: #ffffff;text-decoration: none;font-weight:bold;display: inline-block;">${text}</a></td></tr></table></td></tr></table>`

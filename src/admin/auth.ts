@@ -26,13 +26,13 @@ export function useLoginRequired(loggedOut: boolean) {
   async function checkLoginStatus(router: NextRouter) {
     // If logged out...
     if (loggedOut) {
-      const { auth, email } = router.query
+      const { code, email } = router.query
 
-      // Redirect to /login if missing `email` or `auth token` in URL
-      if (!email || !auth) return router.push('/login')
+      // Redirect to /login if missing `email` or `code` in URL
+      if (!email || !code) return router.push('/login')
 
-      // Ask backend if login auth token is valid
-      const response = await api('admin-check-login-code', { auth, email })
+      // Ask backend if login code is valid
+      const response = await api('admin-check-login-code', { code, email })
 
       // Passed! Set session JWT cookie
       if (response.status === 200) {

@@ -13,7 +13,7 @@ export type JWT_Payload = {
 }
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { auth, email }: { auth: string; email: string } = req.body
+  const { code, email }: { code: string; email: string } = req.body
 
   // Is this email an approved election manager?
   const adminDoc = firebase.firestore().collection('admins').doc(email)
@@ -21,7 +21,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   if (admin.exists) {
     // Is this a valid auth token for them?
-    const [session] = (await adminDoc.collection('logins').where('auth_token', '==', auth).get()).docs
+    const [session] = (await adminDoc.collection('logins').where('login_code', '==', code).get()).docs
     if (session) {
       // Is the session within the last hour?
       const { created_at } = { ...session.data() } as { created_at: { toDate: () => Date } }
