@@ -7,7 +7,6 @@ import { Footer } from '../vote/Footer'
 import { AcceptedVotes } from './AcceptedVotes'
 import { DecryptedVotes } from './DecryptedVotes'
 import { Totals } from './Totals'
-import { UniversalVerification } from './UniversalVerification'
 import { useElectionInfo } from './use-election-info'
 
 export const ElectionStatusPage = (): JSX.Element => {
@@ -31,7 +30,7 @@ export const ElectionStatusPage = (): JSX.Element => {
           {election_title && (
             <div className="title-line">
               <h2>{election_title}</h2>
-              <UniversalVerification />
+              {/* <UniversalVerification /> */}
             </div>
           )}
           <Totals />
