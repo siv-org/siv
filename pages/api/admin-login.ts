@@ -25,6 +25,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(404).send(`'${email}' is not approved election manager`)
   }
 
+  // return res.status(200).send('Success, but not sending emails') // DEBUG ONLY
   // Otherwise trigger their login email...
 
   // First we'll make & store a login code for them.

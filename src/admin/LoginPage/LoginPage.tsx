@@ -149,6 +149,7 @@ export const LoginPage = () => {
                   style={{ margin: 0, marginLeft: 20, padding: '10px 20px' }}
                   onClick={() => {
                     checkLoginCode({
+                      clientSideRedirect: false,
                       code: loginCode,
                       email,
                       onExpired: () => {
