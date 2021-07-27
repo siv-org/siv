@@ -7,7 +7,7 @@ import TimeAgo from 'timeago-react'
 import { Election } from '../../pages/api/admin-all-elections'
 
 export const AllYourElections = () => {
-  const [show, toggle] = useReducer((state) => !state, true)
+  const [show, toggle] = useReducer((state) => !state, false)
 
   const { data } = useSWR('/api/admin-all-elections', (url: string) =>
     fetch(url).then(async (r) => {
@@ -21,12 +21,12 @@ export const AllYourElections = () => {
   return (
     <>
       <h2>
-        Your Existing Elections{' '}
+        Your Existing Elections: <i>{data?.elections?.length}</i>{' '}
         <span>
-          (<a onClick={toggle}>{show ? '- Hide' : '+ Show'}</a>)
+          <a onClick={toggle}>[ {show ? '- Hide' : '+ Show'} ]</a>
         </span>
       </h2>
-      {show ? (
+      {show && (
         <ul>
           {data?.elections?.map(({ created_at, election_title, id }: Election) => (
             <li key={id}>
@@ -39,16 +39,18 @@ export const AllYourElections = () => {
           ))}
           <br />
         </ul>
-      ) : (
-        <p>
-          <i>{data?.elections?.length} elections hidden.</i>
-        </p>
       )}
 
       <style jsx>{`
+        h2 i {
+          font-weight: 400;
+          font-style: normal;
+        }
+
         h2 span {
           font-size: 14px;
           font-weight: normal;
+          margin-left: 5px;
         }
 
         h2 span:hover {
