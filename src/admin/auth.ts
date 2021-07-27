@@ -21,6 +21,38 @@ async function logout() {
   mutate(jwt_api_path)
 }
 
+export async function checkLoginCode({
+  code,
+  email,
+  onExpired,
+  onInvalid,
+  router,
+}: {
+  code: string
+  email: string
+  onExpired: () => void
+  onInvalid: () => void
+  router: NextRouter
+}) {
+  // Ask backend if login code is valid
+  const response = await api('admin-check-login-code', { code, email })
+
+  // Passed! Set session JWT cookie
+  if (response.status === 200) {
+    // Invalidate jwt cache
+    mutate(jwt_api_path)
+
+    // Remove url parameters
+    return router.replace('/admin')
+  }
+
+  // Expired session: redirects back to login page w/ custom error
+  if (response.status === 412) return onExpired()
+
+  // Else, Invalid login token: redirect back to login w/ error message
+  onInvalid()
+}
+
 export function useLoginRequired(loggedOut: boolean) {
   const router = useRouter()
   async function checkLoginStatus(router: NextRouter) {
@@ -29,25 +61,15 @@ export function useLoginRequired(loggedOut: boolean) {
       const { code, email } = router.query
 
       // Redirect to /login if missing `email` or `code` in URL
-      if (!email || !code) return router.push('/login')
+      if (!(typeof email == 'string' && typeof code == 'string')) return router.push('/login')
 
-      // Ask backend if login code is valid
-      const response = await api('admin-check-login-code', { code, email })
-
-      // Passed! Set session JWT cookie
-      if (response.status === 200) {
-        // Invalidate jwt cache
-        mutate(jwt_api_path)
-
-        // Remove url parameters
-        return router.replace('/admin')
-      }
-
-      // Expired session: redirects back to login page w/ custom error
-      if (response.status === 412) return router.push(`/login?expired=true&email=${email}`)
-
-      // Else, Invalid login token: redirect back to login w/ error message
-      router.push('/login?invalid=true')
+      await checkLoginCode({
+        code,
+        email,
+        onExpired: () => router.push(`/login?expired=true&email=${email}`),
+        onInvalid: () => router.push('/login?invalid=true'),
+        router,
+      })
     }
   }
 
