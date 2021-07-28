@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import { cookie_name } from '../../src/admin/auth'
-import { firebase } from './_services'
+import { firebase, pushover } from './_services'
 import { JWT_Payload } from './admin-check-login-code'
 
 const { JWT_SECRET } = process.env
@@ -24,9 +24,16 @@ export function checkJwt(
   if (!cookie) return { res: res.status(401).send({ error: 'Missing JWT cookie' }), valid: false }
 
   // Is it valid jwt?
-  if (!jwt.verify(cookie, JWT_SECRET)) return { res: res.status(401).send({ error: 'Invalid JWT' }), valid: false }
-
-  const payload = jwt.decode(cookie) as JWT_Payload
+  let payload: JWT_Payload = { email: '', name: '' }
+  try {
+    payload = jwt.verify(cookie, JWT_SECRET) as JWT_Payload
+  } catch (e) {
+    pushover(
+      'Invalid JWT signature',
+      `${req.headers.origin} ${req.url}\n${JSON.stringify(jwt.decode(cookie))}\n${cookie}`,
+    )
+    return { res: res.status(401).send({ error: 'Invalid JWT' }), valid: false }
+  }
 
   // Otherwise, it passes
   return { ...payload, valid: true }
