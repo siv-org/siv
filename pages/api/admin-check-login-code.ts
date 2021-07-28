@@ -5,7 +5,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { cookie_name } from '../../src/admin/auth'
 import { firebase, pushover } from './_services'
 
-const JWT_SECRET = 'foobar'
+const { JWT_SECRET } = process.env
 
 export type JWT_Payload = {
   email: string
@@ -13,6 +13,8 @@ export type JWT_Payload = {
 }
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
+  if (!JWT_SECRET) return res.status(401).send({ error: `Missing process.env JWT_SECRET` })
+
   const { code, email }: { code: string; email: string } = req.body
 
   // Is this email an approved election manager?
@@ -20,7 +22,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const admin = await adminDoc.get()
 
   if (admin.exists) {
-    // Is this a valid auth token for them?
+    // Is this a valid login code for them?
     const [session] = (await adminDoc.collection('logins').where('login_code', '==', code).get()).docs
     if (session) {
       // Is the session within the last hour?

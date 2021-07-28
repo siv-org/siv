@@ -5,7 +5,7 @@ import { cookie_name } from '../../src/admin/auth'
 import { firebase } from './_services'
 import { JWT_Payload } from './admin-check-login-code'
 
-const JWT_SECRET = 'foobar'
+const { JWT_SECRET } = process.env
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const result = checkJwt(req, res)
@@ -16,6 +16,8 @@ export function checkJwt(
   req: NextApiRequest,
   res: NextApiResponse,
 ): { res: void; valid: false } | ({ valid: true } & JWT_Payload) {
+  if (!JWT_SECRET) return { res: res.status(401).send({ error: `Missing process.env JWT_SECRET` }), valid: false }
+
   const cookie = req.cookies[cookie_name]
 
   // Are they missing a jwt cookie?
