@@ -53,11 +53,15 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     // Save private key on admin
     promises.push(
-      election.collection('trustees').doc(ADMIN_EMAIL).set({
-        email: ADMIN_EMAIL,
-        index: 0,
-        private_keyshare: pair.decryption_key.toString(),
-      }),
+      election
+        .collection('trustees')
+        .doc(ADMIN_EMAIL)
+        .set({
+          ...trustees[0],
+          index: 0,
+          partial_decryption: 'stage = 12',
+          private_keyshare: pair.decryption_key.toString(),
+        }),
     )
 
     // Save pub key on election
