@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import { cookie_name } from '../../src/admin/auth'
-import { firebase } from './_services'
+import { firebase, pushover } from './_services'
 
 const JWT_SECRET = 'foobar'
 
@@ -46,6 +46,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       }
     }
   }
+
+  pushover('Invalid admin login code', `${email} attempted w/ code '${code}'`)
 
   return res.status(401).send({ error: `Invalid login token` })
 }
