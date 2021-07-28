@@ -110,9 +110,10 @@ function validate_ballot_design(design: string) {
       // Check for name field
       if (!name || typeof name !== 'string') throw 'Each option should have a { name: string } field'
 
-      // Check no duplicate options
-      if (options[name]) throw `Question ${question.id ? `'${question.id}'` : ''} has duplicate option: ${name}`
-      options[name] = true
+      // Check no duplicate options (case insensitive)
+      if (options[name.toLowerCase()])
+        throw `Question ${question.id ? `'${question.id}'` : ''} has duplicate option: ${name}`
+      options[name.toLowerCase()] = true
 
       // Check if the name is encodable (throws if input is outside our alphabet)
       encode(name)
