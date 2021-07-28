@@ -1,57 +1,35 @@
-import router from 'next/router'
 import { useState } from 'react'
 
-import { api } from '../../api-helper'
-import { SaveButton } from '../SaveButton'
-import { revalidate, useStored } from '../useStored'
-import { default_ballot_design } from './default-ballot-design'
-import { validate_ballot_design } from './validate-ballot-design'
+import { useStored } from '../useStored'
+import { check_for_ballot_errors } from './check_for_ballot_errors'
 
-export const TextDesigner = () => {
+export const TextDesigner = ({
+  ballot_design,
+  set_ballot_design,
+}: {
+  ballot_design: string
+  set_ballot_design: (b: string) => void
+}) => {
   const [error, setError] = useState<string | null>()
-  const { ballot_design: stored_ballot_design, election_id } = useStored()
-  const [ballot_design, set_ballot_design] = useState(stored_ballot_design || default_ballot_design)
+  const { ballot_design: stored_ballot_design } = useStored()
 
   return (
     <div className="container">
       {error && <span className="error">⚠️ &nbsp;{error}</span>}
       <textarea
         disabled={!!stored_ballot_design}
-        id="ballot-design"
         value={ballot_design}
         onChange={(event) => {
           set_ballot_design(event.target.value)
-          try {
-            validate_ballot_design(event.target.value)
-
-            // Passed validation
-            setError(null)
-          } catch (err) {
-            console.warn(err)
-            setError(err.message || err)
-          }
+          setError(check_for_ballot_errors(event.target.value))
         }}
       />
-
-      {!stored_ballot_design && (
-        <SaveButton
-          disabled={!!error}
-          onPress={async () => {
-            const response = await api(`election/${election_id}/admin/save-ballot-design`, { ballot_design })
-
-            if (response.status === 201) {
-              revalidate(election_id)
-              router.push(`${window.location.origin}/admin/${election_id}/voters`)
-            } else {
-              throw await response.json()
-            }
-          }}
-        />
-      )}
 
       <style jsx>{`
         .container {
           flex: 1;
+          position: relative;
+          top: 3px;
         }
 
         textarea {
@@ -67,6 +45,10 @@ export const TextDesigner = () => {
           line-height: 17px;
         }
 
+        textarea:focus {
+          outline-width: 1px;
+        }
+
         textarea:disabled:hover {
           background: #f8f8f8;
           cursor: not-allowed;
@@ -74,11 +56,11 @@ export const TextDesigner = () => {
 
         .error {
           border: 1px solid rgba(255, 0, 0, 0.44);
-          background-color: rgba(255, 183, 183, 0.283);
+          background-color: #ffe5e6;
           padding: 2px 6px;
           border-radius: 4px;
-          bottom: 5px;
-          position: relative;
+          top: -26px;
+          position: absolute;
           font-size: 12px;
           font-weight: 600;
         }
