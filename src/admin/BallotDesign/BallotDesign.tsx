@@ -1,11 +1,9 @@
 import { useState } from 'react'
 
-import { useStored } from '../useStored'
 import { DesignInput } from './DesignInput'
-import { StoredDesign } from './StoredDesign'
+import { PointAndClick } from './PointAndClick'
 
 export const BallotDesign = () => {
-  const { ballot_design } = useStored()
   const [selected, setSelected] = useState(1)
   return (
     <>
@@ -17,7 +15,8 @@ export const BallotDesign = () => {
           </span>
         ))}
       </div>
-      {!ballot_design ? <DesignInput /> : <StoredDesign />}
+      {selected !== 1 && <PointAndClick />}
+      {selected !== 0 && <DesignInput />}
       <style jsx>{`
         /* When sidebar disappears */
         @media (max-width: 500px) {

@@ -17,4 +17,5 @@ export const PointAndClick = () => {
         - [ ] Edit option's short_id (if too long)
     - [ ] Toggle 'Write in' allowed
 */
+  return <div>Point and click</div>
 }

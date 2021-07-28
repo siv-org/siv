@@ -6,9 +6,7 @@ import { encode } from '../../crypto/encode'
 import { SaveButton } from '../SaveButton'
 import { revalidate, useStored } from '../useStored'
 
-export const DesignInput = () => {
-  const [error, setError] = useState<string | null>()
-  const [ballot_design, set_ballot_design] = useState(`[
+const default_ballot_design = `[
   {
     "title": "Who should become President?",
     "options": [
@@ -18,13 +16,18 @@ export const DesignInput = () => {
     ],
     "write_in_allowed": true
   }
-]`)
-  const { election_id } = useStored()
+]`
+
+export const DesignInput = () => {
+  const [error, setError] = useState<string | null>()
+  const { ballot_design: stored_ballot_design, election_id } = useStored()
+  const [ballot_design, set_ballot_design] = useState(stored_ballot_design || default_ballot_design)
 
   return (
     <div className="container">
       {error && <span className="error">⚠️ &nbsp;{error}</span>}
       <textarea
+        disabled={!!stored_ballot_design}
         id="ballot-design"
         value={ballot_design}
         onChange={(event) => {
@@ -40,23 +43,26 @@ export const DesignInput = () => {
           }
         }}
       />
-      <SaveButton
-        disabled={!!error}
-        onPress={async () => {
-          const response = await api(`election/${election_id}/admin/save-ballot-design`, { ballot_design })
 
-          if (response.status === 201) {
-            revalidate(election_id)
-            router.push(`${window.location.origin}/admin/${election_id}/voters`)
-          } else {
-            throw await response.json()
-          }
-        }}
-      />
+      {!stored_ballot_design && (
+        <SaveButton
+          disabled={!!error}
+          onPress={async () => {
+            const response = await api(`election/${election_id}/admin/save-ballot-design`, { ballot_design })
+
+            if (response.status === 201) {
+              revalidate(election_id)
+              router.push(`${window.location.origin}/admin/${election_id}/voters`)
+            } else {
+              throw await response.json()
+            }
+          }}
+        />
+      )}
 
       <style jsx>{`
         textarea {
-          border-color: #ccc;
+          border: 1px solid #ccc;
           border-radius: 4px;
           border-top-right-radius: 0;
           font-family: monospace;
@@ -66,6 +72,11 @@ export const DesignInput = () => {
           resize: vertical;
           width: 100%;
           line-height: 17px;
+        }
+
+        textarea:disabled:hover {
+          background: #f8f8f8;
+          cursor: not-allowed;
         }
 
         .error {
