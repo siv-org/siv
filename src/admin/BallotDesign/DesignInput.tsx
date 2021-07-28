@@ -113,6 +113,9 @@ function validate_ballot_design(design: string) {
       // Make sure name field isn't too long.
       if (name.length > 26) throw `Keep names under 26 characters: ${name}`
 
+      // 'BLANK' is a reserved option
+      if (name.toLowerCase() === 'blank') throw `'BLANK' is a reserved option name`
+
       // Check no duplicate options (case insensitive)
       if (options[name.toLowerCase()])
         throw `Question ${question.id ? `'${question.id}'` : ''} has duplicate option: ${name}`
