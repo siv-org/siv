@@ -17,5 +17,14 @@ export const PointAndClick = () => {
         - [ ] Edit option's short_id (if too long)
     - [ ] Toggle 'Write in' allowed
 */
-  return <div>Point and click</div>
+  return (
+    <div>
+      Point and click
+      <style jsx>{`
+        div {
+          flex: 1;
+        }
+      `}</style>
+    </div>
+  )
 }

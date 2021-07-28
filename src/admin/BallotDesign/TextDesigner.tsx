@@ -4,21 +4,10 @@ import { useState } from 'react'
 import { api } from '../../api-helper'
 import { SaveButton } from '../SaveButton'
 import { revalidate, useStored } from '../useStored'
+import { default_ballot_design } from './default-ballot-design'
 import { validate_ballot_design } from './validate-ballot-design'
 
-const default_ballot_design = `[
-  {
-    "title": "Who should become President?",
-    "options": [
-      { "name": "George H. W. Bush" },
-      { "name": "Bill Clinton" },
-      { "name": "Ross Perot" }
-    ],
-    "write_in_allowed": true
-  }
-]`
-
-export const DesignInput = () => {
+export const TextDesigner = () => {
   const [error, setError] = useState<string | null>()
   const { ballot_design: stored_ballot_design, election_id } = useStored()
   const [ballot_design, set_ballot_design] = useState(stored_ballot_design || default_ballot_design)
@@ -61,6 +50,10 @@ export const DesignInput = () => {
       )}
 
       <style jsx>{`
+        .container {
+          flex: 1;
+        }
+
         textarea {
           border: 1px solid #ccc;
           border-radius: 4px;
