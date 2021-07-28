@@ -96,6 +96,10 @@ function validate_ballot_design(design: string) {
     if (ids[id]) throw 'Each question must have a unique ID'
     ids[id] = true
 
+    // 'verification' & 'tracking' are reserved IDs
+    if (id === 'verification') throw `'verification' is a reserved ID`
+    if (id === 'tracking') throw `'tracking' is a reserved ID`
+
     // Check each question has an options array
     if (!question.options || !Array.isArray(question.options))
       throw `Question ${question.id ? `'${question.id}'` : ''} is missing an options array`
