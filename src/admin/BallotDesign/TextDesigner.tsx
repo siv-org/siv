@@ -3,24 +3,18 @@ import { useState } from 'react'
 import { useStored } from '../useStored'
 import { check_for_ballot_errors } from './check_for_ballot_errors'
 
-export const TextDesigner = ({
-  ballot_design,
-  set_ballot_design,
-}: {
-  ballot_design: string
-  set_ballot_design: (b: string) => void
-}) => {
+export const TextDesigner = ({ design, setDesign }: { design: string; setDesign: (s: string) => void }) => {
   const [error, setError] = useState<string | null>()
-  const { ballot_design: stored_ballot_design } = useStored()
+  const { ballot_design: storedBallotDesign } = useStored()
 
   return (
     <div className="container">
       {error && <span className="error">⚠️ &nbsp;{error}</span>}
       <textarea
-        disabled={!!stored_ballot_design}
-        value={ballot_design}
+        disabled={!!storedBallotDesign}
+        value={design}
         onChange={(event) => {
-          set_ballot_design(event.target.value)
+          setDesign(event.target.value)
           setError(check_for_ballot_errors(event.target.value))
         }}
       />
@@ -29,7 +23,6 @@ export const TextDesigner = ({
         .container {
           flex: 1;
           position: relative;
-          top: 3px;
         }
 
         textarea {

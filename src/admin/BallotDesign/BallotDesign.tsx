@@ -13,29 +13,28 @@ import { TextDesigner } from './TextDesigner'
 export const BallotDesign = () => {
   const { ballot_design: stored_ballot_design, election_id } = useStored()
   const [selected, setSelected] = useState(1)
-  const [ballot_design, set_ballot_design] = useState(stored_ballot_design || default_ballot_design)
+  const [design, setDesign] = useState(stored_ballot_design || default_ballot_design)
 
   return (
     <>
       <h2>Ballot Design</h2>
       <ModeControls {...{ selected, setSelected }} />
       <div className="mode-container">
-        {selected !== 1 && <PointAndClick />}
-        {selected !== 0 && <TextDesigner {...{ ballot_design, set_ballot_design }} />}
+        {selected !== 1 && <PointAndClick {...{ design, setDesign }} />}
+        {selected === 2 && <div className="spacer" />}
+        {selected !== 0 && <TextDesigner {...{ design, setDesign }} />}
       </div>
 
       {!stored_ballot_design && (
         <SaveButton
-          disabled={!!check_for_ballot_errors(ballot_design)}
+          disabled={!!check_for_ballot_errors(design)}
           onPress={async () => {
-            const response = await api(`election/${election_id}/admin/save-ballot-design`, { ballot_design })
+            const response = await api(`election/${election_id}/admin/save-ballot-design`, { ballot_design: design })
 
-            if (response.status === 201) {
-              revalidate(election_id)
-              router.push(`${window.location.origin}/admin/${election_id}/voters`)
-            } else {
-              throw await response.json()
-            }
+            if (response.status !== 201) return alert(JSON.stringify(await response.json()))
+
+            revalidate(election_id)
+            router.push(`${window.location.origin}/admin/${election_id}/voters`)
           }}
         />
       )}
@@ -52,6 +51,12 @@ export const BallotDesign = () => {
         .mode-container {
           display: flex;
           width: 100%;
+          position: relative;
+          top: 3px;
+        }
+
+        .spacer {
+          width: 20px;
         }
       `}</style>
     </>
