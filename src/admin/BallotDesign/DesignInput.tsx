@@ -58,6 +58,7 @@ export const DesignInput = () => {
         textarea {
           border-color: #ccc;
           border-radius: 4px;
+          border-top-right-radius: 0;
           font-family: monospace;
           font-size: 12px;
           height: 200px;

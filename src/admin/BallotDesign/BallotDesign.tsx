@@ -12,9 +12,9 @@ export const BallotDesign = () => {
       <h2>Ballot Design</h2>
       <div>
         {['Point & Click', 'Text', 'Split'].map((label, index) => (
-          <a className={selected === index ? 'selected' : ''} key={index} onClick={() => setSelected(index)}>
+          <span className={selected === index ? 'selected' : ''} key={index} onClick={() => setSelected(index)}>
             {label}
-          </a>
+          </span>
         ))}
       </div>
       {!ballot_design ? <DesignInput /> : <StoredDesign />}
@@ -29,16 +29,24 @@ export const BallotDesign = () => {
         div {
           float: right;
         }
-        a {
-          border: 1px solid rgb(18, 18, 88);
-          padding: 5px 10px;
+        span {
+          border: 1px solid hsl(0, 0%, 76%);
+          padding: 5px 15px;
           cursor: pointer;
+          user-select: none;
         }
-        a:not(:first-child) {
+        span:hover {
+          background-color: hsl(0, 0%, 97%);
+        }
+        span:active {
+          background-color: hsl(0, 0%, 84%) !important;
+          border-top-color: hsl(0, 0%, 70%);
+        }
+        span:not(:first-child) {
           border-left-width: 0px;
         }
-        .selected {
-          background-color: rgb(231, 226, 226);
+        span.selected {
+          background-color: hsl(0, 0%, 95%);
         }
       `}</style>
     </>
