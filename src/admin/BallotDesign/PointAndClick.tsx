@@ -3,7 +3,7 @@ import { Item } from 'src/vote/storeElectionInfo'
 
 import { check_for_ballot_errors } from './check_for_ballot_errors'
 
-export const PointAndClick = ({ design }: { design: string; setDesign: (s: string) => void }) => {
+export const PointAndClick = ({ design, setDesign }: { design: string; setDesign: (s: string) => void }) => {
   /* Features to support
 
     - [x] See current design
@@ -37,7 +37,16 @@ export const PointAndClick = ({ design }: { design: string; setDesign: (s: strin
     <div className={`ballot ${errors ? 'errors' : ''}`}>
       {json?.map(({ options, title, write_in_allowed }, index) => (
         <div key={index}>
-          <p>{title}</p>
+          <label className="title-label">Question Title:</label>
+          <input
+            className="title-input"
+            value={title}
+            onChange={({ target }) => {
+              const new_json = [...json]
+              new_json[index].title = target.value
+              setDesign(JSON.stringify(new_json))
+            }}
+          />
           <ul>
             {options?.map(({ name }, index) => (
               <li key={index}>{name}</li>
@@ -58,6 +67,19 @@ export const PointAndClick = ({ design }: { design: string; setDesign: (s: strin
           background-color: hsl(0, 0%, 90%);
           opacity: 0.5;
           cursor: not-allowed;
+        }
+
+        .title-label {
+          margin-top: 15px;
+          font-style: italic;
+          display: block;
+          font-size: 10px;
+        }
+
+        .title-input {
+          font-size: 14px;
+          width: 100%;
+          padding: 5px;
         }
       `}</style>
     </div>

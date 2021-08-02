@@ -12,7 +12,7 @@ import { TextDesigner } from './TextDesigner'
 
 export const BallotDesign = () => {
   const { ballot_design: stored_ballot_design, election_id } = useStored()
-  const [selected, setSelected] = useState(1)
+  const [selected, setSelected] = useState(2)
   const [design, setDesign] = useState(stored_ballot_design || default_ballot_design)
 
   return (
