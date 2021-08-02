@@ -10,7 +10,7 @@ export const PointAndClick = ({ design, setDesign }: { design: string; setDesign
 
     - [x] Edit item title
     - [x] Edit options name
-    - [ ] Delete existing options
+    - [x] Delete existing options
     - [ ] Toggle 'Write in' allowed
     - [ ] Create new options
     - [ ] Add new items
@@ -59,6 +59,16 @@ export const PointAndClick = ({ design, setDesign }: { design: string; setDesign
                     setDesign(JSON.stringify(new_json, undefined, 2))
                   }}
                 />
+                <a
+                  className="delete-btn"
+                  onClick={() => {
+                    const new_json = [...json]
+                    new_json[questionIndex].options.splice(optionIndex, 1)
+                    setDesign(JSON.stringify(new_json, undefined, 2))
+                  }}
+                >
+                  ✕
+                </a>
               </li>
             ))}
             {write_in_allowed && <li>[write in]</li>}
@@ -96,6 +106,26 @@ export const PointAndClick = ({ design, setDesign }: { design: string; setDesign
           padding: 5px;
           font-size: 13px;
           margin-bottom: 6px;
+        }
+
+        .delete-btn {
+          background: hsl(0, 0%, 42%);
+          opacity: 0.5;
+          border-radius: 100px;
+          width: 18px;
+          height: 18px;
+          display: inline-block;
+          text-align: center;
+          color: white;
+          line-height: 17px;
+          padding-left: 1px;
+          cursor: pointer;
+          margin-left: 5px;
+        }
+
+        .delete-btn:hover {
+          opacity: 1;
+          text-decoration: none;
         }
       `}</style>
     </div>
