@@ -44,7 +44,7 @@ export const PointAndClick = ({ design, setDesign }: { design: string; setDesign
             onChange={({ target }) => {
               const new_json = [...json]
               new_json[index].title = target.value
-              setDesign(JSON.stringify(new_json))
+              setDesign(JSON.stringify(new_json, undefined, 2))
             }}
           />
           <ul>
