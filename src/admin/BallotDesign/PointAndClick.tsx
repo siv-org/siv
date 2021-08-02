@@ -8,8 +8,8 @@ export const PointAndClick = ({ design, setDesign }: { design: string; setDesign
 
     - [x] See current design
 
-    - [ ] Edit item title
-    - [ ] Edit options name
+    - [x] Edit item title
+    - [x] Edit options name
     - [ ] Delete existing options
     - [ ] Toggle 'Write in' allowed
     - [ ] Create new options
@@ -35,21 +35,31 @@ export const PointAndClick = ({ design, setDesign }: { design: string; setDesign
 
   return (
     <div className={`ballot ${errors ? 'errors' : ''}`}>
-      {json?.map(({ options, title, write_in_allowed }, index) => (
-        <div key={index}>
+      {json?.map(({ options, title, write_in_allowed }, questionIndex) => (
+        <div key={questionIndex}>
           <label className="title-label">Question Title:</label>
           <input
             className="title-input"
             value={title}
             onChange={({ target }) => {
               const new_json = [...json]
-              new_json[index].title = target.value
+              new_json[questionIndex].title = target.value
               setDesign(JSON.stringify(new_json, undefined, 2))
             }}
           />
           <ul>
-            {options?.map(({ name }, index) => (
-              <li key={index}>{name}</li>
+            {options?.map(({ name }, optionIndex) => (
+              <li key={optionIndex}>
+                <input
+                  className="name-input"
+                  value={name}
+                  onChange={({ target }) => {
+                    const new_json = [...json]
+                    new_json[questionIndex].options[optionIndex].name = target.value
+                    setDesign(JSON.stringify(new_json, undefined, 2))
+                  }}
+                />
+              </li>
             ))}
             {write_in_allowed && <li>[write in]</li>}
           </ul>
@@ -80,6 +90,12 @@ export const PointAndClick = ({ design, setDesign }: { design: string; setDesign
           font-size: 14px;
           width: 100%;
           padding: 5px;
+        }
+
+        .name-input {
+          padding: 5px;
+          font-size: 13px;
+          margin-bottom: 6px;
         }
       `}</style>
     </div>
