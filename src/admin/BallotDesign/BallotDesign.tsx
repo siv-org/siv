@@ -9,8 +9,8 @@ import { check_for_less_urgent_ballot_errors, check_for_urgent_ballot_errors } f
 import { default_ballot_design } from './default-ballot-design'
 import { Errors } from './Errors'
 import { ModeControls } from './ModeControls'
-import { PointAndClick } from './PointAndClick'
 import { TextDesigner } from './TextDesigner'
+import { Wizard } from './Wizard'
 
 export const BallotDesign = () => {
   const { ballot_design: stored_ballot_design, election_id } = useStored()
@@ -31,7 +31,7 @@ export const BallotDesign = () => {
       <Errors {...{ error }} />
       <ModeControls {...{ selected, setSelected }} />
       <div className="mode-container">
-        {selected !== 1 && <PointAndClick {...{ design, setDesign }} />}
+        {selected !== 1 && <Wizard {...{ design, setDesign }} />}
         {selected === 2 && <div className="spacer" />}
         {selected !== 0 && (
           <NoSsr>
