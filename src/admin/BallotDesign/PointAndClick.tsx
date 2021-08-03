@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Item } from 'src/vote/storeElectionInfo'
 
 import { check_for_ballot_errors } from './check_for_ballot_errors'
+import { IOSSwitch } from './IOSSwitch'
 
 export const PointAndClick = ({ design, setDesign }: { design: string; setDesign: (s: string) => void }) => {
   /* Features to support
@@ -11,7 +12,7 @@ export const PointAndClick = ({ design, setDesign }: { design: string; setDesign
     - [x] Edit item title
     - [x] Edit options name
     - [x] Delete existing options
-    - [ ] Toggle 'Write in' allowed
+    - [x] Toggle 'Write in' allowed
     - [ ] Create new options
     - [ ] Add new items
     - [ ] Delete items
@@ -71,7 +72,17 @@ export const PointAndClick = ({ design, setDesign }: { design: string; setDesign
                 </a>
               </li>
             ))}
-            {write_in_allowed && <li>[write in]</li>}
+            <li className={`write-in ${write_in_allowed ? 'allowed' : 'disabled'}`}>
+              <span>{`Write-in ${write_in_allowed ? 'Allowed' : 'Disabled'}`}</span>
+              <IOSSwitch
+                checked={write_in_allowed}
+                onChange={() => {
+                  const new_json = [...json]
+                  new_json[questionIndex].write_in_allowed = !write_in_allowed
+                  setDesign(JSON.stringify(new_json, undefined, 2))
+                }}
+              />
+            </li>
           </ul>
         </div>
       ))}
@@ -126,6 +137,22 @@ export const PointAndClick = ({ design, setDesign }: { design: string; setDesign
         .delete-btn:hover {
           opacity: 1;
           text-decoration: none;
+        }
+
+        .write-in span {
+          font-size: 13px;
+          width: 123px;
+          display: inline-block;
+          color: hsl(0, 0%, 17%);
+          padding-left: 8px;
+        }
+
+        .write-in.disabled {
+          list-style: none; /* Remove bullet */
+        }
+
+        .write-in.disabled span {
+          opacity: 0.6;
         }
       `}</style>
     </div>
