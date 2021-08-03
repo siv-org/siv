@@ -242,22 +242,23 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
         }
 
         .delete-option-btn {
-          background: hsl(0, 0%, 42%);
-          opacity: 0.5;
+          border: 1px solid hsl(0, 0%, 82%);
           border-radius: 100px;
-          width: 19px;
-          height: 19px;
+          width: 20px;
+          height: 20px;
           display: inline-block;
           text-align: center;
-          color: white;
-          line-height: 17px;
+          color: hsl(0, 0%, 42%);
+          line-height: 16px;
           padding-left: 1px;
           cursor: pointer;
           margin-left: 5px;
         }
 
         .delete-option-btn:hover {
-          opacity: 1;
+          background-color: hsl(0, 0%, 42%);
+          border-color: #0000;
+          color: white;
           text-decoration: none;
         }
 
