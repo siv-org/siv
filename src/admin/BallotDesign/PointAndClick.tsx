@@ -80,7 +80,7 @@ export const PointAndClick = ({ design, setDesign }: { design: string; setDesign
                 setDesign(JSON.stringify(new_json, undefined, 2))
               }}
             >
-              [ Add another option ]
+              Add another option
             </a>
             <li className={`write-in ${write_in_allowed ? 'allowed' : 'disabled'}`}>
               <span>{`Write-in ${write_in_allowed ? 'Allowed' : 'Disabled'}`}</span>
@@ -150,8 +150,9 @@ export const PointAndClick = ({ design, setDesign }: { design: string; setDesign
         }
 
         .add-option {
+          font-style: italic;
           padding-left: 8px;
-          margin: 8px 0 14px;
+          margin: 3px 0 14px;
           display: block;
           font-size: 13px;
           cursor: pointer;
@@ -159,6 +160,7 @@ export const PointAndClick = ({ design, setDesign }: { design: string; setDesign
 
         .write-in span {
           font-size: 13px;
+          font-style: italic;
           width: 123px;
           display: inline-block;
           color: hsl(0, 0%, 17%);
