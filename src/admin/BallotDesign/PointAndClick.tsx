@@ -14,8 +14,8 @@ export const PointAndClick = ({ design, setDesign }: { design: string; setDesign
     - [x] Delete existing options
     - [x] Toggle 'Write in' allowed
     - [x] Create new options
-    - [ ] Add new items
-    - [ ] Delete items
+    - [x] Add new questions
+    - [ ] Delete questions
 
     - [ ] Re-order items
     - [ ] Set item ID
@@ -25,6 +25,8 @@ export const PointAndClick = ({ design, setDesign }: { design: string; setDesign
     - [ ] Edit option's subline (e.g. Party affiliation)
     - [ ] Edit option's short_id (if too long)
 
+    - [ ] Duplicate item
+    - [ ] Collapse item
 */
   const [json, setJson] = useState<Item[]>()
 
@@ -37,7 +39,7 @@ export const PointAndClick = ({ design, setDesign }: { design: string; setDesign
   return (
     <div className={`ballot ${errors ? 'errors' : ''}`}>
       {json?.map(({ options, title, write_in_allowed }, questionIndex) => (
-        <div key={questionIndex}>
+        <div className="question" key={questionIndex}>
           <label className="title-label">Question Title:</label>
           <input
             className="title-input"
@@ -96,6 +98,23 @@ export const PointAndClick = ({ design, setDesign }: { design: string; setDesign
           </ul>
         </div>
       ))}
+      <a
+        className="add-question"
+        onClick={() => {
+          const new_json = [...(json || [])]
+          const new_question_number = new_json.length + 1
+          new_json.push({
+            id: `item${new_question_number}`,
+            title: `Question ${new_question_number}`,
+            // eslint-disable-next-line sort-keys-fix/sort-keys-fix
+            options: [{ name: 'Option 1' }, { name: 'Option 2' }],
+            write_in_allowed: false,
+          })
+          setDesign(JSON.stringify(new_json, undefined, 2))
+        }}
+      >
+        Add another question
+      </a>
       <style jsx>{`
         .ballot {
           flex: 1;
@@ -108,6 +127,10 @@ export const PointAndClick = ({ design, setDesign }: { design: string; setDesign
           background-color: hsl(0, 0%, 90%);
           opacity: 0.5;
           cursor: not-allowed;
+        }
+
+        .question:not(:first-child) {
+          margin-top: 45px;
         }
 
         .title-label {
@@ -149,7 +172,8 @@ export const PointAndClick = ({ design, setDesign }: { design: string; setDesign
           text-decoration: none;
         }
 
-        .add-option {
+        .add-option,
+        .add-question {
           font-style: italic;
           padding-left: 8px;
           margin: 3px 0 14px;
