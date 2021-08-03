@@ -1,5 +1,6 @@
 import { DeleteOutlined, QuestionCircleOutlined } from '@ant-design/icons'
 import { useEffect, useState } from 'react'
+import { Tooltip } from 'src/admin/Voters/Tooltip'
 import { Item } from 'src/vote/storeElectionInfo'
 
 import { check_for_urgent_ballot_errors } from './check_for_ballot_errors'
@@ -40,21 +41,31 @@ export const PointAndClick = ({ design, setDesign }: { design: string; setDesign
     <div className={`ballot ${errors ? 'errors' : ''}`}>
       {json?.map(({ id, options, title, write_in_allowed }, questionIndex) => (
         <div className="question" key={questionIndex}>
-          <label className="id-label">Question ID:</label>
-          <div className="id-line">
-            <input
-              className="id-input"
-              value={id}
-              onChange={({ target }) => {
-                const new_json = [...json]
-                new_json[questionIndex].id = target.value
-                setDesign(JSON.stringify(new_json, undefined, 2))
-              }}
-            />
-            <a className="question-id-tooltip">
-              <QuestionCircleOutlined />
-            </a>
-          </div>
+          <label className="id-label">
+            Question ID{' '}
+            <Tooltip
+              placement="top"
+              title={
+                <span style={{ fontSize: 14 }}>
+                  This short ID must be unique for each question. It is used as the column header for the table of
+                  submitted votes.
+                </span>
+              }
+            >
+              <span className="question-id-tooltip">
+                <QuestionCircleOutlined />
+              </span>
+            </Tooltip>
+          </label>
+          <input
+            className="id-input"
+            value={id}
+            onChange={({ target }) => {
+              const new_json = [...json]
+              new_json[questionIndex].id = target.value
+              setDesign(JSON.stringify(new_json, undefined, 2))
+            }}
+          />
           <label className="title-label">Question Title:</label>
           <div className="title-line">
             <input
@@ -160,29 +171,35 @@ export const PointAndClick = ({ design, setDesign }: { design: string; setDesign
           margin-top: 45px;
         }
 
-        .title-label,
-        .id-label {
+        .id-label,
+        .title-label {
           margin-top: 15px;
           font-style: italic;
           display: block;
           font-size: 10px;
         }
 
-        .title-line,
-        .id-line {
+        .question-id-tooltip {
+          font-size: 12px;
+          position: relative;
+          left: 4px;
+          top: 1px;
+          color: rgb(90, 102, 233);
+        }
+
+        .title-line {
           display: flex;
           align-items: center;
         }
 
-        .title-input,
-        .id-input {
+        .id-input,
+        .title-input {
           font-size: 14px;
           flex: 1;
           padding: 5px;
         }
 
-        .delete-question-btn,
-        .question-id-tooltip {
+        .delete-question-btn {
           font-size: 20px;
           color: hsl(0, 0%, 28%);
           cursor: pointer;
