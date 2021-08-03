@@ -133,8 +133,8 @@ export const PointAndClick = ({ design, setDesign }: { design: string; setDesign
           background: hsl(0, 0%, 42%);
           opacity: 0.5;
           border-radius: 100px;
-          width: 18px;
-          height: 18px;
+          width: 19px;
+          height: 19px;
           display: inline-block;
           text-align: center;
           color: white;
