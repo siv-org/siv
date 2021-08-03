@@ -95,7 +95,7 @@ export const PointAndClick = ({ design, setDesign }: { design: string; setDesign
                 setDesign(JSON.stringify(new_json, undefined, 2))
               }}
             >
-              Add another option
+              + Add another option
             </a>
             <li className={`write-in ${write_in_allowed ? 'allowed' : 'disabled'}`}>
               <span>{`Write-in ${write_in_allowed ? 'Allowed' : 'Disabled'}`}</span>
@@ -126,7 +126,7 @@ export const PointAndClick = ({ design, setDesign }: { design: string; setDesign
           setDesign(JSON.stringify(new_json, undefined, 2))
         }}
       >
-        Add another question
+        + Add another question
       </a>
       <style jsx>{`
         .ballot {
