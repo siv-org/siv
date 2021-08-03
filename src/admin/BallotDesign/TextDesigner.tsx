@@ -3,10 +3,15 @@ import { useStored } from '../useStored'
 export const TextDesigner = ({ design, setDesign }: { design: string; setDesign: (s: string) => void }) => {
   const { ballot_design: storedBallotDesign } = useStored()
 
+  const lineHeight = 17
+  const padding = 8
+  const height = design.split('\n').length * lineHeight + padding * 2
+
   return (
     <div className="container">
       <textarea
         disabled={!!storedBallotDesign}
+        style={{ height }}
         value={design}
         onChange={(event) => {
           setDesign(event.target.value)
@@ -25,11 +30,10 @@ export const TextDesigner = ({ design, setDesign }: { design: string; setDesign:
           border-top-right-radius: 0;
           font-family: monospace;
           font-size: 12px;
-          height: 200px;
-          padding: 8px;
+          padding: ${padding}px;
           resize: vertical;
           width: 100%;
-          line-height: 17px;
+          line-height: ${lineHeight}px;
         }
 
         textarea:focus {
