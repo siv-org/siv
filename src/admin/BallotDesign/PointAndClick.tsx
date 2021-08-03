@@ -1,3 +1,4 @@
+import { DeleteOutlined } from '@ant-design/icons'
 import { useEffect, useState } from 'react'
 import { Item } from 'src/vote/storeElectionInfo'
 
@@ -15,7 +16,7 @@ export const PointAndClick = ({ design, setDesign }: { design: string; setDesign
     - [x] Toggle 'Write in' allowed
     - [x] Create new options
     - [x] Add new questions
-    - [ ] Delete questions
+    - [x] Delete questions
 
     - [ ] Re-order items
     - [ ] Set item ID
@@ -41,15 +42,27 @@ export const PointAndClick = ({ design, setDesign }: { design: string; setDesign
       {json?.map(({ options, title, write_in_allowed }, questionIndex) => (
         <div className="question" key={questionIndex}>
           <label className="title-label">Question Title:</label>
-          <input
-            className="title-input"
-            value={title}
-            onChange={({ target }) => {
-              const new_json = [...json]
-              new_json[questionIndex].title = target.value
-              setDesign(JSON.stringify(new_json, undefined, 2))
-            }}
-          />
+          <div className="title-line">
+            <input
+              className="title-input"
+              value={title}
+              onChange={({ target }) => {
+                const new_json = [...json]
+                new_json[questionIndex].title = target.value
+                setDesign(JSON.stringify(new_json, undefined, 2))
+              }}
+            />
+            <a
+              className="delete-question-btn"
+              onClick={() => {
+                const new_json = [...json]
+                new_json.splice(questionIndex, 1)
+                setDesign(JSON.stringify(new_json, undefined, 2))
+              }}
+            >
+              <DeleteOutlined />
+            </a>
+          </div>
           <ul>
             {options?.map(({ name }, optionIndex) => (
               <li key={optionIndex}>
@@ -63,7 +76,7 @@ export const PointAndClick = ({ design, setDesign }: { design: string; setDesign
                   }}
                 />
                 <a
-                  className="delete-btn"
+                  className="delete-option-btn"
                   onClick={() => {
                     const new_json = [...json]
                     new_json[questionIndex].options.splice(optionIndex, 1)
@@ -140,10 +153,30 @@ export const PointAndClick = ({ design, setDesign }: { design: string; setDesign
           font-size: 10px;
         }
 
+        .title-line {
+          display: flex;
+          align-items: center;
+        }
+
         .title-input {
           font-size: 14px;
-          width: 100%;
+          flex: 1;
           padding: 5px;
+        }
+
+        .delete-question-btn {
+          font-size: 20px;
+          color: hsl(0, 0%, 28%);
+          cursor: pointer;
+          margin-left: 5px;
+          width: 29px;
+          text-align: center;
+          border-radius: 99px;
+        }
+
+        .delete-question-btn:hover {
+          background-color: hsl(0, 0%, 50%);
+          color: #fff;
         }
 
         .name-input {
@@ -152,7 +185,7 @@ export const PointAndClick = ({ design, setDesign }: { design: string; setDesign
           margin-bottom: 6px;
         }
 
-        .delete-btn {
+        .delete-option-btn {
           background: hsl(0, 0%, 42%);
           opacity: 0.5;
           border-radius: 100px;
@@ -167,7 +200,7 @@ export const PointAndClick = ({ design, setDesign }: { design: string; setDesign
           margin-left: 5px;
         }
 
-        .delete-btn:hover {
+        .delete-option-btn:hover {
           opacity: 1;
           text-decoration: none;
         }
