@@ -1,5 +1,6 @@
 export const default_ballot_design = `[
   {
+    "id": "president",
     "title": "Who should become President?",
     "options": [
       { "name": "George H. W. Bush" },

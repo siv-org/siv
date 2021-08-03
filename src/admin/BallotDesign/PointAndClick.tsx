@@ -1,4 +1,4 @@
-import { DeleteOutlined } from '@ant-design/icons'
+import { DeleteOutlined, QuestionCircleOutlined } from '@ant-design/icons'
 import { useEffect, useState } from 'react'
 import { Item } from 'src/vote/storeElectionInfo'
 
@@ -18,16 +18,15 @@ export const PointAndClick = ({ design, setDesign }: { design: string; setDesign
     - [x] Add new questions
     - [x] Delete questions
 
+    - [x] Set item ID
     - [ ] Re-order items
-    - [ ] Set item ID
     - [ ] Edit item description
     - [ ] Edit item final question ("Should this bill be")
     - [ ] Reorder existing options
     - [ ] Edit option's subline (e.g. Party affiliation)
     - [ ] Edit option's short_id (if too long)
 
-    - [ ] Duplicate item
-    - [ ] Collapse item
+    - [ ] Collapse item's options
 */
   const [json, setJson] = useState<Item[]>()
 
@@ -39,8 +38,23 @@ export const PointAndClick = ({ design, setDesign }: { design: string; setDesign
 
   return (
     <div className={`ballot ${errors ? 'errors' : ''}`}>
-      {json?.map(({ options, title, write_in_allowed }, questionIndex) => (
+      {json?.map(({ id, options, title, write_in_allowed }, questionIndex) => (
         <div className="question" key={questionIndex}>
+          <label className="id-label">Question ID:</label>
+          <div className="id-line">
+            <input
+              className="id-input"
+              value={id}
+              onChange={({ target }) => {
+                const new_json = [...json]
+                new_json[questionIndex].id = target.value
+                setDesign(JSON.stringify(new_json, undefined, 2))
+              }}
+            />
+            <a className="question-id-tooltip">
+              <QuestionCircleOutlined />
+            </a>
+          </div>
           <label className="title-label">Question Title:</label>
           <div className="title-line">
             <input
@@ -146,25 +160,29 @@ export const PointAndClick = ({ design, setDesign }: { design: string; setDesign
           margin-top: 45px;
         }
 
-        .title-label {
+        .title-label,
+        .id-label {
           margin-top: 15px;
           font-style: italic;
           display: block;
           font-size: 10px;
         }
 
-        .title-line {
+        .title-line,
+        .id-line {
           display: flex;
           align-items: center;
         }
 
-        .title-input {
+        .title-input,
+        .id-input {
           font-size: 14px;
           flex: 1;
           padding: 5px;
         }
 
-        .delete-question-btn {
+        .delete-question-btn,
+        .question-id-tooltip {
           font-size: 20px;
           color: hsl(0, 0%, 28%);
           cursor: pointer;
