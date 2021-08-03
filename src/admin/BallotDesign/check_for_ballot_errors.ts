@@ -1,6 +1,7 @@
 import { encode } from '../../crypto/encode'
 
-export function check_for_ballot_errors(design: string): string | null {
+// These are for urgent errors where we want to disable the PointAndClick designer
+export function check_for_urgent_ballot_errors(design: string): string | null {
   try {
     const parsed = JSON.parse(design)
 
@@ -27,7 +28,7 @@ export function check_for_ballot_errors(design: string): string | null {
       const options: Record<string, boolean> = {}
       question.options.forEach(({ name }: { name?: string }) => {
         // Check for name field
-        if (!name || typeof name !== 'string') throw 'Each option should have a { name: string } field'
+        if (name === undefined || typeof name !== 'string') throw 'Each option should have a { name: string } field'
 
         // Make sure name field isn't too long.
         if (name.length > 26) throw `Keep names under 26 characters: ${name}`
@@ -42,6 +43,26 @@ export function check_for_ballot_errors(design: string): string | null {
 
         // Check if the name is encodable (throws if input is outside our alphabet)
         encode(name)
+      })
+    })
+  } catch (e) {
+    return e.message || e
+  }
+  return null
+}
+
+// These are for less urgent errors we only need to check for on Save.
+export function check_for_less_urgent_ballot_errors(design: string): string | null {
+  try {
+    const parsed = JSON.parse(design)
+
+    if (!Array.isArray(parsed)) throw 'Must be an array'
+
+    // Validate each question
+    parsed.forEach((question) => {
+      // Validate options
+      question.options.forEach(({ name }: { name?: string }) => {
+        if (name === '') throw `Can't have empty options`
       })
     })
   } catch (e) {

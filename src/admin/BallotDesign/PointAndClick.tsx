@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Item } from 'src/vote/storeElectionInfo'
 
-import { check_for_ballot_errors } from './check_for_ballot_errors'
+import { check_for_urgent_ballot_errors } from './check_for_ballot_errors'
 import { IOSSwitch } from './IOSSwitch'
 
 export const PointAndClick = ({ design, setDesign }: { design: string; setDesign: (s: string) => void }) => {
@@ -28,7 +28,7 @@ export const PointAndClick = ({ design, setDesign }: { design: string; setDesign
 */
   const [json, setJson] = useState<Item[]>()
 
-  const errors = check_for_ballot_errors(design)
+  const errors = check_for_urgent_ballot_errors(design)
 
   useEffect(() => {
     if (!errors) setJson(JSON.parse(design))
