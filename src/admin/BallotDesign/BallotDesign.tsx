@@ -6,6 +6,7 @@ import { SaveButton } from '../SaveButton'
 import { revalidate, useStored } from '../useStored'
 import { check_for_ballot_errors } from './check_for_ballot_errors'
 import { default_ballot_design } from './default-ballot-design'
+import { Errors } from './Errors'
 import { ModeControls } from './ModeControls'
 import { PointAndClick } from './PointAndClick'
 import { TextDesigner } from './TextDesigner'
@@ -15,9 +16,12 @@ export const BallotDesign = () => {
   const [selected, setSelected] = useState(2)
   const [design, setDesign] = useState(stored_ballot_design || default_ballot_design)
 
+  const error = check_for_ballot_errors(design)
+
   return (
     <>
       <h2>Ballot Design</h2>
+      <Errors {...{ error }} />
       <ModeControls {...{ selected, setSelected }} />
       <div className="mode-container">
         {selected !== 1 && <PointAndClick {...{ design, setDesign }} />}
