@@ -10,7 +10,6 @@ export function check_for_urgent_ballot_errors(design: string): string | null {
 
     // Validate each question
     parsed.forEach((question) => {
-      // Check for duplicate IDs
       const id = question.id || 'vote'
 
       // 'verification' & 'tracking' are reserved IDs
@@ -22,7 +21,6 @@ export function check_for_urgent_ballot_errors(design: string): string | null {
         throw `Question ${question.id ? `'${question.id}'` : ''} is missing an options array`
 
       // Validate options
-      const options: Record<string, boolean> = {}
       question.options.forEach(({ name }: { name?: string }) => {
         // Check for name field
         if (name === undefined || typeof name !== 'string') throw 'Each option should have a { name: string } field'
@@ -32,11 +30,6 @@ export function check_for_urgent_ballot_errors(design: string): string | null {
 
         // 'BLANK' is a reserved option
         if (name.toLowerCase() === 'blank') throw `'BLANK' is a reserved option name`
-
-        // Check no duplicate options (case insensitive)
-        if (options[name.toLowerCase()])
-          throw `Question ${question.id ? `'${question.id}'` : ''} has duplicate option: ${name}`
-        options[name.toLowerCase()] = true
 
         // Check if the name is encodable (throws if input is outside our alphabet)
         encode(name)
@@ -64,8 +57,14 @@ export function check_for_less_urgent_ballot_errors(design: string): string | nu
       ids[id] = true
 
       // Validate options
-      question.options.forEach(({ name }: { name?: string }) => {
+      const options: Record<string, boolean> = {}
+      question.options.forEach(({ name = '' }: { name?: string }) => {
         if (name === '') throw `Can't have empty options`
+
+        // Check no duplicate options (case insensitive)
+        if (options[name.toLowerCase()])
+          throw `Question ${question.id ? `'${question.id}'` : ''} has duplicate option: ${name}`
+        options[name.toLowerCase()] = true
       })
     })
   } catch (e) {
