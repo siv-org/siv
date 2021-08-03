@@ -77,16 +77,18 @@ export const PointAndClick = ({ design, setDesign }: { design: string; setDesign
                 setDesign(JSON.stringify(new_json, undefined, 2))
               }}
             />
-            <a
-              className="delete-question-btn"
-              onClick={() => {
-                const new_json = [...json]
-                new_json.splice(questionIndex, 1)
-                setDesign(JSON.stringify(new_json, undefined, 2))
-              }}
-            >
-              <DeleteOutlined />
-            </a>
+            <Tooltip placement="top" title="Delete Question">
+              <a
+                className="delete-question-btn"
+                onClick={() => {
+                  const new_json = [...json]
+                  new_json.splice(questionIndex, 1)
+                  setDesign(JSON.stringify(new_json, undefined, 2))
+                }}
+              >
+                <DeleteOutlined />
+              </a>
+            </Tooltip>
           </div>
           <ul>
             {options?.map(({ name }, optionIndex) => (
