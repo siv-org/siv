@@ -18,13 +18,13 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
     - [x] Create new options
     - [x] Add new questions
     - [x] Delete questions
-
     - [x] Set item ID
-    - [ ] Re-order items
+
+    - [ ] Edit option's subline (e.g. Party affiliation)
     - [ ] Edit item description
     - [ ] Edit item final question ("Should this bill be")
+    - [ ] Re-order items
     - [ ] Reorder existing options
-    - [ ] Edit option's subline (e.g. Party affiliation)
     - [ ] Edit option's short_id (if too long)
 
     - [ ] Collapse item's options
