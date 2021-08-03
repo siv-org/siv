@@ -47,8 +47,7 @@ export const PointAndClick = ({ design, setDesign }: { design: string; setDesign
               placement="top"
               title={
                 <span style={{ fontSize: 14 }}>
-                  This short ID must be unique for each question. It is used as the column header for the table of
-                  submitted votes.
+                  This unique short ID is used as the column header for the table of submitted votes.
                 </span>
               }
             >
