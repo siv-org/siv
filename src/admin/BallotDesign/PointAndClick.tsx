@@ -231,6 +231,10 @@ export const PointAndClick = ({ design, setDesign }: { design: string; setDesign
         .write-in.disabled span {
           opacity: 0.6;
         }
+
+        .add-question {
+          margin: 10px 0 !important;
+        }
       `}</style>
     </div>
   )
