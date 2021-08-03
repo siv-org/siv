@@ -1,3 +1,4 @@
+import { NoSsr } from '@material-ui/core'
 import router from 'next/router'
 import { useEffect, useState } from 'react'
 
@@ -32,7 +33,11 @@ export const BallotDesign = () => {
       <div className="mode-container">
         {selected !== 1 && <PointAndClick {...{ design, setDesign }} />}
         {selected === 2 && <div className="spacer" />}
-        {selected !== 0 && <TextDesigner {...{ design, setDesign }} />}
+        {selected !== 0 && (
+          <NoSsr>
+            <TextDesigner {...{ design, setDesign }} />
+          </NoSsr>
+        )}
       </div>
 
       {!stored_ballot_design && (
