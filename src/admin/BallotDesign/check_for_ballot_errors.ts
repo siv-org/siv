@@ -9,12 +9,9 @@ export function check_for_urgent_ballot_errors(design: string): string | null {
     if (!Array.isArray(parsed)) throw 'Must be an array'
 
     // Validate each question
-    const ids: Record<string, boolean> = {}
     parsed.forEach((question) => {
       // Check for duplicate IDs
       const id = question.id || 'vote'
-      if (ids[id]) throw 'Each question must have a unique ID'
-      ids[id] = true
 
       // 'verification' & 'tracking' are reserved IDs
       if (id === 'verification') throw `'verification' is a reserved ID`
@@ -59,7 +56,13 @@ export function check_for_less_urgent_ballot_errors(design: string): string | nu
     if (!Array.isArray(parsed)) throw 'Must be an array'
 
     // Validate each question
+    const ids: Record<string, boolean> = {}
     parsed.forEach((question) => {
+      // Check for duplicate IDs
+      const id = question.id || 'vote'
+      if (ids[id]) throw `Each question must have a unique ID: ${id}`
+      ids[id] = true
+
       // Validate options
       question.options.forEach(({ name }: { name?: string }) => {
         if (name === '') throw `Can't have empty options`
