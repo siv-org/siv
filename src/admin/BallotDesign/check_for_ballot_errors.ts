@@ -58,8 +58,8 @@ export function check_for_less_urgent_ballot_errors(design: string): string | nu
 
       // Validate options
       const options: Record<string, boolean> = {}
-      question.options.forEach(({ name = '' }: { name?: string }) => {
-        if (name === '') throw `Can't have empty options`
+      question.options.forEach(({ name = '' }: { name?: string }, oIndex: number) => {
+        if (name === '') throw `Can't have empty options. Fix \`${id}\` option #${oIndex + 1}`
 
         // Check no duplicate options (case insensitive)
         if (options[name.toLowerCase()])
