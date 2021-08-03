@@ -57,23 +57,13 @@ export const PointAndClick = ({ design, setDesign }: { design: string; setDesign
               </span>
             </Tooltip>
           </label>
-          <input
-            className="id-input"
-            value={id}
-            onChange={({ target }) => {
-              const new_json = [...json]
-              new_json[questionIndex].id = target.value
-              setDesign(JSON.stringify(new_json, undefined, 2))
-            }}
-          />
-          <label className="title-label">Question Title:</label>
-          <div className="title-line">
+          <div className="id-line">
             <input
-              className="title-input"
-              value={title}
+              className="id-input"
+              value={id}
               onChange={({ target }) => {
                 const new_json = [...json]
-                new_json[questionIndex].title = target.value
+                new_json[questionIndex].id = target.value
                 setDesign(JSON.stringify(new_json, undefined, 2))
               }}
             />
@@ -89,6 +79,18 @@ export const PointAndClick = ({ design, setDesign }: { design: string; setDesign
                 <DeleteOutlined />
               </a>
             </Tooltip>
+          </div>
+          <label className="title-label">Question Title:</label>
+          <div className="title-line">
+            <input
+              className="title-input"
+              value={title}
+              onChange={({ target }) => {
+                const new_json = [...json]
+                new_json[questionIndex].title = target.value
+                setDesign(JSON.stringify(new_json, undefined, 2))
+              }}
+            />
           </div>
           <ul>
             {options?.map(({ name }, optionIndex) => (
@@ -160,17 +162,24 @@ export const PointAndClick = ({ design, setDesign }: { design: string; setDesign
           flex: 1;
           border: 1px solid #ccc;
           color: #444;
-          padding: 0px 10px;
+          padding: 10px;
+          background: #eee;
+          padding-bottom: 0;
         }
 
         .errors {
           background-color: hsl(0, 0%, 90%);
-          opacity: 0.5;
+          opacity: 0.3;
           cursor: not-allowed;
         }
 
+        .question {
+          padding: 10px;
+          background: #fff;
+        }
+
         .question:not(:first-child) {
-          margin-top: 45px;
+          margin-top: 15px;
         }
 
         .id-label,
@@ -189,6 +198,12 @@ export const PointAndClick = ({ design, setDesign }: { design: string; setDesign
           color: rgb(90, 102, 233);
         }
 
+        .id-line {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
         .title-line {
           display: flex;
           align-items: center;
@@ -197,8 +212,11 @@ export const PointAndClick = ({ design, setDesign }: { design: string; setDesign
         .id-input,
         .title-input {
           font-size: 14px;
-          flex: 1;
           padding: 5px;
+        }
+
+        .title-input {
+          flex: 1;
         }
 
         .delete-question-btn {
@@ -209,6 +227,8 @@ export const PointAndClick = ({ design, setDesign }: { design: string; setDesign
           width: 29px;
           text-align: center;
           border-radius: 99px;
+          position: relative;
+          bottom: 30px;
         }
 
         .delete-question-btn:hover {
@@ -247,7 +267,7 @@ export const PointAndClick = ({ design, setDesign }: { design: string; setDesign
           font-style: italic;
           padding-left: 8px;
           margin: 3px 0 14px;
-          display: block;
+          display: inline-block;
           font-size: 13px;
           cursor: pointer;
         }
@@ -270,7 +290,10 @@ export const PointAndClick = ({ design, setDesign }: { design: string; setDesign
         }
 
         .add-question {
-          margin: 10px 0 !important;
+          margin: 15px 0 !important;
+          background: #fff;
+          padding: 10px;
+          width: 100%;
         }
       `}</style>
     </div>
