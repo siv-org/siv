@@ -13,7 +13,7 @@ export const PointAndClick = ({ design, setDesign }: { design: string; setDesign
     - [x] Edit options name
     - [x] Delete existing options
     - [x] Toggle 'Write in' allowed
-    - [ ] Create new options
+    - [x] Create new options
     - [ ] Add new items
     - [ ] Delete items
 
@@ -72,6 +72,16 @@ export const PointAndClick = ({ design, setDesign }: { design: string; setDesign
                 </a>
               </li>
             ))}
+            <a
+              className="add-option"
+              onClick={() => {
+                const new_json = [...json]
+                new_json[questionIndex].options.push({ name: '' })
+                setDesign(JSON.stringify(new_json, undefined, 2))
+              }}
+            >
+              [ Add another option ]
+            </a>
             <li className={`write-in ${write_in_allowed ? 'allowed' : 'disabled'}`}>
               <span>{`Write-in ${write_in_allowed ? 'Allowed' : 'Disabled'}`}</span>
               <IOSSwitch
@@ -137,6 +147,14 @@ export const PointAndClick = ({ design, setDesign }: { design: string; setDesign
         .delete-btn:hover {
           opacity: 1;
           text-decoration: none;
+        }
+
+        .add-option {
+          padding-left: 8px;
+          margin: 8px 0 14px;
+          display: block;
+          font-size: 13px;
+          cursor: pointer;
         }
 
         .write-in span {
