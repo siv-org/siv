@@ -91,7 +91,7 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
               }}
             />
           </div>
-          <ul>
+          <ul className="options">
             {options?.map(({ name }, optionIndex) => (
               <li key={optionIndex}>
                 <input
@@ -239,6 +239,10 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
           padding: 5px;
           font-size: 13px;
           margin-bottom: 6px;
+        }
+
+        .options li {
+          white-space: nowrap;
         }
 
         .delete-option-btn {
