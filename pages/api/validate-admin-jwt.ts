@@ -43,7 +43,10 @@ export async function checkJwtOwnsElection(
   req: NextApiRequest,
   res: NextApiResponse,
   election_id: string,
-): Promise<{ res: void; valid: false } | ({ election_title: string; valid: true } & JWT_Payload)> {
+): Promise<
+  | { res: void; valid: false }
+  | ({ ballot_design_finalized?: boolean; election_title: string; valid: true } & JWT_Payload)
+> {
   const jwt_status = checkJwt(req, res)
 
   // Fail immediately if checkJwt failed
@@ -58,5 +61,9 @@ export async function checkJwtOwnsElection(
   }
 
   // Other it passes
-  return { election_title: election.election_title, ...jwt_status }
+  return {
+    ballot_design_finalized: election.ballot_design_finalized,
+    election_title: election.election_title,
+    ...jwt_status,
+  }
 }
