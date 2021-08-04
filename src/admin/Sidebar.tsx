@@ -26,10 +26,10 @@ export const steps = ['Trustees', 'Ballot Design', 'Voters'] as const
 
 export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => void }) => {
   const { election_id, section } = useRouter().query
-  const { ballot_design, threshold_public_key } = useStored()
+  const { ballot_design_finalized, threshold_public_key } = useStored()
 
   const completed: Record<typeof steps[number], boolean> = {
-    'Ballot Design': !!ballot_design,
+    'Ballot Design': !!ballot_design_finalized,
     Trustees: !!threshold_public_key,
     Voters: true,
   }

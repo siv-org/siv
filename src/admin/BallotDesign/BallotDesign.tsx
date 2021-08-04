@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { api } from '../../api-helper'
 import { SaveButton } from '../SaveButton'
 import { revalidate, useStored } from '../useStored'
+import { AutoSaver } from './AutoSaver'
 import { check_for_less_urgent_ballot_errors, check_for_urgent_ballot_errors } from './check_for_ballot_errors'
 import { default_ballot_design } from './default-ballot-design'
 import { Errors } from './Errors'
@@ -13,7 +14,7 @@ import { TextDesigner } from './TextDesigner'
 import { Wizard } from './Wizard'
 
 export const BallotDesign = () => {
-  const { ballot_design: stored_ballot_design, election_id } = useStored()
+  const { ballot_design: stored_ballot_design, ballot_design_finalized, election_id } = useStored()
   const [selected, setSelected] = useState(2)
   const [design, setDesign] = useState(stored_ballot_design || default_ballot_design)
   const [saving_errors, set_saving_errors] = useState<null | string>(null)
@@ -28,6 +29,7 @@ export const BallotDesign = () => {
   return (
     <>
       <h2>Ballot Design</h2>
+      <AutoSaver {...{ design }} />
       <Errors {...{ error }} />
       <ModeControls {...{ selected, setSelected }} />
       <div className="mode-container">
@@ -40,7 +42,7 @@ export const BallotDesign = () => {
         )}
       </div>
 
-      {!stored_ballot_design && (
+      {!ballot_design_finalized && (
         <SaveButton
           disabled={!!error}
           text={error ? 'Error!' : 'Finalize'}
@@ -48,8 +50,7 @@ export const BallotDesign = () => {
             const error = check_for_less_urgent_ballot_errors(design)
             if (error) return set_saving_errors(error)
 
-            const response = await api(`election/${election_id}/admin/save-ballot-design`, { ballot_design: design })
-
+            const response = await api(`election/${election_id}/admin/finalize-ballot-design`)
             if (response.status !== 201) return alert(JSON.stringify(await response.json()))
 
             revalidate(election_id)
