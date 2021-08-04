@@ -43,7 +43,7 @@ export const BallotDesign = () => {
       {!stored_ballot_design && (
         <SaveButton
           disabled={!!error}
-          text={error ? 'Error!' : 'Save'}
+          text={error ? 'Error!' : 'Finalize'}
           onPress={async () => {
             const error = check_for_less_urgent_ballot_errors(design)
             if (error) return set_saving_errors(error)
