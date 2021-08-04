@@ -21,10 +21,11 @@ export const AutoSaver = ({ design }: { design: string }) => {
 
   // Whenever design changes...
   useEffect(() => {
+    if (!election_id) return
     setUnsaved(true)
     // Set a debounce to autosave after 1 second
     debouncedSaveDraft()
-  }, [design])
+  }, [design, election_id])
 
   return (
     <div>
