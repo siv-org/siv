@@ -26,7 +26,7 @@ export const EnterCodePage = () => {
       <Headerbar hideLogin />
       <section>
         <p>An email with login information is being sent to:</p>
-        <h4>{email}</h4>
+        <h3>{email}</h3>
 
         <div>
           <TextField
@@ -76,13 +76,15 @@ export const EnterCodePage = () => {
         section {
           text-align: center;
           margin-top: 3rem;
+          padding: 0 5px;
         }
 
         p {
           margin: 0;
+          font-size: 24px;
         }
 
-        h4 {
+        h3 {
           margin: 2rem 0;
         }
 
