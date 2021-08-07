@@ -1,5 +1,7 @@
 import { OnClickButton } from 'src/landing-page/Button'
 
+import { breakpoint } from './LoginPage'
+
 export const Headerbar = () => {
   return (
     <header>
@@ -60,6 +62,20 @@ export const Headerbar = () => {
           border: 0;
           outline-width: 0;
           width: 50px;
+        }
+
+        @media (max-width: ${breakpoint}px) {
+          div {
+            justify-content: center;
+          }
+
+          h2 {
+            margin-right: 0;
+          }
+
+          section {
+            display: none;
+          }
         }
       `}</style>
     </header>

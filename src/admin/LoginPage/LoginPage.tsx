@@ -10,6 +10,8 @@ import { AboutSection } from './AboutSection'
 import { CreateAccount } from './CreateAccount'
 import { Headerbar } from './Headerbar'
 
+export const breakpoint = 500
+
 export const LoginPage = () => {
   const router = useRouter()
   const [email, setEmail] = useState('')
@@ -196,6 +198,12 @@ export const LoginPage = () => {
           color: red;
           opacity: 0.7;
           font-size: 12px;
+        }
+
+        @media (max-width: ${breakpoint}px) {
+          .columns {
+            flex-direction: column;
+          }
         }
       `}</style>
       <style global jsx>{`
