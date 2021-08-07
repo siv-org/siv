@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import { GlobalCSS } from 'src/GlobalCSS'
 
 import { Head } from '../../Head'
@@ -10,18 +9,6 @@ import { MobileLogin } from './MobileLogin'
 export const breakpoint = 500
 
 export const LoginPage = () => {
-  // const router = useRouter()
-  // const [email, setEmail] = useState('')
-  // const [error, setError] = useState('')
-
-  // Check if there's a redirect message in URL
-  useEffect(() => {
-    // const { email, expired, invalid } = router.query
-    // if (email) setEmail(email as string)
-    // if (expired) setError('This login link has expired, click Sign In below to create another.')
-    // if (invalid) setError('This login link appears invalid, click Sign In below to create another.')
-  }, [])
-
   return (
     <main>
       <Head title="Admin Login" />

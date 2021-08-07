@@ -1,6 +1,6 @@
 import { TextField } from '@material-ui/core'
 import { useRouter } from 'next/router'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { GlobalCSS } from 'src/GlobalCSS'
 import { OnClickButton } from 'src/landing-page/Button'
 
@@ -13,10 +13,24 @@ export const breakpoint = 500
 
 export const EnterCodePage = () => {
   const router = useRouter()
-  const { email } = router.query
+  const { email, expired, invalid } = router.query
   const [error, setError] = useState('')
   const [loginCode, setLoginCode] = useState('')
   const submitBtn = useRef<HTMLAnchorElement>(null)
+
+  const handleExpired = () => {
+    setError('This login code has expired.\nSending you another...')
+    api('admin-login', { email })
+  }
+
+  // Check if there's a redirect message in URL
+  useEffect(() => {
+    if (expired) {
+      handleExpired()
+      router.replace(`${window.location.pathname}?email=${email}`)
+    }
+    if (invalid) setError('This login link appears invalid, click Sign In below to create another.')
+  }, [expired, invalid])
 
   if (typeof email !== 'string') return <p>Missing email</p>
 
@@ -56,9 +70,8 @@ export const EnterCodePage = () => {
                 code: loginCode,
                 email,
                 onExpired: () => {
-                  setError('This login link has expired.\nSending you another...')
                   setLoginCode('')
-                  api('admin-login', { email })
+                  handleExpired()
                 },
                 onInvalid: () => setError('Incorrect code'),
                 router,
