@@ -29,10 +29,12 @@ export const LoginPage = () => {
     <main>
       <Head title="Admin Login" />
       <Headerbar />
-      <div className="columns">
-        <AboutSection />
-        <div className="spacer" />
-        <CreateAccount />
+      <div className="container">
+        <div className="columns">
+          <AboutSection />
+          <div className="spacer" />
+          <CreateAccount />
+        </div>
       </div>
       <div style={{ display: 'none' }}>
         {status !== 'sent' ? (
@@ -171,16 +173,23 @@ export const LoginPage = () => {
         )}
       </div>
       <style jsx>{`
+        .container {
+          display: flex;
+          justify-content: center;
+          padding: 0 3vw;
+        }
+
         .columns {
           display: flex;
           justify-content: space-between;
-          padding: 0 15vw;
           align-items: center;
           height: calc(100vh - 68px);
+          flex: 1;
+          max-width: 1000px;
         }
 
         .spacer {
-          width: 50px;
+          width: 15px;
         }
 
         .error {

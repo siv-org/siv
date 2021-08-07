@@ -35,12 +35,18 @@ export const CreateAccount = () => {
       <style jsx>{`
         section {
           position: relative;
-          bottom: 41px;
+          bottom: 39px;
         }
 
         h2 {
           font-size: 30px;
           font-weight: 600;
+        }
+
+        @media (max-width: 799px) {
+          section {
+            bottom: 51px;
+          }
         }
       `}</style>
     </section>
