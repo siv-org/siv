@@ -40,10 +40,10 @@ export const Headerbar = () => {
         }
 
         section {
-          display: flex;
-          align-items: center;
           max-width: 410px;
           flex: 1;
+          display: flex;
+          position: relative;
         }
 
         @media (max-width: ${breakpoint}px) {

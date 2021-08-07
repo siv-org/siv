@@ -11,11 +11,11 @@ export const MobileLogin = () => {
       <style jsx>{`
         section {
           width: 100%;
+          position: relative;
         }
 
         div {
           display: flex;
-          align-items: center;
         }
 
         p {

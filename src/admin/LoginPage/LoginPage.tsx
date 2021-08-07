@@ -45,35 +45,19 @@ export const LoginPage = () => {
           <div className="mt-8 space-y-6">
             <div className="-space-y-px rounded-md shadow-sm">
               {error && <label className="error">⚠️&nbsp; {error}</label>}
-              <label className="sr-only" htmlFor="email-address">
-                Email address
-              </label>
               <input
                 required
-                autoComplete="email"
-                className="relative block w-full px-3 py-2 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-md appearance-none focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10"
-                id="email-address"
                 name="email"
                 placeholder="Email address"
                 type="email"
                 value={email}
-                onChange={(e) => {
-                  setEmail(e.target.value)
+                onChange={() => {
+                  // setEmail(e.target.value)
                   setStatus('')
-                  setError('')
-                }}
-                onKeyPress={(event) => {
-                  if (event.key === 'Enter') {
-                    document.getElementById('email-address')?.blur()
-                    document.getElementById('login-button')?.click()
-                  }
+                  // setError('')
                 }}
               />
             </div>
-
-            {status !== 'unapproved' && (
-              <p className="text-xs italic font-medium text-gray-400">You will be emailed a login link.</p>
-            )}
 
             <button
               className="relative flex justify-center w-full px-4 py-2 text-sm font-semibold text-white bg-blue-800 border border-transparent rounded-md group disabled:opacity-50 hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
@@ -194,12 +178,6 @@ export const LoginPage = () => {
 
         .spacer {
           width: 15px;
-        }
-
-        .error {
-          color: red;
-          opacity: 0.7;
-          font-size: 12px;
         }
 
         @media (max-width: ${breakpoint}px) {
