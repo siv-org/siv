@@ -6,6 +6,7 @@ import { OnClickButton } from 'src/landing-page/Button'
 import { api } from '../../api-helper'
 import { Head } from '../../Head'
 import { checkLoginCode } from '../auth'
+import { AboutSection } from './AboutSection'
 import { CreateAccount } from './CreateAccount'
 import { Headerbar } from './Headerbar'
 
@@ -28,7 +29,10 @@ export const LoginPage = () => {
     <main>
       <Head title="Admin Login" />
       <Headerbar />
-      <CreateAccount />
+      <div className="columns">
+        <AboutSection />
+        <CreateAccount />
+      </div>
       <div style={{ display: 'none' }}>
         {status !== 'sent' ? (
           <div className="mt-8 space-y-6">
@@ -168,6 +172,12 @@ export const LoginPage = () => {
       <style jsx>{`
         main {
           background: #f9fafb;
+        }
+
+        .columns {
+          display: flex;
+          justify-content: space-between;
+          padding: 0 3rem;
         }
 
         .error {
