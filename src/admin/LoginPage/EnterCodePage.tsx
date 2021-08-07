@@ -47,6 +47,8 @@ export const EnterCodePage = () => {
           <OnClickButton
             style={{ margin: 0, marginLeft: 10, padding: '8px 20px' }}
             onClick={() => {
+              if (loginCode.length < 6) return setError(`Login codes are 6 digits, not ${loginCode.length}`)
+
               checkLoginCode({
                 code: loginCode,
                 email,
