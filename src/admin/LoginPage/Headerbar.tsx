@@ -1,4 +1,3 @@
-import { TextField } from '@material-ui/core'
 import { OnClickButton } from 'src/landing-page/Button'
 
 export const Headerbar = () => {
@@ -6,7 +5,7 @@ export const Headerbar = () => {
     <header>
       <h2>Secure Internet Voting</h2>
       <section>
-        <TextField fullWidth label="Login Email" size="small" style={{ background: 'white' }} variant="outlined" />
+        <input placeholder="Login Email" />
         <OnClickButton
           invertColor
           style={{ marginRight: 0, padding: '5px 15px', whiteSpace: 'nowrap' }}
@@ -34,6 +33,15 @@ export const Headerbar = () => {
         section {
           display: flex;
           align-items: center;
+        }
+
+        input {
+          padding: 9px 15px;
+          font-size: 16px;
+          width: 283px;
+          border-radius: 4px;
+          border: 0;
+          outline-width: 0;
         }
       `}</style>
     </header>
