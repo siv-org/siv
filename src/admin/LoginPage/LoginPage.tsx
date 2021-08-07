@@ -7,6 +7,7 @@ import { OnClickButton } from 'src/landing-page/Button'
 import { api } from '../../api-helper'
 import { Head } from '../../Head'
 import { checkLoginCode } from '../auth'
+import { CreateAccount } from './CreateAccount'
 
 export const LoginPage = () => {
   const router = useRouter()
@@ -24,19 +25,10 @@ export const LoginPage = () => {
   }, [])
 
   return (
-    <main className="flex items-center justify-center min-h-screen px-4 py-12 bg-gray-50 sm:px-6 lg:px-8">
+    <main>
       <Head title="Admin Login" />
-      <p className="text-blue-800 request-access-link">
-        <a href="/for-governments#give-your-voters">
-          <b>New user?</b>
-          <br />
-          <span className="text-xs">Request access</span>
-        </a>
-      </p>
-      <div className="w-full max-w-md mb-24 space-y-8">
-        <h1 className="mb-16 text-2xl font-bold text-center gradient-background">Secure Internet Voting</h1>
-        <h2 className="mt-6 text-3xl font-extrabold text-center text-gray-900">Sign in to your secure account</h2>
-
+      <CreateAccount />
+      <div className="hidden">
         {status !== 'sent' ? (
           <div className="mt-8 space-y-6">
             <div className="-space-y-px rounded-md shadow-sm">
@@ -173,27 +165,14 @@ export const LoginPage = () => {
         )}
       </div>
       <style jsx>{`
-        .gradient-background {
-          background: linear-gradient(90deg, #010b26 0%, #072054 100%);
-          color: #fff;
-          padding: 8px;
+        main {
+          background: #f9fafb;
         }
 
         .error {
           color: red;
           opacity: 0.7;
           font-size: 12px;
-        }
-
-        .request-access-link {
-          font-size: 14px;
-          position: absolute;
-          top: 15px;
-          right: 20px;
-          text-align: right;
-        }
-        .request-access-link:hover {
-          text-decoration: underline;
         }
       `}</style>
     </main>
