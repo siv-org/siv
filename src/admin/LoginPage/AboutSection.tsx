@@ -39,7 +39,7 @@ export const AboutSection = () => {
             flex-direction: column;
             align-items: center;
 
-            margin-top: 2rem;
+            margin: 2rem 0;
           }
         }
       `}</style>

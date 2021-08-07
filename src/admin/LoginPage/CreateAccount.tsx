@@ -3,6 +3,8 @@ import { firestore } from 'firebase/app'
 import { api } from 'src/api-helper'
 import { OnClickButton, darkBlue } from 'src/landing-page/Button'
 
+import { breakpoint } from './LoginPage'
+
 export const CreateAccount = () => {
   return (
     <section>
@@ -54,7 +56,7 @@ export const CreateAccount = () => {
       <style jsx>{`
         section {
           position: relative;
-          bottom: 39px;
+          bottom: 41px;
         }
 
         h2 {
@@ -65,6 +67,18 @@ export const CreateAccount = () => {
         @media (max-width: 799px) {
           section {
             bottom: 51px;
+          }
+        }
+
+        @media (max-width: ${breakpoint}px) {
+          section {
+            bottom: 0;
+            padding-bottom: 3rem;
+          }
+
+          h2 {
+            margin-top: 0;
+            font-size: 24px;
           }
         }
       `}</style>

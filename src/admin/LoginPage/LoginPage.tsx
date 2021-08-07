@@ -9,6 +9,7 @@ import { checkLoginCode } from '../auth'
 import { AboutSection } from './AboutSection'
 import { CreateAccount } from './CreateAccount'
 import { Headerbar } from './Headerbar'
+import { MobileLogin } from './MobileLogin'
 
 export const breakpoint = 500
 
@@ -35,6 +36,7 @@ export const LoginPage = () => {
         <div className="columns">
           <AboutSection />
           <div className="spacer" />
+          <MobileLogin />
           <CreateAccount />
         </div>
       </div>
@@ -203,6 +205,7 @@ export const LoginPage = () => {
         @media (max-width: ${breakpoint}px) {
           .columns {
             flex-direction: column;
+            max-width: 322px;
           }
         }
       `}</style>

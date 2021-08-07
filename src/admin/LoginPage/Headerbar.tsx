@@ -1,5 +1,4 @@
-import { OnClickButton } from 'src/landing-page/Button'
-
+import { LoginInput } from './LoginInput'
 import { breakpoint } from './LoginPage'
 
 export const Headerbar = () => {
@@ -8,14 +7,7 @@ export const Headerbar = () => {
       <div>
         <h2>Secure Internet Voting</h2>
         <section>
-          <input placeholder="Login Email" />
-          <OnClickButton
-            invertColor
-            style={{ marginRight: 0, padding: '5px 15px', whiteSpace: 'nowrap' }}
-            onClick={() => {}}
-          >
-            Send Code
-          </OnClickButton>
+          <LoginInput />
         </section>
       </div>
       <style jsx>{`
@@ -52,16 +44,6 @@ export const Headerbar = () => {
           align-items: center;
           max-width: 410px;
           flex: 1;
-        }
-
-        input {
-          padding: 9px 15px;
-          font-size: 16px;
-          flex-grow: 1;
-          border-radius: 4px;
-          border: 0;
-          outline-width: 0;
-          width: 50px;
         }
 
         @media (max-width: ${breakpoint}px) {
