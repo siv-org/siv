@@ -4,7 +4,10 @@ export const AboutSection = () => {
   return (
     <aside>
       <img className="logo" src="/login/circle-logo.png" />
-      <h3>Fast, private, & verifiable elections.</h3>
+      <h3>
+        Fast, private, & verifiable <br />
+        elections.
+      </h3>
       <img className="phone" src="/login/iphone.png" />
       <style jsx>{`
         img.logo {

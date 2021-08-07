@@ -33,6 +33,11 @@ export const CreateAccount = () => {
         </OnClickButton>
       </div>
       <style jsx>{`
+        section {
+          position: relative;
+          bottom: 41px;
+        }
+
         h2 {
           font-size: 30px;
           font-weight: 600;
