@@ -170,20 +170,23 @@ export const LoginPage = () => {
         )}
       </div>
       <style jsx>{`
-        main {
-          background: #f9fafb;
-        }
-
         .columns {
           display: flex;
           justify-content: space-between;
           padding: 0 3rem;
+          align-items: center;
+          height: calc(100vh - 68px);
         }
 
         .error {
           color: red;
           opacity: 0.7;
           font-size: 12px;
+        }
+      `}</style>
+      <style global jsx>{`
+        body {
+          background: #f9fafb;
         }
       `}</style>
       <GlobalCSS />

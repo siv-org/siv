@@ -3,7 +3,7 @@ import { OnClickButton } from 'src/landing-page/Button'
 
 export const Headerbar = () => {
   return (
-    <main>
+    <header>
       <h2>Secure Internet Voting</h2>
       <section>
         <TextField fullWidth label="Login Email" size="small" style={{ background: 'white' }} variant="outlined" />
@@ -12,7 +12,7 @@ export const Headerbar = () => {
         </OnClickButton>
       </section>
       <style jsx>{`
-        main {
+        header {
           background: rgb(1, 5, 11);
           background: linear-gradient(90deg, #010b26 0%, #072054 100%);
 
@@ -22,6 +22,9 @@ export const Headerbar = () => {
           justify-content: space-between;
 
           padding: 0 3rem;
+
+          z-index: 100;
+          position: relative;
         }
 
         section {
@@ -29,6 +32,6 @@ export const Headerbar = () => {
           align-items: center;
         }
       `}</style>
-    </main>
+    </header>
   )
 }

@@ -2,7 +2,7 @@ import { darkBlue } from 'src/landing-page/Button'
 
 export const AboutSection = () => {
   return (
-    <div>
+    <aside>
       <img className="logo" src="/login/circle-logo.png" />
       <h3>Fast, private, & verifiable elections.</h3>
       <img className="phone" src="/login/iphone.png" />
@@ -24,6 +24,6 @@ export const AboutSection = () => {
           right: 10px;
         }
       `}</style>
-    </div>
+    </aside>
   )
 }
