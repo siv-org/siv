@@ -67,7 +67,7 @@ export function useLoginRequired(loggedOut: boolean) {
         code,
         email,
         onExpired: () => router.push(`/enter-login-code?expired=true&email=${email}`),
-        onInvalid: () => router.push('/enter-login-code?invalid=true'),
+        onInvalid: () => router.push(`/enter-login-code?invalid=true&email=${email}`),
         router,
       })
     }

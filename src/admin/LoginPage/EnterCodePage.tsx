@@ -18,18 +18,23 @@ export const EnterCodePage = () => {
   const [loginCode, setLoginCode] = useState('')
   const submitBtn = useRef<HTMLAnchorElement>(null)
 
-  const handleExpired = () => {
+  function handleExpired() {
     setError('This login code has expired.\nSending you another...')
     api('admin-login', { email })
   }
+  const resetURL = () => router.replace(`${window.location.pathname}?email=${email}`)
 
   // Check if there's a redirect message in URL
   useEffect(() => {
     if (expired) {
       handleExpired()
-      router.replace(`${window.location.pathname}?email=${email}`)
+      resetURL()
     }
-    if (invalid) setError('This login link appears invalid, click Sign In below to create another.')
+    if (invalid) {
+      setError('This login link appears invalid.\nSending you another...')
+      api('admin-login', { email })
+      resetURL()
+    }
   }, [expired, invalid])
 
   if (typeof email !== 'string') return <p>Missing email</p>
