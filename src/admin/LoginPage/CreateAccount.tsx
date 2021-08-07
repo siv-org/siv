@@ -26,7 +26,11 @@ export const CreateAccount = () => {
           background={darkBlue}
           style={{ margin: 0, padding: '10px 30px' }}
           onClick={() => {
-            alert('TODO')
+            const data: Record<string, string> = {}
+            ;['first-name', 'last-name', 'email', 'your-organization'].forEach((id) => {
+              data[id] = (document.getElementById(id) as HTMLInputElement).value
+            })
+            alert(JSON.stringify(data))
           }}
         >
           Create Account
@@ -67,6 +71,13 @@ const Row = (props: BoxProps) => (
   </div>
 )
 
-const Field = (props: TextFieldProps) => (
-  <TextField fullWidth size="small" variant="outlined" {...props} style={{ background: 'white', ...props.style }} />
+const Field = (props: TextFieldProps & { label: string }) => (
+  <TextField
+    fullWidth
+    id={props.label.toLowerCase().replace(' ', '-')}
+    size="small"
+    variant="outlined"
+    {...props}
+    style={{ background: 'white', ...props.style }}
+  />
 )
