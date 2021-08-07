@@ -1,4 +1,6 @@
 import { BoxProps, NoSsr, TextField, TextFieldProps } from '@material-ui/core'
+import { firestore } from 'firebase/app'
+import { api } from 'src/api-helper'
 import { OnClickButton, darkBlue } from 'src/landing-page/Button'
 
 export const CreateAccount = () => {
@@ -27,11 +29,23 @@ export const CreateAccount = () => {
           background={darkBlue}
           style={{ margin: 0, padding: '10px 30px' }}
           onClick={() => {
-            const data: Record<string, string> = {}
+            const fields: Record<string, string> = { created_at: new Date().toString() }
             ;['first-name', 'last-name', 'email', 'your-organization'].forEach((id) => {
-              data[id] = (document.getElementById(id) as HTMLInputElement).value
+              fields[id] = (document.getElementById(id) as HTMLInputElement).value
             })
-            alert(JSON.stringify(data))
+
+            // Store submission in Firestore
+            firestore()
+              .collection('jurisdictions-leads')
+              .doc(new Date().toISOString() + ' ' + String(Math.random()).slice(2, 7))
+              .set(fields)
+              .then(() => {
+                // Notify via Pushover
+                api('pushover', {
+                  message: JSON.stringify(fields),
+                  title: `SIV signup: ${fields['first-name']} ${fields['last-name']}`,
+                })
+              })
           }}
         >
           Create Account
