@@ -1,5 +1,6 @@
 import { TextField } from '@material-ui/core'
 import { validate as validateEmail } from 'email-validator'
+import { useRouter } from 'next/router'
 import { ChangeEventHandler, KeyboardEventHandler, useRef, useState } from 'react'
 import { api } from 'src/api-helper'
 import { OnClickButton } from 'src/landing-page/Button'
@@ -13,6 +14,7 @@ type SharedInputProps = {
 }
 
 export const LoginInput = ({ mobile }: { mobile?: boolean }) => {
+  const router = useRouter()
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
   const [pending, setPending] = useState(false)
@@ -63,7 +65,7 @@ export const LoginInput = ({ mobile }: { mobile?: boolean }) => {
             } else if (response.status === 404) {
               setError('Not an approved account. \nCheck for typos, or Create Account below.')
             } else {
-              alert('TODO: Switch to Enter Code page')
+              router.push(`./enter-login-code?email=${email}`)
             }
           }}
         >

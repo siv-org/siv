@@ -1,14 +1,16 @@
 import { LoginInput } from './LoginInput'
 import { breakpoint } from './LoginPage'
 
-export const Headerbar = () => {
+export const Headerbar = ({ hideLogin }: { hideLogin?: boolean }) => {
   return (
     <header>
       <div>
         <h2>Secure Internet Voting</h2>
-        <section>
-          <LoginInput />
-        </section>
+        {!hideLogin && (
+          <section>
+            <LoginInput />
+          </section>
+        )}
       </div>
       <style jsx>{`
         header {

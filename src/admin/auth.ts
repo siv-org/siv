@@ -22,14 +22,12 @@ async function logout() {
 }
 
 export async function checkLoginCode({
-  clientSideRedirect = true,
   code,
   email,
   onExpired,
   onInvalid,
   router,
 }: {
-  clientSideRedirect?: boolean
   code: string
   email: string
   onExpired: () => void
@@ -45,9 +43,7 @@ export async function checkLoginCode({
     mutate(jwt_api_path)
 
     // Remove url parameters
-    // Need to do full reload when transitioning in from /login page's Code Input form, otherwise Tailwind's css screws up formatting.
-    clientSideRedirect ? await router.replace('/admin') : (window.location.href = '/admin')
-    return
+    return await router.replace('/admin')
   }
 
   // Expired session: redirects back to login page w/ custom error
