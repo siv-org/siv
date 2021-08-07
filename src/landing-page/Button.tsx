@@ -51,11 +51,13 @@ export const OnClickButton = ({
   invertColor,
   id,
   background,
+  noBorder,
   style = {},
 }: ButtonProps & {
   disabled?: boolean
   disabledExplanation?: false | string
   id?: string
+  noBorder?: boolean
   onClick: () => void
 }): JSX.Element => (
   <a
@@ -71,7 +73,7 @@ export const OnClickButton = ({
     <style jsx>{`
       a {
         ${background && `background: ${background}`};
-        border: 2px solid ${invertColor ? '#fff' : darkBlue};
+        border: 2px solid ${invertColor && !noBorder ? '#fff' : darkBlue};
         border-radius: 0.4rem;
         color: ${invertColor ? '#fff' : darkBlue};
         display: inline-block;

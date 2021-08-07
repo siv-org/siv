@@ -23,6 +23,7 @@ export const CreateAccount = () => {
       <div style={{ textAlign: 'right' }}>
         <OnClickButton
           invertColor
+          noBorder
           background={darkBlue}
           style={{ margin: 0, padding: '10px 30px' }}
           onClick={() => {
