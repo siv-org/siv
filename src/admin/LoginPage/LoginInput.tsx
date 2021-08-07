@@ -1,7 +1,10 @@
 import { TextField } from '@material-ui/core'
 import { validate as validateEmail } from 'email-validator'
 import { ChangeEventHandler, KeyboardEventHandler, useRef, useState } from 'react'
+import { api } from 'src/api-helper'
 import { OnClickButton } from 'src/landing-page/Button'
+
+import { Spinner } from '../Spinner'
 
 type SharedInputProps = {
   onChange: ChangeEventHandler<HTMLInputElement>
@@ -12,6 +15,7 @@ type SharedInputProps = {
 export const LoginInput = ({ mobile }: { mobile?: boolean }) => {
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
+  const [pending, setPending] = useState(false)
   const loginButton = useRef<HTMLAnchorElement>(null)
   const Input = mobile ? MUIInput : PlainInput
 
@@ -36,13 +40,34 @@ export const LoginInput = ({ mobile }: { mobile?: boolean }) => {
         <OnClickButton
           invertColor={!mobile}
           ref={loginButton}
-          style={{ margin: 0, padding: `${mobile ? 7 : 6}px 15px`, whiteSpace: 'nowrap' }}
-          onClick={() => {
+          style={{
+            margin: 0,
+            padding: `${mobile ? 7 : 6}px 15px`,
+            textAlign: 'center',
+            whiteSpace: 'nowrap',
+            width: 110,
+          }}
+          onClick={async () => {
+            if (!email) return
+
+            // Validate email on frontend
             if (!validateEmail(email)) return setError('Not a valid email address')
-            alert(email)
+
+            // Send login request to backend
+            setPending(true)
+            const response = await api('admin-login', { email })
+            setPending(false)
+
+            if (response.status === 400) {
+              setError('Invalid email address')
+            } else if (response.status === 404) {
+              setError('Not an approved account. \nCheck for typos, or Create Account below.')
+            } else {
+              alert('TODO: Switch to Enter Code page')
+            }
           }}
         >
-          {!error ? 'Send Code' : 'Error!'}
+          {error ? 'Error!' : pending ? <Spinner /> : 'Send Code'}
         </OnClickButton>
       </div>
       <style jsx>{`
@@ -63,14 +88,16 @@ export const LoginInput = ({ mobile }: { mobile?: boolean }) => {
           border-radius: 5px;
 
           position: absolute;
+
+          white-space: pre-wrap;
         }
 
         .error.desktop {
-          bottom: -35px;
+          bottom: -${error.includes('\n') ? 55 : 35}px;
         }
 
         .error.mobile {
-          top: -40px;
+          top: -${error.includes('\n') ? 60 : 40}px;
         }
       `}</style>
     </>

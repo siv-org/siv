@@ -18,7 +18,6 @@ export const LoginPage = () => {
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
   const [loginCode, setLoginCode] = useState('')
-  const [status, setStatus] = useState<'' | 'pending' | 'sent' | 'error' | 'unapproved'>('')
 
   // Check if there's a redirect message in URL
   useEffect(() => {
@@ -41,76 +40,7 @@ export const LoginPage = () => {
         </div>
       </div>
       <div style={{ display: 'none' }}>
-        {status !== 'sent' ? (
-          <div className="mt-8 space-y-6">
-            <div className="-space-y-px rounded-md shadow-sm">
-              {error && <label className="error">⚠️&nbsp; {error}</label>}
-              <input
-                required
-                name="email"
-                placeholder="Email address"
-                type="email"
-                value={email}
-                onChange={() => {
-                  // setEmail(e.target.value)
-                  setStatus('')
-                  // setError('')
-                }}
-              />
-            </div>
-
-            <button
-              className="relative flex justify-center w-full px-4 py-2 text-sm font-semibold text-white bg-blue-800 border border-transparent rounded-md group disabled:opacity-50 hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-              disabled={!['', 'unapproved'].includes(status)}
-              id="login-button"
-              onClick={async () => {
-                setError('')
-                // Redirect to 'Request Access'
-                if (status === 'unapproved') {
-                  return window.location.assign('/for-governments#give-your-voters')
-                }
-
-                setStatus('pending')
-
-                // Send login request to backend
-                const response = await api('admin-login', { email })
-
-                if (response.status === 400) {
-                  setError('Invalid email address')
-                  setStatus('error')
-                } else if (response.status === 404) {
-                  setError(
-                    'The email you entered is not an approved SIV Election Manager. If you believe this is an error, you can try again with another email address.',
-                  )
-                  setStatus('unapproved')
-                } else {
-                  setStatus('sent')
-                }
-              }}
-            >
-              <span className="absolute inset-y-0 left-0 flex items-center pl-3">
-                {/* Heroicon name: solid/lock-closed */}
-                <svg
-                  aria-hidden="true"
-                  className="w-5 h-5 text-blue-500 group-hover:text-blue-400"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    clipRule="evenodd"
-                    d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                    fillRule="evenodd"
-                  />
-                </svg>
-              </span>
-              {status === '' && 'Sign in'}
-              {status === 'pending' && 'Sending...'}
-              {status === 'error' && 'Error.'}
-              {status === 'unapproved' && 'Request Access'}
-            </button>
-          </div>
-        ) : (
+        {status == 'sent' && (
           <>
             <div className="text-center">
               <p className="text-sm">An email with login information is being sent to:</p>
