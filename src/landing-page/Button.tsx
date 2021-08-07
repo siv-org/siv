@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-const darkBlue = '#002868'
+export const darkBlue = '#002868'
 
 type ButtonProps = {
   background?: string
@@ -48,6 +48,7 @@ export const OnClickButton = ({
   disabled,
   disabledExplanation,
   onClick,
+  invertColor,
   id,
   background,
   style = {},
@@ -70,9 +71,9 @@ export const OnClickButton = ({
     <style jsx>{`
       a {
         ${background && `background: ${background}`};
-        border: 2px solid ${darkBlue};
+        border: 2px solid ${invertColor ? '#fff' : darkBlue};
         border-radius: 0.4rem;
-        color: ${darkBlue};
+        color: ${invertColor ? '#fff' : darkBlue};
         display: inline-block;
         font-weight: bold;
         margin: 17px;
@@ -91,8 +92,9 @@ export const OnClickButton = ({
       }
 
       a:not(.disabled):hover {
-        background-color: ${darkBlue};
-        color: ${'#fff'};
+        background-color: ${invertColor ? '#fff' : darkBlue};
+        color: ${invertColor ? '#000' : '#fff'};
+        border-color: ${invertColor ? darkBlue : '#fff'};
         cursor: pointer;
       }
     `}</style>

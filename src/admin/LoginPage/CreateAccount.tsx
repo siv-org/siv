@@ -1,5 +1,5 @@
 import { BoxProps, NoSsr, TextField, TextFieldProps } from '@material-ui/core'
-import { OnClickButton } from 'src/landing-page/Button'
+import { OnClickButton, darkBlue } from 'src/landing-page/Button'
 
 export const CreateAccount = () => {
   return (
@@ -22,6 +22,8 @@ export const CreateAccount = () => {
       </NoSsr>
       <div style={{ textAlign: 'right' }}>
         <OnClickButton
+          invertColor
+          background={darkBlue}
           style={{ margin: 0, padding: '10px 30px' }}
           onClick={() => {
             alert('TODO')

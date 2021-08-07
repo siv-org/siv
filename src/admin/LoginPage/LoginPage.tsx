@@ -1,13 +1,13 @@
-import 'tailwindcss/tailwind.css'
-
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import { GlobalCSS } from 'src/GlobalCSS'
 import { OnClickButton } from 'src/landing-page/Button'
 
 import { api } from '../../api-helper'
 import { Head } from '../../Head'
 import { checkLoginCode } from '../auth'
 import { CreateAccount } from './CreateAccount'
+import { Headerbar } from './Headerbar'
 
 export const LoginPage = () => {
   const router = useRouter()
@@ -27,8 +27,9 @@ export const LoginPage = () => {
   return (
     <main>
       <Head title="Admin Login" />
+      <Headerbar />
       <CreateAccount />
-      <div className="hidden">
+      <div style={{ display: 'none' }}>
         {status !== 'sent' ? (
           <div className="mt-8 space-y-6">
             <div className="-space-y-px rounded-md shadow-sm">
@@ -175,6 +176,7 @@ export const LoginPage = () => {
           font-size: 12px;
         }
       `}</style>
+      <GlobalCSS />
     </main>
   )
 }
