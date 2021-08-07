@@ -33,11 +33,7 @@ export const LoginInput = ({ mobile }: { mobile?: boolean }) => {
             setEmail(target.value)
             setError('')
           }}
-          onKeyPress={(event) => {
-            if (event.key === 'Enter') {
-              loginButton.current?.click()
-            }
-          }}
+          onKeyPress={(event) => event.key === 'Enter' && loginButton.current?.click()}
         />
         <OnClickButton
           invertColor={!mobile}

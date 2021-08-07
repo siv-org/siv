@@ -1,6 +1,6 @@
 import { TextField } from '@material-ui/core'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { GlobalCSS } from 'src/GlobalCSS'
 import { OnClickButton } from 'src/landing-page/Button'
 
@@ -16,6 +16,7 @@ export const EnterCodePage = () => {
   const { email } = router.query
   const [error, setError] = useState('')
   const [loginCode, setLoginCode] = useState('')
+  const submitBtn = useRef<HTMLAnchorElement>(null)
 
   if (typeof email !== 'string') return <p>Missing email</p>
 
@@ -43,8 +44,10 @@ export const EnterCodePage = () => {
               if (/^\d{0,6}$/.test(next)) return setLoginCode(next)
               setError('Login codes are 6 digit numbers')
             }}
+            onKeyPress={(event) => event.key === 'Enter' && submitBtn.current?.click()}
           />
           <OnClickButton
+            ref={submitBtn}
             style={{ margin: 0, marginLeft: 10, padding: '8px 20px' }}
             onClick={() => {
               if (loginCode.length < 6) return setError(`Login codes are 6 digits, not ${loginCode.length}`)
