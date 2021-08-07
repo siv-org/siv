@@ -31,6 +31,7 @@ export const LoginPage = () => {
       <Headerbar />
       <div className="columns">
         <AboutSection />
+        <div className="spacer" />
         <CreateAccount />
       </div>
       <div style={{ display: 'none' }}>
@@ -173,9 +174,13 @@ export const LoginPage = () => {
         .columns {
           display: flex;
           justify-content: space-between;
-          padding: 0 3rem;
+          padding: 0 15vw;
           align-items: center;
           height: calc(100vh - 68px);
+        }
+
+        .spacer {
+          width: 50px;
         }
 
         .error {
