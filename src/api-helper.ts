@@ -1,4 +1,4 @@
-import Pusher, { Channel } from 'pusher-js'
+import Pusher from 'pusher-js'
 import { useEffect } from 'react'
 import useSWR, { mutate } from 'swr'
 
@@ -15,8 +15,6 @@ export const api = (route: string, body?: Record<string, unknown>) =>
 const pusher = typeof window !== 'undefined' ? new Pusher('9718ba0612df1a49e52b', { cluster: 'us3' }) : undefined
 // Pusher.logToConsole = true
 
-const channelCache: Record<string, Channel> = {}
-
 export const useData = (key: string, pusherChannel?: [string | undefined, string]) => {
   const [channelName, eventName] = pusherChannel || []
 
@@ -26,16 +24,16 @@ export const useData = (key: string, pusherChannel?: [string | undefined, string
       if (!pusher) return alert('Pusher not initialized')
 
       // Subscribe to channel
-      channelCache[channelName] = pusher.subscribe(channelName)
+      const channel = pusher.subscribe(channelName)
       // console.log('Subscribed to', channelName)
-      channelCache[channelName].bind(eventName, () => {
+      channel.bind(eventName, () => {
         console.log(`🆕 ${channelName} - ${eventName}`)
         mutate(cacheKey)
       })
 
       return () => {
         // console.log('Unsubscribing from', channelName)
-        channelCache[channelName].unbind()
+        channel.unbind()
       }
     }
   }, [channelName, eventName])
