@@ -1,11 +1,16 @@
 import { BoxProps, NoSsr, TextField, TextFieldProps } from '@material-ui/core'
 import { firestore } from 'firebase/app'
+import { useState } from 'react'
 import { api } from 'src/api-helper'
 import { OnClickButton, darkBlue } from 'src/landing-page/Button'
 
+import { CreatedAccountWaiting } from './CreatedAccountWaiting'
 import { breakpoint } from './LoginPage'
 
 export const CreateAccount = () => {
+  const [submitted, setSubmitted] = useState(false)
+  if (submitted) return <CreatedAccountWaiting />
+
   return (
     <section>
       <h2>Create an account</h2>
@@ -30,24 +35,25 @@ export const CreateAccount = () => {
           noBorder
           background={darkBlue}
           style={{ margin: 0, padding: '10px 30px' }}
-          onClick={() => {
+          onClick={async () => {
             const fields: Record<string, string> = { created_at: new Date().toString() }
             ;['first-name', 'last-name', 'email', 'your-organization'].forEach((id) => {
               fields[id] = (document.getElementById(id) as HTMLInputElement).value
             })
 
             // Store submission in Firestore
-            firestore()
+            await firestore()
               .collection('jurisdictions-leads')
               .doc(new Date().toISOString() + ' ' + String(Math.random()).slice(2, 7))
               .set(fields)
-              .then(() => {
-                // Notify via Pushover
-                api('pushover', {
-                  message: JSON.stringify(fields),
-                  title: `SIV signup: ${fields['first-name']} ${fields['last-name']}`,
-                })
-              })
+
+            // Notify via Pushover
+            api('pushover', {
+              message: JSON.stringify(fields),
+              title: `SIV signup: ${fields['first-name']} ${fields['last-name']}`,
+            })
+
+            setSubmitted(true)
           }}
         >
           Create Account
