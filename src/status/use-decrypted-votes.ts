@@ -1,4 +1,4 @@
-import { useData } from '../api-helper'
+import { useData } from '../pusher-helper'
 import { useElectionId } from './use-election-id'
 
 type Votes = Record<string, string>[]

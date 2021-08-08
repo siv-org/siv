@@ -1,5 +1,5 @@
 import { TrusteesLatest } from '../../pages/api/election/[election_id]/trustees/latest'
-import { useData } from '../api-helper'
+import { useData } from '../pusher-helper'
 import { useElectionId } from '../status/use-election-id'
 
 export function useTrusteeData() {

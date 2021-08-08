@@ -1,5 +1,5 @@
 import { ElectionInfo } from '../../pages/api/election/[election_id]/info'
-import { useData } from '../api-helper'
+import { useData } from '../pusher-helper'
 import { useElectionId } from './use-election-id'
 
 export function useElectionInfo(): ElectionInfo {
