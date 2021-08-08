@@ -2,7 +2,10 @@ import Pusher from 'pusher-js'
 import { useEffect } from 'react'
 import useSWR, { mutate } from 'swr'
 
-const pusher = typeof window !== 'undefined' ? new Pusher('9718ba0612df1a49e52b', { cluster: 'us3' }) : undefined
+/** Pusher counts each initialization — `new Pusher()` — as one connection.
+https://support.pusher.com/hc/en-us/articles/360019428173-How-are-connections-counted-
+Also important not to initialize on SSR, those connections are never dropped (bc window never closes) */
+export const pusher = typeof window !== 'undefined' ? new Pusher('9718ba0612df1a49e52b', { cluster: 'us3' }) : undefined
 // Pusher.logToConsole = true
 
 export const useData = (key: string, pusherChannel?: [string | undefined, string]) => {

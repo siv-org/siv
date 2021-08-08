@@ -1,15 +1,12 @@
-import Pusher from 'pusher-js'
 import { useEffect } from 'react'
+import { pusher } from 'src/pusher-helper'
 
 import { getLatestFromServer } from './get-latest-from-server'
 import { StateAndDispatch } from './trustee-state'
 
 export function initPusher({ dispatch, state }: StateAndDispatch) {
   function subscribe() {
-    // Enable pusher logging - don't include this in production
-    // Pusher.logToConsole = true
-
-    const pusher = new Pusher('9718ba0612df1a49e52b', { cluster: 'us3' })
+    if (!pusher) return alert('Pusher not initialized')
 
     const channel = pusher.subscribe(`keygen-${state.election_id}`)
     channel.bind('update', (data: unknown) => {

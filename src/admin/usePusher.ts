@@ -1,14 +1,11 @@
-import Pusher from 'pusher-js'
 import { useEffect } from 'react'
+import { pusher } from 'src/pusher-helper'
 
 import { revalidate } from './useStored'
 
 export function usePusher(election_id?: string) {
   function subscribe() {
-    // Enable pusher logging - don't include this in production
-    // Pusher.logToConsole = true
-
-    const pusher = new Pusher('9718ba0612df1a49e52b', { cluster: 'us3' })
+    if (!pusher) return alert('Pusher not initialized')
 
     const keygenChannel = pusher.subscribe(`keygen-${election_id}`)
     keygenChannel.bind('update', () => revalidate(election_id))
