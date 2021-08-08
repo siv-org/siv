@@ -2,8 +2,6 @@ import Pusher, { Channel } from 'pusher-js'
 import { useEffect } from 'react'
 import useSWR, { mutate } from 'swr'
 
-const pusher = new Pusher('9718ba0612df1a49e52b', { cluster: 'us3' })
-
 export const api = (route: string, body?: Record<string, unknown>) =>
   fetch(`/api/${route}`, {
     body: JSON.stringify(body),
@@ -14,6 +12,7 @@ export const api = (route: string, body?: Record<string, unknown>) =>
     method: 'POST',
   })
 
+const pusher = typeof window !== 'undefined' ? new Pusher('9718ba0612df1a49e52b', { cluster: 'us3' }) : undefined
 // Pusher.logToConsole = true
 
 const channelCache: Record<string, Channel> = {}
@@ -24,6 +23,8 @@ export const useData = (key: string, pusherChannel?: [string | undefined, string
   // If given pusher channel & event names, revalidate on activity
   useEffect(() => {
     if (channelName && eventName) {
+      if (!pusher) return alert('Pusher not initialized')
+
       // Subscribe to channel
       channelCache[channelName] = pusher.subscribe(channelName)
       // console.log('Subscribed to', channelName)
