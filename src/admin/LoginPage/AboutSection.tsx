@@ -29,6 +29,12 @@ export const AboutSection = () => {
           right: 10px;
         }
 
+        @media (max-width: 799px) {
+          h3 {
+            font-size: 24px;
+          }
+        }
+
         @media (max-width: ${breakpoint}px) {
           img.phone {
             display: none;

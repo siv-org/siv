@@ -66,7 +66,7 @@ export const CreateAccount = () => {
 
         @media (max-width: 799px) {
           section {
-            bottom: 51px;
+            bottom: 39px;
           }
         }
 

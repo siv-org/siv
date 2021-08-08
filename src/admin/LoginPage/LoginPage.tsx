@@ -32,7 +32,8 @@ export const LoginPage = () => {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          height: calc(100vh - 68px);
+          height: max(calc(100vh - 68px), 620px);
+
           flex: 1;
           max-width: 1000px;
         }
