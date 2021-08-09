@@ -1,5 +1,5 @@
 import { BoxProps, NoSsr, TextField, TextFieldProps } from '@material-ui/core'
-import { firestore } from 'firebase/app'
+import { validate as validateEmail } from 'email-validator'
 import { useState } from 'react'
 import { api } from 'src/api-helper'
 import { OnClickButton, darkBlue } from 'src/landing-page/Button'
@@ -37,21 +37,16 @@ export const CreateAccount = () => {
           style={{ margin: 0, padding: '10px 30px' }}
           onClick={async () => {
             const fields: Record<string, string> = { created_at: new Date().toString() }
-            ;['first-name', 'last-name', 'email', 'your-organization'].forEach((id) => {
+            ;['first_name', 'last_name', 'email', 'your_organization'].forEach((id) => {
               fields[id] = (document.getElementById(id) as HTMLInputElement).value
             })
 
-            // Store submission in Firestore
-            await firestore()
-              .collection('jurisdictions-leads')
-              .doc(new Date().toISOString() + ' ' + String(Math.random()).slice(2, 7))
-              .set(fields)
+            // Validate email on frontend
+            if (!validateEmail(fields.email)) return alert('Not a valid email address')
 
-            // Notify via Pushover
-            api('pushover', {
-              message: JSON.stringify(fields),
-              title: `SIV signup: ${fields['first-name']} ${fields['last-name']}`,
-            })
+            const response = await api('admin-create-account', fields)
+
+            if (response.status !== 200) return alert((await response.json()).error)
 
             setSubmitted(true)
           }}
@@ -109,7 +104,7 @@ const Row = (props: BoxProps) => (
 const Field = (props: TextFieldProps & { label: string }) => (
   <TextField
     fullWidth
-    id={props.label.toLowerCase().replace(' ', '-')}
+    id={props.label.toLowerCase().replace(' ', '_')}
     size="small"
     variant="outlined"
     {...props}
