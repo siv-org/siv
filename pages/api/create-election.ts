@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
+import { default_ballot_design } from 'src/admin/BallotDesign/default-ballot-design'
 
 import { firebase } from './_services'
 import { checkJwt } from './validate-admin-jwt'
@@ -14,6 +15,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const election_id = Number(new Date()).toString()
   const election = firebase.firestore().collection('elections').doc(election_id)
   await election.set({
+    ballot_design: default_ballot_design,
     created_at: new Date(),
     creator: jwt.email,
     election_manager: jwt.name,

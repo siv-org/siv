@@ -55,8 +55,7 @@ function reducer(prev: State, payload: Map) {
     encoded[key] = encode(`${newState.tracking}:${value}`)
 
     // Generate & store a randomizer
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const random = pickRandomInteger(big(prev.public_key!.modulo))
+    const random = pickRandomInteger(big(prev.public_key.modulo))
     randomizer[key] = random.toString()
 
     // Encrypt the encoded value w/ its randomizer
