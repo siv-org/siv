@@ -1,15 +1,15 @@
 import { mapValues } from 'lodash-es'
 import { NextApiRequest, NextApiResponse } from 'next'
-
-import { Trustee } from '../../../../../src/admin/Trustees/Trustees'
-import { generate_key_pair } from '../../../../../src/crypto/generate-key-pair'
-import { get_safe_prime } from '../../../../../src/crypto/generate-safe-prime'
+import { Trustee } from 'src/admin/Observers/Observers'
+import { generate_key_pair } from 'src/crypto/generate-key-pair'
+import { get_safe_prime } from 'src/crypto/generate-safe-prime'
 import {
   evaluate_private_polynomial,
   generate_public_coefficients,
   pick_private_coefficients,
-} from '../../../../../src/crypto/threshold-keygen'
-import { big } from '../../../../../src/crypto/types'
+} from 'src/crypto/threshold-keygen'
+import { big } from 'src/crypto/types'
+
 import { firebase, pushover, sendEmail } from '../../../_services'
 import { generateAuthToken } from '../../../invite-voters'
 import { pusher } from '../../../pusher'

@@ -49,21 +49,28 @@ export const Observers = () => {
 
   return (
     <div className="container">
-      <h2>Verifying Observers</h2>
-      <h4>Each Trustee adds extra redundancy for vote privacy.</h4>
+      <h2>
+        Verifying Observers <span>(Optional)</span>
+      </h2>
+      <h4>Observers get complete cryptographic proof that votes are private & tallied correctly.</h4>
+      <p>
+        The SIV Server always ensures vote privacy & accuracy already, but this option allows others to also confirm
+        these proofs.
+      </p>
+      <p>
+        If you add them, votes cannot be unlocked and tallied until their computers run the automatic verification
+        checks.
+      </p>
+      <br />
+
       {!trustees?.length ? (
         <div>
-          <ol>
-            <li>
-              <span id="default-trustee">{admin_email}</span> The SIV server
-            </li>
-          </ol>
           <p>
-            <i>Add more trustees:</i>
+            <i>Verifying Observers:</i>
           </p>
           {new_trustees.map((_, i) => (
             <div className="row" key={i}>
-              <span>{i + 2}.</span>
+              <span>{i + 1}.</span>
               <TextField
                 autoFocus
                 error={!!new_trustees[i].error}
@@ -217,7 +224,7 @@ export const Observers = () => {
       )}
       {(trustees?.length || 0) > 1 && !threshold_public_key && (
         <p>
-          <i>Waiting on trustees to generate a shared private key...</i>
+          <i>Waiting on verifying observers to generate a shared private key...</i>
         </p>
       )}
       <EncryptionAddress />
@@ -239,6 +246,11 @@ export const Observers = () => {
           h2 {
             display: none;
           }
+        }
+
+        h2 span {
+          font-size: 12px;
+          margin-left: 5px;
         }
 
         li {
