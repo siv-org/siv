@@ -30,7 +30,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   sendEmail({
     from: 'David Ernst',
     fromEmail: 'david@secureinternetvoting.org',
-    recipient: 'testing@dsernst.com', // data.email,
+    recipient: data.email,
     subject: 'SIV Account Approved',
     text: `<h2 style="margin-bottom: 0;">SIV Account Approved</h2>
 Congratulations, you now have the ability to create Secure Internet Voting elections.
