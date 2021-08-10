@@ -1,14 +1,23 @@
 import { useStored } from '../useStored'
 
 export const EncryptionAddress = () => {
-  const { threshold_public_key } = useStored()
+  const { threshold_public_key, trustees } = useStored()
 
-  if (!threshold_public_key) return null
+  if (!threshold_public_key || !trustees) return null
 
   return (
     <div>
-      <h4>✅ The Verifying Observers completed the Pre-Election setup.</h4>
-      They created a Multi-Party Unlocking Key for the encryption address:
+      {trustees.length > 1 ? (
+        <>
+          <h4>✅ The Verifying Observers completed the Pre-Election setup.</h4>
+          They created a Multi-Party Unlocking Key for the encryption address:
+        </>
+      ) : (
+        <>
+          <h4>No extra Verifying Observers were added.</h4>✅ SIV has created a unique Unlocking Key for the encryption
+          address:
+        </>
+      )}
       <span>{threshold_public_key}</span>
       <p>The election can now begin.</p>
       <style jsx>{`

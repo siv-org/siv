@@ -71,7 +71,6 @@ export const Observers = () => {
             <div className="row" key={i}>
               <span>{i + 1}.</span>
               <TextField
-                autoFocus
                 error={!!new_trustees[i].error}
                 helperText={new_trustees[i].error}
                 label="Email"
@@ -119,7 +118,9 @@ export const Observers = () => {
 
           <SaveButton
             text={
-              new_trustees.length === 1 && !(new_trustees[0].email || new_trustees[0].name) ? 'Skip' : 'Send Invitation'
+              !new_trustees.some((t) => t.email || t.name)
+                ? 'Skip'
+                : `Finalize & Send Invitation${new_trustees.length > 1 ? 's' : ''}`
             }
             onPress={async () => {
               // Remove empty rows
@@ -161,65 +162,67 @@ export const Observers = () => {
           />
         </div>
       ) : (
-        <table>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>email</th>
-              <th>name</th>
-              <th style={{ width: 50 }}>invite delivered</th>
-              <th style={{ width: 100 }}>setup stage completed</th>
-            </tr>
-          </thead>
-          <tbody>
-            {trustees.slice(1).map(({ email, mailgun_events, name, stage = 0 }, index) => (
-              <tr key={email}>
-                <td>{index + 1}</td>
-                <td>
-                  <span style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <span>{email}</span>
-                    {/* Edit email btn */}
-                    <span
-                      className="visible-on-parent-hover"
-                      onClick={async () => {
-                        const new_email = prompt('Edit email?', email)
-
-                        if (!new_email || new_email === email) return
-
-                        if (!validateEmail(new_email)) return alert(`Invalid email: '${new_email}'`)
-
-                        // Store new email in API
-                        const response = await api(`election/${election_id}/admin/edit-trustee-email`, {
-                          new_email,
-                          old_email: email,
-                        })
-
-                        if (response.status === 201) {
-                          revalidate(election_id)
-                        } else {
-                          const json = await response.json()
-                          console.error(json)
-                          alert(json.error)
-                        }
-                      }}
-                    >
-                      &nbsp;
-                      <EditOutlined />
-                    </span>
-                  </span>
-                </td>
-                <td>{name}</td>
-                {email === admin_email ? (
-                  <td style={{ textAlign: 'center' }}>✓</td>
-                ) : (
-                  <DeliveriesAndFailures {...mailgun_events} checkmarkOnly />
-                )}
-
-                <td style={{ textAlign: 'center' }}>{stage} of 12</td>
+        trustees.length > 1 && (
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>email</th>
+                <th>name</th>
+                <th style={{ width: 50 }}>invite delivered</th>
+                <th style={{ width: 100 }}>setup stage completed</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {trustees.slice(1).map(({ email, mailgun_events, name, stage = 0 }, index) => (
+                <tr key={email}>
+                  <td>{index + 1}</td>
+                  <td>
+                    <span style={{ display: 'flex', justifyContent: 'space-between' }}>
+                      <span>{email}</span>
+                      {/* Edit email btn */}
+                      <span
+                        className="visible-on-parent-hover"
+                        onClick={async () => {
+                          const new_email = prompt('Edit email?', email)
+
+                          if (!new_email || new_email === email) return
+
+                          if (!validateEmail(new_email)) return alert(`Invalid email: '${new_email}'`)
+
+                          // Store new email in API
+                          const response = await api(`election/${election_id}/admin/edit-trustee-email`, {
+                            new_email,
+                            old_email: email,
+                          })
+
+                          if (response.status === 201) {
+                            revalidate(election_id)
+                          } else {
+                            const json = await response.json()
+                            console.error(json)
+                            alert(json.error)
+                          }
+                        }}
+                      >
+                        &nbsp;
+                        <EditOutlined />
+                      </span>
+                    </span>
+                  </td>
+                  <td>{name}</td>
+                  {email === admin_email ? (
+                    <td style={{ textAlign: 'center' }}>✓</td>
+                  ) : (
+                    <DeliveriesAndFailures {...mailgun_events} checkmarkOnly />
+                  )}
+
+                  <td style={{ textAlign: 'center' }}>{stage} of 12</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )
       )}
       {(trustees?.length || 0) > 1 && !threshold_public_key && (
         <p>
