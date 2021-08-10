@@ -13,8 +13,6 @@ export type JWT_Payload = {
 }
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  if (!JWT_SECRET) return res.status(401).send({ error: `Missing process.env JWT_SECRET` })
-
   const { code, email }: { code: string; email: string } = req.body
 
   // Is this email an approved election manager?
@@ -30,26 +28,39 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       const date = created_at.toDate()
       const diff = Number(new Date()) - Number(date)
       const minutes_since = diff / 1000 / 60
-      if (minutes_since < 60) {
-        // Valid session
 
-        const payload: JWT_Payload = { email, name: admin?.data()?.name || 'MissingName' }
+      // Has login code expired?
+      if (minutes_since > 60) return res.status(412).send({ error: 'Expired login code' })
 
-        // Set authentication cookie
-        const cookies = new Cookies(req, res)
-        const signed_jwt = jwt.sign(payload, JWT_SECRET)
-        // 2038 is max 32-bit date: https://stackoverflow.com/questions/532635/javascript-cookie-with-no-expiration-date
-        cookies.set(cookie_name, signed_jwt, { expires: new Date('Tue, 19 Jan 2038 03:14:07 UTC') })
+      setJWT({ email, name: admin?.data()?.name, req, res })
 
-        return res.status(200).send({ message: 'Success! Setting jwt cookie.' })
-      } else {
-        // Expired session
-        return res.status(412).send({ error: 'Expired session' })
-      }
+      return res.status(200).send({ message: 'Success! Setting jwt cookie.' })
     }
   }
 
   pushover('Invalid admin login code', `${email} attempted w/ code '${code}'`)
 
   return res.status(401).send({ error: `Invalid login token` })
+}
+
+export function setJWT({
+  email,
+  name = 'MissingName',
+  req,
+  res,
+}: {
+  email: string
+  name?: string
+  req: NextApiRequest
+  res: NextApiResponse
+}) {
+  if (!JWT_SECRET) return res.status(401).send({ error: `Missing process.env JWT_SECRET` })
+
+  const payload: JWT_Payload = { email, name }
+
+  // Set authentication cookie
+  const cookies = new Cookies(req, res)
+  const signed_jwt = jwt.sign(payload, JWT_SECRET)
+  // 2038 is max 32-bit date: https://stackoverflow.com/questions/532635/javascript-cookie-with-no-expiration-date
+  cookies.set(cookie_name, signed_jwt, { expires: new Date('Tue, 19 Jan 2038 03:14:07 UTC') })
 }

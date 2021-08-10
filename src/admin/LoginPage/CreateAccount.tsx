@@ -1,19 +1,27 @@
 import { BoxProps, NoSsr, TextField, TextFieldProps } from '@material-ui/core'
 import { validate as validateEmail } from 'email-validator'
-import { useState } from 'react'
+import router from 'next/router'
+import { useEffect, useState } from 'react'
 import { api } from 'src/api-helper'
 import { OnClickButton, darkBlue } from 'src/landing-page/Button'
 
 import { CreatedAccountWaiting } from './CreatedAccountWaiting'
 import { breakpoint } from './LoginPage'
 
+const adminInitKey = 'siv-admin-init'
+
 export const CreateAccount = () => {
   const [submitted, setSubmitted] = useState(false)
+
+  useEffect(() => {
+    attemptInitLoginCode()
+  }, [])
+
   if (submitted) return <CreatedAccountWaiting />
 
   return (
     <section>
-      <h2>Create an account</h2>
+      <h2 onClick={attemptInitLoginCode}>Create an account</h2>
       <p>
         Approved governments get free usage through Dec 31<sup>st</sup>, &apos;21
       </p>
@@ -48,7 +56,9 @@ export const CreateAccount = () => {
 
             if (response.status !== 200) return alert((await response.json()).error)
 
-            localStorage.setItem('siv-admin-init', (await response.json()).init_login_code)
+            const code = (await response.json()).init_login_code
+
+            localStorage.setItem(adminInitKey, JSON.stringify({ code, email: fields.email }))
 
             setSubmitted(true)
           }}
@@ -113,3 +123,21 @@ const Field = (props: TextFieldProps & { label: string }) => (
     style={{ background: 'white', ...props.style }}
   />
 )
+
+async function attemptInitLoginCode() {
+  const initCode = localStorage.getItem(adminInitKey)
+  if (!initCode) return
+  // Check w/ API if it can now be used to log in
+  const response = await api('admin-use-init-code', JSON.parse(initCode))
+
+  if (response.status === 400) return console.error(await response.json())
+
+  // Unapproved
+  if (response.status === 204) return
+
+  // Clear localStorage key
+  localStorage.removeItem(adminInitKey)
+
+  // Approved & can skip_init_verification
+  if (response.status === 200) return await router.push('./admin')
+}
