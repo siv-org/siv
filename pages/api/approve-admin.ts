@@ -3,7 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { firebase, pushover, sendEmail } from './_services'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { id } = req.body
+  const { id, skip_init_email_validation } = req.body
 
   if (!id || typeof id !== 'string') return res.status(400).json({ error: 'Missing ID' })
 
@@ -16,12 +16,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   const data = { ...doc.data() }
+
+  const new_admin_doc = { approved_at: new Date(), name: `${data.first_name} ${data.last_name}`, ...data }
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-expect-error
+  if (!skip_init_email_validation) delete new_admin_doc.init_login_code
+
   // Make a doc for them in approved `admins` DB
-  await firebase
-    .firestore()
-    .collection('admins')
-    .doc(data.email)
-    .create({ approved_at: new Date(), name: `${data.first_name} ${data.last_name}`, ...data })
+  await firebase.firestore().collection('admins').doc(data.email).create(new_admin_doc)
 
   // Delete their applied-admin doc
   await firebase.firestore().collection('applied-admins').doc(id).delete()
