@@ -37,38 +37,38 @@ export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => voi
 
   return (
     <div className="sidebar">
-      {election_id ? (
-        <main>
-          <h2 className="logo">SIV</h2>
+      <main>
+        <h2 className="logo">SIV</h2>
+        {election_id && (
           <>
-            <label>
-              <ApartmentOutlined style={{ marginRight: 5 }} /> Election Management
-            </label>
-            {steps.map((name) => (
-              <Link href={`./${urled(name)}`} key={name}>
-                <a className={urled(name) === section ? 'current' : ''} onClick={closeMenu}>
-                  {name !== 'Voters' && <input readOnly checked={completed[name]} type="checkbox" />}
-                  {name}
-                </a>
+            <>
+              <label>
+                <ApartmentOutlined style={{ marginRight: 5 }} /> Election Management
+              </label>
+              {steps.map((name) => (
+                <Link href={`./${urled(name)}`} key={name}>
+                  <a className={urled(name) === section ? 'current' : ''} onClick={closeMenu}>
+                    {name !== 'Voters' && <input readOnly checked={completed[name]} type="checkbox" />}
+                    {name}
+                  </a>
+                </Link>
+              ))}
+            </>
+            <>
+              <label>
+                <LinkOutlined style={{ marginRight: 5 }} />
+                Public Pages
+              </label>
+              <Link href={`/election/${election_id}/vote`}>
+                <a target="_blank">Cast Vote</a>
               </Link>
-            ))}
+              <Link href={`/election/${election_id}`}>
+                <a target="_blank">Election Status</a>
+              </Link>
+            </>
           </>
-          <>
-            <label>
-              <LinkOutlined style={{ marginRight: 5 }} />
-              Public Pages
-            </label>
-            <Link href={`/election/${election_id}/vote`}>
-              <a target="_blank">Cast Vote</a>
-            </Link>
-            <Link href={`/election/${election_id}`}>
-              <a target="_blank">Election Status</a>
-            </Link>
-          </>
-        </main>
-      ) : (
-        <></>
-      )}
+        )}
+      </main>
 
       <div className="bottom">
         <label>
@@ -120,7 +120,7 @@ export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => voi
           padding-left: 8px;
         }
 
-        a:not(.all-elections) {
+        a {
           display: block;
           padding: 3px 8px;
           border-radius: 5px;
@@ -132,7 +132,7 @@ export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => voi
           font-size: 16px;
         }
 
-        a:hover:not(.all-elections) {
+        a:hover {
           color: #000;
           background-color: #ffffff58;
           text-decoration: none;
