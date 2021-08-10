@@ -22,7 +22,7 @@ export const Sidebar = () => (
   </div>
 )
 
-export const steps = ['Trustees', 'Ballot Design', 'Voters'] as const
+export const steps = ['Observers', 'Ballot Design', 'Voters'] as const
 
 export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => void }) => {
   const { election_id, section } = useRouter().query
@@ -30,7 +30,7 @@ export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => voi
 
   const completed: Record<typeof steps[number], boolean> = {
     'Ballot Design': !!ballot_design_finalized,
-    Trustees: !!threshold_public_key,
+    Observers: !!threshold_public_key,
     Voters: true,
   }
   const urled = (s: string) => s.toLowerCase().replaceAll(' ', '-')
