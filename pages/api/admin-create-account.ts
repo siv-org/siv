@@ -11,8 +11,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     your_organization,
   }: { email?: string; first_name?: string; last_name?: string; your_organization?: string } = req.body
 
-  console.log('In create account route')
-
   // Confirm they sent a valid email address
   if (!email) return res.status(400).send({ error: 'Missing email' })
   if (!validateEmail(email)) return res.status(400).send({ error: 'Invalid email' })
@@ -23,7 +21,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(409).send({ error: `'${email}' already has an account.\n\nLog in above.` })
 
   // Store their application in the DB
-  const doc_id = new Date().toISOString() + ' ' + String(Math.random()).slice(2, 7)
+  const doc_id = new Date().toISOString() + '-' + String(Math.random()).slice(2, 7)
   firebase
     .firestore()
     .collection('applied-admins')
@@ -38,13 +36,12 @@ Last Name: ${last_name}
 Email: ${email}
 Organization: ${your_organization}
 
-Link to approve: ${req.headers.origin}/approve-admin?email=${email}`
+Link to approve: ${req.headers.origin}/approve-admin?id=${doc_id}`
 
   await Promise.all([
     sendEmail({
-      from: `${email}`,
       recipient: 'applied-admin@secureinternetvoting.org',
-      subject: 'SIV Admin Application',
+      subject: `SIV Admin Application: ${email}`,
       text: message,
     }),
     pushover(`new admin: ${email}`, message),
