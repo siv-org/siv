@@ -22,9 +22,11 @@ export const AllYourElections = () => {
     <>
       <h2>
         Your Existing Elections: <i>{data?.elections?.length}</i>{' '}
-        <span>
-          <a onClick={toggle}>[ {show ? '- Hide' : '+ Show'} ]</a>
-        </span>
+        {!!data?.elections?.length && (
+          <span>
+            <a onClick={toggle}>[ {show ? '- Hide' : '+ Show'} ]</a>
+          </span>
+        )}
       </h2>
       {show && (
         <ul>
