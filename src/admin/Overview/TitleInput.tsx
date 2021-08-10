@@ -30,7 +30,7 @@ export const TitleInput = () => {
             const { election_id } = await response.json()
 
             // Set election_id in URL
-            router.push(`${window.location.origin}/admin/${election_id}/trustees`)
+            router.push(`${window.location.origin}/admin/${election_id}/ballot-design`)
           } else {
             throw await response.json()
           }
