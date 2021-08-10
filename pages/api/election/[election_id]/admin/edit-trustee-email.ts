@@ -16,6 +16,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const jwt = await checkJwtOwnsElection(req, res, election_id)
   if (!jwt.valid) return
 
+  const { election_manager, election_title } = jwt
+
   const trusteesCollection = firebase.firestore().collection('elections').doc(election_id).collection('trustees')
 
   // Get old trustee data
@@ -32,7 +34,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Confirm new trustee doesn't already exist
   if ((await trusteesCollection.doc(new_email).get()).exists)
-    return res.status(401).json({ error: `There's already a trustee ${new_email}` })
+    return res.status(401).json({ error: `There's already an Observer ${new_email}` })
 
   // Validate new_email is a valid email address
   if (!validateEmail(new_email)) return res.status(401).json({ error: `Invalid email: ${new_email}` })
@@ -55,7 +57,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Send trustee invite email to new_email
   const link = `${req.headers.origin}/election/${election_id}/trustee?auth=${new_auth_token}`
-  await sendTrusteeInvite(link, new_email, election_id, jwt.election_title, old_trustee_data.name)
+  await sendTrusteeInvite({
+    election_id,
+    election_manager,
+    election_title,
+    email: new_email,
+    link,
+    name: old_trustee_data.name,
+  })
 
   return res.status(201).json({ message: 'Changed email' })
 }

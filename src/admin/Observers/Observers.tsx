@@ -52,10 +52,9 @@ export const Observers = () => {
       <h2>
         Verifying Observers <span>(Optional)</span>
       </h2>
-      <h4>Observers get complete cryptographic proof that votes are private & tallied correctly.</h4>
       <p>
-        The SIV Server always ensures vote privacy & accuracy already, but this option allows others to also confirm
-        these proofs.
+        SIV always ensures vote privacy & accuracy. For additional security, Verifying Observers also get complete
+        cryptographic proof that votes are private & tallied correctly.
       </p>
       <p>
         If you add them, votes cannot be unlocked and tallied until their computers run the automatic verification
@@ -169,11 +168,11 @@ export const Observers = () => {
               <th>email</th>
               <th>name</th>
               <th style={{ width: 50 }}>invite delivered</th>
-              <th>stage completed</th>
+              <th style={{ width: 100 }}>setup stage completed</th>
             </tr>
           </thead>
           <tbody>
-            {trustees.map(({ email, mailgun_events, name, stage = 0 }, index) => (
+            {trustees.slice(1).map(({ email, mailgun_events, name, stage = 0 }, index) => (
               <tr key={email}>
                 <td>{index + 1}</td>
                 <td>
@@ -224,7 +223,8 @@ export const Observers = () => {
       )}
       {(trustees?.length || 0) > 1 && !threshold_public_key && (
         <p>
-          <i>Waiting on verifying observers to generate a shared private key...</i>
+          <br />
+          <i>Waiting on Verifying Observers to complete the Pre-Election setup...</i>
         </p>
       )}
       <EncryptionAddress />

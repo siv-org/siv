@@ -31,7 +31,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (!jwt.valid) return
 
   const { trustees } = req.body as { trustees: Trustee[] }
-  const { election_title } = jwt
+  const { election_manager, election_title } = jwt
 
   // Add admin@ email to front of the trustees list
   trustees.unshift({ email: ADMIN_EMAIL, name: 'The SIV Server' })
@@ -96,7 +96,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
         const link = `${req.headers.origin}/election/${election_id}/trustee?auth=${auth_tokens[index]}`
 
-        return sendTrusteeInvite(link, email, election_id, election_title, name)
+        return sendTrusteeInvite({ election_id, election_manager, election_title, email, link, name })
       }),
     ),
   )
@@ -143,24 +143,37 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   res.status(201).json({ election_id })
 }
 
-export const sendTrusteeInvite = (
-  link: string,
-  email: string,
-  election_id: string,
-  election_title?: string,
-  name?: string,
-) =>
+export const sendTrusteeInvite = ({
+  election_id,
+  election_manager,
+  election_title,
+  email,
+  link,
+  name,
+}: {
+  election_id: string
+  election_manager: string
+  election_title?: string
+  email: string
+  link: string
+  name?: string
+}) =>
   sendEmail({
+    from: `${election_manager} via SIV`,
     recipient: email,
-    subject: `Trustee Invitation: ${election_title || `Election ${election_id}`}`,
+    subject: `Invitation to be a Verifying Observer: ${election_title || `Election ${election_id}`}`,
     text: `Dear ${name || email},
-<h3>You're invited to join a SIV Multiparty Key Generation${
-      election_title ? `: ${election_title}` : ''
-    }.</h3>This helps thoroughly anonymize election votes.
-Each Trustee adds an extra layer of vote privacy.
+<h3 style="margin-bottom:0">${election_manager} invited you to be a Verifying Observer${
+      election_title ? ` for the election: ${election_title}` : ''
+    }.</h3>
+This gives you cryptographic proof that votes are private & tallied correctly.
 
-Click here to join:
+Once you click this link, your computer will automatically run the Pre-Election Verification code:
+
 <a href="${link}" style="font-weight: bold;">${link}</a>
+<em style="font-size:10px; opacity: 0.6;">This link is unique for you. Don't share it with anyone.</em>
 
-<em style="font-size:10px; opacity: 0.6;">This link is unique for you. Don't share it with anyone.</em>`,
+At the end of the election, the Election Manager will ask you to open it again. You need to use the same device. This allows your computer to automatically anonymize & verify all votes, and then unlock them for tallying.
+
+Thank you for helping to make this election more secure.`,
   })
