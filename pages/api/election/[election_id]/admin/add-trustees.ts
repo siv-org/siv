@@ -94,7 +94,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       trustees.map(({ email, name }: Trustee, index: number) => {
         if (email === ADMIN_EMAIL) return
 
-        const link = `${req.headers.origin}/election/${election_id}/trustee?auth=${auth_tokens[index]}`
+        const link = `${req.headers.origin}/election/${election_id}/observer?auth=${auth_tokens[index]}`
 
         return sendTrusteeInvite({ election_id, election_manager, election_title, email, link, name })
       }),
@@ -102,7 +102,15 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   )
 
   // Send Admin push notification
-  promises.push(pushover(`Invited ${trustees.length} trustees`, trustees.map((t) => t.email).join(', ')))
+  promises.push(
+    pushover(
+      `${election_manager} invited ${trustees.length - 1} observer${trustees.length > 2 ? 's' : ''}`,
+      trustees
+        .slice(1)
+        .map((t) => t.email)
+        .join(', '),
+    ),
+  )
 
   // Generate admin's private coefficients and public commitments
   const private_coefficients = pick_private_coefficients(trustees.length, safe_prime_bigs)

@@ -56,7 +56,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   ])
 
   // Send trustee invite email to new_email
-  const link = `${req.headers.origin}/election/${election_id}/trustee?auth=${new_auth_token}`
+  const link = `${req.headers.origin}/election/${election_id}/observer?auth=${new_auth_token}`
   await sendTrusteeInvite({
     election_id,
     election_manager,
