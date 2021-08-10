@@ -8,11 +8,11 @@ import { StateAndDispatch, getParameters } from '../trustee-state'
 import { YouLabel } from '../YouLabel'
 import { EncryptionNote } from './EncryptionNote'
 
+export const plaintext = '2021'
+export const randomizer = '108'
+
 export const PartialDecryptionTest = ({ dispatch, state }: StateAndDispatch) => {
   const { parameters, partial_decryption: partial, private_keyshare, threshold_public_key, trustees = [] } = state
-
-  const plaintext = '2020'
-  const randomizer = '108'
 
   useEffect(() => {
     // Don't start until we have the threshold key

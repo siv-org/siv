@@ -4,6 +4,7 @@ import { moduloLambda } from '../../crypto/lagrange'
 import { combine_partials } from '../../crypto/threshold-keygen'
 import { big } from '../../crypto/types'
 import { StateAndDispatch, getParameters } from '../trustee-state'
+import { plaintext, randomizer } from './11-PartialDecryptionTest'
 
 export const CombinePartials = ({ state }: StateAndDispatch) => {
   const { trustees = [], parameters, threshold_public_key } = state
@@ -26,8 +27,6 @@ export const CombinePartials = ({ state }: StateAndDispatch) => {
   const combined_inverse = big(combined).modInverse(big_p).toString()
 
   // Repeating encryption code from 11...
-  const plaintext = '2020'
-  const randomizer = '108'
   const encrypted = big(threshold_public_key).modPow(big(randomizer), big_p).multiply(big(plaintext)).mod(big_p)
 
   const decrypted = big(combined_inverse).multiply(encrypted).mod(big_p)

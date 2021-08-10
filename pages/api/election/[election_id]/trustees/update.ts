@@ -1,13 +1,12 @@
 import bluebird from 'bluebird'
 import { sumBy } from 'lodash-es'
 import { NextApiRequest, NextApiResponse } from 'next'
-
-import decrypt from '../../../../../src/crypto/decrypt'
-import { decode } from '../../../../../src/crypto/encode'
-import encrypt from '../../../../../src/crypto/encrypt'
-import pickRandomInteger from '../../../../../src/crypto/pick-random-integer'
-import { rename_to_c1_and_2 } from '../../../../../src/crypto/shuffle'
-import { Shuffle_Proof, verify_shuffle_proof } from '../../../../../src/crypto/shuffle-proof'
+import decrypt from 'src/crypto/decrypt'
+import { decode } from 'src/crypto/encode'
+import encrypt from 'src/crypto/encrypt'
+import pickRandomInteger from 'src/crypto/pick-random-integer'
+import { rename_to_c1_and_2 } from 'src/crypto/shuffle'
+import { Shuffle_Proof, verify_shuffle_proof } from 'src/crypto/shuffle-proof'
 import {
   combine_partials,
   compute_g_to_keyshare,
@@ -19,19 +18,12 @@ import {
   partial_decrypt,
   unlock_message_with_shared_secret,
   verify_partial_decryption_proof,
-} from '../../../../../src/crypto/threshold-keygen'
-import {
-  Big,
-  Cipher_Text,
-  big,
-  bigCipher,
-  bigPubKey,
-  bigs_to_strs,
-  toStrings,
-  to_bigs,
-} from '../../../../../src/crypto/types'
-import { Partial, Shuffled, State, Trustee } from '../../../../../src/trustee/trustee-state'
-import { mapValues } from '../../../../../src/utils'
+} from 'src/crypto/threshold-keygen'
+import { Big, Cipher_Text, big, bigCipher, bigPubKey, bigs_to_strs, toStrings, to_bigs } from 'src/crypto/types'
+import { randomizer } from 'src/trustee/keygen/11-PartialDecryptionTest'
+import { Partial, Shuffled, State, Trustee } from 'src/trustee/trustee-state'
+import { mapValues } from 'src/utils'
+
 import { firebase } from '../../../_services'
 import { pusher } from '../../../pusher'
 import { recombine_decrypteds } from '../admin/unlock'
@@ -207,7 +199,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       promises.push(pusher.trigger(`status-${election_id}`, 'pub_key', { threshold_public_key }))
 
       // (3) Encrypt test message
-      const randomizer = '108'
       const unlock = big_parameters.g.modPow(big(randomizer), big_parameters.p)
 
       // (4) Partially decrypt test message
