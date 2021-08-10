@@ -15,7 +15,7 @@ import { Wizard } from './Wizard'
 
 export const BallotDesign = () => {
   const { ballot_design: stored_ballot_design, ballot_design_finalized, election_id } = useStored()
-  const [selected, setSelected] = useState(2)
+  const [selected, setSelected] = useState(0)
 
   const designState = useState(stored_ballot_design || default_ballot_design)
   const [design] = designState
