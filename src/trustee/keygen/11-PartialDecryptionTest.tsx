@@ -64,9 +64,9 @@ export const PartialDecryptionTest = ({ dispatch, state }: StateAndDispatch) => 
         </li>
       </ul>
       <p>
-        Now each trustee can contribute their partial decryption, using their secret keyshare:
+        Now each party can contribute their partial decryption, using their secret keyshare:
         <br />
-        <i>partial_decryption = unlock ^ trustees_keyshare % p</i>
+        <i>partial_decryption = unlock ^ keyshare % p</i>
       </p>
       <PrivateBox>
         <p>

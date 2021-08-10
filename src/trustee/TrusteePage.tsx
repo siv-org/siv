@@ -24,7 +24,7 @@ export const TrusteePage = (): JSX.Element => {
 
   return (
     <>
-      <Head title="Trustee" />
+      <Head title="Observer" />
 
       <HeaderBar />
       <main>

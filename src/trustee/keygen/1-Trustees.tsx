@@ -4,7 +4,7 @@ import { YouLabel } from '../YouLabel'
 export const Trustees = ({ state }: { state: State }) => {
   return (
     <>
-      <h3>I. Trustees:</h3>
+      <h3>I. Participants:</h3>
       <ol>
         {state.trustees?.map(({ email, you }) => (
           <li key={email}>

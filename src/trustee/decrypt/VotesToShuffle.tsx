@@ -75,7 +75,7 @@ export const VotesToShuffle = ({
 
       // Begin (async) validating each proof...
       Object.keys(trustee_validations).forEach((column) => {
-        // Inputs are the previous trustee's outputs
+        // Inputs are the previous party's outputs
         // except for admin, who provides the original split list.
         const inputs = index > 0 ? trustees[index - 1].shuffled![column].shuffled : trustees[0].preshuffled![column]
 
@@ -119,7 +119,7 @@ export const VotesToShuffle = ({
   }
 
   useEffect(() => {
-    // If trustee before us has shuffled more than us,
+    // If party before us has shuffled more than us,
     // AND their previous shuffle includes a valid ZK Proof,
     // THEN: we should shuffle the list they provided.
     if (num_prev_shuffled > num_we_shuffled && prev_proofs_all_passed) {

@@ -88,7 +88,7 @@ export const SendPairwiseShares = ({ dispatch, state }: StateAndDispatch) => {
   return (
     <>
       <h3>VI. Send Pairwise Shares:</h3>
-      <p>Each trustee calculates private shares to send to others.</p>
+      <p>Each party calculates private shares to send to others.</p>
       <PrivateBox>
         <p>Calculating pairwise shares...</p>
         <ol>
@@ -133,7 +133,7 @@ export const SendPairwiseShares = ({ dispatch, state }: StateAndDispatch) => {
           ))}
         </ol>
       </PrivateBox>
-      <p>Send &amp; receive pairwise shares to all the other trustees.</p>
+      <p>Send &amp; receive pairwise shares to all the other parties.</p>
       <ol>
         {trustees.map(({ email, encrypted_pairwise_shares_for = {}, you }) => (
           <li key={email}>

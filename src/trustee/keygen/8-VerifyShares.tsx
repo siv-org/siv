@@ -65,7 +65,7 @@ export const VerifyShares = ({ dispatch, state }: StateAndDispatch) => {
     <>
       <h3>VIII. Verify Shares:</h3>
       <p>
-        Each trustee can verify their received private shares against senders&apos; public commitments A<sub>c</sub>.
+        Each party can verify their received private shares against senders&apos; public commitments A<sub>c</sub>.
       </p>
       <p>
         <i>Confirm:</i> g ^ share == Product( c from 0 to t-1 ){'{'} A<sub>c</sub> ^receivers_index ^c % p {'}'}

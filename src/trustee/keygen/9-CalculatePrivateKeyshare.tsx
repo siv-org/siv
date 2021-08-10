@@ -30,7 +30,7 @@ export const CalculatePrivateKeyshare = ({ dispatch, state }: StateAndDispatch) 
   return (
     <>
       <h3>IX. Calculate Private Keyshare:</h3>
-      <p>Each trustee can calculate own private keyshare from all the incoming shares.</p>
+      <p>Each party can calculate own private keyshare from all the incoming shares.</p>
       <PrivateBox>
         <p>Your private keyshare is the sum of each of the incoming secrets mod q...</p>
         <ul>
