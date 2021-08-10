@@ -12,7 +12,7 @@ import { EncryptionAddress } from './EncryptionAddress'
 export type Trustee = { email: string; error?: string; name?: string }
 const admin_email = 'admin@secureinternetvoting.org'
 
-export const Trustees = () => {
+export const Observers = () => {
   const { election_id, threshold_public_key, trustees } = useStored()
   const [new_trustees, set_new_trustees] = useState<Trustee[]>([{ email: '' }])
 
@@ -49,7 +49,7 @@ export const Trustees = () => {
 
   return (
     <div className="container">
-      <h2>Trustees</h2>
+      <h2>Verifying Observers</h2>
       <h4>Each Trustee adds extra redundancy for vote privacy.</h4>
       {!trustees?.length ? (
         <div>

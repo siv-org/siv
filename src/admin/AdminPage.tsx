@@ -7,9 +7,9 @@ import { useLoginRequired, useUser } from './auth'
 import { BallotDesign } from './BallotDesign/BallotDesign'
 import { HeaderBar } from './HeaderBar'
 import { MobileMenu } from './MobileMenu'
+import { Observers } from './Observers/Observers'
 import { ElectionOverview } from './Overview/ElectionOverview'
 import { Sidebar } from './Sidebar'
-import { Trustees } from './Trustees/Trustees'
 import { usePusher } from './usePusher'
 import { AddVoters } from './Voters/AddVoters'
 
@@ -32,7 +32,7 @@ export const AdminPage = (): JSX.Element => {
           <MobileMenu />
           <AllYourElections />
           {(section === 'overview' || !election_id) && <ElectionOverview />}
-          {section === 'trustees' && <Trustees />}
+          {section === 'observers' && <Observers />}
           {section === 'ballot-design' && <BallotDesign />}
           {section === 'voters' && <AddVoters />}
         </div>
