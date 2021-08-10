@@ -6,13 +6,14 @@ import { useStored } from '../useStored'
 
 export const AutoSaver = ({ design }: { design: string }) => {
   const [unsaved, setUnsaved] = useState(false)
+  const [firstLoad, setFirstLoad] = useState(true)
   const { election_id } = useStored()
 
   const debouncedSaveDraft = debounce(
     async () => {
       const response = await api(`election/${election_id}/admin/save-ballot-design`, { ballot_design: design })
 
-      if (response.status !== 201) return alert(JSON.stringify(await response.json()))
+      if (response.status !== 201) return alert(`Error: ${(await response.json()).error}`)
       setUnsaved(false)
     },
     500,
@@ -22,6 +23,7 @@ export const AutoSaver = ({ design }: { design: string }) => {
   // Whenever design changes...
   useEffect(() => {
     if (!election_id) return
+    if (firstLoad) return setFirstLoad(false)
     setUnsaved(true)
     // Set a debounce to autosave after 1 second
     debouncedSaveDraft()
