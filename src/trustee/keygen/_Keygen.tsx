@@ -17,6 +17,11 @@ export const Keygen = ({ dispatch, state }: StateAndDispatch): JSX.Element => {
   return (
     <>
       <h2>Threshold Key Generation</h2>
+      <p>
+        Your computer handles this stage automatically.
+        <br />
+        The transcript below is provided to be able to verify the work.
+      </p>
       <ResetButton {...{ state }} />
       <Trustees {...{ state }} />
       <Parameters {...{ state }} />
