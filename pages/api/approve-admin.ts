@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import { firebase, pushover, sendEmail } from './_services'
+import { pusher } from './pusher'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { id, skip_init_email_validation } = req.body
@@ -27,6 +28,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Delete their applied-admin doc
   await firebase.firestore().collection('applied-admins').doc(id).delete()
+
+  // Notify CreatedAccountWaiting frontend if it's still open
+  pusher.trigger(`admin-${data.email}`, 'approved', '')
 
   // Send them an email with their login instructions
   sendEmail({

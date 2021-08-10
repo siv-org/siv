@@ -11,13 +11,13 @@ import { breakpoint } from './LoginPage'
 const adminInitKey = 'siv-admin-init'
 
 export const CreateAccount = () => {
-  const [submitted, setSubmitted] = useState(false)
+  const [submitted, setSubmitted] = useState<string>()
 
   useEffect(() => {
     attemptInitLoginCode()
   }, [])
 
-  if (submitted) return <CreatedAccountWaiting />
+  if (submitted) return <CreatedAccountWaiting email={submitted} />
 
   return (
     <section>
@@ -49,8 +49,10 @@ export const CreateAccount = () => {
               fields[id] = (document.getElementById(id) as HTMLInputElement).value
             })
 
+            const { email } = fields
+
             // Validate email on frontend
-            if (!validateEmail(fields.email)) return alert('Not a valid email address')
+            if (!validateEmail(email)) return alert('Not a valid email address')
 
             const response = await api('admin-create-account', fields)
 
@@ -58,9 +60,9 @@ export const CreateAccount = () => {
 
             const code = (await response.json()).init_login_code
 
-            localStorage.setItem(adminInitKey, JSON.stringify({ code, email: fields.email }))
+            localStorage.setItem(adminInitKey, JSON.stringify({ code, email }))
 
-            setSubmitted(true)
+            setSubmitted(email)
           }}
         >
           Create Account
@@ -124,7 +126,7 @@ const Field = (props: TextFieldProps & { label: string }) => (
   />
 )
 
-async function attemptInitLoginCode() {
+export async function attemptInitLoginCode() {
   const initCode = localStorage.getItem(adminInitKey)
   if (!initCode) return
   // Check w/ API if it can now be used to log in

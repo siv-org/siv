@@ -1,6 +1,21 @@
+import { useEffect } from 'react'
+import { pusher } from 'src/pusher-helper'
+
+import { attemptInitLoginCode } from './CreateAccount'
 import { breakpoint } from './LoginPage'
 
-export const CreatedAccountWaiting = () => {
+export const CreatedAccountWaiting = ({ email }: { email: string }) => {
+  // Listen for 'approved'
+  useEffect(() => {
+    if (!pusher) return alert('Missing pusher')
+    const channel = pusher.subscribe(`admin-${email}`)
+    channel.bind('approved', attemptInitLoginCode)
+
+    return () => {
+      channel.unsubscribe()
+    }
+  })
+
   return (
     <section>
       <h2>Your account info has been submitted.</h2>
@@ -29,9 +44,3 @@ export const CreatedAccountWaiting = () => {
     </section>
   )
 }
-
-// Thank you for creating an account
-
-// Thank you
-// Your account status is pending
-// You'll receive an email notification when you can login.
