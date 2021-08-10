@@ -87,8 +87,8 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
             disabled={!num_checked}
             style={{ margin: 0, padding: '5px 10px' }}
             onClick={async () => {
-              if (!threshold_public_key) return alert('You need to finish setting the election Trustees first.')
-              if (!ballot_design_finalized) return alert('You need to save a Ballot Design first.')
+              if (!ballot_design_finalized) return alert('You need to Finalize a Ballot Design first.')
+              if (!threshold_public_key) return alert('You need to finish setting the election Observers first.')
 
               toggle_sending()
               const voters_to_invite = checked.reduce((acc: string[], is_checked, index) => {
