@@ -250,7 +250,9 @@ export const Observers = () => {
 
         h2 span {
           font-size: 12px;
+          font-weight: 500;
           margin-left: 5px;
+          opacity: 0.8;
         }
 
         li {
