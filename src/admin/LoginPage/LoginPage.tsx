@@ -1,6 +1,9 @@
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
 import { GlobalCSS } from 'src/GlobalCSS'
 
 import { Head } from '../../Head'
+import { useUser } from '../auth'
 import { AboutSection } from './AboutSection'
 import { CreateAccount } from './CreateAccount'
 import { Headerbar } from './Headerbar'
@@ -9,6 +12,8 @@ import { MobileLogin } from './MobileLogin'
 export const breakpoint = 500
 
 export const LoginPage = () => {
+  useLoggedOutOnly()
+
   return (
     <main>
       <Head title="Admin Login" />
@@ -57,4 +62,17 @@ export const LoginPage = () => {
       <GlobalCSS />
     </main>
   )
+}
+
+function useLoggedOutOnly() {
+  const { loading, loggedOut } = useUser()
+  const router = useRouter()
+  const [redirecting, setRedirecting] = useState(false)
+
+  useEffect(() => {
+    if (!loading && !loggedOut && !redirecting) {
+      setRedirecting(true)
+      router.push('./admin')
+    }
+  }, [loading, loggedOut])
 }
