@@ -2,6 +2,7 @@ import { validate as validateEmail } from 'email-validator'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import { firebase, pushover, sendEmail } from './_services'
+import { generateAdminLoginCode } from './admin-login'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const {
@@ -20,13 +21,15 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if ((await adminDoc.get()).exists)
     return res.status(409).send({ error: `'${email}' already has an account.\n\nLog in above.` })
 
+  const init_login_code = generateAdminLoginCode()
+
   // Store their application in the DB
   const doc_id = new Date().toISOString() + '-' + String(Math.random()).slice(2, 7)
   firebase
     .firestore()
     .collection('applied-admins')
     .doc(doc_id)
-    .create({ created_at: new Date(), ...req.body })
+    .create({ created_at: new Date(), ...req.body, init_login_code })
 
   // Send message w/ Approval Link
   const message = `New SIV Admin Application
@@ -36,7 +39,9 @@ Last Name: ${last_name}
 Email: ${email}
 Organization: ${your_organization}
 
-Link to approve: ${req.headers.origin}/approve-admin?id=${doc_id}`
+Link to approve: ${req.headers.origin}/approve-admin?id=${doc_id}
+
+Approve & skip email verification: ${req.headers.origin}/approve-admin?id=${doc_id}&skip_init_email_validation=true`
 
   await Promise.all([
     sendEmail({
@@ -47,5 +52,5 @@ Link to approve: ${req.headers.origin}/approve-admin?id=${doc_id}`
     pushover(`new admin: ${email}`, message),
   ])
 
-  res.status(200).send('Success')
+  res.status(200).send({ init_login_code, message: 'Success' })
 }

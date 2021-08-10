@@ -48,6 +48,8 @@ export const CreateAccount = () => {
 
             if (response.status !== 200) return alert((await response.json()).error)
 
+            localStorage.setItem('siv-admin-init', (await response.json()).init_login_code)
+
             setSubmitted(true)
           }}
         >
