@@ -33,12 +33,14 @@ export const mailgun = Mailgun({
 export const sendEmail = ({
   from,
   fromEmail,
+  preheader,
   recipient,
   subject,
   text,
 }: {
   from?: string
   fromEmail?: string
+  preheader?: string
   recipient: string
   subject: string
   text: string
@@ -49,6 +51,7 @@ export const sendEmail = ({
     <table align="center" style="text-align: left; max-width: 600px; background-color: white;">
         <tr>
           <td align="center" style="text-align:center; background: linear-gradient(90deg, #010b26 0%, #072054 100%);">
+          ${preheader ? buildPreheader(preheader) : ''}
             <span style="font-size: 17px; font-weight: 700; color: white; line-height: 50px; text-decoration: none;">
               Secure Internet Voting
             </span>
@@ -61,6 +64,9 @@ export const sendEmail = ({
     subject,
     to: recipient,
   })
+
+const buildPreheader = (preheader: string) =>
+  `<div style="display:none!important;visibility:hidden!important;mso-hide:all!important;font-size:1px;overflow:hidden!important;display:none!important;">${preheader}</div>`
 
 /** Helper function to use Pushover (admin push notifs) */
 export const pushover = (title: string, message: string) =>

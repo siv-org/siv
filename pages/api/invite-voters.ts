@@ -75,6 +75,7 @@ export const send_invitation_email = ({
 
   return sendEmail({
     from,
+    preheader: `Click here to securely cast your vote: ${link}`,
     recipient: voter,
     subject: subject_line,
     text: `<h2 style="margin: 0">${subject_line}</h2>
