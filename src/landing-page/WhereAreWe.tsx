@@ -14,7 +14,7 @@ export const WhereAreWe = (): JSX.Element => (
       flipped
       smallHeadline
       graphic="voting-line-ridic.jpg"
-      text="Six hour waiting lines in Georgia. 600,000 Kentucky voters forced to share a single polling location. Tens of thousands of polling centers closed throughout the country."
+      text="Too many voters are being asked to wait in long lines or share too few polling locations."
     />
   </Section>
 )
