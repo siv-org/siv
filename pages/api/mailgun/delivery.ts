@@ -10,7 +10,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   if (error) {
     console.error(error)
-    pushover('mailgun-deliveries webhook error', JSON.stringify(error))
+    await pushover('mailgun-deliveries webhook error', JSON.stringify(error))
     return res.status(400).send({ error })
   }
 
