@@ -6,11 +6,11 @@ import { supabase } from '../_supabase'
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   // console.log(req.body)
 
-  const { data, error } = await supabase.from('mailgun-opens').insert([{ json: req.body }])
+  const { data, error } = await supabase.from('mailgun-deliveries').insert([{ json: req.body }])
 
   if (error) {
     console.error(error)
-    pushover('mailgun-opens webhook error', JSON.stringify(error))
+    pushover('mailgun-deliveries webhook error', JSON.stringify(error))
     return res.status(400).send({ error })
   }
 
