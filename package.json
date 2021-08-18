@@ -53,6 +53,7 @@
     "@peculiar/webcrypto": "^1.1.7",
     "@sentry/browser": "^6.0.2",
     "@sentry/tracing": "^6.0.2",
+    "@supabase/supabase-js": "^1.21.3",
     "@types/bluebird": "^3.5.33",
     "@types/jsbn": "^1.2.29",
     "@types/lodash-es": "^4.17.3",
