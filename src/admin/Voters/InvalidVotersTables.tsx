@@ -1,6 +1,6 @@
 import { EditOutlined } from '@ant-design/icons'
 import { validate as validateEmail } from 'email-validator'
-import { useReducer } from 'react'
+import { useReducer, useState } from 'react'
 import { api } from 'src/api-helper'
 
 import { revalidate, useStored } from '../useStored'
@@ -10,32 +10,32 @@ import { QueuedCell } from './QueuedCell'
 import { Signature, getStatus } from './Signature'
 import { use_multi_select } from './use-multi-select'
 
-export const ValidVotersTable = ({
-  checked,
+export const InvalidVotersTable = ({
   hide_approved,
   hide_voted,
   num_voted,
-  set_checked,
 }: {
-  checked: boolean[]
   hide_approved: boolean
   hide_voted: boolean
   num_voted: number
-  set_checked: (checked: boolean[]) => void
 }) => {
   const { election_id, esignature_requested, voters } = useStored()
   const [mask_tokens, toggle_tokens] = useReducer((state) => !state, true)
   const { last_selected, pressing_shift, set_last_selected } = use_multi_select()
+  const [checked, set_checked] = useState<boolean[]>(new Array(voters?.length).fill(false))
 
   if (!voters) return null
 
   const shown_voters = voters.filter(
     ({ esignature_review, has_voted, invalidated }) =>
-      !invalidated && (!has_voted || !hide_voted) && (getStatus(esignature_review) !== 'approve' || !hide_approved),
+      invalidated && (!has_voted || !hide_voted) && (getStatus(esignature_review) !== 'approve' || !hide_approved),
   )
+
+  if (!shown_voters || !shown_voters.length) return null
 
   return (
     <table>
+      Invalidated voters:
       <thead>
         <tr>
           <th>
@@ -79,8 +79,18 @@ export const ValidVotersTable = ({
       </thead>
       <tbody>
         {shown_voters.map(
-          ({ auth_token, email, esignature, esignature_review, has_voted, index, invite_queued, mailgun_events }) => (
-            <tr className={`${checked[index] ? 'checked' : ''}`} key={email}>
+          ({
+            auth_token,
+            email,
+            esignature,
+            esignature_review,
+            has_voted,
+            index,
+            invalidated,
+            invite_queued,
+            mailgun_events,
+          }) => (
+            <tr className={`${checked[index] ? 'checked' : ''} ${invalidated ? 'invalidated' : ''}`} key={email}>
               {/* Checkbox cell */}
 
               <td
@@ -107,32 +117,34 @@ export const ValidVotersTable = ({
                 <span style={{ display: 'flex', justifyContent: 'space-between' }}>
                   <span>{email}</span>
                   {/* Edit email btn */}
-                  <span
-                    className="visible-on-parent-hover"
-                    onClick={async () => {
-                      const new_email = prompt('Edit email?', email)
+                  {!invalidated && (
+                    <span
+                      className="visible-on-parent-hover"
+                      onClick={async () => {
+                        const new_email = prompt('Edit email?', email)
 
-                      if (!new_email || new_email === email) return
+                        if (!new_email || new_email === email) return
 
-                      if (!validateEmail(new_email)) return alert(`Invalid email: '${new_email}'`)
+                        if (!validateEmail(new_email)) return alert(`Invalid email: '${new_email}'`)
 
-                      // Store new email in API
-                      const response = await api(`election/${election_id}/admin/edit-voter-email`, {
-                        new_email,
-                        old_email: email,
-                      })
+                        // Store new email in API
+                        const response = await api(`election/${election_id}/admin/edit-voter-email`, {
+                          new_email,
+                          old_email: email,
+                        })
 
-                      if (response.status === 201) {
-                        revalidate(election_id)
-                      } else {
-                        console.error(response.json())
-                        // throw await response.json()
-                      }
-                    }}
-                  >
-                    &nbsp;
-                    <EditOutlined />
-                  </span>
+                        if (response.status === 201) {
+                          revalidate(election_id)
+                        } else {
+                          console.error(response.json())
+                          // throw await response.json()
+                        }
+                      }}
+                    >
+                      &nbsp;
+                      <EditOutlined />
+                    </span>
+                  )}
                 </span>
               </td>
               <td className="show-strikethrough" style={{ fontFamily: 'monospace' }}>
@@ -150,13 +162,14 @@ export const ValidVotersTable = ({
           ),
         )}
       </tbody>
-
       <style jsx>{`
         table {
           border-collapse: collapse;
           display: block;
           overflow: scroll;
           width: 100%;
+
+          margin-top: 3rem;
         }
 
         th,
@@ -173,6 +186,23 @@ export const ValidVotersTable = ({
 
         tr.checked {
           background: #f1f1f1;
+        }
+
+        tr.invalidated {
+          color: #aaa;
+        }
+
+        tr.invalidated td.show-strikethrough {
+          position: relative !important;
+        }
+
+        tr.invalidated td.show-strikethrough:before {
+          content: ' ';
+          position: absolute;
+          top: 50%;
+          left: 0;
+          border-bottom: 1px solid #aaa;
+          width: 100%;
         }
 
         .hoverable:hover {
