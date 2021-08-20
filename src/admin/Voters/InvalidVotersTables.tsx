@@ -77,7 +77,7 @@ export const InvalidVotersTable = ({
       </thead>
       <tbody>
         {shown_voters.map(
-          ({ auth_token, email, esignature, esignature_review, has_voted, index, invite_queued, mailgun_events }) => (
+          ({ auth_token, email, esignature, esignature_review, has_voted, invite_queued, mailgun_events }, index) => (
             <tr className={`${checked[index] ? 'checked' : ''}`} key={email}>
               {/* Checkbox cell */}
 
