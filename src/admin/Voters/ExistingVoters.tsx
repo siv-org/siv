@@ -1,4 +1,4 @@
-import { EditOutlined } from '@ant-design/icons'
+import { DeleteOutlined, EditOutlined, MailOutlined } from '@ant-design/icons'
 import { validate as validateEmail } from 'email-validator'
 import { useEffect, useReducer, useState } from 'react'
 
@@ -82,43 +82,72 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
       {/* Top bar buttons */}
       {!readOnly && (
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
-          {/* Send Invitations btn */}
-          <OnClickButton
-            disabled={!num_checked}
-            style={{ margin: 0, padding: '5px 10px' }}
-            onClick={async () => {
-              if (!ballot_design_finalized) return alert('You need to Finalize a Ballot Design first.')
-              if (!threshold_public_key) return alert('You need to finish setting the election Observers first.')
+          <div>
+            {/* Send Invitations btn */}
+            <OnClickButton
+              disabled={!num_checked}
+              style={{ margin: 0, padding: '5px 10px' }}
+              onClick={async () => {
+                if (!ballot_design_finalized) return alert('You need to Finalize a Ballot Design first.')
+                if (!threshold_public_key) return alert('You need to finish setting the election Observers first.')
 
-              toggle_sending()
-              const voters_to_invite = checked.reduce((acc: string[], is_checked, index) => {
-                if (is_checked) acc.push(voters[index].email)
-                return acc
-              }, [])
+                toggle_sending()
+                const voters_to_invite = checked.reduce((acc: string[], is_checked, index) => {
+                  if (is_checked) acc.push(voters[index].email)
+                  return acc
+                }, [])
 
-              try {
-                const response = await api(`election/${election_id}/admin/invite-voters`, { voters: voters_to_invite })
+                try {
+                  const response = await api(`election/${election_id}/admin/invite-voters`, {
+                    voters: voters_to_invite,
+                  })
 
-                if (response.status === 201) {
-                  revalidate(election_id)
-                } else {
-                  const json = await response.json()
-                  console.error(json)
-                  set_error(json?.error || 'Error w/o message ')
+                  if (response.status === 201) {
+                    revalidate(election_id)
+                  } else {
+                    const json = await response.json()
+                    console.error(json)
+                    set_error(json?.error || 'Error w/o message ')
+                  }
+                } catch (e) {
+                  set_error(e.message || 'Caught error w/o message')
                 }
-              } catch (e) {
-                set_error(e.message || 'Caught error w/o message')
-              }
 
-              toggle_sending()
-            }}
-          >
-            <>
-              {sending && <Spinner />}
-              Send{sending ? 'ing' : ''} {num_checked} Invitation{num_checked === 1 ? '' : 's'}
-            </>
-          </OnClickButton>
+                toggle_sending()
+              }}
+            >
+              <>
+                {sending && <Spinner />}
+                <MailOutlined />
+                &nbsp; Send{sending ? 'ing' : ''} {num_checked} Invitation{num_checked === 1 ? '' : 's'}
+              </>
+            </OnClickButton>
+            {/* Delete Voter btn */}
+            <OnClickButton
+              disabled={!num_checked}
+              style={{ borderWidth: 1, margin: 0, marginLeft: num_checked === 1 ? 15 : 5, padding: '5px 10px' }}
+              onClick={() => {
+                const voters_selected = checked.reduce((acc: string[], is_checked, index) => {
+                  if (is_checked) acc.push(voters[index].email)
+                  return acc
+                }, [])
 
+                const amount_to_show = 10
+
+                const confirmed = confirm(
+                  `Are you sure you want to invalidate ${
+                    num_checked === 1 ? 'this voter' : `these ${num_checked} voters`
+                  } & their auth token${num_checked === 1 ? '' : 's'}?\n\n${voters_selected
+                    .slice(0, amount_to_show)
+                    .join('\n')}${
+                    num_checked > amount_to_show ? `\n\n and ${num_checked - amount_to_show} more.` : ''
+                  }`,
+                )
+              }}
+            >
+              <DeleteOutlined />
+            </OnClickButton>
+          </div>
           {error && (
             <span className="error">
               <b> ⚠️ Error:</b> {error}
