@@ -312,7 +312,7 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
                   <span style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <span>{email}</span>
                     {/* Edit email btn */}
-                    {!readOnly && (
+                    {!readOnly && !invalidated && (
                       <span
                         className="visible-on-parent-hover"
                         onClick={async () => {
