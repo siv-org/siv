@@ -1,7 +1,134 @@
-# How to Remove Voters - Invalidating Voter Authorization Tokens
+# How to Remove Voters: Invalidating Voter Authorization Tokens
 
-## After Successful Invalidation
+## Initial Steps:
+
+1. In your [**Election Admin Dashboard**](https://login.siv.tech), navigate to the **`Voters`** tab.
+
+2. Check the box(es) for the voter(s) you want to invalidate.
+
+3. In the top-left corner above the Voters table, click the trash can icon: 🗑️
+
+## After Successful Invalidation:
 
 The voter's row is struck through and greyed out.
 
-<todo>The voter can be revalidated to undo a mistaken invalidation.</todo>
+SIV prevents accidentally sending invitations for invalidated tokens.
+
+Invalidated voter can still be revalidated again, to undo any mistakes.
+
+## The specific Invalidation process depends on the election stage:
+
+---
+
+### Scenario I: The voter hasn’t been invited yet
+
+> The admin can easily invalidate uninvited voters to correct any mistakes.
+
+**_Admin Interface:_**
+
+- The admin is asked to confirm.
+
+  > ### Are you sure you want to invalidate this voter & auth token?
+
+---
+
+### Scenario II: The voter was invited, but hasn’t voted yet
+
+> The admin can decide whether to notify the voter or not.
+
+**_Admin Interface:_**
+
+- The admin is asked to confirm, with an additional option to notify the voter:
+  > ### Are you sure?
+  >
+  > This voter was already invited to vote, {x minutes ago}.
+  >
+  > Would you like to send them a new notification email that their token has been invalidated?
+  >
+  > **[ Cancel ]** / **[Invalidate without Notifying]** / **[Invalidate & Notify]**
+
+**_Voter Interface:_**
+
+- If the admin chose to notify the voter, the voter receives an email:
+
+  > ### Your Voter Authorization Token has been invalidated.
+  >
+  > If you believe this was in error, you can press reply to write to the Election Administrator.
+
+- The `/vote` page errors when given an invalidated token:
+  > ### This voter authorization token was invalidated.
+  >
+  > If you believe this was in error, you can write a message to the Election Administrator:
+  >
+  > ***
+  >
+  > Write your message here... &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; **[ Submit ]**
+  >
+  > ***
+
+---
+
+### Scenario III: The voter already voted, but votes haven’t been unlocked and tallied yet
+
+> In the rare circumstance where a vote must be invalidated after it has already been submitted and accepted, SIV prioritizes security.
+>
+> SIV allows admins to remove votes after they've been cast, but only in a transparent way, and with the vote contents still protected by encryption.
+>
+> The voter, Verifying Observers, and public will all be able to see that the encrypted vote was invalidated.
+>
+> This ensures voters can be confident that submitted votes cannot be secretly removed.
+>
+> This is powered by a Merkle Tree, a powerful cryptographic data structure. This is like a blockchain, but very fast & environmentally-friendly.
+
+**_Admin Interface:_**
+
+- The admin is asked to confirm.
+  > Are you sure you want to invalidate this voter & their submitted vote?
+  >
+  > The public will be able to see the vote was invalidated (but not its contents).
+
+**_Voter Interface:_**
+
+- The voter will receive a notification that their vote was invalidated.
+
+  > ### Your Submitted Vote has been invalidated.
+  >
+  > If you believe this was in error, you can press reply to write to the Election Administrator.
+
+- If they revisit the `/vote` page, above the Vote Confirmation screen, they will see a new error message about their vote being invalidated by the admin.
+
+  > ### Your Submitted Vote was invalidated.
+  >
+  > If you believe this was in error, you can write a message to the Election Administrator:
+  >
+  > ***
+  >
+  > Write your message here... &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; **[ Submit ]**
+  >
+  > ***
+
+**_Verifying Observers Interface:_**
+
+- They will see that an encrypted vote was invalidated by the admin.
+
+**_General Public Interface:_**
+
+- If they review the encrypted votes list, they will see that there was an invalidation issued for this submitted encrypted vote.
+
+---
+
+### Scenario IV: The voter voted, and the votes have already been unlocked and tallied
+
+> This situation is extreme and is only to be used under the most unusual circumstances.
+>
+> All Verifying Observers must explicitly opt-in again to re-unlock the updated list.
+>
+> All voters are transparently told about this.
+
+**_Admin Interface:_**
+
+**_Verifying Observers Interface:_**
+
+**_Voter Interface:_**
+
+**_General Public Interface:_**
