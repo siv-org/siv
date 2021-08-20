@@ -48,7 +48,8 @@ export async function validateAuthToken(
     return fail(`Vote already recorded. (${format(previous_at)})`)
   }
 
-  // TODO Has Auth Token been invalidated?
+  // Has Auth Token been invalidated?
+  if (voter.data().invalidated_at) return fail('This voter authorization token was invalidated.')
 
   // Passed all checks
   pass('Your Voter Authorization Token is valid.')
