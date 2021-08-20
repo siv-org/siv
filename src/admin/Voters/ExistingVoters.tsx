@@ -9,6 +9,7 @@ import { revalidate, useStored } from '../useStored'
 import { DeliveriesAndFailures } from './DeliveriesAndFailures'
 import { QueuedCell } from './QueuedCell'
 import { Signature, getStatus } from './Signature'
+import { use_multi_select } from './use-multi-select'
 
 export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
   const { ballot_design_finalized, election_id, esignature_requested, threshold_public_key, voters } = useStored()
@@ -440,25 +441,3 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
 }
 
 export const mask = (string: string) => `${string.slice(0, 2)}......${string.slice(-2)}`
-
-/** Logic for checkbox multi-select (holding shift) */
-const use_multi_select = () => {
-  const [pressing_shift, set_shift] = useState(false)
-  const [last_selected, set_last_selected] = useState<number>()
-  function handleKeyUp(e: KeyboardEvent) {
-    if (e.key === 'Shift') set_shift(false)
-  }
-  function handleKeyDown(e: KeyboardEvent) {
-    if (e.key === 'Shift') set_shift(true)
-  }
-  useEffect(() => {
-    document.addEventListener('keyup', handleKeyUp, false)
-    document.addEventListener('keydown', handleKeyDown, false)
-    return () => {
-      document.removeEventListener('keyup', handleKeyUp)
-      document.removeEventListener('keydown', handleKeyDown)
-    }
-  }, [])
-
-  return { last_selected, pressing_shift, set_last_selected }
-}
