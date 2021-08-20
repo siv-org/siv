@@ -1,19 +1,20 @@
-import { DeleteOutlined, EditOutlined, MailOutlined } from '@ant-design/icons'
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import { validate as validateEmail } from 'email-validator'
 import { useEffect, useReducer, useState } from 'react'
+import { api } from 'src/api-helper'
+import { OnClickButton } from 'src/landing-page/Button'
 
-import { api } from '../../api-helper'
-import { OnClickButton } from '../../landing-page/Button'
 import { Spinner } from '../Spinner'
 import { revalidate, useStored } from '../useStored'
 import { DeliveriesAndFailures } from './DeliveriesAndFailures'
 import { QueuedCell } from './QueuedCell'
+import { SendInvitationsButton } from './SendInvitationsButton'
 import { Signature, getStatus } from './Signature'
 import { use_latest_mailgun_events } from './use-latest-mailgun-events'
 import { use_multi_select } from './use-multi-select'
 
 export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
-  const { ballot_design_finalized, election_id, esignature_requested, threshold_public_key, voters } = useStored()
+  const { election_id, esignature_requested, voters } = useStored()
   const [mask_tokens, toggle_tokens] = useReducer((state) => !state, true)
   const [checked, set_checked] = useState(new Array(voters?.length).fill(false))
   const num_checked = checked.filter((c) => c).length
@@ -23,7 +24,6 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
     : voters?.filter(({ esignature_review }) => getStatus(esignature_review) === 'approve').length || 0
 
   const [unlocking, toggle_unlocking] = useReducer((state) => !state, false)
-  const [sending, toggle_sending] = useReducer((state) => !state, false)
   const [hide_voted, toggle_hide_voted] = useReducer((state) => !state, false)
   const [hide_approved, toggle_hide_approved] = useReducer((state) => !state, false)
   const [error, set_error] = useState('')
@@ -54,45 +54,7 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
       {!readOnly && (
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
           <div>
-            {/* Send Invitations btn */}
-            <OnClickButton
-              disabled={!num_checked}
-              style={{ margin: 0, padding: '5px 10px' }}
-              onClick={async () => {
-                if (!ballot_design_finalized) return alert('You need to Finalize a Ballot Design first.')
-                if (!threshold_public_key) return alert('You need to finish setting the election Observers first.')
-
-                toggle_sending()
-                const voters_to_invite = checked.reduce((acc: string[], is_checked, index) => {
-                  if (is_checked) acc.push(voters[index].email)
-                  return acc
-                }, [])
-
-                try {
-                  const response = await api(`election/${election_id}/admin/invite-voters`, {
-                    voters: voters_to_invite,
-                  })
-
-                  if (response.status === 201) {
-                    revalidate(election_id)
-                  } else {
-                    const json = await response.json()
-                    console.error(json)
-                    set_error(json?.error || 'Error w/o message ')
-                  }
-                } catch (e) {
-                  set_error(e.message || 'Caught error w/o message')
-                }
-
-                toggle_sending()
-              }}
-            >
-              <>
-                {sending && <Spinner />}
-                <MailOutlined />
-                &nbsp; Send{sending ? 'ing' : ''} {num_checked} Invitation{num_checked === 1 ? '' : 's'}
-              </>
-            </OnClickButton>
+            <SendInvitationsButton {...{ checked, num_checked, set_error }} />
             {/* Delete Voter btn */}
             <OnClickButton
               disabled={!num_checked}
