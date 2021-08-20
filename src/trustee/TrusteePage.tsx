@@ -2,7 +2,7 @@ import { Tab, Tabs } from '@material-ui/core'
 import { useRouter } from 'next/router'
 import { useReducer } from 'react'
 
-import { mask as maskFunc } from '../admin/Voters/ExistingVoters'
+import { mask as maskToken } from '../admin/Voters/mask-token'
 import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
 import { ShuffleAndDecrypt } from './decrypt/ShuffleAndDecrypt'
@@ -18,7 +18,7 @@ export const TrusteePage = (): JSX.Element => {
   const { auth, election_id } = router.query as { auth: string; election_id: string }
   const [masked, toggle_masked] = useReducer((state) => !state, true)
 
-  const mask = masked ? maskFunc : (s: string) => s
+  const mask = masked ? maskToken : (s: string) => s
 
   const tab = router.isReady && document?.location?.hash === '#after' ? 1 : 0
 

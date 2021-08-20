@@ -14,7 +14,7 @@ export const ManagerPage = (): JSX.Element => {
       <HeaderBar />
       <main>
         <h1>{election_title ? `Manage: ${election_title}` : 'Election Manager'}</h1>
-        <ExistingVoters readOnly />
+        <ExistingVoters />
       </main>
 
       <style jsx>{`
