@@ -14,15 +14,15 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (!jwt.valid) return
 
   await Promise.all(
-    voters.map((voter: string) => {
+    voters.map((voter: string) =>
       firebase
         .firestore()
         .collection('elections')
         .doc(election_id)
         .collection('voters')
         .doc(voter)
-        .update({ invalidated_at: new Date() })
-    }),
+        .update({ invalidated_at: new Date() }),
+    ),
   )
 
   await res.status(201).json({ message: 'Done' })

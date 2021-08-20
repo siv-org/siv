@@ -13,6 +13,7 @@ export type Voter = {
   esignature_review: ReviewLog[]
   has_voted: boolean
   index: number
+  invalidated?: boolean
   invite_queued?: QueueLog[]
   mailgun_events: { accepted?: MgEvent[]; delivered?: MgEvent[]; failed?: MgEvent[] }
 }
@@ -102,11 +103,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Build voters objects
   const voters: Voter[] = (await loadVoters).docs.reduce((acc: Voter[], doc) => {
-    const { auth_token, email, esignature_review, index, invite_queued, mailgun_events } = { ...doc.data() } as {
+    const { auth_token, email, esignature_review, index, invalidated_at, invite_queued, mailgun_events } = {
+      ...doc.data(),
+    } as {
       auth_token: string
       email: string
       esignature_review: ReviewLog[]
       index: number
+      invalidated_at?: Date
       invite_queued: QueueLog[]
       mailgun_events: { accepted: MgEvent[]; delivered: MgEvent[] }
     }
@@ -119,6 +123,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         esignature_review,
         has_voted: !!votesByAuth[auth_token],
         index,
+        invalidated: invalidated_at ? true : undefined,
         invite_queued,
         mailgun_events,
       },

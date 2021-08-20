@@ -273,8 +273,18 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
         </thead>
         <tbody>
           {shown_voters.map(
-            ({ auth_token, email, esignature, esignature_review, has_voted, index, invite_queued, mailgun_events }) => (
-              <tr className={`${checked[index] ? 'checked' : ''}`} key={email}>
+            ({
+              auth_token,
+              email,
+              esignature,
+              esignature_review,
+              has_voted,
+              index,
+              invalidated,
+              invite_queued,
+              mailgun_events,
+            }) => (
+              <tr className={`${checked[index] ? 'checked' : ''} ${invalidated ? 'invalidated' : ''}`} key={email}>
                 {/* Checkbox cell */}
                 {!readOnly && (
                   <td
@@ -297,8 +307,8 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
                     <input readOnly checked={checked[index]} className="hoverable" type="checkbox" />
                   </td>
                 )}
-                <td>{index + 1}</td>
-                <td>
+                <td className="show-strikethrough">{index + 1}</td>
+                <td className="show-strikethrough">
                   <span style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <span>{email}</span>
                     {/* Edit email btn */}
@@ -332,7 +342,9 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
                     )}
                   </span>
                 </td>
-                <td style={{ fontFamily: 'monospace' }}>{mask_tokens ? mask(auth_token) : auth_token}</td>
+                <td className="show-strikethrough" style={{ fontFamily: 'monospace' }}>
+                  {mask_tokens ? mask(auth_token) : auth_token}
+                </td>
 
                 <QueuedCell {...{ invite_queued }} />
                 <DeliveriesAndFailures {...mailgun_events} />
@@ -387,6 +399,23 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
 
         tr.checked {
           background: #f1f1f1;
+        }
+
+        tr.invalidated {
+          color: #aaa;
+        }
+
+        tr.invalidated td.show-strikethrough {
+          position: relative !important;
+        }
+
+        tr.invalidated td.show-strikethrough:before {
+          content: ' ';
+          position: absolute;
+          top: 50%;
+          left: 0;
+          border-bottom: 1px solid #aaa;
+          width: 100%;
         }
 
         .hoverable:hover {
