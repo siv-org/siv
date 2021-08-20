@@ -1,12 +1,15 @@
 import { TextField } from '@material-ui/core'
 import router from 'next/router'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 
 import { OnClickButton } from '../landing-page/Button'
 
 export const EnterAuthToken = () => {
   const [error, setError] = useState('')
   const [text, setText] = useState('')
+
+  const submitBtn = useRef<HTMLAnchorElement>(null)
+
   return (
     <div className="container">
       <h1>To cast a vote...</h1>
@@ -32,9 +35,11 @@ export const EnterAuthToken = () => {
 
             setText(event.target.value)
           }}
+          onKeyPress={(event) => event.key === 'Enter' && submitBtn.current?.click()}
         />
         <OnClickButton
           disabled={text.length !== 10 || !!error}
+          ref={submitBtn}
           style={{ margin: 0, marginLeft: 10, padding: '19px 15px' }}
           onClick={async () => {
             // Update auth in URL
