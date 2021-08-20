@@ -126,7 +126,7 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
             <OnClickButton
               disabled={!num_checked}
               style={{ borderWidth: 1, margin: 0, marginLeft: num_checked === 1 ? 15 : 5, padding: '5px 10px' }}
-              onClick={() => {
+              onClick={async () => {
                 const voters_selected = checked.reduce((acc: string[], is_checked, index) => {
                   if (is_checked) acc.push(voters[index].email)
                   return acc
@@ -143,6 +143,24 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
                     num_checked > amount_to_show ? `\n\n and ${num_checked - amount_to_show} more.` : ''
                   }`,
                 )
+
+                if (!confirmed) return
+
+                const response = await api(`election/${election_id}/admin/invalidate-voters`, {
+                  voters: voters_selected,
+                })
+
+                try {
+                  if (response.status === 201) {
+                    revalidate(election_id)
+                  } else {
+                    const json = await response.json()
+                    console.error(json)
+                    set_error(json?.error || 'Error w/o message ')
+                  }
+                } catch (e) {
+                  set_error(e.message || 'Caught error w/o message')
+                }
               }}
             >
               <DeleteOutlined />
@@ -335,6 +353,7 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
           border-radius: 3px;
           padding: 3px 10px;
           background: rgb(255, 246, 246);
+          max-width: 320px;
         }
 
         .error a {
