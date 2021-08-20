@@ -2,15 +2,14 @@ import { EditOutlined } from '@ant-design/icons'
 import { validate as validateEmail } from 'email-validator'
 import { useEffect, useReducer, useState } from 'react'
 import { api } from 'src/api-helper'
-import { OnClickButton } from 'src/landing-page/Button'
 
-import { Spinner } from '../Spinner'
 import { revalidate, useStored } from '../useStored'
 import { DeliveriesAndFailures } from './DeliveriesAndFailures'
 import { InvalidateVotersButton } from './InvalidateVotersButton'
 import { QueuedCell } from './QueuedCell'
 import { SendInvitationsButton } from './SendInvitationsButton'
 import { Signature, getStatus } from './Signature'
+import { UnlockVotesButton } from './UnlockVotesButton'
 import { use_latest_mailgun_events } from './use-latest-mailgun-events'
 import { use_multi_select } from './use-multi-select'
 
@@ -24,7 +23,6 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
     ? num_voted
     : voters?.filter(({ esignature_review }) => getStatus(esignature_review) === 'approve').length || 0
 
-  const [unlocking, toggle_unlocking] = useReducer((state) => !state, false)
   const [hide_voted, toggle_hide_voted] = useReducer((state) => !state, false)
   const [hide_approved, toggle_hide_approved] = useReducer((state) => !state, false)
   const [error, set_error] = useState('')
@@ -65,32 +63,7 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
             </span>
           )}
 
-          {/* Unlock Votes btn */}
-          <OnClickButton
-            disabled={!num_approved}
-            disabledExplanation={
-              !num_approved &&
-              esignature_requested &&
-              !!num_voted &&
-              "No votes with approved signatures.\n\nHover over individual signatures to Approve/Reject them, or click 'Signature' column header to Approve All."
-            }
-            style={{ margin: 0, marginLeft: 5, padding: '5px 10px' }}
-            onClick={async () => {
-              toggle_unlocking()
-              const response = await api(`election/${election_id}/admin/unlock`)
-              if (response.status !== 201) {
-                const json = await response.json()
-                console.error('Unlocking error:', json)
-                alert(json.error)
-              }
-              toggle_unlocking()
-            }}
-          >
-            <>
-              {unlocking && <Spinner />}
-              Unlock{unlocking ? 'ing' : ''} {num_approved} Vote{num_approved === 1 ? '' : 's'}
-            </>
-          </OnClickButton>
+          <UnlockVotesButton {...{ num_approved, num_voted }} />
         </div>
       )}
 
