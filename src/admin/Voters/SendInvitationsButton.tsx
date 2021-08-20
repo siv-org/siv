@@ -15,10 +15,10 @@ export const SendInvitationsButton = ({
   num_checked: number
   set_error: (error: string) => void
 }) => {
-  const { ballot_design_finalized, election_id, threshold_public_key, voters } = useStored()
+  const { ballot_design_finalized, election_id, threshold_public_key, valid_voters } = useStored()
   const [sending, toggle_sending] = useReducer((state) => !state, false)
 
-  if (!voters) return null
+  if (!valid_voters) return null
 
   return (
     <OnClickButton
@@ -30,7 +30,7 @@ export const SendInvitationsButton = ({
 
         toggle_sending()
         const voters_to_invite = checked.reduce((acc: string[], is_checked, index) => {
-          if (is_checked) acc.push(voters[index].email)
+          if (is_checked) acc.push(valid_voters[index].email)
           return acc
         }, [])
 

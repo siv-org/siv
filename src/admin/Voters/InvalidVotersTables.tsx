@@ -1,9 +1,7 @@
-import { EditOutlined } from '@ant-design/icons'
-import { validate as validateEmail } from 'email-validator'
 import { useReducer, useState } from 'react'
 import { api } from 'src/api-helper'
 
-import { revalidate, useStored } from '../useStored'
+import { useStored } from '../useStored'
 import { DeliveriesAndFailures } from './DeliveriesAndFailures'
 import { mask } from './mask-token'
 import { QueuedCell } from './QueuedCell'
@@ -79,18 +77,8 @@ export const InvalidVotersTable = ({
       </thead>
       <tbody>
         {shown_voters.map(
-          ({
-            auth_token,
-            email,
-            esignature,
-            esignature_review,
-            has_voted,
-            index,
-            invalidated,
-            invite_queued,
-            mailgun_events,
-          }) => (
-            <tr className={`${checked[index] ? 'checked' : ''} ${invalidated ? 'invalidated' : ''}`} key={email}>
+          ({ auth_token, email, esignature, esignature_review, has_voted, index, invite_queued, mailgun_events }) => (
+            <tr className={`${checked[index] ? 'checked' : ''}`} key={email}>
               {/* Checkbox cell */}
 
               <td
@@ -116,35 +104,6 @@ export const InvalidVotersTable = ({
               <td className="show-strikethrough">
                 <span style={{ display: 'flex', justifyContent: 'space-between' }}>
                   <span>{email}</span>
-                  {/* Edit email btn */}
-                  {!invalidated && (
-                    <span
-                      className="visible-on-parent-hover"
-                      onClick={async () => {
-                        const new_email = prompt('Edit email?', email)
-
-                        if (!new_email || new_email === email) return
-
-                        if (!validateEmail(new_email)) return alert(`Invalid email: '${new_email}'`)
-
-                        // Store new email in API
-                        const response = await api(`election/${election_id}/admin/edit-voter-email`, {
-                          new_email,
-                          old_email: email,
-                        })
-
-                        if (response.status === 201) {
-                          revalidate(election_id)
-                        } else {
-                          console.error(response.json())
-                          // throw await response.json()
-                        }
-                      }}
-                    >
-                      &nbsp;
-                      <EditOutlined />
-                    </span>
-                  )}
                 </span>
               </td>
               <td className="show-strikethrough" style={{ fontFamily: 'monospace' }}>
@@ -188,15 +147,12 @@ export const InvalidVotersTable = ({
           background: #f1f1f1;
         }
 
-        tr.invalidated {
+        tr td.show-strikethrough {
           color: #aaa;
-        }
-
-        tr.invalidated td.show-strikethrough {
           position: relative !important;
         }
 
-        tr.invalidated td.show-strikethrough:before {
+        tr td.show-strikethrough:before {
           content: ' ';
           position: absolute;
           top: 50%;

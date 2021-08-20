@@ -13,9 +13,9 @@ export const InvalidateVotersButton = ({
   num_checked: number
   set_error: (error: string) => void
 }) => {
-  const { election_id, voters } = useStored()
+  const { election_id, valid_voters } = useStored()
 
-  if (!voters) return null
+  if (!valid_voters) return null
 
   return (
     <OnClickButton
@@ -23,7 +23,7 @@ export const InvalidateVotersButton = ({
       style={{ borderWidth: 1, margin: 0, marginLeft: num_checked === 1 ? 15 : 5, padding: '5px 10px' }}
       onClick={async () => {
         const voters_selected = checked.reduce((acc: string[], is_checked, index) => {
-          if (is_checked) acc.push(voters[index].email)
+          if (is_checked) acc.push(valid_voters[index].email)
           return acc
         }, [])
 
