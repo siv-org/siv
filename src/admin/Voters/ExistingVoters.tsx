@@ -9,6 +9,7 @@ import { revalidate, useStored } from '../useStored'
 import { DeliveriesAndFailures } from './DeliveriesAndFailures'
 import { QueuedCell } from './QueuedCell'
 import { Signature, getStatus } from './Signature'
+import { use_latest_mailgun_events } from './use-latest-mailgun-events'
 import { use_multi_select } from './use-multi-select'
 
 export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
@@ -28,6 +29,7 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
   const [error, set_error] = useState('')
 
   const { last_selected, pressing_shift, set_last_selected } = use_multi_select()
+  use_latest_mailgun_events(election_id, voters)
 
   // Grow checked array to match voters list
   useEffect(() => {
@@ -37,38 +39,6 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
       set_checked(new_checked)
     }
   }, [voters?.length])
-
-  // Auto run api/check-voter-invite-status when there are pending invites
-  const num_invited = voters?.reduce(
-    (acc: { delivered: number; failed: number; queued: number }, voter) => {
-      if (voter.invite_queued) acc.queued += voter.invite_queued.length
-      if (voter.mailgun_events?.delivered) acc.delivered += voter.mailgun_events.delivered.length
-      if (voter.mailgun_events?.failed) acc.failed += voter.mailgun_events.failed.length
-      return acc
-    },
-    { delivered: 0, failed: 0, queued: 0 },
-  )
-  const pending_invites = num_invited && num_invited.queued > num_invited.delivered + num_invited.failed
-  const [last_num_events, set_last_num_events] = useState(0)
-  useEffect(() => {
-    if (pending_invites) {
-      const interval = setInterval(() => {
-        console.log('Checking pending invites...')
-        api(`election/${election_id}/admin/check-voter-invite-status`)
-          .then((response) => response.json())
-          .then(({ num_events }) => {
-            if (num_events !== last_num_events) {
-              revalidate(election_id)
-              set_last_num_events(num_events)
-            }
-          })
-      }, 1000)
-      return () => {
-        console.log('All invites delivered 👍')
-        clearInterval(interval)
-      }
-    }
-  }, [pending_invites])
 
   // Don't show anything if we don't have any voters yet
   if (!voters?.length) return null
