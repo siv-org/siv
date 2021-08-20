@@ -5,11 +5,9 @@ import { api } from 'src/api-helper'
 
 import { revalidate, useStored } from '../useStored'
 import { DeliveriesAndFailures } from './DeliveriesAndFailures'
-import { InvalidateVotersButton } from './InvalidateVotersButton'
 import { QueuedCell } from './QueuedCell'
-import { SendInvitationsButton } from './SendInvitationsButton'
 import { Signature, getStatus } from './Signature'
-import { UnlockVotesButton } from './UnlockVotesButton'
+import { TopBarButtons } from './TopBarButtons'
 import { use_latest_mailgun_events } from './use-latest-mailgun-events'
 import { use_multi_select } from './use-multi-select'
 
@@ -17,7 +15,6 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
   const { election_id, esignature_requested, voters } = useStored()
   const [mask_tokens, toggle_tokens] = useReducer((state) => !state, true)
   const [checked, set_checked] = useState(new Array(voters?.length).fill(false))
-  const num_checked = checked.filter((c) => c).length
   const num_voted = voters?.filter((v) => v.has_voted).length || 0
   const num_approved = !esignature_requested
     ? num_voted
@@ -25,7 +22,6 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
 
   const [hide_voted, toggle_hide_voted] = useReducer((state) => !state, false)
   const [hide_approved, toggle_hide_approved] = useReducer((state) => !state, false)
-  const [error, set_error] = useState('')
 
   const { last_selected, pressing_shift, set_last_selected } = use_multi_select()
   use_latest_mailgun_events(election_id, voters)
@@ -49,23 +45,7 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
 
   return (
     <>
-      {/* Top bar buttons */}
-      {!readOnly && (
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
-          <div>
-            <SendInvitationsButton {...{ checked, num_checked, set_error }} />
-            <InvalidateVotersButton {...{ checked, num_checked, set_error }} />
-          </div>
-          {error && (
-            <span className="error">
-              <b> ⚠️ Error:</b> {error}
-              <a onClick={() => set_error('')}>x</a>
-            </span>
-          )}
-
-          <UnlockVotesButton {...{ num_approved, num_voted }} />
-        </div>
-      )}
+      <TopBarButtons {...{ checked, num_approved, num_voted }} />
 
       <p className="num-voted-row">
         <span>
@@ -224,20 +204,6 @@ export const ExistingVoters = ({ readOnly }: { readOnly?: boolean }) => {
         </tbody>
       </table>
       <style jsx>{`
-        .error {
-          align-self: center;
-          border: 1px solid rgba(131, 1, 1, 0.776);
-          border-radius: 3px;
-          padding: 3px 10px;
-          background: rgb(255, 246, 246);
-          max-width: 320px;
-        }
-
-        .error a {
-          margin-left: 10px;
-          cursor: pointer;
-        }
-
         .num-voted-row {
           display: flex;
           justify-content: space-between;
