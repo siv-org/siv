@@ -1,12 +1,11 @@
-import { useRouter } from 'next/router'
-export const HeaderBar = (): JSX.Element => {
-  const { query } = useRouter()
+import { onTodoPage } from './Todo'
 
+export const HeaderBar = (): JSX.Element => {
   return (
     <main>
       <section>
         <p>
-          SIV <span>Docs {query?.todo !== undefined && 'Todo'}</span>
+          SIV <span>Docs {onTodoPage() && 'Todo'}</span>
         </p>
       </section>
       <style jsx>{`

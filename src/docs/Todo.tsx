@@ -1,9 +1,12 @@
 import { useRouter } from 'next/router'
 
-export const Todo = ({ children }: { children: JSX.Element }) => {
+export const onTodoPage = (): boolean => {
   const { query } = useRouter()
+  return query?.todo !== undefined
+}
 
-  if (!query || query.todo === undefined) return null
+export const Todo = ({ children }: { children: JSX.Element }) => {
+  if (!onTodoPage()) return null
 
   return (
     <div>

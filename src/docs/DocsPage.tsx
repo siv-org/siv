@@ -1,16 +1,14 @@
-import { useRouter } from 'next/router'
 import { GlobalCSS } from 'src/GlobalCSS'
 import { Head } from 'src/Head'
 
 import { HeaderBar } from './HeaderBar'
 import InvalidatingVoters from './invalidating-voters.mdx'
+import { onTodoPage } from './Todo'
 
 export const DocsPage = () => {
-  const { query } = useRouter()
-
   return (
     <>
-      <Head title={`${query?.todo !== undefined ? 'Todo' : 'Docs'}: Invalidating Voters`} />
+      <Head title={`${onTodoPage() ? 'Todo' : 'Docs'}: Invalidating Voters`} />
 
       <HeaderBar />
       <main>
