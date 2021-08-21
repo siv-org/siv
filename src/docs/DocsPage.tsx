@@ -1,3 +1,4 @@
+import { startCase } from 'lodash-es'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import { GlobalCSS } from 'src/GlobalCSS'
@@ -9,13 +10,13 @@ import { onTodoPage } from './Todo'
 export const DocsPage = () => {
   const { doc } = useRouter().query
 
-  if (!doc) return null
+  if (typeof doc !== 'string') return null
 
   const Doc = dynamic(() => import(`./${doc}.mdx`))
 
   return (
     <>
-      <Head title={`${onTodoPage() ? 'Todo' : 'Docs'}: Invalidating Voters`} />
+      <Head title={`${onTodoPage() ? 'Todo' : 'Docs'}: ${startCase(doc)}`} />
 
       <HeaderBar />
       <main>
