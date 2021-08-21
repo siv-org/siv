@@ -1,9 +1,12 @@
+import { useRouter } from 'next/router'
 export const HeaderBar = (): JSX.Element => {
+  const { query } = useRouter()
+
   return (
     <main>
       <section>
         <p>
-          SIV <span>Docs</span>
+          SIV <span>Docs {query?.todo !== undefined && 'Todo'}</span>
         </p>
       </section>
       <style jsx>{`
