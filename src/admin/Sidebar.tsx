@@ -1,4 +1,4 @@
-import { ApartmentOutlined, LinkOutlined, QuestionCircleOutlined } from '@ant-design/icons'
+import { ApartmentOutlined, LinkOutlined, QuestionCircleOutlined, SnippetsOutlined } from '@ant-design/icons'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
@@ -53,6 +53,15 @@ export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => voi
                   </a>
                 </Link>
               ))}
+            </>
+            <>
+              <label>
+                <SnippetsOutlined style={{ marginRight: 5 }} />
+                Post Election
+              </label>
+              <Link href={`/election/${election_id}/vote`}>
+                <a target="_blank">Marked Ballots</a>
+              </Link>
             </>
             <>
               <label>
