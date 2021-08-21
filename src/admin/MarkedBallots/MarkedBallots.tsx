@@ -1,5 +1,7 @@
 import { useDecryptedVotes } from 'src/status/use-decrypted-votes'
 
+import { PDF } from './PDF'
+
 export const MarkedBallots = () => {
   const votes = useDecryptedVotes()
 
@@ -14,7 +16,12 @@ export const MarkedBallots = () => {
           </p>
         </>
       ) : (
-        votes.map((vote) => <p key={vote.verification}>{JSON.stringify(vote)}</p>)
+        <>
+          <PDF />
+          {votes.map((vote) => (
+            <p key={vote.verification}>{JSON.stringify(vote)}</p>
+          ))}
+        </>
       )}
     </>
   )
