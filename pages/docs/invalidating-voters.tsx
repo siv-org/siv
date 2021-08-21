@@ -16,6 +16,9 @@ const DocsPage = () => {
       <style jsx>{`
         main {
           padding: 1rem;
+
+          margin: 0 auto;
+          max-width: 800px;
         }
       `}</style>
     </main>
