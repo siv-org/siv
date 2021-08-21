@@ -59,8 +59,10 @@ export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => voi
                 <SnippetsOutlined style={{ marginRight: 5 }} />
                 Post Election
               </label>
-              <Link href={`/election/${election_id}/vote`}>
-                <a target="_blank">Marked Ballots</a>
+              <Link href={`./marked-ballots`}>
+                <a className={'marked-ballots' === section ? 'current' : ''} onClick={closeMenu}>
+                  Marked Ballots
+                </a>
               </Link>
             </>
             <>

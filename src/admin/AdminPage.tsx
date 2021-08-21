@@ -6,6 +6,7 @@ import { AllYourElections } from './AllYourElections'
 import { useLoginRequired, useUser } from './auth'
 import { BallotDesign } from './BallotDesign/BallotDesign'
 import { HeaderBar } from './HeaderBar'
+import { MarkedBallots } from './MarkedBallots/MarkedBallots'
 import { MobileMenu } from './MobileMenu'
 import { Observers } from './Observers/Observers'
 import { ElectionOverview } from './Overview/ElectionOverview'
@@ -35,6 +36,7 @@ export const AdminPage = (): JSX.Element => {
           {section === 'observers' && <Observers />}
           {section === 'ballot-design' && <BallotDesign />}
           {section === 'voters' && <AddVoters />}
+          {section === 'marked-ballots' && <MarkedBallots />}
         </div>
       </main>
 
