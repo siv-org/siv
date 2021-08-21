@@ -36,6 +36,9 @@ SIV prevents accidentally sending invitations for invalidated tokens.
 
 ### Scenario II: The voter was invited, but hasn’t voted yet
 
+<Todo>
+
+
 > The admin can decide whether to notify the voter or not.
 
 **_Admin Interface:_**
@@ -49,7 +52,13 @@ SIV prevents accidentally sending invitations for invalidated tokens.
   >
   > **[ Cancel ]** / **[Invalidate without Notifying]** / **[Invalidate & Notify]**
 
+</Todo>
+
+
 **_Voter Interface:_**
+
+<Todo>
+
 
 - If the admin chose to notify the voter, the voter receives an email:
 
@@ -57,20 +66,33 @@ SIV prevents accidentally sending invitations for invalidated tokens.
   >
   > If you believe this was in error, you can press reply to write to the Election Administrator.
 
+</Todo>
+
+
 - The `/vote` page errors when given an invalidated token:
+
   > ### This voter authorization token was invalidated.
-  >
-  > If you believe this was in error, you can write a message to the Election Administrator:
-  >
-  > ***
-  >
-  > Write your message here... &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; **[ Submit ]**
-  >
-  > ***
+
+<Todo>
+
+
+> If you believe this was in error, you can write a message to the Election Administrator:
+>
+> ---
+>
+> Write your message here... &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; **[ Submit ]**
+>
+> ---
+
+</Todo>
+
 
 ---
 
 ### Scenario III: The voter already voted, but votes haven’t been unlocked and tallied yet
+
+<Todo>
+
 
 > In the rare circumstance where a vote must be invalidated after it has already been submitted and accepted, SIV prioritizes security.
 >
@@ -117,9 +139,15 @@ SIV prevents accidentally sending invitations for invalidated tokens.
 
 - If they review the encrypted votes list, they will see that there was an invalidation issued for this submitted encrypted vote.
 
+</Todo>
+
+
 ---
 
 ### Scenario IV: The voter voted, and the votes have already been unlocked and tallied
+
+<Todo>
+
 
 > This situation is extreme and is only to be used under the most unusual circumstances.
 >
@@ -134,3 +162,6 @@ SIV prevents accidentally sending invitations for invalidated tokens.
 **_Voter Interface:_**
 
 **_General Public Interface:_**
+
+</Todo>
+
