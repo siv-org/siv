@@ -2,19 +2,30 @@ import { DownloadOutlined } from '@ant-design/icons'
 import { useEffect, useRef } from 'react'
 import { darkBlue } from 'src/landing-page/Button'
 
-export const DownloadAllButton = () => {
+import { useStored } from '../useStored'
+import { markPdf } from './mark-pdf'
+
+export const DownloadAllButton = ({ votes }: { votes: Record<string, string>[] }) => {
   const button = useRef<HTMLAnchorElement>(null)
+  const { ballot_design = '[]', election_title = '' } = useStored()
 
   useEffect(() => {
-    if (!button || !button.current) return
-    const sample_url = `${window?.location?.origin}/sample-ballot.pdf`
-    button.current.href = sample_url
+    async function buildAll() {
+      if (!button || !button.current) return
+
+      const pdfBytes = await markPdf({ ballot_design, election_title, vote: votes[0] })
+
+      const blob = new Blob([pdfBytes], { type: 'application/pdf' })
+      const blobUrl = URL.createObjectURL(blob)
+      button.current.href = blobUrl
+    }
+    buildAll()
   }, [])
 
   const invertColor = false
 
   return (
-    <a download="sample" ref={button}>
+    <a download={`${election_title} votes`} ref={button}>
       <DownloadOutlined style={{ fontSize: 20, marginRight: 7 }} />
       Download All
       <style jsx>{`
