@@ -1,3 +1,4 @@
+import { DownloadOutlined } from '@ant-design/icons'
 import { OnClickButton } from 'src/landing-page/Button'
 import { useDecryptedVotes } from 'src/status/use-decrypted-votes'
 
@@ -19,7 +20,10 @@ export const MarkedBallots = () => {
       ) : (
         <>
           <OnClickButton style={{ marginLeft: 0, padding: '6px 15px' }} onClick={() => {}}>
-            Download All
+            <>
+              <DownloadOutlined style={{ fontSize: 20, marginRight: 7 }} />
+              Download All
+            </>
           </OnClickButton>
           {votes.map((vote, index) => (
             <div key={index}>
