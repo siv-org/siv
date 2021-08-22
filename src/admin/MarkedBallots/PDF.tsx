@@ -22,14 +22,14 @@ export const PDF = () => {
 
       // Get the first page of the document
       const pages = pdfDoc.getPages()
-      const firstPage = pages[0]
+      const page = pages[0]
 
       // Get the width and height of the first page
-      const { height, width } = firstPage.getSize()
+      const { height, width } = page.getSize()
 
       // Write in title
       const size = 16
-      firstPage.drawText(title, {
+      page.drawText(title, {
         color: rgb(0, 0, 0),
         font: helveticaFont,
         size,
@@ -38,7 +38,7 @@ export const PDF = () => {
       })
 
       // Write in date
-      firstPage.drawText(`Printed: ${moment().format('MMM D, YYYY')}`, {
+      page.drawText(`Printed: ${moment().format('MMM D, YYYY')}`, {
         color: rgb(0, 0, 0),
         font: helveticaFont,
         size: 13,
@@ -46,10 +46,12 @@ export const PDF = () => {
         y: height - 70,
       })
 
+      const lineHeight = 22
+
       // For each question:
-      JSON.parse(ballot_design).forEach(({ options, title }: Item) => {
+      JSON.parse(ballot_design).forEach(({ options, title, write_in_allowed }: Item) => {
         // Write title
-        firstPage.drawText(title, {
+        page.drawText(title, {
           color: rgb(0, 0, 0),
           font: helveticaFont,
           size: 13,
@@ -59,14 +61,63 @@ export const PDF = () => {
 
         // Write each option
         options.forEach(({ name }, index) => {
-          firstPage.drawText(name, {
+          const y = height - (120 + index * lineHeight)
+
+          // Draw checkbox
+          page.drawRectangle({
+            borderColor: rgb(0, 0, 0),
+            borderWidth: 2,
+            height: 10,
+            width: 16,
+            x: 203,
+            y,
+          })
+
+          // Write option name
+          page.drawText(name, {
             color: rgb(0, 0, 0),
             font: helveticaFont,
             size: 12,
             x: 225,
-            y: height - (120 + index * 17),
+            y,
           })
         })
+
+        const writeInY = height - (120 + options.length * lineHeight)
+
+        // Draw write-in
+        if (write_in_allowed) {
+          // Draw checkbox
+          page.drawRectangle({
+            borderColor: rgb(0, 0, 0),
+            borderWidth: 2,
+            height: 10,
+            width: 16,
+            x: 203,
+            y: writeInY,
+          })
+
+          // Draw dotted line
+          new Array(17).fill(true).forEach((_, index) => {
+            page.drawRectangle({
+              borderColor: rgb(0, 0, 0),
+              borderWidth: 1,
+              height: 0,
+              width: 5,
+              x: 225 + index * 8,
+              y: writeInY,
+            })
+          })
+
+          // Write 'write-in'
+          page.drawText('Write-in', {
+            color: rgb(0, 0, 0),
+            font: helveticaFont,
+            size: 8,
+            x: 225,
+            y: writeInY - 9,
+          })
+        }
       })
 
       // Serialize the PDFDocument to bytes (a Uint8Array)
