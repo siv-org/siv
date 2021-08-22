@@ -22,7 +22,7 @@ export const Sidebar = () => (
   </div>
 )
 
-export const steps = ['Ballot Design', 'Observers', 'Voters'] as const
+export const steps = ['Ballot Design', 'Observers', 'Voters']
 
 export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => void }) => {
   const { election_id, section } = useRouter().query

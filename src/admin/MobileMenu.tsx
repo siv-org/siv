@@ -17,7 +17,7 @@ export const MobileMenu = () => {
   return (
     <div className="mobile-menu">
       <OnClickButton style={{ marginLeft: 0, padding: '5px 11px' }} onClick={() => set_menu(true)}>
-        {section ? `Step ${steps.indexOf(name as typeof steps[number]) + 1}: ${name}` : 'Menu'}
+        {section && steps.includes(name) ? `Step ${steps.indexOf(name) + 1}: ${name}` : 'Menu'}
       </OnClickButton>
       <SwipeableDrawer
         anchor="left"
