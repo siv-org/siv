@@ -1,14 +1,14 @@
 import { useEffect } from 'react'
 
 import { useStored } from '../useStored'
-import { MarkPdf } from './mark-pdf'
+import { markPdf } from './mark-pdf'
 
 export const EmbeddedPdf = ({ index, vote }: { index: number; vote: Record<string, string> }) => {
   const { ballot_design = '[]', election_title = '' } = useStored()
 
   useEffect(() => {
     async function renderToIframe() {
-      const pdfBytes = await MarkPdf({ ballot_design, election_title, vote })
+      const pdfBytes = await markPdf({ ballot_design, election_title, vote })
 
       const blob = new Blob([pdfBytes], { type: 'application/pdf' })
       const blobUrl = URL.createObjectURL(blob)

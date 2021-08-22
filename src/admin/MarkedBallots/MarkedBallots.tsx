@@ -1,7 +1,6 @@
-import { DownloadOutlined } from '@ant-design/icons'
-import { OnClickButton } from 'src/landing-page/Button'
 import { useDecryptedVotes } from 'src/status/use-decrypted-votes'
 
+import { DownloadAllButton } from './DownloadAllButton'
 import { EmbeddedPdf } from './EmbeddedPdf'
 
 export const MarkedBallots = () => {
@@ -19,12 +18,7 @@ export const MarkedBallots = () => {
         </>
       ) : (
         <>
-          <OnClickButton style={{ marginLeft: 0, padding: '6px 15px' }} onClick={() => {}}>
-            <>
-              <DownloadOutlined style={{ fontSize: 20, marginRight: 7 }} />
-              Download All
-            </>
-          </OnClickButton>
+          <DownloadAllButton />
           {votes.map((vote, index) => (
             <div key={index}>
               {/* <p key={vote.verification}>{JSON.stringify(vote)}</p> */}

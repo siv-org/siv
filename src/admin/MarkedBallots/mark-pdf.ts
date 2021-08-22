@@ -2,9 +2,7 @@ import moment from 'moment'
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib'
 import { Item } from 'src/vote/storeElectionInfo'
 
-const sample_url = `${window.location.origin}/sample-ballot.pdf`
-
-export const MarkPdf = async ({
+export const markPdf = async ({
   ballot_design,
   election_title,
   vote,
@@ -14,7 +12,7 @@ export const MarkPdf = async ({
   vote: Record<string, string>
 }) => {
   // Fetch an existing PDF document
-  const existingPdfBytes = await fetch(sample_url).then((res) => res.arrayBuffer())
+  const existingPdfBytes = await fetch(`${window.location.origin}/sample-ballot.pdf`).then((res) => res.arrayBuffer())
 
   // Load a PDFDocument from the existing PDF bytes
   const pdfDoc = await PDFDocument.load(existingPdfBytes)
