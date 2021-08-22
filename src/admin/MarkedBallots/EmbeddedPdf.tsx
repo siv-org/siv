@@ -8,7 +8,7 @@ export const EmbeddedPdf = ({ index, vote }: { index: number; vote: Record<strin
 
   useEffect(() => {
     async function renderToIframe() {
-      const pdfBytes = await markPdf({ ballot_design, election_title, vote })
+      const pdfBytes = await (await markPdf({ ballot_design, election_title, vote })).save()
 
       const blob = new Blob([pdfBytes], { type: 'application/pdf' })
       const blobUrl = URL.createObjectURL(blob)

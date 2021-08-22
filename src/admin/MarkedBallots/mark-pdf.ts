@@ -167,7 +167,5 @@ export const markPdf = async ({
     }
   })
 
-  // Serialize the PDFDocument to bytes (a Uint8Array)
-  const pdfBytes = await pdfDoc.save()
-  return pdfBytes
+  return pdfDoc
 }

@@ -1,4 +1,5 @@
 import { DownloadOutlined } from '@ant-design/icons'
+import { PDFDocument } from 'pdf-lib'
 import { useEffect, useRef } from 'react'
 import { darkBlue } from 'src/landing-page/Button'
 
@@ -13,8 +14,17 @@ export const DownloadAllButton = ({ votes }: { votes: Record<string, string>[] }
     async function buildAll() {
       if (!button || !button.current) return
 
-      const pdfBytes = await markPdf({ ballot_design, election_title, vote: votes[0] })
+      // Combine all voters into one file for printing
+      const merged = await PDFDocument.create()
+      for (const i in votes) {
+        const vote = votes[i]
+        const doc = await markPdf({ ballot_design, election_title, vote })
+        const copied = await merged.copyPages(doc, doc.getPageIndices())
+        copied.forEach((page) => merged.addPage(page))
+      }
+      const pdfBytes = await merged.save()
 
+      // Put the combined PDF onto the download link
       const blob = new Blob([pdfBytes], { type: 'application/pdf' })
       const blobUrl = URL.createObjectURL(blob)
       button.current.href = blobUrl
