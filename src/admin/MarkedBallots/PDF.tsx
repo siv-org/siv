@@ -5,7 +5,7 @@ import { Item } from 'src/vote/storeElectionInfo'
 
 import { useStored } from '../useStored'
 
-export const PDF = () => {
+export const PDF = ({ index, vote }: { index: number; vote: Record<string, string> }) => {
   const sample_url = `${window.location.origin}/sample-ballot.pdf`
   const { ballot_design = '[]', election_title: title = '' } = useStored()
 
@@ -49,7 +49,7 @@ export const PDF = () => {
       const lineHeight = 22
 
       // For each question:
-      JSON.parse(ballot_design).forEach(({ options, title, write_in_allowed }: Item) => {
+      JSON.parse(ballot_design).forEach(({ id = 'vote', options, title, write_in_allowed }: Item) => {
         // Write title
         page.drawText(title, {
           color: rgb(0, 0, 0),
@@ -67,6 +67,7 @@ export const PDF = () => {
           page.drawRectangle({
             borderColor: rgb(0, 0, 0),
             borderWidth: 2,
+            color: vote[id] === name.toUpperCase() ? rgb(0.2, 0.2, 0.2) : undefined,
             height: 10,
             width: 16,
             x: 203,
@@ -87,15 +88,29 @@ export const PDF = () => {
 
         // Draw write-in
         if (write_in_allowed) {
+          const did_write_in = vote[id] && !options.some(({ name }) => vote[id] === name.toUpperCase())
+
           // Draw checkbox
           page.drawRectangle({
             borderColor: rgb(0, 0, 0),
             borderWidth: 2,
+            color: did_write_in ? rgb(0.2, 0.2, 0.2) : undefined,
             height: 10,
             width: 16,
             x: 203,
             y: writeInY,
           })
+
+          if (did_write_in) {
+            // Write 'write-in'
+            page.drawText(vote[id], {
+              color: rgb(0, 0, 0),
+              font: helveticaFont,
+              size: 12,
+              x: 225,
+              y: writeInY + 3,
+            })
+          }
 
           // Draw dotted line
           new Array(17).fill(true).forEach((_, index) => {
@@ -124,12 +139,12 @@ export const PDF = () => {
       const pdfBytes = await pdfDoc.save()
       const blob = new Blob([pdfBytes], { type: 'application/pdf' })
       const blobUrl = URL.createObjectURL(blob)
-      const el = document.getElementById('iframe') as HTMLIFrameElement
+      const el = document.getElementById(`iframe-${index}`) as HTMLIFrameElement
       if (!el) return alert("Can't find iframe to insert pdf")
       el.src = blobUrl
     }
     modifyPdf()
   }, [])
 
-  return <iframe id="iframe" style={{ borderWidth: 1, height: 500, maxWidth: 500, width: '100%' }} />
+  return <iframe id={`iframe-${index}`} style={{ borderWidth: 1, height: 500, maxWidth: 500, width: '100%' }} />
 }
