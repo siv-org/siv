@@ -1,3 +1,4 @@
+import { OnClickButton } from 'src/landing-page/Button'
 import { useDecryptedVotes } from 'src/status/use-decrypted-votes'
 
 import { PDF } from './PDF'
@@ -17,6 +18,9 @@ export const MarkedBallots = () => {
         </>
       ) : (
         <>
+          <OnClickButton style={{ marginLeft: 0, padding: '6px 15px' }} onClick={() => {}}>
+            Download All
+          </OnClickButton>
           {votes.map((vote, index) => (
             <div key={index}>
               {/* <p key={vote.verification}>{JSON.stringify(vote)}</p> */}
