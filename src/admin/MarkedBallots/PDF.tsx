@@ -49,19 +49,21 @@ export const PDF = ({ index, vote }: { index: number; vote: Record<string, strin
       const lineHeight = 22
 
       // For each question:
-      JSON.parse(ballot_design).forEach(({ id = 'vote', options, title, write_in_allowed }: Item) => {
+      ;(JSON.parse(ballot_design) as Item[]).forEach(({ id = 'vote', options, title, write_in_allowed }, index) => {
+        const questionY = height - 100 - 130 * index
+
         // Write title
         page.drawText(title, {
           color: rgb(0, 0, 0),
           font: helveticaFont,
           size: 13,
           x: 200,
-          y: height - 100,
+          y: questionY,
         })
 
         // Write each option
         options.forEach(({ name }, index) => {
-          const y = height - (120 + index * lineHeight)
+          const y = questionY - (20 + index * lineHeight)
 
           // Draw checkbox
           page.drawRectangle({
@@ -84,7 +86,7 @@ export const PDF = ({ index, vote }: { index: number; vote: Record<string, strin
           })
         })
 
-        const writeInY = height - (120 + options.length * lineHeight)
+        const writeInY = questionY - (20 + options.length * lineHeight)
 
         // Draw write-in
         if (write_in_allowed) {
