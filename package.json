@@ -68,6 +68,7 @@
     "jsonwebtoken": "^8.5.1",
     "lodash-es": "^4.17.15",
     "mailgun-js": "^0.22.0",
+    "moment": "^2.29.1",
     "next": "10",
     "next-transpile-modules": "^4.0.3",
     "pdf-lib": "^1.16.0",
