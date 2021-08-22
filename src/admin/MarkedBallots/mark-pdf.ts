@@ -62,15 +62,7 @@ export const markPdf = async ({
   ;(JSON.parse(ballot_design) as Item[]).forEach(({ id = 'vote', options, title, write_in_allowed }, index) => {
     const questionY = height - 100 - 140 * index
 
-    // Draw rectangle around question
-    page.drawRectangle({
-      borderColor: rgb(0, 0, 0),
-      borderWidth: 1,
-      height: 130,
-      width: 192,
-      x: 200 - 5,
-      y: questionY - 114,
-    })
+    const x = 190
 
     // Draw rectangle for question title
     page.drawRectangle({
@@ -78,8 +70,18 @@ export const markPdf = async ({
       color: rgb(0.85, 0.85, 0.85),
       height: 20,
       width: 192,
-      x: 200 - 5,
+      x: x - 5,
       y: questionY - 5,
+    })
+
+    // Draw rectangle around question
+    page.drawRectangle({
+      borderColor: rgb(0, 0, 0),
+      borderWidth: 1,
+      height: 130,
+      width: 192,
+      x: x - 5,
+      y: questionY - 114,
     })
 
     // Write question title
@@ -87,7 +89,7 @@ export const markPdf = async ({
       color: rgb(0, 0, 0),
       font: helveticaFont,
       size: 10,
-      x: 200,
+      x: x,
       y: questionY,
     })
 
@@ -102,7 +104,7 @@ export const markPdf = async ({
         color: vote[id] === name.toUpperCase() ? rgb(0.2, 0.2, 0.2) : undefined,
         height: 10,
         width: 16,
-        x: 203,
+        x: x + 3,
         y,
       })
 
@@ -111,7 +113,7 @@ export const markPdf = async ({
         color: rgb(0, 0, 0),
         font: helveticaFont,
         size: 12,
-        x: 225,
+        x: x + 25,
         y,
       })
     })
@@ -129,7 +131,7 @@ export const markPdf = async ({
         color: did_write_in ? rgb(0.2, 0.2, 0.2) : undefined,
         height: 10,
         width: 16,
-        x: 203,
+        x: x + 3,
         y: writeInY,
       })
 
@@ -139,7 +141,7 @@ export const markPdf = async ({
           color: rgb(0, 0, 0),
           font: helveticaFont,
           size: 12,
-          x: 225,
+          x: x + 25,
           y: writeInY + 3,
         })
       }
@@ -151,7 +153,7 @@ export const markPdf = async ({
           borderWidth: 1,
           height: 0,
           width: 5,
-          x: 225 + index * 8,
+          x: x + 25 + index * 8,
           y: writeInY,
         })
       })
@@ -161,7 +163,7 @@ export const markPdf = async ({
         color: rgb(0, 0, 0),
         font: helveticaFont,
         size: 8,
-        x: 225,
+        x: x + 25,
         y: writeInY - 9,
       })
     }

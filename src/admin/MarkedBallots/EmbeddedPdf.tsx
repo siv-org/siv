@@ -21,5 +21,5 @@ export const EmbeddedPdf = ({ index, vote }: { index: number; vote: Record<strin
     renderToIframe()
   }, [election_title, ballot_design, vote])
 
-  return <iframe id={`iframe-${index}`} style={{ borderWidth: 1, height: 500, maxWidth: 500, width: '100%' }} />
+  return <iframe id={`iframe-${index}`} style={{ borderWidth: 1, height: 500, maxWidth: 800, width: '100%' }} />
 }
