@@ -1,12 +1,13 @@
 import moment from 'moment'
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib'
 import { useEffect } from 'react'
+import { Item } from 'src/vote/storeElectionInfo'
 
 import { useStored } from '../useStored'
 
 export const PDF = () => {
   const sample_url = `${window.location.origin}/sample-ballot.pdf`
-  const { election_title: title = '' } = useStored()
+  const { ballot_design = '[]', election_title: title = '' } = useStored()
 
   useEffect(() => {
     async function modifyPdf() {
@@ -37,13 +38,35 @@ export const PDF = () => {
       })
 
       // Write in date
-      const size2 = 13
       firstPage.drawText(`Printed: ${moment().format('MMM D, YYYY')}`, {
         color: rgb(0, 0, 0),
         font: helveticaFont,
-        size: size2,
+        size: 13,
         x: 10,
         y: height - 70,
+      })
+
+      // For each question:
+      JSON.parse(ballot_design).forEach(({ options, title }: Item) => {
+        // Write title
+        firstPage.drawText(title, {
+          color: rgb(0, 0, 0),
+          font: helveticaFont,
+          size: 13,
+          x: 200,
+          y: height - 100,
+        })
+
+        // Write each option
+        options.forEach(({ name }, index) => {
+          firstPage.drawText(name, {
+            color: rgb(0, 0, 0),
+            font: helveticaFont,
+            size: 12,
+            x: 225,
+            y: height - (120 + index * 17),
+          })
+        })
       })
 
       // Serialize the PDFDocument to bytes (a Uint8Array)
