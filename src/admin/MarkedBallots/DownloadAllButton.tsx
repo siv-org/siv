@@ -8,10 +8,11 @@ import { markPdf } from './mark-pdf'
 
 export const DownloadAllButton = ({ votes }: { votes: Record<string, string>[] }) => {
   const button = useRef<HTMLAnchorElement>(null)
-  const { ballot_design = '[]', election_title = '' } = useStored()
+  const { ballot_design, election_title } = useStored()
 
   useEffect(() => {
     async function buildAll() {
+      if (!ballot_design || !election_title) return
       if (!button || !button.current) return
 
       // Combine all voters into one file for printing
@@ -30,7 +31,7 @@ export const DownloadAllButton = ({ votes }: { votes: Record<string, string>[] }
       button.current.href = blobUrl
     }
     buildAll()
-  }, [])
+  }, [ballot_design, election_title])
 
   const invertColor = false
 
