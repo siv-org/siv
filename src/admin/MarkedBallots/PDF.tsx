@@ -27,7 +27,7 @@ export const PDF = ({ index, vote }: { index: number; vote: Record<string, strin
       // Get the width and height of the first page
       const { height, width } = page.getSize()
 
-      // Write in title
+      // Write in election title
       const size = 16
       page.drawText(title, {
         color: rgb(0, 0, 0),
@@ -62,11 +62,21 @@ export const PDF = ({ index, vote }: { index: number; vote: Record<string, strin
       ;(JSON.parse(ballot_design) as Item[]).forEach(({ id = 'vote', options, title, write_in_allowed }, index) => {
         const questionY = height - 100 - 130 * index
 
-        // Write title
+        // Draw rectangle for question title
+        page.drawRectangle({
+          borderWidth: 0,
+          color: rgb(0.85, 0.85, 0.85),
+          height: 20,
+          width: helveticaFont.widthOfTextAtSize(title, 13) + 10,
+          x: 200 - 5,
+          y: questionY - 5,
+        })
+
+        // Write question title
         page.drawText(title, {
           color: rgb(0, 0, 0),
           font: helveticaFont,
-          size: 13,
+          size: 10,
           x: 200,
           y: questionY,
         })
