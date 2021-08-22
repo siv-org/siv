@@ -9,13 +9,6 @@ export const MarkedBallots = () => {
   return (
     <>
       <h2>Marked Ballots</h2>
-      <div>
-        This shows printing votes onto a sample ballot design.
-        <p>
-          Please contact <a href="mailto:help@secureinternetvoting.org">help@secureinternetvoting.org</a> to configure
-          SIV with your existing ballot equipment.
-        </p>
-      </div>
       {!votes?.length ? (
         <>
           <p>There are no Unlocked votes yet.</p>
@@ -25,6 +18,13 @@ export const MarkedBallots = () => {
         </>
       ) : (
         <>
+          <div>
+            This shows printing votes onto a sample ballot design.
+            <p>
+              Please contact <a href="mailto:help@secureinternetvoting.org">help@secureinternetvoting.org</a> to
+              configure SIV with your existing ballot equipment.
+            </p>
+          </div>
           <DownloadAllButton {...{ votes }} />
           {votes.map((vote, index) => (
             <div key={index}>
