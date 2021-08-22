@@ -19,7 +19,7 @@ export const MarkedBallots = () => {
         <>
           {votes.map((vote, index) => (
             <div key={index}>
-              <p key={vote.verification}>{JSON.stringify(vote)}</p>
+              {/* <p key={vote.verification}>{JSON.stringify(vote)}</p> */}
               <PDF {...{ index, vote }} />
             </div>
           ))}

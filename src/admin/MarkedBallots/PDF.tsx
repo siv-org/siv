@@ -60,14 +60,24 @@ export const PDF = ({ index, vote }: { index: number; vote: Record<string, strin
 
       // For each question:
       ;(JSON.parse(ballot_design) as Item[]).forEach(({ id = 'vote', options, title, write_in_allowed }, index) => {
-        const questionY = height - 100 - 130 * index
+        const questionY = height - 100 - 140 * index
+
+        // Draw rectangle around question
+        page.drawRectangle({
+          borderColor: rgb(0, 0, 0),
+          borderWidth: 1,
+          height: 130,
+          width: 192,
+          x: 200 - 5,
+          y: questionY - 114,
+        })
 
         // Draw rectangle for question title
         page.drawRectangle({
           borderWidth: 0,
           color: rgb(0.85, 0.85, 0.85),
           height: 20,
-          width: helveticaFont.widthOfTextAtSize(title, 13) + 10,
+          width: 192,
           x: 200 - 5,
           y: questionY - 5,
         })
