@@ -37,6 +37,16 @@ export const PDF = ({ index, vote }: { index: number; vote: Record<string, strin
         y: height - 30,
       })
 
+      // Write in Verification #
+      const trackingSize = 10
+      page.drawText(vote.tracking, {
+        color: rgb(0.3, 0.3, 0.3),
+        font: helveticaFont,
+        size: trackingSize,
+        x: width - helveticaFont.widthOfTextAtSize(vote.tracking, trackingSize) - 10,
+        y: height - 15,
+      })
+
       // Write in date
       page.drawText(`Printed: ${moment().format('MMM D, YYYY')}`, {
         color: rgb(0, 0, 0),
