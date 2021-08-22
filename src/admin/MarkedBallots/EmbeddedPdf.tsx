@@ -1,0 +1,23 @@
+import { useEffect } from 'react'
+
+import { useStored } from '../useStored'
+import { MarkPdf } from './mark-pdf'
+
+export const EmbeddedPdf = ({ index, vote }: { index: number; vote: Record<string, string> }) => {
+  const { ballot_design = '[]', election_title = '' } = useStored()
+
+  useEffect(() => {
+    async function renderToIframe() {
+      const pdfBytes = await MarkPdf({ ballot_design, election_title, vote })
+
+      const blob = new Blob([pdfBytes], { type: 'application/pdf' })
+      const blobUrl = URL.createObjectURL(blob)
+      const el = document.getElementById(`iframe-${index}`) as HTMLIFrameElement
+      if (!el) return alert("Can't find iframe to insert pdf")
+      el.src = blobUrl
+    }
+    renderToIframe()
+  }, [])
+
+  return <iframe id={`iframe-${index}`} style={{ borderWidth: 1, height: 500, maxWidth: 500, width: '100%' }} />
+}

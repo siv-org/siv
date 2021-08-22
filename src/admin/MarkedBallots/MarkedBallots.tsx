@@ -2,7 +2,7 @@ import { DownloadOutlined } from '@ant-design/icons'
 import { OnClickButton } from 'src/landing-page/Button'
 import { useDecryptedVotes } from 'src/status/use-decrypted-votes'
 
-import { PDF } from './PDF'
+import { EmbeddedPdf } from './EmbeddedPdf'
 
 export const MarkedBallots = () => {
   const votes = useDecryptedVotes()
@@ -28,7 +28,7 @@ export const MarkedBallots = () => {
           {votes.map((vote, index) => (
             <div key={index}>
               {/* <p key={vote.verification}>{JSON.stringify(vote)}</p> */}
-              <PDF {...{ index, vote }} />
+              <EmbeddedPdf {...{ index, vote }} />
             </div>
           ))}
         </>
