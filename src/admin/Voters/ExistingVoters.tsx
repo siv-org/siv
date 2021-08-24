@@ -5,6 +5,7 @@ import { InvalidVotersTable } from './InvalidVotersTables'
 import { NumVotedRow } from './NumVotedRow'
 import { getStatus } from './Signature'
 import { TopBarButtons } from './TopBarButtons'
+import { UnlockedStatus } from './UnlockedStatus'
 import { use_latest_mailgun_events } from './use-latest-mailgun-events'
 import { ValidVotersTable } from './ValidVotersTables'
 
@@ -35,6 +36,7 @@ export const ExistingVoters = () => {
 
   return (
     <>
+      <UnlockedStatus />
       <TopBarButtons {...{ checked, num_approved, num_voted }} />
 
       <NumVotedRow
