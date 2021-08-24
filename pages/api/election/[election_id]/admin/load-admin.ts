@@ -33,6 +33,7 @@ export type AdminData = {
   election_manager?: string
   election_title?: string
   esignature_requested?: boolean
+  notified_unlocked?: number
   threshold_public_key?: string
   trustees?: Trustee[]
   voters?: Voter[]
@@ -68,6 +69,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     election_manager,
     election_title,
     esignature_requested,
+    notified_unlocked,
     threshold_public_key,
   } = {
     ...electionDoc.data(),
@@ -77,6 +79,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     election_manager?: string
     election_title?: string
     esignature_requested?: boolean
+    notified_unlocked?: number
     threshold_public_key?: string
   }
 
@@ -137,6 +140,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     election_manager,
     election_title,
     esignature_requested,
+    notified_unlocked,
     threshold_public_key,
     trustees,
     voters,
