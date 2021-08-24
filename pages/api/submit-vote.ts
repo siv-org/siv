@@ -56,7 +56,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       from: election_manager,
       recipient: email,
       subject: 'Vote Confirmation',
-      text: `<h2 style="margin: 0">Your vote was successfully submitted. Thank you.</h2>
+      text: `<h2 style="margin: 0">Your vote was successfully submitted.</h2>
   The tallied results will be posted at <a href="${link}">${link}</a> when the election closes.
 
   For your records, your encrypted vote is attached.
