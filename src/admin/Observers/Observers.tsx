@@ -53,8 +53,8 @@ export const Observers = () => {
         Verifying Observers <span>(Optional)</span>
       </h2>
       <p>
-        SIV always ensures vote privacy & accuracy. For additional security, Verifying Observers also get complete
-        cryptographic proof that votes are private & tallied correctly.
+        This lets you give indepedent Verifying Observers complete cryptographic proof that votes are private & tallied
+        correctly.
       </p>
       <p>
         If you add them, votes cannot be unlocked and tallied until their computers run the automatic verification
