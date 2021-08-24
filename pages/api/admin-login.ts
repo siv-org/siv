@@ -6,14 +6,15 @@ import { big } from 'src/crypto/types'
 import { firebase, sendEmail } from './_services'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { email }: { email: string } = req.body
+  let { email }: { email: string } = req.body
 
   // Confirm they sent a valid email address
   if (!email) return res.status(400).send('Missing email')
   if (!email.includes('@') || !email.includes('.')) return res.status(400).send('Malformed')
+  email = email.toLowerCase()
 
   // Is this email an approved election manager?
-  const adminDoc = firebase.firestore().collection('admins').doc(email.toLowerCase())
+  const adminDoc = firebase.firestore().collection('admins').doc(email)
 
   // Store 'failed-logins' in db
   if (!(await adminDoc.get()).exists) {

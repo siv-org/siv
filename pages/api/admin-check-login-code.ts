@@ -13,7 +13,9 @@ export type JWT_Payload = {
 }
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { code, email }: { code: string; email: string } = req.body
+  const { code }: { code: string } = req.body
+  let { email }: { email: string } = req.body
+  email = email.toLowerCase()
 
   // Is this email an approved election manager?
   const adminDoc = firebase.firestore().collection('admins').doc(email)
