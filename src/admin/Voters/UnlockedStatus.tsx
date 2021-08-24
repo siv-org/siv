@@ -1,7 +1,7 @@
 import { api } from 'src/api-helper'
 import { useDecryptedVotes } from 'src/status/use-decrypted-votes'
 
-import { useStored } from '../useStored'
+import { revalidate, useStored } from '../useStored'
 
 export const UnlockedStatus = () => {
   const { election_id, notified_unlocked, valid_voters } = useStored()
@@ -19,8 +19,9 @@ export const UnlockedStatus = () => {
           ✅ Successfully unlocked {unlocked_votes.length} votes.{' '}
           {notified_unlocked !== unlocked_votes.length ? (
             <a
-              onClick={() => {
-                api(`election/${election_id}/admin/notify-unlocked`)
+              onClick={async () => {
+                await api(`election/${election_id}/admin/notify-unlocked`)
+                revalidate(election_id)
               }}
             >
               Notify voters?
