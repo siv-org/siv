@@ -7,7 +7,7 @@ import useSWR from 'swr'
 import { Cipher_Text } from '../crypto/types'
 import { Item } from '../vote/storeElectionInfo'
 
-type Vote = { auth: string } & { [index: string]: Cipher_Text }
+export type EncryptedVote = { auth: string } & { [index: string]: Cipher_Text }
 const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
 export const AcceptedVotes = ({
@@ -21,7 +21,7 @@ export const AcceptedVotes = ({
 }): JSX.Element => {
   const { election_id } = useRouter().query
 
-  const { data: votes, mutate } = useSWR<Vote[]>(
+  const { data: votes, mutate } = useSWR<EncryptedVote[]>(
     !election_id ? null : `/api/election/${election_id}/accepted-votes`,
     fetcher,
   )
@@ -130,7 +130,7 @@ export const AcceptedVotes = ({
   )
 }
 
-export const stringifyEncryptedVote = (vote: Vote) =>
+export const stringifyEncryptedVote = (vote: EncryptedVote) =>
   `{ auth: ${vote.auth}${Object.keys(vote)
     .map((key) =>
       key === 'auth' ? '' : `, ${key}: { encrypted: '${vote[key].encrypted}', lock: '${vote[key].unlock}' }`,

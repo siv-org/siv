@@ -1,7 +1,8 @@
 import { firestore } from 'firebase-admin'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { Cipher_Text } from 'src/crypto/types'
 
-import { stringifyEncryptedVote } from '../../src/status/AcceptedVotes'
+import { EncryptedVote, stringifyEncryptedVote } from '../../src/status/AcceptedVotes'
 import { firebase, pushover, sendEmail } from './_services'
 import { validateAuthToken } from './check-auth-token'
 import { pusher } from './pusher'
@@ -51,18 +52,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   promises.push(
     sendEmail({
+      attachment: { data: buildSubmissionReceipt(auth, encrypted_vote), filename: 'receipt.txt' },
       from: election_manager,
       recipient: email,
       subject: 'Vote Confirmation',
       text: `<h2 style="margin: 0">Your vote was successfully submitted. Thank you.</h2>
   The tallied results will be posted at <a href="${link}">${link}</a> when the election closes.
 
-  <hr />
-
-  For your records, here is the encrypted vote you submitted.
-  You can confirm it matches your private Encryption Receipt.
-
-<code style="font-size: 11px; margin: 0 30px;">${stringifyEncryptedVote({ auth, ...encrypted_vote })}</code>
+  For your records, your encrypted vote is attached.
 
   <em style="font-size:13px">You can press reply if you have a problem.</em>`,
     }),
@@ -74,3 +71,16 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   res.status(200).send('Success.')
 }
+
+const buildSubmissionReceipt = (auth: string, encrypted_vote: Record<string, Cipher_Text>) =>
+  Buffer.from(`
+============================
+Encrypted Submission Receipt
+============================
+
+This is the encrypted vote you submitted.
+
+You can confirm it matches your private Encryption Details by revisiting your vote invitation link on the same voting device.
+
+${stringifyEncryptedVote({ auth, ...encrypted_vote } as EncryptedVote)}
+`)

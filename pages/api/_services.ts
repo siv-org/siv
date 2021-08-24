@@ -1,5 +1,5 @@
 import Firebase from 'firebase-admin'
-import Mailgun from 'mailgun-js'
+import Mailgun, { AttachmentParams } from 'mailgun-js'
 
 const {
   FIREBASE_CLIENT_EMAIL,
@@ -31,6 +31,7 @@ export const mailgun = Mailgun({
 })
 
 export const sendEmail = ({
+  attachment,
   from,
   fromEmail,
   preheader,
@@ -38,6 +39,7 @@ export const sendEmail = ({
   subject,
   text,
 }: {
+  attachment?: AttachmentParams
   from?: string
   fromEmail?: string
   preheader?: string
@@ -46,6 +48,7 @@ export const sendEmail = ({
   text: string
 }) =>
   mailgun.messages().send({
+    attachment: !attachment ? undefined : new mailgun.Attachment(attachment),
     from: `${from || 'SIV Admin'} <${fromEmail || 'election@secureinternetvoting.org'}>`,
     html: `<body style="background-color: #f5f5f5; padding: 2em 0.5em;">
     <table align="center" style="text-align: left; max-width: 600px; background-color: white;">
