@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { api } from 'src/api-helper'
 import { useDecryptedVotes } from 'src/status/use-decrypted-votes'
 
@@ -22,7 +23,13 @@ export const UnlockedStatus = () => {
         </p>
       ) : !more_to_unlock ? (
         <p>
-          ✅ Successfully unlocked {unlocked_votes.length} votes.{' '}
+          ✅ Successfully{' '}
+          <Link href={`/election/${election_id}`}>
+            <a className="status" target="_blank">
+              unlocked {unlocked_votes.length}
+            </a>
+          </Link>{' '}
+          votes.{' '}
           {notified_unlocked !== unlocked_votes.length ? (
             <a
               onClick={async () => {
@@ -67,6 +74,11 @@ export const UnlockedStatus = () => {
         a {
           font-weight: 600;
           cursor: pointer;
+        }
+
+        a.status {
+          color: black;
+          font-weight: 500;
         }
 
         b {
