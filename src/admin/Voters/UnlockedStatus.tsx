@@ -10,7 +10,7 @@ export const UnlockedStatus = () => {
   const unlocked_votes = useDecryptedVotes()
   const isUnlockBlocked = useIsUnlockBlocked()
 
-  if (!num_voted || !unlocked_votes || !unlocked_votes.length) return null
+  if (!num_voted || !unlocked_votes || (!isUnlockBlocked && !unlocked_votes.length)) return null
 
   const more_to_unlock = num_voted > unlocked_votes.length
 

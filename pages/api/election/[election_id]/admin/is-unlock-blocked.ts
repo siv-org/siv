@@ -29,11 +29,15 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   let waiting_on: IsUnlockBlocked = null
 
   // Stop if no trustees yet
-  if (!trustees.length) return res.status(200).send(null)
+  if (!trustees.length) return res.status(200).send(waiting_on)
 
   // How many has admin shuffled?
   const admin_shuffled = trustees[0].shuffled
+  // Stop if admin hasn't started shuffling yet
+  if (!admin_shuffled) return res.status(200).send(waiting_on)
+
   const first_col = Object.keys(admin_shuffled)[0]
+
   const num_admin_shuffled = admin_shuffled[first_col].shuffled.length
 
   // Check if any trustee haven't shuffled as many
@@ -41,7 +45,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     // Skip admin
     if (index === 0) return true
 
-    const num_shuffled = shuffled[first_col].shuffled.length
+    const num_shuffled = (shuffled || {})[first_col]?.shuffled.length || 0
     if (num_shuffled < num_admin_shuffled) {
       waiting_on = email
     }
@@ -50,6 +54,17 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (waiting_on) return res.status(206).send(waiting_on)
 
   // Check if any trustees haven't decrypted
+  trustees.every(({ email, partials }, index) => {
+    // Skip admin
+    if (index === 0) return true
+
+    const num_decrypted = (partials || {})[first_col]?.length || 0
+    if (num_decrypted < num_admin_shuffled) {
+      waiting_on = email
+    }
+    return !waiting_on // Break out of loop when we find one
+  })
+  if (waiting_on) return res.status(206).send(waiting_on)
 
   // Not blocked
   return res.status(200).send(waiting_on)

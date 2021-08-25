@@ -8,7 +8,6 @@ export function useIsUnlockBlocked(): IsUnlockBlocked | undefined {
 
   const { data }: { data?: IsUnlockBlocked } = useSWR(election_id ? url(election_id) : null, (url: string) =>
     fetch(url).then(async (r) => {
-      console.log({ r })
       if (!r.ok) throw await r.json()
       return await r.text()
     }),
