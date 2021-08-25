@@ -2,13 +2,17 @@ import { useEffect } from 'react'
 import { pusher } from 'src/pusher-helper'
 
 import { revalidate } from './useStored'
+import { revalidateUnlockStatus } from './Voters/use-is-unlock-blocked'
 
 export function usePusher(election_id?: string) {
   function subscribe() {
     if (!pusher) return alert('Pusher not initialized')
 
     const keygenChannel = pusher.subscribe(`keygen-${election_id}`)
-    keygenChannel.bind('update', () => revalidate(election_id))
+    keygenChannel.bind('update', () => {
+      revalidate(election_id)
+      revalidateUnlockStatus(election_id)
+    })
 
     const statusChannel = pusher.subscribe(`status-${election_id}`)
     statusChannel.bind('pub_key', ({ threshold_public_key }: { threshold_public_key: string }) => {
