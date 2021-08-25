@@ -2,23 +2,23 @@ import { api } from 'src/api-helper'
 import { useDecryptedVotes } from 'src/status/use-decrypted-votes'
 
 import { revalidate, useStored } from '../useStored'
+import { useIsUnlockBlocked } from './use-is-unlock-blocked'
 
 export const UnlockedStatus = () => {
   const { election_id, notified_unlocked, valid_voters } = useStored()
   const num_voted = valid_voters?.filter((v) => v.has_voted).length || 0
   const unlocked_votes = useDecryptedVotes()
+  const isUnlockBlocked = useIsUnlockBlocked()
 
   if (!num_voted || !unlocked_votes || !unlocked_votes.length) return null
 
   const more_to_unlock = num_voted > unlocked_votes.length
 
-  const waiting_on_observer = 'foo@dsernst.com'
-
   return (
-    <div className={more_to_unlock || waiting_on_observer ? 'warning' : ''}>
-      {waiting_on_observer ? (
+    <div className={more_to_unlock || isUnlockBlocked ? 'warning' : ''}>
+      {isUnlockBlocked ? (
         <p>
-          ⚠️ Unlocking: Waiting on Observer <i> {waiting_on_observer}</i>
+          ⚠️ Unlocking: Waiting on Observer <i> {isUnlockBlocked}</i>
         </p>
       ) : !more_to_unlock ? (
         <p>
