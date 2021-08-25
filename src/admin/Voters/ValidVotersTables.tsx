@@ -100,7 +100,7 @@ export const ValidVotersTable = ({
                   set_checked(new_checked)
                 }}
               >
-                <input readOnly checked={checked[index]} className="hoverable" type="checkbox" />
+                <input readOnly checked={!!checked[index]} className="hoverable" type="checkbox" />
               </td>
               <td className="show-strikethrough">{index + 1}</td>
               <td className="show-strikethrough">
