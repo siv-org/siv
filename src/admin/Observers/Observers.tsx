@@ -227,7 +227,7 @@ export const Observers = () => {
       {(trustees?.length || 0) > 1 && !threshold_public_key && (
         <p>
           <br />
-          <i>Waiting on Verifying Observers to complete the Pre-Election setup...</i>
+          <i>Waiting for Verifying Observers to complete the Pre-Election setup...</i>
         </p>
       )}
       <EncryptionAddress />
