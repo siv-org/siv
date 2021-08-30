@@ -79,7 +79,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Store auth tokens in db
   promises.push(
     Promise.all(
-      trustees.map(({ email, name }: Trustee, index: number) =>
+      trustees.map(({ email, name = '' }: Trustee, index: number) =>
         election
           .collection('trustees')
           .doc(email)
