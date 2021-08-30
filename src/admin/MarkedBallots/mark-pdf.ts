@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { PDFDocument, StandardFonts, rgb } from 'pdf-lib'
+import { PDFDocument, PDFFont, StandardFonts, rgb } from 'pdf-lib'
 import { Item } from 'src/vote/storeElectionInfo'
 
 export const markPdf = async ({
@@ -56,46 +56,48 @@ export const markPdf = async ({
     y: height - 70,
   })
 
-  const lineHeight = 22
+  let currentY = height - 98
+  const col_width = 195
 
   // For each question:
-  ;(JSON.parse(ballot_design) as Item[]).forEach(({ id = 'vote', options, title, write_in_allowed }, index) => {
-    const questionY = height - 100 - 140 * index
+  ;(JSON.parse(ballot_design) as Item[]).forEach(({ id = 'vote', options, title, write_in_allowed }) => {
+    const questionYTop = currentY
 
     const x = 190
 
-    // Draw rectangle for question title
+    const title_line_height = 12
+    const title_x_padding = 5
+    const title_y_padding = 6
+    const num_lines = fillParagraph(title, helveticaFont, 10, col_width - title_x_padding * 2)
+
+    const multi_line_offset = (num_lines - 1) * (title_line_height + 3)
+
+    // Question title background rectangle
+    const boxHeight = (title_line_height + 3) * num_lines
     page.drawRectangle({
       borderWidth: 0,
       color: rgb(0.85, 0.85, 0.85),
-      height: 20,
-      width: 192,
-      x: x - 5,
-      y: questionY - 5,
-    })
-
-    // Draw rectangle around question
-    page.drawRectangle({
-      borderColor: rgb(0, 0, 0),
-      borderWidth: 1,
-      height: 130,
-      width: 192,
-      x: x - 5,
-      y: questionY - 114,
+      height: boxHeight,
+      width: col_width,
+      x: x - title_x_padding,
+      y: currentY - boxHeight + title_y_padding * 2 + multi_line_offset,
     })
 
     // Write question title
     page.drawText(title, {
       color: rgb(0, 0, 0),
       font: helveticaFont,
+      lineHeight: title_line_height,
+      maxWidth: col_width - title_x_padding * 2,
       size: 10,
       x: x,
-      y: questionY,
+      y: currentY + multi_line_offset,
     })
 
+    const lineHeight = 22
     // Write each option
-    options.forEach(({ name }, index) => {
-      const y = questionY - (20 + index * lineHeight)
+    options.forEach(({ name }) => {
+      currentY -= lineHeight
 
       // Draw checkbox
       page.drawRectangle({
@@ -105,7 +107,7 @@ export const markPdf = async ({
         height: 10,
         width: 16,
         x: x + 3,
-        y,
+        y: currentY,
       })
 
       // Write option name
@@ -114,14 +116,13 @@ export const markPdf = async ({
         font: helveticaFont,
         size: 12,
         x: x + 25,
-        y,
+        y: currentY,
       })
     })
 
-    const writeInY = questionY - (20 + options.length * lineHeight)
-
     // Draw write-in
     if (write_in_allowed) {
+      currentY -= lineHeight
       const did_write_in = vote[id] && !options.some(({ name }) => vote[id] === name.toUpperCase())
 
       // Draw checkbox
@@ -132,7 +133,7 @@ export const markPdf = async ({
         height: 10,
         width: 16,
         x: x + 3,
-        y: writeInY,
+        y: currentY,
       })
 
       if (did_write_in) {
@@ -142,21 +143,23 @@ export const markPdf = async ({
           font: helveticaFont,
           size: 12,
           x: x + 25,
-          y: writeInY + 3,
+          y: currentY + 3,
         })
       }
 
       // Draw dotted line
-      new Array(17).fill(true).forEach((_, index) => {
+      new Array(17).fill(true).forEach((_, dash) => {
         page.drawRectangle({
           borderColor: rgb(0, 0, 0),
           borderWidth: 1,
           height: 0,
           width: 5,
-          x: x + 25 + index * 8,
-          y: writeInY,
+          x: x + 25 + dash * 8,
+          y: currentY,
         })
       })
+
+      currentY -= 9
 
       // Write 'write-in'
       page.drawText('Write-in', {
@@ -164,10 +167,54 @@ export const markPdf = async ({
         font: helveticaFont,
         size: 8,
         x: x + 25,
-        y: writeInY - 9,
+        y: currentY,
       })
     }
+
+    // Box bottom padding
+    currentY -= 5
+
+    const questionHeight = questionYTop - currentY + boxHeight - 3
+
+    // Draw rectangle around whole question
+    page.drawRectangle({
+      borderColor: rgb(0, 0, 0),
+      borderWidth: 1,
+      height: questionHeight,
+      width: col_width,
+      x: x - title_x_padding,
+      y: currentY,
+    })
+
+    // Question margin bottom
+    currentY -= 30
   })
 
   return pdfDoc
+}
+
+// based on https://github.com/Hopding/pdf-lib/issues/20#issuecomment-894784448
+const fillParagraph = (text: string, font: PDFFont, fontSize: number, maxWidth: number): number => {
+  const paragraphs = text.split('\n')
+  for (let index = 0; index < paragraphs.length; index++) {
+    const paragraph = paragraphs[index]
+    if (font.widthOfTextAtSize(paragraph, fontSize) > maxWidth) {
+      const words = paragraph.split(' ')
+      const newParagraph: string[][] = []
+      let i = 0
+      newParagraph[i] = []
+      for (let k = 0; k < words.length; k++) {
+        const word = words[k]
+        newParagraph[i].push(word)
+        if (font.widthOfTextAtSize(newParagraph[i].join(' '), fontSize) > maxWidth) {
+          newParagraph[i].splice(-1)
+          i = i + 1
+          newParagraph[i] = []
+          newParagraph[i].push(word)
+        }
+      }
+      paragraphs[index] = newParagraph.map((p) => p.join(' ')).join('\n')
+    }
+  }
+  return paragraphs[0].split('\n').length
 }
