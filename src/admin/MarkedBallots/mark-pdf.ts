@@ -216,5 +216,5 @@ const fillParagraph = (text: string, font: PDFFont, fontSize: number, maxWidth: 
       paragraphs[index] = newParagraph.map((p) => p.join(' ')).join('\n')
     }
   }
-  return paragraphs[0].split('\n').length
+  return paragraphs.reduce((acc, p) => acc + p.split('\n').length, 0)
 }
