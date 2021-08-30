@@ -2,6 +2,14 @@ import moment from 'moment'
 import { PDFDocument, PDFFont, StandardFonts, rgb } from 'pdf-lib'
 import { Item } from 'src/vote/storeElectionInfo'
 
+/*
+Here are 3 different elections by user david@siv, each with distinct ballot schemas, to test this code renders correctly:
+
+http://localhost:3000/admin/1630029086677/marked-ballots
+http://localhost:3000/admin/1609262256833/marked-ballots
+http://localhost:3000/admin/1629843954245/marked-ballots
+*/
+
 export const markPdf = async ({
   ballot_design,
   election_title,
