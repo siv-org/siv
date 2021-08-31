@@ -1,10 +1,9 @@
 import { firestore } from 'firebase-admin'
 import { pick } from 'lodash-es'
 import { NextApiRequest, NextApiResponse } from 'next'
-
-import { Trustee } from '../../../../../src/trustee/trustee-state'
-import { firebase } from '../../../_services'
-import { pusher } from '../../../pusher'
+import { firebase } from 'pages/api/_services'
+import { pusher } from 'pages/api/pusher'
+import { Trustee } from 'src/trustee/trustee-state'
 
 const { ADMIN_EMAIL } = process.env
 
@@ -55,7 +54,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       'private_coefficients',
       'pairwise_shares_for',
       'commitments',
-      'keygen_attempt',
     ]
 
     const cleaned = pick(admin, [...all_trustee_initial_fields, ...admin_initial_fields])
@@ -63,7 +61,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     // Keep admins own decrypted_share for themselves
     cleaned.decrypted_shares_from = pick(admin?.decrypted_shares_from, ADMIN_EMAIL)
 
-    return adminDoc.set(cleaned)
+    return adminDoc.set({
+      ...cleaned,
+      keygen_attempt: 1 + admin?.keygen_attempt,
+      previous_keygen_attempt: [admin, ...admin?.previous_keygen_attempt],
+    })
   }
 
   // Reset db info about other trustees
@@ -79,7 +81,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
         const cleaned = pick(t, all_trustee_initial_fields)
 
-        return electionDoc.collection('trustees').doc(t.email).set(cleaned)
+        return electionDoc
+          .collection('trustees')
+          .doc(t.email)
+          .set({ ...cleaned, previous_keygen_attempt: firestore.FieldValue.arrayUnion(t) })
       }),
     )
   }
