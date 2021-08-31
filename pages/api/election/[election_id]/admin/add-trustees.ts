@@ -169,7 +169,7 @@ export const sendTrusteeInvite = ({
   sendEmail({
     from: `${election_manager} via SIV`,
     recipient: email,
-    subject: `Invitation to be a Verifying Observer: ${election_title || `Election ${election_id}`}`,
+    subject: buildSubject(election_id, election_title),
     text: `Dear ${name || email},
 <h3 style="margin-bottom:0">${election_manager} invited you to be a Verifying Observer${
       election_title ? ` for the election: ${election_title}` : ''
@@ -185,3 +185,6 @@ At the end of the election, the Election Manager will ask you to open it again. 
 
 Thank you for helping to make this election more secure.`,
   })
+
+export const buildSubject = (election_id: string, election_title?: string) =>
+  `Invitation to be a Verifying Observer: ${election_title || `Election ${election_id}`}`

@@ -4,6 +4,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 import { firebase, mailgun, pushover } from '../../../_services'
 import { checkJwtOwnsElection } from '../../../validate-admin-jwt'
+import { buildSubject } from './add-trustees'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { election_id } = req.query as { election_id: string }
@@ -20,7 +21,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     created_at: { _seconds: number }
     election_title?: string
   }
-  const subject_line = `Trustee Invitation: ${election_title || `Election ${election_id}`}`
 
   // Find one page of mailgun events for this election
   function getMgEvents(next?: string) {
@@ -28,7 +28,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       ascending: 'yes',
       begin: new Date(created_at._seconds * 1000).toUTCString(),
       limit: 300,
-      subject: subject_line,
+      subject: buildSubject(election_id, election_title),
     })
   }
 
