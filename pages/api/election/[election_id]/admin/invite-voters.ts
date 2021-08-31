@@ -2,7 +2,7 @@ import bluebird from 'bluebird'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import { firebase } from '../../../_services'
-import { send_invitation_email } from '../../../invite-voters'
+import { buildSubject, send_invitation_email } from '../../../invite-voters'
 import { checkJwtOwnsElection } from '../../../validate-admin-jwt'
 
 export type QueueLog = { result: string; time: Date }
@@ -21,7 +21,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     election_manager?: string
     election_title?: string
   }
-  const subject_line = `Vote Invitation${election_title ? `: ${election_title}` : ''}`
 
   // Email each voter their auth token
   await bluebird
@@ -37,7 +36,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         const link = `${req.headers.origin}/election/${election_id}/vote?auth=${auth_token}`
         // const link = `https://secureinternetvoting.org/election/${election_id}/vote?auth=${auth_token}`
 
-        return send_invitation_email({ from: election_manager, link, subject_line, voter: email }).then((result) => {
+        return send_invitation_email({
+          from: election_manager,
+          link,
+          subject_line: buildSubject(election_title),
+          voter: email,
+        }).then((result) => {
           console.log(email, result)
           // Store queued_log in DB
           voter_doc.update({ invite_queued: [...(invite_queued || []), { result, time: new Date() }] })

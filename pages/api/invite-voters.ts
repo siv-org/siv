@@ -35,9 +35,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       (voter: string, index: number) => {
         const link = `${req.headers.origin}/election/${election_id}/vote?auth=${auth_tokens[index]}`
 
-        const subject_line = `Vote Invitation${election_title ? `: ${election_title}` : ''}`
-
-        return send_invitation_email({ link, subject_line, voter }).then((result) => {
+        return send_invitation_email({ link, subject_line: buildSubject(), voter }).then((result) => {
           console.log(voter, result)
           // Wait a second after sending to not overload Mailgun
           return new Promise((res) => setTimeout(res, 1000))
@@ -54,6 +52,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   return res.status(201).end(election_id)
 }
+
+export const buildSubject = (election_title?: string) => `Vote Invitation${election_title ? `: ${election_title}` : ''}`
 
 export const send_invitation_email = ({
   from,

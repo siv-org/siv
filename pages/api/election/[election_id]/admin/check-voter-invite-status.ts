@@ -1,6 +1,7 @@
 import bluebird from 'bluebird'
 import { firestore } from 'firebase-admin'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { buildSubject } from 'pages/api/invite-voters'
 
 import { firebase, mailgun, pushover } from '../../../_services'
 import { checkJwtOwnsElection } from '../../../validate-admin-jwt'
@@ -20,7 +21,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     created_at: { _seconds: number }
     election_title?: string
   }
-  const subject_line = `Vote Invitation${election_title ? `: ${election_title}` : ''}`
 
   // Find one page of mailgun events for this election
   function getMgEvents(next?: string) {
@@ -28,7 +28,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       ascending: 'yes',
       begin: new Date(created_at._seconds * 1000).toUTCString(),
       limit: 300,
-      subject: subject_line,
+      subject: buildSubject(election_title),
     })
   }
 
