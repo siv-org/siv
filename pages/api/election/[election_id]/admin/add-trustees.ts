@@ -136,6 +136,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           commitments,
           decrypted_shares_from,
           decryption_key: pair.decryption_key.toString(),
+          keygen_attempt: 1,
           pairwise_shares_for,
           private_coefficients: private_coefficients.map((c) => c.toString()),
           recipient_key: pair.public_key.recipient.toString(),

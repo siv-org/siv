@@ -55,6 +55,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       'private_coefficients',
       'pairwise_shares_for',
       'commitments',
+      'keygen_attempt',
     ]
 
     const cleaned = pick(admin, [...all_trustee_initial_fields, ...admin_initial_fields])

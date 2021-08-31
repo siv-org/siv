@@ -1,8 +1,8 @@
 import { pick } from 'lodash-es'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { firebase } from 'pages/api/_services'
+import { Trustee } from 'src/trustee/trustee-state'
 
-import { Trustee } from '../../../../../src/trustee/trustee-state'
-import { firebase } from '../../../_services'
 import { transform_email_keys } from './commafy'
 
 export type ParametersString = { g: string; p: string; q: string; t: number }

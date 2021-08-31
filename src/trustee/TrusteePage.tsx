@@ -9,6 +9,7 @@ import { ShuffleAndDecrypt } from './decrypt/ShuffleAndDecrypt'
 import { getTrusteesOnInit } from './get-latest-from-server'
 import { HeaderBar } from './HeaderBar'
 import { Keygen } from './keygen/_Keygen'
+import { useKeygenAttempt } from './keygen/useKeygenAttempt'
 import { initPusher } from './pusher-helper'
 import { useTrusteeState } from './trustee-state'
 
@@ -48,7 +49,7 @@ export const TrusteePage = (): JSX.Element => {
           <Tab label="After Election" />
         </Tabs>
 
-        {!(election_id && auth) ? <p>Need election_id and auth</p> : <ClientOnly {...{ auth, election_id }} />}
+        {!(election_id && auth) ? <p>Need election_id and auth</p> : <LoadedParams {...{ auth, election_id }} />}
       </main>
 
       <style jsx>{`
@@ -74,9 +75,24 @@ export const TrusteePage = (): JSX.Element => {
   )
 }
 
-const ClientOnly = ({ auth, election_id }: { auth: string; election_id: string }) => {
+const LoadedParams = ({ auth, election_id }: { auth: string; election_id: string }) => {
+  const attempt = useKeygenAttempt(election_id)
+  if (!attempt) return <p>Loading keygen_attempt #</p>
+
+  return <LoadedAttemptNumber {...{ attempt, auth, election_id }} />
+}
+
+const LoadedAttemptNumber = ({
+  attempt,
+  auth,
+  election_id,
+}: {
+  attempt: number
+  auth: string
+  election_id: string
+}) => {
   // Initialize local vote state on client
-  const [state, dispatch] = useTrusteeState({ auth, election_id })
+  const [state, dispatch] = useTrusteeState({ attempt, auth, election_id })
 
   // Get initial Trustee info
   getTrusteesOnInit({ dispatch, state })
