@@ -1,5 +1,7 @@
 import useSWR, { mutate } from 'swr'
 
+import { Dispatch } from '../trustee-state'
+
 export const useKeygenAttempt = (election_id: string) => {
   const { data }: { data?: number } = useSWR(url(election_id), (url: string) =>
     fetch(url).then(async (r) => {
@@ -11,8 +13,9 @@ export const useKeygenAttempt = (election_id: string) => {
   return data
 }
 
-export function revalidate(election_id?: string) {
-  mutate(url(election_id))
+export async function revalidateKeygenAttempt(election_id: string, auth: string, dispatch: Dispatch) {
+  await mutate(url(election_id))
+  dispatch({ reset: { auth, election_id, own_email: '' } })
 }
 
 const url = (election_id?: string) =>

@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { pusher } from 'src/pusher-helper'
 
 import { getLatestFromServer } from './get-latest-from-server'
+import { revalidateKeygenAttempt } from './keygen/useKeygenAttempt'
 import { StateAndDispatch } from './trustee-state'
 
 export function initPusher({ dispatch, state }: StateAndDispatch) {
@@ -14,13 +15,10 @@ export function initPusher({ dispatch, state }: StateAndDispatch) {
       getLatestFromServer({ dispatch, state })
     })
 
-    channel.bind('reset-keygen', (data: unknown) => {
-      console.log('🤡 Pusher reset', data)
+    channel.bind('reset-keygen', () => {
       const { auth, election_id } = state
-      const storage_key = `trustee-${election_id}-${auth}`
-      localStorage.removeItem(storage_key)
-      console.log(`Cleared localStorage[${`trustee-${state.election_id}-${state.auth}`}]`)
-      dispatch({ reset: { auth, election_id, own_email: '' } })
+      revalidateKeygenAttempt(election_id, auth, dispatch)
+      console.log(`♻️ New keygen attempt: observer-${election_id}-${auth}`)
     })
 
     channel.bind('reset-unlock', (data: unknown) => {

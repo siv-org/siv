@@ -64,7 +64,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     return adminDoc.set({
       ...cleaned,
       keygen_attempt: 1 + admin?.keygen_attempt,
-      previous_keygen_attempt: [admin, ...admin?.previous_keygen_attempt],
+      previous_keygen_attempt: [admin, ...(admin?.previous_keygen_attempt || [])],
     })
   }
 
