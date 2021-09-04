@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 
 import { Line } from './Line'
 import { useScrollContext } from './ScrollContext'
+import { stepHash } from './step-hash'
 import { Step as StepType } from './steps'
 import { useWindowDimensions } from './useWindowDimensions'
 
@@ -15,6 +16,7 @@ export const Step = ({ leftFirst = false, name, subheader, then }: StepType) => 
 
   return (
     <div id={name} key={name} style={{ background: 'white', padding: '3rem 30px' }}>
+      <a className="step-anchor" id={stepHash[name]} />
       <p className="step-name">{name}</p>
       {subheader && <p className="subheader">{subheader}</p>}
       {then.map(({ left, right }, index) => (
@@ -56,6 +58,12 @@ export const Step = ({ leftFirst = false, name, subheader, then }: StepType) => 
 
         /* Sidebar disappears */
         @media (max-width: 1030px) {
+          .step-anchor {
+            position: relative;
+            top: 30px;
+            display: block;
+          }
+
           .subheader {
             max-width: 43vw;
           }

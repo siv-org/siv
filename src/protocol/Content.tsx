@@ -1,5 +1,3 @@
-import router from 'next/router'
-
 import { Milestone } from './Milestone'
 import styles from './protocol.module.css'
 import { useScrollContext } from './ScrollContext'
@@ -73,7 +71,7 @@ function saveScrollPosition({ dispatch, state }: ReturnType<typeof useScrollCont
 
     if (current !== state.current) {
       dispatch({ current })
-      router.replace(`#${stepHash[current]}`)
+      history.replaceState(null, '', `#${stepHash[current]}`)
     }
   }
 }
