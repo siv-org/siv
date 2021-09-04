@@ -5,7 +5,7 @@ import styles from './protocol.module.css'
 import { useScrollContext } from './ScrollContext'
 import { Step } from './Step'
 import { stepHash } from './step-hash'
-import { groupedSteps } from './steps'
+import { groupedSteps, initStep } from './steps'
 
 export const Content = () => (
   <div
@@ -58,7 +58,7 @@ function saveScrollPosition({ dispatch, state }: ReturnType<typeof useScrollCont
     const { innerHeight, innerWidth } = window
 
     // Find currently scrolled to step
-    let current = 'Voter Registration'
+    let current = initStep
     for (const step in state) {
       const yOffset = state[step]
 

@@ -439,3 +439,5 @@ export const groupedSteps: Group[] = [
     ],
   },
 ]
+
+export const initStep = groupedSteps[0].steps[0].name

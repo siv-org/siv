@@ -1,7 +1,9 @@
 import { merge } from 'lodash-es'
 import { createContext, useContext, useMemo, useReducer } from 'react'
 
-const initState = { current: 'Voter Registration' }
+import { initStep } from './steps'
+
+const initState = { current: initStep }
 
 const reducer = (prev: State, payload: Payload) => merge({ ...prev }, payload)
 
