@@ -270,7 +270,7 @@ export const groupedSteps: Group[] = [
       {
         leftFirst: true,
         name: 'Step 4: Verifiable Shuffle',
-        subheader: 'All the encrypted votes are then anonymized by the Trustees.',
+        subheader: 'All the encrypted votes are then anonymized by the Verifying Observers.',
         then: [
           {
             left: [
@@ -303,7 +303,7 @@ export const groupedSteps: Group[] = [
               '',
               '',
               {
-                html: `Trustee #1 then shuffles the votes.`,
+                html: `Observer #1 then shuffles the votes.`,
               },
               '',
             ],
@@ -327,7 +327,7 @@ export const groupedSteps: Group[] = [
               '',
               '',
               {
-                html: `So, Trustee #1 then picks new Randomizer integers for each encrypted field, and ${purple(
+                html: `So, Observer #1 then picks new Randomizer integers for each encrypted field, and ${purple(
                   em(semibold('Re-encrypts')),
                 )} the shuffled votes.`,
               },
@@ -335,7 +335,7 @@ export const groupedSteps: Group[] = [
               {
                 html: `This is like ${semibold(
                   em('painting over'),
-                )} the outside of the safes. The vote content is still safely locked within, and the Trustee still has no ability to see or modify what's inside.`,
+                )} the outside of the safes. The vote content is still safely locked within, and the Observer still has no ability to see or modify what's inside.`,
               },
               '',
               {
@@ -354,16 +354,16 @@ export const groupedSteps: Group[] = [
               {
                 p: 'Now, the shuffled list is cryptographically mixed, with the original Auth Tokens unlinkable.',
               },
-              { p: 'Only Trustee #1 can possibly know the exact way they shuffled.' },
+              { p: 'Only Observer #1 can possibly know the exact way they shuffled.' },
               {
                 p: 'Their shuffled + re-encrypted list is now published publicly.',
               },
               '',
               {
                 html: `${light(
-                  `Each Trustee also provides a ${em(
+                  `Each Observer also provides a ${em(
                     `Zero-Knowledge Proof of a Valid Shuffle`,
-                  )}. The SIV Shuffling software generates this for them automatically. This proof allows anyone to verify vote accuracy, even if a Trustee is dishonest or compromised.`,
+                  )}. The SIV Shuffling software generates this for them automatically. This proof allows anyone to verify vote accuracy, even if a Observer is dishonest or compromised.`,
                 )}`,
               },
               '',
@@ -376,14 +376,14 @@ export const groupedSteps: Group[] = [
             left: [
               {
                 p:
-                  'For strong cryptographic privacy, Trustee #2 then repeats this same shuffle + re-encryption process, starting with the mixed list from Trustee #1.',
+                  'For strong cryptographic privacy, Observer #2 then repeats this same shuffle + re-encryption process, starting with the mixed list from Observer #1.',
               },
               '',
               {
-                p: `This way, all of our Trustees independently shuffle the encrypted votes, like multiple people shuffling a deck of cards, then handing it off to the next person.`,
+                p: `This way, all of the Observers independently shuffle the encrypted votes, like multiple people shuffling a deck of cards, then handing it off to the next person.`,
               },
               {
-                p: `Total privacy is ensured as long as at least a single Trustee refuses to share their record of how they shuffled.`,
+                p: `Total privacy is ensured as long as at least a single Observer refuses to share their record of how they shuffled.`,
               },
             ],
             right: ['', '', { image: 'step-4-shuffle.png', maxWidth: 490 }],
@@ -394,7 +394,7 @@ export const groupedSteps: Group[] = [
       // Step 5
       {
         name: 'Step 5: Votes Unlocked & Tallied',
-        subheader: 'A quorum of Trustees then works together to Unlock the final shuffled list.',
+        subheader: 'A quorum of Verifying Observers then works together to Unlock the final shuffled list.',
         then: [
           {
             left: [
@@ -407,7 +407,7 @@ export const groupedSteps: Group[] = [
             ],
             right: [
               '',
-              { html: "<b>Each Trustee's individual key can partially unlock the final votes.</b>" },
+              { html: "<b>Each Observer's individual key can partially unlock the final votes.</b>" },
               '',
               { image: 'pre-c-key.png', maxWidth: 200 },
               '',
