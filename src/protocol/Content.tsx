@@ -1,7 +1,10 @@
+import router from 'next/router'
+
 import { Milestone } from './Milestone'
 import styles from './protocol.module.css'
 import { useScrollContext } from './ScrollContext'
 import { Step } from './Step'
+import { stepHash } from './step-hash'
 import { groupedSteps } from './steps'
 
 export const Content = () => (
@@ -70,6 +73,7 @@ function saveScrollPosition({ dispatch, state }: ReturnType<typeof useScrollCont
 
     if (current !== state.current) {
       dispatch({ current })
+      router.replace(`#${stepHash[current]}`)
     }
   }
 }
