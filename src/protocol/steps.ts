@@ -167,8 +167,10 @@ export const groupedSteps: Group[] = [
             ],
           },
           { left: ['', '', '', ''] },
-          // { html: `This step is completed by using a ${green(semibold('SIV Sealing Tool'))}:` },
-          // { image: 'step-2g-tool-options.png', maxWidth: 462 },
+          // {
+          //   left: [{ html: `This step is completed by using a ${orange(semibold('SIV Sealing Tool'))}:` }],
+          //   right: [{ image: 'step-2g-tool-options.png', maxWidth: 462 }],
+          // },
           {
             left: [
               {
