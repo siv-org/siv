@@ -139,7 +139,7 @@ export const groupedSteps: Group[] = [
             right: ['', { react: Ballot }],
           },
           {
-            left: [{ html: `SIV adds a special ${em('Verification Secret')} section at the end.` }],
+            left: [{ html: `SIV adds a unique ${em('Verification #')} before votes are encrypted.` }],
             right: [{ react: VerificationSecret }],
           },
           {
@@ -418,7 +418,7 @@ export const groupedSteps: Group[] = [
               '',
               '',
               {
-                p: `Any voter can Search (Ctrl+F) to find their individual vote, via their Verification Secret, and see that their vote was counted correctly.`,
+                p: `Any voter can Search (Ctrl+F) to find their individual vote, via their Verification #, and see that their vote was counted correctly.`,
               },
               '',
               '',
