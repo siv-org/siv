@@ -73,6 +73,7 @@ export const groupedSteps: Group[] = [
             ],
             right: [{ react: BallotDesigner }],
           },
+          { left: ['', '', '', '', ''] },
         ],
       },
 
