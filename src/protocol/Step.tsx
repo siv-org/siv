@@ -27,6 +27,12 @@ export const Step = ({ leftFirst = false, name, subheader, then }: StepType) => 
       ))}
 
       <style jsx>{`
+        .step-anchor {
+          position: relative;
+          bottom: 30px;
+          display: block;
+        }
+
         .step-name {
           margin: 0;
           color: #000c;
@@ -59,9 +65,8 @@ export const Step = ({ leftFirst = false, name, subheader, then }: StepType) => 
         /* Sidebar disappears */
         @media (max-width: 1030px) {
           .step-anchor {
-            position: relative;
             top: 30px;
-            display: block;
+            bottom: unset;
           }
 
           .subheader {

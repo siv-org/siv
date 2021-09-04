@@ -1,6 +1,7 @@
 import Link from 'next/link'
 
 import { useScrollContext } from './ScrollContext'
+import { stepHash } from './step-hash'
 import { groupedSteps } from './steps'
 
 export const Sidebar = () => {
@@ -21,8 +22,11 @@ export const Sidebar = () => {
           {steps.map((step) => (
             <a
               className={state.current === step.name ? 'current' : ''}
+              href={`#${stepHash[step.name]}`}
               key={step.name}
-              onClick={() => {
+              onClick={(event) => {
+                event.preventDefault()
+
                 const $Protocol = document.getElementById('protocol') as HTMLElement
                 const offset = state[step.name]
                 $Protocol.scrollTop = Number(offset) - 30
@@ -48,11 +52,11 @@ export const Sidebar = () => {
           width: 43px;
           color: #fffb;
           transition: 0.05s color linear;
+          text-decoration: none;
         }
 
         h2 a:hover {
           color: #fffffff8;
-          text-decoration: none;
         }
 
         h3 {
@@ -74,12 +78,12 @@ export const Sidebar = () => {
           cursor: pointer;
           color: #fffa;
           transition: 0.05s color linear;
+          text-decoration: none;
         }
 
         .steps a:hover {
           color: #fffe;
           background-color: #ffffff18;
-          text-decoration: none;
         }
 
         .steps a.current {
