@@ -174,8 +174,8 @@ export const groupedSteps: Group[] = [
           {
             left: [
               {
-                html: `You can download an Encryption Receipt, allowing you or 3rd-party auditors to verify that everything worked as intended.<br />
-          ${light(`This is optional. It helps prove or disprove claims of improper results.`)}`,
+                html: `SIV creates an Encryption Receipt for each voter, allowing them or 3rd-party auditors to verify that everything worked as intended.<br />
+          ${light(`This is automatically stored in the browser's localstorage, and never leaves the device.`)}`,
               },
             ],
             right: ['', { react: EncryptionReceipt }],
