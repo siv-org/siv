@@ -167,6 +167,7 @@ export const groupedSteps: Group[] = [
             ],
           },
           { left: ['', '', '', ''] },
+          // Image about running the SIV Voting software on own computer or 3rd party's server.
           // {
           //   left: [{ html: `This step is completed by using a ${orange(semibold('SIV Sealing Tool'))}:` }],
           //   right: [{ image: 'step-2g-tool-options.png', maxWidth: 462 }],
@@ -181,19 +182,19 @@ export const groupedSteps: Group[] = [
             right: ['', { react: EncryptionReceipt }],
           },
 
-          {
-            left: [
-              '',
-              '',
-              '',
-              {
-                html: `For extra security, this encryption step can be completed while offline (e.g. in airplane mode) and in a sandboxed incognito tab. <br />
-          ${light(
-            `This protects against the voting software itself being malicious, ensuring it can't possibly store any private vote information.`,
-          )}`,
-              },
-            ],
-          },
+          // {
+          //   left: [
+          //     '',
+          //     '',
+          //     '',
+          //     {
+          //       html: `For extra security, this encryption step can be completed while offline (e.g. in airplane mode) and in a sandboxed incognito tab. <br />
+          // ${light(
+          //   `This protects against the voting software itself being malicious, ensuring it can't possibly store any private vote information.`,
+          // )}`,
+          //     },
+          //   ],
+          // },
         ],
       },
 
