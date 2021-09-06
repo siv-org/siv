@@ -43,7 +43,7 @@ Stepping back, we agree that malware is a serious concern. Not just for voting, 
 
 If some people clearly prefer doing things online, it's not hard to imagine many would likewise prefer internet voting.
 
-We're not looking to force SIV on anyone, just to offer it as an additional option. 🙂`,
+We're not looking to force SIV on anyone, just to offer it as an additional option.`,
   },
 
   {
