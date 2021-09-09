@@ -1,4 +1,4 @@
-export const faq: { q: string; resp?: string }[] = [
+export const faq: { q: string; resp: string }[] = [
   {
     q: 'What is a "Secure" election?',
     resp: `There are three pillars that define a secure election.
@@ -40,8 +40,9 @@ The entire process leaves a written audit trail, for independent verification.
 
   {
     q: 'How does SIV ensure Vote Privacy?',
-    resp:
-      'Submitted votes are encrypted on voters’ own devices. Once all votes are received, they go through multiple anonymizations for extra assurance, before being unlocked & tallied.',
+    resp: `Submitted votes are encrypted on voters’ own devices.
+
+Once all votes are received, they go through multiple anonymizations for extra assurance, before being unlocked & tallied.`,
   },
   {
     q: 'How does SIV ensure election results are Verifiable?',
@@ -99,7 +100,7 @@ Many people clearly prefer online options. It's easy to imagine many would likew
 
 SIV is compatible with overseas and military (UOCAVA) voters, including being tallied by EAC certified equipment.
 
-Many state legislatures have been introducing bills to allow for secure internet voting. Please [add your name](/#let-your-govt-know) to let your legislatures know you are interested.`,
+Many state legislatures have been introducing bills to allow for secure internet voting. Please <a href="/#let-your-govt-know" target="_blank">add your name</a> to let your legislatures know you are interested.`,
   },
   {
     q: 'What is the difference between Secure Internet Voting & other internet voting options?',
@@ -109,7 +110,11 @@ Some systems share some of these properties, however no widely deployed system h
   },
   {
     q: 'Why isn’t internet voting already widespread?',
-    resp: `Voting has unique security requirements. Unlike most information systems, voting needs to be both authenticated (one vote per person), while also preserving strong guarantees of a secret vote, such that even administrators can’t see how anyone voted. This is unusually challenging. Thankfully now [secureinternetvoting.org](https://secureinternetvoting.org) is available and ready to make elections much easier and more trustworthy.`,
+    resp: `Voting has unique security requirements.
+
+Unlike most information systems, voting needs to be both authenticated (one vote per person), while also preserving strong guarantees of a secret vote, such that even administrators can’t see how anyone voted. This is unusually challenging.
+
+Thankfully now <a href="https://secureinternetvoting.org" target="_blank">secureinternetvoting.org</a> is available and ready to make elections much easier and more trustworthy.`,
   },
   {
     q: 'How does Secure Internet Voting improve upon paper voting?',
@@ -121,12 +126,14 @@ Votes can be strongly anonymized for far greater privacy guarantees than paper s
 
 Every encrypted vote can be traced back to a specific registered voter, meaning that the entire voter roll can be audited to provide much stronger protection against ballot stuffing.
 
-The entire process can save election administrators (and taxpayers) vast amounts of time and money to run elections.`,
+The entire process can save election administrators and taxpayers vast amounts of time and money to run elections.`,
   },
   {
     q: 'Can SIV be used alongside paper methods?',
     resp: `SIV is an addition to existing approaches, not a replacement.
+
 Any voter who prefers traditional methods can still use them.
+
 Voter Authorization tokens can be invalidated as soon as a vote is recorded from another channel, or during later de-duplication stages.`,
   },
   {
@@ -137,15 +144,17 @@ Voter Authorization tokens can be invalidated as soon as a vote is recorded from
 2. Discrete Logarithm Encryption
 3. An Anonymization Mixnet, verified by Zero-Knowledge Proofs
 
-The specific research is listed on https://secureinternetvoting.org/about`,
+The specific research is listed on <a href="https://secureinternetvoting.org/about" target="_blank">secureinternetvoting.org/about</a>.`,
   },
   {
     q: `Does SIV support multiple languages?`,
-    resp: `Because SIV runs in web browsers, it works natively with freely accessible translation tools that can translate into hundreds of languages. This offers far more language options than paper ballots or native apps.`,
+    resp: `Because SIV runs in web browsers, it works natively with freely accessible translation tools that can translate into hundreds of languages.
+
+This offers far more language options than paper ballots or native apps.`,
   },
   {
     q: 'Does SIV support voters with disabilities?',
-    resp: `Yes. Because SIV votes can be securely sent from voters’ own devices, people no longer need to travel to polling places or mail drop boxes.
+    resp: `Yes. Because SIV votes can be securely sent from voters’ own devices, people no longer need to travel to polling places or drop boxes.
 
 Because SIV works in existing web browsers built on W3C Standards, we can leverage decades of work poured into Accessibility APIs.
 
@@ -153,7 +162,7 @@ Voters with disabilities can use their own devices, with their own preferences f
   },
   {
     q: 'Does SIV support other voting methods, like Approval Voting?',
-    resp: `Currently, SIV supports Plurality Voting, Block Voting, and Approval Voting. We add new voting methods as requested: please let us know if you need more: voting-methods@secureinternetvoting.org
+    resp: `Currently, SIV supports Plurality Voting, Block Voting, and Approval Voting. We add new voting methods as requested. Please let us know if you need more: <a href="mailto:voting-methods@secureinternetvoting.org" target="_blank">voting-methods@secureinternetvoting.org</a>.
 
 Digital voting can make it much easier for voters to adopt these more advanced voting methods, with immediate feedback and by automatically preventing voters from accidentally disqualifying their ballot.`,
   },
@@ -171,13 +180,14 @@ This is not only faster & easier, but also much safer for voters because it prot
     q: 'Does SIV use blockchain technologies?',
     resp: `SIV uses many of the same cryptographic building blocks for strong integrity, accuracy, and verifiability.
 
-It does not use Proof-of-Work consensus, which allows it to be very fast and environmentally friendly. Nor does it require voters to manage their own private keys.
+It does not require voters to manage their own private keys. Nor does it use Proof-of-Work consensus, which allows it to be very fast and environmentally friendly.
 
-In other words, SIV uses many similar ideas, but specifically designed for the problem of running secure elections, not decentralized money.`,
+In other words, SIV uses many similar ideas, but specifically designed for the problem of easily running secure elections, not decentralized money.`,
   },
   {
     q: 'How long does it take to run a SIV election?',
-    resp: `Ballots can be sent out and returned near instantly, with immediate confirmation for voters. Once the election closes, SIV can tally millions of ballots in seconds.`,
+    resp: `Ballots can be sent out and returned near instantly, with immediate confirmation for voters.
+Once the election closes, SIV can tally millions of ballots in seconds.`,
   },
   {
     q: 'How long does it take for voters to participate in a SIV election?',
@@ -190,18 +200,20 @@ In other words, SIV uses many similar ideas, but specifically designed for the p
   },
   {
     q: 'How does SIV protect voters in hostile or insecure network environments?',
-    resp: `All connections to secureinternetvoting.org always require Transport Layer Security (https). This ensures voters' network connection to SIV cannot be tampered or surveilled.
+    resp: `All connections to <a href="https://secureinternetvoting.org" target="_blank">secureinternetvoting.org</a> always require https Transport Layer Security.
+
+This ensures voters' network connection to SIV cannot be tampered or surveilled.
 `,
   },
   {
     q: 'Can my group use SIV for our private election?',
-    resp: `Most likely, please contact us at private-usage@secureinternetvoting.org`,
+    resp: `Most likely, please contact us at <a href="mailto:private-usage@secureinternetvoting.org" target="_blank">private-usage@secureinternetvoting.org</a>.`,
   },
   {
-    q: 'How does SIV help election admins respond to public records requests?',
+    q: 'How does SIV help election administrators with public records requests?',
     resp: `We have heard from countless election clerks swamped with public records requests.
 
-  SIV automatically creates complete end-to-end verifiable elections, so that such record requests will no longer be necessary in the future.`,
+SIV automatically creates complete end-to-end verifiable elections, so that such record requests will no longer be necessary in the future.`,
   },
   {
     q: 'What are Verifying Observers?',
@@ -209,7 +221,7 @@ In other words, SIV uses many similar ideas, but specifically designed for the p
 
 These Verifying Observers are similar to the election observers we use in our existing paper elections. But the SIV process runs on computers and uses advanced mathematics and strong cryptography, including what are called Zero-Knowledge Proofs. It offers total privacy and verifiability, proving that none of the votes are tampered with. And it requires only a small handful of people, unlike our large paper elections which can require tens of thousands of observers, but who can ultimately provide only incomplete security.
 
-Protocol [Steps 4](/protocol#4) & [5](/protocol#5) detail more about their role.
+Protocol <a href="/protocol#4" target="_blank">Steps 4</a> & <a href="/protocol#5" target="_blank">5</a> detail more about their role.
 `,
   },
   {
@@ -222,7 +234,7 @@ To be confident that the privacy of the vote is protected, voters need to trust 
     q: 'Does SIV permit vote recounts?',
     resp: `SIV provides the full list of anonymized votes to allow for independent recounts. In fact, every device that visits the public election status page automatically does its own recount.
 
-      In other words, you get thousands of independent recounts for free.`,
+In other words, you get thousands of independent recounts for free.`,
   },
   {
     q: 'How does SIV impact Risk Limiting Audits?',
@@ -236,7 +248,9 @@ RLAs are still very useful to audit voter rolls & Voter Authorization token issu
     q: `What if voters are subject to phishing attacks?`,
     resp: `SIV automatically sends voters a confirmation email as soon as their encrypted vote is received. If there is unauthorized access, the voter is quickly alerted to it.
 
-Voter Auth Tokens can be invalidated, including even after they're used. Thus stolen Auth Tokens can be remedied. All invalidations after votes are submitted require clear justification, for independent auditability.
+Voter Auth Tokens can be invalidated, including even after they're used. Thus stolen Auth Tokens can be remedied.
+
+<i>Note:</i> All invalidations after votes are submitted require clear justification, for independent auditability.
 `,
   },
 ]

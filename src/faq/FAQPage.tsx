@@ -45,13 +45,18 @@ export const FAQPage = (): JSX.Element => {
               </span>
               <span>{!expanded[index] ? '+' : '–'}</span>
             </h3>
-            {expanded[index] && <p>{resp}</p>}
+            {expanded[index] && <p dangerouslySetInnerHTML={{ __html: resp }} />}
           </div>
         ))}
       </main>
       <BlueDivider />
       <Footer />
 
+      <style global jsx>{`
+        a {
+          font-weight: bold;
+        }
+      `}</style>
       <style jsx>{`
         main {
           max-width: 750px;
