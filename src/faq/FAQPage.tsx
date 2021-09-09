@@ -26,7 +26,10 @@ export const FAQPage = (): JSX.Element => {
                 setExpanded(update)
               }}
             >
-              {index + 1}. {q}
+              <span>
+                {index + 1}. {q}
+              </span>
+              <span>{!expanded[index] ? '+' : '–'}</span>
             </h3>
             {expanded[index] && <p>{resp}</p>}
           </div>
@@ -53,6 +56,9 @@ export const FAQPage = (): JSX.Element => {
           margin: 0;
           padding: 1rem;
           cursor: pointer;
+
+          display: flex;
+          justify-content: space-between;
         }
 
         p {
