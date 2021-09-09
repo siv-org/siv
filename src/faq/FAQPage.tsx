@@ -61,6 +61,10 @@ export const FAQPage = (): JSX.Element => {
           justify-content: space-between;
         }
 
+        h3:hover {
+          background: hsl(0, 0%, 90%);
+        }
+
         p {
           white-space: pre-wrap;
           margin: 0;
