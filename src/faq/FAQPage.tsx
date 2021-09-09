@@ -5,6 +5,7 @@ import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
 import { BlueDivider } from '../landing-page/BlueDivider'
 import { Footer } from '../landing-page/Footer'
+import { AddYourQuestion } from './AddYourQuestion'
 import { faq } from './faq'
 import { HeaderBar } from './HeaderBar'
 
@@ -48,6 +49,8 @@ export const FAQPage = (): JSX.Element => {
             {expanded[index] && <p dangerouslySetInnerHTML={{ __html: resp }} />}
           </div>
         ))}
+
+        <AddYourQuestion />
       </main>
       <BlueDivider />
       <Footer />
