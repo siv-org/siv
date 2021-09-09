@@ -3,13 +3,13 @@ export const faq: { q: string; resp: string }[] = [
     q: 'What is a "Secure" election?',
     resp: `There are three pillars that define a secure election.
 
-I. Authenticated voters (“One person one vote”)
+<b>I. Authenticated voters (“<i>One person one vote</i>”)</b>
 SIV only lets approved people vote, and only once.
 
-II. Private voting (“A secret election”)
-SIV encrypts votes on-device, then uses advanced cryptographic shuffles before unlocking & tallying.
+<b>II. Private voting (“<i>A secret election</i>”)</b>
+SIV encrypts votes on-device, then uses advanced cryptographic shuffles before unlocking & tallying, for provable vote privacy.
 
-III. Independently verifiable tallies (“Auditable results”)
+<b>III. Independently verifiable tallies (“<i>Auditable results</i>”)</b>
 a)  Anyone can recount SIV final tallies
 b)  Voters can confirm their vote was counted correctly
 c)  SIV provides cryptographic Universal Verification that final results are tamper-free.`,
@@ -24,15 +24,16 @@ It’s pronounced like the first syllable of “civilization”.`,
     resp: `Each voter is assigned a unique Voter Authorization token. Each token ensures only one submission. They can be revoked, re-issued, and audited as necessary.
 
 The specific process for issuing Voter Tokens is up to Election Administrators.
+
 This can include any combination of:
 
-1. Unique codes sent to email addresses
-2. Unique codes sent to SMS numbers
-3. Unique codes sent to physical mail addresses
-4. Voter drawn signatures
-5. ID + selfie photos
-6. IP address geolocation
-7. Unique codes given in-person
+    1. Unique codes sent to email addresses
+    2. Unique codes sent to SMS numbers
+    3. Unique codes sent to physical mail addresses
+    4. Signature verification
+    5. ID + selfie photos
+    6. IP address geolocation
+    7. Unique codes given in-person
 
 The entire process leaves a written audit trail, for independent verification.
 `,
@@ -50,27 +51,29 @@ Once all votes are received, they go through multiple anonymizations for extra a
 
 There are two ways in which Votes themselves can be verified.
 
-1. Voters themselves can personally verify their vote in the final tally. When they submit their vote, voters' devices create a random secret Verification #. Once votes are unlocked for tallying, voters can find their Verification # to confirm that their vote was cast and counted exactly as intended. This provides far greater assurance than paper elections offer, where voters have little first-hand verifiability after they submit their vote.
+1. Voters themselves can personally verify their vote in the final tally. When they submit their vote, voters' devices create a random secret <i>Verification #</i>. Once votes are unlocked for tallying, voters can find their <i>Verification #</i> to confirm that their vote was cast and counted exactly as intended. This provides far greater assurance than paper elections offer, where voters have little first-hand verifiability after they submit their vote.
 
-2. SIV also allows for cryptographic Universal Verifiability. Election administrators and approved organizations can run the SIV Universal Verifier. This provides the ability to retrace all the election steps for all votes, from encrypted submissions to final results.`,
+2. SIV also allows for cryptographic <i>Universal Verifiability</i>. Election administrators and approved organizations can run the SIV Universal Verifier. This provides the ability to retrace all the election steps for all votes, from encrypted submissions to final results.`,
   },
   {
     q: 'How can voters be confident in election results?',
-    resp: `SIV provides individual vote verifiability.  With the secret Verification # received after votes are submitted, voters themselves can quickly and easily see that their choices are included in the final tally, without error.
+    resp: `SIV provides individual vote verifiability.  With the secret <i>Verification #</i> received after votes are submitted, voters themselves can quickly and easily see that their choices are included in the final tally, without error.
 
-This check requires little technical knowledge, can be explained in seconds, and all necessary information is automatically stored on voting device so it can be easily found later.`,
+This check requires little technical knowledge, can be explained in seconds, and all necessary information is automatically stored on voting devices so it can be easily found later.`,
   },
   {
     q: 'How does SIV protect elections from being hacked?',
     resp: `SIV creates an auditable record of each step along the process. Everything can be independently verified for correctness, from beginning to end.
 
-The SIV design is built with extra redundant security so that SIV does not depend on any single point of failure.`,
+The SIV design is built with extra redundant security so that SIV does not depend on any single point of failure.
+
+SIV is significantly more trustworthy than paper elections, because all election results can be independently verified.`,
   },
   {
     q: 'What if voters’ devices are compromised?',
     resp: `SIV is meant to be opt-in. If you don’t trust your devices, you can borrow another or continue to use Vote by Mail or In-Person options.
 
-If a voting device is compromised, the malware might learn how one voted, but the voter can still independently check whether their vote was submitted as intended, including checking with a separate device.
+If a voting device is compromised, the malware may learn how one voted, but the voter can still independently check whether their vote was submitted as intended, including checking with a separate device.
 
 If there is an issue, votes can still be corrected after the fact, with clear justification for independent auditing.`,
   },
@@ -98,7 +101,7 @@ Many people clearly prefer online options. It's easy to imagine many would likew
     q: 'Does the law allow SIV to be used right now?',
     resp: `Voting laws are state by state.
 
-SIV is compatible with overseas and military (UOCAVA) voters, including being tallied by EAC certified equipment.
+SIV is compatible with overseas and military (<i>UOCAVA</i>) voters, including being tallied by EAC certified equipment.
 
 Many state legislatures have been introducing bills to allow for secure internet voting. Please <a href="/#let-your-govt-know" target="_blank">add your name</a> to let your legislatures know you are interested.`,
   },
@@ -118,15 +121,15 @@ Thankfully now <a href="https://secureinternetvoting.org" target="_blank">secure
   },
   {
     q: 'How does Secure Internet Voting improve upon paper voting?',
-    resp: `Voters can quickly and easily verify for themselves that their unique vote is in the final tally and independently recount the votes themselves for vastly stronger assurance that the election is fair and accurate.
+    resp: `1. Voters can quickly and easily verify for themselves that their unique vote is in the final tally and independently recount the votes themselves for vastly stronger assurance that the election is fair and accurate.
 
-It is radically faster. Ballots can be sent to voters and then returned nearly instantly, with voters receiving instant confirmation that their vote was acknowledged.
+2. It is radically faster. Ballots can be sent to voters and then returned nearly instantly, with voters receiving instant confirmation that their vote was acknowledged.
 
-Votes can be strongly anonymized for far greater privacy guarantees than paper systems can offer, which require vast supervision.
+3. Votes can be strongly anonymized for far greater privacy guarantees than paper systems can offer, which require vast supervision.
 
-Every encrypted vote can be traced back to a specific registered voter, meaning that the entire voter roll can be audited to provide much stronger protection against ballot stuffing.
+4. Every encrypted vote can be traced back to a specific registered voter, meaning that the entire voter roll can be audited to provide much stronger protection against ballot stuffing.
 
-The entire process can save election administrators and taxpayers vast amounts of time and money to run elections.`,
+5. The entire process can save election administrators and taxpayers vast amounts of time and money to run elections.`,
   },
   {
     q: 'Can SIV be used alongside paper methods?',
