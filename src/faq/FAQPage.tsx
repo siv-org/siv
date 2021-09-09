@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { OnClickButton } from 'src/landing-page/Button'
 
 import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
@@ -8,7 +9,8 @@ import { faq } from './faq'
 import { HeaderBar } from './HeaderBar'
 
 export const FAQPage = (): JSX.Element => {
-  const [expanded, setExpanded] = useState(new Array(faq.length).fill(false))
+  const [expanded, setExpanded] = useState<boolean[]>(new Array(faq.length).fill(false))
+  const any_collapsed = expanded.some((s) => !s)
 
   return (
     <>
@@ -17,8 +19,20 @@ export const FAQPage = (): JSX.Element => {
       <HeaderBar />
       <main>
         <h1>Frequently Asked Questions</h1>
+        <div className="button-container">
+          <OnClickButton
+            style={{ margin: 0, padding: '5px 15px', textAlign: 'right' }}
+            onClick={() => {
+              const update = [...expanded].fill(any_collapsed)
+              setExpanded(update)
+            }}
+          >
+            <>{any_collapsed ? 'Expand' : 'Collapse'} all</>
+          </OnClickButton>
+        </div>
+
         {faq.map(({ q, resp }, index) => (
-          <div key={index}>
+          <div className="question" key={index}>
             <h3
               onClick={() => {
                 const update = [...expanded]
@@ -46,7 +60,12 @@ export const FAQPage = (): JSX.Element => {
           padding: 1rem;
         }
 
-        div {
+        .button-container {
+          text-align: right;
+          margin-bottom: 1rem;
+        }
+
+        .question {
           margin-bottom: 3rem;
           border: 1px solid hsl(0, 0%, 87%);
         }
