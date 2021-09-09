@@ -1,3 +1,5 @@
+import { useState } from 'react'
+
 import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
 import { BlueDivider } from '../landing-page/BlueDivider'
@@ -5,39 +7,61 @@ import { Footer } from '../landing-page/Footer'
 import { faq } from './faq'
 import { HeaderBar } from './HeaderBar'
 
-export const FAQPage = (): JSX.Element => (
-  <>
-    <Head title="FAQ" />
+export const FAQPage = (): JSX.Element => {
+  const [expanded, setExpanded] = useState(new Array(faq.length).fill(false))
 
-    <HeaderBar />
-    <main>
-      <h1>Frequently Asked Questions</h1>
-      {faq.map(({ q, resp }, index) => (
-        <div key={index}>
-          <h3>{q}</h3>
-          <p>{resp}</p>
-        </div>
-      ))}
-    </main>
-    <BlueDivider />
-    <Footer />
+  return (
+    <>
+      <Head title="FAQ" />
 
-    <style jsx>{`
-      main {
-        max-width: 750px;
-        width: 100%;
-        margin: 2rem auto;
-        padding: 1rem;
-      }
+      <HeaderBar />
+      <main>
+        <h1>Frequently Asked Questions</h1>
+        {faq.map(({ q, resp }, index) => (
+          <div key={index}>
+            <h3
+              onClick={() => {
+                const update = [...expanded]
+                update[index] = !update[index]
+                setExpanded(update)
+              }}
+            >
+              {index + 1}. {q}
+            </h3>
+            {expanded[index] && <p>{resp}</p>}
+          </div>
+        ))}
+      </main>
+      <BlueDivider />
+      <Footer />
 
-      div {
-        margin-bottom: 3rem;
-      }
+      <style jsx>{`
+        main {
+          max-width: 750px;
+          width: 100%;
+          margin: 2rem auto;
+          padding: 1rem;
+        }
 
-      p {
-        white-space: pre-wrap;
-      }
-    `}</style>
-    <GlobalCSS />
-  </>
-)
+        div {
+          margin-bottom: 3rem;
+          border: 1px solid hsl(0, 0%, 87%);
+        }
+
+        h3 {
+          background: hsl(0, 0%, 93%);
+          margin: 0;
+          padding: 1rem;
+          cursor: pointer;
+        }
+
+        p {
+          white-space: pre-wrap;
+          margin: 0;
+          padding: 1rem;
+        }
+      `}</style>
+      <GlobalCSS />
+    </>
+  )
+}
