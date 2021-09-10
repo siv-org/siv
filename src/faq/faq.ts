@@ -79,9 +79,9 @@ SIV is significantly more trustworthy than paper elections, because all election
     q: 'What if voters’ devices are compromised?',
     resp: `SIV is meant to be opt-in. If you don’t trust your devices, you can borrow another or continue to use Vote by Mail or In-Person options.
 
-If a voting device is compromised, the malware may learn how one voted, but the voter can still independently check whether their vote was submitted as intended, including checking with a separate device.
+If a voting device is compromised, the malware may learn how one voted, but voters can still check whether their vote was submitted as intended, including checking with a separate device.
 
-If there is an issue, votes can still be corrected after the fact, with clear justification for independent auditing.`,
+If needed, SIV still allows for votes to be corrected even after the shuffling & unlocking stage, with clear justification given for independent auditing. This is a powerful remedial ability not possible with paper elections.`,
   },
   {
     q: 'Aren’t computers inherently less secure than paper?',
