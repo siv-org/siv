@@ -114,11 +114,11 @@ Many people clearly prefer online options. It's easy to imagine many would likew
   },
   {
     q: 'Does the law allow SIV to be used right now?',
-    resp: `Voting laws are state by state.
+    resp: `Voting laws vary state by state.
 
-SIV is compatible with overseas and military (<i>UOCAVA</i>) voters, including being tallied by EAC certified equipment.
+Most states already permit internet voting for overseas and military voters (<i>UOCAVA</i>). To comply with state regulations, SIV is compatible with existing EAC certified tallying equipment.
 
-Many state legislatures have been introducing bills to allow for secure internet voting. Please <a href="/#let-your-govt-know" target="_blank">add your name</a> to let your legislatures know you are interested.`,
+A number of state legislators have introduced bills to allow for wider use of internet voting. Please <a href="/#let-your-govt-know" target="_blank">add your name</a> to let your representatives know you are interested.`,
   },
   {
     q: 'What is the difference between Secure Internet Voting & other internet voting options?',
