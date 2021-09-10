@@ -234,7 +234,7 @@ This protects voters' network connection to prevent tampering and surveillance.`
     q: 'How does SIV help election administrators with public records requests?',
     resp: `We have heard from countless election clerks swamped with public records requests.
 
-SIV automatically creates complete end-to-end verifiable elections, so that such record requests will no longer be necessary in the future.`,
+SIV automatically creates complete end-to-end verifiable elections, so that anyone who submits record requests can simply be directed to the publicly posted election data.`,
   },
   {
     q: 'What are Verifying Observers?',
