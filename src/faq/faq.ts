@@ -176,9 +176,9 @@ It also frees Election Administrators from needing to determine into which langu
   },
   {
     q: 'Does SIV support voters with disabilities?',
-    resp: `Yes. Because SIV votes can be securely sent from voters’ own devices, people no longer need to travel to polling places or drop boxes.
+    resp: `Yes, because SIV votes can be securely sent from voters’ own devices, people no longer need to travel to polling places or drop boxes.
 
-Because SIV works in existing web browsers built on W3C Standards, we can leverage decades of work poured into Accessibility APIs.
+SIV works in existing web browsers built on W3C Standards, thus leveraging decades of work poured into Accessibility APIs.
 
 Voters with disabilities can use their own devices, with their own preferences for Text-to-Speech, Larger Font Sizes, High Contrast Mode, and other Accessibility options.`,
   },
@@ -186,7 +186,7 @@ Voters with disabilities can use their own devices, with their own preferences f
     q: 'Does SIV support other voting methods, like Approval Voting?',
     resp: `Currently, SIV supports Plurality Voting, Block Voting, and Approval Voting. We add new voting methods as requested. Please let us know if you need more: <a href="mailto:voting-methods@secureinternetvoting.org" target="_blank">voting-methods@secureinternetvoting.org</a>.
 
-Digital voting can make it much easier for voters to adopt these more advanced voting methods, with immediate feedback and by automatically preventing voters from accidentally disqualifying their ballot.`,
+Digital voting can make it much easier for voters to adopt these more advanced voting methods, with immediate feedback and automatically preventing voters from accidentally disqualifying their ballot.`,
   },
   {
     q: 'What additional hardware does SIV require?',
