@@ -76,7 +76,7 @@ export const InvitationExplanation = () => (
       <em>
         See{' '}
         <Link href="/faq">
-          <a>How does SIV authenticate voters</a>
+          <a>How does SIV ensure One Vote per Person?</a>
         </Link>{' '}
         for more.
       </em>
