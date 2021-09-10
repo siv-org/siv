@@ -131,11 +131,13 @@ The SIV team has understood these challenges and focused on solving them from da
 
 2. It is radically faster. Ballots can be sent to voters and then returned nearly instantly, with voters receiving instant confirmation that their vote was acknowledged.
 
-3. Votes can be strongly anonymized for far greater privacy guarantees than paper systems can offer, which require vast supervision.
+3. Every encrypted vote can be traced back to a specific registered voter, meaning that the entire voter roll can be audited to provide much stronger protection against ballot stuffing.
 
-4. Every encrypted vote can be traced back to a specific registered voter, meaning that the entire voter roll can be audited to provide much stronger protection against ballot stuffing.
+4. Votes can be strongly anonymized for far greater privacy guarantees than paper systems can offer, which require vast supervision.
 
-5. The entire process can save election administrators and taxpayers vast amounts of time and money to run elections.`,
+5. The entire process can save election administrators and taxpayers vast amounts of time and money to hold elections.
+
+6. Votes can now be revoked, with sufficient justification, at any point, even after anonymization & tallying, for powerful new remediation abilities.`,
   },
   {
     q: 'Can SIV be used alongside paper methods?',
