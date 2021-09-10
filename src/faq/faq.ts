@@ -4,10 +4,10 @@ export const faq: { q: string; resp: string }[] = [
     resp: `There are three pillars that define a secure election.
 
 <b>I. Authenticated voters (“<i>One person one vote</i>”)</b>
-SIV only lets approved people vote, and only once.
+SIV only lets registered & authenticated people vote, and only once.
 
 <b>II. Private voting (“<i>A secret election</i>”)</b>
-SIV encrypts votes on-device, then uses advanced cryptographic shuffles before unlocking & tallying, for provable vote privacy.
+SIV encrypts votes on the voter's personal device, then uses advanced cryptographic shuffles before unlocking & tallying, for provable vote privacy.
 
 <b>III. Independently verifiable tallies (“<i>Auditable results</i>”)</b>
 a)  Anyone can recount SIV final tallies
