@@ -204,7 +204,7 @@ This is not only faster & easier, but also much safer for voters because it prot
 
 It does not require voters to manage their own private keys. Nor does it use Proof-of-Work consensus, which allows it to be very fast and environmentally friendly.
 
-In other words, SIV uses many similar ideas, but specifically designed for the problem of easily running secure elections, not decentralized money.`,
+In other words, SIV uses many similar ideas, but is specifically designed for the problem of easily running secure elections, not decentralized money.`,
   },
   {
     q: 'How long does it take to run a SIV election?',
