@@ -49,7 +49,9 @@ Their plaintext never leaves their device.
 
 Once all votes are received, the Verifying Observers' computers each add their own cryptographic shuffle to all the votes, for thorough anonymization, before working together to unlock the votes for tallying.
 
-The SIV system offers rigorous privacy, where nobody has the ability to connect votes to voter's identities, while maintaining complete auditability of who voted & verifiability of final results.`,
+This is a similar process as with paper ballots, where voters are confirmed, but the voter's identification is not on the submitted ballot.
+
+The SIV system offers even more rigorous privacy, so nobody has the ability to connect votes to voter's identities, while maintaining complete auditability of who voted & verifiability of final results.`,
   },
   {
     q: 'How does SIV ensure election results are Verifiable?',
