@@ -70,6 +70,12 @@ There are two ways in which votes can be verified.
 This check requires little technical knowledge, can be explained in seconds, and all necessary information is automatically stored on voting devices so it can be easily found later.`,
   },
   {
+    q: 'Does SIV permit vote recounts?',
+    resp: `SIV provides the full list of anonymized votes to allow for independent recounts. In fact, every device that visits the public election status page automatically does its own recount.
+
+In other words, you get thousands of independent recounts for free.`,
+  },
+  {
     q: 'How does SIV protect elections from being hacked?',
     resp: `SIV creates an auditable record of each step along the process. Everything can be independently verified for correctness, from beginning to end.
 
@@ -149,24 +155,6 @@ The SIV team has understood these challenges and focused on solving them from da
 6. Votes can now be revoked, with sufficient justification, at any point, even after anonymization & tallying, for powerful new remediation abilities.`,
   },
   {
-    q: 'Can SIV be used alongside paper methods?',
-    resp: `SIV is an addition to existing approaches, not a replacement.
-
-Any voter who prefers traditional methods can still use them.
-
-Voter Authorization tokens can be invalidated as soon as a vote is recorded from another channel, or during later de-duplication stages. This ensures no voter can cast two ballots by using multiple methods.`,
-  },
-  {
-    q: 'What research is Secure Internet Voting built upon?',
-    resp: `SIV is based on a number of peer-reviewed cryptographic technologies:
-
-1. Decentralized Multiparty Key Generation and Decryption
-2. Discrete Logarithm Encryption
-3. An Anonymization Mixnet, verified by Zero-Knowledge Proofs
-
-The specific research is listed on <a href="https://secureinternetvoting.org/about" target="_blank">secureinternetvoting.org/about</a>.`,
-  },
-  {
     q: `Does SIV support multiple languages?`,
     resp: `SIV provides voters with far greater language accessibility than printed options.
 
@@ -181,6 +169,14 @@ It also frees Election Administrators from needing to determine into which langu
 SIV works in existing web browsers built on W3C Standards, thus leveraging decades of work poured into Accessibility APIs.
 
 Voters with disabilities can use their own devices, with their own preferences for Text-to-Speech, Larger Font Sizes, High Contrast Mode, and other Accessibility options.`,
+  },
+  {
+    q: 'Can SIV be used alongside paper methods?',
+    resp: `SIV is an addition to existing approaches, not a replacement.
+
+Any voter who prefers traditional methods can still use them.
+
+Voter Authorization tokens can be invalidated as soon as a vote is recorded from another channel, or during later de-duplication stages. This ensures no voter can cast two ballots by using multiple methods.`,
   },
   {
     q: 'Does SIV support other voting methods, like Approval Voting?',
@@ -205,6 +201,16 @@ This is not only faster & easier, but also much safer for voters because it prot
 It does not require voters to manage their own private keys. Nor does it use Proof-of-Work consensus, which allows it to be very fast and environmentally friendly.
 
 In other words, SIV uses many similar ideas, but is specifically designed for the problem of easily running secure elections, not decentralized money.`,
+  },
+  {
+    q: 'What research is Secure Internet Voting built upon?',
+    resp: `SIV is based on a number of peer-reviewed cryptographic technologies:
+
+1. Decentralized Multiparty Key Generation and Decryption
+2. Discrete Logarithm Encryption
+3. An Anonymization Mixnet, verified by Zero-Knowledge Proofs
+
+The specific research is listed on <a href="https://secureinternetvoting.org/about" target="_blank">secureinternetvoting.org/about</a>.`,
   },
   {
     q: 'How long does it take to run a SIV election?',
@@ -250,12 +256,6 @@ Protocol <a href="/protocol#4" target="_blank">Steps 4</a> & <a href="/protocol#
     resp: `The most secure and safest approach is to assign Verifying Observers with independent interests, such as one nominated by each participating political party.
 
 To be confident that the privacy of the vote is protected, voters need to trust just a single Verifying Observer. Verifying Observers do not need to trust each other, and cannot possibly tamper with votes.`,
-  },
-  {
-    q: 'Does SIV permit vote recounts?',
-    resp: `SIV provides the full list of anonymized votes to allow for independent recounts. In fact, every device that visits the public election status page automatically does its own recount.
-
-In other words, you get thousands of independent recounts for free.`,
   },
   {
     q: 'How does SIV impact Risk Limiting Audits?',
