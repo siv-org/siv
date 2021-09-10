@@ -154,7 +154,7 @@ The SIV team has understood these challenges and focused on solving them from da
 
 Any voter who prefers traditional methods can still use them.
 
-Voter Authorization tokens can be invalidated as soon as a vote is recorded from another channel, or during later de-duplication stages.`,
+Voter Authorization tokens can be invalidated as soon as a vote is recorded from another channel, or during later de-duplication stages. This ensures no voter can cast two ballots by using multiple methods.`,
   },
   {
     q: 'What research is Secure Internet Voting built upon?',
