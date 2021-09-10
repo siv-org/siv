@@ -44,7 +44,7 @@ export const FAQPage = (): JSX.Element => {
               <span>
                 {index + 1}. {q}
               </span>
-              <span>{!expanded[index] ? '+' : '–'}</span>
+              <label>{!expanded[index] ? '+' : '–'}</label>
             </h3>
             {expanded[index] && <p dangerouslySetInnerHTML={{ __html: resp }} />}
           </div>
@@ -90,6 +90,10 @@ export const FAQPage = (): JSX.Element => {
 
         h3:hover {
           background: hsl(0, 0%, 90%);
+        }
+
+        label {
+          padding-left: 20px;
         }
 
         p {
