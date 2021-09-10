@@ -123,7 +123,7 @@ Some systems share some of these properties, however no widely deployed system h
 
 Unlike most information systems, voting needs to be both authenticated (one vote per person), while also preserving strong guarantees of a secret vote, such that even administrators can’t see how anyone voted. This is unusually challenging.
 
-Thankfully now <a href="https://secureinternetvoting.org" target="_blank">secureinternetvoting.org</a> is available and ready to make elections much easier and more trustworthy.`,
+The SIV team has understood these challenges and focused on solving them from day one. <a href="https://secureinternetvoting.org" target="_blank">SecureInternetVoting.org</a> is now available to run fast, private, & verifiable elections.`,
   },
   {
     q: 'How does Secure Internet Voting improve upon paper voting?',
