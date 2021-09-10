@@ -247,7 +247,7 @@ Protocol <a href="/protocol#4" target="_blank">Steps 4</a> & <a href="/protocol#
   },
   {
     q: 'How should Verifying Observers be picked?',
-    resp: `The most power comes from assigning Verifying Observers with independent interests, such as one nominated by each participating political party.
+    resp: `The most secure and safest approach is to assign Verifying Observers with independent interests, such as one nominated by each participating political party.
 
 To be confident that the privacy of the vote is protected, voters need to trust just a single Verifying Observer. Verifying Observers do not need to trust each other, and cannot possibly tamper with votes.`,
   },
