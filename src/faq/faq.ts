@@ -34,6 +34,7 @@ This can include any combination of:
     5. ID + selfie photos
     6. IP address geolocation
     7. Unique codes given in-person
+    8. Time-based One-Time Passwords
 
 The entire process leaves a written audit trail, for independent verification.
 `,
