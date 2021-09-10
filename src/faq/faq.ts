@@ -65,7 +65,7 @@ There are two ways in which votes can be verified.
   },
   {
     q: 'How can voters be confident in election results?',
-    resp: `SIV provides individual vote verifiability.  With the secret <i>Verification #</i> received after votes are submitted, voters themselves can quickly and easily see that their choices are included in the final tally, without error.
+    resp: `Unlike paper methods, SIV provides individual vote verifiability.  With the secret <i>Verification #</i> received after votes are submitted, voters themselves can quickly and easily see that their choices are included in the final tally, without error.
 
 This check requires little technical knowledge, can be explained in seconds, and all necessary information is automatically stored on voting devices so it can be easily found later.`,
   },
