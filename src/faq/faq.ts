@@ -41,15 +41,14 @@ The entire process leaves a written audit trail, for independent verification.
 
   {
     q: 'How does SIV ensure Vote Privacy?',
-    resp: `Using <a href="https://en.wikipedia.org/wiki/Threshold_cryptosystem" target="_blank">Threshold Key Cryptography</a>, the SIV system doesn't allow anyone to see how anybody voted, including the election administrators.
+    resp: `Using <a href="https://en.wikipedia.org/wiki/Threshold_cryptosystem" target="_blank">Threshold Key Cryptography</a>, the SIV system doesn't allow anyone, including the election administrators, to see how anyone else voted.
 
-Once a voter makes their selection, all their options get encrypted on their device. Their plaintext never leaves their phone or computer.
+Once a voter makes their selections, all their options get encrypted on their voting device.
+Their plaintext never leaves their device.
 
-The SIV system uses a multi-party unlocking key, split into fractional pieces held by the election's Verifying Observers, so nobody has the ability to connect votes to voter's identities.
+Once all votes are received, the Verifying Observers' computers each add their own cryptographic shuffle to all the votes, for thorough anonymization, before working together to unlock the votes for tallying.
 
-Once all votes are received, the Verifying Observers' computers each add their own cryptographic shuffle of all the votes, for thorough anonymization, before working together to unlock the votes for tallying.
-
-This offers rigorous privacy, while maintaining complete auditability & verifiability.`,
+The SIV system offers rigorous privacy, where nobody has the ability to connect votes to voter's identities, while maintaining complete auditability of who voted & verifiability of final results.`,
   },
   {
     q: 'How does SIV ensure election results are Verifiable?',
