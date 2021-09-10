@@ -101,12 +101,11 @@ The US House of Representatives has cast all their public votes using electronic
 
 The US nuclear arsenal is secured by strong multi-party cryptography, and communication from command centers to the front lines goes over digital channels, secured by strong encryption.
 
-In a single day, the NASDAQ Stock Exchange sees hundreds of trillions of dollars of trading volume.
+Millions of Americans have adopted online banking. In a single day, the NASDAQ Stock Exchange sees hundreds of billions of dollars of trading volume.
 
-As of September 2021, the collective cryptocurrency algorithms currently represent over $2 trillion of market value, secured by nothing more than a secret integer on individual devices— and with no reversibility, unlike SIV.
+As of September 2021, the collective cryptocurrency algorithms currently represent over $2 trillion of market value, secured by nothing more than secret integers on individual devices— and with no reversibility, unlike SIV.
 
-Many people clearly prefer online options. It's easy to imagine many would likewise prefer internet voting, especially once shown how it can be even more secure than paper alternatives.
-`,
+Many people clearly prefer online options. It's easy to imagine many would likewise prefer internet voting, especially once shown how it can be even more secure than paper alternatives.`,
   },
   {
     q: 'How does SIV comply with existing certified tallying equipment?',
