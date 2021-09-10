@@ -213,8 +213,7 @@ Once the election closes, SIV can tally millions of ballots in seconds.`,
     q: 'How does SIV protect voters in hostile or insecure network environments?',
     resp: `All connections to <a href="https://secureinternetvoting.org" target="_blank">secureinternetvoting.org</a> always require https Transport Layer Security.
 
-This ensures voters' network connection to SIV cannot be tampered or surveilled.
-`,
+This protects voters' network connection to prevent tampering and surveillance.`,
   },
   {
     q: 'Can my group use SIV for our private election?',
