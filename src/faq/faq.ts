@@ -55,7 +55,7 @@ The SIV system offers even more rigorous privacy, so nobody has the ability to c
   },
   {
     q: 'How does SIV ensure election results are Verifiable?',
-    resp: `All final election tallies can independently recounted.
+    resp: `All final election tallies can be independently recounted.
 
 There are two ways in which votes can be verified.
 
