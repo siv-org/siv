@@ -86,6 +86,14 @@ If a voting device is compromised, the malware may learn how one voted, but vote
 If needed, SIV still allows for votes to be corrected even after the shuffling & unlocking stage, with clear justification given for independent auditing. This is a powerful remedial ability not possible with paper elections.`,
   },
   {
+    q: 'How can SIV address election irregularities?',
+    resp: `Unlike paper elections, SIV allows votes to be corrected even after anonymization.
+
+With paper ballots, courts have only crude and limited tools to address alleged election irregularity, such as throwing out the count from an entire precinct or county, or calling for a new election.
+
+Because SIV is able to preserve all data at every step along the way, a court facing a claim of election irregularities is now empowered with far greater and flexible precision to correct or rollback elections exactly as needed.`,
+  },
+  {
     q: 'Aren’t computers inherently less secure than paper?',
     resp: `No, computers can be used for much stronger security than analog options, and already power much of our political, military, and economic infrastructure.
 
