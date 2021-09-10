@@ -168,9 +168,11 @@ The specific research is listed on <a href="https://secureinternetvoting.org/abo
   },
   {
     q: `Does SIV support multiple languages?`,
-    resp: `Because SIV runs in web browsers, it works natively with freely accessible translation tools that can translate into hundreds of languages.
+    resp: `SIV provides voters with far greater language accessibility than printed options.
 
-This offers far more language options than paper ballots or native apps.`,
+Because SIV runs in web browsers, it works natively with freely accessible translation tools that can translate into hundreds of languages.
+
+It also frees Election Administrators from needing to determine into which languages ballots must be translated.`,
   },
   {
     q: 'Does SIV support voters with disabilities?',
