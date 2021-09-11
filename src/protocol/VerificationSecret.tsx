@@ -27,7 +27,7 @@ export function VerificationSecret(): JSX.Element {
             padding: '5px 13px',
           }}
         >
-          Verification Secret:
+          Verification #:
         </p>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <NoSsr>
@@ -45,12 +45,11 @@ export function VerificationSecret(): JSX.Element {
           </NoSsr>
         </div>
         <p>
-          <b>This Verification Secret will be shown once votes are unlocked.</b> It allows you to easily verify your
-          vote was counted correctly, while protecting your privacy.
+          <b>This Verification # will be shown once votes are unlocked.</b> It allows you to easily verify your vote was
+          counted correctly, while protecting your privacy.
         </p>
         <p style={{ fontSize: 12 }}>
-          This unique value was generated on your own device. Don&apos;t share it with anyone, or they&apos;ll be able
-          to see how you voted. Regenerate if needed.
+          This unique value was generated on your own device. Don&apos;t share it with anyone.
         </p>
       </Paper>
     </>
