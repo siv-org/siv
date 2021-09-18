@@ -1,14 +1,30 @@
+import { useEffect, useState } from 'react'
+
+import { PileOfVotes } from './PileOfVotes'
+
 export const Mixnet = () => {
   const observers = ['SIV Server', 'David Ernst', 'Ariana Ivan']
+  const [step, setStep] = useState(0)
+
+  useEffect(() => {
+    setInterval(() => {
+      setStep((v) => v + 1)
+    }, 1000)
+  }, [])
   return (
     <section>
       <h3>Anonymization Mixnet</h3>
+      <PileOfVotes />
       <div>
-        <span className="votes">Originally Submitted Votes</span>
-        {observers.map((o) => (
+        <span className="votes">Votes Originally Submitted</span>
+        {observers.map((o, index) => (
           <>
-            <img src="/vote/shuffle.png" />
-            <span className="votes">Votes shuffled by {o}</span>
+            {step > index * 2 && <img src="/vote/shuffle.png" />}
+            {step > index * 2 + 1 && (
+              <span className="votes">
+                Votes shuffled by <b>{o}</b>
+              </span>
+            )}
           </>
         ))}
       </div>
@@ -28,6 +44,7 @@ export const Mixnet = () => {
           width: 80px;
           padding: 5px;
           display: inline-block;
+          height: 95px;
         }
 
         img {

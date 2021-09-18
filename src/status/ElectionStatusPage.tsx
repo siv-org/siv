@@ -6,7 +6,7 @@ import { Head } from '../Head'
 import { Footer } from '../vote/Footer'
 import { AcceptedVotes } from './AcceptedVotes'
 import { DecryptedVotes } from './DecryptedVotes'
-import { Mixnet } from './Mixnet'
+import { Mixnet } from './Mixnet/Mixnet'
 import { Totals } from './Totals'
 import { useElectionInfo } from './use-election-info'
 
@@ -47,7 +47,7 @@ export const ElectionStatusPage = (): JSX.Element => {
             </p>
           )}
           <div style={{ display: show_encrypteds || !has_decrypted_votes ? 'block' : 'none' }}>
-            <Mixnet />
+            {show_encrypteds && has_decrypted_votes && <Mixnet />}
             <AcceptedVotes {...{ ballot_design, esignature_requested }} />
           </div>
         </div>
