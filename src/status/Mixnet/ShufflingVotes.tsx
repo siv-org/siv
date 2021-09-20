@@ -1,7 +1,7 @@
 import { OneVote } from './OneVote'
 import { Paths } from './Paths'
 
-export const PileOfVotes = () => {
+export const ShufflingVotes = () => {
   return (
     <div>
       {new Array(4).fill(0).map((_, index) => (
@@ -9,7 +9,7 @@ export const PileOfVotes = () => {
           key={index}
           style={{
             animationDuration: '1s',
-            animationName: `move-${Math.floor(Math.random() * 10)}`,
+            animationName: `path-${Math.floor(Math.random() * 10)}`,
             animationTimingFunction: 'ease',
             position: 'absolute',
           }}
@@ -19,7 +19,6 @@ export const PileOfVotes = () => {
       <style jsx>{`
         div {
           display: flex;
-          margin-bottom: 3rem;
           position: relative;
           height: 100px;
           width: 100px;

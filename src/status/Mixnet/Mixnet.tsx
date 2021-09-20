@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 
-import { PileOfVotes } from './PileOfVotes'
+import { ShufflingVotes } from './ShufflingVotes'
+import { StaticPileOfVotes } from './StaticPileofVotes'
 
 export const Mixnet = () => {
   const observers = ['SIV Server', 'David Ernst', 'Ariana Ivan']
@@ -8,43 +9,51 @@ export const Mixnet = () => {
 
   useEffect(() => {
     setInterval(() => {
-      setStep((v) => v + 1)
+      setStep((v) => (v < 5 ? v + 1 : v))
     }, 1000)
   }, [])
+
   return (
     <section>
       <h3>Anonymization Mixnet</h3>
-      <PileOfVotes />
-      <div>
-        <span className="votes">Votes Originally Submitted</span>
+      <main>
+        <StaticPileOfVotes />
+        <label>Originally Submitted Votes</label>
         {observers.map((o, index) => (
-          <>
-            {step > index * 2 && <img src="/vote/shuffle.png" />}
-            {step > index * 2 + 1 && (
-              <span className="votes">
-                Votes shuffled by <b>{o}</b>
-              </span>
-            )}
-          </>
+          <div key={index}>
+            {step > index * 2 &&
+              (step > index * 2 + 1 ? (
+                <>
+                  <ShufflingVotes />
+                </>
+              ) : (
+                <>
+                  <img src="/vote/shuffle.png" />
+                  <p>
+                    Shuffled by <b>{o}</b>
+                  </p>
+                </>
+              ))}
+          </div>
         ))}
-      </div>
+      </main>
       <style jsx>{`
         section {
           margin-bottom: 3rem;
         }
 
-        div {
+        main {
           display: flex;
           align-items: center;
+          position: relative;
         }
 
-        .votes {
-          border: 1px solid #666;
-          border-radius: 3px;
-          width: 80px;
-          padding: 5px;
-          display: inline-block;
-          height: 95px;
+        label {
+          position: absolute;
+          bottom: -60px;
+          line-height: 17px;
+          width: 100px;
+          text-align: center;
         }
 
         img {

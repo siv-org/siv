@@ -7,13 +7,18 @@ import { Footer } from '../vote/Footer'
 import { AcceptedVotes } from './AcceptedVotes'
 import { DecryptedVotes } from './DecryptedVotes'
 import { Mixnet } from './Mixnet/Mixnet'
+import { OnlyMixnet } from './OnlyMixnet'
 import { Totals } from './Totals'
 import { useElectionInfo } from './use-election-info'
+
+const debug = true
 
 export const ElectionStatusPage = (): JSX.Element => {
   const { election_id } = useRouter().query as { election_id: string }
   const { ballot_design, election_title, esignature_requested, has_decrypted_votes } = useElectionInfo()
   const [show_encrypteds, toggle_encrypteds] = useReducer((state) => !state, false)
+
+  if (debug) return <OnlyMixnet />
 
   return (
     <>

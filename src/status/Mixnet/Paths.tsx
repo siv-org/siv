@@ -2,7 +2,7 @@ export const Paths = () => {
   return (
     <>
       <style global jsx>{`
-        @keyframes move-0 {
+        @keyframes path-0 {
           0% {
             left: 0%;
             top: 0%;
@@ -35,7 +35,7 @@ export const Paths = () => {
           }
         }
 
-        @keyframes move-1 {
+        @keyframes path-1 {
           0% {
             left: 0%;
             top: 0%;
@@ -68,7 +68,7 @@ export const Paths = () => {
           }
         }
 
-        @keyframes move-2 {
+        @keyframes path-2 {
           0% {
             left: 0%;
             top: 0%;
@@ -101,7 +101,7 @@ export const Paths = () => {
           }
         }
 
-        @keyframes move-3 {
+        @keyframes path-3 {
           0% {
             left: 0%;
             top: 0%;
@@ -134,7 +134,7 @@ export const Paths = () => {
           }
         }
 
-        @keyframes move-4 {
+        @keyframes path-4 {
           0% {
             left: 0%;
             top: 0%;
@@ -167,7 +167,7 @@ export const Paths = () => {
           }
         }
 
-        @keyframes move-5 {
+        @keyframes path-5 {
           0% {
             left: 0%;
             top: 0%;
@@ -200,7 +200,7 @@ export const Paths = () => {
           }
         }
 
-        @keyframes move-6 {
+        @keyframes path-6 {
           0% {
             left: 0%;
             top: 0%;
@@ -233,7 +233,7 @@ export const Paths = () => {
           }
         }
 
-        @keyframes move-7 {
+        @keyframes path-7 {
           0% {
             left: 0%;
             top: 0%;
@@ -266,7 +266,7 @@ export const Paths = () => {
           }
         }
 
-        @keyframes move-8 {
+        @keyframes path-8 {
           0% {
             left: 0%;
             top: 0%;
@@ -299,7 +299,7 @@ export const Paths = () => {
           }
         }
 
-        @keyframes move-9 {
+        @keyframes path-9 {
           0% {
             left: 0%;
             top: 0%;

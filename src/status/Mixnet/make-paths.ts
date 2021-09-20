@@ -1,7 +1,7 @@
 // This file can generate more keyframes of random paths to paste into Paths.tsx
 // (styled-jsx doesn't like keyframes generated on the fly)
 
-const quadrants = [
+export const quadrants = [
   [0, 0],
   [0, 50],
   [50, 0],
