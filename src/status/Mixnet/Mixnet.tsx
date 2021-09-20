@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 
+import { ReplayButton } from './ReplayButton'
 import { ShufflingVotes } from './ShufflingVotes'
 import { StaticPileOfVotes } from './StaticPileofVotes'
 
@@ -16,6 +17,7 @@ export const Mixnet = () => {
   return (
     <section>
       <h3>Anonymization Mixnet</h3>
+      <ReplayButton onClick={() => setStep(0)} />
       <main>
         <StaticPileOfVotes />
         <label>Originally Submitted Votes</label>
