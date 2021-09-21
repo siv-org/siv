@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react'
 
 import { ReplayButton } from './ReplayButton'
+import { ShufflePaths } from './ShufflePaths'
 import { ShufflingVotes } from './ShufflingVotes'
+import { SlidingVotes } from './SlidingVotes'
 import { StaticPileOfVotes } from './StaticPileofVotes'
+import { StepLabel } from './StepLabel'
 
 export const Mixnet = () => {
   const observers = ['SIV Server', 'David Ernst', 'Ariana Ivan']
@@ -10,7 +13,7 @@ export const Mixnet = () => {
 
   useEffect(() => {
     setInterval(() => {
-      setStep((v) => (v < 5 ? v + 1 : v))
+      setStep((v) => (v < 2 ? v + 1 : v))
     }, 1000)
   }, [])
 
@@ -18,24 +21,20 @@ export const Mixnet = () => {
     <section>
       <h3>Anonymization Mixnet</h3>
       <ReplayButton onClick={() => setStep(0)} />
+      <StepLabel {...{ step }} />
+      <ShufflePaths />
       <main>
-        <StaticPileOfVotes />
-        <label>Originally Submitted Votes</label>
+        <StaticPileOfVotes original />
+
         {observers.map((o, index) => (
           <div key={index}>
-            {step > index * 2 &&
-              (step > index * 2 + 1 ? (
-                <>
-                  <ShufflingVotes />
-                </>
-              ) : (
-                <>
-                  <img src="/vote/shuffle.png" />
-                  <p>
-                    Shuffled by <b>{o}</b>
-                  </p>
-                </>
-              ))}
+            {step > index * 3 && (
+              <>
+                {step % 3 === 1 && <SlidingVotes name={o} {...{ index }} />}
+                {step % 3 === 2 && <ShufflingVotes name={o} />}
+                {step % 3 === 0 && <StaticPileOfVotes name={o} />}
+              </>
+            )}
           </div>
         ))}
       </main>
@@ -48,19 +47,6 @@ export const Mixnet = () => {
           display: flex;
           align-items: center;
           position: relative;
-        }
-
-        label {
-          position: absolute;
-          bottom: -60px;
-          line-height: 17px;
-          width: 100px;
-          text-align: center;
-        }
-
-        img {
-          width: 40px;
-          margin: 0 15px;
         }
       `}</style>
     </section>

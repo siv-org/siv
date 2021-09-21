@@ -1,4 +1,4 @@
-export const Paths = () => {
+export const ShufflePaths = () => {
   return (
     <>
       <style global jsx>{`
