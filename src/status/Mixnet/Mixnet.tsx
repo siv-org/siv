@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
+import { RandomPathsCSS } from './RandomPathsCSS'
 import { ReplayButton } from './ReplayButton'
-import { ShufflePaths } from './ShufflePaths'
 import { ShufflingVotes } from './ShufflingVotes'
 import { SlidingVotes } from './SlidingVotes'
 import { StaticPileOfVotes } from './StaticPileofVotes'
@@ -9,7 +9,7 @@ import { StepLabel } from './StepLabel'
 
 export const Mixnet = () => {
   const observers = ['SIV Server', 'David Ernst', 'Ariana Ivan']
-  const [step, setStep] = useState(0)
+  const [step, setStep] = useState(2)
 
   useEffect(() => {
     setInterval(() => {
@@ -22,7 +22,7 @@ export const Mixnet = () => {
       <h3>Anonymization Mixnet</h3>
       <ReplayButton onClick={() => setStep(0)} />
       <StepLabel {...{ step }} />
-      <ShufflePaths />
+      <RandomPathsCSS />
       <main>
         <StaticPileOfVotes original />
 

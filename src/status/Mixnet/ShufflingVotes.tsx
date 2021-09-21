@@ -1,3 +1,4 @@
+import { quadrants } from './make-paths'
 import { OneVote } from './OneVote'
 
 export const ShufflingVotes = ({ name }: { name?: string }) => {
@@ -5,14 +6,16 @@ export const ShufflingVotes = ({ name }: { name?: string }) => {
     <section>
       <img src="/vote/shuffle.png" />
       <div>
-        {new Array(4).fill(0).map((_, index) => (
+        {new Array(5).fill(0).map((_, start) => (
           <OneVote
-            key={index}
+            key={start}
             style={{
               animationDuration: '1s',
-              animationName: `path-${Math.floor(Math.random() * 10)}`,
+              animationName: `path-${start % 4}-${Math.floor(Math.random() * 10)}`,
               animationTimingFunction: 'ease',
+              left: quadrants[start % 4][0],
               position: 'absolute',
+              top: quadrants[start % 4][1],
             }}
           />
         ))}
