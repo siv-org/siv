@@ -1,4 +1,4 @@
-const debug = true
+import { debug } from '../ElectionStatusPage'
 
 export const StepLabel = ({ step }: { step: number }) => {
   if (!debug) return null

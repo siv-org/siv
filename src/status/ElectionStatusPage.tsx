@@ -11,7 +11,7 @@ import { OnlyMixnet } from './OnlyMixnet'
 import { Totals } from './Totals'
 import { useElectionInfo } from './use-election-info'
 
-const debug = true
+export const debug = false
 
 export const ElectionStatusPage = (): JSX.Element => {
   const { election_id } = useRouter().query as { election_id: string }
