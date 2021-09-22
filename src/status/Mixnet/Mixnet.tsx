@@ -41,7 +41,7 @@ export const Mixnet = () => {
       </main>
       <style jsx>{`
         section {
-          margin-bottom: 3rem;
+          margin-bottom: 5rem;
         }
 
         main {
