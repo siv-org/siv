@@ -37,7 +37,7 @@ export const ShufflingVotes = ({ name }: { name?: string }) => {
           display: flex;
           position: relative;
           height: 100px;
-          width: 100px;
+          width: 93px;
         }
 
         label {

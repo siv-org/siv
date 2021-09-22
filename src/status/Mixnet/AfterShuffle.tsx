@@ -10,7 +10,6 @@ export const AfterShuffle = ({ name }: { name: string }) => {
         section {
           display: flex;
           align-items: center;
-
           position: relative;
         }
 
