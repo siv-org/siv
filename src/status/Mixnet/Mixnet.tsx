@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 
 import { useElectionInfo } from '../use-election-info'
 import { ReplayButton } from './debug/ReplayButton'
-import { FadeInCSS } from './FadeInCSS'
+import { FadeAndSlideInCSS } from './FadeAndSlideInCSS'
 import { AfterShuffle } from './Shuffle/AfterShuffle'
 import { RandomPathsCSS } from './Shuffle/RandomPathsCSS'
 import { ShufflingVotes } from './Shuffle/ShufflingVotes'
@@ -79,7 +79,7 @@ export const Mixnet = () => {
       </main>
       <ReplayButton {...{ maxStep, step }} onClick={startAnimation} />
       <RandomPathsCSS />
-      <FadeInCSS />
+      <FadeAndSlideInCSS />
       <style jsx>{`
         section {
           margin-top: 2rem;

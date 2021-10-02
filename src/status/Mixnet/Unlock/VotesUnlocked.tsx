@@ -11,7 +11,7 @@ export const VotesUnlocked = () => {
     }, 1000)
   }, [])
   return (
-    <section>
+    <section className="slide-in">
       <div className="arrow fade-in" />
       <UnlockingPile {...{ step }} />
       {[1, 2].includes(step) && (
@@ -29,8 +29,6 @@ export const VotesUnlocked = () => {
           display: flex;
           align-items: center;
           position: relative;
-
-          animation: 1s linear slide-in;
         }
 
         .arrow {
@@ -68,31 +66,8 @@ export const VotesUnlocked = () => {
           color: green;
         }
 
-        .fade-in {
-          animation 1s ease fade-in;
-        }
-
         .fade-in-fast {
           animation .5s ease fade-in-fast;
-        }
-
-        @keyframes slide-in {
-          0% {
-            transform: translateX(-100%);
-          }
-          65%,
-          100% {
-            transform: translateX(0%);
-          }
-        }
-
-        @keyframes fade-in {
-          0%, 90% {
-            opacity: 0;
-          }
-          100% {
-            opacity: 0.5;
-          }
         }
 
         @keyframes fade-in-fast {

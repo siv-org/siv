@@ -26,16 +26,6 @@ export const UnlockingPile = ({ step }: { step: number }) => {
 
           background: #fff;
         }
-
-        label {
-          position: absolute;
-          bottom: -60px;
-          line-height: 17px;
-          width: 93px;
-          text-align: center;
-
-          background: #fff;
-        }
       `}</style>
     </div>
   )
