@@ -1,5 +1,3 @@
-import { useEffect, useRef, useState } from 'react'
-
 import { useElectionInfo } from '../use-election-info'
 import { ReplayButton } from './debug/ReplayButton'
 import { FadeAndSlideInCSS } from './FadeAndSlideInCSS'
@@ -9,45 +7,15 @@ import { ShufflingVotes } from './Shuffle/ShufflingVotes'
 import { SlidingVotes } from './Shuffle/SlidingVotes'
 import { StaticPileOfVotes } from './Shuffle/StaticPileOfVotes'
 import { VotesUnlocked } from './Unlock/VotesUnlocked'
+import { useStepCounter } from './useStepCounter'
 
 export const debug = true
-const initStep = 0
 
 export const Mixnet = () => {
   const { observers = [] } = useElectionInfo()
-  const [step, setStep] = useState(initStep)
-  const interval = useRef<NodeJS.Timeout>()
 
   const maxStep = observers.length * 3 + 1
-
-  const clear = () => clearInterval(interval.current as NodeJS.Timeout)
-
-  function startAnimation() {
-    // Clear any existing intervals
-    clear()
-
-    // Reset step count
-    setStep(initStep)
-
-    // Start new interval
-    interval.current = setInterval(() => {
-      setStep((s) => {
-        if (s >= maxStep) {
-          clear()
-          return s
-        }
-        return s + 1
-      })
-    }, 1000)
-  }
-
-  useEffect(() => {
-    if (!observers.length) return
-
-    startAnimation()
-
-    return clear
-  }, [observers])
+  const { startInterval, step } = useStepCounter(!observers.length ? 0 : maxStep)
 
   return (
     <section>
@@ -77,7 +45,7 @@ export const Mixnet = () => {
 
         {step >= observers.length * 3 + 1 && <VotesUnlocked />}
       </main>
-      <ReplayButton {...{ maxStep, step }} onClick={startAnimation} />
+      <ReplayButton {...{ maxStep, step }} onClick={startInterval} />
       <RandomPathsCSS />
       <FadeAndSlideInCSS />
       <style jsx>{`
