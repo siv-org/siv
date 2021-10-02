@@ -8,6 +8,7 @@ import { ShufflingVotes } from './ShufflingVotes'
 import { SlidingVotes } from './SlidingVotes'
 import { StaticPileOfVotes } from './StaticPileOfVotes'
 import { StepLabel } from './StepLabel'
+import { VotesUnlocked } from './VotesUnlocked'
 
 export const debug = false
 
@@ -16,10 +17,12 @@ export const Mixnet = () => {
   const [step, setStep] = useState(0)
 
   useEffect(() => {
+    if (!observers.length) return
+
     setInterval(() => {
-      setStep((v) => (v < observers.length * 3 ? v + 1 : v))
+      setStep((v) => (v < observers.length * 3 + 1 ? v + 1 : v))
     }, 1000)
-  }, [])
+  }, [observers])
 
   return (
     <section>
@@ -46,6 +49,8 @@ export const Mixnet = () => {
             )}
           </div>
         ))}
+
+        {step >= observers.length * 3 && <VotesUnlocked />}
       </main>
       <ReplayButton onClick={() => setStep(0)} />
       <StepLabel {...{ step }} />
