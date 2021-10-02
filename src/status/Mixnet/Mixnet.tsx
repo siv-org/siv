@@ -50,7 +50,23 @@ export const Mixnet = () => {
       <RandomPathsCSS />
       <style jsx>{`
         section {
-          margin-bottom: 1rem;
+          margin-top: 2rem;
+          margin-bottom: 3rem;
+        }
+
+        h3 {
+          margin-bottom: 5px;
+        }
+
+        p {
+          margin-top: 0px;
+          font-size: 13px;
+          font-style: italic;
+          opacity: 0.7;
+        }
+
+        a {
+          font-weight: 600;
         }
 
         main {
@@ -58,11 +74,7 @@ export const Mixnet = () => {
           align-items: center;
           position: relative;
           margin-bottom: 5rem;
-          padding-top: 2rem;
-        }
-
-        a {
-          font-weight: 600;
+          padding-top: 3rem;
         }
       `}</style>
     </section>

@@ -27,8 +27,8 @@ export const AfterShuffle = ({ index, name }: { index: number; name: string }) =
           text-align: center;
           right: -10px;
           width: 110px;
-          opacity: 0.7;
           font-size: 12px;
+          font-weight: 600;
         }
 
         label {

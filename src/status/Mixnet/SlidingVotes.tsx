@@ -1,4 +1,4 @@
-import { StaticPileOfVotes } from './StaticPileofVotes'
+import { StaticPileOfVotes } from './StaticPileOfVotes'
 
 export const SlidingVotes = ({ index, name }: { index: number; name: string }) => {
   return (
