@@ -1,9 +1,10 @@
+import { ShuffleIcon } from './ShuffleIcon'
 import { StaticPileOfVotes } from './StaticPileOfVotes'
 
 export const AfterShuffle = ({ index, name }: { index: number; name: string }) => {
   return (
     <section>
-      <img src="/vote/shuffle.png" />
+      <ShuffleIcon />
       <p>
         Shuffled {index + 1} time{index > 0 ? 's' : ''}
       </p>
@@ -14,11 +15,6 @@ export const AfterShuffle = ({ index, name }: { index: number; name: string }) =
           display: flex;
           align-items: center;
           position: relative;
-        }
-
-        img {
-          width: 40px;
-          margin: 0 15px;
         }
 
         p {

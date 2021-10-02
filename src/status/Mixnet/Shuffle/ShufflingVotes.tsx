@@ -1,10 +1,11 @@
 import { OneVote } from '../OneVote'
 import { quadrants } from './make-paths'
+import { ShuffleIcon } from './ShuffleIcon'
 
 export const ShufflingVotes = ({ name }: { name?: string }) => {
   return (
     <section>
-      <img src="/vote/shuffle.png" />
+      <ShuffleIcon />
       <div>
         {new Array(5).fill(0).map((_, start) => (
           <OneVote
@@ -27,11 +28,6 @@ export const ShufflingVotes = ({ name }: { name?: string }) => {
           display: flex;
           align-items: center;
           position: relative;
-        }
-
-        img {
-          width: 40px;
-          margin: 0 15px;
         }
 
         div {
