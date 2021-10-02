@@ -54,12 +54,17 @@ export const Mixnet = () => {
       <FadeAndSlideInCSS />
       <style jsx>{`
         section {
-          margin-top: 2rem;
-          margin-bottom: 8rem;
+          padding: 1rem;
+          background: #fff;
+          margin-bottom: 2rem;
+          border-radius: 8px;
+
+          box-shadow: 0px 2px 2px hsl(0 0% 50% / 0.333), 0px 4px 4px hsl(0 0% 50% / 0.333),
+            0px 6px 6px hsl(0 0% 50% / 0.333);
         }
 
         h3 {
-          margin-bottom: 5px;
+          margin: 0 0 5px;
         }
 
         p {

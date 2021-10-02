@@ -64,6 +64,8 @@ export const ElectionStatusPage = (): JSX.Element => {
           padding: 1rem;
           overflow-wrap: break-word;
 
+          background: hsl(0, 0%, 95%);
+
           /* Push footer to bottom */
           display: flex;
           flex-direction: column;

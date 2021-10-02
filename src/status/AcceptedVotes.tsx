@@ -42,7 +42,7 @@ export const AcceptedVotes = ({
   )
 
   return (
-    <div>
+    <section>
       <h3>{title_prefix}All Submitted Votes</h3>
       <p>
         Ordered oldest to newest.{' '}
@@ -105,8 +105,18 @@ export const AcceptedVotes = ({
         </tbody>
       </table>
       <style jsx>{`
+        section {
+          background: #fff;
+          padding: 1rem;
+          border-radius: 8px;
+          box-shadow: 0px 2px 2px hsl(0 0% 50% / 0.333), 0px 4px 4px hsl(0 0% 50% / 0.333),
+            0px 6px 6px hsl(0 0% 50% / 0.333);
+
+          margin-bottom: 2rem;
+        }
+
         h3 {
-          margin-bottom: 5px;
+          margin: 0 0 5px;
         }
 
         p {
@@ -146,7 +156,7 @@ export const AcceptedVotes = ({
           text-align: center;
         }
       `}</style>
-    </div>
+    </section>
   )
 }
 
