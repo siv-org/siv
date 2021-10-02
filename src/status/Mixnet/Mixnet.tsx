@@ -7,7 +7,7 @@ import { AfterShuffle } from './Shuffle/AfterShuffle'
 import { RandomPathsCSS } from './Shuffle/RandomPathsCSS'
 import { ShufflingVotes } from './Shuffle/ShufflingVotes'
 import { SlidingVotes } from './Shuffle/SlidingVotes'
-import { StaticPileOfVotes } from './StaticPileOfVotes'
+import { StaticPileOfVotes } from './Shuffle/StaticPileOfVotes'
 import { VotesUnlocked } from './Unlock/VotesUnlocked'
 
 export const debug = false
