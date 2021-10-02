@@ -1,30 +1,22 @@
 import { OneVote } from '../OneVote'
+import { BottomLabel } from './BottomLabel'
 import { quadrants } from './make-paths'
 
-export const StaticPileOfVotes = ({
-  index = -1,
-  name,
-  original,
-}: {
-  index?: number
-  name?: string
-  original?: true
-}) => {
+export const StaticPileOfVotes = ({ index = -1, original }: { index?: number; original?: true }) => {
   return (
     <div>
-      {new Array(4).fill(0).map((_, index) => (
+      {new Array(4).fill(0).map((_, vIndex) => (
         <OneVote
-          key={index}
+          key={vIndex}
           style={{
             left: 0,
             position: 'absolute',
             top: 0,
-            transform: `translate(${quadrants[index][0]}%, ${quadrants[index][1]}%)`,
+            transform: `translate(${quadrants[vIndex][0]}%, ${quadrants[vIndex][1]}%)`,
           }}
         />
       ))}
-      {original && <label>Originally Submitted Votes</label>}
-      {name && <label>{name}</label>}
+      {original && <BottomLabel name="Originally Submitted Votes" />}
       <style jsx>{`
         div {
           display: flex;
@@ -32,17 +24,6 @@ export const StaticPileOfVotes = ({
           height: 100px;
           width: 93px;
           border-top: 1px solid #fff;
-
-          background: #fff;
-          z-index: ${100 - index};
-        }
-
-        label {
-          position: absolute;
-          bottom: -60px;
-          line-height: 17px;
-          width: 93px;
-          text-align: center;
 
           background: #fff;
           z-index: ${100 - index};

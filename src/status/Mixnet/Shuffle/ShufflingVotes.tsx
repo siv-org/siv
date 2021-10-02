@@ -1,4 +1,5 @@
 import { OneVote } from '../OneVote'
+import { BottomLabel } from './BottomLabel'
 import { quadrants } from './make-paths'
 import { ShuffleIcon } from './ShuffleIcon'
 
@@ -22,7 +23,7 @@ export const ShufflingVotes = ({ name }: { name?: string }) => {
           />
         ))}
       </div>
-      {name && <label>{name}</label>}
+      <BottomLabel {...{ name }} />
       <style jsx>{`
         section {
           display: flex;
@@ -35,17 +36,6 @@ export const ShufflingVotes = ({ name }: { name?: string }) => {
           position: relative;
           height: 100px;
           width: 93px;
-        }
-
-        label {
-          position: absolute;
-          top: 110px;
-          line-height: 17px;
-          width: 93px;
-          right: 0;
-          text-align: center;
-
-          background: #fff;
         }
       `}</style>
     </section>

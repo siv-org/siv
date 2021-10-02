@@ -1,3 +1,4 @@
+import { BottomLabel } from './BottomLabel'
 import { ShuffleIcon } from './ShuffleIcon'
 import { StaticPileOfVotes } from './StaticPileOfVotes'
 
@@ -6,7 +7,7 @@ export const SlidingVotes = ({ index, name }: { index: number; name: string }) =
     <section>
       <ShuffleIcon fadeIn />
       <StaticPileOfVotes {...{ index }} />
-      {name && <label className="fade-in">{name}</label>}
+      <BottomLabel {...{ name }} fadeIn />
       <style jsx>{`
         section {
           display: flex;
@@ -15,17 +16,6 @@ export const SlidingVotes = ({ index, name }: { index: number; name: string }) =
           z-index: ${100 - index};
 
           position: relative;
-        }
-
-        label {
-          position: absolute;
-          top: 110px;
-          line-height: 17px;
-          width: 93px;
-          right: 0;
-          text-align: center;
-
-          background: #fff;
         }
 
         @keyframes slide-in {

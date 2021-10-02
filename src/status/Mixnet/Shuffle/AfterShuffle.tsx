@@ -1,3 +1,4 @@
+import { BottomLabel } from './BottomLabel'
 import { ShuffleIcon } from './ShuffleIcon'
 import { StaticPileOfVotes } from './StaticPileOfVotes'
 
@@ -9,7 +10,7 @@ export const AfterShuffle = ({ index, name }: { index: number; name: string }) =
         Shuffled {index + 1} time{index > 0 ? 's' : ''}
       </p>
       <StaticPileOfVotes />
-      {name && <label>{name}</label>}
+      <BottomLabel {...{ name }} />
       <style jsx>{`
         section {
           display: flex;
@@ -25,15 +26,6 @@ export const AfterShuffle = ({ index, name }: { index: number; name: string }) =
           width: 110px;
           font-size: 12px;
           font-weight: 600;
-        }
-
-        label {
-          position: absolute;
-          top: 110px;
-          line-height: 17px;
-          width: 93px;
-          right: 0;
-          text-align: center;
         }
       `}</style>
     </section>
