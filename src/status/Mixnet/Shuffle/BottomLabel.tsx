@@ -29,19 +29,6 @@ export const BottomLabel = ({
         .small {
           font-size: 12px;
         }
-
-        .fade-in-fast {
-          animation .5s ease fade-in-fast;
-        }
-
-        @keyframes fade-in-fast {
-          0%, 50% {
-            opacity: 0;
-          }
-          100% {
-            opacity: 0.5;
-          }
-        }
       `}</style>
     </>
   )

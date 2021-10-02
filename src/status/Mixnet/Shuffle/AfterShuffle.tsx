@@ -6,7 +6,7 @@ export const AfterShuffle = ({ index, name }: { index: number; name: string }) =
   return (
     <section>
       <ShuffleIcon />
-      <p>
+      <p className="fade-in-fast">
         Shuffled {index + 1} time{index > 0 ? 's' : ''}
       </p>
       <StaticPileOfVotes />
@@ -22,8 +22,8 @@ export const AfterShuffle = ({ index, name }: { index: number; name: string }) =
           position: absolute;
           top: -40px;
           text-align: center;
-          right: -10px;
-          width: 110px;
+          right: -12px;
+          width: 115px;
           font-size: 12px;
           font-weight: 600;
         }

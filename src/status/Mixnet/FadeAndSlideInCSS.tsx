@@ -16,6 +16,19 @@ export const FadeAndSlideInCSS = () => {
           }
         }
 
+        .fade-in-fast {
+          animation .5s ease fade-in-fast;
+        }
+
+        @keyframes fade-in-fast {
+          0%, 50% {
+            opacity: 0;
+          }
+          100% {
+            opacity: 0.5;
+          }
+        }
+
         .slide-in {
           animation: 1s linear slide-in;
         }
