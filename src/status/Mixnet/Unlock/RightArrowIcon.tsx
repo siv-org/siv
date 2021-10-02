@@ -3,7 +3,7 @@ export const RightArrowIcon = () => (
     <div className="arrow fade-in" />
     <style jsx>{`
       .arrow {
-        margin: 0 19px 0 9px;
+        margin: 0 22px 0 5px;
         width: 28px;
         height: 28px;
         border: 3px solid;
