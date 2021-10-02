@@ -1,13 +1,13 @@
-// This file can generate more keyframes of random paths to paste into Paths.tsx
+// This file can generate more keyframes of random paths to paste into RandomPathsCSS.tsx
 // (styled-jsx doesn't like keyframes generated on the fly)
 
 export const quadrants = [
   [0, 0],
-  [0, 50],
-  [50, 0],
-  [50, 50],
+  [0, 105],
+  [95, 0],
+  [95, 105],
 ]
-const positions = quadrants.map(([top, left]) => `left: ${left}%; top: ${top}%;`)
+const positions = quadrants.map(([x, y]) => `transform: translate(${x}%, ${y}%);`)
 const randomPosition = () => positions[Math.floor(Math.random() * 4)]
 
 const randomPath = (start: number, path: number) => `

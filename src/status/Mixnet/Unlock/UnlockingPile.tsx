@@ -9,9 +9,10 @@ export const UnlockingPile = ({ step }: { step: number }) => {
           key={index}
           step={step}
           style={{
-            left: quadrants[index][0],
+            left: 0,
             position: 'absolute',
-            top: quadrants[index][1],
+            top: 0,
+            transform: `translate(${quadrants[index][0]}%, ${quadrants[index][1]}%)`,
           }}
         />
       ))}

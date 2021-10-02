@@ -13,9 +13,10 @@ export const ShufflingVotes = ({ name }: { name?: string }) => {
               animationDuration: '1s',
               animationName: `path-${start % 4}-${Math.floor(Math.random() * 10)}`,
               animationTimingFunction: 'ease',
-              left: quadrants[start % 4][0],
+              left: 0,
               position: 'absolute',
-              top: quadrants[start % 4][1],
+              top: 0,
+              transform: `translate(${quadrants[start % 4][0]}%, ${quadrants[start % 4][1]}%)`,
             }}
           />
         ))}

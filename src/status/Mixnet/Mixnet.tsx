@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { useElectionInfo } from '../use-election-info'
 import { ReplayButton } from './debug/ReplayButton'
-import { StepLabel } from './debug/StepLabel'
 import { AfterShuffle } from './Shuffle/AfterShuffle'
 import { RandomPathsCSS } from './Shuffle/RandomPathsCSS'
 import { ShufflingVotes } from './Shuffle/ShufflingVotes'
@@ -10,18 +9,43 @@ import { SlidingVotes } from './Shuffle/SlidingVotes'
 import { StaticPileOfVotes } from './Shuffle/StaticPileOfVotes'
 import { VotesUnlocked } from './Unlock/VotesUnlocked'
 
-export const debug = false
+export const debug = true
+const initStep = 0
 
 export const Mixnet = () => {
   const { observers = [] } = useElectionInfo()
-  const [step, setStep] = useState(0)
+  const [step, setStep] = useState(initStep)
+  const interval = useRef<NodeJS.Timeout>()
+
+  const maxStep = observers.length * 3 + 1
+
+  const clear = () => clearInterval(interval.current as NodeJS.Timeout)
+
+  function startAnimation() {
+    // Clear any existing intervals
+    clear()
+
+    // Reset step count
+    setStep(initStep)
+
+    // Start new interval
+    interval.current = setInterval(() => {
+      setStep((s) => {
+        if (s >= maxStep) {
+          clear()
+          return s
+        }
+        return s + 1
+      })
+    }, 1000)
+  }
 
   useEffect(() => {
     if (!observers.length) return
 
-    setInterval(() => {
-      setStep((v) => (v < observers.length * 3 + 1 ? v + 1 : v))
-    }, 1000)
+    startAnimation()
+
+    return clear
   }, [observers])
 
   return (
@@ -52,8 +76,7 @@ export const Mixnet = () => {
 
         {step >= observers.length * 3 + 1 && <VotesUnlocked />}
       </main>
-      <ReplayButton onClick={() => setStep(0)} />
-      <StepLabel {...{ step }} />
+      <ReplayButton {...{ maxStep, step }} onClick={startAnimation} />
       <RandomPathsCSS />
       <style jsx>{`
         section {
