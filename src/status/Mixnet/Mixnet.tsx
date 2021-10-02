@@ -9,6 +9,8 @@ import { SlidingVotes } from './SlidingVotes'
 import { StaticPileOfVotes } from './StaticPileOfVotes'
 import { StepLabel } from './StepLabel'
 
+export const debug = false
+
 export const Mixnet = () => {
   const { observers = [] } = useElectionInfo()
   const [step, setStep] = useState(0)
@@ -51,7 +53,7 @@ export const Mixnet = () => {
       <style jsx>{`
         section {
           margin-top: 2rem;
-          margin-bottom: 3rem;
+          margin-bottom: 8rem;
         }
 
         h3 {

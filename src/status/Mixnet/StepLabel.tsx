@@ -1,4 +1,4 @@
-import { debug } from '../ElectionStatusPage'
+import { debug } from './Mixnet'
 
 export const StepLabel = ({ step }: { step: number }) => {
   if (!debug) return null
