@@ -1,8 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 
-const initStep = 0
-
-export const useStepCounter = (maxStep: number) => {
+export const useStepCounter = (initStep: number, maxStep: number) => {
   const [step, setStep] = useState(initStep)
   const interval = useRef<NodeJS.Timeout>()
 

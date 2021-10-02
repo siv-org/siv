@@ -10,12 +10,15 @@ import { VotesUnlocked } from './Unlock/VotesUnlocked'
 import { useStepCounter } from './useStepCounter'
 
 export const debug = true
+const initStep = 0
 
 export const Mixnet = () => {
   const { observers = [] } = useElectionInfo()
 
   const maxStep = observers.length * 3 + 4
-  const { startInterval, step } = useStepCounter(!observers.length ? 0 : maxStep)
+
+  const { startInterval, step } = useStepCounter(initStep, !observers.length ? 0 : maxStep)
+
   const initUnlockingStep = observers.length * 3 + 1
 
   return (

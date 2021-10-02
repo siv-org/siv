@@ -1,7 +1,21 @@
-export const BottomLabel = ({ fadeIn, name }: { fadeIn?: boolean; name?: string }) => {
+export const BottomLabel = ({
+  children,
+  fadeIn,
+  fadeInFast,
+  name = '',
+  small,
+}: {
+  children?: JSX.Element
+  fadeIn?: boolean
+  fadeInFast?: boolean
+  name?: string
+  small?: boolean
+}) => {
   return (
     <>
-      {name && <label className={fadeIn ? 'fade-in' : ''}>{name}</label>}
+      <label className={`${fadeIn ? 'fade-in' : ''} ${fadeInFast ? 'fade-in-fast' : ''} ${small ? 'small' : ''}`}>
+        {children || name}
+      </label>
       <style jsx>{`
         label {
           position: absolute;
@@ -10,6 +24,23 @@ export const BottomLabel = ({ fadeIn, name }: { fadeIn?: boolean; name?: string 
           width: 93px;
           right: 0;
           text-align: center;
+        }
+
+        .small {
+          font-size: 12px;
+        }
+
+        .fade-in-fast {
+          animation .5s ease fade-in-fast;
+        }
+
+        @keyframes fade-in-fast {
+          0%, 50% {
+            opacity: 0;
+          }
+          100% {
+            opacity: 0.5;
+          }
         }
       `}</style>
     </>
