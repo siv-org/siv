@@ -9,7 +9,7 @@ import { StaticPileOfVotes } from './Shuffle/StaticPileOfVotes'
 import { VotesUnlocked } from './Unlock/VotesUnlocked'
 import { useStepCounter } from './useStepCounter'
 
-export const debug = true
+export const debug = false
 const initStep = 0
 
 export const Mixnet = () => {
