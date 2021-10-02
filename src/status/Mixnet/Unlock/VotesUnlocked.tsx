@@ -1,15 +1,6 @@
-import { useEffect, useState } from 'react'
-
 import { UnlockingPile } from './UnlockingPile'
 
-export const VotesUnlocked = () => {
-  const [step, setStep] = useState(0)
-
-  useEffect(() => {
-    setInterval(() => {
-      setStep((s) => (s < 3 ? s + 1 : s))
-    }, 1000)
-  }, [])
+export const VotesUnlocked = ({ step }: { step: number }) => {
   return (
     <section className="slide-in">
       <div className="arrow fade-in" />

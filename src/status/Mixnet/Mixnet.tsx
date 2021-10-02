@@ -14,8 +14,9 @@ export const debug = true
 export const Mixnet = () => {
   const { observers = [] } = useElectionInfo()
 
-  const maxStep = observers.length * 3 + 1
+  const maxStep = observers.length * 3 + 4
   const { startInterval, step } = useStepCounter(!observers.length ? 0 : maxStep)
+  const initUnlockingStep = observers.length * 3 + 1
 
   return (
     <section>
@@ -43,7 +44,7 @@ export const Mixnet = () => {
           </div>
         ))}
 
-        {step >= observers.length * 3 + 1 && <VotesUnlocked />}
+        {step >= initUnlockingStep && <VotesUnlocked step={step - initUnlockingStep} />}
       </main>
       <ReplayButton {...{ maxStep, step }} onClick={startInterval} />
       <RandomPathsCSS />
