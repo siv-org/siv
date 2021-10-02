@@ -30,6 +30,7 @@ export const StaticPileOfVotes = ({
           position: relative;
           height: 100px;
           width: 93px;
+          border-top: 1px solid #fff;
 
           background: #fff;
           z-index: ${100 - index};

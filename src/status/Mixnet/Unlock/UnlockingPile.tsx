@@ -21,6 +21,7 @@ export const UnlockingPile = ({ step }: { step: number }) => {
           position: relative;
           height: 100px;
           width: 93px;
+          border-top: 1px solid #fff;
 
           background: #fff;
         }
