@@ -1,9 +1,10 @@
+import { ShuffleIcon } from './ShuffleIcon'
 import { StaticPileOfVotes } from './StaticPileOfVotes'
 
 export const SlidingVotes = ({ index, name }: { index: number; name: string }) => {
   return (
     <section>
-      <img className="fade-in" src="/vote/shuffle.png" />
+      <ShuffleIcon fadeIn />
       <StaticPileOfVotes {...{ index }} />
       {name && <label className="fade-in">{name}</label>}
       <style jsx>{`
@@ -12,17 +13,8 @@ export const SlidingVotes = ({ index, name }: { index: number; name: string }) =
           align-items: center;
           animation: 1s linear slide-in;
           z-index: ${100 - index};
-          
+
           position: relative;
-        }
-
-        .fade-in {
-          animation 1s ease fade-in;
-        }
-
-        img {
-          width: 40px;
-          margin: 0 15px;
         }
 
         label {
@@ -40,17 +32,9 @@ export const SlidingVotes = ({ index, name }: { index: number; name: string }) =
           0% {
             transform: translateX(-100%);
           }
-          65%, 100% {
-            transform: translateX(0%);
-          }
-        }
-
-        @keyframes fade-in {
-          0%, 90% {
-            opacity: 0;
-          }
+          65%,
           100% {
-            opacity: 0.5;
+            transform: translateX(0%);
           }
         }
       `}</style>

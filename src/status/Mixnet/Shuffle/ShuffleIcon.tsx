@@ -1,6 +1,6 @@
-export const ShuffleIcon = () => (
+export const ShuffleIcon = ({ fadeIn }: { fadeIn?: boolean }) => (
   <>
-    <img src="/vote/shuffle.png" />
+    <img className={fadeIn ? 'fade-in' : ''} src="/vote/shuffle.png" />
     <style jsx>{`
       img {
         width: 40px;
