@@ -36,6 +36,7 @@ export const ShufflingVotes = ({ name }: { name?: string }) => {
           position: relative;
           height: 100px;
           width: 93px;
+          border-top: 1px solid #fff;
         }
       `}</style>
     </section>
