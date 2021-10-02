@@ -50,7 +50,7 @@ export const Mixnet = () => {
           </div>
         ))}
 
-        {step >= observers.length * 3 && <VotesUnlocked />}
+        {step >= observers.length * 3 + 1 && <VotesUnlocked />}
       </main>
       <ReplayButton onClick={() => setStep(0)} />
       <StepLabel {...{ step }} />

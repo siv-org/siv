@@ -1,16 +1,7 @@
-import { useEffect, useState } from 'react'
-
 import { OneVote } from '../OneVote'
 import { quadrants } from '../Shuffle/make-paths'
 
-export const UnlockingPile = ({ index = -1 }: { index?: number; name?: string; original?: true }) => {
-  const [step, setStep] = useState(0)
-
-  useEffect(() => {
-    setInterval(() => {
-      setStep((s) => (s < 2 ? s + 1 : s))
-    }, 1000)
-  }, [])
+export const UnlockingPile = ({ step }: { step: number }) => {
   return (
     <div>
       {new Array(4).fill(0).map((_, index) => (
@@ -32,7 +23,6 @@ export const UnlockingPile = ({ index = -1 }: { index?: number; name?: string; o
           width: 93px;
 
           background: #fff;
-          z-index: ${100 - index};
         }
 
         label {
@@ -43,7 +33,6 @@ export const UnlockingPile = ({ index = -1 }: { index?: number; name?: string; o
           text-align: center;
 
           background: #fff;
-          z-index: ${100 - index};
         }
       `}</style>
     </div>

@@ -6,8 +6,8 @@ export const OneVote = ({ step = 0, style }: { step?: number; style: CSSProperti
     <div {...{ style }}>
       <FileOutlined style={{ fontSize: 48 }} />
       {step === 0 && <img src="/vote/lock.png" />}
-      {step === 1 && <img className="unlocked" src="/vote/unlocked.png" />}
-      {step > 1 && <p>...</p>}
+      {[1, 2].includes(step) && <img className="unlocked" src="/vote/unlocked.png" />}
+      {step > 2 && <p>...</p>}
       <style jsx>{`
         div {
           position: relative;
