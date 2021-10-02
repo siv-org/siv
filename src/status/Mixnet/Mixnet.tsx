@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 
+import { useElectionInfo } from '../use-election-info'
 import { AfterShuffle } from './AfterShuffle'
 import { RandomPathsCSS } from './RandomPathsCSS'
 import { ReplayButton } from './ReplayButton'
@@ -9,7 +10,7 @@ import { StaticPileOfVotes } from './StaticPileofVotes'
 import { StepLabel } from './StepLabel'
 
 export const Mixnet = () => {
-  const observers = ['SIV Server', 'David Ernst', 'Ariana Ivan']
+  const { observers = [] } = useElectionInfo()
   const [step, setStep] = useState(0)
 
   useEffect(() => {
