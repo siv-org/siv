@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
-import { quadrants } from './make-paths'
-import { OneVote } from './OneVote'
+import { OneVote } from '../OneVote'
+import { quadrants } from '../Shuffle/make-paths'
 
 export const UnlockingPile = ({ index = -1 }: { index?: number; name?: string; original?: true }) => {
   const [step, setStep] = useState(0)

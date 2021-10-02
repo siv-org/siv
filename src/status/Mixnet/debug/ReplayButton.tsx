@@ -1,7 +1,7 @@
 import { ReloadOutlined } from '@ant-design/icons'
 import { OnClickButton } from 'src/landing-page/Button'
 
-import { debug } from './Mixnet'
+import { debug } from '../Mixnet'
 
 export const ReplayButton = ({ onClick }: { onClick: () => void }) => {
   if (!debug) return null

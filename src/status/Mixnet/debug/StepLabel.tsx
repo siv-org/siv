@@ -1,4 +1,4 @@
-import { debug } from './Mixnet'
+import { debug } from '../Mixnet'
 
 export const StepLabel = ({ step }: { step: number }) => {
   if (!debug) return null

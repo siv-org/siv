@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react'
 
 import { useElectionInfo } from '../use-election-info'
-import { AfterShuffle } from './AfterShuffle'
-import { RandomPathsCSS } from './RandomPathsCSS'
-import { ReplayButton } from './ReplayButton'
-import { ShufflingVotes } from './ShufflingVotes'
-import { SlidingVotes } from './SlidingVotes'
+import { ReplayButton } from './debug/ReplayButton'
+import { StepLabel } from './debug/StepLabel'
+import { AfterShuffle } from './Shuffle/AfterShuffle'
+import { RandomPathsCSS } from './Shuffle/RandomPathsCSS'
+import { ShufflingVotes } from './Shuffle/ShufflingVotes'
+import { SlidingVotes } from './Shuffle/SlidingVotes'
 import { StaticPileOfVotes } from './StaticPileOfVotes'
-import { StepLabel } from './StepLabel'
-import { VotesUnlocked } from './VotesUnlocked'
+import { VotesUnlocked } from './Unlock/VotesUnlocked'
 
 export const debug = false
 

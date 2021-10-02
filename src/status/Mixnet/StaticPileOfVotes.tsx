@@ -1,5 +1,5 @@
-import { quadrants } from './make-paths'
 import { OneVote } from './OneVote'
+import { quadrants } from './Shuffle/make-paths'
 
 export const StaticPileOfVotes = ({
   index = -1,

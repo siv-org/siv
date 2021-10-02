@@ -1,4 +1,4 @@
-import { StaticPileOfVotes } from './StaticPileOfVotes'
+import { StaticPileOfVotes } from '../StaticPileOfVotes'
 
 export const AfterShuffle = ({ index, name }: { index: number; name: string }) => {
   return (

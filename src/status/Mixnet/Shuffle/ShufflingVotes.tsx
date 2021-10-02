@@ -1,5 +1,5 @@
+import { OneVote } from '../OneVote'
 import { quadrants } from './make-paths'
-import { OneVote } from './OneVote'
 
 export const ShufflingVotes = ({ name }: { name?: string }) => {
   return (
