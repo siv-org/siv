@@ -32,9 +32,10 @@ export const FAQPage = (): JSX.Element => {
           </OnClickButton>
         </div>
 
-        {faq.map(({ q, resp }, index) => (
+        {faq.map(({ id, q, resp }, index) => (
           <div className="question" key={index}>
             <h3
+              id={id}
               onClick={() => {
                 const update = [...expanded]
                 update[index] = !update[index]
