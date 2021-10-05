@@ -171,10 +171,11 @@ export const Observers = () => {
                 <th>name</th>
                 <th style={{ width: 50 }}>invite delivered</th>
                 <th style={{ width: 100 }}>setup stage completed</th>
+                <th>device</th>
               </tr>
             </thead>
             <tbody>
-              {trustees.slice(1).map(({ email, mailgun_events, name, stage = 0 }, index) => (
+              {trustees.slice(1).map(({ device, email, mailgun_events, name, stage = 0 }, index) => (
                 <tr key={email}>
                   <td>{index + 1}</td>
                   <td>
@@ -218,6 +219,8 @@ export const Observers = () => {
                   )}
 
                   <td style={{ textAlign: 'center' }}>{stage} of 12</td>
+
+                  <td style={{ fontSize: 12, textAlign: 'center' }}>{device}</td>
                 </tr>
               ))}
             </tbody>

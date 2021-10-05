@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
+import UAParser from 'ua-parser-js'
 
 import { firebase } from '../../../_services'
 import { checkJwt } from '../../../validate-admin-jwt'
@@ -18,6 +19,7 @@ export type Voter = {
   mailgun_events: { accepted?: MgEvent[]; delivered?: MgEvent[]; failed?: MgEvent[] }
 }
 type Trustee = {
+  device?: string
   email: string
   mailgun_events: { accepted?: MgEvent[]; delivered?: MgEvent[]; failed?: MgEvent[] }
   name?: string
@@ -95,7 +97,22 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     if (data.verified && has_everyone(data.verified)) stage = 8
     if (data.partial_decryption) stage = 12
 
-    return [...acc, { email: data.email, mailgun_events: data.mailgun_events, name: data.name, stage }]
+    let device = ''
+    if (data.headers) {
+      const ua = UAParser(data.headers['user-agent'])
+      device = `${ua.browser.name} ${ua.browser.version} on ${ua.os.name} ${ua.os.version}`
+    }
+
+    return [
+      ...acc,
+      {
+        device,
+        email: data.email,
+        mailgun_events: data.mailgun_events,
+        name: data.name,
+        stage,
+      },
+    ]
   }, [])
 
   // Gather who's voted already
