@@ -13,10 +13,12 @@ const fetcher = (url: string) => fetch(url).then((r) => r.json())
 export const AcceptedVotes = ({
   ballot_design,
   esignature_requested,
+  has_decrypted_votes,
   title_prefix = '',
 }: {
   ballot_design?: Item[]
   esignature_requested?: boolean
+  has_decrypted_votes?: boolean
   title_prefix?: string
 }): JSX.Element => {
   const { election_id } = useRouter().query
@@ -40,11 +42,24 @@ export const AcceptedVotes = ({
   )
 
   return (
-    <div>
+    <section>
       <h3>{title_prefix}All Submitted Votes</h3>
       <p>
-        Ordered oldest to newest. When the election closes, {esignature_requested ? 'all approved' : 'these'} votes will
-        be shuffled and then unlocked.
+        Ordered oldest to newest.{' '}
+        {has_decrypted_votes ? (
+          <>
+            These are the encrypted votes submitted by each authenticated voter.
+            <br />
+            For more, see{' '}
+            <a href="../protocol#3" target="_blank">
+              SIV Protocol Step 3: Submit Encrypted Vote
+            </a>
+            .
+          </>
+        ) : (
+          `When the election closes, ${esignature_requested ? 'all approved' : 'these'} votes will
+        be shuffled and then unlocked.`
+        )}
       </p>
       <table>
         <thead>
@@ -90,8 +105,18 @@ export const AcceptedVotes = ({
         </tbody>
       </table>
       <style jsx>{`
+        section {
+          background: #fff;
+          padding: 1rem;
+          border-radius: 8px;
+          box-shadow: 0px 2px 2px hsl(0 0% 50% / 0.333), 0px 4px 4px hsl(0 0% 50% / 0.333),
+            0px 6px 6px hsl(0 0% 50% / 0.333);
+
+          margin-bottom: 2rem;
+        }
+
         h3 {
-          margin-bottom: 5px;
+          margin: 0 0 5px;
         }
 
         p {
@@ -101,10 +126,15 @@ export const AcceptedVotes = ({
           opacity: 0.7;
         }
 
+        a {
+          font-weight: 600;
+        }
+
         table {
           border-collapse: collapse;
           display: block;
           overflow: scroll;
+          margin-top: 2rem;
         }
 
         th,
@@ -126,7 +156,7 @@ export const AcceptedVotes = ({
           text-align: center;
         }
       `}</style>
-    </div>
+    </section>
   )
 }
 

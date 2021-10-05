@@ -76,10 +76,12 @@ export const Totals = ({ proofsPage }: { proofsPage?: boolean }): JSX.Element =>
       ))}
       <style jsx>{`
         .totals {
-          background: #f9f9f9;
-          border: 2px solid #ddd;
-          border-radius: 5px;
+          background: #fff;
+          border-radius: 8px;
           padding: 1rem;
+
+          box-shadow: 0px 1px 2px hsl(0 0% 50% / 0.333), 0px 3px 4px hsl(0 0% 50% / 0.333),
+            0px 4px 6px hsl(0 0% 50% / 0.333);
         }
 
         .title-line {
