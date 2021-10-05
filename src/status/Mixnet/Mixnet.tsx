@@ -1,3 +1,4 @@
+import { useElectionInfo } from '../use-election-info'
 import { Animation } from './Animation'
 import { FadeAndSlideInCSS } from './FadeAndSlideInCSS'
 import { RandomPathsCSS } from './Shuffle/RandomPathsCSS'
@@ -5,11 +6,13 @@ import { RandomPathsCSS } from './Shuffle/RandomPathsCSS'
 export const debug = false
 
 export const Mixnet = () => {
+  const { observers = [] } = useElectionInfo()
   return (
     <section>
       <h3>Anonymization Mixnet</h3>
       <p>
-        This animation illustrates how the encrypted votes were anonymized by the Election&apos;s Verifying Observers
+        This animation illustrates how the encrypted votes were anonymized{' '}
+        {observers.length > 1 ? "by the Election's Verifying Observers " : ''}
         before being unlocked. For more, see{' '}
         <a href="../protocol#4" target="_blank">
           SIV Protocol Step 4: Verifiable Shuffle
