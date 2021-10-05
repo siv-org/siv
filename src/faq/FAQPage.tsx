@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
 import { OnClickButton } from 'src/landing-page/Button'
 
 import { GlobalCSS } from '../GlobalCSS'
@@ -12,6 +13,22 @@ import { HeaderBar } from './HeaderBar'
 export const FAQPage = (): JSX.Element => {
   const [expanded, setExpanded] = useState<boolean[]>(new Array(faq.length).fill(false))
   const any_collapsed = expanded.some((s) => !s)
+  const { asPath } = useRouter()
+
+  // Autoexpand faq if following link to specific id
+  useEffect(() => {
+    const hash = asPath.split('#')[1]
+    if (hash) {
+      // Find the matching index
+      const index = faq.findIndex(({ id }) => id === hash)
+
+      if (index !== -1) {
+        const update = [...expanded]
+        update[index] = true
+        setExpanded(update)
+      }
+    }
+  }, [asPath])
 
   return (
     <>
@@ -32,9 +49,10 @@ export const FAQPage = (): JSX.Element => {
           </OnClickButton>
         </div>
 
-        {faq.map(({ q, resp }, index) => (
+        {faq.map(({ id, q, resp }, index) => (
           <div className="question" key={index}>
             <h3
+              id={id}
               onClick={() => {
                 const update = [...expanded]
                 update[index] = !update[index]

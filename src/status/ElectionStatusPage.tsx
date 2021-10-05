@@ -6,6 +6,8 @@ import { Head } from '../Head'
 import { Footer } from '../vote/Footer'
 import { AcceptedVotes } from './AcceptedVotes'
 import { DecryptedVotes } from './DecryptedVotes'
+import { Mixnet, debug } from './Mixnet/Mixnet'
+import { OnlyMixnet } from './OnlyMixnet'
 import { Totals } from './Totals'
 import { useElectionInfo } from './use-election-info'
 
@@ -13,6 +15,8 @@ export const ElectionStatusPage = (): JSX.Element => {
   const { election_id } = useRouter().query as { election_id: string }
   const { ballot_design, election_title, esignature_requested, has_decrypted_votes } = useElectionInfo()
   const [show_encrypteds, toggle_encrypteds] = useReducer((state) => !state, false)
+
+  if (debug) return <OnlyMixnet />
 
   return (
     <>
@@ -46,7 +50,8 @@ export const ElectionStatusPage = (): JSX.Element => {
             </p>
           )}
           <div style={{ display: show_encrypteds || !has_decrypted_votes ? 'block' : 'none' }}>
-            <AcceptedVotes {...{ ballot_design, esignature_requested }} />
+            {show_encrypteds && has_decrypted_votes && <Mixnet />}
+            <AcceptedVotes {...{ ballot_design, esignature_requested, has_decrypted_votes }} />
           </div>
         </div>
         <Footer />
@@ -58,6 +63,8 @@ export const ElectionStatusPage = (): JSX.Element => {
           margin: 0 auto;
           padding: 1rem;
           overflow-wrap: break-word;
+
+          background: hsl(0, 0%, 95%);
 
           /* Push footer to bottom */
           display: flex;

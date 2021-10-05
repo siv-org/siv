@@ -1,5 +1,6 @@
-export const faq: { q: string; resp: string }[] = [
+export const faq: { id?: string; q: string; resp: string }[] = [
   {
+    id: 'secure',
     q: 'What is a "Secure" election?',
     resp: `There are three pillars that define a secure election.
 
@@ -41,6 +42,7 @@ The entire process leaves a written audit trail, for independent verification.
   },
 
   {
+    id: 'privacy',
     q: 'How does SIV ensure Vote Privacy?',
     resp: `Using <a href="https://en.wikipedia.org/wiki/Threshold_cryptosystem" target="_blank">Threshold Key Cryptography</a>, the SIV system doesn't allow anyone, including the election administrators, to see how anyone else voted.
 

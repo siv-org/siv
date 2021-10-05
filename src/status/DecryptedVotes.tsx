@@ -50,8 +50,16 @@ export const DecryptedVotes = ({ proofsPage }: { proofsPage?: boolean }): JSX.El
         </tbody>
       </table>
       <style jsx>{`
+        div {
+          background: #fff;
+          padding: 1rem;
+          border-radius: 8px;
+          box-shadow: 0px 2px 2px hsl(0 0% 50% / 0.333), 0px 4px 4px hsl(0 0% 50% / 0.333),
+            0px 6px 6px hsl(0 0% 50% / 0.333);
+        }
+
         h3 {
-          margin-bottom: 5px;
+          margin: 0 0 5px;
         }
 
         p {
