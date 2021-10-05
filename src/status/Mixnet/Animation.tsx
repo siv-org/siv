@@ -1,3 +1,6 @@
+import { useEffect, useRef } from 'react'
+import smoothscroll from 'smoothscroll-polyfill'
+
 import { useElectionInfo } from '../use-election-info'
 import { ReplayButton } from './debug/ReplayButton'
 import { AfterShuffle } from './Shuffle/AfterShuffle'
@@ -11,15 +14,28 @@ const initStep = 0
 
 export const Animation = () => {
   const { observers = [] } = useElectionInfo()
+  const el = useRef<HTMLDivElement>(null)
 
   const maxStep = observers.length * 3 + 4
-
-  const { startInterval, step } = useStepCounter(initStep, !observers.length ? 0 : maxStep)
-
   const initUnlockingStep = observers.length * 3 + 1
+
+  // Turn on smoothscroll polyfill (for Safari)
+  useEffect(() => {
+    smoothscroll.polyfill()
+  })
+  function scrollToEnd(step: number) {
+    if (step % 3 === 0) {
+      setTimeout(() => {
+        el.current?.scrollBy({ behavior: 'smooth', left: el.current?.scrollWidth })
+      }, 50)
+    }
+  }
+
+  const { startInterval, step } = useStepCounter(initStep, !observers.length ? 0 : maxStep, scrollToEnd)
+
   return (
     <>
-      <main>
+      <main ref={el}>
         <StaticPileOfVotes original />
 
         {observers.map((o, index) => (
@@ -35,6 +51,9 @@ export const Animation = () => {
         ))}
 
         {step >= initUnlockingStep && <VotesUnlocked step={step - initUnlockingStep} />}
+
+        {/* Right padding spacer */}
+        <div style={{ opacity: 0 }}>abc</div>
       </main>
       <ReplayButton {...{ maxStep, step }} onClick={startInterval} />
 
@@ -45,8 +64,7 @@ export const Animation = () => {
           position: relative;
           padding-bottom: 5rem;
           padding-top: 3rem;
-
-          overflow-x: scroll;
+          overflow-x: auto;
         }
       `}</style>
     </>
