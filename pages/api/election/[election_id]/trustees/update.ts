@@ -66,6 +66,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   delete body.email
   delete body.auth
 
+  // If pub key, also store req headers (user agent, ip address)
+  if (body.recipient_key) body.headers = req.headers
+
   // Escape object keys w/ periods into commas
   // (Firebase doesn't like dots in keys)
   const commafied = transform_email_keys(body, 'commafy')
