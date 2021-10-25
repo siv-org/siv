@@ -3,7 +3,7 @@ import Link from 'next/link'
 export const HeaderBar = (): JSX.Element => (
   <div>
     <span>Secure Internet Voting</span>
-    <Link href="/for-governments">
+    <Link href="/admin">
       <a>For Governments</a>
     </Link>
     <style jsx>{`
