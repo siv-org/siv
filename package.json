@@ -5,6 +5,7 @@
   "scripts": {
     "build": "next build",
     "cypress": "cypress open --config-file cypress/cypress-config.json",
+    "cypress:run": "cypress run --config-file cypress/cypress-config.json",
     "dev": "next dev",
     "format": "prettier --write **/*.{js,ts,tsx}",
     "lint": "eslint . --ext ts --ext tsx --ext js",
