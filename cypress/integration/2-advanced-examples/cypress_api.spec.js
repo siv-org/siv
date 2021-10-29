@@ -34,6 +34,7 @@ context('Cypress.Commands', () => {
       .console('info')
       .then(($button) => {
         // subject is still $button
+        void $button
       })
   })
 })
