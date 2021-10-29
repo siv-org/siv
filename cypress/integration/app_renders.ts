@@ -5,7 +5,7 @@ Tests:
   - [x] /
   - [x] /protocol
   - [x] /about
-  - [ ] /faq
+  - [x] /faq
   - [ ] /login
   - [ ] /admin
   - [ ] /${election_id}/ sub-pages:
@@ -30,5 +30,9 @@ describe('The webapp should render', () => {
 
   it('/about', () => {
     cy.visit('/about').contains('Decentralized Threshold Key Generation & Decryption')
+  })
+
+  it('/faq', () => {
+    cy.visit('/faq').contains('Frequently Asked Questions')
   })
 })
