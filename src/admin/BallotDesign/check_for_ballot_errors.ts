@@ -36,7 +36,9 @@ export function check_for_urgent_ballot_errors(design: string): string | null {
       })
     })
   } catch (e) {
-    return e.message || e
+    if (typeof e === 'string') return e
+    if (e instanceof Error) return e.message
+    throw e
   }
   return null
 }
@@ -68,7 +70,9 @@ export function check_for_less_urgent_ballot_errors(design: string): string | nu
       })
     })
   } catch (e) {
-    return e.message || e
+    if (typeof e === 'string') return e
+    if (e instanceof Error) return e.message
+    throw e
   }
   return null
 }

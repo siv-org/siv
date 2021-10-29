@@ -47,7 +47,8 @@ export const SendInvitationsButton = ({
             set_error(json?.error || 'Error w/o message ')
           }
         } catch (e) {
-          set_error(e.message || 'Caught error w/o message')
+          if (e instanceof Error) set_error(e.message)
+          set_error('Caught error w/o message')
         }
 
         toggle_sending()
