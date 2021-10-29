@@ -105,7 +105,7 @@
     "@typescript-eslint/eslint-plugin": "^5",
     "@typescript-eslint/parser": "^5",
     "cypress": "^8.7.0",
-    "eslint": "^7",
+    "eslint": "^8",
     "eslint-config-prettier": "^6.10.1",
     "eslint-plugin-cypress": "^2.12.1",
     "eslint-plugin-react": "^7.20.1",
