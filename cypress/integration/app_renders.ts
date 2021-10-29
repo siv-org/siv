@@ -4,7 +4,7 @@ Tests:
 - [ ] Can load pages without rendering error:
   - [x] /
   - [x] /protocol
-  - [ ] /about
+  - [x] /about
   - [ ] /faq
   - [ ] /login
   - [ ] /admin
@@ -26,5 +26,9 @@ describe('The webapp should render', () => {
 
   it('/protocol', () => {
     cy.visit('/protocol').contains('Secure Internet Voting (SIV) Protocol Overview')
+  })
+
+  it('/about', () => {
+    cy.visit('/about').contains('Decentralized Threshold Key Generation & Decryption')
   })
 })
