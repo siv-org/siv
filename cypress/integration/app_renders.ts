@@ -6,7 +6,7 @@ Tests:
   - [x] /protocol
   - [x] /about
   - [x] /faq
-  - [ ] /login
+  - [x] /login
   - [ ] /admin
   - [ ] /${election_id}/ sub-pages:
   - [ ] /ballot
@@ -34,5 +34,9 @@ describe('The webapp should render', () => {
 
   it('/faq', () => {
     cy.visit('/faq').contains('Frequently Asked Questions')
+  })
+
+  it('/login', () => {
+    cy.visit('/login').contains('Create an account')
   })
 })
