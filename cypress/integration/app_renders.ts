@@ -20,7 +20,7 @@ Tests:
 */
 
 describe('The webapp should render', () => {
-  it('/ · homepage', () => {
+  it('/', () => {
     cy.visit('/').contains('Fast. Private. Verifiable')
   })
 
