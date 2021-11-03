@@ -1,7 +1,6 @@
 const darkBlue = '#002868'
 
 import { BoxProps, NoSsr, TextField, TextFieldProps } from '@material-ui/core'
-import { firestore } from 'firebase/app'
 import { omit } from 'lodash-es'
 import { useState } from 'react'
 import { Element } from 'react-scroll'
@@ -51,7 +50,7 @@ export function GiveYourVoters({ idKey }: { idKey: string }): JSX.Element {
           <OnClickButton
             disabled={saved}
             style={{ marginRight: 0 }}
-            onClick={() => {
+            onClick={async () => {
               const fields: Record<string, string | Date> = { created_at: new Date().toString(), idKey }
 
               // Get data from input fields
@@ -59,20 +58,8 @@ export function GiveYourVoters({ idKey }: { idKey: string }): JSX.Element {
                 fields[field] = (document.getElementById(toID(field)) as HTMLInputElement).value
               })
 
-              // Store submission in Firestore
-              firestore()
-                .collection('jurisdictions-leads')
-                .doc(new Date().toISOString() + ' ' + String(Math.random()).slice(2, 7))
-                .set(fields)
-                .then(() => {
-                  setSaved(true)
-
-                  // Notify via Pushover
-                  api('pushover', {
-                    message: `${fields.email}\n\n${fields.message}`,
-                    title: `SIV jurisdiction-lead: ${fields.name} (${fields.location})`,
-                  })
-                })
+              const { status } = await api('/jurisdictions-leads', fields)
+              if (status === 201) setSaved(true)
             }}
           >
             Send
