@@ -88,7 +88,7 @@
     "smoothscroll-polyfill": "^0.4.4",
     "swr": "^0.4.0",
     "tailwindcss": "^2.0.3",
-    "timeago-react": "^3.0.1",
+    "timeago-react": "^3.0.4",
     "timeago.js": "^4.0.2",
     "ua-parser-js": "^0.7.28"
   },
