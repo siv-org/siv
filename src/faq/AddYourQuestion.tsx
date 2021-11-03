@@ -16,10 +16,14 @@ export const AddYourQuestion = () => {
           style={{ flex: 1, marginRight: 10 }}
           variant="outlined"
           onChange={() => setSaved(false)}
+          onKeyPress={(event) =>
+            event.key === 'Enter' && (document.getElementById('submit-btn') as HTMLButtonElement)?.click()
+          }
         />
       </NoSsr>
       <OnClickButton
         disabled={saved}
+        id="submit-btn"
         style={{ margin: 0, padding: '8px 17px' }}
         onClick={async () => {
           const { status } = await api('/faq-submission', {
