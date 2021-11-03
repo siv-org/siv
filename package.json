@@ -10,13 +10,13 @@
     "format": "prettier --write **/*.{js,ts,tsx}",
     "lint": "eslint . --ext ts --ext tsx --ext js",
     "start": "next start",
-    "test-all": "yarn lint && yarn type-check",
-    "type-check": "tsc --pretty --noEmit"
+    "test": "yarn lint && yarn typecheck && yarn e2e",
+    "typecheck": "tsc --pretty --noEmit"
   },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged",
-      "pre-push": "yarn run type-check"
+      "pre-push": "yarn run typecheck"
     }
   },
   "lint-staged": {
