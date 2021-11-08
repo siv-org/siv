@@ -2,7 +2,7 @@
 
 -[x] / admin
     - [x] /${election_id}/ sub-pages:
-    - [ ] /ballot
+    - [x] /ballot
     - [ ] /observers
     - [ ] /voters
   - [ ] /vote -> EnterAuth
@@ -13,18 +13,34 @@
 */
 
 describe('Can create an election', () => {
-  it('Can log into /admin w/ jwt cookie', () => {
+  beforeEach(() => {
     cy.setCookie('siv-jwt', Cypress.env('E2E_TESTER_ADMIN_JWT'))
+  })
+
+  it('Can log into /admin w/ jwt cookie', () => {
     cy.visit('/admin').contains('Your Existing Elections:')
   })
 
   it('Can create new election', () => {
-    cy.setCookie('siv-jwt', Cypress.env('E2E_TESTER_ADMIN_JWT'))
-    cy.visit('/admin')
-
     cy.get('#election-title').type('test election')
     cy.get('#election-title-save').click()
 
     cy.contains('Managing: test election')
+  })
+
+  it('Can edit ballot design in Wizard Mode', () => {
+    cy.get('.title-input').type('abc')
+  })
+
+  it('Can edit ballot design in Text Mode', () => {
+    // Switch to text mode
+    cy.get('.mode-controls > :nth-child(2)').click()
+
+    // Modify 'Bill Clinton' line
+    cy.get(':nth-child(10) > .CodeMirror-line > [role="presentation"] > :nth-child(2)').type('FOO')
+
+    // Check if change is reflected in Wizard mode
+    cy.get('.mode-controls > :nth-child(1)').click()
+    cy.get(':nth-child(2) > .name-input').should('have.value', 'Bill CFOOlinton')
   })
 })
