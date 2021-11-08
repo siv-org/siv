@@ -7,7 +7,7 @@ Tests:
   - [x] /about
   - [x] /faq
   - [x] /login
-  - [ ] /admin
+  - [x] /admin
   - [ ] /${election_id}/ sub-pages:
   - [ ] /ballot
   - [ ] /observers
@@ -38,5 +38,10 @@ describe('The webapp should render', () => {
 
   it('/login', () => {
     cy.visit('/login').contains('Create an account')
+  })
+
+  it('/admin', () => {
+    cy.setCookie('siv-jwt', Cypress.env('E2E_TESTER_ADMIN_JWT'))
+    cy.visit('/admin').contains('Your Existing Elections:')
   })
 })
