@@ -79,7 +79,7 @@
     "pusher": "^4.0.2",
     "pusher-js": "^7.0.2",
     "react": "^17",
-    "react-codemirror2": "^7.2.1",
+    "react-codemirror2": "scniro/react-codemirror2#0f2bb13",
     "react-dom": "^17",
     "react-flip-move": "^3.0.4",
     "react-linkify": "^1.0.0-alpha",
