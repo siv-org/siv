@@ -46,7 +46,7 @@ export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => voi
                 <ApartmentOutlined style={{ marginRight: 5 }} /> Election Management
               </label>
               {steps.map((name) => (
-                <Link href={`./${urled(name)}`} key={name}>
+                <Link href={`/election/${election_id}/${urled(name)}`} key={name}>
                   <a className={urled(name) === section ? 'current' : ''} onClick={closeMenu}>
                     {name !== 'Voters' && <input readOnly checked={completed[name]} type="checkbox" />}
                     {name}
@@ -59,7 +59,7 @@ export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => voi
                 <SnippetsOutlined style={{ marginRight: 5 }} />
                 Post Election
               </label>
-              <Link href={`./marked-ballots`}>
+              <Link href={`/election/${election_id}/marked-ballots`}>
                 <a className={'marked-ballots' === section ? 'current' : ''} onClick={closeMenu}>
                   Marked Ballots
                 </a>
