@@ -64,6 +64,15 @@ describe('Can create an election', () => {
     cy.get('.sidebar input[type="checkbox"]').first().should('be.checked')
   })
 
+  it.skip('Can skip adding observers')
+  it.skip('Can add extra Observers for keygen', () => {
+    // Add an email address
+    // Click invite
+    // Look for email invitation
+    // Open email invitation to join keygen
+    // Look for keygen success
+  })
+
   it('Delete test election at the end to cleanup', () => {
     cy.request(`api/election/${election_id}/delete-test-election`).then((response) => {
       expect(response.status).to.eq(201)
