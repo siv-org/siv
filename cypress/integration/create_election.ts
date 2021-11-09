@@ -53,6 +53,17 @@ describe('Can create an election', () => {
     cy.get(':nth-child(2) > .name-input').should('have.value', 'Bill CFOOlinton')
   })
 
+  it('Can finalize ballot design', () => {
+    // Locate & click the finalize button
+    cy.contains('Finalize').click()
+
+    // Expect to switch to observer tab
+    cy.contains('Verifying Observers')
+
+    // Expect the ballot design checkbox in the side bar to be 'checked'
+    cy.get('.sidebar input[type="checkbox"]').first().should('be.checked')
+  })
+
   it('Delete test election at the end to cleanup', () => {
     cy.request(`api/election/${election_id}/delete-test-election`).then((response) => {
       expect(response.status).to.eq(201)
