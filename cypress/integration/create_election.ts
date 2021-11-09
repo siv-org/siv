@@ -65,15 +65,30 @@ describe('Can create an election', () => {
   })
 
   it.skip('Can skip adding observers')
-  it.skip('Can add extra Observers for keygen', () => {
+
+  const temp_username = 'nbfyvca' + String(Math.random()).slice(4)
+  it('Can add extra Observers for keygen', () => {
     // Add an email address
-    // Click invite
-    // Look for email invitation
-    // Open email invitation to join keygen
-    // Look for keygen success
+    cy.get('input[type="text"]').first().type(`${temp_username}@grr.la`)
+
+    // Click invite button
+    cy.contains('Finalize & Send Invitation').click()
   })
 
+  // it('Can receive Observer invitation email', () => {
+  //   cy.wait(500)
+  //   // Look for email invitation in temp inbox
+  //   cy.visit('https://www.guerrillamail.com/inbox')
+  //   cy.get('#inbox-id').click().type(temp_username)
+  //   cy.get('.save').click()
+
+  //   // Open email invitation to get keygen auth_token
+  // })
+
+  // Look for keygen success
+
   it('Delete test election at the end to cleanup', () => {
+    // cy.pause()
     cy.request(`api/election/${election_id}/delete-test-election`).then((response) => {
       expect(response.status).to.eq(201)
     })
