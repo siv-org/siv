@@ -118,6 +118,10 @@ describe('Can create an election', () => {
       })
   })
 
+  it('Can open the observer keygen app', () => {
+    cy.visit(`/election/${election_id}/observer?auth=${observer_auth}`)
+  })
+
   // Look for keygen success
 
   it('Delete test election at the end to cleanup', () => {
