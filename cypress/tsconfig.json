@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
-    "types": ["cypress"]
+    "types": ["cypress"],
+    "lib": ["es2020", "dom"]
   },
   "include": ["**/*.ts"]
 }

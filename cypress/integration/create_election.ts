@@ -1,3 +1,6 @@
+/// <reference types="cypress-mailslurp" />
+
+import { MatchOptionFieldEnum, MatchOptionShouldEnum } from 'mailslurp-client'
 /*
 
 -[x] / admin
@@ -12,7 +15,12 @@
   - [ ] /observer/shuffle
 */
 
+// Pick a random election name
+const election_name = 'test ' + String(Math.random()).slice(2, 10)
+
+// Initializing now so we can re-use between tests
 let election_id = ''
+let observer_auth = ''
 
 describe('Can create an election', () => {
   beforeEach(() => {
@@ -21,15 +29,15 @@ describe('Can create an election', () => {
 
   it('Can log into /admin w/ jwt cookie', () => {
     cy.visit('/admin')
-    cy.wait(100) // Wait for /admin to fully render
+    cy.wait(400) // Wait for /admin to fully render
     cy.contains('Your Existing Elections:')
   })
 
   it('Can create new election', { defaultCommandTimeout: 10_000 }, () => {
-    cy.get('#election-title').type('test election')
+    cy.get('#election-title').type(election_name)
     cy.get('#election-title-save').click()
 
-    cy.contains('Managing: test election')
+    cy.contains(`Managing: ${election_name}`)
 
     // Save election_id
     cy.get('.current-election > span')
@@ -68,24 +76,47 @@ describe('Can create an election', () => {
 
   it.skip('Can skip adding observers')
 
-  const temp_username = 'nbfyvca' + String(Math.random()).slice(4)
+  const mailslurp_address = '1401ca7a-7e21-4ce6-b1ca-0188b65f81ea@mailslurp.com'
   it('Can add extra Observers for keygen', () => {
     // Add an email address
-    cy.get('input[type="text"]').first().type(`${temp_username}@grr.la`)
+    cy.get('input[type="text"]').first().type(mailslurp_address)
 
     // Click invite button
     cy.contains('Finalize & Send Invitation').click()
   })
 
-  // it('Can receive Observer invitation email', () => {
-  //   cy.wait(500)
-  //   // Look for email invitation in temp inbox
-  //   cy.visit('https://www.guerrillamail.com/inbox')
-  //   cy.get('#inbox-id').click().type(temp_username)
-  //   cy.get('.save').click()
+  it('Can receive Observer invitation email', { defaultCommandTimeout: 30000 }, () => {
+    const inboxId = mailslurp_address.split('@')[0]
 
-  //   // Open email invitation to get keygen auth_token
-  // })
+    // Look for email invitation
+    cy.mailslurp()
+      .then((mailslurp) =>
+        mailslurp.waitController.waitForMatchingFirstEmail({
+          inboxId,
+          matchOptions: {
+            matches: [
+              {
+                field: MatchOptionFieldEnum.SUBJECT,
+                should: MatchOptionShouldEnum.CONTAIN,
+                value: election_name,
+              },
+            ],
+          },
+          timeout: 30000,
+        }),
+      )
+      .then((email) => {
+        // Was email found?
+        expect(email).to.exist
+
+        // Extract observer's auth token
+        const match = email.body.match(/\?auth=[a-e0-9]{10}/)[0]
+        observer_auth = match.split('=')[1]
+
+        // Could we find a 10 char auth token?
+        expect(observer_auth).to.exist.and.lengthOf(10)
+      })
+  })
 
   // Look for keygen success
 
