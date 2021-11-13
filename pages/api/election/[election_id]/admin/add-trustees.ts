@@ -102,15 +102,16 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   )
 
   // Send Admin push notification
-  promises.push(
-    pushover(
-      `${election_manager} invited ${trustees.length - 1} observer${trustees.length > 2 ? 's' : ''}`,
-      trustees
-        .slice(1)
-        .map((t) => t.email)
-        .join(', '),
-    ),
-  )
+  if (election_manager !== 'SIV End2End Tester')
+    promises.push(
+      pushover(
+        `${election_manager} invited ${trustees.length - 1} observer${trustees.length > 2 ? 's' : ''}`,
+        trustees
+          .slice(1)
+          .map((t) => t.email)
+          .join(', '),
+      ),
+    )
 
   // Generate admin's private coefficients and public commitments
   const private_coefficients = pick_private_coefficients(trustees.length, safe_prime_bigs)
