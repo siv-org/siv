@@ -20,7 +20,9 @@ describe('Can create an election', () => {
   })
 
   it('Can log into /admin w/ jwt cookie', () => {
-    cy.visit('/admin').contains('Your Existing Elections:')
+    cy.visit('/admin')
+    cy.wait(100) // Wait for /admin to fully render
+    cy.contains('Your Existing Elections:')
   })
 
   it('Can create new election', { defaultCommandTimeout: 10_000 }, () => {
