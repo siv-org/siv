@@ -27,9 +27,9 @@ describe('Can create an election', () => {
     cy.setCookie('siv-jwt', Cypress.env('E2E_TESTER_ADMIN_JWT'))
   })
 
-  it('Can log into /admin w/ jwt cookie', () => {
+  it('Can log into /admin w/ jwt cookie', { retries: 3 }, () => {
     cy.visit('/admin')
-    cy.wait(400) // Wait for /admin to fully render
+    cy.wait(1000) // eslint-disable-line cypress/no-unnecessary-waiting
     cy.contains('Your Existing Elections:')
   })
 
