@@ -118,8 +118,10 @@ describe('Can create an election', () => {
       })
   })
 
-  it('Can open the observer keygen app', () => {
-    cy.visit(`/election/${election_id}/observer?auth=${observer_auth}`)
+  it('Can run observer keygen process', () => {
+    cy.visit(`/election/${election_id}/observer?auth=${observer_auth}`).contains('Which ✅ matches plaintext.', {
+      timeout: 15000,
+    })
   })
 
   // Look for keygen success
