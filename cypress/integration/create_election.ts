@@ -110,7 +110,7 @@ describe('Can create an election', () => {
         expect(email).to.exist
 
         // Extract observer's auth token
-        const match = email.body.match(/\?auth=[a-e0-9]{10}/)[0]
+        const match = email.body.match(/\?auth=[a-f0-9]{10}/)[0]
         observer_auth = match.split('=')[1]
 
         // Could we find a 10 char auth token?
