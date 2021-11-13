@@ -1,51 +1,23 @@
 import { EditOutlined } from '@ant-design/icons'
 import { TextField } from '@material-ui/core'
 import { validate as validateEmail } from 'email-validator'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import { api } from '../../api-helper'
 import { SaveButton } from '../SaveButton'
 import { revalidate, useStored } from '../useStored'
 import { DeliveriesAndFailures } from '../Voters/DeliveriesAndFailures'
 import { EncryptionAddress } from './EncryptionAddress'
+import { useLatestMailgunEvents } from './use-latest-mailgun'
 
 export type Trustee = { email: string; error?: string; name?: string }
 const admin_email = 'admin@secureinternetvoting.org'
 
 export const Observers = () => {
-  const { election_id, threshold_public_key, trustees } = useStored()
+  const { election_id, election_manager, threshold_public_key, trustees } = useStored()
   const [new_trustees, set_new_trustees] = useState<Trustee[]>([{ email: '' }])
 
-  // Auto run api/check-voter-invite-status when there are pending invites
-  const num_invited = trustees?.reduce(
-    (acc: { delivered: number; failed: number }, trustee) => {
-      if (trustee.mailgun_events?.delivered) acc.delivered += trustee.mailgun_events.delivered.length
-      if (trustee.mailgun_events?.failed) acc.failed += trustee.mailgun_events.failed.length
-      return acc
-    },
-    { delivered: 0, failed: 0 },
-  )
-  const pending_invites = trustees && num_invited && trustees.length > num_invited.delivered + num_invited.failed + 1 // +1 for admin@
-  const [last_num_events, set_last_num_events] = useState(0)
-  useEffect(() => {
-    if (pending_invites) {
-      const interval = setInterval(() => {
-        console.log('Checking pending invites...')
-        api(`election/${election_id}/admin/check-trustee-invite-status`)
-          .then((response) => response.json())
-          .then(({ num_events }) => {
-            if (num_events !== last_num_events) {
-              revalidate(election_id)
-              set_last_num_events(num_events)
-            }
-          })
-      }, 1000)
-      return () => {
-        console.log('All invites delivered 👍')
-        clearInterval(interval)
-      }
-    }
-  }, [pending_invites])
+  if (election_manager !== 'SIV End2End Tester') useLatestMailgunEvents(election_id, trustees)
 
   return (
     <div className="container">
