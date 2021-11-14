@@ -21,6 +21,7 @@ const election_name = 'test ' + String(Math.random()).slice(2, 10)
 // Initializing now so we can re-use between tests
 let election_id = ''
 let observer_auth = ''
+const voter_auth_tokens = []
 
 describe('Can create an election', () => {
   beforeEach(() => {
@@ -136,7 +137,35 @@ describe('Can create an election', () => {
     cy.get('.sidebar input[type="checkbox"]').eq(1).should('be.checked')
   })
 
-  // Look for keygen success
+  it('Can add voters', () => {
+    // Switch to voter tab
+    cy.get('.sidebar').contains('Voters').click()
+
+    // Input should be auto-focused
+    cy.focused()
+      .should('have.attr', 'id', 'textarea')
+      // Add 2 voters
+      .type('test1@siv.tech{enter}test2@siv.tech')
+
+    // Hit Save button
+    cy.get('#main-content').contains('Save').click()
+
+    // Expect table to have added 2 voters
+    cy.get('#main-content table > tbody > tr').should('have.length', 2)
+
+    // We'll extract the voter auth tokens directly, rather than sending emails
+
+    // First we need to unmask them
+    cy.contains('auth token').click()
+
+    // Then we can extract the auth tokens
+    cy.get('#main-content table > tbody > tr > td:nth-child(4)')
+      .each(($el) => voter_auth_tokens.push($el.text()))
+      .then(() => {
+        expect(voter_auth_tokens).to.have.length(2)
+        cy.log('Found vote tokens: ' + voter_auth_tokens)
+      })
+  })
 
   it('Delete test election at the end to cleanup', () => {
     // cy.pause()
