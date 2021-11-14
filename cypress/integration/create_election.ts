@@ -16,12 +16,13 @@ import { MatchOptionFieldEnum, MatchOptionShouldEnum } from 'mailslurp-client'
 */
 
 // Pick a random election name
-const election_name = 'test ' + String(Math.random()).slice(2, 10)
+let election_name = 'test ' + String(Math.random()).slice(2, 10)
 
 // Initializing now so we can re-use between tests
 let election_id = ''
 let observer_auth = ''
 const voter_auth_tokens = []
+const votes = []
 
 describe('Can create an election', () => {
   beforeEach(() => {
@@ -165,6 +166,64 @@ describe('Can create an election', () => {
         expect(voter_auth_tokens).to.have.length(2)
         cy.log('Found vote tokens: ' + voter_auth_tokens)
       })
+  })
+
+  it.only('voters can cast votes', () => {
+    election_id = '1636866461910'
+    election_name = 'test 85211298'
+    voter_auth_tokens.push('113f88ff9e', 'f74ea617c9')
+
+    // For each voter auth token:
+    cy.wrap(voter_auth_tokens).each((token) => {
+      // Visit 'Cast Vote' page
+      cy.visit(`/election/${election_id}/vote`)
+
+      // Expect auth input to be selected
+      cy.get('input')
+        .should('have.focus')
+
+        // Enter voter token
+        .type(token as unknown as string)
+
+        // Hit Enter
+        .type('{enter}')
+
+      // Confirm it was accepted
+      cy.contains('Your Voter Authorization Token is valid.')
+
+      // Pick a vote option
+      // OR
+      // Write a write-in
+      let vote = ''
+
+      const will_write_in = Math.random() > 0.9
+      if (will_write_in) {
+        vote = (Math.random() + 1).toString(36).substring(7)
+        cy.get('#president-other').type(vote)
+      } else {
+        const choice = Math.floor(Math.random() * 3)
+        cy.get('input[type="radio"]')
+          .eq(choice)
+          .then(($el) => {
+            // Store our selection for later
+            vote = $el.val() as string
+            return $el
+          })
+          .click()
+      }
+
+      cy.then(() => {
+        cy.log(`voting for: ${vote}`)
+      })
+
+      // Submit vote
+
+      // Confirm we were redirected to Submission page
+
+      // Visit election status page, confirm row w/ voter auth token is present
+    })
+
+    // Return to election admin page, confirm both rows are marked as voted
   })
 
   it('Delete test election at the end to cleanup', () => {
