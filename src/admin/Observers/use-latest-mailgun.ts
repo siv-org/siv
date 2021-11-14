@@ -4,7 +4,11 @@ import { api } from 'src/api-helper'
 
 import { revalidate } from '../useStored'
 
-export const useLatestMailgunEvents = (election_id: string | undefined, trustees: Trustee[] | undefined) => {
+export const useLatestMailgunEvents = (
+  election_id: string | undefined,
+  trustees: Trustee[] | undefined,
+  election_manager: string | undefined,
+) => {
   // Auto run api/check-trustee-invite-status when there are pending invites
   const num_invited = trustees?.reduce(
     (acc: { delivered: number; failed: number }, trustee) => {
@@ -17,6 +21,9 @@ export const useLatestMailgunEvents = (election_id: string | undefined, trustees
   const pending_invites = trustees && num_invited && trustees.length > num_invited.delivered + num_invited.failed + 1 // +1 for admin@
   const [last_num_events, set_last_num_events] = useState(0)
   useEffect(() => {
+    // Disable for e2e tests
+    if (election_manager === 'SIV End2End Tester') return
+
     if (pending_invites) {
       const interval = setInterval(() => {
         console.log('Checking pending invites...')

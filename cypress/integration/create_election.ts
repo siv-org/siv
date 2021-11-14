@@ -70,7 +70,7 @@ describe('Can create an election', () => {
     // Expect to switch to observer tab
     cy.contains('Verifying Observers')
 
-    // Expect the ballot design checkbox in the side bar to be 'checked'
+    // Expect the ballot design checkbox in the sidebar to be 'checked'
     cy.get('.sidebar input[type="checkbox"]').first().should('be.checked')
   })
 
@@ -119,9 +119,21 @@ describe('Can create an election', () => {
   })
 
   it('Can run observer keygen process', () => {
-    cy.visit(`/election/${election_id}/observer?auth=${observer_auth}`).contains('Which ✅ matches plaintext.', {
-      timeout: 15000,
-    })
+    // Open observer tab,
+    cy.visit(`/election/${election_id}/observer?auth=${observer_auth}`)
+
+      //look for success message
+      .contains('Which ✅ matches plaintext.', {
+        timeout: 15000,
+      })
+
+    // Return to admin UI
+    cy.visit(`/admin/${election_id}/observers`)
+    cy.wait(500) // eslint-disable-line cypress/no-unnecessary-waiting
+    cy.contains('✅ The Verifying Observers completed the Pre-Election setup.')
+
+    // Expect the observer checkbox in the sidebar to be 'checked'
+    cy.get('.sidebar input[type="checkbox"]').eq(1).should('be.checked')
   })
 
   // Look for keygen success

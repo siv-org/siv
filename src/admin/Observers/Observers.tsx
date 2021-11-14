@@ -17,7 +17,7 @@ export const Observers = () => {
   const { election_id, election_manager, threshold_public_key, trustees } = useStored()
   const [new_trustees, set_new_trustees] = useState<Trustee[]>([{ email: '' }])
 
-  if (election_manager !== 'SIV End2End Tester') useLatestMailgunEvents(election_id, trustees)
+  useLatestMailgunEvents(election_id, trustees, election_manager)
 
   return (
     <div className="container">
