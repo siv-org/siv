@@ -6,17 +6,17 @@ import { MatchOptionFieldEnum, MatchOptionShouldEnum } from 'mailslurp-client'
 -[x] / admin
     - [x] /${election_id}/ sub-pages:
     - [x] /ballot
-    - [ ] /observers
-    - [ ] /voters
-  - [ ] /vote -> EnterAuth
-  - [ ] /vote w/ Auth
-  - [ ] /${election_id}/ Status page
+    - [x] /observers
+    - [x] /voters
+  - [x] /vote -> EnterAuth
+  - [x] /vote w/ Auth
+  - [x] /${election_id}/ Status page
   - [ ] /observer/keygen
   - [ ] /observer/shuffle
 */
 
 // Pick a random election name
-let election_name = 'test ' + String(Math.random()).slice(2, 10)
+const election_name = 'test ' + String(Math.random()).slice(2, 10)
 
 // Initializing now so we can re-use between tests
 let election_id = ''
@@ -168,13 +168,9 @@ describe('Can create an election', () => {
       })
   })
 
-  it.only('voters can cast votes', () => {
-    election_id = '1636866461910'
-    election_name = 'test 85211298'
-    voter_auth_tokens.push('113f88ff9e', 'f74ea617c9')
-
+  it('voters can cast votes', () => {
     // For each voter auth token:
-    cy.wrap(voter_auth_tokens).each((token) => {
+    cy.wrap(voter_auth_tokens).each((token: string) => {
       // Visit 'Cast Vote' page
       cy.visit(`/election/${election_id}/vote`)
 
@@ -183,13 +179,13 @@ describe('Can create an election', () => {
         .should('have.focus')
 
         // Enter voter token
-        .type(token as unknown as string)
+        .type(token)
 
         // Hit Enter
         .type('{enter}')
 
       // Confirm it was accepted
-      cy.contains('Your Voter Authorization Token is valid.')
+      cy.contains('Your Voter Authorization Token is valid.').should('exist')
 
       // Pick a vote option
       // OR
@@ -214,16 +210,27 @@ describe('Can create an election', () => {
 
       cy.then(() => {
         cy.log(`voting for: ${vote}`)
+        votes.push(vote)
       })
 
       // Submit vote
+      cy.contains('a', 'Submit').click()
 
       // Confirm we were redirected to Submission page
+      cy.contains('Submitted').should('exist')
 
       // Visit election status page, confirm row w/ voter auth token is present
+      cy.visit(`/election/${election_id}`).contains(token).should('exist')
     })
 
-    // Return to election admin page, confirm both rows are marked as voted
+    // Return to election admin page,
+    cy.visit(`/admin/${election_id}/voters`)
+    cy.wait(1000) // eslint-disable-line cypress/no-unnecessary-waiting
+
+    // Confirm both Voter rows are marked as voted
+    cy.get('#main-content table > tbody > tr')
+      .should('have.length', 2)
+      .each((row) => cy.wrap(row).contains('✓').should('exist'))
   })
 
   it('Delete test election at the end to cleanup', () => {
