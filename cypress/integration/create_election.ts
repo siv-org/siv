@@ -233,6 +233,10 @@ describe('Can create an election', () => {
       .each((row) => cy.wrap(row).contains('✓').should('exist'))
   })
 
+  it.skip('Admin can begin unlocking votes')
+  it.skip('Observers can shuffle')
+  it.skip('Final results published')
+
   it('Delete test election at the end to cleanup', () => {
     // cy.pause()
     cy.request(`api/election/${election_id}/delete-test-election`).then((response) => {
