@@ -70,7 +70,7 @@ describe('Can create an election', () => {
     cy.contains('Finalize').click()
 
     // Expect to switch to observer tab
-    cy.contains('Verifying Observers')
+    cy.contains('Verifying Observers', { timeout: 10_000 }).should('exist')
 
     // Expect the ballot design checkbox in the sidebar to be 'checked'
     cy.get('.sidebar input[type="checkbox"]').first().should('be.checked')
@@ -217,7 +217,7 @@ describe('Can create an election', () => {
       cy.contains('a', 'Submit').click()
 
       // Confirm we were redirected to Submission page
-      cy.contains('Submitted').should('exist')
+      cy.contains('Submitted', { timeout: 10_000 }).should('exist')
 
       // Visit election status page, confirm row w/ voter auth token is present
       cy.visit(`/election/${election_id}`).contains(token).should('exist')

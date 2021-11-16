@@ -1,3 +1,4 @@
+import bluebird from 'bluebird'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { firebase } from 'pages/api/_services'
 import { checkJwtOwnsElection } from 'pages/api/validate-admin-jwt'
@@ -15,8 +16,17 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (jwt.email !== 'e2e-tester@secureinternetvoting.org')
     return res.status(403).json({ error: 'Can only delete test elections' })
 
+  const doc = firebase.firestore().collection('elections').doc(election_id)
+
+  // First delete the subcollection
+  await bluebird.map(['trustees', 'voters', 'votes'], async (collection) => {
+    // Get then delete all docs in the collection
+    const trusteeDocs = (await doc.collection(collection).get()).docs
+    return { [collection]: await bluebird.map(trusteeDocs, (doc) => doc.ref.delete()) }
+  })
+
   // Delete the election
-  await firebase.firestore().collection('elections').doc(election_id).delete()
+  await doc.delete()
 
   res.status(201).json({ message: 'success' })
 }
