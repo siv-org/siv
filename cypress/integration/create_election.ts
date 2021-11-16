@@ -131,7 +131,7 @@ describe('Can create an election', () => {
 
     // Return to admin UI
     cy.visit(`/admin/${election_id}/observers`)
-    cy.wait(500) // eslint-disable-line cypress/no-unnecessary-waiting
+    cy.wait(1000) // eslint-disable-line cypress/no-unnecessary-waiting
     cy.contains('✅ The Verifying Observers completed the Pre-Election setup.')
 
     // Expect the observer checkbox in the sidebar to be 'checked'
