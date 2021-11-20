@@ -7,12 +7,13 @@ import { MatchOptionFieldEnum, MatchOptionShouldEnum } from 'mailslurp-client'
     - [x] /${election_id}/ sub-pages:
     - [x] /ballot
     - [x] /observers
+    - [x] /observer/keygen
     - [x] /voters
   - [x] /vote -> EnterAuth
   - [x] /vote w/ Auth
   - [x] /${election_id}/ Status page
-  - [ ] /observer/keygen
-  - [ ] /observer/shuffle
+  - [x] /observer/shuffle
+  - [x] /${election_id} status page has votes
 */
 
 // Pick a random election name
@@ -23,6 +24,9 @@ let election_id = ''
 let observer_auth = ''
 const voter_auth_tokens = []
 const votes = []
+
+// 15 second timeout
+Cypress.config('defaultCommandTimeout', 15_000)
 
 describe('Can create an election', () => {
   beforeEach(() => {
@@ -35,7 +39,7 @@ describe('Can create an election', () => {
     cy.contains('Your Existing Elections:')
   })
 
-  it('Can create new election', { defaultCommandTimeout: 10_000 }, () => {
+  it('Can create new election', () => {
     cy.get('#election-title').type(election_name)
     cy.get('#election-title-save').click()
 
@@ -70,7 +74,7 @@ describe('Can create an election', () => {
     cy.contains('Finalize').click()
 
     // Expect to switch to observer tab
-    cy.contains('Verifying Observers', { timeout: 10_000 }).should('exist')
+    cy.contains('Verifying Observers').should('exist')
 
     // Expect the ballot design checkbox in the sidebar to be 'checked'
     cy.get('.sidebar input[type="checkbox"]').first().should('be.checked')
@@ -87,7 +91,7 @@ describe('Can create an election', () => {
     cy.contains('Finalize & Send Invitation').click()
   })
 
-  it('Can receive Observer invitation email', { defaultCommandTimeout: 30000 }, () => {
+  it('Can receive Observer invitation email', () => {
     const inboxId = mailslurp_address.split('@')[0]
 
     // Look for email invitation
@@ -104,7 +108,7 @@ describe('Can create an election', () => {
               },
             ],
           },
-          timeout: 30000,
+          timeout: 30_000,
         }),
       )
       .then((email) => {
@@ -125,14 +129,15 @@ describe('Can create an election', () => {
     cy.visit(`/election/${election_id}/observer?auth=${observer_auth}`)
 
       //look for success message
-      .contains('Which ✅ matches plaintext.', {
-        timeout: 15000,
-      })
+      .contains('Which ✅ matches plaintext.')
 
     // Return to admin UI
     cy.visit(`/admin/${election_id}/observers`)
     cy.wait(1000) // eslint-disable-line cypress/no-unnecessary-waiting
     cy.contains('✅ The Verifying Observers completed the Pre-Election setup.')
+
+    // Save the observer's new private key, for later decryption
+    cy.saveLocalStorage()
 
     // Expect the observer checkbox in the sidebar to be 'checked'
     cy.get('.sidebar input[type="checkbox"]').eq(1).should('be.checked')
@@ -192,7 +197,7 @@ describe('Can create an election', () => {
       // Write a write-in
       let vote = ''
 
-      const will_write_in = Math.random() > 0.9
+      const will_write_in = Math.random() > 0.5
       if (will_write_in) {
         vote = (Math.random() + 1).toString(36).substring(7)
         cy.get('#president-other').type(vote)
@@ -217,7 +222,7 @@ describe('Can create an election', () => {
       cy.contains('a', 'Submit').click()
 
       // Confirm we were redirected to Submission page
-      cy.contains('Submitted', { timeout: 10_000 }).should('exist')
+      cy.contains('Submitted').should('exist')
 
       // Visit election status page, confirm row w/ voter auth token is present
       cy.visit(`/election/${election_id}`).contains(token).should('exist')
@@ -233,9 +238,46 @@ describe('Can create an election', () => {
       .each((row) => cy.wrap(row).contains('✓').should('exist'))
   })
 
-  it.skip('Admin can begin unlocking votes')
-  it.skip('Observers can shuffle')
-  it.skip('Final results published')
+  it('Admin can begin unlocking votes', () => {
+    // Find and click Unlock button
+    cy.contains('a', 'Unlock 2 Votes').should('exist').click()
+
+    // Expect "Waiting on message"
+    cy.contains('Unlocking: Waiting on Observer').should('exist')
+  })
+
+  it('Observers can shuffle', () => {
+    // Restore observer's local storage snapshot from keygen
+    cy.restoreLocalStorage()
+
+    // Open observer tab,
+    cy.visit(`/election/${election_id}/observer?auth=${observer_auth}`)
+
+    // Wait for top bar to fully render
+    cy.wait(1000) // eslint-disable-line cypress/no-unnecessary-waiting
+
+    // Switch to Shuffle tab
+    cy.contains('After Election').should('exist').click()
+
+    // Wait for shuffle & decryption to complete
+    cy.wait(5000) // eslint-disable-line cypress/no-unnecessary-waiting
+
+    // Expect at least one of the 2 sets of 2 decryption proofs to be verified.
+    cy.contains('2 of 2 Decryption Proofs verified').should('exist')
+  })
+
+  it('Final results published', () => {
+    // election_id = '1637366404267'
+    cy.visit(`/election/${election_id}`)
+
+    // Expect 'Vote Totals' section to be present
+    cy.contains('Vote Totals:').should('exist')
+
+    // Expect our 2 votes to be present
+    cy.wrap(votes).each((vote: string) => {
+      cy.contains(vote.toUpperCase()).should('exist')
+    })
+  })
 
   it('Delete test election at the end to cleanup', () => {
     // cy.pause()
