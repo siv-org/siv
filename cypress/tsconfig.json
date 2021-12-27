@@ -1,0 +1,7 @@
+{
+  "compilerOptions": {
+    "types": ["cypress", "cypress-localstorage-commands"],
+    "lib": ["es2020", "dom"]
+  },
+  "include": ["**/*.ts"]
+}

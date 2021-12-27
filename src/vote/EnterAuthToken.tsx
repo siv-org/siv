@@ -30,7 +30,8 @@ export const EnterAuthToken = () => {
             try {
               testAuthToken(event.target.value)
             } catch (e) {
-              setError(e)
+              if (typeof e === 'string') setError(e)
+              setError('Caught error w/o message')
             }
 
             setText(event.target.value)

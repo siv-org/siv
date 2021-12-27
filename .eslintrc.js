@@ -20,17 +20,17 @@ module.exports = {
     sourceType: 'module',
   },
   plugins: ['react', '@typescript-eslint', 'typescript-sort-keys', 'sort-destructure-keys', 'sort-keys-fix'],
+  rules: {
+    '@typescript-eslint/explicit-module-boundary-types': 0, // Verbose
+    '@typescript-eslint/no-empty-function': 0, // unnecessary
+    'react/jsx-sort-props': [2, { callbacksLast: true, shorthandFirst: true }], // style
+    'react/react-in-jsx-scope': 0, // Handled by Next.js
+    'sort-destructure-keys/sort-destructure-keys': 2, // style
+    'sort-keys-fix/sort-keys-fix': 2, // style
+  },
   settings: {
     react: {
       version: 'detect',
     },
-  },
-  rules: {
-    'react/react-in-jsx-scope': 0, // Handled by Next.js
-    '@typescript-eslint/explicit-module-boundary-types': 0, // Verbose
-    'sort-destructure-keys/sort-destructure-keys': 2, // style
-    'sort-keys-fix/sort-keys-fix': 2, // style
-    'react/jsx-sort-props': [2, { shorthandFirst: true, callbacksLast: true }], // style
-    '@typescript-eslint/no-empty-function': 0, // unnecessary
   },
 }

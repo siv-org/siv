@@ -1,8 +1,12 @@
+// @ts-check
 /* eslint-disable @typescript-eslint/no-var-requires */
 const withMDX = require('@next/mdx')()
 const withTM = require('next-transpile-modules')(['lodash-es'])
 
-module.exports = withMDX(
+/**
+ * @type {import('next').NextConfig}
+ **/
+const nextConfig = withMDX(
   withTM({
     typescript: {
       // !! WARN !!
@@ -12,3 +16,5 @@ module.exports = withMDX(
     },
   }),
 )
+
+module.exports = nextConfig

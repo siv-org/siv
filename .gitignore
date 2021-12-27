@@ -9,6 +9,7 @@ yarn.lock
 
 # Environment Variables
 .env.local
+cypress.env.json
 
 TODO.md
 *.log

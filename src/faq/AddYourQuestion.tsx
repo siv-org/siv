@@ -1,5 +1,4 @@
 import { NoSsr, TextField } from '@material-ui/core'
-import { firestore } from 'firebase/app'
 import { useState } from 'react'
 import { OnClickButton } from 'src/landing-page/Button'
 
@@ -17,31 +16,20 @@ export const AddYourQuestion = () => {
           style={{ flex: 1, marginRight: 10 }}
           variant="outlined"
           onChange={() => setSaved(false)}
+          onKeyPress={(event) =>
+            event.key === 'Enter' && (document.getElementById('submit-btn') as HTMLButtonElement)?.click()
+          }
         />
       </NoSsr>
       <OnClickButton
         disabled={saved}
+        id="submit-btn"
         style={{ margin: 0, padding: '8px 17px' }}
-        onClick={() => {
-          const fields = {
-            created_at: new Date().toString(),
+        onClick={async () => {
+          const { status } = await api('/faq-submission', {
             question: (document.getElementById('question-field') as HTMLInputElement).value,
-          }
-
-          // Store submission in Firestore
-          firestore()
-            .collection('faq-submissions')
-            .doc(new Date().toISOString() + ' ' + String(Math.random()).slice(2, 7))
-            .set(fields)
-            .then(() => {
-              setSaved(true)
-
-              // Notify via Pushover
-              api('pushover', {
-                message: fields.question,
-                title: `SIV FAQ submission`,
-              })
-            })
+          })
+          if (status === 201) setSaved(true)
         }}
       >
         {saved ? 'Done!' : 'Submit'}

@@ -1,5 +1,4 @@
 import { NoSsr, TextField } from '@material-ui/core'
-import { firestore } from 'firebase/app'
 import { useState } from 'react'
 
 import { api } from '../api-helper'
@@ -22,31 +21,20 @@ export const EmailSignup = (): JSX.Element => {
             style={{ flex: 1, marginRight: 10, maxWidth: 250 }}
             variant="outlined"
             onChange={() => setSaved(false)}
+            onKeyPress={(event) =>
+              event.key === 'Enter' && (document.getElementById('signup-btn') as HTMLButtonElement)?.click()
+            }
           />
         </NoSsr>
         <OnClickButton
           disabled={saved}
+          id="signup-btn"
           style={{ margin: 0, padding: '8px 17px' }}
-          onClick={() => {
-            const fields = {
-              created_at: new Date().toString(),
+          onClick={async () => {
+            const { status } = await api('/email-signup', {
               email: (document.getElementById('newsletter-signup-field') as HTMLInputElement).value,
-            }
-
-            // Store submission in Firestore
-            firestore()
-              .collection('news-signups')
-              .doc(new Date().toISOString() + ' ' + String(Math.random()).slice(2, 7))
-              .set(fields)
-              .then(() => {
-                setSaved(true)
-
-                // Notify via Pushover
-                api('pushover', {
-                  message: fields.email,
-                  title: `SIV newsletter signup`,
-                })
-              })
+            })
+            if (status === 201) setSaved(true)
           }}
         >
           {saved ? 'Done!' : 'Sign Up'}

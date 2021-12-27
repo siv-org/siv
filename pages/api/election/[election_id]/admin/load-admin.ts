@@ -18,7 +18,7 @@ export type Voter = {
   invite_queued?: QueueLog[]
   mailgun_events: { accepted?: MgEvent[]; delivered?: MgEvent[]; failed?: MgEvent[] }
 }
-type Trustee = {
+export type Trustee = {
   device?: string
   email: string
   mailgun_events: { accepted?: MgEvent[]; delivered?: MgEvent[]; failed?: MgEvent[] }
