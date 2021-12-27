@@ -1,3 +1,5 @@
+import { GlobalCSS } from 'src/GlobalCSS'
+
 import { AboveFold } from './AboveFold'
 import { AnAdditionOption } from './AnAdditionalOption'
 import { Features } from './Features'
@@ -9,7 +11,7 @@ import { Privacy } from './Privacy'
 import { Verifiability } from './Verifiability'
 
 export const HomePage = () => (
-  <p>
+  <div>
     <AboveFold />
     <Features />
     <Privacy />
@@ -19,5 +21,12 @@ export const HomePage = () => (
     <NowPossible />
     <LetYourGovtKnow />
     <Footer />
-  </p>
+
+    <GlobalCSS />
+    <style jsx>{`
+      div {
+        padding: 1rem 3rem;
+      }
+    `}</style>
+  </div>
 )
