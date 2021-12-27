@@ -9,6 +9,7 @@ export const HeaderBar = () => (
       <a href="/about">Research</a>
       <a href="/admin">Sign In</a>
     </span>
+    <img src="/home3/blue-underline.png" />
     <style jsx>{`
       header {
         display: flex;
@@ -37,6 +38,13 @@ export const HeaderBar = () => (
 
       a:last-child {
         margin-left: 35px;
+      }
+
+      img {
+        width: 100px;
+        position: absolute;
+        right: 40px;
+        top: 40px;
       }
     `}</style>
   </header>
