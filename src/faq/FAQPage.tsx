@@ -13,7 +13,7 @@ import { HeaderBar } from './HeaderBar'
 export const FAQPage = (): JSX.Element => {
   const [expanded, setExpanded] = useState<boolean[]>(new Array(faq.length).fill(false))
   const any_collapsed = expanded.some((s) => !s)
-  const { asPath } = useRouter()
+  const asPath = useRouter()?.asPath
 
   // Autoexpand faq if following link to specific id
   useEffect(() => {
