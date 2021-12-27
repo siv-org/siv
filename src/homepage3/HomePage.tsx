@@ -1,4 +1,5 @@
 import { AboveFold } from './AboveFold'
+import { AnAdditionOption } from './AnAdditionalOption'
 import { Features } from './Features'
 import { OnePersonOneVote } from './OnePersonOneVote'
 import { Privacy } from './Privacy'
@@ -11,5 +12,6 @@ export const HomePage = () => (
     <Privacy />
     <OnePersonOneVote />
     <Verifiability />
+    <AnAdditionOption />
   </p>
 )
