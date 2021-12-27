@@ -1,6 +1,7 @@
 import { AboveFold } from './AboveFold'
 import { AnAdditionOption } from './AnAdditionalOption'
 import { Features } from './Features'
+import { LetYourGovtKnow } from './LetYourGovtKnow'
 import { NowPossible } from './NowPossible'
 import { OnePersonOneVote } from './OnePersonOneVote'
 import { Privacy } from './Privacy'
@@ -15,5 +16,6 @@ export const HomePage = () => (
     <Verifiability />
     <AnAdditionOption />
     <NowPossible />
+    <LetYourGovtKnow />
   </p>
 )
