@@ -34,6 +34,7 @@ export const Features = () => (
         justify-content: space-between;
         width: 100%;
         text-align: center;
+        margin-top: 5rem;
       }
 
       span {
@@ -67,7 +68,7 @@ export const Features = () => (
         border: 2px solid ${darkBlue};
         background-color: ${darkBlue};
         color: white;
-        padding: 4px 70px;
+        padding: 4px 80px;
         border-radius: 6px;
         font-weight: 600;
 
