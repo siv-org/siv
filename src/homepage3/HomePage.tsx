@@ -1,6 +1,7 @@
 import { AboveFold } from './AboveFold'
 import { AnAdditionOption } from './AnAdditionalOption'
 import { Features } from './Features'
+import { Footer } from './Footer'
 import { LetYourGovtKnow } from './LetYourGovtKnow'
 import { NowPossible } from './NowPossible'
 import { OnePersonOneVote } from './OnePersonOneVote'
@@ -17,5 +18,6 @@ export const HomePage = () => (
     <AnAdditionOption />
     <NowPossible />
     <LetYourGovtKnow />
+    <Footer />
   </p>
 )
