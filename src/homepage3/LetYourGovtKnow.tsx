@@ -1,5 +1,3 @@
-const darkBlue = '#002868'
-
 import { BoxProps, NoSsr, TextField, TextFieldProps } from '@material-ui/core'
 import { omit } from 'lodash-es'
 import { useState } from 'react'
@@ -7,6 +5,7 @@ import { Element } from 'react-scroll'
 
 import { api } from '../api-helper'
 import { OnClickButton } from '../landing-page/Button'
+import { darkBlue } from './colors'
 
 export function LetYourGovtKnow(): JSX.Element {
   const idKey = 'home3'
@@ -26,9 +25,7 @@ export function LetYourGovtKnow(): JSX.Element {
         <a id="let-your-govt-know" />
         <Element name="let-your-govt-know" />
         <h2>Are you a voter?</h2>
-        <h3 style={{ color: darkBlue, margin: '1.5rem 0' }}>
-          Let your local government know you want Secure Internet Voting
-        </h3>
+        <h3>Let your local government know you want Secure Internet Voting</h3>
       </div>
 
       <form autoComplete="off" className="column">
@@ -66,6 +63,7 @@ export function LetYourGovtKnow(): JSX.Element {
 
       <style jsx>{`
         .container {
+          margin-top: 13rem;
           padding: 3rem;
           display: flex;
         }
@@ -76,6 +74,17 @@ export function LetYourGovtKnow(): JSX.Element {
 
         .column:first-child {
           margin-right: 9%;
+        }
+
+        h2 {
+          font-size: 28px;
+          font-weight: 800;
+        }
+
+        h3 {
+          font-size: 18px;
+          color: ${darkBlue};
+          margin: 1.5rem 0;
         }
 
         /* Small screens: single column */
