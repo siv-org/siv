@@ -1,7 +1,7 @@
 import { GlobalCSS } from 'src/GlobalCSS'
 
 import { AboveFold } from './AboveFold'
-import { AnAdditionOption } from './AnAdditionalOption'
+import { AnAdditionalOption } from './AnAdditionalOption'
 import { Features } from './Features'
 import { Footer } from './Footer'
 import { LetYourGovtKnow } from './LetYourGovtKnow'
@@ -17,7 +17,7 @@ export const HomePage = () => (
     <Privacy />
     <OnePersonOneVote />
     <Verifiability />
-    <AnAdditionOption />
+    <AnAdditionalOption />
     <NowPossible />
     <LetYourGovtKnow />
     <Footer />
