@@ -1,5 +1,6 @@
 import { GlobalCSS } from 'src/GlobalCSS'
 
+import { Head } from '../Head'
 import { AboveFold } from './AboveFold'
 import { AnAdditionalOption } from './AnAdditionalOption'
 import { AreYouAVoter } from './AreYouAVoter'
@@ -11,18 +12,22 @@ import { Privacy } from './Privacy'
 import { Verifiability } from './Verifiability'
 
 export const HomePage = () => (
-  <div>
-    <AboveFold />
-    <Features />
-    <Privacy />
-    <OnePersonOneVote />
-    <Verifiability />
-    <AnAdditionalOption />
-    <NowPossible />
-    <AreYouAVoter />
-    <Footer />
+  <>
+    <Head title="Secure Internet Voting" />
 
-    <GlobalCSS />
+    <div>
+      <AboveFold />
+      <Features />
+      <Privacy />
+      <OnePersonOneVote />
+      <Verifiability />
+      <AnAdditionalOption />
+      <NowPossible />
+      <AreYouAVoter />
+      <Footer />
+
+      <GlobalCSS />
+    </div>
     <style jsx>{`
       div {
         padding: 1rem 3rem;
@@ -31,5 +36,5 @@ export const HomePage = () => (
         overflow-x: hidden;
       }
     `}</style>
-  </div>
+  </>
 )
