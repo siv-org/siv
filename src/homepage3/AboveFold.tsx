@@ -13,7 +13,7 @@ export const AboveFold = () => (
       </div>
     </h1>
     <div className="phone-container">
-      <Image height={1247} layout="responsive" src="/home3/voter-interface.gif" width={935} />
+      <Image height={912} layout="responsive" src="/home3/above-interface.gif" width={464} />
     </div>
     <h2>Fast. Private. Verifiable.</h2>
     <p>Millions of people want to be able to vote from their phones.</p>
@@ -49,12 +49,12 @@ export const AboveFold = () => (
 
       .phone-container {
         float: right;
-        width: 35%;
-        max-width: 450px;
+        width: 25%;
+        max-width: 300px;
         height: 80%;
         position: relative;
-        top: -11vw;
-        right: -3vw;
+        top: -14vw;
+        right: 2vw;
       }
 
       p {
