@@ -96,6 +96,7 @@ export const AboveFold = () => (
 
         h1 {
           font-size: 6.2vw;
+          margin-top: 15vw;
         }
 
         .underline-container {
@@ -104,18 +105,20 @@ export const AboveFold = () => (
 
         h2 {
           font-size: 4.5vw;
+          margin-top: 6vw;
         }
 
         .phone-container {
           float: none;
           top: 0;
           left: 0;
+          margin: 5vw 0;
         }
 
         p {
-          font-size: 3vw;
+          font-size: 3.5vw;
           text-align: center;
-          margin-bottom: 6vw;
+          margin-bottom: 10vw;
         }
 
         a {
