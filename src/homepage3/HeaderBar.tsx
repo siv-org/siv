@@ -47,6 +47,11 @@ export const HeaderBar = () => (
         position: relative;
       }
 
+      a:last-child:hover {
+        text-decoration: none;
+        filter: drop-shadow(0 0 7px #0003);
+      }
+
       .blue-underline {
         width: 12vw;
         height: 6vw;

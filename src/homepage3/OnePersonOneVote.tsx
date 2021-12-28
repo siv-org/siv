@@ -59,7 +59,6 @@ export const OnePersonOneVote = () => (
         list-style: none;
       }
 
-      img,
       div {
         position: absolute;
       }
