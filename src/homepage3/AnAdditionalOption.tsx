@@ -1,3 +1,5 @@
+import { Link } from 'react-scroll'
+
 import { darkBlue } from './colors'
 
 export const AnAdditionalOption = () => (
@@ -19,7 +21,9 @@ export const AnAdditionalOption = () => (
       </li>
     </ul>
     <p>
-      <a href="">Help bring Secure Internet Voting to your area</a>
+      <Link id="help-bring-btn" offset={-25} smooth={true} to="let-your-govt-know">
+        Help bring Secure Internet Voting to your area
+      </Link>
     </p>
     <style jsx>{`
       section {
@@ -67,8 +71,11 @@ export const AnAdditionalOption = () => (
         left: -13px;
         top: -4.5rem;
       }
+    `}</style>
+    <style global jsx>{`
+      #help-bring-btn {
+        cursor: pointer;
 
-      a {
         border: 2px solid ${darkBlue};
         background-color: ${darkBlue};
         color: white;
@@ -81,7 +88,7 @@ export const AnAdditionalOption = () => (
         margin: 3rem 0;
       }
 
-      a:hover {
+      #help-bring-btn:hover {
         background-color: white;
         text-decoration: none;
         color: ${darkBlue};
