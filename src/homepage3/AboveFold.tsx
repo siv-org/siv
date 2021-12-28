@@ -53,7 +53,7 @@ export const AboveFold = () => (
         max-width: 450px;
         height: 80%;
         position: relative;
-        top: -10vw;
+        top: -11vw;
         right: -3vw;
       }
 
