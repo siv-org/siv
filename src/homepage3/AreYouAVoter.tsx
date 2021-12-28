@@ -88,13 +88,21 @@ export function AreYouAVoter(): JSX.Element {
         }
 
         /* Small screens: single column */
-        @media (max-width: 750px) {
+        @media (max-width: 700px) {
           .container {
             flex-direction: column;
           }
 
           .column:first-child {
             margin: 0;
+          }
+
+          h2 {
+            font-size: 6vw;
+          }
+
+          h3 {
+            font-size: 4.5vw;
           }
         }
       `}</style>
