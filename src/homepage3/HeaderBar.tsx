@@ -61,6 +61,30 @@ export const HeaderBar = () => (
         top: 0;
         z-index: -10;
       }
+
+      /* 1-column for small screens */
+      @media (max-width: 700px) {
+        header {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+
+        h3 {
+          font-size: 8vw;
+          margin-bottom: 3vw;
+        }
+
+        a {
+          font-size: 4vw;
+        }
+
+        .blue-underline {
+          width: 20vw;
+          height: 10vw;
+          top: 1vw;
+        }
+      }
     `}</style>
   </header>
 )
