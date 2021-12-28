@@ -97,6 +97,7 @@ export const AnAdditionalOption = () => (
         border-radius: 6px;
         font-weight: 600;
         font-size: 1.875vw;
+        transition: 0.1s background-color linear, 0.1s color linear;
 
         display: inline-block;
         margin: 6vw 0;

@@ -44,6 +44,7 @@ export const Privacy = () => (
         border-radius: 0.75vw;
         font-size: 1.5vw;
         font-weight: 600;
+        transition: 0.1s background-color linear, 0.1s color linear;
 
         display: inline-block;
         margin: 3vw 0;

@@ -70,6 +70,7 @@ export const AboveFold = () => (
         padding: 0.5vw 6.25vw;
         border-radius: 0.75vw;
         margin-right: 3.75vw;
+        transition: 0.1s background-color linear, 0.1s color linear;
       }
 
       a.button:hover {

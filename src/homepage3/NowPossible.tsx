@@ -35,6 +35,7 @@ export const NowPossible = () => (
         border-radius: 0.75vw;
         font-weight: 600;
         font-size: 1.75vw;
+        transition: 0.1s background-color linear, 0.1s color linear;
 
         display: inline-block;
         margin: 12vw 0 4vw;

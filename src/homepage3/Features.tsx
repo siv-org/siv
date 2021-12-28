@@ -93,6 +93,7 @@ export const Features = () => (
         border-radius: 0.75vw;
         font-weight: 600;
         font-size: 1.5vw;
+        transition: 0.1s background-color linear, 0.1s color linear;
 
         display: inline-block;
         margin: 6vw 0;
