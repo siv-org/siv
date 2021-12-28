@@ -7,7 +7,7 @@ import { api } from '../api-helper'
 import { OnClickButton } from '../landing-page/Button'
 import { darkBlue } from './colors'
 
-export function LetYourGovtKnow(): JSX.Element {
+export function AreYouAVoter(): JSX.Element {
   const idKey = 'home3'
   const [saved, setSaved] = useState(false)
 

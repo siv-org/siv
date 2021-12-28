@@ -2,9 +2,9 @@ import { GlobalCSS } from 'src/GlobalCSS'
 
 import { AboveFold } from './AboveFold'
 import { AnAdditionalOption } from './AnAdditionalOption'
+import { AreYouAVoter } from './AreYouAVoter'
 import { Features } from './Features'
 import { Footer } from './Footer'
-import { LetYourGovtKnow } from './LetYourGovtKnow'
 import { NowPossible } from './NowPossible'
 import { OnePersonOneVote } from './OnePersonOneVote'
 import { Privacy } from './Privacy'
@@ -19,7 +19,7 @@ export const HomePage = () => (
     <Verifiability />
     <AnAdditionalOption />
     <NowPossible />
-    <LetYourGovtKnow />
+    <AreYouAVoter />
     <Footer />
 
     <GlobalCSS />
