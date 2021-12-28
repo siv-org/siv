@@ -6,8 +6,7 @@ export const OnePersonOneVote = () => (
   <section>
     <h2>
       One Person,
-      <br />
-      One Vote
+      <br /> One Vote
     </h2>
     <ul>
       <li>
@@ -77,6 +76,55 @@ export const OnePersonOneVote = () => (
       div.auth3 {
         width: 11.25vw;
         left: -11.25vw;
+      }
+
+      /* 1-column for small screens */
+      @media (max-width: 700px) {
+        section {
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+        }
+
+        h2 br {
+          display: none;
+        }
+
+        h2 {
+          width: 100%;
+          font-size: 6vw;
+        }
+
+        ul {
+          padding-inline-start: 0;
+          width: 100%;
+        }
+
+        li {
+          font-size: 5vw;
+
+          display: flex;
+          align-items: center;
+          flex-direction: column;
+        }
+
+        div {
+          position: relative;
+          left: 0 !important;
+          margin-top: 3vw;
+        }
+
+        div.auth1 {
+          width: 12.5vw;
+        }
+
+        div.auth2 {
+          width: 20vw;
+        }
+
+        div.auth3 {
+          width: 22.5vw;
+        }
       }
     `}</style>
   </section>
