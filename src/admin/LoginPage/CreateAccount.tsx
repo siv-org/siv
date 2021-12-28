@@ -22,9 +22,7 @@ export const CreateAccount = () => {
   return (
     <section>
       <h2 onClick={attemptInitLoginCode}>Create an account</h2>
-      <p>
-        Approved governments get free usage through Dec 31<sup>st</sup>, &apos;21
-      </p>
+      <p>Approved governments can pilot SIV for free.</p>
       <NoSsr>
         <Row>
           <Field label="First Name" style={{ marginRight: 10 }} />
