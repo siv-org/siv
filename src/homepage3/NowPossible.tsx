@@ -56,6 +56,19 @@ export const NowPossible = () => (
         width: 120vw;
         height: 100%;
       }
+
+      /* 1-column for small screens */
+      @media (max-width: 700px) {
+        h2 {
+          font-size: 6.5vw;
+        }
+
+        a {
+          font-size: 3.5vw;
+          padding: 1.5vw 12vw;
+          margin-top: 0;
+        }
+      }
     `}</style>
   </section>
 )
