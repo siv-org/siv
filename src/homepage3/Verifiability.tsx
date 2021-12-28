@@ -40,6 +40,27 @@ export const Verifiability = () => (
         display: flex;
         justify-content: space-between;
       }
+
+      /* 1-column for small screens */
+      @media (max-width: 700px) {
+        h2 {
+          font-size: 6vw;
+        }
+
+        p {
+          font-size: 4.5vw;
+          text-align: center;
+          margin-bottom: 13vw;
+        }
+
+        p br {
+          display: none;
+        }
+
+        .container {
+          flex-direction: column;
+        }
+      }
     `}</style>
   </section>
 )
@@ -71,6 +92,23 @@ const Screenshot = ({ n }: { n: 1 | 2 }) => (
 
         font-size: 1.6vw;
         font-weight: 700;
+      }
+
+      /* 1-column for small screens */
+      @media (max-width: 700px) {
+        div {
+          width: 100%;
+          margin-bottom: 10vw;
+          box-shadow: rgba(0, 0, 0, 0.24) 0px 0.7vw 2vw;
+        }
+
+        span {
+          font-size: 4vw;
+          width: 6vw;
+          height: 6vw;
+          top: -3vw;
+          left: -3vw;
+        }
       }
     `}</style>
   </div>

@@ -93,6 +93,7 @@ export const OnePersonOneVote = () => (
         h2 {
           width: 100%;
           font-size: 6vw;
+          margin-bottom: 0;
         }
 
         ul {
@@ -106,12 +107,12 @@ export const OnePersonOneVote = () => (
           display: flex;
           align-items: center;
           flex-direction: column;
+          margin-bottom: 9vw;
         }
 
         div {
           position: relative;
           left: 0 !important;
-          margin-top: 3vw;
         }
 
         div.auth1 {
