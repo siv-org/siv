@@ -9,10 +9,9 @@ export const NowPossible = () => (
     <img src="/home3/dark-wave-background.gif" />
     <style jsx>{`
       section {
-        padding-top: 8rem;
+        padding-top: 16vw;
         text-align: center;
         position: relative;
-        height: 100vh;
 
         display: flex;
         flex-direction: column;
@@ -21,29 +20,29 @@ export const NowPossible = () => (
 
       h2 {
         color: white;
-        font-size: 36px;
+        font-size: 4.5vw;
       }
 
       img {
         z-index: -1;
         position: absolute;
         top: 0;
-        left: -8rem;
-        right: -8rem;
+        left: -16vw;
+        right: -16vw;
         width: 120vw;
       }
 
       a {
-        border: 2px solid ${darkBlue}11;
+        border: 0.25vw solid ${darkBlue}11;
         background-color: ${darkBlue}66;
         color: white;
-        padding: 4px 40px;
-        border-radius: 6px;
+        padding: 0.5vw 5vw;
+        border-radius: 0.75vw;
         font-weight: 600;
-        font-size: 14px;
+        font-size: 1.75vw;
 
         display: inline-block;
-        margin: 3rem 0;
+        margin: 14vw 0 6vw;
       }
 
       a:hover {
