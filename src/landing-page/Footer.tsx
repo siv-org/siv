@@ -14,15 +14,11 @@ export const Footer = (): JSX.Element => {
         <h3>SIV</h3>
         <p>
           <Link href="/about">
-            <a className="styled-link">About</a>
+            <a className="styled-link">Research</a>
           </Link>
           <br />
           <Link href="/protocol">
-            <a className="styled-link">Study Protocol</a>
-          </Link>
-          <br />
-          <Link href="/for-governments">
-            <a className="styled-link">For Governments</a>
+            <a className="styled-link">Protocol</a>
           </Link>
           <br />
           <Link href="/faq">
