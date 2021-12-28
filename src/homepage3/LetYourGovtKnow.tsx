@@ -63,8 +63,7 @@ export function LetYourGovtKnow(): JSX.Element {
 
       <style jsx>{`
         .container {
-          margin-top: 13rem;
-          padding: 3rem;
+          margin-top: 26vw;
           display: flex;
         }
 
@@ -77,14 +76,15 @@ export function LetYourGovtKnow(): JSX.Element {
         }
 
         h2 {
-          font-size: 28px;
+          margin-top: 2vw;
+          font-size: 3.5vw;
           font-weight: 800;
         }
 
         h3 {
-          font-size: 18px;
+          font-size: 2.25vw;
           color: ${darkBlue};
-          margin: 1.5rem 0;
+          margin: 3vw 0;
         }
 
         /* Small screens: single column */
