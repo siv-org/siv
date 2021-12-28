@@ -2,6 +2,7 @@ import { darkBlue } from './colors'
 
 export const Privacy = () => (
   <section>
+    <img className="second" src="/home3/privacy-background.gif" />
     <h2>Free and fair elections require strong privacy</h2>
     <h3>
       SIV offers Multi-Party Encryption and strong Cryptographic <br /> Shuffles so that no one can see how anyone
@@ -63,6 +64,45 @@ export const Privacy = () => (
         left: -16vw;
         right: -16vw;
         width: 120vw;
+      }
+
+      .second {
+        display: none;
+      }
+
+      /* 1-column for small screens */
+      @media (max-width: 700px) {
+        .second {
+          display: block;
+          top: -65vw;
+        }
+
+        h2 {
+          margin-top: 40vw;
+          font-size: 6.5vw;
+        }
+
+        h3 {
+          font-size: 5vw;
+        }
+
+        h5 {
+          font-size: 3.8vw;
+          margin-bottom: 4vw;
+        }
+
+        a {
+          font-size: 3.5vw;
+          padding: 1.5vw 15vw;
+        }
+
+        img {
+          top: 65vw;
+        }
+
+        section {
+          margin-bottom: 40vw;
+        }
       }
     `}</style>
   </section>
