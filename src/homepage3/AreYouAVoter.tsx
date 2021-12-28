@@ -97,13 +97,6 @@ export function AreYouAVoter(): JSX.Element {
             margin: 0;
           }
         }
-
-        /* Large screens: increase horiz padding */
-        @media (min-width: 1050px) {
-          .container {
-            padding: 3rem 5rem;
-          }
-        }
       `}</style>
     </div>
   )

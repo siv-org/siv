@@ -62,13 +62,6 @@ export const Footer = (): JSX.Element => (
           text-align: left;
         }
       }
-
-      /* Large screens: increase horiz padding */
-      @media (min-width: 1050px) {
-        footer {
-          padding: 17px 5rem;
-        }
-      }
     `}</style>
   </footer>
 )
