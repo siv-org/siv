@@ -11,7 +11,7 @@ export const Privacy = () => (
     <p>
       <a href="/faq#privacy">Learn More</a>
     </p>
-    <img src="/home3/privacy-background.png" />
+    <img src="/home3/privacy-background.gif" />
     <style jsx>{`
       section {
         margin-top: 10vw;
