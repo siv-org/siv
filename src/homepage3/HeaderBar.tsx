@@ -1,3 +1,5 @@
+import Image from 'next/image'
+
 import { darkBlue } from './colors'
 
 export const HeaderBar = () => (
@@ -7,28 +9,32 @@ export const HeaderBar = () => (
       <a href="/faq">FAQ</a>
       <a href="/protocol">Protocol</a>
       <a href="/about">Research</a>
-      <a href="/admin">Sign In</a>
+      <a href="/admin">
+        Sign In
+        <div className="blue-underline">
+          <Image layout="fill" src="/home3/blue-underline.png" />
+        </div>
+      </a>
     </span>
-    <img src="/home3/blue-underline.png" />
     <style jsx>{`
       header {
         display: flex;
         justify-content: space-between;
-        padding-top: 1rem;
+        padding-top: 2vw;
       }
 
       h3 {
         margin: 0;
         color: ${darkBlue};
-        font-size: 24px;
+        font-size: 3vw;
       }
 
       a {
         color: ${darkBlue};
         text-decoration: none;
-        padding: 0 13px;
-        margin: 0 3px;
-        font-size: 18px;
+        padding: 0 1.5vw;
+        margin: 0 0.4vw;
+        font-size: 2vw;
         font-weight: 500;
       }
 
@@ -37,14 +43,17 @@ export const HeaderBar = () => (
       }
 
       a:last-child {
-        margin-left: 35px;
+        margin-left: 4vw;
+        position: relative;
       }
 
-      img {
-        width: 100px;
+      .blue-underline {
+        width: 12vw;
+        height: 6vw;
         position: absolute;
-        right: 40px;
-        top: 40px;
+        right: -1vw;
+        left: -1vw;
+        top: 0;
         z-index: -10;
       }
     `}</style>
