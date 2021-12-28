@@ -74,11 +74,11 @@ export const AnAdditionalOption = () => (
       }
 
       li:nth-child(1) div {
-        left: -0.625vw;
+        left: -1vw;
       }
 
       li:nth-child(2) div {
-        left: -1.625vw;
+        left: -2vw;
       }
 
       li:nth-child(3) div {
@@ -116,11 +116,11 @@ export const AnAdditionalOption = () => (
         }
 
         li:nth-child(1) div {
-          left: -1.25vw;
+          left: -2vw;
         }
 
         li:nth-child(2) div {
-          left: -3.25vw;
+          left: -4vw;
         }
 
         li:nth-child(3) div {
