@@ -63,7 +63,7 @@ export function AreYouAVoter(): JSX.Element {
 
       <style jsx>{`
         .container {
-          margin-top: 26vw;
+          margin-top: 13vw;
           display: flex;
         }
 
@@ -90,7 +90,6 @@ export function AreYouAVoter(): JSX.Element {
         /* Small screens: single column */
         @media (max-width: 750px) {
           .container {
-            padding: 17px 6vw;
             flex-direction: column;
           }
 

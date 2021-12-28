@@ -50,7 +50,6 @@ export const Footer = (): JSX.Element => (
       /* Small screens: reduce horiz padding */
       @media (max-width: 750px) {
         footer {
-          padding: 17px 6vw;
           flex-direction: column;
         }
 
