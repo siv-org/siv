@@ -52,7 +52,7 @@ export function AreYouAVoter(): JSX.Element {
                 fields[field] = (document.getElementById(toID(field)) as HTMLInputElement).value
               })
 
-              const { status } = await api('/let-your-govt-know', fields)
+              const { status } = await api('let-your-govt-know', fields)
               if (status === 201) setSaved(true)
             }}
           >
