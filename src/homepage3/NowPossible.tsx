@@ -1,3 +1,5 @@
+import Image from 'next/image'
+
 import { darkBlue } from './colors'
 
 export const NowPossible = () => (
@@ -6,10 +8,12 @@ export const NowPossible = () => (
     <p>
       <a href="/faq">Frequently Asked Questions</a>
     </p>
-    <img src="/home3/dark-wave-background.gif" />
+    <div>
+      <Image layout="fill" src="/home3/background-purple.jpg" />
+    </div>
     <style jsx>{`
       section {
-        padding-top: 16vw;
+        padding-top: 22vw;
         text-align: center;
         position: relative;
 
@@ -23,18 +27,9 @@ export const NowPossible = () => (
         font-size: 4.5vw;
       }
 
-      img {
-        z-index: -1;
-        position: absolute;
-        top: 0;
-        left: -16vw;
-        right: -16vw;
-        width: 120vw;
-      }
-
       a {
         border: 0.25vw solid ${darkBlue}11;
-        background-color: ${darkBlue}66;
+        background-color: ${darkBlue}bb;
         color: white;
         padding: 0.5vw 5vw;
         border-radius: 0.75vw;
@@ -42,14 +37,23 @@ export const NowPossible = () => (
         font-size: 1.75vw;
 
         display: inline-block;
-        margin: 14vw 0 6vw;
+        margin: 12vw 0 4vw;
       }
 
       a:hover {
         border-color: ${darkBlue};
         background-color: #000;
         text-decoration: none;
-        color: white;
+      }
+
+      div {
+        z-index: -1;
+        position: absolute;
+        top: 0;
+        left: -16vw;
+        right: -16vw;
+        width: 120vw;
+        height: 100%;
       }
     `}</style>
   </section>
