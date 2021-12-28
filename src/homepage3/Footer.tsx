@@ -16,13 +16,21 @@ export const Footer = (): JSX.Element => (
     </div>
     <style jsx>{`
       footer {
-        padding: 3rem;
+        padding: 3rem 0;
         display: flex;
         justify-content: space-between;
       }
 
       div:first-child {
         margin-right: 15%;
+      }
+
+      h3 {
+        font-size: 2.5vw;
+      }
+
+      p {
+        font-size: 1.625vw;
       }
 
       .text-align-right {
