@@ -1,6 +1,6 @@
 import { EmailSignup } from '../landing-page/EmailSignup'
 
-const email = 'questions@secureinternetvoting.org'
+const email = 'team@secureinternetvoting.org'
 
 export const Footer = (): JSX.Element => (
   <footer>
@@ -47,8 +47,8 @@ export const Footer = (): JSX.Element => (
         text-decoration: underline;
       }
 
-      /* Small screens: reduce horiz padding */
-      @media (max-width: 750px) {
+      /* Small screens: single column */
+      @media (max-width: 700px) {
         footer {
           flex-direction: column;
         }
@@ -60,6 +60,14 @@ export const Footer = (): JSX.Element => (
 
         .text-align-right {
           text-align: left;
+        }
+
+        h3 {
+          font-size: 6vw;
+        }
+
+        p {
+          font-size: 4.5vw;
         }
       }
     `}</style>
