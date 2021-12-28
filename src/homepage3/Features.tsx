@@ -7,21 +7,21 @@ export const Features = () => (
     <div className="row">
       <div>
         <span className="easy">
-          <Image height={810} layout="responsive" src="/home3/features-1.gif" width={1440} />
+          <Image height={160} layout="responsive" src="/home3/features-1.gif" width={160} />
         </span>
         <h2>Easy To Use</h2>
         <p>Voters can vote from their preferred device in seconds, without needing to install anything.</p>
       </div>
       <div>
         <span className="quick">
-          <Image height={810} layout="responsive" src="/home3/features-2.gif" width={1440} />
+          <Image height={110} layout="responsive" src="/home3/features-2.gif" width={110} />
         </span>
         <h2>Quick Results</h2>
         <p>Ballots can be submitted, confirmed, and tallied instantly.</p>
       </div>
       <div>
         <span className="verifiable">
-          <Image height={810} layout="responsive" src="/home3/features-3.gif" width={1440} />
+          <Image height={170} layout="responsive" src="/home3/features-3.gif" width={170} />
         </span>
         <h2>Verifiable</h2>
         <p>Voters can personally verify that their vote was counted correctly & recount all votes themselves.</p>
@@ -48,7 +48,7 @@ export const Features = () => (
       }
 
       span {
-        height: 8.5vw;
+        height: 9vw;
         display: block;
         position: relative;
         margin: 0 auto;
@@ -57,18 +57,18 @@ export const Features = () => (
       span.easy {
         position: relative;
         left: 2.2vw;
-        width: 15vw;
+        width: 9vw;
       }
 
       span.quick {
-        width: 12.5vw;
+        width: 6vw;
       }
 
       span.verifiable {
         position: relative;
-        bottom: 2.2vw;
+        bottom: 3.3vw;
         left: 1.5vw;
-        width: 17.5vw;
+        width: 9vw;
       }
 
       h2 {
