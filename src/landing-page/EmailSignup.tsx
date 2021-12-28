@@ -31,7 +31,7 @@ export const EmailSignup = (): JSX.Element => {
           id="signup-btn"
           style={{ margin: 0, padding: '8px 17px' }}
           onClick={async () => {
-            const { status } = await api('/email-signup', {
+            const { status } = await api('email-signup', {
               email: (document.getElementById('newsletter-signup-field') as HTMLInputElement).value,
             })
             if (status === 201) setSaved(true)

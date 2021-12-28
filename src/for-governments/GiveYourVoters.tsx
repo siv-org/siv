@@ -58,7 +58,7 @@ export function GiveYourVoters({ idKey }: { idKey: string }): JSX.Element {
                 fields[field] = (document.getElementById(toID(field)) as HTMLInputElement).value
               })
 
-              const { status } = await api('/jurisdictions-leads', fields)
+              const { status } = await api('jurisdictions-leads', fields)
               if (status === 201) setSaved(true)
             }}
           >

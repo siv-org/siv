@@ -26,7 +26,7 @@ export const AddYourQuestion = () => {
         id="submit-btn"
         style={{ margin: 0, padding: '8px 17px' }}
         onClick={async () => {
-          const { status } = await api('/faq-submission', {
+          const { status } = await api('faq-submission', {
             question: (document.getElementById('question-field') as HTMLInputElement).value,
           })
           if (status === 201) setSaved(true)
