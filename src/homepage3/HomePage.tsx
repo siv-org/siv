@@ -26,6 +26,9 @@ export const HomePage = () => (
     <style jsx>{`
       div {
         padding: 1rem 3rem;
+
+        width: 100%;
+        overflow-x: hidden;
       }
     `}</style>
   </div>
