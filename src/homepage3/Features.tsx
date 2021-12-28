@@ -104,6 +104,52 @@ export const Features = () => (
         text-decoration: none;
         color: ${darkBlue};
       }
+
+      /* 1-column for small screens */
+      @media (max-width: 700px) {
+        .row {
+          flex-direction: column;
+          align-items: center;
+          margin-top: 25vw;
+        }
+
+        span {
+          height: 18vw;
+        }
+
+        span.easy {
+          width: 18vw;
+          left: 5vw;
+        }
+
+        span.quick {
+          width: 12vw;
+          top: 5vw;
+        }
+
+        span.verifiable {
+          width: 18vw;
+          top: 1vw;
+          left: 3.5vw;
+        }
+
+        h2 {
+          font-size: 5.5vw;
+        }
+
+        p {
+          font-size: 3.4vw;
+        }
+
+        .row p {
+          max-width: 75vw;
+        }
+
+        a {
+          font-size: 3.5vw;
+          padding: 1.5vw 10vw;
+        }
+      }
     `}</style>
   </section>
 )
