@@ -14,7 +14,7 @@ export const Privacy = () => (
     <img src="/home3/privacy-background.png" />
     <style jsx>{`
       section {
-        margin-top: 5rem;
+        margin-top: 10vw;
         text-align: center;
         color: ${darkBlue};
         position: relative;
@@ -22,30 +22,31 @@ export const Privacy = () => (
       }
 
       h2 {
-        font-size: 26px;
+        font-size: 3.25vw;
       }
 
       h3 {
-        font-size: 22px;
+        font-size: 2.75vw;
         font-weight: 300;
       }
 
       h5 {
-        font-size: 15px;
+        font-size: 1.875vw;
         font-weight: 300;
         margin-bottom: 5rem;
       }
 
       a {
-        border: 2px solid ${darkBlue};
+        border: 0.25vw solid ${darkBlue};
         background-color: ${darkBlue};
         color: white;
-        padding: 4px 120px;
-        border-radius: 6px;
+        padding: 0.5vw 15vw;
+        border-radius: 0.75vw;
+        font-size: 1.5vw;
         font-weight: 600;
 
         display: inline-block;
-        margin: 3rem 0;
+        margin: 3vw 0;
       }
 
       a:hover {
@@ -58,8 +59,8 @@ export const Privacy = () => (
         z-index: -1;
         position: absolute;
         top: 0;
-        left: -8rem;
-        right: -8rem;
+        left: -16vw;
+        right: -16vw;
         width: 120vw;
       }
     `}</style>

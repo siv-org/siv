@@ -95,7 +95,7 @@ export const Features = () => (
         font-size: 1.5vw;
 
         display: inline-block;
-        margin: 3rem 0;
+        margin: 6vw 0;
       }
 
       a:hover {
