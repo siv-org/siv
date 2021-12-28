@@ -29,7 +29,8 @@ export const AnAdditionalOption = () => (
     </ul>
     <p>
       <Link id="help-bring-btn" offset={-25} smooth={true} to="let-your-govt-know">
-        Help bring Secure Internet Voting to your area
+        Help bring <span className="desktop">Secure Internet Voting</span>
+        <span className="mobile">SIV</span> to your area
       </Link>
     </p>
     <style jsx>{`
@@ -84,6 +85,49 @@ export const AnAdditionalOption = () => (
         left: -1.8vw;
         top: -9vw;
       }
+
+      /* 1-column for small screens */
+      @media (max-width: 700px) {
+        section {
+          text-align: center;
+        }
+
+        h2 {
+          font-size: 6vw;
+        }
+
+        p {
+          font-size: 4.5vw;
+        }
+
+        ul {
+          flex-direction: column;
+          padding-top: 5vw;
+        }
+
+        li {
+          font-size: 4vw;
+          margin-bottom: 10vw;
+        }
+
+        div {
+          width: 20vw;
+          top: -15vw;
+        }
+
+        li:nth-child(1) div {
+          left: -1.25vw;
+        }
+
+        li:nth-child(2) div {
+          left: -3.25vw;
+        }
+
+        li:nth-child(3) div {
+          left: -3.6vw;
+          top: -18vw;
+        }
+      }
     `}</style>
     <style global jsx>{`
       #help-bring-btn {
@@ -107,6 +151,27 @@ export const AnAdditionalOption = () => (
         background-color: white;
         text-decoration: none;
         color: ${darkBlue};
+      }
+
+      #help-bring-btn span.mobile {
+        display: none;
+      }
+
+      /* 1-column for small screens */
+      @media (max-width: 700px) {
+        #help-bring-btn {
+          font-size: 3.5vw;
+          padding: 1.5vw 12vw;
+          margin-top: 0;
+        }
+
+        #help-bring-btn span.mobile {
+          display: inline;
+        }
+
+        #help-bring-btn span.desktop {
+          display: none;
+        }
       }
     `}</style>
   </section>
