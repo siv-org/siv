@@ -10,12 +10,8 @@ export const Verifiability = () => (
       <br /> own submission is counted correctly, and recount all results themselves.
     </p>
     <div className="container">
-      <div>
-        <Image height={1080} layout="responsive" src="/home3/verifiability-1.png" width={1920} />
-      </div>
-      <div>
-        <Image height={1080} layout="responsive" src="/home3/verifiability-2.png" width={1920} />
-      </div>
+      <Screenshot n={1} />
+      <Screenshot n={2} />
     </div>
     <style jsx>{`
       section {
@@ -44,11 +40,38 @@ export const Verifiability = () => (
         display: flex;
         justify-content: space-between;
       }
-
-      .container > div {
-        position: relative;
-        width: 49%;
-      }
     `}</style>
   </section>
+)
+
+const Screenshot = ({ n }: { n: 1 | 2 }) => (
+  <div>
+    <span>{n}</span>
+    <Image height={516} layout="responsive" src={`/home3/verifiability-${n}.png`} width={992} />
+    <style jsx>{`
+      div {
+        position: relative;
+        width: 47%;
+
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 0.375vw 1vw;
+      }
+
+      span {
+        position: absolute;
+        top: -1.4vw;
+        left: -1.4vw;
+        background: #fff;
+        border-radius: 10vw;
+
+        border: 0.25vw solid ${darkBlue};
+        width: 2.8vw;
+        height: 2.8vw;
+        z-index: 10;
+        text-align: center;
+
+        font-size: 1.6vw;
+        font-weight: 700;
+      }
+    `}</style>
+  </div>
 )
