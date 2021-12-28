@@ -24,10 +24,6 @@ export const AboveFold = () => (
       <a href="mailto:hi@secureinternetvoting.org">Contact Team</a>
     </div>
     <style jsx>{`
-      section {
-        height: 100vh;
-      }
-
       h1 {
         color: ${darkBlue};
         font-size: 4.5vw;

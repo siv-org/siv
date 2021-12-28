@@ -5,7 +5,7 @@ import { AnAdditionalOption } from './AnAdditionalOption'
 import { Features } from './Features'
 import { Footer } from './Footer'
 import { LetYourGovtKnow } from './LetYourGovtKnow'
-import { NowPossible } from './NowPossible'
+// import { NowPossible } from './NowPossible'
 import { OnePersonOneVote } from './OnePersonOneVote'
 import { Privacy } from './Privacy'
 import { Verifiability } from './Verifiability'
@@ -18,7 +18,7 @@ export const HomePage = () => (
     <OnePersonOneVote />
     <Verifiability />
     <AnAdditionalOption />
-    <NowPossible />
+    {/* <NowPossible /> */}
     <LetYourGovtKnow />
     <Footer />
 

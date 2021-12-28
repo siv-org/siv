@@ -1,25 +1,27 @@
+import Image from 'next/image'
+
 import { darkBlue } from './colors'
 
 export const Features = () => (
   <section>
     <div className="row">
       <div>
-        <span>
-          <img className="phone" src="/home3/easy-to-use.gif" width="120px" />
+        <span className="easy">
+          <Image height={810} layout="responsive" src="/home3/easy-to-use.gif" width={1440} />
         </span>
         <h2>Easy To Use</h2>
         <p>Voters can vote from their preferred device in seconds, without needing to install anything.</p>
       </div>
       <div>
-        <span>
-          <img src="/home3/quick-results.gif" width="100px" />
+        <span className="quick">
+          <Image height={810} layout="responsive" src="/home3/quick-results.gif" width={1440} />
         </span>
         <h2>Quick Results</h2>
         <p>Ballots can be submitted, confirmed, and tallied instantly.</p>
       </div>
       <div>
-        <span>
-          <img className="check" src="/home3/verifiable.gif" width="140px" />
+        <span className="verifiable">
+          <Image height={810} layout="responsive" src="/home3/verifiable.gif" width={1440} />
         </span>
         <h2>Verifiable</h2>
         <p>Voters can personally verify that their vote was counted correctly & recount all votes themselves.</p>
@@ -29,48 +31,68 @@ export const Features = () => (
       <a href="/admin">Run a Secure Vote</a>
     </p>
     <style jsx>{`
+      section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+      }
+
       .row {
         display: flex;
         justify-content: space-between;
         width: 100%;
+        max-width: 1400px;
         text-align: center;
-        margin-top: 5rem;
+        margin: 10vw auto 0;
       }
 
       span {
-        height: 70px;
+        height: 8.5vw;
         display: block;
+        position: relative;
+        margin: 0 auto;
       }
 
-      img.phone {
+      span.easy {
         position: relative;
-        left: 1.1rem;
+        left: 2.2vw;
+        width: 15vw;
       }
 
-      img.check {
+      span.quick {
+        width: 12.5vw;
+      }
+
+      span.verifiable {
         position: relative;
-        bottom: 1.1rem;
+        bottom: 2.2vw;
+        left: 1.5vw;
+        width: 17.5vw;
       }
 
       h2 {
         font-weight: 800;
+        font-size: 2.4vw;
       }
 
       .row p {
-        max-width: 200px;
+        max-width: 25vw;
       }
 
       p {
         text-align: center;
+        font-size: 1.7vw;
       }
 
       a {
-        border: 2px solid ${darkBlue};
+        border: 0.25vw solid ${darkBlue};
         background-color: ${darkBlue};
         color: white;
-        padding: 4px 80px;
-        border-radius: 6px;
+        padding: 0.5vw 10vw;
+        border-radius: 0.75vw;
         font-weight: 600;
+        font-size: 1.5vw;
 
         display: inline-block;
         margin: 3rem 0;
