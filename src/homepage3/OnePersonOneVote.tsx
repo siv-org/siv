@@ -13,7 +13,7 @@ export const OnePersonOneVote = () => (
         <div className="auth1">
           <Image height={597} src="/home3/auth-1.png" width={620} />
         </div>
-        Voters can be authenticated by email, SMS, postal mail, drawn signatures, ID photos— in any preferred
+        Voters can be authenticated by email, SMS, postal mail, drawn signatures, ID photos, or any preferred
         combination.
       </li>
       <li>
