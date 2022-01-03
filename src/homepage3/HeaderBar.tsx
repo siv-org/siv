@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import blueUnderline from 'public/home3/blue-underline.png'
 
 import { darkBlue } from './colors'
 
@@ -12,7 +13,7 @@ export const HeaderBar = () => (
       <a href="/admin">
         Sign In
         <div className="blue-underline">
-          <Image layout="fill" src="/home3/blue-underline.png" />
+          <Image layout="fill" src={blueUnderline} />
         </div>
       </a>
     </span>
@@ -45,11 +46,12 @@ export const HeaderBar = () => (
       a:last-child {
         margin-left: 4vw;
         position: relative;
+        padding-bottom: 1vw;
       }
 
       a:last-child:hover {
         text-decoration: none;
-        filter: drop-shadow(0 0 7px #0003);
+        filter: drop-shadow(0 0 7px ${darkBlue}3f);
       }
 
       .blue-underline {
