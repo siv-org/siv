@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import blueUnderline from 'public/home3/blue-underline.png'
 
 import { darkBlue } from './colors'
@@ -7,15 +8,23 @@ export const HeaderBar = () => (
   <header>
     <h3>SIV</h3>
     <span>
-      <a href="/faq">FAQ</a>
-      <a href="/protocol">Protocol</a>
-      <a href="/about">Research</a>
-      <a href="/admin">
-        Sign In
-        <div className="blue-underline">
-          <Image layout="fill" src={blueUnderline} />
-        </div>
-      </a>
+      <Link href="/faq">
+        <a>FAQ</a>
+      </Link>
+      <Link href="/protocol">
+        <a>Protocol</a>
+      </Link>
+      <Link href="/about">
+        <a>Research</a>
+      </Link>
+      <Link href="/admin">
+        <a>
+          Sign In
+          <div className="blue-underline">
+            <Image layout="fill" src={blueUnderline} />
+          </div>
+        </a>
+      </Link>
     </span>
     <style jsx>{`
       header {
