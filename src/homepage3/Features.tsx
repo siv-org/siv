@@ -44,7 +44,7 @@ export const Features = () => (
         width: 100%;
         max-width: 1400px;
         text-align: center;
-        margin: 10vw auto 0;
+        margin: 5vw auto 0;
       }
 
       span {
