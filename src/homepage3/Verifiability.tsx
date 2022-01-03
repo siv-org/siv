@@ -1,4 +1,6 @@
 import Image from 'next/image'
+import verifiability1 from 'public/home3/verifiability-1.png'
+import verifiability2 from 'public/home3/verifiability-2.png'
 
 import { darkBlue } from './colors'
 
@@ -65,10 +67,12 @@ export const Verifiability = () => (
   </section>
 )
 
+const images = { 1: verifiability1, 2: verifiability2 }
+
 const Screenshot = ({ n }: { n: 1 | 2 }) => (
   <div>
     <span>{n}</span>
-    <Image height={516} layout="responsive" src={`/home3/verifiability-${n}.png`} width={992} />
+    <Image height={516} layout="responsive" placeholder="blur" src={images[n]} width={992} />
     <style jsx>{`
       div {
         position: relative;
