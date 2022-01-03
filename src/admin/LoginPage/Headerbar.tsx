@@ -1,3 +1,5 @@
+import Link from 'next/link'
+
 import { LoginInput } from './LoginInput'
 import { breakpoint } from './LoginPage'
 
@@ -5,7 +7,11 @@ export const Headerbar = ({ hideLogin }: { hideLogin?: boolean }) => {
   return (
     <header>
       <div>
-        <h2>Secure Internet Voting</h2>
+        <h2>
+          <Link href="/">
+            <a>Secure Internet Voting</a>
+          </Link>
+        </h2>
         {!hideLogin && (
           <section>
             <LoginInput />
@@ -39,6 +45,10 @@ export const Headerbar = ({ hideLogin }: { hideLogin?: boolean }) => {
         h2 {
           white-space: nowrap;
           margin-right: 2rem;
+        }
+
+        h2 a {
+          color: white;
         }
 
         section {
