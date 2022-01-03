@@ -1,9 +1,10 @@
-import { EmailSignup } from '../landing-page/EmailSignup'
+import { EmailSignup } from './EmailSignup'
 
 const email = 'team@secureinternetvoting.org'
 
 export const Footer = (): JSX.Element => (
   <footer>
+    <img src="/home3/footer-lines.png" />
     <div>
       <EmailSignup />
     </div>
@@ -16,9 +17,19 @@ export const Footer = (): JSX.Element => (
     </div>
     <style jsx>{`
       footer {
-        padding: 3rem 0;
+        padding: 33vw 0 6vw;
         display: flex;
         justify-content: space-between;
+        position: relative;
+      }
+
+      img {
+        z-index: -1;
+        position: absolute;
+        top: -28vw;
+        left: -30vw;
+        right: -30vw;
+        width: 148vw;
       }
 
       div:first-child {
@@ -51,6 +62,13 @@ export const Footer = (): JSX.Element => (
       @media (max-width: 700px) {
         footer {
           flex-direction: column;
+        }
+
+        img {
+          left: -16vw;
+          right: -16vw;
+          width: 120vw;
+          top: -21vw;
         }
 
         div:first-child {
