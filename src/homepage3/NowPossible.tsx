@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import backgroundPurple from 'public/home3/background-purple.jpg'
 
 import { darkBlue } from './colors'
 
@@ -9,7 +10,7 @@ export const NowPossible = () => (
       <a href="/faq">Frequently Asked Questions</a>
     </p>
     <div>
-      <Image layout="fill" src="/home3/background-purple.jpg" />
+      <Image layout="fill" placeholder="blur" src={backgroundPurple} />
     </div>
     <style jsx>{`
       section {
