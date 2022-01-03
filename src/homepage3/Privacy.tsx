@@ -8,7 +8,7 @@ export const Privacy = () => (
       SIV offers Multi-Party Encryption and strong Cryptographic <br /> Shuffles so that no one can see how anyone
       votes.
     </h3>
-    <h5>All while maintaining full auditability and verifability.</h5>
+    <h5>All while maintaining full auditability and verifiability.</h5>
     <p>
       <a href="/faq#privacy">Learn More</a>
     </p>
