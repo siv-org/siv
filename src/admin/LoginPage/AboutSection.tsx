@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { darkBlue } from 'src/landing-page/Button'
 
 import { breakpoint } from './LoginPage'
@@ -5,7 +6,11 @@ import { breakpoint } from './LoginPage'
 export const AboutSection = () => {
   return (
     <aside>
-      <img className="logo" src="/login/circle-logo.png" />
+      <Link href="/">
+        <a>
+          <img className="logo" src="/login/circle-logo.png" />
+        </a>
+      </Link>
       <h3>
         Fast, private, & verifiable <br />
         elections.
