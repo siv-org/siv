@@ -82,7 +82,7 @@ export const InvitationExplanation = () => (
       Verification features of SIV.{' '}
       <em>
         See{' '}
-        <Link href="/faq">
+        <Link href="/faq#1p1v">
           <a>How does SIV ensure One Vote per Person?</a>
         </Link>{' '}
         for more.

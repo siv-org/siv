@@ -21,6 +21,7 @@ c)  SIV provides cryptographic Universal Verification that final results are tam
 It’s pronounced like the first syllable of “civilization”.`,
   },
   {
+    id: '1p1v',
     q: 'How does SIV ensure One Vote per Person?',
     resp: `Each voter is assigned a unique Voter Authorization token. Each token ensures only one submission. They can be revoked, re-issued, and audited as necessary.
 
@@ -117,8 +118,7 @@ Many people clearly prefer online options. It's easy to imagine many would likew
   },
   {
     q: 'How does SIV comply with existing certified tallying equipment?',
-    resp:
-      'SIV can automatically print votes onto existing ballot designs and be fed through existing certified tallying equipment.',
+    resp: 'SIV can automatically print votes onto existing ballot designs and be fed through existing certified tallying equipment.',
   },
   {
     q: 'Does the law allow SIV to be used right now?',
@@ -221,8 +221,7 @@ Once the election closes, SIV can tally millions of ballots in seconds.`,
   },
   {
     q: 'How long does it take for voters to participate in a SIV election?',
-    resp:
-      'As soon as voters receive their unique vote invitation, they can immediately mark their selections on their own device, then submit their encrypted vote instantly.',
+    resp: 'As soon as voters receive their unique vote invitation, they can immediately mark their selections on their own device, then submit their encrypted vote instantly.',
   },
   {
     q: 'How does SIV impact governments’ budgets?',
