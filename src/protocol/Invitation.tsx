@@ -83,7 +83,7 @@ export const InvitationExplanation = () => (
       <em>
         See{' '}
         <Link href="/faq#1p1v">
-          <a>How does SIV ensure One Vote per Person?</a>
+          <a target="_blank">How does SIV ensure One Vote per Person?</a>
         </Link>{' '}
         for more.
       </em>
