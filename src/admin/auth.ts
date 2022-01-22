@@ -61,7 +61,7 @@ export function useLoginRequired(loggedOut: boolean) {
       const { code, email } = router.query
 
       // Redirect to /login if missing `email` or `code` in URL
-      if (!(typeof email == 'string' && typeof code == 'string')) return router.push('/login')
+      if (!(typeof email == 'string' && typeof code == 'string')) return router.replace('/login')
 
       await checkLoginCode({
         code,
