@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { useReducer } from 'react'
 
 import { voters } from './election-parameters'
 import { Paper } from './Paper'
@@ -12,34 +13,40 @@ const Highlight = (props: { children: string }) => (
   <span style={{ backgroundColor: `${redHex}44`, border: `1px solid ${redHex}`, padding: '0 2px' }} {...props} />
 )
 
-export const Invitation = () => (
-  <Paper marginBottom noFade style={{ position: 'relative' }}>
-    <img
-      src="/protocol/step-1-invitation-icon.png"
-      style={{ maxWidth: 35, opacity: 0.5, position: 'absolute', right: 'calc(1vw + 5px)', width: '7vw' }}
-    />
-    <p>
-      From: <b>elections@local.gov</b> <br />
-      To: <b>you@email.com</b> <br />
-      Subject: <b>Your Vote Invitation</b>
-    </p>
-    <p>Voting for our next Mayor is now open.</p>
-    <p>Votes accepted for the next 14 days.</p>
-    <p>
-      Click here to securely cast your vote: <br />
-      <a style={{ cursor: 'pointer' }}>
-        www.local.gov/vote?auth=
-        <Highlight>{voters[0].auth}</Highlight>
-      </a>
-    </p>
-    <p>
-      <i style={{ fontSize: 12 }}>
-        This link is unique for you. Don&apos;t share it with anyone, or they&apos;ll be able to take your vote. (
-        <a style={{ cursor: 'pointer' }}>Help</a>)
-      </i>
-    </p>
-  </Paper>
-)
+export const Invitation = () => {
+  const [helpLinkClicked, toggleHelpLink] = useReducer((state) => !state, false)
+  return (
+    <Paper marginBottom noFade style={{ position: 'relative' }}>
+      <img
+        src="/protocol/step-1-invitation-icon.png"
+        style={{ maxWidth: 35, opacity: 0.5, position: 'absolute', right: 'calc(1vw + 5px)', width: '7vw' }}
+      />
+      <p>
+        From: <b>elections@local.gov</b> <br />
+        To: <b>you@email.com</b> <br />
+        Subject: <b>Your Vote Invitation</b>
+      </p>
+      <p>Voting for our next Mayor is now open.</p>
+      <p>Votes accepted for the next 14 days.</p>
+      <p>
+        Click here to securely cast your vote: <br />
+        <a style={{ cursor: 'pointer' }}>
+          www.local.gov/vote?auth=
+          <Highlight>{voters[0].auth}</Highlight>
+        </a>
+      </p>
+      <p>
+        <i style={{ fontSize: 12 }}>
+          This link is unique for you. Don&apos;t share it with anyone, or they&apos;ll be able to take your vote. (
+          <a style={{ cursor: 'pointer' }} onClick={toggleHelpLink}>
+            {!helpLinkClicked ? 'Help' : 'Just an example'}
+          </a>
+          )
+        </i>
+      </p>
+    </Paper>
+  )
+}
 
 export const InvitationExplanation = () => (
   <>
