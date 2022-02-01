@@ -18,7 +18,7 @@ export const Button = ({
 }: ButtonProps & {
   href: string
 }): JSX.Element => (
-  <Link href={href} prefetch={href.startsWith('/') ? undefined : false}>
+  <Link href={href}>
     <a style={style}>
       {children}
       <style jsx>{`

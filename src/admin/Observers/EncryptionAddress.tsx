@@ -3,7 +3,7 @@ import { Button } from 'src/landing-page/Button'
 import { useStored } from '../useStored'
 
 export const EncryptionAddress = () => {
-  const { threshold_public_key, trustees } = useStored()
+  const { election_id, threshold_public_key, trustees } = useStored()
 
   if (!threshold_public_key || !trustees) return null
 
@@ -24,7 +24,7 @@ export const EncryptionAddress = () => {
         <span>{threshold_public_key}</span>
         <p>The election can now begin.</p>
       </div>
-      <Button href="./voters" style={{ marginLeft: 0, marginTop: 30 }}>
+      <Button href={`/admin/${election_id}/voters`} style={{ marginLeft: 0, marginTop: 30 }}>
         Step 3: Add Voters
       </Button>
       <style jsx>{`
