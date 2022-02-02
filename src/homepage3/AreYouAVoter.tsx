@@ -105,6 +105,21 @@ export function AreYouAVoter(): JSX.Element {
             font-size: 4.5vw;
           }
         }
+
+        /* fixed width for large screens */
+        @media (min-width: 1440px) {
+          .container {
+            max-width: 1440px;
+            margin: 0 auto;
+
+            padding-top: 15rem;
+          }
+
+          .column:first-child {
+            bottom: 1.8rem;
+            position: relative;
+          }
+        }
       `}</style>
     </div>
   )

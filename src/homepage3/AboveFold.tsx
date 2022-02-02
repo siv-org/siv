@@ -129,6 +129,14 @@ export const AboveFold = () => (
           padding: 1.5vw 6.25vw;
         }
       }
+
+      /* fixed width for large screens */
+      @media (min-width: 1440px) {
+        section {
+          max-width: 1440px;
+          margin: 0 auto;
+        }
+      }
     `}</style>
   </section>
 )

@@ -46,6 +46,7 @@ export const Footer = (): JSX.Element => (
 
       .text-align-right {
         text-align: right;
+        padding-top: 1rem;
       }
 
       a {
@@ -86,6 +87,20 @@ export const Footer = (): JSX.Element => (
 
         p {
           font-size: 4.5vw;
+        }
+      }
+
+      /* fixed width for large screens */
+      @media (min-width: 1440px) {
+        footer {
+          max-width: 1440px;
+          margin: 0 auto;
+
+          padding-top: 35vw;
+        }
+
+        img {
+          top: -31vw;
         }
       }
     `}</style>

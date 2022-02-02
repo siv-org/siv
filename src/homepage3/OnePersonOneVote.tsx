@@ -127,6 +127,16 @@ export const OnePersonOneVote = () => (
           width: 22.5vw;
         }
       }
+
+      /* fixed width for large screens */
+      @media (min-width: 1440px) {
+        section {
+          max-width: 1440px;
+          margin: 0 auto;
+
+          padding-top: 15rem;
+        }
+      }
     `}</style>
   </section>
 )
