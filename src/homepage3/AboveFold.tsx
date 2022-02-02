@@ -136,6 +136,15 @@ export const AboveFold = () => (
           max-width: 1440px;
           margin: 0 auto;
         }
+
+        h1 {
+          font-size: min(4.5vw, 85px);
+        }
+
+        .underline-container {
+          width: min(17vw, 320px);
+          top: min(2vw, 38px);
+        }
       }
     `}</style>
   </section>
