@@ -42,7 +42,7 @@ export const Features = () => (
         display: flex;
         justify-content: space-between;
         width: 100%;
-        max-width: 1400px;
+        max-width: 1440px;
         text-align: center;
         margin: 5vw auto 0;
       }

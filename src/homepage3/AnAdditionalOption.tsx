@@ -65,6 +65,7 @@ export const AnAdditionalOption = () => (
         position: relative;
         font-size: 2vw;
         margin: 15vw 8vw 0;
+        text-align: center;
       }
 
       div {
