@@ -1,8 +1,6 @@
-import { mapValues } from 'lodash-es'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { Trustee } from 'src/admin/Observers/Observers'
 import { generate_key_pair } from 'src/crypto/generate-key-pair'
-import { get_safe_prime } from 'src/crypto/generate-safe-prime'
 import {
   evaluate_private_polynomial,
   generate_public_coefficients,
@@ -35,20 +33,16 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Add admin@ email to front of the trustees list
   trustees.unshift({ email: ADMIN_EMAIL, name: 'The SIV Server' })
 
-  // Generate a safe prime of the right bit size
-  const safe_prime_bigs = get_safe_prime(256, 20)
-  const safe_prime = mapValues(safe_prime_bigs, (v) => v.toString())
-
   // Update election
   const election = firebase.firestore().collection('elections').doc(election_id)
-  await election.update({ ...safe_prime, t: trustees.length })
+  await election.update({ t: trustees.length })
 
   // Generate admin's keypair
-  const pair = generate_key_pair(safe_prime_bigs.p)
+  const pair = generate_key_pair()
 
   // If admin is only trustees, we can skip the keygen ceremony
   if (trustees.length === 1) {
-    const threshold_public_key = pair.public_key.recipient.toString()
+    const threshold_public_key = pair.public_key.toString()
 
     // Save private key on admin
     promises.push(
@@ -135,7 +129,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           keygen_attempt: 1,
           pairwise_shares_for,
           private_coefficients: private_coefficients.map((c) => c.toString()),
-          recipient_key: pair.public_key.recipient.toString(),
+          recipient_key: pair.public_key.toString(),
         },
         { merge: true },
       )
