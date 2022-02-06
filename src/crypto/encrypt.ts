@@ -1,14 +1,13 @@
-import { Big, Cipher_Text, Public_Key } from './types'
+import { G, RP } from './curve'
+import { Cipher, Public_Key } from './shuffle'
 
-export default function encrypt(public_key: Public_Key, randomizer: Big, encoded_message: Big): Cipher_Text {
-  const { generator, modulo, recipient } = public_key
-
+export default function encrypt(public_key: Public_Key, randomizer: bigint, message: RP): Cipher {
   // Calculate our encrypted message
-  const shared_secret = recipient.modPow(randomizer, modulo)
-  const encrypted = encoded_message.multiply(shared_secret).mod(modulo)
+  const shared_secret = public_key.multiply(randomizer)
+  const encrypted = message.add(shared_secret)
 
-  // This lets the recipient's private key reverse the encryption
-  const unlock = generator.modPow(randomizer, modulo)
+  // This unlock factor lets someone with the decryption key reverse the encryption
+  const unlock = G.multiply(randomizer)
 
   return { encrypted, unlock }
 }

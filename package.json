@@ -62,6 +62,7 @@
     "@types/jsbn": "^1.2.29",
     "@types/lodash-es": "^4.17.3",
     "autoprefixer": "^10.2.4",
+    "bigint-mod-arith": "^3.0.2",
     "bluebird": "^3.7.2",
     "codemirror": "^5.62.2",
     "cookies": "^0.8.0",

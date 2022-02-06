@@ -1,12 +1,11 @@
-import { Big, Cipher_Text, Public_Key } from './types'
+import { RP } from './curve'
+import { Cipher } from './shuffle'
 
-export default function decrypt(public_key: Public_Key, secret_key: Big, ciphertext: Cipher_Text): string {
-  const { encrypted, unlock } = ciphertext
-  const { modulo } = public_key
+export default function decrypt(secret_key: bigint, cipher: Cipher): RP {
+  const { encrypted, unlock } = cipher
 
-  const shared_secret = unlock.modPow(secret_key, modulo)
-  const s_inverse = shared_secret.modInverse(modulo)
-  const decrypted = encrypted.multiply(s_inverse).mod(modulo)
+  const shared_secret = unlock.multiply(secret_key)
+  const message = encrypted.subtract(shared_secret)
 
-  return decrypted.toString()
+  return message
 }

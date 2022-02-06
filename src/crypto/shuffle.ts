@@ -1,13 +1,15 @@
-import pick_random_integer from './pick-random-integer'
+import { RP, random_bigint } from './curve'
 import { Shuffle_Proof, generate_shuffle_proof } from './shuffle-proof'
-import { Cipher_Text, Public_Key, big } from './types'
+
+export type Cipher = { encrypted: RP; unlock: RP }
+
+export type Public_Key = RP
+const G = RP.BASE
 
 export async function shuffle(
   pub_key: Public_Key,
-  inputs: Cipher_Text[],
-): Promise<{ proof: Shuffle_Proof; shuffled: Cipher_Text[] }> {
-  const { generator, modulo, recipient } = pub_key
-
+  inputs: Cipher[],
+): Promise<{ proof: Shuffle_Proof; shuffled: Cipher[] }> {
   // First, we need a permutation array and reencryption values
   const permutes = build_permutation_array(inputs.length)
 
@@ -15,20 +17,20 @@ export async function shuffle(
   const permuted = permute(inputs, permutes)
 
   // Generate a unique random re-encryption factor for each value
-  const reencrypts = permutes.map(() => pick_random_integer(modulo))
+  const reencrypts = permutes.map(random_bigint)
 
   // Now we generate the re-encrypted and shuffled list...
   const shuffled = permuted.map((cipher, index) => {
     const { encrypted, unlock } = cipher
     const reencrypt = reencrypts[permutes[index]]
 
-    const encrypted_multiplier = recipient.modPow(reencrypt, modulo)
-    const new_encrypted = encrypted.multiply(encrypted_multiplier).mod(modulo)
+    const encrypted_shift = pub_key.multiply(reencrypt)
+    const new_encrypted = encrypted.add(encrypted_shift)
 
-    const lock_multiplier = generator.modPow(reencrypt, modulo)
-    const new_lock = unlock.multiply(lock_multiplier).mod(modulo)
+    const unlock_shift = G.multiply(reencrypt)
+    const new_unlock = unlock.add(unlock_shift)
 
-    return { encrypted: new_encrypted, unlock: new_lock }
+    return { encrypted: new_encrypted, unlock: new_unlock }
   })
 
   // Finally we generate a ZK proof that it's a valid shuffle
@@ -37,12 +39,7 @@ export async function shuffle(
     rename_to_c1_and_2(shuffled),
     reencrypts,
     permutes,
-    {
-      g: pub_key.generator,
-      h: pub_key.recipient,
-      p: pub_key.modulo,
-      q: pub_key.modulo.subtract(big(1)).divide(big(2)),
-    },
+    { h: pub_key },
   )
 
   return { proof, shuffled }
@@ -63,5 +60,4 @@ function permute<T>(input: T[], permutation_array: number[]) {
   return input.map((_, index) => input[permutation_array[index]])
 }
 
-export const rename_to_c1_and_2 = (inputs: Cipher_Text[]) =>
-  inputs.map(({ encrypted, unlock }) => ({ c1: unlock, c2: encrypted }))
+const rename_to_c1_and_2 = (inputs: Cipher[]) => inputs.map(({ encrypted, unlock }) => ({ c1: unlock, c2: encrypted }))

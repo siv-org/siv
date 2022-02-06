@@ -1,53 +1,46 @@
-/* eslint-disable no-console */
-import { integer_from_seed } from './integer-from-seed'
-import pick_random_integer from './pick-random-integer'
-import { product_bigs, sum_bigs } from './threshold-keygen'
-import { Big, big } from './types'
+import { CURVE } from '@noble/ed25519'
+import { modPow } from 'bigint-mod-arith'
 
-type ElGamalPair = { c1: Big; c2: Big }
+import { bigint_from_seed } from './bigint-from-seed'
+import { G, RP, invert, mod, random_bigint, sum_bigints, sum_points } from './curve'
 
-type SequencesOfPairs = ElGamalPair[]
+type ElGamalPair = { c1: RP; c2: RP }
 
-type Simple_Shuffle_Proof = {
-  Gamma: Big
-  Thetas: Big[]
-  Xs: Big[]
-  Ys: Big[]
-  alphas: Big[]
-  parameters: Parameters
+export type SequencesOfPairs = ElGamalPair[]
+
+export type Simple_Shuffle_Proof = {
+  Gamma: RP
+  Thetas: RP[]
+  Xs: RP[]
+  Ys: RP[]
+  alphas: bigint[]
 }
 
 export type Shuffle_Proof = {
-  As: Big[]
-  Cs: Big[]
-  Ds: Big[]
-  Gamma: Big
-  Lambda1: Big
-  Lambda2: Big
-  Us: Big[]
-  Ws: Big[]
-  parameters: ParametersWithH
-  sigmas: Big[]
+  As: RP[]
+  Cs: RP[]
+  Ds: RP[]
+  Gamma: RP
+  Lambda1: RP
+  Lambda2: RP
+  Us: RP[]
+  Ws: RP[]
+  parameters: Parameters
+  sigmas: bigint[]
   simple_shuffle_proof: Simple_Shuffle_Proof
-  tau: Big
+  tau: bigint
 }
 
-type Parameters = {
-  g: Big
-  p: Big // Safe Prime
-  q: Big // Sophie-Germain Prime
-}
-
-type ParametersWithH = Parameters & {
-  h: Big // Public_Threshold_Key aka Encryption_Address
+export type Parameters = {
+  h: RP // Public_Threshold_Key aka Encryption_Address
 }
 
 export async function generate_shuffle_proof(
   inputs: SequencesOfPairs,
   outputs: SequencesOfPairs,
-  reencrypts: Big[],
+  reencrypts: bigint[],
   permutes: number[],
-  { g, h, p, q }: ParametersWithH,
+  { h }: Parameters,
 ): Promise<Shuffle_Proof> {
   // All 4 input arrays need the same length
   const { length } = inputs
@@ -62,63 +55,47 @@ export async function generate_shuffle_proof(
   })
 
   // Prover generates lots of secret random values
-  const us = inputs.map(() => pick_random_integer(q))
-  const ws = inputs.map(() => pick_random_integer(q))
-  const tau_0 = pick_random_integer(q)
+  const us = inputs.map(random_bigint)
+  const ws = inputs.map(random_bigint)
+  const tau_0 = random_bigint()
 
-  const as = inputs.map(() => pick_random_integer(q))
-  const gamma = pick_random_integer(q)
+  const as = inputs.map(random_bigint)
+  const gamma = random_bigint()
 
   // Prover projects all these into p space
-  const Us = us.map((u) => g.modPow(u, p))
-  const Ws = ws.map((w) => g.modPow(gamma.multiply(w).mod(q), p))
-  const As = as.map((a) => g.modPow(a, p))
-  const Cs = As.map((_, i) => As[permutes[i]].modPow(gamma, p))
-  const Gamma = g.modPow(gamma, p)
+  const Us = us.map((u) => G.multiply(u))
+  const Ws = ws.map((w) => G.multiply(mod(gamma * w)))
+  const As = as.map((a) => G.multiply(a))
+  const Cs = As.map((_, i) => As[permutes[i]].multiply(gamma))
+  const Gamma = G.multiply(gamma)
 
   // Prover calculates... some things
-  const sum = sum_bigs(
-    ws.map((w, i) => w.multiply(reencrypts[permutes[i]])),
-    q,
-  )
+  const sum = sum_bigints(ws.map((w, i) => w * reencrypts[permutes[i]]))
 
-  const product1 = product_bigs(
-    inputs.map(({ c1 }, i) => c1.modPow(ws[permutation_inverse[i]].subtract(us[i]).mod(q), p)),
-    p,
-  )
-  const Lambda1 = g.modPow(tau_0.add(sum), p).multiply(product1).mod(p)
+  const product1 = sum_points(inputs.map(({ c1 }, i) => c1.multiply(mod(ws[permutation_inverse[i]] - us[i]))))
+  const Lambda1 = G.multiply(mod(tau_0 + sum)).add(product1)
 
-  // The exponent may be negative, so we'll mod it first, but c2 may not be in the Q subgroup,
-  // so we mod the exponent by p - 1, which is safe via Fermat's Little Theorem.
-  const product2 = product_bigs(
-    inputs.map(({ c2 }, i) => c2.modPow(ws[permutation_inverse[i]].subtract(us[i]).mod(p.subtract(big(1))), p)),
-    p,
-  )
-  const Lambda2 = h.modPow(tau_0.add(sum), p).multiply(product2).mod(p)
+  const product2 = sum_points(inputs.map(({ c2 }, i) => c2.multiply(mod(ws[permutation_inverse[i]] - us[i]))))
+  const Lambda2 = h.multiply(mod(tau_0 + sum)).add(product2)
 
   // Replace Verifier's rho randoms with deterministic PRNG
   // using all the public values calculated so far
-  const rhos = await prng.rhos(As, Cs, Us, Ws, Gamma, Lambda1, Lambda2, q)
+  const rhos = await prng.rhos(As, Cs, Us, Ws, Gamma, Lambda1, Lambda2)
 
-  const bs = rhos.map((rho, i) => rho.subtract(us[i]).mod(p.subtract(big(1))))
-  const ds = inputs.map((_, i) => gamma.multiply(bs[permutes[i]]))
-  const Ds = ds.map((d) => g.modPow(d, p))
+  const bs = rhos.map((rho, i) => mod(rho - us[i]))
+  const ds = inputs.map((_, i) => mod(gamma * bs[permutes[i]]))
+  const Ds = ds.map((d) => G.multiply(d))
 
   // Challenger sends another deterministic PRNG value
-  const lambda = await prng.lambda(Ds, q)
+  const lambda = await prng.lambda(Ds)
 
-  const rs = as.map((a, i) => a.add(lambda.multiply(bs[i])))
-  const ss = rs.map((_, i) => gamma.multiply(rs[permutes[i]]).mod(q))
-  const sigmas = ws.map((sigma, i) => sigma.add(bs[permutes[i]]))
+  const rs = as.map((a, i) => mod(a + lambda * bs[i]))
+  const ss = rs.map((_, i) => mod(gamma * rs[permutes[i]]))
+  const sigmas = ws.map((sigma, i) => mod(sigma + bs[permutes[i]]))
 
-  const tau = sum_bigs(
-    bs.map((b, i) => b.multiply(reencrypts[i])),
-    q,
-  )
-    .subtract(tau_0)
-    .mod(q)
+  const tau = mod(sum_bigints(bs.map((b, i) => b * reencrypts[i])) - tau_0)
 
-  const simple_shuffle_proof = await generate_simple_shuffle_proof({ g, p, q }, rs, ss, gamma)
+  const simple_shuffle_proof = await generate_simple_shuffle_proof(rs, ss, gamma)
 
   return {
     As,
@@ -129,7 +106,7 @@ export async function generate_shuffle_proof(
     Lambda2,
     Us,
     Ws,
-    parameters: { g, h, p, q },
+    parameters: { h },
     sigmas,
     simple_shuffle_proof,
     tau,
@@ -143,69 +120,50 @@ export async function verify_shuffle_proof(
   { debug } = { debug: false },
 ): Promise<boolean> {
   const log = debug ? console.log : () => {}
-  const { g, h, p, q } = parameters
+  const { h } = parameters
 
   // Recalculate Deterministic PRNG values
-  const rhos = await prng.rhos(As, Cs, Us, Ws, Gamma, Lambda1, Lambda2, q)
+  const rhos = await prng.rhos(As, Cs, Us, Ws, Gamma, Lambda1, Lambda2)
   log(`rhos = ${rhos.join(', ')}`)
-  const lambda = await prng.lambda(Ds, q)
+  const lambda = await prng.lambda(Ds)
   log(`lambda = ${lambda}`)
 
-  const Bs = rhos.map((rho, i) => g.modPow(rho, p).multiply(Us[i].modInverse(p)).mod(p))
+  const Bs = rhos.map((rho, i) => G.multiplyUnsafe(rho).subtract(Us[i]))
 
-  const Rs = As.map((A, i) => A.multiply(Bs[i].modPow(lambda, p)).mod(p))
-  const Ss = Cs.map((C, i) => C.multiply(Ds[i].modPow(lambda, p)).mod(p))
+  const Rs = As.map((A, i) => A.add(Bs[i].multiplyUnsafe(lambda)))
+  const Ss = Cs.map((C, i) => C.add(Ds[i].multiplyUnsafe(lambda)))
 
   log(`Rs = ${Rs.join(', ')}`)
   log(`Ss = ${Ss.join(', ')}`)
 
   // Check all the simple_shuffle_proof values match
-  if (!p.equals(simple_shuffle_proof.parameters.p)) return false
-  if (!q.equals(simple_shuffle_proof.parameters.q)) return false
-  if (!g.equals(simple_shuffle_proof.parameters.g)) return false
   if (!Gamma.equals(simple_shuffle_proof.Gamma)) return false
   if (Rs.length !== simple_shuffle_proof.Xs.length) return false
   if (Ss.length !== simple_shuffle_proof.Ys.length) return false
-  if (!Rs.every((r, i) => r.equals(simple_shuffle_proof.Xs[i]))) return false
+  if (!Rs.every((R, i) => R.equals(simple_shuffle_proof.Xs[i]))) return false
   if (!Ss.every((S, i) => S.equals(simple_shuffle_proof.Ys[i]))) return false
   log('all simple_shuffle_proof values match')
 
-  const is_simple_shuffle_proof_valid = await verify_simple_shuffle_proof(simple_shuffle_proof)
-  if (!is_simple_shuffle_proof_valid) return false
+  if (!(await verify_simple_shuffle_proof(simple_shuffle_proof))) return false
   log('simple_shuffle_proof is valid')
 
   const Phi1 = outputs.reduce(
     (accum, output, i) =>
-      accum
-        .multiply(output.c1.modPow(sigmas[i], p))
-        .mod(p)
-        .multiply(inputs[i].c1.modPow(big(0).subtract(rhos[i]).mod(q), p))
-        .mod(p),
-    big(1),
+      accum.add(output.c1.multiplyUnsafe(sigmas[i])).add(inputs[i].c1.multiplyUnsafe(mod(-rhos[i]))),
+    RP.ZERO,
   )
 
   const Phi2 = outputs.reduce(
     (accum, output, i) =>
-      accum
-        .multiply(output.c2.modPow(sigmas[i], p))
-        .mod(p)
-        .multiply(
-          inputs[i].c2.modPow(
-            big(0)
-              .subtract(rhos[i])
-              .mod(p.subtract(big(1))),
-            p,
-          ),
-        )
-        .mod(p),
-    big(1),
+      accum.add(output.c2.multiplyUnsafe(sigmas[i])).add(inputs[i].c2.multiplyUnsafe(mod(-rhos[i]))),
+    RP.ZERO,
   )
 
   // Sigma equality checks
   if (
     !sigmas.every((sigma, i) => {
-      const left = Gamma.modPow(sigma, p)
-      const right = Ws[i].multiply(Ds[i]).mod(p)
+      const left = Gamma.multiplyUnsafe(sigma)
+      const right = Ws[i].add(Ds[i])
       log(`Sigma ${i}: ${left} ==? ${right}`)
       return left.equals(right)
     })
@@ -215,14 +173,14 @@ export async function verify_shuffle_proof(
 
   // Lambda equality checks
   {
-    const left = Lambda1.multiply(g.modPow(tau, p)).mod(p)
+    const left = Lambda1.add(G.multiplyUnsafe(tau))
     const right = Phi1
     log(`Lambda1: ${left} ==? ${right}`)
     if (!left.equals(right)) return false
   }
 
   {
-    const left = Lambda2.multiply(h.modPow(tau, p)).mod(p)
+    const left = Lambda2.add(h.multiplyUnsafe(tau))
     const right = Phi2
     log(`Lambda2: ${left} ==? ${right}`)
     if (!left.equals(right)) return false
@@ -240,76 +198,60 @@ export async function verify_shuffle_proof(
 // X[i] = g.modPow(x[i], p)
 // Y[i] = g.modPow(y[i], p)
 // Y[i] = X[pi[i]]^gamma
-async function generate_simple_shuffle_proof(
-  { g, p, q }: Parameters,
-  xs: Big[],
-  ys: Big[],
-  gamma: Big,
-): Promise<Simple_Shuffle_Proof> {
+async function generate_simple_shuffle_proof(xs: bigint[], ys: bigint[], gamma: bigint): Promise<Simple_Shuffle_Proof> {
   const k = xs.length
 
-  const Xs = xs.map((x) => g.modPow(x, p))
-  const Ys = ys.map((y) => g.modPow(y, p))
+  const Xs = xs.map((x) => G.multiply(x))
+  const Ys = ys.map((y) => G.multiply(y))
 
   // SSA. 1. V generates a random t ∈ Zq and gives t to P as a challenge.
-  const t = await prng.t(p, q, g, Xs, Ys)
+  const t = await prng.t(Xs, Ys)
 
   // console.log(`t = ${t}`)
 
   // SSA. 2.
-  const x_hats = xs.map((x) => x.subtract(t).mod(q))
-  const y_hats = ys.map((y) => y.subtract(gamma.multiply(t)).mod(q))
+  const x_hats = xs.map((x) => mod(x - t))
+  const y_hats = ys.map((y) => mod(y - mod(gamma * t)))
 
   // console.log(`x_hats = ${x_hats}, y_hats = ${y_hats}`)
   // console.log(
-  //   `X_hats = ${x_hats.map((x_hat) => g.modPow(x_hat, p))}, Y_hats = ${y_hats.map((y_hat) =>
-  //     g.modPow(y_hat, p),
+  //   `X_hats = ${x_hats.map((x_hat) => G.multiply(x_hat))}, Y_hats = ${y_hats.map((y_hat) =>
+  //     G.multiply(y_hat),
   //   )}`,
   // )
 
-  const thetas = new Array(2 * k - 1).fill('').map(() => pick_random_integer(q))
+  const thetas = new Array(2 * k - 1).fill('').map(random_bigint)
 
   // console.log(`thetas = ${thetas}`)
 
   const Thetas = thetas.map((theta, i) => {
-    if (i === 0) return g.modPow(big(0).subtract(theta.multiply(y_hats[0])).mod(q), p)
+    if (i === 0) return G.multiply(mod(-theta * y_hats[0]))
     if (i < k) {
-      return g.modPow(thetas[i - 1].multiply(x_hats[i]).subtract(theta.multiply(y_hats[i])).mod(q), p)
+      return G.multiply(mod(thetas[i - 1] * x_hats[i] - theta * y_hats[i]))
     }
     if (i < 2 * k - 1) {
-      return g.modPow(
-        gamma
-          .multiply(thetas[i - 1])
-          .subtract(theta)
-          .mod(q),
-        p,
-      )
+      return G.multiply(mod(gamma * thetas[i - 1] - theta))
     }
     throw new Error('count mismatch')
   })
-  Thetas.push(g.modPow(gamma.multiply(thetas[2 * k - 2]).mod(q), p))
+  Thetas.push(G.multiply(mod(gamma * thetas[2 * k - 2])))
 
   // SSA. 3. V generates a random challenge c ∈ Zq and reveals it to P
-  const c = await prng.c(Thetas, q)
+  const c = await prng.c(Thetas)
 
   // console.log(`c = ${c}`)
 
   // SSA. 4. P computes 2k − 1 elements, α1, . . . , α2k−1, of Zq
-  let product = big(1) // intermediate value
+  let product = BigInt(1) // intermediate value
   const alphas = thetas.map((theta, i) => {
-    let multiplicand: Big
+    let multiplicand: bigint
     if (i < k) {
-      product = product.multiply(x_hats[i]).multiply(y_hats[i].modInverse(q)).mod(q)
+      product = mod(product * x_hats[i] * invert(y_hats[i]))
       multiplicand = product
     } else {
-      multiplicand = gamma.modPow(
-        big(i)
-          .add(big(1).subtract(big(2).multiply(big(k))))
-          .mod(q.subtract(big(1))),
-        q,
-      )
+      multiplicand = modPow(gamma, mod(BigInt(i - 2 * k)), CURVE.l)
     }
-    return theta.add(c.multiply(multiplicand)).mod(q)
+    return mod(theta + c * multiplicand)
   })
 
   // 2nd way to calculate alphas
@@ -329,47 +271,42 @@ async function generate_simple_shuffle_proof(
   // }
 
   return {
-    Gamma: g.modPow(gamma, p),
+    Gamma: G.multiply(gamma),
     Thetas,
     Xs,
     Ys,
     alphas,
-    parameters: { g, p, q },
   }
 }
 
-async function verify_simple_shuffle_proof({ Gamma, Thetas, Xs, Ys, alphas, parameters }: Simple_Shuffle_Proof) {
+async function verify_simple_shuffle_proof({ Gamma, Thetas, Xs, Ys, alphas }: Simple_Shuffle_Proof) {
   // console.log('Beginning verify_simple_shuffle_proof...')
-  const { g, p, q } = parameters
 
   const k = Xs.length
 
   // SSA. 1. V generates a random t ∈ Zq and gives t to P as a challenge.
-  const t = await prng.t(p, q, g, Xs, Ys)
+  const t = await prng.t(Xs, Ys)
 
   // console.log(`t = ${t}`)
 
   // SSA. 3. V generates a random challenge c ∈ Zq and reveals it to P
-  const c = await prng.c(Thetas, q)
+  const c = await prng.c(Thetas)
 
   // console.log(`c = ${c}`)
 
   // SSA. 5. V computes
-  const U = g.modPow(big(0).subtract(t).mod(q), p)
-  const W = Gamma.modPow(big(0).subtract(t).mod(q), p)
+  const U = G.multiplyUnsafe(mod(-t))
+  const W = Gamma.multiplyUnsafe(mod(-t))
 
   // console.log(`U = ${U}, W = ${W}`)
 
-  const X_hats = Xs.map((X) => X.multiply(U).mod(p))
-  const Y_hats = Ys.map((Y) => Y.multiply(W).mod(p))
+  const X_hats = Xs.map((X) => X.add(U))
+  const Y_hats = Ys.map((Y) => Y.add(W))
   // console.log(`X_hats = ${X_hats}, Y_hats = ${Y_hats}`)
 
   // and checks each of the following 2k equations:
   for (let i = 0; i < k; i += 1) {
-    const left = X_hats[i]
-      .modPow(i === 0 ? c : alphas[i - 1], p)
-      .multiply(Y_hats[i].modPow(big(0).subtract(alphas[i]).mod(q), p))
-      .mod(p)
+    const left = X_hats[i].multiplyUnsafe(i === 0 ? c : alphas[i - 1]).add(Y_hats[i].multiplyUnsafe(mod(-alphas[i])))
     const right = Thetas[i]
     // console.log(`left = ${left}, right = ${right}`)
     if (!left.equals(right)) return false
@@ -378,16 +315,7 @@ async function verify_simple_shuffle_proof({ Gamma, Thetas, Xs, Ys, alphas, para
   // console.log('halfway there..')
 
   for (let i = k; i < 2 * k; i += 1) {
-    const left = Gamma.modPow(alphas[i - 1], p)
-      .multiply(
-        g.modPow(
-          big(0)
-            .subtract(i < 2 * k - 1 ? alphas[i] : c)
-            .mod(q),
-          p,
-        ),
-      )
-      .mod(p)
+    const left = Gamma.multiplyUnsafe(alphas[i - 1]).add(G.multiplyUnsafe(mod(i < 2 * k - 1 ? -alphas[i] : -c)))
     const right = Thetas[i]
     // console.log(`left = ${left}, right = ${right}`)
     if (!left.equals(right)) return false
@@ -400,12 +328,9 @@ async function verify_simple_shuffle_proof({ Gamma, Thetas, Xs, Ys, alphas, para
 
 // Fiat-Shamir deterministic PRNG challenge integers
 const prng = {
-  c: (Thetas: Big[], q: Big) => integer_from_seed(Thetas.join(','), q),
-  lambda: (Ds: Big[], q: Big) => integer_from_seed(`${Ds.join(',')}`, q),
-  rhos: (As: Big[], Cs: Big[], Us: Big[], Ws: Big[], Gamma: Big, Lambda1: Big, Lambda2: Big, q: Big) =>
-    Promise.all(
-      As.map((_, i) => integer_from_seed(`${As[i]} ${Cs[i]} ${Us[i]} ${Ws[i]} ${Gamma} ${Lambda1} ${Lambda2}`, q)),
-    ),
-  t: (p: Big, q: Big, g: Big, Xs: Big[], Ys: Big[]) =>
-    integer_from_seed(`${p},${q},${g},${Xs.join(',')},${Ys.join(',')}`, q),
+  c: (Thetas: RP[]) => bigint_from_seed(Thetas.join(',')),
+  lambda: (Ds: RP[]) => bigint_from_seed(Ds.join(',')),
+  rhos: (As: RP[], Cs: RP[], Us: RP[], Ws: RP[], Gamma: RP, Lambda1: RP, Lambda2: RP) =>
+    Promise.all(As.map((_, i) => bigint_from_seed([As[i], Cs[i], Us[i], Ws[i], Gamma, Lambda1, Lambda2].join(',')))),
+  t: (Xs: RP[], Ys: RP[]) => bigint_from_seed(Xs.concat(Ys).join(',')),
 }
