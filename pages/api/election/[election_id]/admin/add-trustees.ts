@@ -8,7 +8,6 @@ import {
   generate_public_coefficients,
   pick_private_coefficients,
 } from 'src/crypto/threshold-keygen'
-import { big } from 'src/crypto/types'
 
 import { firebase, pushover, sendEmail } from '../../../_services'
 import { generateAuthToken } from '../../../invite-voters'
@@ -114,16 +113,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     )
 
   // Generate admin's private coefficients and public commitments
-  const private_coefficients = pick_private_coefficients(trustees.length, safe_prime_bigs)
-  const commitments = generate_public_coefficients(private_coefficients, safe_prime_bigs)
+  const private_coefficients = pick_private_coefficients(trustees.length)
+  const commitments = generate_public_coefficients(private_coefficients)
 
   // Generate admins own keyshare for themselves
   const pairwise_shares_for = {
-    [ADMIN_EMAIL]: evaluate_private_polynomial(
-      1,
-      private_coefficients,
-      mapValues(safe_prime, (v) => big(v)),
-    ).toString(),
+    [ADMIN_EMAIL]: evaluate_private_polynomial(1, private_coefficients).toString(),
   }
   const decrypted_shares_from = { ...pairwise_shares_for }
 
