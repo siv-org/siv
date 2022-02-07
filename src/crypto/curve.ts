@@ -5,7 +5,7 @@ import { CURVE, RistrettoPoint as RP, utils } from '@noble/ed25519'
 
 import { pick_random_bigint } from './pick-random-bigint'
 
-export { RistrettoPoint as RP } from '@noble/ed25519'
+export { RistrettoPoint as RP, CURVE } from '@noble/ed25519'
 
 export const mod = (a: bigint, b = CURVE.l) => utils.mod(a, b)
 export const invert = (a: bigint, b = CURVE.l) => utils.invert(a, b)
@@ -92,5 +92,26 @@ export function deep_RPs_to_strs(o: unknown | unknown[] | Record<string, unknown
     return obj
   }
 
+  return o
+}
+
+/** Recursively converts deep object of hex strings to RPs */
+export function deep_strs_to_RPs(o: unknown | unknown[] | Record<string, unknown>): unknown {
+  if (Array.isArray(o)) {
+    return o.map((v) => {
+      if (typeof v === 'string') return RP.fromHex(v)
+      return deep_strs_to_RPs(v)
+    })
+  }
+
+  if (typeof o === 'object') {
+    if (o === null) return o
+    const obj: Record<string, unknown> = {}
+    Object.entries(o).forEach(([k, v]) => {
+      if (typeof v === 'string') obj[k] = RP.fromHex(v)
+      else obj[k] = deep_strs_to_RPs(v)
+    })
+    return obj
+  }
   return o
 }

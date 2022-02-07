@@ -1,9 +1,9 @@
-import { range } from 'lodash-es'
+import { CURVE, RP, pointToString, stringToPoint } from 'src/crypto/curve'
+import { range } from 'src/utils'
 
 import { moduloLambda } from '../../crypto/lagrange'
 import { combine_partials } from '../../crypto/threshold-keygen'
-import { big } from '../../crypto/types'
-import { StateAndDispatch, getParameters } from '../trustee-state'
+import { StateAndDispatch } from '../trustee-state'
 import { plaintext, randomizer } from './11-PartialDecryptionTest'
 
 export const CombinePartials = ({ state }: StateAndDispatch) => {
@@ -11,25 +11,18 @@ export const CombinePartials = ({ state }: StateAndDispatch) => {
 
   const partials = trustees.map((t) => t.partial_decryption).filter((p) => p)
 
-  if (!parameters || partials.length < parameters.t || !threshold_public_key) {
-    return <></>
-  }
-
-  const big_p = big(parameters.p)
+  if (!parameters || partials.length < parameters.t || !threshold_public_key) return <></>
 
   const indices = range(1, partials.length + 1)
-  const indices_as_bigs = indices.map((index) => [big(index)])
-  const lambdas = indices_as_bigs.map((_, index) => moduloLambda(index, indices_as_bigs, big(parameters.q)))
-  const combined = combine_partials(
-    partials.map((p) => big(p as string)),
-    getParameters(state),
-  ).toString()
-  const combined_inverse = big(combined).modInverse(big_p).toString()
+  const indices_as_bigs = indices.map((index) => [BigInt(index)])
+  const lambdas = indices_as_bigs.map((_, index) => moduloLambda(index, indices_as_bigs, CURVE.l))
+  const combined = combine_partials(partials.map((p) => RP.fromHex(p as string)))
 
   // Repeating encryption code from 11...
-  const encrypted = big(threshold_public_key).modPow(big(randomizer), big_p).multiply(big(plaintext)).mod(big_p)
+  // const encrypted = big(threshold_public_key).modPow(big(randomizer), big_p).multiply(big(plaintext)).mod(big_p)
+  const encrypted = RP.fromHex(threshold_public_key).multiplyUnsafe(randomizer).add(stringToPoint(plaintext))
 
-  const decrypted = big(combined_inverse).multiply(encrypted).mod(big_p)
+  const decrypted = encrypted.subtract(combined)
 
   return (
     <>
@@ -37,7 +30,7 @@ export const CombinePartials = ({ state }: StateAndDispatch) => {
       <p>
         The partials can be combined using{' '}
         <a href="https://en.wikipedia.org/wiki/Lagrange_polynomial" rel="noreferrer" target="_blank">
-          Langrangian Interpolation
+          Lagrangian Interpolation
         </a>
         .
       </p>
@@ -50,31 +43,23 @@ export const CombinePartials = ({ state }: StateAndDispatch) => {
           &nbsp; = c[1]^a
         </code>
       </p>
-      <p>For our function, mod q = {parameters.q}, these Langrangians work out to:</p>
+      <p>For our function, mod l = {CURVE.l}, these Lagrangians work out to:</p>
       <ol>
         {lambdas.map((l, index) => (
-          <li key={index}>{l.toString()}</li>
+          <li key={index}>{l}</li>
         ))}
       </ol>
       <p>
-        So, <i>combined</i> = {partials.map((p, index) => `(${p} ^ ${lambdas[index]})`).join(' * ')} % {parameters.p} ≡{' '}
+        So, <i>Combined</i> = {partials.map((p, index) => `(${p} * ${lambdas[index]})`).join(' + ')} ≡{' '}
         {combined || '...'}
       </p>
-      <p>Then, we can take this combined value and finish the standard ElGamal decryption.</p>
+      <p>Then, we can take this combined value and finish Elliptic Curve ElGamal decryption.</p>
+      <p>decrypted_point = encrypted - combined</p>
       <p>
-        decrypted_message = combined
-        <sup>-1</sup> * encrypted % p
+        {encrypted} - {combined} ≡ {decrypted}
       </p>
-      <p>
-        combined
-        <sup>-1</sup> % p ≡ {combined_inverse}
-      </p>
-      <p>
-        Thus, decrypted_message = {combined_inverse} * {encrypted.toString()} % {parameters.p} ≡ {decrypted.toString()}
-      </p>
-      <p>Which {decrypted.toString() === plaintext ? '✅ matches' : '❌ does not match'} plaintext.</p>
-      {/* <br />
-      <h3>All done. 🎉</h3> */}
+      <p>Which decodes back into the message: {pointToString(decrypted)}</p>
+      <p>Which {pointToString(decrypted) === plaintext ? '✅ matches' : '❌ does not match'} plaintext.</p>
     </>
   )
 }

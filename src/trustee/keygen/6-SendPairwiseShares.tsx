@@ -1,13 +1,12 @@
 import { keyBy, mapValues } from 'lodash-es'
 import { useEffect } from 'react'
+import { CURVE, RP, deep_RPs_to_strs, random_bigint, stringToPoint } from 'src/crypto/curve'
 
 import { api } from '../../api-helper'
 import encrypt from '../../crypto/encrypt'
-import pickRandomInteger from '../../crypto/pick-random-integer'
 import { evaluate_private_polynomial } from '../../crypto/threshold-keygen'
-import { big, bigPubKey, toStrings } from '../../crypto/types'
 import { PrivateBox } from '../PrivateBox'
-import { StateAndDispatch, getParameters } from '../trustee-state'
+import { StateAndDispatch } from '../trustee-state'
 import { YouLabel } from '../YouLabel'
 import { EncryptionNote } from './EncryptionNote'
 
@@ -35,19 +34,16 @@ export const SendPairwiseShares = ({ dispatch, state }: StateAndDispatch) => {
 
     // Calculate pairwise shares
     const pairwise_shares_for = mapValues(trusteesMap, ({ index }) =>
-      evaluate_private_polynomial(
-        index + 1,
-        coeffs.map((c) => big(c)),
-        getParameters(state),
-      ).toString(),
+      evaluate_private_polynomial(index + 1, coeffs.map(BigInt)).toString(),
     )
+    console.log(pairwise_shares_for)
     // Save the share for yourself
     dispatch({ decrypted_shares_from: { [own_email]: pairwise_shares_for[own_email] } })
 
     // Encrypt the pairwise shares for the target recipients eyes only...
 
     // First we pick randomizers for each
-    const pairwise_randomizers_for = mapValues(trusteesMap, () => pickRandomInteger(big(parameters.p)))
+    const pairwise_randomizers_for = mapValues(trusteesMap, random_bigint)
 
     // Then we encrypt
     const encrypted_pairwise_shares_for = trustees.reduce(
@@ -56,11 +52,11 @@ export const SendPairwiseShares = ({ dispatch, state }: StateAndDispatch) => {
           ? memo // Don't encrypt to self
           : {
               ...memo,
-              [email]: toStrings(
+              [email]: deep_RPs_to_strs(
                 encrypt(
-                  bigPubKey({ generator: parameters.g, modulo: parameters.p, recipient: recipient_key as string }),
+                  RP.fromHex(recipient_key!), // eslint-disable-line @typescript-eslint/no-non-null-assertion
                   pairwise_randomizers_for[email],
-                  big(pairwise_shares_for[email]),
+                  stringToPoint(pairwise_shares_for[email]),
                 ),
               ),
             },
@@ -69,7 +65,7 @@ export const SendPairwiseShares = ({ dispatch, state }: StateAndDispatch) => {
 
     dispatch({
       encrypted_pairwise_shares_for,
-      pairwise_randomizers_for: mapValues(pairwise_randomizers_for, (r) => r.toString()),
+      pairwise_randomizers_for: mapValues(pairwise_randomizers_for, String),
       pairwise_shares_for,
     })
 
@@ -81,9 +77,7 @@ export const SendPairwiseShares = ({ dispatch, state }: StateAndDispatch) => {
     })
   }, [coeffs, trustees_w_commitments])
 
-  if (!trustees || !coeffs || trustees_w_commitments !== trustees.length) {
-    return <></>
-  }
+  if (!trustees || !coeffs || trustees_w_commitments !== trustees.length) return <></>
 
   return (
     <>
@@ -106,7 +100,7 @@ export const SendPairwiseShares = ({ dispatch, state }: StateAndDispatch) => {
                   {term_index !== coeffs.length - 1 && ' + '}
                 </span>
               ))}{' '}
-              % {parameters?.q} ≡ {state.pairwise_shares_for ? state.pairwise_shares_for[email] : '[pending...]'}
+              % {CURVE.l} ≡ {state.pairwise_shares_for ? state.pairwise_shares_for[email] : '[pending...]'}
             </li>
           ))}
         </ol>

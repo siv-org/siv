@@ -1,16 +1,17 @@
 import { useEffect } from 'react'
+import { RP } from 'src/crypto/curve'
+import { mapValues } from 'src/utils'
 
 import { api } from '../../api-helper'
 import { generate_key_pair } from '../../crypto/generate-key-pair'
-import { big } from '../../crypto/types'
 import { PrivateBox } from '../PrivateBox'
 import { StateAndDispatch } from '../trustee-state'
 import { YouLabel } from '../YouLabel'
 
 export const MessagingKeys = ({ dispatch, state }: StateAndDispatch) => {
   useEffect(() => {
-    // These effects will run once we've received parameters.p and identified ourselves
-    if (!state.parameters?.p || !state.own_email) return
+    // These effects will run once we've identified ourselves
+    if (!state.own_email) return
 
     // Don't run more than once
     if (state.personal_key_pair) return
@@ -20,14 +21,7 @@ export const MessagingKeys = ({ dispatch, state }: StateAndDispatch) => {
       return alert('Another device has already joined this ceremony using this Observer Token. Refusing to override.')
 
     // Generate your keypair
-    const personal_key_pair_bigs = generate_key_pair(big(state.parameters.p))
-    // Convert personal_key_pair to strings
-    const personal_key_pair = {
-      decryption_key: personal_key_pair_bigs.decryption_key.toString(),
-      public_key: {
-        recipient: personal_key_pair_bigs.public_key.recipient.toString(),
-      },
-    }
+    const personal_key_pair = mapValues(generate_key_pair(), String)
 
     dispatch({ personal_key_pair })
 
@@ -35,20 +29,19 @@ export const MessagingKeys = ({ dispatch, state }: StateAndDispatch) => {
     api(`election/${state.election_id}/trustees/update`, {
       auth: state.auth,
       email: state.own_email,
-      recipient_key: personal_key_pair.public_key.recipient,
+      recipient_key: personal_key_pair.public_key,
     })
-  }, [state.parameters?.p, state.own_email])
+  }, [state.own_email])
 
   if (!state.parameters || !state.trustees) {
     return <></>
   }
 
-  const { g, p } = state.parameters
   const { decryption_key: y, public_key } = state.personal_key_pair || {
     decryption_key: undefined,
     public_key: undefined,
   }
-  const h = public_key?.recipient
+  const h = public_key
 
   return (
     <>
@@ -60,7 +53,7 @@ export const MessagingKeys = ({ dispatch, state }: StateAndDispatch) => {
           Private key <i>y</i> = {y}
         </p>
         <p>
-          Public key <i>h</i> = g ^ y % p = {g} ^ {y} % {p} ≡ {h}.
+          Public key <i>h</i> = G * y = {`${RP.BASE}`} * {y} ≡ {h}.
         </p>
       </PrivateBox>
       <ol>

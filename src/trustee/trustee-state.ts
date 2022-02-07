@@ -1,8 +1,6 @@
 import { merge } from 'lodash-es'
 
 import { ParametersString } from '../../pages/api/election/[election_id]/trustees/latest'
-import { Parameters } from '../crypto/threshold-keygen'
-import { big } from '../crypto/types'
 import { useLocalStorageReducer } from '../vote/useLocalStorage'
 import { diff } from './diff-objects'
 
@@ -44,7 +42,7 @@ export type State = {
   pairwise_shares_for?: Record<string, string>
   parameters?: ParametersString
   partial_decryption?: string
-  personal_key_pair?: { decryption_key: string; public_key: { recipient: string } }
+  personal_key_pair?: { decryption_key: string; public_key: string }
   private_coefficients?: string[]
   private_keyshare?: string
   threshold_public_key?: string
@@ -93,14 +91,3 @@ export const useTrusteeState = ({
   election_id: string
 }) =>
   useLocalStorageReducer(`observer-${election_id}-${auth}-${attempt}`, reducer, { auth, election_id, own_email: '' })
-
-/** Helper function to create Parameter from state.parameters */
-export function getParameters(state: State): Parameters {
-  if (!state.parameters) throw new TypeError('Missing params')
-
-  return {
-    g: big(state.parameters.g),
-    p: big(state.parameters.p),
-    q: big(state.parameters.q),
-  }
-}

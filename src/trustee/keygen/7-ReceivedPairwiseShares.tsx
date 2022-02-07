@@ -1,8 +1,9 @@
 import { sumBy } from 'lodash-es'
 import { useEffect } from 'react'
+import { deep_strs_to_RPs, pointToString } from 'src/crypto/curve'
+import { Cipher } from 'src/crypto/shuffle'
 
 import decrypt from '../../crypto/decrypt'
-import { big, bigCipher, bigPubKey } from '../../crypto/types'
 import { PrivateBox } from '../PrivateBox'
 import { StateAndDispatch } from '../trustee-state'
 
@@ -30,14 +31,11 @@ export const ReceivedPairwiseShares = ({ dispatch, state }: StateAndDispatch) =>
       if (encrypted_share_for_us && !decrypted_shares_from[email]) {
         // Then lets decrypt it
         console.log(`Unlocking cipher from ${email}...`)
-        decrypted_shares_from[email] = decrypt(
-          bigPubKey({
-            generator: parameters.g,
-            modulo: parameters.p,
-            recipient: personal_key_pair.public_key.recipient,
-          }),
-          big(personal_key_pair.decryption_key),
-          bigCipher(JSON.parse(encrypted_share_for_us)),
+        decrypted_shares_from[email] = pointToString(
+          decrypt(
+            BigInt(personal_key_pair.decryption_key),
+            deep_strs_to_RPs(JSON.parse(encrypted_share_for_us)) as Cipher,
+          ),
         )
 
         // Store the decrypted result
@@ -47,9 +45,7 @@ export const ReceivedPairwiseShares = ({ dispatch, state }: StateAndDispatch) =>
   }, [num_encrypteds_broadcast])
 
   // Only show after calculated own pairwise shares
-  if (!shares) {
-    return <></>
-  }
+  if (!shares) return <></>
 
   return (
     <>

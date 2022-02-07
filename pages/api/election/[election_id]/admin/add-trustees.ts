@@ -108,7 +108,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Generate admin's private coefficients and public commitments
   const private_coefficients = pick_private_coefficients(trustees.length)
-  const commitments = generate_public_coefficients(private_coefficients)
+  const commitments = generate_public_coefficients(private_coefficients).map(String)
 
   // Generate admins own keyshare for themselves
   const pairwise_shares_for = {
@@ -125,11 +125,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         {
           commitments,
           decrypted_shares_from,
-          decryption_key: pair.decryption_key.toString(),
+          decryption_key: String(pair.decryption_key),
           keygen_attempt: 1,
           pairwise_shares_for,
-          private_coefficients: private_coefficients.map((c) => c.toString()),
-          recipient_key: pair.public_key.toString(),
+          private_coefficients: private_coefficients.map(String),
+          recipient_key: String(pair.public_key),
         },
         { merge: true },
       )

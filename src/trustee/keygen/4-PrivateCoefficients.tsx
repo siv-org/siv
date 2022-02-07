@@ -1,8 +1,9 @@
+import { CURVE } from '@noble/ed25519'
 import { useEffect } from 'react'
 
 import { pick_private_coefficients } from '../../crypto/threshold-keygen'
 import { PrivateBox } from '../PrivateBox'
-import { StateAndDispatch, getParameters } from '../trustee-state'
+import { StateAndDispatch } from '../trustee-state'
 
 export const PrivateCoefficients = ({ dispatch, state }: StateAndDispatch) => {
   const trustees_w_recipient_keys = state.trustees?.filter((t) => t.recipient_key)
@@ -18,16 +19,12 @@ export const PrivateCoefficients = ({ dispatch, state }: StateAndDispatch) => {
     if (state.private_coefficients) return
 
     // Generate your private polynomial
-    const private_coefficients = pick_private_coefficients(state.parameters.t, getParameters(state)).map((coeff) =>
-      coeff.toString(),
-    )
+    const private_coefficients = pick_private_coefficients(state.parameters.t).map(String)
 
     dispatch({ private_coefficients })
   }, [state.trustees, trustees_w_recipient_keys?.length])
 
-  if (!state.trustees || !state.parameters || trustees_w_recipient_keys?.length !== state.trustees.length) {
-    return <></>
-  }
+  if (!state.trustees || !state.parameters || trustees_w_recipient_keys?.length !== state.trustees.length) return <></>
 
   const coeffs = state.private_coefficients
 
@@ -35,8 +32,8 @@ export const PrivateCoefficients = ({ dispatch, state }: StateAndDispatch) => {
     <>
       <h3>IV. Private Coefficients:</h3>
       <p>
-        Each party picks their own private coefficients in ℤ<sub>q</sub>, f(x) = a<sub>0</sub> + a<sub>1</sub>x + ... +
-        a<sub>t-1</sub>x<sup>t-1</sup> % q.
+        Each party picks their own private coefficients in ℤ<sub>l</sub>, f(x) = a<sub>0</sub> + a<sub>1</sub>x + ... +
+        a<sub>t-1</sub>x<sup>t-1</sup> % l.
       </p>
       <PrivateBox>
         <p>Using Crypto.getRandomValues() on your device to generate your private polynomial...</p>
@@ -52,7 +49,7 @@ export const PrivateCoefficients = ({ dispatch, state }: StateAndDispatch) => {
                   {index !== coeffs.length - 1 && ' + '}
                 </span>
               ))}{' '}
-              % {state.parameters.q}
+              % {CURVE.l}
             </p>
           )}
         </>
