@@ -72,3 +72,25 @@ export const sum_bigints = (bigs: bigint[], modulo = CURVE.l): bigint =>
 
 /** Sum up an array of RistrettoPoints */
 export const sum_points = (points: RP[]): RP => points.reduce((memo, term) => memo.add(term))
+
+/** Recursively converts deep object of RPs to hex */
+export function deep_RPs_to_strs(o: unknown | unknown[] | Record<string, unknown>): unknown {
+  if (Array.isArray(o)) {
+    return o.map((v) => {
+      if (v instanceof RP) return `${v}`
+      return deep_RPs_to_strs(v)
+    })
+  }
+
+  if (typeof o === 'object') {
+    if (o === null) return o
+    const obj: Record<string, unknown> = {}
+    Object.entries(o).forEach(([k, v]) => {
+      if (v instanceof RP) obj[k] = `${v}`
+      else obj[k] = deep_RPs_to_strs(v)
+    })
+    return obj
+  }
+
+  return o
+}

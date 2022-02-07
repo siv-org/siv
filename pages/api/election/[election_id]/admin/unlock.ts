@@ -2,7 +2,7 @@ import bluebird from 'bluebird'
 import { mapValues } from 'lodash-es'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getStatus } from 'src/admin/Voters/Signature'
-import { RP, pointToString } from 'src/crypto/curve'
+import { RP, deep_RPs_to_strs, pointToString } from 'src/crypto/curve'
 import decrypt from 'src/crypto/decrypt'
 import { shuffle } from 'src/crypto/shuffle'
 import { Shuffled } from 'src/trustee/trustee-state'
@@ -43,7 +43,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     t: number
     threshold_public_key: string
   }
-  const public_key = RP.fromHex(threshold_public_key)
 
   type Cipher = { encrypted: string; unlock: string }
 
@@ -85,15 +84,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Then admin does a SIV shuffle (permute + re-encryption) for each item's list
   const shuffled = (await bluebird.props(
-    mapValues(split, async (list) => {
-      const shuffled = await shuffle(
-        public_key,
-        list.map((row) => mapValues(row, RP.fromHex)),
-      )
-      const shuffled_strs = { ...shuffled, shuffled: shuffled.shuffled.map((c) => mapValues(c, (rp) => rp.toHex())) }
-
-      return shuffled_strs
-    }),
+    mapValues(split, async (list) =>
+      deep_RPs_to_strs(
+        await shuffle(
+          RP.fromHex(threshold_public_key),
+          list.map((row) => mapValues(row, RP.fromHex)),
+        ),
+      ),
+    ),
   )) as Shuffled
 
   // Store admins shuffled lists

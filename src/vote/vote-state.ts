@@ -68,7 +68,7 @@ function reducer(prev: State, payload: Map) {
     const cipher = encrypt(RP.fromHex(prev.public_key!), random, RP.fromHex(encoded[key]))
 
     // Store the encrypted cipher as strings
-    return mapValues(cipher, (c) => c.toString())
+    return mapValues(cipher, String)
   })
 
   return merge(newState, { encoded, encrypted, randomizer })
