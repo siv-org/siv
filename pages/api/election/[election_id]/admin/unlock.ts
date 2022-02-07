@@ -1,13 +1,12 @@
 import bluebird from 'bluebird'
 import { mapValues } from 'lodash-es'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { getStatus } from 'src/admin/Voters/Signature'
+import { RP, pointToString } from 'src/crypto/curve'
+import decrypt from 'src/crypto/decrypt'
+import { shuffle } from 'src/crypto/shuffle'
+import { Shuffled } from 'src/trustee/trustee-state'
 
-import { getStatus } from '../../../../../src/admin/Voters/Signature'
-import decrypt from '../../../../../src/crypto/decrypt'
-import { decode } from '../../../../../src/crypto/encode'
-import { shuffle } from '../../../../../src/crypto/shuffle'
-import { big, bigCipher, bigPubKey, bigs_to_strs } from '../../../../../src/crypto/types'
-import { Shuffled } from '../../../../../src/trustee/trustee-state'
 import { firebase, pushover } from '../../../_services'
 import { pusher } from '../../../pusher'
 import { checkJwtOwnsElection } from '../../../validate-admin-jwt'
@@ -39,14 +38,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Is election_id in DB?
   if (!(await election).exists) return res.status(400).json({ error: `Unknown Election ID: '${election_id}'` })
 
-  const { esignature_requested, g, p, t, threshold_public_key } = { ...(await election).data() } as {
+  const { esignature_requested, t, threshold_public_key } = { ...(await election).data() } as {
     esignature_requested: boolean
-    g: string
-    p: string
     t: number
     threshold_public_key: string
   }
-  const public_key = bigPubKey({ generator: g, modulo: p, recipient: threshold_public_key })
+  const public_key = RP.fromHex(threshold_public_key)
 
   type Cipher = { encrypted: string; unlock: string }
 
@@ -88,7 +85,15 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Then admin does a SIV shuffle (permute + re-encryption) for each item's list
   const shuffled = (await bluebird.props(
-    mapValues(split, async (list) => bigs_to_strs(await shuffle(public_key, list.map(bigCipher)))),
+    mapValues(split, async (list) => {
+      const shuffled = await shuffle(
+        public_key,
+        list.map((row) => mapValues(row, RP.fromHex)),
+      )
+      const shuffled_strs = { ...shuffled, shuffled: shuffled.shuffled.map((c) => mapValues(c, (rp) => rp.toHex())) }
+
+      return shuffled_strs
+    }),
   )) as Shuffled
 
   // Store admins shuffled lists
@@ -109,12 +114,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     // Decrypt votes
     const decrypted_and_split = mapValues(shuffled, (list) => {
       return list.shuffled.map((cipher) =>
-        decode(
-          decrypt(public_key, big(decryption_key), {
-            encrypted: big(cipher.encrypted),
-            unlock: big(cipher.unlock),
-          }),
-        ),
+        pointToString(decrypt(BigInt(decryption_key), mapValues(cipher, RP.fromHex))),
       )
     })
 
