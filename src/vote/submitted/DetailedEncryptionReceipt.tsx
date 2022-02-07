@@ -1,4 +1,3 @@
-import { map } from 'lodash-es'
 import { useReducer } from 'react'
 
 import { Paper } from '../../protocol/Paper'
@@ -22,7 +21,7 @@ Encryption Formula
   lock = (generator ^ randomizer) % modulo
 
 Public Key
-  ${map(state.public_key, (v, k) => `${k}: ${v}`).join('\n  ')}
+  ${state.public_key}
 
 ---------
 
