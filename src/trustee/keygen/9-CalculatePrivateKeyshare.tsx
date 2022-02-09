@@ -44,7 +44,7 @@ export const CalculatePrivateKeyshare = ({ dispatch, state }: StateAndDispatch) 
           {Object.keys(decrypted_shares_from)
             .map((email) => decrypted_shares_from[email])
             .join(' + ')}{' '}
-          % {CURVE.l} ≡ {private_keyshare}
+          % {`${CURVE.l}`} ≡ {private_keyshare}
         </p>
       </PrivateBox>
     </>

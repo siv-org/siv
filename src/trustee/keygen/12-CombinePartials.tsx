@@ -43,20 +43,20 @@ export const CombinePartials = ({ state }: StateAndDispatch) => {
           &nbsp; = c[1]^a
         </code>
       </p>
-      <p>For our function, mod l = {CURVE.l}, these Lagrangians work out to:</p>
+      <p>For our function, mod l = {`${CURVE.l}`}, these Lagrangians work out to:</p>
       <ol>
         {lambdas.map((l, index) => (
-          <li key={index}>{l}</li>
+          <li key={index}>{`${l}`}</li>
         ))}
       </ol>
       <p>
         So, <i>Combined</i> = {partials.map((p, index) => `(${p} * ${lambdas[index]})`).join(' + ')} ≡{' '}
-        {combined || '...'}
+        {`${combined}` || '...'}
       </p>
       <p>Then, we can take this combined value and finish Elliptic Curve ElGamal decryption.</p>
       <p>decrypted_point = encrypted - combined</p>
       <p>
-        {encrypted} - {combined} ≡ {decrypted}
+        {`${encrypted}`} - {`${combined}`} ≡ {`${decrypted}`}
       </p>
       <p>Which decodes back into the message: {pointToString(decrypted)}</p>
       <p>Which {pointToString(decrypted) === plaintext ? '✅ matches' : '❌ does not match'} plaintext.</p>

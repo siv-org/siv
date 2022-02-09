@@ -46,15 +46,15 @@ export const PartialDecryptionTest = ({ dispatch, state }: StateAndDispatch) => 
         together to unlock it.
       </p>
       <p>
-        We&apos;ll encrypt the message `{plaintext}` using `{randomizer}` as the randomizer.
+        We&apos;ll encrypt the message `{plaintext}` using `{`${randomizer}`}` as the randomizer.
       </p>
       <EncryptionNote />
       <ul>
         <li>
-          Encrypted = {plaintext} * ({threshold_public_key} * {randomizer}) ≡ {encrypted}
+          Encrypted = {plaintext} * ({threshold_public_key} * {randomizer}) ≡ {`${encrypted}`}
         </li>
         <li>
-          Unlock = {RP.BASE} * {randomizer} ≡ {unlock}
+          Unlock = {`${RP.BASE}`} * {randomizer} ≡ {`${unlock}`}
         </li>
       </ul>
       <p>
@@ -64,7 +64,7 @@ export const PartialDecryptionTest = ({ dispatch, state }: StateAndDispatch) => 
       </p>
       <PrivateBox>
         <p>
-          Partial = {unlock.toString()} * {private_keyshare} ≡ {partial || '[pending...]'}
+          Partial = {`${unlock}`} * {private_keyshare} ≡ {partial || '[pending...]'}
         </p>
       </PrivateBox>
       <ul>
