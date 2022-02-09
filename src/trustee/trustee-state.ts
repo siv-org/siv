@@ -1,4 +1,5 @@
 import { merge } from 'lodash-es'
+import { stringifyShuffle } from 'src/crypto/stringify-shuffle'
 
 import { ParametersString } from '../../pages/api/election/[election_id]/trustees/latest'
 import { useLocalStorageReducer } from '../vote/useLocalStorage'
@@ -6,7 +7,7 @@ import { diff } from './diff-objects'
 
 // Define our types
 type Cipher = { encrypted: string; unlock: string }
-export type Shuffled = Record<string, { proof: unknown; shuffled: Cipher[] }>
+export type Shuffled = Record<string, ReturnType<typeof stringifyShuffle>>
 export type Partial = {
   partial: string
   proof: {

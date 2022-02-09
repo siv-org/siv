@@ -3,11 +3,12 @@ import { LoadingOutlined } from '@ant-design/icons'
 import bluebird from 'bluebird'
 import { mapValues } from 'lodash-es'
 import { Dispatch, Fragment, SetStateAction, useEffect, useReducer, useState } from 'react'
+import { RP } from 'src/crypto/curve'
+import { destringifyShuffle, stringifyShuffle } from 'src/crypto/stringify-shuffle'
 
 import { api } from '../../api-helper'
 import { rename_to_c1_and_2, shuffle } from '../../crypto/shuffle'
-import { Shuffle_Proof, verify_shuffle_proof } from '../../crypto/shuffle-proof'
-import { Cipher_Text, bigCipher, bigPubKey, bigs_to_strs, to_bigs } from '../../crypto/types'
+import { verify_shuffle_proof } from '../../crypto/shuffle-proof'
 import { Shuffled, StateAndDispatch } from '../trustee-state'
 import { YouLabel } from '../YouLabel'
 
@@ -17,7 +18,7 @@ export const VotesToShuffle = ({
   set_final_shuffle_verifies,
   state,
 }: StateAndDispatch & { set_final_shuffle_verifies: Dispatch<SetStateAction<boolean>> }) => {
-  const { own_index, trustees = [], parameters, threshold_public_key } = state
+  const { own_index, trustees = [], threshold_public_key } = state
   const [proofs_shown, set_proofs_shown] = useState<Record<string, boolean>>({})
 
   /* Object to track which proofs have been validated
@@ -79,18 +80,18 @@ export const VotesToShuffle = ({
         // except for admin, who provides the original split list.
         const inputs = index > 0 ? trustees[index - 1].shuffled![column].shuffled : trustees[0].preshuffled![column]
 
+        const { proof, shuffled: shuffledCol } = destringifyShuffle(shuffled[column])
+
         verify_shuffle_proof(
-          rename_to_c1_and_2(to_bigs(inputs) as Cipher_Text[]),
-          rename_to_c1_and_2(to_bigs(shuffled[column].shuffled) as Cipher_Text[]),
-          to_bigs(shuffled[column].proof) as Shuffle_Proof,
+          rename_to_c1_and_2(inputs.map((c) => mapValues(c, RP.fromHex))),
+          rename_to_c1_and_2(shuffledCol),
+          proof,
         ).then((result) => {
           set_validated_proofs({ column, email, result, type: 'UPDATE' })
         })
       })
     })
   }, [num_shuffled_from_trustees])
-
-  const { g, p } = parameters!
 
   const prev_email = trustees[own_index - 1]?.email || ''
   const prev_trustees_shuffled = trustees[own_index - 1]?.shuffled || {}
@@ -100,13 +101,16 @@ export const VotesToShuffle = ({
 
   async function shuffleFromPrevious() {
     console.log(`Prev shuffled: ${num_prev_shuffled}, We shuffled: ${num_we_shuffled}. Shuffling...`)
-    // Get the election's public key
-    const public_key = bigPubKey({ generator: g, modulo: p, recipient: threshold_public_key! })
 
     // Do a SIV shuffle (permute + re-encryption) for each item's list
     const shuffled = await bluebird.props(
       mapValues(prev_trustees_shuffled, async (list) =>
-        bigs_to_strs(await shuffle(public_key, list.shuffled.map(bigCipher))),
+        stringifyShuffle(
+          await shuffle(
+            RP.fromHex(threshold_public_key!),
+            list.shuffled.map((c) => mapValues(c, RP.fromHex)),
+          ),
+        ),
       ),
     )
 

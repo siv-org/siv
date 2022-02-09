@@ -2,10 +2,10 @@ import bluebird from 'bluebird'
 import { mapValues } from 'lodash-es'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getStatus } from 'src/admin/Voters/Signature'
-import { RP, deep_RPs_to_strs, pointToString } from 'src/crypto/curve'
+import { RP, pointToString } from 'src/crypto/curve'
 import decrypt from 'src/crypto/decrypt'
 import { shuffle } from 'src/crypto/shuffle'
-import { Shuffled } from 'src/trustee/trustee-state'
+import { stringifyShuffle } from 'src/crypto/stringify-shuffle'
 
 import { firebase, pushover } from '../../../_services'
 import { pusher } from '../../../pusher'
@@ -83,16 +83,16 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }, {})
 
   // Then admin does a SIV shuffle (permute + re-encryption) for each item's list
-  const shuffled = (await bluebird.props(
+  const shuffled = await bluebird.props(
     mapValues(split, async (list) =>
-      deep_RPs_to_strs(
+      stringifyShuffle(
         await shuffle(
           RP.fromHex(threshold_public_key),
           list.map((row) => mapValues(row, RP.fromHex)),
         ),
       ),
     ),
-  )) as Shuffled
+  )
 
   // Store admins shuffled lists
   await adminDoc.update({ preshuffled: split, shuffled })

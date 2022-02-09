@@ -85,11 +85,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // If they provided the final partial, admin can combine partials
   if (body.recipient_key || body.encrypted_pairwise_shares_for || body.shuffled || body.partials) {
     // Get admin's private data
-    const admin = { ...(await loadAdmin).data() } as Required<State> & {
-      decryption_key: string
-      recipient_key: string
-    }
-    const { decryption_key, private_coefficients, private_keyshare, recipient_key } = admin
+    const admin = { ...(await loadAdmin).data() } as Required<State> & { decryption_key: string }
+    const { decryption_key, private_coefficients, private_keyshare } = admin
 
     // Get election parameters
     const parameters = { ...election.data() }
