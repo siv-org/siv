@@ -1,9 +1,7 @@
 import { CURVE } from '@noble/ed25519'
-import { Crypto } from '@peculiar/webcrypto'
 
 import { mod } from './curve'
-
-const crypto = new Crypto()
+import { sha256 } from './sha256'
 
 /**
  * Deterministically generate a pseudorandom bigint less than `max`, from a given `seed` string.
@@ -37,14 +35,6 @@ export async function bigint_from_seed(seed: string, max = CURVE.l): Promise<big
   const result = mod(integer, max)
 
   return result
-}
-
-// Example from https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/digest#Basic_example
-async function sha256(message: string) {
-  const encoder = new TextEncoder()
-  const data = encoder.encode(message)
-  const hash = await crypto.subtle.digest('SHA-256', data)
-  return hash
 }
 
 /**
