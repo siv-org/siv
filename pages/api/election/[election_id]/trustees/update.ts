@@ -5,6 +5,7 @@ import { RP, random_bigint } from 'src/crypto/curve'
 import { keygenDecrypt, keygenEncrypt } from 'src/crypto/keygen-encrypt'
 import { rename_to_c1_and_2 } from 'src/crypto/shuffle'
 import { Shuffle_Proof, verify_shuffle_proof } from 'src/crypto/shuffle-proof'
+import { destringifyShuffle } from 'src/crypto/stringify-shuffle'
 import {
   combine_partials,
   compute_g_to_keyshare,
@@ -202,13 +203,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         }))
 
         // Confirm that every column's shuffle proof is valid
-        const checks = await bluebird.map(Object.keys(shuffled), (column) =>
-          verify_shuffle_proof(
-            rename_to_c1_and_2(to_bigs(trustees[trustee.index - 1].shuffled[column].shuffled) as Cipher_Text[]),
-            rename_to_c1_and_2(to_bigs(shuffled[column].shuffled) as Cipher_Text[]),
-            to_bigs(shuffled[column].proof) as Shuffle_Proof,
-          ),
-        )
+        const checks = await bluebird.map(Object.keys(shuffled), (column) => {
+          const { shuffled: prevShuffle } = destringifyShuffle(trustees[trustee.index - 1].shuffled[column])
+          const { proof, shuffled: currShuffle } = destringifyShuffle(shuffled[column])
+
+          return verify_shuffle_proof(rename_to_c1_and_2(prevShuffle), rename_to_c1_and_2(currShuffle), proof)
+        })
+
         if (!checks.length || !checks.every((x) => x)) {
           console.log("Final shuffle proof didn't fully pass")
         } else {
