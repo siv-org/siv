@@ -6,6 +6,7 @@ import {
   generate_public_coefficients,
   pick_private_coefficients,
 } from 'src/crypto/threshold-keygen'
+import { mapValues } from 'src/utils'
 
 import { firebase, pushover, sendEmail } from '../../../_services'
 import { generateAuthToken } from '../../../invite-voters'
@@ -38,11 +39,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   await election.update({ t: trustees.length })
 
   // Generate admin's keypair
-  const pair = generate_key_pair()
+  const pair = mapValues(generate_key_pair(), String)
 
   // If admin is only trustees, we can skip the keygen ceremony
   if (trustees.length === 1) {
-    const threshold_public_key = pair.public_key.toString()
+    const threshold_public_key = pair.public_key
 
     // Save private key on admin
     promises.push(
@@ -53,7 +54,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           ...trustees[0],
           index: 0,
           partial_decryption: 'stage = 12',
-          private_keyshare: pair.decryption_key.toString(),
+          private_keyshare: pair.decryption_key,
         }),
     )
 
@@ -125,11 +126,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         {
           commitments,
           decrypted_shares_from,
-          decryption_key: String(pair.decryption_key),
+          decryption_key: pair.decryption_key,
           keygen_attempt: 1,
           pairwise_shares_for,
           private_coefficients: private_coefficients.map(String),
-          recipient_key: String(pair.public_key),
+          recipient_key: pair.public_key,
         },
         { merge: true },
       )

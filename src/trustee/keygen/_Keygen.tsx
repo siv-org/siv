@@ -29,8 +29,8 @@ export const Keygen = ({ dispatch, state }: StateAndDispatch): JSX.Element => {
       <PrivateCoefficients {...{ dispatch, state }} />
       <PublicCommitments {...{ dispatch, state }} />
       <SendPairwiseShares {...{ dispatch, state }} />
-      {/*
       <ReceivedPairwiseShares {...{ dispatch, state }} />
+      {/*
       <VerifyShares {...{ dispatch, state }} />
       <CalculatePrivateKeyshare {...{ dispatch, state }} />
       <PublicThresholdKey {...{ dispatch, state }} />

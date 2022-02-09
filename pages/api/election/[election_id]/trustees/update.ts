@@ -1,10 +1,9 @@
 import bluebird from 'bluebird'
 import { sumBy } from 'lodash-es'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { RP, deep_RPs_to_strs, deep_strs_to_RPs, pointToString, random_bigint, stringToPoint } from 'src/crypto/curve'
-import decrypt from 'src/crypto/decrypt'
-import encrypt from 'src/crypto/encrypt'
-import { Cipher, rename_to_c1_and_2 } from 'src/crypto/shuffle'
+import { RP, random_bigint } from 'src/crypto/curve'
+import { keygenDecrypt, keygenEncrypt } from 'src/crypto/keygen-encrypt'
+import { rename_to_c1_and_2 } from 'src/crypto/shuffle'
 import { Shuffle_Proof, verify_shuffle_proof } from 'src/crypto/shuffle-proof'
 import {
   combine_partials,
@@ -106,8 +105,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       const pairwise_randomizer = random_bigint()
 
       // Then we encrypt
-      const encrypted_pairwise_share = deep_RPs_to_strs(
-        encrypt(RP.fromHex(recipient_key), pairwise_randomizer, stringToPoint(pairwise_share)),
+      const encrypted_pairwise_share = JSON.stringify(
+        await keygenEncrypt(RP.fromHex(body.recipient_key), pairwise_randomizer, pairwise_share),
       )
 
       const admin_update = {
@@ -130,14 +129,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     // Logic for new encrypted shares
     if (body.encrypted_pairwise_shares_for) {
-      let encrypted
-      try {
-        encrypted = JSON.parse(body.encrypted_pairwise_shares_for[ADMIN_EMAIL])
-      } catch (e) {
-        return console.error(`Error parsing encrypted share from ${email} for admin`, e)
-      }
       // Decrypt the share for admin
-      const decrypted_share = pointToString(decrypt(BigInt(decryption_key), deep_strs_to_RPs(encrypted) as Cipher))
+      const decrypted_share = await keygenDecrypt(
+        BigInt(decryption_key),
+        body.encrypted_pairwise_shares_for[ADMIN_EMAIL],
+      )
 
       // Verify the received share
       const verification = is_received_share_valid(BigInt(decrypted_share), 1, trustee.commitments.map(RP.fromHex))

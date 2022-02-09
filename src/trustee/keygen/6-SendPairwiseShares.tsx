@@ -4,11 +4,11 @@ import { useEffect } from 'react'
 import { CURVE, RP, random_bigint } from 'src/crypto/curve'
 
 import { api } from '../../api-helper'
+import { keygenEncrypt } from '../../crypto/keygen-encrypt'
 import { evaluate_private_polynomial } from '../../crypto/threshold-keygen'
 import { PrivateBox } from '../PrivateBox'
 import { StateAndDispatch } from '../trustee-state'
 import { YouLabel } from '../YouLabel'
-import { keygenEncrypt } from './keygen-encrypt'
 
 export const SendPairwiseShares = ({ dispatch, state }: StateAndDispatch) => {
   const {
@@ -48,23 +48,24 @@ export const SendPairwiseShares = ({ dispatch, state }: StateAndDispatch) => {
 
     ;(async () => {
       // Then we encrypt
-      const encrypted_pairwise_shares_for = await bluebird.props(
-        trustees.reduce(
-          async (memo, { email, recipient_key, you }) =>
-            you
-              ? memo // Don't encrypt to self
-              : {
-                  ...memo,
-                  [email]: JSON.stringify(
-                    await keygenEncrypt(
+      const encrypted_pairwise_shares_for = mapValues(
+        (await bluebird.props(
+          trustees.reduce(
+            (memo, { email, recipient_key, you }) =>
+              you
+                ? memo // Don't encrypt to self
+                : {
+                    ...memo,
+                    [email]: keygenEncrypt(
                       RP.fromHex(recipient_key!), // eslint-disable-line @typescript-eslint/no-non-null-assertion
                       pairwise_randomizers_for[email],
                       pairwise_shares_for[email],
                     ),
-                  ),
-                },
-          {},
-        ),
+                  },
+            {},
+          ),
+        )) as Record<string, unknown>,
+        JSON.stringify,
       )
 
       dispatch({

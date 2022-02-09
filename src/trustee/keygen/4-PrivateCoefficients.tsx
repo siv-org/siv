@@ -49,7 +49,7 @@ export const PrivateCoefficients = ({ dispatch, state }: StateAndDispatch) => {
                   {index !== coeffs.length - 1 && ' + '}
                 </span>
               ))}{' '}
-              % {CURVE.l}
+              % {`${CURVE.l}`}
             </p>
           )}
         </>

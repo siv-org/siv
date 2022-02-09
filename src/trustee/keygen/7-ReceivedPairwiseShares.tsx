@@ -1,9 +1,7 @@
 import { sumBy } from 'lodash-es'
 import { useEffect } from 'react'
-import { deep_strs_to_RPs, pointToString } from 'src/crypto/curve'
-import { Cipher } from 'src/crypto/shuffle'
 
-import decrypt from '../../crypto/decrypt'
+import { keygenDecrypt } from '../../crypto/keygen-encrypt'
 import { PrivateBox } from '../PrivateBox'
 import { StateAndDispatch } from '../trustee-state'
 
@@ -31,15 +29,15 @@ export const ReceivedPairwiseShares = ({ dispatch, state }: StateAndDispatch) =>
       if (encrypted_share_for_us && !decrypted_shares_from[email]) {
         // Then lets decrypt it
         console.log(`Unlocking cipher from ${email}...`)
-        decrypted_shares_from[email] = pointToString(
-          decrypt(
+        ;(async () => {
+          decrypted_shares_from[email] = await keygenDecrypt(
             BigInt(personal_key_pair.decryption_key),
-            deep_strs_to_RPs(JSON.parse(encrypted_share_for_us)) as Cipher,
-          ),
-        )
+            encrypted_share_for_us,
+          )
 
-        // Store the decrypted result
-        dispatch({ decrypted_shares_from })
+          // Store the decrypted result
+          dispatch({ decrypted_shares_from })
+        })()
       }
     })
   }, [num_encrypteds_broadcast])
