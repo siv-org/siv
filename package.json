@@ -60,7 +60,6 @@
     "@supabase/supabase-js": "^1.21.3",
     "@types/bluebird": "^3.5.33",
     "@types/lodash-es": "^4.17.3",
-    "autoprefixer": "^10.2.4",
     "bigint-mod-arith": "^3.0.2",
     "bluebird": "^3.7.2",
     "codemirror": "^5.62.2",
@@ -75,7 +74,6 @@
     "next": "11",
     "next-transpile-modules": "8",
     "pdf-lib": "^1.16.0",
-    "postcss": "^8.2.6",
     "pusher": "^4.0.2",
     "pusher-js": "^7.0.2",
     "react": "^17",
@@ -88,7 +86,6 @@
     "react-simple-code-editor": "^0.11.0",
     "smoothscroll-polyfill": "^0.4.4",
     "swr": "^0.4.0",
-    "tailwindcss": "^2.0.3",
     "timeago-react": "^3.0.4",
     "timeago.js": "^4.0.2",
     "ua-parser-js": "^0.7.28"
