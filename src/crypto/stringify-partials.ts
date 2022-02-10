@@ -10,7 +10,7 @@ export const stringifyPartial = (proof: AsyncReturnType<typeof generate_partial_
 export const destringifyPartial = (
   proof: ReturnType<typeof stringifyPartial>,
 ): AsyncReturnType<typeof generate_partial_decryption_proof> => ({
-  g_to_secret_r: RP.fromHex(proof.g_to_secret_r),
-  obfuscated_trustee_secret: BigInt(proof.obfuscated_trustee_secret),
-  unlock_to_secret_r: RP.fromHex(proof.unlock_to_secret_r),
+  LR: RP.fromHex(proof.LR),
+  O: BigInt(proof.O),
+  R: RP.fromHex(proof.R),
 })

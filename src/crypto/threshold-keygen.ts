@@ -137,29 +137,29 @@ export function compute_g_to_keyshare(receivers_index_j: number, Broadcasts: RP[
  *
  *  which are both equal to trustees_secret
  *
- *  @param ciphertext_unlock c[0] of the encrypted ciphertext (g ^ randomizer)
+ *  @param cipher_lock c[0] of the encrypted ciphertext (g ^ randomizer)
  *  @param trustees_secret
  *
  *  Based on Chaum-Pedersen ZK Proof of Discrete Logs
  *
  */
-export async function generate_partial_decryption_proof(ciphertext_unlock: RP, trustees_secret: bigint) {
+export async function generate_partial_decryption_proof(cipher_lock: RP, trustees_secret: bigint) {
   // Prover picks a secret random integer less than q
   const secret_r = random_bigint()
 
   const g_to_trustees_keyshare = G.multiply(trustees_secret)
 
   // Calculates Verifier's deterministic random number (Fiat-Shamir technique):
-  const public_r = await bigint_from_seed(`${ciphertext_unlock} ${g_to_trustees_keyshare}`)
+  const public_r = await bigint_from_seed(`${cipher_lock} ${g_to_trustees_keyshare}`)
 
   // Prover creates and sends:
-  const obfuscated_trustee_secret = mod(secret_r + public_r * trustees_secret)
+  const O = mod(secret_r + public_r * trustees_secret)
 
   // Prover also shares commitment of their secret randomizer choice
-  const g_to_secret_r = G.multiply(secret_r)
-  const unlock_to_secret_r = ciphertext_unlock.multiply(secret_r)
+  const R = G.multiply(secret_r)
+  const LR = cipher_lock.multiply(secret_r)
 
-  return { g_to_secret_r, obfuscated_trustee_secret, unlock_to_secret_r }
+  return { LR, O, R }
 }
 
 /** Verifies a non-interactive Zero Knowledge proof of a valid partial decryption
@@ -169,7 +169,7 @@ export async function generate_partial_decryption_proof(ciphertext_unlock: RP, t
  *
  *  which are both equal to trustees_secret
  *
- *  @param ciphertext_unlock c[0] of the encrypted ciphertext (g ^ randomizer)
+ *  @param cipher_lock c[0] of the encrypted ciphertext (g ^ randomizer)
  *  @param g_to_trustees_keyshare - See `compute_g_to_keyshare()` func above
  *  @param partial_decryption - partial decryption to prove is valid
  *  @param {g, p, q} - Safe prime parameters
@@ -178,30 +178,26 @@ export async function generate_partial_decryption_proof(ciphertext_unlock: RP, t
  *
  */
 export async function verify_partial_decryption_proof(
-  ciphertext_unlock: RP,
+  cipher_lock: RP,
   g_to_trustees_keyshare: RP,
   partial_decryption: RP,
-  {
-    g_to_secret_r,
-    obfuscated_trustee_secret,
-    unlock_to_secret_r,
-  }: AsyncReturnType<typeof generate_partial_decryption_proof>,
+  { LR, O, R }: AsyncReturnType<typeof generate_partial_decryption_proof>,
 ): Promise<boolean> {
   // Recalculate deterministic verifier nonce
-  const public_r = await bigint_from_seed(`${ciphertext_unlock} ${g_to_trustees_keyshare}`)
+  const public_r = await bigint_from_seed(`${cipher_lock} ${g_to_trustees_keyshare}`)
 
   // Verifier checks:
-  // g ^ obfuscated_trustee_secret
-  const left_side_1 = G.multiply(obfuscated_trustee_secret)
-  //   == g_to_secret_r * (g ^ trustee_secret ^ public_r)
-  const right_side_1 = g_to_secret_r.add(g_to_trustees_keyshare.multiply(public_r))
+  // g ^ O
+  const left_side_1 = G.multiply(O)
+  //   == R * (g ^ trustee_secret ^ public_r)
+  const right_side_1 = R.add(g_to_trustees_keyshare.multiply(public_r))
   const check1 = left_side_1.equals(right_side_1)
 
   // And Verifier checks:
-  // ciphertext_unlock ^ obfuscated_trustee_secret
-  const left_side_2 = ciphertext_unlock.multiply(obfuscated_trustee_secret)
-  //   == unlock_to_secret_r * (partial_decryption ^ public_r)
-  const right_side_2 = unlock_to_secret_r.add(partial_decryption.multiply(public_r))
+  // cipher_lock ^ O
+  const left_side_2 = cipher_lock.multiply(O)
+  //   == LR * (partial_decryption ^ public_r)
+  const right_side_2 = LR.add(partial_decryption.multiply(public_r))
   const check2 = left_side_2.equals(right_side_2)
 
   return check1 && check2
