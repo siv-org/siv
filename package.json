@@ -94,7 +94,6 @@
     "@types/cookies": "^0.7.6",
     "@types/jsonwebtoken": "^8.5.1",
     "@types/mailgun-js": "^0.22.10",
-    "@types/ms": "^0.7.31",
     "@types/node": "^13.9.5",
     "@types/react": "^16.9.27",
     "@types/react-linkify": "^1.0.0",
