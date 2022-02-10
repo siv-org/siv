@@ -1,5 +1,6 @@
 import { CURVE } from '@noble/ed25519'
 
+import { bytesToHex } from './bytes-to-hex'
 import { mod } from './curve'
 import { sha256 } from './sha256'
 
@@ -28,7 +29,7 @@ export async function bigint_from_seed(seed: string, max = CURVE.l): Promise<big
   }
 
   // 2. Convert bits into a BigInt
-  const hex = [...new Uint8Array(bytes)].reduce((memo, b) => memo + b.toString(16), '0x')
+  const hex = `0x${bytesToHex(bytes)}`
   const integer = BigInt(hex)
 
   // 3. Make sure integer is not greater than max
