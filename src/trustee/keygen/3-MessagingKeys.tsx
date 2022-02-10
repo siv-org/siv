@@ -41,7 +41,7 @@ export const MessagingKeys = ({ dispatch, state }: StateAndDispatch) => {
     decryption_key: undefined,
     public_key: undefined,
   }
-  const h = public_key
+  const H = public_key
 
   return (
     <>
@@ -53,7 +53,7 @@ export const MessagingKeys = ({ dispatch, state }: StateAndDispatch) => {
           Private key <i>y</i> = {y}
         </p>
         <p>
-          Public key <i>h</i> = G * y = {`${RP.BASE}`} * {y} ≡ {h}.
+          Public key <i>H</i> = G * y = {`${RP.BASE}`} * {y} ≡ {H}.
         </p>
       </PrivateBox>
       <ol>

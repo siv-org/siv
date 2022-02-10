@@ -39,7 +39,7 @@ export async function shuffle(
     rename_to_c1_and_2(shuffled),
     reencrypts,
     permutes,
-    { h: pub_key },
+    pub_key,
   )
 
   return { proof, shuffled }

@@ -21,18 +21,14 @@ export type Shuffle_Proof = {
   Cs: RP[]
   Ds: RP[]
   Gamma: RP
+  H: RP // Public_Threshold_Key aka Encryption_Address
   Lambda1: RP
   Lambda2: RP
   Us: RP[]
   Ws: RP[]
-  parameters: Parameters
   sigmas: bigint[]
   simple_shuffle_proof: Simple_Shuffle_Proof
   tau: bigint
-}
-
-export type Parameters = {
-  h: RP // Public_Threshold_Key aka Encryption_Address
 }
 
 export async function generate_shuffle_proof(
@@ -40,7 +36,7 @@ export async function generate_shuffle_proof(
   outputs: SequencesOfPairs,
   reencrypts: bigint[],
   permutes: number[],
-  { h }: Parameters,
+  H: RP,
 ): Promise<Shuffle_Proof> {
   // All 4 input arrays need the same length
   const { length } = inputs
@@ -50,9 +46,7 @@ export async function generate_shuffle_proof(
 
   // We'll use this permutation inverse a few times
   const permutation_inverse: number[] = []
-  permutes.forEach((permute, i) => {
-    permutation_inverse[permute] = i
-  })
+  permutes.forEach((p, i) => (permutation_inverse[p] = i))
 
   // Prover generates lots of secret random values
   const us = inputs.map(random_bigint)
@@ -76,7 +70,7 @@ export async function generate_shuffle_proof(
   const Lambda1 = G.multiply(mod(tau_0 + sum)).add(product1)
 
   const product2 = sum_points(inputs.map(({ c2 }, i) => c2.multiply(mod(ws[permutation_inverse[i]] - us[i]))))
-  const Lambda2 = h.multiply(mod(tau_0 + sum)).add(product2)
+  const Lambda2 = H.multiply(mod(tau_0 + sum)).add(product2)
 
   // Replace Verifier's rho randoms with deterministic PRNG
   // using all the public values calculated so far
@@ -102,11 +96,11 @@ export async function generate_shuffle_proof(
     Cs,
     Ds,
     Gamma,
+    H,
     Lambda1,
     Lambda2,
     Us,
     Ws,
-    parameters: { h },
     sigmas,
     simple_shuffle_proof,
     tau,
@@ -116,11 +110,10 @@ export async function generate_shuffle_proof(
 export async function verify_shuffle_proof(
   inputs: SequencesOfPairs,
   outputs: SequencesOfPairs,
-  { As, Cs, Ds, Gamma, Lambda1, Lambda2, Us, Ws, parameters, sigmas, simple_shuffle_proof, tau }: Shuffle_Proof,
+  { As, Cs, Ds, Gamma, H, Lambda1, Lambda2, Us, Ws, sigmas, simple_shuffle_proof, tau }: Shuffle_Proof,
   { debug } = { debug: false },
 ): Promise<boolean> {
   const log = debug ? console.log : () => {}
-  const { h } = parameters
 
   // Recalculate Deterministic PRNG values
   const rhos = await prng.rhos(As, Cs, Us, Ws, Gamma, Lambda1, Lambda2)
@@ -180,7 +173,7 @@ export async function verify_shuffle_proof(
   }
 
   {
-    const left = Lambda2.add(h.multiplyUnsafe(tau))
+    const left = Lambda2.add(H.multiplyUnsafe(tau))
     const right = Phi2
     log(`Lambda2: ${left} ==? ${right}`)
     if (!left.equals(right)) return false
@@ -190,7 +183,7 @@ export async function verify_shuffle_proof(
 }
 
 // based on http://www.cs.tau.ac.il/~fiat/crypt07/papers/neff.pdf
-// p, q, g - prime group parameters
+// g - prime group generator
 // x - k-length array
 // y - k-length array
 // pi - permutation array

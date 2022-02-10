@@ -172,7 +172,6 @@ export async function generate_partial_decryption_proof(cipher_lock: RP, trustee
  *  @param cipher_lock c[0] of the encrypted ciphertext (g ^ randomizer)
  *  @param g_to_trustees_keyshare - See `compute_g_to_keyshare()` func above
  *  @param partial_decryption - partial decryption to prove is valid
- *  @param {g, p, q} - Safe prime parameters
  *
  *  Based on Chaum-Pedersen ZK Proof of Discrete Logs
  *
