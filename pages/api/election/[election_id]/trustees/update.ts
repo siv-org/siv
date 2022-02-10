@@ -178,11 +178,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       promises.push(pusher.trigger(`status-${election_id}`, 'pub_key', { threshold_public_key }))
 
       // (3) Encrypt test message
-      // (since it's just for testing, we only need the Unlock half to compute the partial)
-      const unlock = RP.BASE.multiply(randomizer)
+      // (since it's just for testing, we only need the Lock half to compute the partial)
+      const Lock = RP.BASE.multiply(randomizer)
 
       // (4) Partially decrypt test message
-      const partial_decryption = partial_decrypt(unlock, BigInt(private_keyshare)).toString()
+      const partial_decryption = partial_decrypt(Lock, BigInt(private_keyshare)).toString()
 
       // Store admin's private_keyshare & partial_decryption
       const admin_update_2 = { partial_decryption, private_keyshare }
@@ -220,10 +220,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             (acc: Record<string, Partial[]>, column) =>
               bluebird.props({
                 ...acc,
-                [column]: bluebird.map((shuffled as Shuffled)[column].shuffled, async ({ unlock }) => ({
-                  partial: partial_decrypt(RP.fromHex(unlock), BigInt(private_keyshare)).toHex(),
+                [column]: bluebird.map((shuffled as Shuffled)[column].shuffled, async ({ lock }) => ({
+                  partial: partial_decrypt(RP.fromHex(lock), BigInt(private_keyshare)).toHex(),
                   proof: stringifyPartial(
-                    await generate_partial_decryption_proof(RP.fromHex(unlock), BigInt(private_keyshare)),
+                    await generate_partial_decryption_proof(RP.fromHex(lock), BigInt(private_keyshare)),
                   ),
                 })),
               }),
@@ -269,7 +269,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             (column) =>
               bluebird.map(partials[column], async ({ partial, proof }: Partial, voteIndex) => {
                 const result = await verify_partial_decryption_proof(
-                  RP.fromHex(last_trustees_shuffled[column].shuffled[voteIndex].unlock),
+                  RP.fromHex(last_trustees_shuffled[column].shuffled[voteIndex].lock),
                   g_to_trustees_keyshare,
                   RP.fromHex(partial),
                   destringifyPartial(proof),

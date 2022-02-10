@@ -1,7 +1,7 @@
 import { RP, random_bigint } from './curve'
 import { Shuffle_Proof, generate_shuffle_proof } from './shuffle-proof'
 
-export type Cipher = { encrypted: RP; unlock: RP }
+export type Cipher = { encrypted: RP; lock: RP }
 
 export type Public_Key = RP
 const G = RP.BASE
@@ -21,16 +21,16 @@ export async function shuffle(
 
   // Now we generate the re-encrypted and shuffled list...
   const shuffled = permuted.map((cipher, index) => {
-    const { encrypted, unlock } = cipher
+    const { encrypted, lock } = cipher
     const reencrypt = reencrypts[permutes[index]]
 
     const encrypted_shift = pub_key.multiply(reencrypt)
     const new_encrypted = encrypted.add(encrypted_shift)
 
-    const unlock_shift = G.multiply(reencrypt)
-    const new_unlock = unlock.add(unlock_shift)
+    const lock_shift = G.multiply(reencrypt)
+    const new_lock = lock.add(lock_shift)
 
-    return { encrypted: new_encrypted, unlock: new_unlock }
+    return { encrypted: new_encrypted, lock: new_lock }
   })
 
   // Finally we generate a ZK proof that it's a valid shuffle
@@ -61,4 +61,4 @@ function permute<T>(input: T[], permutation_array: number[]) {
 }
 
 export const rename_to_c1_and_2 = (inputs: Cipher[]) =>
-  inputs.map(({ encrypted, unlock }) => ({ c1: unlock, c2: encrypted }))
+  inputs.map(({ encrypted, lock }) => ({ c1: lock, c2: encrypted }))

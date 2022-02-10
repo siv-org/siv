@@ -82,7 +82,7 @@ export const VotesToDecrypt = ({
         trustee_validations[column].forEach((_, voteIndex) => {
           const { partial, proof } = partials[column][voteIndex]
           verify_partial_decryption_proof(
-            RP.fromHex(last_trustees_shuffled[column].shuffled[voteIndex].unlock),
+            RP.fromHex(last_trustees_shuffled[column].shuffled[voteIndex].lock),
             g_to_trustees_keyshare,
             RP.fromHex(partial),
             destringifyPartial(proof),
@@ -109,10 +109,10 @@ export const VotesToDecrypt = ({
       (acc: Partials, column) =>
         bluebird.props({
           ...acc,
-          [column]: bluebird.map(last_trustees_shuffled[column].shuffled, async ({ unlock }) => ({
-            partial: partial_decrypt(RP.fromHex(unlock), BigInt(private_keyshare!)).toHex(),
+          [column]: bluebird.map(last_trustees_shuffled[column].shuffled, async ({ lock }) => ({
+            partial: partial_decrypt(RP.fromHex(lock), BigInt(private_keyshare!)).toHex(),
             proof: stringifyPartial(
-              await generate_partial_decryption_proof(RP.fromHex(unlock), BigInt(private_keyshare!)),
+              await generate_partial_decryption_proof(RP.fromHex(lock), BigInt(private_keyshare!)),
             ),
           })),
         }),

@@ -7,7 +7,7 @@ export default function encrypt(public_key: Public_Key, randomizer: bigint, mess
   const encrypted = message.add(shared_secret)
 
   // This unlock factor lets someone with the decryption key reverse the encryption
-  const unlock = G.multiply(randomizer)
+  const lock = G.multiply(randomizer)
 
-  return { encrypted, unlock }
+  return { encrypted, lock }
 }

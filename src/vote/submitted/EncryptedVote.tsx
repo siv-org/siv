@@ -31,7 +31,7 @@ export const EncryptedVote = ({ auth, columns, state }: { auth: string; columns:
           {columns.map((key) => (
             <Fragment key={key}>
               <td>{state.encrypted[key]?.encrypted}</td>
-              <td>{state.encrypted[key]?.unlock}</td>
+              <td>{state.encrypted[key]?.lock}</td>
             </Fragment>
           ))}
         </tr>

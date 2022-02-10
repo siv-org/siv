@@ -1,5 +1,6 @@
 import { mapValues, merge } from 'lodash-es'
 import { RP, random_bigint, stringToPoint } from 'src/crypto/curve'
+import { CipherStrings } from 'src/crypto/stringify-shuffle'
 
 import encrypt from '../crypto/encrypt'
 import { Item } from './storeElectionInfo'
@@ -12,7 +13,7 @@ export type State = {
   ballot_design?: Item[]
   election_title?: string
   encoded: Map
-  encrypted: Record<string, { encrypted: string; unlock: string }>
+  encrypted: Record<string, CipherStrings>
   esignature_requested?: boolean
   plaintext: Map
   public_key?: string

@@ -211,7 +211,7 @@ const ShuffledVotesTable = ({
               return (
                 <Fragment key={key}>
                   <td>{cipher.encrypted}</td>
-                  <td>{cipher.unlock}</td>
+                  <td>{cipher.lock}</td>
                 </Fragment>
               )
             })}

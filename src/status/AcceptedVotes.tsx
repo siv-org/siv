@@ -1,13 +1,13 @@
 import { flatten } from 'lodash-es'
 import { useRouter } from 'next/router'
 import { Fragment, useEffect } from 'react'
+import { CipherStrings } from 'src/crypto/stringify-shuffle'
 import { pusher } from 'src/pusher-helper'
 import useSWR from 'swr'
 
-import { Cipher_Text } from '../crypto/types'
 import { Item } from '../vote/storeElectionInfo'
 
-export type EncryptedVote = { auth: string } & { [index: string]: Cipher_Text }
+export type EncryptedVote = { auth: string } & { [index: string]: CipherStrings }
 const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
 export const AcceptedVotes = ({
@@ -95,7 +95,7 @@ export const AcceptedVotes = ({
                   return (
                     <Fragment key={key}>
                       <td>{vote[key]?.encrypted}</td>
-                      <td>{vote[key]?.unlock}</td>
+                      <td>{vote[key]?.lock}</td>
                     </Fragment>
                   )
                 }
@@ -163,7 +163,7 @@ export const AcceptedVotes = ({
 export const stringifyEncryptedVote = (vote: EncryptedVote) =>
   `{ auth: ${vote.auth}${Object.keys(vote)
     .map((key) =>
-      key === 'auth' ? '' : `, ${key}: { encrypted: '${vote[key].encrypted}', lock: '${vote[key].unlock}' }`,
+      key === 'auth' ? '' : `, ${key}: { encrypted: '${vote[key].encrypted}', lock: '${vote[key].lock}' }`,
     )
     .join('')} }`
 

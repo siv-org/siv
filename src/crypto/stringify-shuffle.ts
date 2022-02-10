@@ -4,6 +4,7 @@ import { AsyncReturnType } from './async-return-type'
 import { RP } from './curve'
 import { shuffle } from './shuffle'
 
+export type CipherStrings = ReturnType<typeof stringifyShuffle>['shuffled'][0]
 export function stringifyShuffle({ proof, shuffled }: AsyncReturnType<typeof shuffle>) {
   const p = proof
   const simple = p.simple_shuffle_proof

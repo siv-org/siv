@@ -5,7 +5,7 @@ import { getStatus } from 'src/admin/Voters/Signature'
 import { RP, pointToString } from 'src/crypto/curve'
 import decrypt from 'src/crypto/decrypt'
 import { shuffle } from 'src/crypto/shuffle'
-import { stringifyShuffle } from 'src/crypto/stringify-shuffle'
+import { CipherStrings, stringifyShuffle } from 'src/crypto/stringify-shuffle'
 
 import { firebase, pushover } from '../../../_services'
 import { pusher } from '../../../pusher'
@@ -44,8 +44,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     threshold_public_key: string
   }
 
-  type Cipher = { encrypted: string; unlock: string }
-
   // If esignature_requested, filter for only approved
   let votes_to_unlock = (await loadVotes).docs
   if (esignature_requested) {
@@ -74,7 +72,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   //   item1: [Cipher, Cipher, Cipher],
   //   item2: [Cipher, Cipher, Cipher],
   // }
-  const split = encrypteds_without_auth_tokens.reduce((acc: Record<string, Cipher[]>, encrypted) => {
+  const split = encrypteds_without_auth_tokens.reduce((acc: Record<string, CipherStrings[]>, encrypted) => {
     Object.keys(encrypted).forEach((key) => {
       if (!acc[key]) acc[key] = []
       acc[key].push(encrypted[key])

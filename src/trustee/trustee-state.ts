@@ -1,13 +1,12 @@
 import { merge } from 'lodash-es'
 import { stringifyPartial } from 'src/crypto/stringify-partials'
-import { stringifyShuffle } from 'src/crypto/stringify-shuffle'
+import { CipherStrings, stringifyShuffle } from 'src/crypto/stringify-shuffle'
 
 import { ParametersString } from '../../pages/api/election/[election_id]/trustees/latest'
 import { useLocalStorageReducer } from '../vote/useLocalStorage'
 import { diff } from './diff-objects'
 
 // Define our types
-type Cipher = { encrypted: string; unlock: string }
 export type Shuffled = Record<string, ReturnType<typeof stringifyShuffle>>
 export type Partial = {
   partial: string
@@ -22,7 +21,7 @@ export type Trustee = {
   name?: string
   partial_decryption?: string
   partials?: Record<string, Partial[]>
-  preshuffled?: Record<string, Cipher[]> // admin only
+  preshuffled?: Record<string, CipherStrings[]> // admin only
   recipient_key?: string
   shuffled?: Shuffled
   verified?: Record<string, boolean>
