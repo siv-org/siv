@@ -153,7 +153,7 @@ export async function generate_partial_decryption_proof(ciphertext_unlock: RP, t
   const public_r = await bigint_from_seed(`${ciphertext_unlock} ${g_to_trustees_keyshare}`)
 
   // Prover creates and sends:
-  const obfuscated_trustee_secret = secret_r + public_r * trustees_secret
+  const obfuscated_trustee_secret = mod(secret_r + public_r * trustees_secret)
 
   // Prover also shares commitment of their secret randomizer choice
   const g_to_secret_r = G.multiply(secret_r)

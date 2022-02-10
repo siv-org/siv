@@ -1,4 +1,5 @@
 import { merge } from 'lodash-es'
+import { stringifyPartial } from 'src/crypto/stringify-partials'
 import { stringifyShuffle } from 'src/crypto/stringify-shuffle'
 
 import { ParametersString } from '../../pages/api/election/[election_id]/trustees/latest'
@@ -10,11 +11,7 @@ type Cipher = { encrypted: string; unlock: string }
 export type Shuffled = Record<string, ReturnType<typeof stringifyShuffle>>
 export type Partial = {
   partial: string
-  proof: {
-    g_to_secret_r: string
-    obfuscated_trustee_secret: string
-    unlock_to_secret_r: string
-  }
+  proof: ReturnType<typeof stringifyPartial>
 }
 
 export type Trustee = {

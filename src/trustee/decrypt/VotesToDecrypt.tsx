@@ -3,6 +3,8 @@ import { LoadingOutlined } from '@ant-design/icons'
 import bluebird from 'bluebird'
 import { mapValues } from 'lodash-es'
 import { Dispatch, Fragment, SetStateAction, useEffect, useReducer, useState } from 'react'
+import { RP } from 'src/crypto/curve'
+import { destringifyPartial, stringifyPartial } from 'src/crypto/stringify-partials'
 
 import { api } from '../../api-helper'
 import {
@@ -11,8 +13,7 @@ import {
   partial_decrypt,
   verify_partial_decryption_proof,
 } from '../../crypto/threshold-keygen'
-import { Big, big, bigs_to_strs, to_bigs } from '../../crypto/types'
-import { Partial, StateAndDispatch, getParameters } from '../trustee-state'
+import { Partial, StateAndDispatch } from '../trustee-state'
 import { YouLabel } from '../YouLabel'
 
 type Partials = Record<string, Partial[]>
@@ -57,7 +58,7 @@ export const VotesToDecrypt = ({
     {},
   )
   const num_partials_from_trustees = trustees.map(({ partials = {} }) => (Object.values(partials)[0] || []).length)
-  const all_broadcasts = trustees.map(({ commitments }) => commitments)
+  const all_Broadcasts = trustees.map(({ commitments }) => commitments.map(RP.fromHex))
   useEffect(() => {
     trustees.forEach(({ email, partials = {} }, index) => {
       const num_partials = num_partials_from_trustees[index]
@@ -74,18 +75,17 @@ export const VotesToDecrypt = ({
       const trustee_validations = mapValues(partials, (column) => column.map(() => null))
       set_validated_proofs({ email, payload: trustee_validations, type: 'RESET' })
 
-      const g_to_trustees_keyshare = compute_g_to_keyshare(index + 1, all_broadcasts, parameters)
+      const g_to_trustees_keyshare = compute_g_to_keyshare(index + 1, all_Broadcasts)
 
       // Begin (async) validating each proof...
       Object.keys(trustee_validations).forEach((column) => {
         trustee_validations[column].forEach((_, voteIndex) => {
           const { partial, proof } = partials[column][voteIndex]
           verify_partial_decryption_proof(
-            big(last_trustees_shuffled[column].shuffled[voteIndex].unlock),
-            big(g_to_trustees_keyshare),
-            big(partial),
-            to_bigs(proof) as { g_to_secret_r: Big; obfuscated_trustee_secret: Big; unlock_to_secret_r: Big },
-            parameters,
+            RP.fromHex(last_trustees_shuffled[column].shuffled[voteIndex].unlock),
+            g_to_trustees_keyshare,
+            RP.fromHex(partial),
+            destringifyPartial(proof),
           ).then((result) => {
             set_validated_proofs({ column, email, result, type: 'UPDATE', voteIndex })
           })
@@ -98,8 +98,6 @@ export const VotesToDecrypt = ({
   const num_last_shuffled = Object.values(last_trustees_shuffled)[0]?.shuffled.length
   const num_we_decrypted = Object.values(trustees[own_index]?.partials || {})[0]?.length || 0
 
-  const parameters = getParameters(state)
-
   async function partialDecryptFinalShuffle() {
     console.log(
       `Last trusteee has shuffled: ${num_last_shuffled}, We decrypted: ${num_we_decrypted}. Beginning partial decryption...`,
@@ -111,12 +109,12 @@ export const VotesToDecrypt = ({
       (acc: Partials, column) =>
         bluebird.props({
           ...acc,
-          [column]: bluebird.map(last_trustees_shuffled[column].shuffled, async ({ unlock }) =>
-            bigs_to_strs({
-              partial: partial_decrypt(big(unlock), big(private_keyshare!), parameters),
-              proof: await generate_partial_decryption_proof(big(unlock), big(private_keyshare!), parameters),
-            }),
-          ),
+          [column]: bluebird.map(last_trustees_shuffled[column].shuffled, async ({ unlock }) => ({
+            partial: partial_decrypt(RP.fromHex(unlock), BigInt(private_keyshare!)).toHex(),
+            proof: stringifyPartial(
+              await generate_partial_decryption_proof(RP.fromHex(unlock), BigInt(private_keyshare!)),
+            ),
+          })),
         }),
       {},
     )

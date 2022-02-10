@@ -1,10 +1,11 @@
 import bluebird from 'bluebird'
 import { sumBy } from 'lodash-es'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { RP, random_bigint } from 'src/crypto/curve'
+import { RP, pointToString, random_bigint } from 'src/crypto/curve'
 import { keygenDecrypt, keygenEncrypt } from 'src/crypto/keygen-encrypt'
 import { rename_to_c1_and_2 } from 'src/crypto/shuffle'
-import { Shuffle_Proof, verify_shuffle_proof } from 'src/crypto/shuffle-proof'
+import { verify_shuffle_proof } from 'src/crypto/shuffle-proof'
+import { destringifyPartial, stringifyPartial } from 'src/crypto/stringify-partials'
 import { destringifyShuffle } from 'src/crypto/stringify-shuffle'
 import {
   combine_partials,
@@ -219,12 +220,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             (acc: Record<string, Partial[]>, column) =>
               bluebird.props({
                 ...acc,
-                [column]: bluebird.map((shuffled as Shuffled)[column].shuffled, async ({ unlock }) =>
-                  bigs_to_strs({
-                    partial: partial_decrypt(big(unlock), big(private_keyshare), big_parameters),
-                    proof: await generate_partial_decryption_proof(big(unlock), big(private_keyshare), big_parameters),
-                  }),
-                ),
+                [column]: bluebird.map((shuffled as Shuffled)[column].shuffled, async ({ unlock }) => ({
+                  partial: partial_decrypt(RP.fromHex(unlock), BigInt(private_keyshare)).toHex(),
+                  proof: stringifyPartial(
+                    await generate_partial_decryption_proof(RP.fromHex(unlock), BigInt(private_keyshare)),
+                  ),
+                })),
               }),
             {},
           )
@@ -255,12 +256,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
       if (trustees.every((t) => t.partials && t.partials[columns[0]].length >= last_shuffled_length)) {
         // Verify that all partials have passing ZK Proofs
-        const all_broadcasts = trustees.map(({ commitments }) => commitments)
+        const all_broadcasts = trustees.map(({ commitments }) => commitments.map(RP.fromHex))
         const last_trustees_shuffled = trustees[trustees.length - 1].shuffled
         let any_failed = false
         // For all trustees...
         await bluebird.map(trustees, ({ partials }, index) => {
-          const g_to_trustees_keyshare = compute_g_to_keyshare(index + 1, all_broadcasts, big_parameters)
+          const g_to_trustees_keyshare = compute_g_to_keyshare(index + 1, all_broadcasts)
           // For all columns...
           return bluebird.map(
             Object.keys(partials),
@@ -268,11 +269,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             (column) =>
               bluebird.map(partials[column], async ({ partial, proof }: Partial, voteIndex) => {
                 const result = await verify_partial_decryption_proof(
-                  big(last_trustees_shuffled[column].shuffled[voteIndex].unlock),
-                  big(g_to_trustees_keyshare),
-                  big(partial),
-                  to_bigs(proof) as { g_to_secret_r: Big; obfuscated_trustee_secret: Big; unlock_to_secret_r: Big },
-                  big_parameters,
+                  RP.fromHex(last_trustees_shuffled[column].shuffled[voteIndex].unlock),
+                  g_to_trustees_keyshare,
+                  RP.fromHex(partial),
+                  destringifyPartial(proof),
                 )
                 if (!result) any_failed = true
               }),
@@ -288,12 +288,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             // For each row
             return (list as { shuffled: { encrypted: string }[] }).shuffled.map(({ encrypted }, index) => {
               // 1. First we combine the partials to get the ElGamal shared secret
-              const partials = trustees.map((t) => big(t.partials[key][index].partial))
-              const shared_secret = combine_partials(partials, big_parameters)
+              const partials = trustees.map((t) => RP.fromHex(t.partials[key][index].partial))
+              const shared_secret = combine_partials(partials)
 
               // 2. Then we can unlock each messages
-              const unlocked = unlock_message_with_shared_secret(shared_secret, big(encrypted), big_parameters.p)
-              return decode(unlocked)
+              const unlocked = unlock_message_with_shared_secret(shared_secret, RP.fromHex(encrypted))
+              return pointToString(unlocked)
             })
           }) as Record<string, string[]>
 

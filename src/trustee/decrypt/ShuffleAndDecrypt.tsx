@@ -14,9 +14,7 @@ export const ShuffleAndDecrypt = ({ dispatch, state }: StateAndDispatch): JSX.El
   const { ballot_design } = useElectionInfo()
   const [final_shuffle_verifies, set_final_shuffle_verifies] = useState(false)
 
-  if (!private_keyshare) {
-    return <p>Error: No `private_keyshare` found in localStorage.</p>
-  }
+  if (!private_keyshare) return <p>Error: No `private_keyshare` found in localStorage.</p>
 
   return (
     <>
