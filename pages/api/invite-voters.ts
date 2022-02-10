@@ -1,5 +1,6 @@
 import bluebird from 'bluebird'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { generateAuthToken } from 'src/crypto/generate-auth-tokens'
 
 import { firebase, pushover, sendEmail } from './_services'
 
@@ -12,7 +13,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (password !== ADMIN_PASSWORD) return res.status(401).send('Invalid Password.')
 
   // 2. Generate auth token for each voter
-  const auth_tokens = voters.map(() => generateAuthToken())
+  const auth_tokens = voters.map(generateAuthToken)
 
   // This will hold all our async tasks
   const promises: Promise<unknown>[] = []
@@ -84,12 +85,4 @@ Click here to securely cast your vote:
 
 <em style="font-size:13px; opacity: 0.6;">This link is unique for you. Don't share it with anyone.</em>`,
   })
-}
-
-export function generateAuthToken() {
-  const random = Math.random()
-  const integer = String(random).slice(2)
-  const hex = Number(integer).toString(16)
-  const auth_token = hex.slice(0, 10)
-  return auth_token
 }

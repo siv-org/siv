@@ -8,7 +8,7 @@ import pick_random_integer from '../../src/crypto/pick-random-integer'
 import { big, bigPubKey } from '../../src/crypto/types'
 import { generateTrackingNum } from '../../src/vote/tracking-num'
 import { firebase } from './_services'
-import { generateAuthToken } from './invite-voters'
+import { generateAuthToken } from 'src/crypto/generate-auth-tokens'
 import { pusher } from './pusher'
 */
 

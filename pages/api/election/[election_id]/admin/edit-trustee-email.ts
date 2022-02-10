@@ -1,8 +1,8 @@
 import { validate as validateEmail } from 'email-validator'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { generateAuthToken } from 'src/crypto/generate-auth-tokens'
 
 import { firebase } from '../../../_services'
-import { generateAuthToken } from '../../../invite-voters'
 import { checkJwtOwnsElection } from '../../../validate-admin-jwt'
 import { sendTrusteeInvite } from './add-trustees'
 

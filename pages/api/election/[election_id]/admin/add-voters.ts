@@ -1,8 +1,8 @@
 import { firestore } from 'firebase-admin'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { generateAuthToken } from 'src/crypto/generate-auth-tokens'
 
 import { firebase } from '../../../_services'
-import { generateAuthToken } from '../../../invite-voters'
 import { checkJwtOwnsElection } from '../../../validate-admin-jwt'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -16,7 +16,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (!election_id) return res.status(401).json({ error: 'Missing election_id' })
 
   // Generate auth token for each voter
-  const auth_tokens = new_voters.map(() => generateAuthToken())
+  const auth_tokens = new_voters.map(generateAuthToken)
 
   // Get existing voter from DB
   const electionDoc = firebase.firestore().collection('elections').doc(election_id)

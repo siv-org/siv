@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { Trustee } from 'src/admin/Observers/Observers'
+import { generateAuthToken } from 'src/crypto/generate-auth-tokens'
 import { generate_key_pair } from 'src/crypto/generate-key-pair'
 import {
   evaluate_private_polynomial,
@@ -9,7 +10,6 @@ import {
 import { mapValues } from 'src/utils'
 
 import { firebase, pushover, sendEmail } from '../../../_services'
-import { generateAuthToken } from '../../../invite-voters'
 import { pusher } from '../../../pusher'
 import { checkJwtOwnsElection } from '../../../validate-admin-jwt'
 
@@ -68,7 +68,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   // Generate auth token for each trustee
-  const auth_tokens = trustees.map(() => generateAuthToken())
+  const auth_tokens = trustees.map(generateAuthToken)
 
   // Store auth tokens in db
   promises.push(
