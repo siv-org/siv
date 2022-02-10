@@ -21,7 +21,7 @@ Encryption Formula
   unlock = (generator ^ randomizer) % modulo
 
 Public Key
-  ${map(public_key, (v, k) => `${k}: ${v.toString()}`).join('\n  ')}
+${public_key}
 
 ${map(
   state.plaintext,
