@@ -1,14 +1,12 @@
 import { map, mapValues, merge } from 'lodash-es'
 import { createContext, useContext, useMemo, useReducer } from 'react'
+import { RP, random_bigint, stringToPoint } from 'src/crypto/curve'
 
-import { encode } from '../crypto/encode'
 import encrypt from '../crypto/encrypt'
-import pickRandomInteger from '../crypto/pick-random-integer'
-import { Big, big } from '../crypto/types'
 import { candidates, public_key, voters } from './election-parameters'
 
-const rand = () => pickRandomInteger(public_key.modulo).toString().padStart(public_key.modulo.toString().length, '0')
-export const randEncrypted = () => `{ encrypted: ${rand()}, unlock: ${rand()} }`
+const rand = () => RP.BASE.multiplyUnsafe(random_bigint()).toHex()
+export const randEncrypted = () => `{ encrypted: ${rand()}, lock: ${rand()} }`
 
 const initState = {
   encrypted: { auth: voters[0].auth },
@@ -26,15 +24,12 @@ function reducer(prev: State, payload: Payload) {
 
   // Encrypt values
   const randomizer: Partial<VoteMap> = {}
-  const encrypted = mapValues(newState.plaintext, (value, key) => {
-    const random = pickRandomInteger(public_key.modulo)
-    randomizer[key] = random.toString()
-    const cipher = encrypt(public_key, random, big(encode(value as string)))
+  const encrypted = mapValues(newState.plaintext as Record<string, string>, (value, key) => {
+    const random = random_bigint()
+    randomizer[key] = String(random)
+    const cipher = encrypt(RP.fromHex(public_key), random, stringToPoint(value))
 
-    return `{ \n${map(
-      cipher,
-      (value: Big, key) => `${key}: ${value.toString().padStart(public_key.modulo.toString().length, '0')}`,
-    ).join(',\n\t ')} \n}`
+    return `{ \n${map(cipher, (v, k) => `${k}: ${v}`).join(',\n\t ')} \n}`
   })
 
   return merge(newState, { encrypted, randomizer })
