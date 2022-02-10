@@ -33,19 +33,6 @@
     "singleQuote": true,
     "trailingComma": "all"
   },
-  "stylelint": {
-    "extends": [
-      "stylelint-config-standard",
-      "stylelint-config-idiomatic-order"
-    ],
-    "rules": {
-      "declaration-colon-newline-after": null,
-      "value-list-comma-newline-after": null
-    },
-    "ignoreFiles": [
-      "**/*.tsx"
-    ]
-  },
   "dependencies": {
     "@ant-design/icons": "~4.7",
     "@fingerprintjs/fingerprintjs-pro": "^3.5.1",
@@ -117,9 +104,6 @@
     "prettier": "^2.0.2",
     "prettier-plugin-import-sort": "^0.0.4",
     "prettier-plugin-packagejson": "^2.2.5",
-    "stylelint": "^13.6.1",
-    "stylelint-config-idiomatic-order": "^8.1.0",
-    "stylelint-config-standard": "^20.0.0",
     "typescript": "~4.4"
   },
   "importSort": {
