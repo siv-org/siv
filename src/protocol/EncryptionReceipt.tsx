@@ -1,6 +1,6 @@
 import { map } from 'lodash-es'
+import { stringToPoint } from 'src/crypto/curve'
 
-import { encode } from '../crypto/encode'
 import { public_key } from './election-parameters'
 import { Paper } from './Paper'
 import { useVoteContext } from './VoteContext'
@@ -25,9 +25,9 @@ ${public_key}
 
 ${map(
   state.plaintext,
-  (_, key) => `${key}
-  plaintext: ${state.plaintext[key]}
-  encoded: ${encode(state.plaintext[key] as string)}
+  (value: string, key) => `${key}
+  plaintext: ${value}
+  encoded: ${stringToPoint(value)}
   randomizer: ${state.randomizer[key]}
   ${state.encrypted[key]?.slice(3, -2)}
 `,

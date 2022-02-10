@@ -1,7 +1,7 @@
 import { orderBy } from 'lodash-es'
 import { flatten } from 'lodash-es'
+import { stringToPoint } from 'src/crypto/curve'
 
-import { encode } from '../crypto/encode'
 import { useDecryptedVotes } from '../status/use-decrypted-votes'
 import { useElectionInfo } from '../status/use-election-info'
 
@@ -37,7 +37,7 @@ export const EncodedsTable = (): JSX.Element => {
             <tr key={index}>
               <td>{index + 1}.</td>
               {columns.map((c) => (
-                <td key={c}>{encode(`${vote.tracking}:${vote[c]}`)}</td>
+                <td key={c}>{stringToPoint(`${vote.tracking}:${vote[c]}`)}</td>
               ))}
             </tr>
           ))}

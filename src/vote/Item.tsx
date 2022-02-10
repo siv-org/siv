@@ -2,7 +2,6 @@ import { FormControlLabel, Radio, RadioGroup, TextField } from '@material-ui/cor
 import { Dispatch, useState } from 'react'
 import Linkify from 'react-linkify'
 
-import { encode } from '../crypto/encode'
 import { Item as ItemType } from './storeElectionInfo'
 import { State } from './vote-state'
 
@@ -72,7 +71,7 @@ export const Item = ({
                   }
                   // Check for invalid characters
                   try {
-                    encode(event.target.value)
+                    new TextEncoder().encode(event.target.value)
                   } catch {
                     return setError('Invalid character')
                   }

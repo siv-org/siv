@@ -1,5 +1,3 @@
-import { encode } from '../../crypto/encode'
-
 // These are for urgent errors where we want to disable the PointAndClick designer
 export function check_for_urgent_ballot_errors(design: string): string | null {
   try {
@@ -32,7 +30,7 @@ export function check_for_urgent_ballot_errors(design: string): string | null {
         if (name.toLowerCase() === 'blank') throw `'BLANK' is a reserved option name`
 
         // Check if the name is encodable (throws if input is outside our alphabet)
-        encode(name)
+        new TextEncoder().encode(name)
       })
     })
   } catch (e) {
