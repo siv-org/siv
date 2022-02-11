@@ -17,8 +17,10 @@ export const DetailedEncryptionReceipt = ({ state }: { state: State & { submitte
 
 Encryption Formula
   https://en.wikipedia.org/wiki/ElGamal_encryption
-  encrypted = encoded * (recipient ^ randomizer) % modulo
-  lock = (generator ^ randomizer) % modulo
+  in Ristretto255 prime-order subgroup of Elliptic Curve25519
+
+  Encrypted = Encoded + (Recipient * randomizer)
+  Lock = (Generator * randomizer)
 
 Public Key
   ${state.public_key}

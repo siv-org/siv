@@ -17,8 +17,10 @@ Encrypted @ ${new Date().toString()}
 
 Encryption Formula
   https://en.wikipedia.org/wiki/ElGamal_encryption
-  encrypted = encoded * (recipient ^ randomizer) % modulo
-  unlock = (generator ^ randomizer) % modulo
+  in Ristretto255 prime-order subgroup of Elliptic Curve25519
+
+  Encrypted = Encoded + (Recipient * randomizer)
+  Lock = (Generator * randomizer)
 
 Public Key
 ${public_key}
