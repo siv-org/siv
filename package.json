@@ -89,7 +89,7 @@
     "@types/ua-parser-js": "^0.7.36",
     "@typescript-eslint/eslint-plugin": "^5",
     "@typescript-eslint/parser": "^5",
-    "cypress": "9.0.0",
+    "cypress": "9.4.1",
     "cypress-localstorage-commands": "^1.6.1",
     "eslint": "^8",
     "eslint-config-prettier": "^6.10.1",
