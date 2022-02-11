@@ -195,7 +195,7 @@ const PartialsTable = ({
               const validated = trustees_validations[key][index]
               return (
                 <Fragment key={key}>
-                  <td>
+                  <td className="monospaced">
                     <div>
                       {partials[key][index].partial}{' '}
                       <span>{validated === null ? <LoadingOutlined /> : validated ? '' : '❌'}</span>
@@ -221,7 +221,7 @@ const PartialsTable = ({
           padding: 3px 10px;
           padding-right: 20px;
           margin: 0;
-          max-width: 367px;
+          max-width: 250px;
         }
         td div {
           position: relative;
@@ -233,6 +233,10 @@ const PartialsTable = ({
           right: -16px;
           font-size: 10px;
           opacity: 0.3;
+        }
+
+        td.monospaced {
+          font-family: monospace;
         }
 
         th,

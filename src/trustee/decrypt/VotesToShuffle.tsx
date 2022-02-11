@@ -210,8 +210,8 @@ const ShuffledVotesTable = ({
               const cipher = shuffled[key].shuffled[index]
               return (
                 <Fragment key={key}>
-                  <td>{cipher.encrypted}</td>
-                  <td>{cipher.lock}</td>
+                  <td className="monospaced">{cipher.encrypted}</td>
+                  <td className="monospaced">{cipher.lock}</td>
                 </Fragment>
               )
             })}
@@ -231,7 +231,11 @@ const ShuffledVotesTable = ({
           border: 1px solid #ccc;
           padding: 3px 10px;
           margin: 0;
-          max-width: 360px;
+          max-width: 240px;
+        }
+
+        td.monospaced {
+          font-family: monospace;
         }
 
         th,
