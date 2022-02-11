@@ -15,15 +15,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged",
-      "pre-push": "yarn run typecheck"
+      "pre-push": "yarn lint && yarn typecheck"
     }
-  },
-  "lint-staged": {
-    "*.@(ts|tsx)": [
-      "yarn lint",
-      "yarn format"
-    ]
   },
   "prettier": {
     "bracketSpacing": true,
@@ -100,7 +93,6 @@
     "eslint-plugin-typescript-sort-keys": "^2",
     "husky": "^4.2.3",
     "import-sort-style-module": "^6.0.0",
-    "lint-staged": "^10.0.10",
     "prettier": "^2.0.2",
     "prettier-plugin-import-sort": "^0.0.4",
     "prettier-plugin-packagejson": "^2.2.5",
