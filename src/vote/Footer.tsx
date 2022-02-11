@@ -3,7 +3,7 @@ export const Footer = ({ style }: { style?: React.CSSProperties }) => (
     <b>
       This election is powered by{' '}
       <a href="https://siv.org" rel="noreferrer" target="_blank">
-        siv.org
+        SIV.org
       </a>
     </b>
     <style jsx>{`
