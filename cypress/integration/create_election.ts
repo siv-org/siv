@@ -275,7 +275,7 @@ describe('Can create an election', () => {
 
     // Expect our 2 votes to be present
     cy.wrap(votes).each((vote: string) => {
-      cy.contains(vote.toUpperCase()).should('exist')
+      cy.contains(vote).should('exist')
     })
   })
 
