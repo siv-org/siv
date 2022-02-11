@@ -94,8 +94,8 @@ export const AcceptedVotes = ({
                 if (key !== 'auth') {
                   return (
                     <Fragment key={key}>
-                      <td>{vote[key]?.encrypted}</td>
-                      <td>{vote[key]?.lock}</td>
+                      <td className="monospaced">{vote[key]?.encrypted}</td>
+                      <td className="monospaced">{vote[key]?.lock}</td>
                     </Fragment>
                   )
                 }
@@ -142,7 +142,11 @@ export const AcceptedVotes = ({
           border: 1px solid #ccc;
           padding: 3px 10px;
           margin: 0;
-          max-width: 360px;
+          max-width: 240px;
+        }
+
+        td.monospaced {
+          font-family: monospace;
         }
 
         th,
