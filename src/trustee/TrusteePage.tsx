@@ -25,7 +25,7 @@ export const TrusteePage = (): JSX.Element => {
 
   return (
     <>
-      <Head title="Observer" />
+      <Head title={`Observer${tab === 0 ? '' : ' Unlock'}`} />
 
       <HeaderBar />
       <main>
