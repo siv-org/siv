@@ -51,10 +51,10 @@ export const PartialDecryptionTest = ({ dispatch, state }: StateAndDispatch) => 
       <EncryptionNote />
       <ul>
         <li>
-          Encrypted = {plaintext} * ({threshold_public_key} * {randomizer}) ≡ {`${encrypted}`}
+          Encrypted = {plaintext} + ({threshold_public_key} * {`${randomizer}`}) ≡ {`${encrypted}`}
         </li>
         <li>
-          Unlock = {`${RP.BASE}`} * {randomizer} ≡ {`${unlock}`}
+          Unlock = {`${RP.BASE}`} * {`${randomizer}`} ≡ {`${unlock}`}
         </li>
       </ul>
       <p>

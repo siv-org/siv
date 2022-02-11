@@ -106,7 +106,7 @@ export const SendPairwiseShares = ({ dispatch, state }: StateAndDispatch) => {
                   {term_index !== coeffs.length - 1 && ' + '}
                 </span>
               ))}{' '}
-              % {CURVE.l} ≡ {state.pairwise_shares_for ? state.pairwise_shares_for[email] : '[pending...]'}
+              % {`${CURVE.l}`} ≡ {state.pairwise_shares_for ? state.pairwise_shares_for[email] : '[pending...]'}
             </li>
           ))}
         </ol>

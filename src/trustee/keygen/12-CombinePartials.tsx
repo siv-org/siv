@@ -58,7 +58,7 @@ export const CombinePartials = ({ state }: StateAndDispatch) => {
       <p>
         {`${encrypted}`} - {`${combined}`} ≡ {`${decrypted}`}
       </p>
-      <p>Which decodes back into the message: {pointToString(decrypted)}</p>
+      <p>Which decodes back into the message: `{pointToString(decrypted)}`</p>
       <p>Which {pointToString(decrypted) === plaintext ? '✅ matches' : '❌ does not match'} plaintext.</p>
     </>
   )
