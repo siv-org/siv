@@ -89,7 +89,7 @@ export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => voi
         <Link href="/protocol">
           <a target="_blank">Protocol Overview</a>
         </Link>
-        <Link href="mailto:help@secureinternetvoting.org">
+        <Link href="mailto:help@siv.org">
           <a>Get Help</a>
         </Link>
       </div>

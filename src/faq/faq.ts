@@ -140,7 +140,7 @@ Some systems share some of these properties, however no widely deployed system h
 
 Unlike most information systems, voting needs to be both authenticated (one vote per person), while also preserving strong guarantees of a secret vote, such that even administrators can’t see how anyone voted. This is unusually challenging.
 
-The SIV team has understood these challenges and focused on solving them from day one. <a href="https://secureinternetvoting.org" target="_blank">SecureInternetVoting.org</a> is now available to run fast, private, & verifiable elections.`,
+The SIV team has understood these challenges and focused on solving them from day one. <a href="https://siv.org" target="_blank">siv.org</a> is now available to run fast, private, & verifiable elections.`,
   },
   {
     q: 'How does Secure Internet Voting improve upon paper voting?',
@@ -182,7 +182,7 @@ Voter Authorization tokens can be invalidated as soon as a vote is recorded from
   },
   {
     q: 'Does SIV support other voting methods, like Approval Voting?',
-    resp: `Currently, SIV supports Plurality Voting, Block Voting, and Approval Voting. We add new voting methods as requested. Please let us know if you need more: <a href="mailto:voting-methods@secureinternetvoting.org" target="_blank">voting-methods@secureinternetvoting.org</a>.
+    resp: `Currently, SIV supports Plurality Voting, Block Voting, and Approval Voting. We add new voting methods as requested. Please let us know if you need more: <a href="mailto:voting-methods@siv.org" target="_blank">voting-methods@siv.org</a>.
 
 Digital voting can make it much easier for voters to adopt these more advanced voting methods, with immediate feedback and automatically preventing voters from accidentally disqualifying their ballot.`,
   },
@@ -212,7 +212,7 @@ In other words, SIV uses many similar ideas, but is specifically designed for th
 2. Discrete Logarithm Encryption
 3. An Anonymization Mixnet, verified by Zero-Knowledge Proofs
 
-The specific research is listed on <a href="https://secureinternetvoting.org/about" target="_blank">secureinternetvoting.org/about</a>.`,
+The specific research is listed on <a href="https://siv.org/about" target="_blank">siv.org/about</a>.`,
   },
   {
     q: 'How long does it take to run a SIV election?',
@@ -229,13 +229,13 @@ Once the election closes, SIV can tally millions of ballots in seconds.`,
   },
   {
     q: 'How does SIV protect voters in hostile or insecure network environments?',
-    resp: `All connections to <a href="https://secureinternetvoting.org" target="_blank">secureinternetvoting.org</a> always require https Transport Layer Security.
+    resp: `All connections to <a href="https://siv.org" target="_blank">siv.org</a> always require https Transport Layer Security.
 
 This protects voters' network connection to prevent tampering and surveillance.`,
   },
   {
     q: 'Can my group use SIV for our private election?',
-    resp: `Most likely, please contact us at <a href="mailto:private-usage@secureinternetvoting.org" target="_blank">private-usage@secureinternetvoting.org</a>.`,
+    resp: `Most likely, please contact us at <a href="mailto:private-usage@siv.org" target="_blank">private-usage@siv.org</a>.`,
   },
   {
     q: 'How does SIV help election administrators with public records requests?',

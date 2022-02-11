@@ -34,7 +34,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         const { auth_token, invite_queued } = { ...voter.data() } as { auth_token: string; invite_queued?: QueueLog[] }
 
         const link = `${req.headers.origin}/election/${election_id}/vote?auth=${auth_token}`
-        // const link = `https://secureinternetvoting.org/election/${election_id}/vote?auth=${auth_token}`
+        // const link = `https://siv.org/election/${election_id}/vote?auth=${auth_token}`
 
         return send_invitation_email({
           from: election_manager,

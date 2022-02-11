@@ -11,7 +11,7 @@ import { EncryptionAddress } from './EncryptionAddress'
 import { useLatestMailgunEvents } from './use-latest-mailgun'
 
 export type Trustee = { email: string; error?: string; name?: string }
-const admin_email = 'admin@secureinternetvoting.org'
+const admin_email = 'admin@siv.org'
 
 export const Observers = () => {
   const { election_id, election_manager, threshold_public_key, trustees } = useStored()

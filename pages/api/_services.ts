@@ -27,7 +27,7 @@ export const firebase = !Firebase.apps.length
 /** Init mailgun */
 export const mailgun = Mailgun({
   apiKey: MAILGUN_API_KEY as string,
-  domain: MAILGUN_DOMAIN || 'secureinternetvoting.org',
+  domain: MAILGUN_DOMAIN || 'siv.org',
 })
 
 export const sendEmail = ({
@@ -49,7 +49,7 @@ export const sendEmail = ({
 }) =>
   mailgun.messages().send({
     attachment: !attachment ? undefined : new mailgun.Attachment(attachment),
-    from: `${from || 'SIV Admin'} <${fromEmail || 'election@secureinternetvoting.org'}>`,
+    from: `${from || 'SIV Admin'} <${fromEmail || 'election@siv.org'}>`,
     html: `<body style="background-color: #f5f5f5; padding: 2em 0.5em;">
     <table align="center" style="text-align: left; max-width: 600px; background-color: white;">
         <tr>

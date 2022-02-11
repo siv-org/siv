@@ -35,13 +35,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Send them an email with their login instructions
   sendEmail({
     from: 'David Ernst',
-    fromEmail: 'david@secureinternetvoting.org',
+    fromEmail: 'david@siv.org',
     recipient: data.email,
     subject: 'SIV Account Approved',
     text: `<h2 style="margin-bottom: 0;">SIV Account Approved</h2>
-Congratulations, you now have the ability to create Secure Internet Voting elections.
+Congratulations, you now have the ability to create SIV elections.
 
-You can login anytime at <b><a href="https://login.secureinternetvoting.org">login.secureinternetvoting.org</a></b>`,
+You can login anytime at <b><a href="https://login.siv.org">login.siv.org</a></b>`,
   })
 
   // If they still have the Waiting Page open, show that they've been approved

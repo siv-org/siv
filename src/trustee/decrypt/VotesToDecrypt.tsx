@@ -29,7 +29,7 @@ export const VotesToDecrypt = ({
   /* Object to track which proofs have been validated
   KEY: null=tbd, true=valid, false=invalid
   {
-    'admin@secureinternetvoting.org': {
+    'admin@siv.org': {
       president: [null, null, null, null],
       mayor: [null, null, null, null]
     },

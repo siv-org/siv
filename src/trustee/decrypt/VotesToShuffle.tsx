@@ -24,7 +24,7 @@ export const VotesToShuffle = ({
   /* Object to track which proofs have been validated
   KEY: null=tbd, true=valid, false=invalid
   {
-    'admin@secureinternetvoting.org': {
+    'admin@siv.org': {
       num_votes: 4,
       columns: {
         president: true,

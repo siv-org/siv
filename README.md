@@ -18,10 +18,10 @@ yarn dev
 
 ## Layout
 
-- http://secureinternetvoting.org - Landing page
-- http://secureinternetvoting.org/admin - Create New Election
-- http://secureinternetvoting.org/protocol - Protocol Description
-- http://secureinternetvoting.org/faq - FAQ
+- http://siv.org - Landing page
+- http://siv.org/admin - Create New Election
+- http://siv.org/protocol - Protocol Description
+- http://siv.org/faq - FAQ
 
 ## Next steps
 

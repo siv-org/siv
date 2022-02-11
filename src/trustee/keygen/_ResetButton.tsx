@@ -43,5 +43,5 @@ export function ResetButton({ state }: { state: State }) {
 
 // Only show for David
 export function showResetButton(state: State): boolean {
-  return 'david@secureinternetvoting.org' === state.own_email || state.own_email.includes('@dsernst.com')
+  return 'david@siv.org' === state.own_email || state.own_email.includes('@dsernst.com')
 }

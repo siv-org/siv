@@ -24,7 +24,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Find one page of mailgun events for this election
   function getMgEvents(next?: string) {
-    return mailgun.get(next || '/secureinternetvoting.org/events', {
+    return mailgun.get(next || '/siv.org/events', {
       ascending: 'yes',
       begin: new Date(created_at._seconds * 1000).toUTCString(),
       limit: 300,
@@ -42,7 +42,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         mgEventsList.items,
         async (item: { event: string; recipient: string }) => {
           // Skip replies to us
-          if (item.recipient === 'election@secureinternetvoting.org') return
+          if (item.recipient === 'election@siv.org') return
           const voterDoc = electionDoc.collection('voters').doc(item.recipient)
           // Confirm voterDoc exists
           if (!(await voterDoc.get()).exists) {
