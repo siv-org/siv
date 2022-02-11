@@ -151,7 +151,7 @@ describe('Can create an election', () => {
     cy.focused()
       .should('have.attr', 'id', 'textarea')
       // Add 2 voters
-      .type('test1@siv.tech{enter}test2@siv.tech')
+      .type('test1@siv.org{enter}test2@siv.org')
 
     // Hit Save button
     cy.get('#main-content').contains('Save').click()
