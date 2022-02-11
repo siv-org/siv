@@ -320,10 +320,11 @@ async function verify_simple_shuffle_proof({ Gamma, Thetas, Xs, Ys, alphas }: Si
 }
 
 // Fiat-Shamir deterministic PRNG challenge integers
+const hash = (args: RP[]) => bigint_from_seed(args.join(','))
 const prng = {
-  c: (Thetas: RP[]) => bigint_from_seed(Thetas.join(',')),
-  lambda: (Ds: RP[]) => bigint_from_seed(Ds.join(',')),
+  c: (Thetas: RP[]) => hash(Thetas),
+  lambda: (Ds: RP[]) => hash(Ds),
   rhos: (As: RP[], Cs: RP[], Us: RP[], Ws: RP[], Gamma: RP, Lambda1: RP, Lambda2: RP) =>
-    Promise.all(As.map((_, i) => bigint_from_seed([As[i], Cs[i], Us[i], Ws[i], Gamma, Lambda1, Lambda2].join(',')))),
-  t: (Xs: RP[], Ys: RP[]) => bigint_from_seed(Xs.concat(Ys).join(',')),
+    Promise.all(As.map((_, i) => hash([As[i], Cs[i], Us[i], Ws[i], Gamma, Lambda1, Lambda2]))),
+  t: (Xs: RP[], Ys: RP[]) => hash([...Xs, ...Ys]),
 }
