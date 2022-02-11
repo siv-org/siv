@@ -1,9 +1,9 @@
 export const EncryptionNote = () => (
   <p className="encryption-note">
     <code>
-      <i>https://en.wikipedia.org/wiki/ElGamal_encryption</i>
-      {'\n'}encrypted = message * (recipient ^ randomizer) % modulo
-      {'\n'}unlock = (generator ^ randomizer) % modulo
+      <i>https://en.wikipedia.org/wiki/ElGamal_encryption, adapted for Elliptic Curves</i>
+      {'\n'}Encrypted = Message + (Pub_key * randomizer)
+      {'\n'}Unlock = G * randomizer
     </code>
     <style jsx>{`
       .encryption-note {

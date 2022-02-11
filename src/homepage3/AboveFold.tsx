@@ -21,7 +21,7 @@ export const AboveFold = () => (
       <a className="button" href="/admin">
         Get Started
       </a>
-      <a href="mailto:team@secureinternetvoting.org">Contact Team</a>
+      <a href="mailto:team@siv.org">Contact Team</a>
     </div>
 
     <style jsx>{`

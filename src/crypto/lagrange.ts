@@ -1,7 +1,7 @@
-import { Big, big } from './types'
+import { invert, mod } from './curve'
 
 /** = product[j !== i]{ j / (j - i) (mod p) } */
-export const moduloLambda = (index: number, points: Big[][], modulo: Big, debug?: boolean): Big => {
+export const moduloLambda = (index: number, points: bigint[][], modulo: bigint, debug?: boolean): bigint => {
   const i = points[index][0]
 
   // eslint-disable-next-line no-console
@@ -13,24 +13,24 @@ export const moduloLambda = (index: number, points: Big[][], modulo: Big, debug?
       return memo
     }
     const j = point[0]
-    log({ j: j.toString() })
+    log({ j })
 
-    const numerator = big(0).subtract(j).mod(modulo)
-    const denominator = i.subtract(j).mod(modulo)
+    const numerator = mod(-j, modulo)
+    const denominator = mod(i - j, modulo)
     log({ denominator: denominator.toString() })
 
-    const term = numerator.multiply(denominator.modInverse(modulo))
-    log({ term: term.toString() })
+    const term = numerator * invert(denominator, modulo)
+    log({ term })
 
-    return memo.multiply(term).mod(modulo)
-  }, big(1))
+    return mod(memo * term, modulo)
+  }, BigInt(1))
 }
 
 /** sum[i=1, t]{ s_i * lambda_i} (mod p) */
-export const lagrange_interpolation = (points: [Big, Big][], modulo: Big): Big =>
+export const lagrange_interpolation = (points: [bigint, bigint][], modulo: bigint): bigint =>
   points.reduce((memo, point, index) => {
     const lambda = moduloLambda(index, points, modulo)
     const s = point[1]
-    const addend = s.multiply(lambda).mod(modulo)
-    return memo.add(addend).mod(modulo)
-  }, big(0))
+    const addend = mod(s * lambda, modulo)
+    return mod(memo + addend, modulo)
+  }, BigInt(0))

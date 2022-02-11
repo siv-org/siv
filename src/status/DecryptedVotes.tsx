@@ -31,7 +31,7 @@ export const DecryptedVotes = ({ proofsPage }: { proofsPage?: boolean }): JSX.El
         <thead>
           <tr>
             <th></th>
-            <th>verification #</th>
+            <th style={{ backgroundColor: 'rgba(10, 232, 10, 0.24)' }}>verification #</th>
             {columns.map((c) => (
               <th key={c}>{c}</th>
             ))}

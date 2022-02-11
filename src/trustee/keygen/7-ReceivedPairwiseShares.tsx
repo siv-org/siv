@@ -1,26 +1,18 @@
 import { sumBy } from 'lodash-es'
 import { useEffect } from 'react'
 
-import decrypt from '../../crypto/decrypt'
-import { big, bigCipher, bigPubKey } from '../../crypto/types'
+import { keygenDecrypt } from '../../crypto/keygen-encrypt'
 import { PrivateBox } from '../PrivateBox'
 import { StateAndDispatch } from '../trustee-state'
 
 export const ReceivedPairwiseShares = ({ dispatch, state }: StateAndDispatch) => {
-  const {
-    decrypted_shares_from = {},
-    parameters,
-    pairwise_shares_for: shares,
-    trustees = [],
-    personal_key_pair,
-    own_email,
-  } = state
+  const { decrypted_shares_from = {}, pairwise_shares_for: shares, trustees = [], personal_key_pair, own_email } = state
 
   const num_encrypteds_broadcast = sumBy(trustees, (t) => Object.keys(t.encrypted_pairwise_shares_for || {}).length)
 
   // Reruns whenever more encrypted_pairwise_shares_for are broadcast
   useEffect(() => {
-    if (!personal_key_pair || !parameters) return
+    if (!personal_key_pair) return
 
     // For each trustee...
     trustees.forEach(({ email, encrypted_pairwise_shares_for = {} }) => {
@@ -30,26 +22,21 @@ export const ReceivedPairwiseShares = ({ dispatch, state }: StateAndDispatch) =>
       if (encrypted_share_for_us && !decrypted_shares_from[email]) {
         // Then lets decrypt it
         console.log(`Unlocking cipher from ${email}...`)
-        decrypted_shares_from[email] = decrypt(
-          bigPubKey({
-            generator: parameters.g,
-            modulo: parameters.p,
-            recipient: personal_key_pair.public_key.recipient,
-          }),
-          big(personal_key_pair.decryption_key),
-          bigCipher(JSON.parse(encrypted_share_for_us)),
-        )
+        ;(async () => {
+          decrypted_shares_from[email] = await keygenDecrypt(
+            BigInt(personal_key_pair.decryption_key),
+            encrypted_share_for_us,
+          )
 
-        // Store the decrypted result
-        dispatch({ decrypted_shares_from })
+          // Store the decrypted result
+          dispatch({ decrypted_shares_from })
+        })()
       }
     })
   }, [num_encrypteds_broadcast])
 
   // Only show after calculated own pairwise shares
-  if (!shares) {
-    return <></>
-  }
+  if (!shares) return <></>
 
   return (
     <>

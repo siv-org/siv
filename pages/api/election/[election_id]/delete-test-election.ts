@@ -13,8 +13,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (!jwt.valid) return
 
   // Don't delete if not from e2e tester
-  if (jwt.email !== 'e2e-tester@secureinternetvoting.org')
-    return res.status(403).json({ error: 'Can only delete test elections' })
+  if (jwt.email !== 'e2e-tester@siv.org') return res.status(403).json({ error: 'Can only delete test elections' })
 
   const doc = firebase.firestore().collection('elections').doc(election_id)
 

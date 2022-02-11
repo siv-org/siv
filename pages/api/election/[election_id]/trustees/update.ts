@@ -1,12 +1,12 @@
 import bluebird from 'bluebird'
 import { sumBy } from 'lodash-es'
 import { NextApiRequest, NextApiResponse } from 'next'
-import decrypt from 'src/crypto/decrypt'
-import { decode } from 'src/crypto/encode'
-import encrypt from 'src/crypto/encrypt'
-import pickRandomInteger from 'src/crypto/pick-random-integer'
+import { RP, pointToString, random_bigint } from 'src/crypto/curve'
+import { keygenDecrypt, keygenEncrypt } from 'src/crypto/keygen-encrypt'
 import { rename_to_c1_and_2 } from 'src/crypto/shuffle'
-import { Shuffle_Proof, verify_shuffle_proof } from 'src/crypto/shuffle-proof'
+import { verify_shuffle_proof } from 'src/crypto/shuffle-proof'
+import { destringifyPartial, stringifyPartial } from 'src/crypto/stringify-partials'
+import { destringifyShuffle } from 'src/crypto/stringify-shuffle'
 import {
   combine_partials,
   compute_g_to_keyshare,
@@ -19,7 +19,6 @@ import {
   unlock_message_with_shared_secret,
   verify_partial_decryption_proof,
 } from 'src/crypto/threshold-keygen'
-import { Big, Cipher_Text, big, bigCipher, bigPubKey, bigs_to_strs, toStrings, to_bigs } from 'src/crypto/types'
 import { randomizer } from 'src/trustee/keygen/11-PartialDecryptionTest'
 import { Partial, Shuffled, State, Trustee } from 'src/trustee/trustee-state'
 import { mapValues } from 'src/utils'
@@ -88,42 +87,30 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // If they provided the final partial, admin can combine partials
   if (body.recipient_key || body.encrypted_pairwise_shares_for || body.shuffled || body.partials) {
     // Get admin's private data
-    const admin = { ...(await loadAdmin).data() } as Required<State> & {
-      decryption_key: string
-      recipient_key: string
-    }
-    const { decryption_key, private_coefficients, private_keyshare, recipient_key } = admin
+    const admin = { ...(await loadAdmin).data() } as Required<State> & { decryption_key: string }
+    const { decryption_key, private_coefficients, private_keyshare } = admin
 
     // Get election parameters
     const parameters = { ...election.data() }
-    const big_parameters = { g: big(parameters.g), p: big(parameters.p), q: big(parameters.q) }
 
     // Logic for new recipient_key
     if (body.recipient_key) {
       // Calculate admin's pairwise share for this trustee
-      const pairwise_share = evaluate_private_polynomial(
-        trustee.index + 1,
-        private_coefficients.map((c) => big(c)),
-        big_parameters,
-      ).toString()
+      const pairwise_share = evaluate_private_polynomial(trustee.index + 1, private_coefficients.map(BigInt)).toString()
 
       // Encrypt the pairwise shares for the target recipients eyes only...
 
       // First we pick a randomizer
-      const pairwise_randomizer = pickRandomInteger(big(parameters.p)).toString()
+      const pairwise_randomizer = random_bigint()
 
       // Then we encrypt
-      const encrypted_pairwise_share = toStrings(
-        encrypt(
-          bigPubKey({ generator: parameters.g, modulo: parameters.p, recipient: body.recipient_key }),
-          big(pairwise_randomizer),
-          big(pairwise_share),
-        ),
+      const encrypted_pairwise_share = JSON.stringify(
+        await keygenEncrypt(RP.fromHex(body.recipient_key), pairwise_randomizer, pairwise_share),
       )
 
       const admin_update = {
         [`encrypted_pairwise_shares_for.${commafy(email)}`]: encrypted_pairwise_share,
-        [`pairwise_randomizers_for.${commafy(email)}`]: pairwise_randomizer,
+        [`pairwise_randomizers_for.${commafy(email)}`]: String(pairwise_randomizer),
         [`pairwise_shares_for.${commafy(email)}`]: pairwise_share,
       }
 
@@ -141,25 +128,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     // Logic for new encrypted shares
     if (body.encrypted_pairwise_shares_for) {
-      let encrypted
-      try {
-        encrypted = JSON.parse(body.encrypted_pairwise_shares_for[ADMIN_EMAIL])
-      } catch (e) {
-        return console.error(`Error parsing encrypted share from ${email} for admin`, e)
-      }
       // Decrypt the share for admin
-      const decrypted_share = decrypt(
-        bigPubKey({
-          generator: parameters.g,
-          modulo: parameters.p,
-          recipient: recipient_key,
-        }),
-        big(decryption_key),
-        bigCipher(encrypted),
+      const decrypted_share = await keygenDecrypt(
+        BigInt(decryption_key),
+        body.encrypted_pairwise_shares_for[ADMIN_EMAIL],
       )
 
       // Verify the received share
-      const verification = is_received_share_valid(big(decrypted_share), 1, trustee.commitments, big_parameters)
+      const verification = is_received_share_valid(BigInt(decrypted_share), 1, trustee.commitments.map(RP.fromHex))
 
       // Store all the new data we created
       const admin_update = {
@@ -183,29 +159,30 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       const numPassed = sumBy(Object.values(adminLatest.verified || {}), Number)
       const numExpected = parameters.t - 1
       // Stop if not enough have passed yet
-      if (!numPassed || numPassed !== numExpected) return
+      if (numPassed !== numExpected) return
 
-      const incoming_bigs = Object.values(adminLatest.decrypted_shares_from || {}).map((n) => big(n))
+      const incoming_bigs = Object.values(adminLatest.decrypted_shares_from || {}).map(BigInt)
 
       // (1) Calculate admins private keyshare
-      const private_keyshare = compute_keyshare(incoming_bigs, big_parameters.q).toString()
+      const private_keyshare = compute_keyshare(incoming_bigs).toString()
 
       // Get all trustees
       const trustees: Trustee[] = []
       ;(await electionDoc.collection('trustees').get()).forEach((doc) => trustees.push({ ...doc.data() } as Trustee))
-      const constant_commitments = trustees.map((t) => big(t.commitments[0]))
+      const constant_commitments = trustees.map((t) => RP.fromHex(t.commitments[0]))
 
       // (2) Calculate & store public threshold key
-      const threshold_public_key = compute_pub_key(constant_commitments, big_parameters.p).toString()
+      const threshold_public_key = compute_pub_key(constant_commitments).toString()
       await electionDoc.update({ threshold_public_key })
       // Notify admin panel the pub key was created
       promises.push(pusher.trigger(`status-${election_id}`, 'pub_key', { threshold_public_key }))
 
       // (3) Encrypt test message
-      const unlock = big_parameters.g.modPow(big(randomizer), big_parameters.p)
+      // (since it's just for testing, we only need the Lock half to compute the partial)
+      const Lock = RP.BASE.multiply(randomizer)
 
       // (4) Partially decrypt test message
-      const partial_decryption = partial_decrypt(unlock, big(private_keyshare), big_parameters).toString()
+      const partial_decryption = partial_decrypt(Lock, BigInt(private_keyshare)).toString()
 
       // Store admin's private_keyshare & partial_decryption
       const admin_update_2 = { partial_decryption, private_keyshare }
@@ -227,13 +204,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         }))
 
         // Confirm that every column's shuffle proof is valid
-        const checks = await bluebird.map(Object.keys(shuffled), (column) =>
-          verify_shuffle_proof(
-            rename_to_c1_and_2(to_bigs(trustees[trustee.index - 1].shuffled[column].shuffled) as Cipher_Text[]),
-            rename_to_c1_and_2(to_bigs(shuffled[column].shuffled) as Cipher_Text[]),
-            to_bigs(shuffled[column].proof) as Shuffle_Proof,
-          ),
-        )
+        const checks = await bluebird.map(Object.keys(shuffled), (column) => {
+          const { shuffled: prevShuffle } = destringifyShuffle(trustees[trustee.index - 1].shuffled[column])
+          const { proof, shuffled: currShuffle } = destringifyShuffle(shuffled[column])
+
+          return verify_shuffle_proof(rename_to_c1_and_2(prevShuffle), rename_to_c1_and_2(currShuffle), proof)
+        })
+
         if (!checks.length || !checks.every((x) => x)) {
           console.log("Final shuffle proof didn't fully pass")
         } else {
@@ -243,12 +220,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             (acc: Record<string, Partial[]>, column) =>
               bluebird.props({
                 ...acc,
-                [column]: bluebird.map((shuffled as Shuffled)[column].shuffled, async ({ unlock }) =>
-                  bigs_to_strs({
-                    partial: partial_decrypt(big(unlock), big(private_keyshare), big_parameters),
-                    proof: await generate_partial_decryption_proof(big(unlock), big(private_keyshare), big_parameters),
-                  }),
-                ),
+                [column]: bluebird.map((shuffled as Shuffled)[column].shuffled, async ({ lock }) => ({
+                  partial: partial_decrypt(RP.fromHex(lock), BigInt(private_keyshare)).toHex(),
+                  proof: stringifyPartial(
+                    await generate_partial_decryption_proof(RP.fromHex(lock), BigInt(private_keyshare)),
+                  ),
+                })),
               }),
             {},
           )
@@ -279,12 +256,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
       if (trustees.every((t) => t.partials && t.partials[columns[0]].length >= last_shuffled_length)) {
         // Verify that all partials have passing ZK Proofs
-        const all_broadcasts = trustees.map(({ commitments }) => commitments)
+        const all_broadcasts = trustees.map(({ commitments }) => commitments.map(RP.fromHex))
         const last_trustees_shuffled = trustees[trustees.length - 1].shuffled
         let any_failed = false
         // For all trustees...
         await bluebird.map(trustees, ({ partials }, index) => {
-          const g_to_trustees_keyshare = compute_g_to_keyshare(index + 1, all_broadcasts, big_parameters)
+          const g_to_trustees_keyshare = compute_g_to_keyshare(index + 1, all_broadcasts)
           // For all columns...
           return bluebird.map(
             Object.keys(partials),
@@ -292,11 +269,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             (column) =>
               bluebird.map(partials[column], async ({ partial, proof }: Partial, voteIndex) => {
                 const result = await verify_partial_decryption_proof(
-                  big(last_trustees_shuffled[column].shuffled[voteIndex].unlock),
-                  big(g_to_trustees_keyshare),
-                  big(partial),
-                  to_bigs(proof) as { g_to_secret_r: Big; obfuscated_trustee_secret: Big; unlock_to_secret_r: Big },
-                  big_parameters,
+                  RP.fromHex(last_trustees_shuffled[column].shuffled[voteIndex].lock),
+                  g_to_trustees_keyshare,
+                  RP.fromHex(partial),
+                  destringifyPartial(proof),
                 )
                 if (!result) any_failed = true
               }),
@@ -312,12 +288,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             // For each row
             return (list as { shuffled: { encrypted: string }[] }).shuffled.map(({ encrypted }, index) => {
               // 1. First we combine the partials to get the ElGamal shared secret
-              const partials = trustees.map((t) => big(t.partials[key][index].partial))
-              const shared_secret = combine_partials(partials, big_parameters)
+              const partials = trustees.map((t) => RP.fromHex(t.partials[key][index].partial))
+              const shared_secret = combine_partials(partials)
 
               // 2. Then we can unlock each messages
-              const unlocked = unlock_message_with_shared_secret(shared_secret, big(encrypted), big_parameters.p)
-              return decode(unlocked)
+              const unlocked = unlock_message_with_shared_secret(shared_secret, RP.fromHex(encrypted))
+              return pointToString(unlocked)
             })
           }) as Record<string, string[]>
 

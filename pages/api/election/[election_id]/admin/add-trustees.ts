@@ -1,17 +1,15 @@
-import { mapValues } from 'lodash-es'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { Trustee } from 'src/admin/Observers/Observers'
+import { generateAuthToken } from 'src/crypto/generate-auth-tokens'
 import { generate_key_pair } from 'src/crypto/generate-key-pair'
-import { get_safe_prime } from 'src/crypto/generate-safe-prime'
 import {
   evaluate_private_polynomial,
   generate_public_coefficients,
   pick_private_coefficients,
 } from 'src/crypto/threshold-keygen'
-import { big } from 'src/crypto/types'
+import { mapValues } from 'src/utils'
 
 import { firebase, pushover, sendEmail } from '../../../_services'
-import { generateAuthToken } from '../../../invite-voters'
 import { pusher } from '../../../pusher'
 import { checkJwtOwnsElection } from '../../../validate-admin-jwt'
 
@@ -36,20 +34,16 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Add admin@ email to front of the trustees list
   trustees.unshift({ email: ADMIN_EMAIL, name: 'The SIV Server' })
 
-  // Generate a safe prime of the right bit size
-  const safe_prime_bigs = get_safe_prime(256, 20)
-  const safe_prime = mapValues(safe_prime_bigs, (v) => v.toString())
-
   // Update election
   const election = firebase.firestore().collection('elections').doc(election_id)
-  await election.update({ ...safe_prime, t: trustees.length })
+  await election.update({ t: trustees.length })
 
   // Generate admin's keypair
-  const pair = generate_key_pair(safe_prime_bigs.p)
+  const pair = mapValues(generate_key_pair(), String)
 
   // If admin is only trustees, we can skip the keygen ceremony
   if (trustees.length === 1) {
-    const threshold_public_key = pair.public_key.recipient.toString()
+    const threshold_public_key = pair.public_key
 
     // Save private key on admin
     promises.push(
@@ -60,7 +54,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           ...trustees[0],
           index: 0,
           partial_decryption: 'stage = 12',
-          private_keyshare: pair.decryption_key.toString(),
+          private_keyshare: pair.decryption_key,
         }),
     )
 
@@ -74,7 +68,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   // Generate auth token for each trustee
-  const auth_tokens = trustees.map(() => generateAuthToken())
+  const auth_tokens = trustees.map(generateAuthToken)
 
   // Store auth tokens in db
   promises.push(
@@ -114,16 +108,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     )
 
   // Generate admin's private coefficients and public commitments
-  const private_coefficients = pick_private_coefficients(trustees.length, safe_prime_bigs)
-  const commitments = generate_public_coefficients(private_coefficients, safe_prime_bigs)
+  const private_coefficients = pick_private_coefficients(trustees.length)
+  const commitments = generate_public_coefficients(private_coefficients).map(String)
 
   // Generate admins own keyshare for themselves
   const pairwise_shares_for = {
-    [ADMIN_EMAIL]: evaluate_private_polynomial(
-      1,
-      private_coefficients,
-      mapValues(safe_prime, (v) => big(v)),
-    ).toString(),
+    [ADMIN_EMAIL]: evaluate_private_polynomial(1, private_coefficients).toString(),
   }
   const decrypted_shares_from = { ...pairwise_shares_for }
 
@@ -136,11 +126,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         {
           commitments,
           decrypted_shares_from,
-          decryption_key: pair.decryption_key.toString(),
+          decryption_key: pair.decryption_key,
           keygen_attempt: 1,
           pairwise_shares_for,
-          private_coefficients: private_coefficients.map((c) => c.toString()),
-          recipient_key: pair.public_key.recipient.toString(),
+          private_coefficients: private_coefficients.map(String),
+          recipient_key: pair.public_key,
         },
         { merge: true },
       )

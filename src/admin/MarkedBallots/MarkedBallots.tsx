@@ -21,8 +21,8 @@ export const MarkedBallots = () => {
           <div>
             This shows printing votes onto a sample ballot design.
             <p>
-              Please contact <a href="mailto:help@secureinternetvoting.org">help@secureinternetvoting.org</a> to
-              configure SIV with your existing ballot equipment.
+              Please contact <a href="mailto:help@siv.org">help@siv.org</a> to configure SIV with your existing ballot
+              equipment.
             </p>
           </div>
           <DownloadAllButton {...{ votes }} />

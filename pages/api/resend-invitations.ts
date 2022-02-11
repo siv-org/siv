@@ -12,7 +12,7 @@ const { ADMIN_PASSWORD } = process.env
 // *** Script parameters ***
 const election_id = ''
 const batch_limit = 100
-const vote_page_url = `https://secureinternetvoting.org/election/${election_id}/vote`
+const vote_page_url = `https://siv.org/election/${election_id}/vote`
 // *************************
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -29,7 +29,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const subject_line = `Vote Invitation${election_title ? `: ${election_title}` : ''}`
 
   function getMgEvents(next?: string) {
-    return mailgun.get(next || '/secureinternetvoting.org/events', {
+    return mailgun.get(next || '/siv.org/events', {
       ascending: 'yes',
       begin: '16 Jan 2021 10:00:00 -0800',
       // end: '16 Jan 2021 10:00:00 -0800',

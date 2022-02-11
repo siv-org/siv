@@ -47,8 +47,7 @@ export const groupedSteps: Group[] = [
               '',
               '',
               {
-                html:
-                  'Individuals voters should <a href="/#let-your-govt-know" target="_blank">opt-in to SIV</a> by registering an email address with their election administrator.',
+                html: 'Individuals voters should <a href="/#let-your-govt-know" target="_blank">opt-in to SIV</a> by registering an email address with their election administrator.',
               },
             ],
             right: [{ react: VoterList }],
@@ -342,7 +341,7 @@ export const groupedSteps: Group[] = [
               '',
               {
                 html: `${light(
-                  `SIV is built upon a modular exponential operation ("modPow", also called <a href="https://en.wikipedia.org/wiki/ElGamal_encryption" target="_blank">ElGamal</a>) to enable this re-encryption. The math is equivalent to multiplying X^A * X^B, or X^(A+B), where A is the Voter's Randomizer and B is the Re-encrypter's. Because the encryption only needs these exponents to be randomly chosen integers, there is no impact to the underlying contents.`,
+                  `SIV is built upon a homomorphic encryption scheme called <a href="https://en.wikipedia.org/wiki/ElGamal_encryption" target="_blank">ElGamal</a> to enable this re-encryption. The math is equivalent to adding (X * A) + (X * B), or X * (A + B), where A is the Voter's Randomizer and B is the Re-encrypter's. Because the encryption only needs these factors to be randomly chosen integers, there is no impact to the underlying contents.`,
                 )}`,
               },
               '',
@@ -377,8 +376,7 @@ export const groupedSteps: Group[] = [
           {
             left: [
               {
-                p:
-                  'For strong cryptographic privacy, Observer #2 then repeats this same shuffle + re-encryption process, starting with the mixed list from Observer #1.',
+                p: 'For strong cryptographic privacy, Observer #2 then repeats this same shuffle + re-encryption process, starting with the mixed list from Observer #1.',
               },
               '',
               {

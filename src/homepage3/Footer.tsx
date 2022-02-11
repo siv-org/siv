@@ -1,6 +1,6 @@
 import { EmailSignup } from './EmailSignup'
 
-const email = 'team@secureinternetvoting.org'
+const email = 'team@siv.org'
 
 export const Footer = (): JSX.Element => (
   <footer>

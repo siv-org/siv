@@ -30,8 +30,8 @@ export const EncryptedVote = ({ auth, columns, state }: { auth: string; columns:
           <td>{auth}</td>
           {columns.map((key) => (
             <Fragment key={key}>
-              <td>{state.encrypted[key]?.encrypted}</td>
-              <td>{state.encrypted[key]?.unlock}</td>
+              <td className="monospaced">{state.encrypted[key]?.encrypted}</td>
+              <td className="monospaced">{state.encrypted[key]?.lock}</td>
             </Fragment>
           ))}
         </tr>
@@ -50,7 +50,11 @@ export const EncryptedVote = ({ auth, columns, state }: { auth: string; columns:
         border: 1px solid #ccc;
         padding: 3px 10px;
         margin: 0;
-        max-width: 360px;
+        max-width: 240px;
+      }
+
+      td.monospaced {
+        font-family: monospace;
       }
 
       th,

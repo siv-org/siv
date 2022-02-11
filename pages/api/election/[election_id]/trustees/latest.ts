@@ -5,8 +5,7 @@ import { Trustee } from 'src/trustee/trustee-state'
 
 import { transform_email_keys } from './commafy'
 
-export type ParametersString = { g: string; p: string; q: string; t: number }
-export type TrusteesLatest = { parameters: ParametersString; trustees: Trustee[] }
+export type TrusteesLatest = { t: number; trustees: Trustee[] }
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { auth, election_id } = req.query
 
@@ -22,9 +21,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const doc = await election.get()
   if (!doc.exists) return res.status(400).send('Unknown Election ID.')
 
-  // Grab safe prime parameters
-  const data = { ...doc.data() }
-  const parameters = { g: data.g, p: data.p, q: data.q, t: data.t }
+  // Grab election threshold param
+  const t = { ...doc.data() }.t
 
   // Grab trustees
   const trustees = (await loadTrustees).docs.map((doc) => {
@@ -58,7 +56,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     return sortObject(decommafied) as Trustee
   })
 
-  const response: TrusteesLatest = { parameters, trustees }
+  const response: TrusteesLatest = { t, trustees }
 
   res.status(200).json(response)
 }

@@ -1,19 +1,22 @@
-import { mapValues } from 'lodash-es'
+// import { mapValues } from 'lodash-es'
 import { NextApiRequest, NextApiResponse } from 'next'
 
+/*
 import { encode } from '../../src/crypto/encode'
 import encrypt from '../../src/crypto/encrypt'
 import pick_random_integer from '../../src/crypto/pick-random-integer'
 import { big, bigPubKey } from '../../src/crypto/types'
 import { generateTrackingNum } from '../../src/vote/tracking-num'
 import { firebase } from './_services'
-import { generateAuthToken } from './invite-voters'
+import { generateAuthToken } from 'src/crypto/generate-auth-tokens'
 import { pusher } from './pusher'
+*/
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Disable this endpoint
   return res.status(401).end()
 
+  /*
   const election_id = '1612818814403'
   const p = '84490233071588324613543045838826431628034872330024413446004719838344478256747'
   const threshold_key = '25753591117431663234613254388754657393582184952307187183880669779500171305735'
@@ -53,8 +56,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   await pusher.trigger(`status-${election_id}`, 'votes', 'sample-votes')
 
   return res.status(200).json({ message: `Inserted ${num_samples} sample vote` })
+  */
 }
 
+/*
 const ballot_schema = [
   {
     id: 'favorite_apple',
@@ -63,3 +68,4 @@ const ballot_schema = [
     write_in_allowed: true,
   },
 ]
+*/

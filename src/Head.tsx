@@ -1,6 +1,6 @@
 import _Head from 'next/head'
 
-const card_image = `https://secureinternetvoting.org/preview.png`
+const card_image = `https://siv.org/preview.png`
 
 export const Head = ({ children = <></>, title }: { children?: JSX.Element; title: string }) => {
   const full_title = `SIV: ` + title

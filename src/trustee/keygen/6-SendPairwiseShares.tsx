@@ -1,23 +1,22 @@
+import bluebird from 'bluebird'
 import { keyBy, mapValues } from 'lodash-es'
 import { useEffect } from 'react'
+import { CURVE, RP, random_bigint } from 'src/crypto/curve'
 
 import { api } from '../../api-helper'
-import encrypt from '../../crypto/encrypt'
-import pickRandomInteger from '../../crypto/pick-random-integer'
+import { keygenEncrypt } from '../../crypto/keygen-encrypt'
 import { evaluate_private_polynomial } from '../../crypto/threshold-keygen'
-import { big, bigPubKey, toStrings } from '../../crypto/types'
 import { PrivateBox } from '../PrivateBox'
-import { StateAndDispatch, getParameters } from '../trustee-state'
+import { StateAndDispatch } from '../trustee-state'
 import { YouLabel } from '../YouLabel'
-import { EncryptionNote } from './EncryptionNote'
 
 export const SendPairwiseShares = ({ dispatch, state }: StateAndDispatch) => {
   const {
+    auth,
     encrypted_pairwise_shares_for: encrypteds_for,
     own_email,
     pairwise_randomizers_for: randomizers,
     pairwise_shares_for: shares,
-    parameters,
     private_coefficients: coeffs,
     trustees,
   } = state
@@ -26,7 +25,7 @@ export const SendPairwiseShares = ({ dispatch, state }: StateAndDispatch) => {
   // Runs once, after all commitments have been broadcast
   useEffect(() => {
     // Need these before we begin
-    if (!parameters || !trustees || !coeffs || trustees_w_commitments !== trustees.length) return
+    if (!trustees || !coeffs || trustees_w_commitments !== trustees.length) return
 
     // Don't run if we've already calculated these
     if (shares) return
@@ -35,55 +34,56 @@ export const SendPairwiseShares = ({ dispatch, state }: StateAndDispatch) => {
 
     // Calculate pairwise shares
     const pairwise_shares_for = mapValues(trusteesMap, ({ index }) =>
-      evaluate_private_polynomial(
-        index + 1,
-        coeffs.map((c) => big(c)),
-        getParameters(state),
-      ).toString(),
+      evaluate_private_polynomial(index + 1, coeffs.map(BigInt)).toString(),
     )
+    // console.log(pairwise_shares_for)
+
     // Save the share for yourself
     dispatch({ decrypted_shares_from: { [own_email]: pairwise_shares_for[own_email] } })
 
     // Encrypt the pairwise shares for the target recipients eyes only...
 
     // First we pick randomizers for each
-    const pairwise_randomizers_for = mapValues(trusteesMap, () => pickRandomInteger(big(parameters.p)))
+    const pairwise_randomizers_for = mapValues(trusteesMap, random_bigint)
 
-    // Then we encrypt
-    const encrypted_pairwise_shares_for = trustees.reduce(
-      (memo, { email, recipient_key, you }) =>
-        you
-          ? memo // Don't encrypt to self
-          : {
-              ...memo,
-              [email]: toStrings(
-                encrypt(
-                  bigPubKey({ generator: parameters.g, modulo: parameters.p, recipient: recipient_key as string }),
-                  pairwise_randomizers_for[email],
-                  big(pairwise_shares_for[email]),
-                ),
-              ),
-            },
-      {},
-    )
+    ;(async () => {
+      // Then we encrypt
+      const encrypted_pairwise_shares_for = mapValues(
+        (await bluebird.props(
+          trustees.reduce(
+            (memo, { email, recipient_key, you }) =>
+              you
+                ? memo // Don't encrypt to self
+                : {
+                    ...memo,
+                    [email]: keygenEncrypt(
+                      RP.fromHex(recipient_key!), // eslint-disable-line @typescript-eslint/no-non-null-assertion
+                      pairwise_randomizers_for[email],
+                      pairwise_shares_for[email],
+                    ),
+                  },
+            {},
+          ),
+        )) as Record<string, unknown>,
+        JSON.stringify,
+      )
 
-    dispatch({
-      encrypted_pairwise_shares_for,
-      pairwise_randomizers_for: mapValues(pairwise_randomizers_for, (r) => r.toString()),
-      pairwise_shares_for,
-    })
+      dispatch({
+        encrypted_pairwise_shares_for,
+        pairwise_randomizers_for: mapValues(pairwise_randomizers_for, String),
+        pairwise_shares_for,
+      })
 
-    // Send encrypted_pairwise_shares to admin to broadcast
-    api(`election/${state.election_id}/trustees/update`, {
-      auth: state.auth,
-      email: state.own_email,
-      encrypted_pairwise_shares_for,
-    })
+      // Send encrypted_pairwise_shares to admin to broadcast
+      api(`election/${state.election_id}/trustees/update`, {
+        auth,
+        email: state.own_email,
+        encrypted_pairwise_shares_for,
+      })
+    })()
   }, [coeffs, trustees_w_commitments])
 
-  if (!trustees || !coeffs || trustees_w_commitments !== trustees.length) {
-    return <></>
-  }
+  if (!trustees || !coeffs || trustees_w_commitments !== trustees.length) return <></>
 
   return (
     <>
@@ -106,13 +106,12 @@ export const SendPairwiseShares = ({ dispatch, state }: StateAndDispatch) => {
                   {term_index !== coeffs.length - 1 && ' + '}
                 </span>
               ))}{' '}
-              % {parameters?.q} ≡ {state.pairwise_shares_for ? state.pairwise_shares_for[email] : '[pending...]'}
+              % {`${CURVE.l}`} ≡ {state.pairwise_shares_for ? state.pairwise_shares_for[email] : '[pending...]'}
             </li>
           ))}
         </ol>
       </PrivateBox>
       <p>Encrypt the private shares so only the target recipient can read them.</p>
-      <EncryptionNote />
       <PrivateBox>
         <ol>
           {trustees.map(({ email, recipient_key, you }) => (

@@ -1,9 +1,8 @@
 import { mapValues, merge } from 'lodash-es'
+import { RP, random_bigint, stringToPoint } from 'src/crypto/curve'
+import { CipherStrings } from 'src/crypto/stringify-shuffle'
 
-import { encode } from '../crypto/encode'
 import encrypt from '../crypto/encrypt'
-import pickRandomInteger from '../crypto/pick-random-integer'
-import { big, bigPubKey } from '../crypto/types'
 import { Item } from './storeElectionInfo'
 import { generateTrackingNum } from './tracking-num'
 import { useLocalStorageReducer } from './useLocalStorage'
@@ -14,9 +13,10 @@ export type State = {
   ballot_design?: Item[]
   election_title?: string
   encoded: Map
-  encrypted: Record<string, { encrypted: string; unlock: string }>
+  encrypted: Record<string, CipherStrings>
+  esignature_requested?: boolean
   plaintext: Map
-  public_key: { generator: string; modulo: string; recipient: string }
+  public_key?: string
   randomizer: Map
   submitted_at?: Date
   tracking?: string
@@ -42,6 +42,12 @@ function reducer(prev: State, payload: Map) {
     }
   })
 
+  // Make sure we have a public key
+  if (Object.keys(newState.plaintext) && !prev.public_key) {
+    alert('The election admin has not finished setting an encryption address yet.')
+    return prev
+  }
+
   // Generate a new tracking number
   newState.tracking = generateTrackingNum()
 
@@ -51,18 +57,19 @@ function reducer(prev: State, payload: Map) {
 
   // For each key in plaintext
   const encrypted = mapValues(newState.plaintext, (value, key) => {
-    // Encode the string into an integer
-    encoded[key] = encode(`${newState.tracking}:${value}`)
+    // Encode the string into an element of our Prime Order Group
+    encoded[key] = stringToPoint(`${newState.tracking}:${value}`).toHex()
 
     // Generate & store a randomizer
-    const random = pickRandomInteger(big(prev.public_key.modulo))
-    randomizer[key] = random.toString()
+    const random = random_bigint()
+    randomizer[key] = String(random)
 
     // Encrypt the encoded value w/ its randomizer
-    const cipher = encrypt(bigPubKey(prev.public_key), random, big(encoded[key]))
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const cipher = encrypt(RP.fromHex(prev.public_key!), random, RP.fromHex(encoded[key]))
 
     // Store the encrypted cipher as strings
-    return mapValues(cipher, (c) => c.toString())
+    return mapValues(cipher, String)
   })
 
   return merge(newState, { encoded, encrypted, randomizer })

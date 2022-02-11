@@ -1,6 +1,6 @@
 import { map } from 'lodash-es'
+import { stringToPoint } from 'src/crypto/curve'
 
-import { encode } from '../crypto/encode'
 import { public_key } from './election-parameters'
 import { Paper } from './Paper'
 import { useVoteContext } from './VoteContext'
@@ -17,17 +17,19 @@ Encrypted @ ${new Date().toString()}
 
 Encryption Formula
   https://en.wikipedia.org/wiki/ElGamal_encryption
-  encrypted = encoded * (recipient ^ randomizer) % modulo
-  unlock = (generator ^ randomizer) % modulo
+  in Ristretto255 prime-order subgroup of Elliptic Curve25519
+
+  Encrypted = Encoded + (Recipient * randomizer)
+  Lock = (Generator * randomizer)
 
 Public Key
-  ${map(public_key, (v, k) => `${k}: ${v.toString()}`).join('\n  ')}
+${public_key}
 
 ${map(
   state.plaintext,
-  (_, key) => `${key}
-  plaintext: ${state.plaintext[key]}
-  encoded: ${encode(state.plaintext[key] as string)}
+  (value: string, key) => `${key}
+  plaintext: ${value}
+  encoded: ${stringToPoint(value)}
   randomizer: ${state.randomizer[key]}
   ${state.encrypted[key]?.slice(3, -2)}
 `,

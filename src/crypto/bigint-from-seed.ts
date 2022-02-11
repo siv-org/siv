@@ -1,18 +1,18 @@
-import { Crypto } from '@peculiar/webcrypto'
+import { CURVE } from '@noble/ed25519'
 
-import { Big, big } from './types'
-
-const crypto = new Crypto()
+import { bytesToHex } from './bytes-to-hex'
+import { mod } from './curve'
+import { sha256 } from './sha256'
 
 /**
- * Deterministically generate a pseudorandom integer less than `max`, from a given `seed` string.
+ * Deterministically generate a pseudorandom bigint less than `max`, from a given `seed` string.
  */
-export async function integer_from_seed(seed: string, max: Big): Promise<Big> {
+export async function bigint_from_seed(seed: string, max = CURVE.l): Promise<bigint> {
   // This will hold our growing buffer of bytes
   let bytes = new ArrayBuffer(0)
 
   // How many bytes will we need?
-  const bits = max.bitLength()
+  const bits = max.toString(2).length
   const bytesNeeded = Math.ceil(bits / 8)
 
   // Because we're going to mod the result, we want to create significantly more bytes
@@ -28,21 +28,14 @@ export async function integer_from_seed(seed: string, max: Big): Promise<Big> {
     bytes = appendBuffer(bytes, hash)
   }
 
-  // 2. Convert bits into a BigInteger
-  const integer = big([...new Uint8Array(bytes)])
+  // 2. Convert bits into a BigInt
+  const hex = `0x${bytesToHex(bytes)}`
+  const integer = BigInt(hex)
 
   // 3. Make sure integer is not greater than max
-  const result = integer.mod(max)
+  const result = mod(integer, max)
 
   return result
-}
-
-// Example from https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/digest#Basic_example
-async function sha256(message: string) {
-  const encoder = new TextEncoder()
-  const data = encoder.encode(message)
-  const hash = await crypto.subtle.digest('SHA-256', data)
-  return hash
 }
 
 /**

@@ -1,4 +1,3 @@
-import { map } from 'lodash-es'
 import { useReducer } from 'react'
 
 import { Paper } from '../../protocol/Paper'
@@ -18,11 +17,13 @@ export const DetailedEncryptionReceipt = ({ state }: { state: State & { submitte
 
 Encryption Formula
   https://en.wikipedia.org/wiki/ElGamal_encryption
-  encrypted = encoded * (recipient ^ randomizer) % modulo
-  lock = (generator ^ randomizer) % modulo
+  in Ristretto255 prime-order subgroup of Elliptic Curve25519
+
+  Encrypted = Encoded + (Recipient * randomizer)
+  Lock = (Generator * randomizer)
 
 Public Key
-  ${map(state.public_key, (v, k) => `${k}: ${v}`).join('\n  ')}
+  ${state.public_key}
 
 ---------
 
@@ -35,7 +36,7 @@ ${Object.keys(state.plaintext)
   encoded: ${state.encoded[key]}
   randomizer: ${state.randomizer[key]}
     encrypted: ${state.encrypted[key].encrypted}
-    lock: ${state.encrypted[key].unlock}
+    lock: ${state.encrypted[key].lock}
 `,
   )
   .join('\n')}`}

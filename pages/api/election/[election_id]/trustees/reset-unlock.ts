@@ -14,7 +14,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { auth, email } = req.body
 
   if (!email) return res.status(404)
-  if (!('david@secureinternetvoting.org' === email || email.includes('@dsernst.com')))
+  if (!('david@siv.org' === email || email.includes('@dsernst.com')))
     return res.status(401).json({ error: 'Not authorized to reset' })
 
   const electionDoc = firebase
@@ -60,11 +60,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   await Promise.all([reset_decrypted, reset_trustees()])
-  const success_msg = `Successfully reset db for election/${election_id}/unlock`
-  console.log(success_msg)
+  console.log(`Successfully reset db for election/${election_id}/unlock`)
 
   // Notify all participants to reset
   await pusher.trigger(`keygen-${election_id}`, 'reset-unlock', `${email} trigged reset`)
 
-  res.status(204).json({ message: success_msg })
+  res.status(204).end()
 }

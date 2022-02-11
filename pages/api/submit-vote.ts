@@ -1,6 +1,6 @@
 import { firestore } from 'firebase-admin'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { Cipher_Text } from 'src/crypto/types'
+import { CipherStrings } from 'src/crypto/stringify-shuffle'
 
 import { EncryptedVote, stringifyEncryptedVote } from '../../src/status/AcceptedVotes'
 import { firebase, pushover, sendEmail } from './_services'
@@ -72,7 +72,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   res.status(200).send('Success.')
 }
 
-const buildSubmissionReceipt = (auth: string, encrypted_vote: Record<string, Cipher_Text>) =>
+const buildSubmissionReceipt = (auth: string, encrypted_vote: Record<string, CipherStrings>) =>
   Buffer.from(`
 ============================
 Encrypted Submission Receipt

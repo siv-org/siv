@@ -31,3 +31,12 @@ export const mapKeys = (obj: Obj, fn: (value: unknown, key: string, obj?: Obj) =
 /** Build a new object of only picked props */
 export const pick = (obj: Obj, props: string[]) =>
   props.reduce((acc: Obj, prop: string) => ({ ...acc, [prop]: obj[prop] }), {})
+
+/** Builds an array of numbers from (optional) start to end */
+export const range = (start: number, end?: number) => {
+  if (end === undefined) {
+    end = start
+    start = 0
+  }
+  return [...new Array(end - start).keys()].map((i) => i + start)
+}

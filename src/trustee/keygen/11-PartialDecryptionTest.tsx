@@ -1,29 +1,28 @@
 import { useEffect } from 'react'
+import { RP, stringToPoint } from 'src/crypto/curve'
 
 import { api } from '../../api-helper'
 import { partial_decrypt } from '../../crypto/threshold-keygen'
-import { big } from '../../crypto/types'
 import { PrivateBox } from '../PrivateBox'
-import { StateAndDispatch, getParameters } from '../trustee-state'
+import { StateAndDispatch } from '../trustee-state'
 import { YouLabel } from '../YouLabel'
 import { EncryptionNote } from './EncryptionNote'
 
-export const plaintext = '2021'
-export const randomizer = '108'
+export const plaintext = 'Hello World'
+export const randomizer = BigInt('2417724384034137663855661539098615942228874043861702527369412269014269114')
+const unlock = RP.BASE.multiply(randomizer)
 
 export const PartialDecryptionTest = ({ dispatch, state }: StateAndDispatch) => {
-  const { parameters, partial_decryption: partial, private_keyshare, threshold_public_key, trustees = [] } = state
+  const { partial_decryption: partial, private_keyshare, threshold_public_key, trustees = [] } = state
 
   useEffect(() => {
     // Don't start until we have the threshold key
-    if (!threshold_public_key || !parameters || !private_keyshare) return
+    if (!threshold_public_key || !private_keyshare) return
 
     // Only calculate once
     if (partial) return
 
-    const unlock = big(parameters.g).modPow(big(randomizer), big(parameters.p))
-
-    const partial_decryption = partial_decrypt(unlock, big(private_keyshare), getParameters(state)).toString()
+    const partial_decryption = partial_decrypt(unlock, BigInt(private_keyshare)).toString()
 
     dispatch({ partial_decryption })
 
@@ -35,14 +34,9 @@ export const PartialDecryptionTest = ({ dispatch, state }: StateAndDispatch) => 
     })
   }, [threshold_public_key])
 
-  if (!threshold_public_key || !parameters) {
-    return <></>
-  }
+  if (!threshold_public_key) return <></>
 
-  const p = big(parameters.p)
-
-  const encrypted = big(threshold_public_key).modPow(big(randomizer), p).multiply(big(plaintext)).mod(p)
-  const unlock = big(parameters.g).modPow(big(randomizer), big(parameters.p))
+  const encrypted = RP.fromHex(threshold_public_key).multiplyUnsafe(randomizer).add(stringToPoint(plaintext))
 
   return (
     <>
@@ -52,25 +46,25 @@ export const PartialDecryptionTest = ({ dispatch, state }: StateAndDispatch) => 
         together to unlock it.
       </p>
       <p>
-        We&apos;ll encrypt the message `{plaintext}` using `{randomizer}` as the randomizer.
+        We&apos;ll encrypt the message `{plaintext}` using `{`${randomizer}`}` as the randomizer.
       </p>
       <EncryptionNote />
       <ul>
         <li>
-          encrypted = {plaintext} * ({threshold_public_key} ^ {randomizer}) % {parameters.p} ≡ {encrypted.toString()}
+          Encrypted = {plaintext} + ({threshold_public_key} * {`${randomizer}`}) ≡ {`${encrypted}`}
         </li>
         <li>
-          unlock = ({parameters.g} ^ {randomizer}) % {parameters.p} ≡ {unlock.toString()}
+          Unlock = {`${RP.BASE}`} * {`${randomizer}`} ≡ {`${unlock}`}
         </li>
       </ul>
       <p>
         Now each party can contribute their partial decryption, using their secret keyshare:
         <br />
-        <i>partial_decryption = unlock ^ keyshare % p</i>
+        <i>Partial_decryption = Unlock * keyshare</i>
       </p>
       <PrivateBox>
         <p>
-          partial = {unlock.toString()} ^ {private_keyshare} % {parameters.p} ≡ {partial || '[pending...]'}
+          Partial = {`${unlock}`} * {private_keyshare} ≡ {partial || '[pending...]'}
         </p>
       </PrivateBox>
       <ul>

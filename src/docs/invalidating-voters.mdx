@@ -5,7 +5,7 @@ import { Todo } from './Todo'
 
 ## Initial Steps:
 
-1. In your [**Election Admin Dashboard**](https://login.siv.tech), navigate to the **`Voters`** tab.
+1. In your [**Election Admin Dashboard**](https://login.siv.org), navigate to the **`Voters`** tab.
 
 2. Check the box(es) for the voter(s) you want to invalidate.
 
@@ -39,7 +39,6 @@ SIV prevents accidentally sending invitations for invalidated tokens.
 
 <Todo>
 
-
 > The admin can decide whether to notify the voter or not.
 
 **_Admin Interface:_**
@@ -55,11 +54,9 @@ SIV prevents accidentally sending invitations for invalidated tokens.
 
 </Todo>
 
-
 **_Voter Interface:_**
 
 <Todo>
-
 
 - If the admin chose to notify the voter, the voter receives an email:
 
@@ -69,13 +66,11 @@ SIV prevents accidentally sending invitations for invalidated tokens.
 
 </Todo>
 
-
 - The `/vote` page errors when given an invalidated token:
 
   > ### This voter authorization token was invalidated.
 
 <Todo>
-
 
 > If you believe this was in error, you can write a message to the Election Administrator:
 >
@@ -87,13 +82,11 @@ SIV prevents accidentally sending invitations for invalidated tokens.
 
 </Todo>
 
-
 ---
 
 ### Scenario III: The voter already voted, but votes haven’t been unlocked and tallied yet
 
 <Todo>
-
 
 > In the rare circumstance where a vote must be invalidated after it has already been submitted and accepted, SIV prioritizes security.
 >
@@ -142,13 +135,11 @@ SIV prevents accidentally sending invitations for invalidated tokens.
 
 </Todo>
 
-
 ---
 
 ### Scenario IV: The voter voted, and the votes have already been unlocked and tallied
 
 <Todo>
-
 
 > This situation is extreme and is only to be used under the most unusual circumstances.
 >
@@ -165,4 +156,3 @@ SIV prevents accidentally sending invitations for invalidated tokens.
 **_General Public Interface:_**
 
 </Todo>
-

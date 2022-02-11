@@ -2,7 +2,7 @@ import Link from 'next/link'
 
 import { EmailSignup } from './EmailSignup'
 
-const email = 'questions@secureinternetvoting.org'
+const email = 'questions@siv.org'
 
 export const Footer = (): JSX.Element => {
   return (

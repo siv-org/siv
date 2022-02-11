@@ -1,7 +1,6 @@
 import { firestore } from 'firebase-admin'
 import { NextApiRequest, NextApiResponse } from 'next'
-import pick_random_integer from 'src/crypto/pick-random-integer'
-import { big } from 'src/crypto/types'
+import { pick_random_bigint } from 'src/crypto/pick-random-bigint'
 
 import { firebase, sendEmail } from './_services'
 
@@ -54,7 +53,8 @@ ${button(link, 'Or Click Here to Login Directly')}
  * greater than 100,000
  * less than 999,999.
  */
-export const generateAdminLoginCode = () => pick_random_integer(big(1_000_000)).add(big(100_000)).toString().slice(0, 6)
+export const generateAdminLoginCode = () =>
+  (pick_random_bigint(BigInt(900_000)) + BigInt(100_000)).toString().slice(0, 6)
 
 const button = (link: string, text: string) =>
   `<table width="100%" cellspacing="0" cellpadding="0"><tr><td align="center"><table cellspacing="0" cellpadding="0"><tr><td style="border-radius: 8px;" bgcolor="#072054"><a href="${link}" target="_blank" style="padding: 8px 22px; border: 1px solid #072054;border-radius: 8px;font-family: Helvetica, Arial, sans-serif;font-size: 14px; color: #ffffff;text-decoration: none;font-weight:bold;display: inline-block;">${text}</a></td></tr></table></td></tr></table>`

@@ -1,11 +1,12 @@
-import { big } from '../../crypto/types'
+import { CURVE, RP } from 'src/crypto/curve'
+
 import { State } from '../trustee-state'
 
 export const Parameters = ({ state }: { state: State }) => {
-  if (!state.parameters) return <></>
+  if (!state.t) return <></>
 
   const n = state.trustees?.length
-  const t = state.parameters.t
+  const { t } = state
 
   return (
     <>
@@ -13,17 +14,23 @@ export const Parameters = ({ state }: { state: State }) => {
       <p>
         The goal is to generate a {t} of {n} threshold key (<i>t</i> = {t}, <i>n</i> = {n})
       </p>
+      <p>Our prime order group is Ristretto255, a subgroup of Curve25519.</p>
       <ul>
         <li>
-          Prime <i>p</i> = {state.parameters.p} ({big(state.parameters.p).bitLength()} bits)
+          Prime Order <i>l</i> = {`${CURVE.l}`} ({CURVE.l.toString(2).length} bits)
         </li>
         <li>
-          Prime <i>q</i> = {state.parameters.q}
-        </li>
-        <li>
-          Generator <i>g</i> = {state.parameters.g}
+          Generator <i>G</i> = {`${RP.BASE}`}
         </li>
       </ul>
+      <p>Ristretto points are represented by capital letters, scalars by lowercase.</p>
+      <p>
+        The operation (RistrettoPoint * scalar) is{' '}
+        <a href="https://en.wikipedia.org/wiki/Elliptic_curve_point_multiplication" rel="noreferrer" target="_blank">
+          Point Multiplication
+        </a>
+        , a one-way function.
+      </p>
     </>
   )
 }

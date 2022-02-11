@@ -1,10 +1,10 @@
 import { useEffect } from 'react'
+import { RP } from 'src/crypto/curve'
 
 import { api } from '../../api-helper'
 import { is_received_share_valid } from '../../crypto/threshold-keygen'
-import { big } from '../../crypto/types'
 import { PrivateBox } from '../PrivateBox'
-import { StateAndDispatch, getParameters } from '../trustee-state'
+import { StateAndDispatch } from '../trustee-state'
 import { YouLabel } from '../YouLabel'
 
 export const VerifyShares = ({ dispatch, state }: StateAndDispatch) => {
@@ -33,12 +33,7 @@ export const VerifyShares = ({ dispatch, state }: StateAndDispatch) => {
         console.log(`Verifying share from ${email}...`)
 
         // Verify the share
-        verified[email] = is_received_share_valid(
-          big(decrypted_share),
-          own_index + 1,
-          commitments,
-          getParameters(state),
-        )
+        verified[email] = is_received_share_valid(BigInt(decrypted_share), own_index + 1, commitments.map(RP.fromHex))
       }
     })
 
@@ -57,9 +52,7 @@ export const VerifyShares = ({ dispatch, state }: StateAndDispatch) => {
   }, [Object.keys(decrypted_shares_from).join()])
 
   // Don't display this section until we decrypt at least 2 shares (admin's comes at start)
-  if (Object.keys(decrypted_shares_from).length < 2) {
-    return <></>
-  }
+  if (Object.keys(decrypted_shares_from).length < 2) return <></>
 
   return (
     <>
@@ -68,7 +61,7 @@ export const VerifyShares = ({ dispatch, state }: StateAndDispatch) => {
         Each party can verify their received private shares against senders&apos; public commitments A<sub>c</sub>.
       </p>
       <p>
-        <i>Confirm:</i> g ^ share == Product( c from 0 to t-1 ){'{'} A<sub>c</sub> ^receivers_index ^c % p {'}'}
+        <i>Confirm:</i> g * share == Sum( c from 0 to t-1 ){'{'} A<sub>c</sub> * receivers_index ^c {'}'}
       </p>
       <PrivateBox>
         <p>Checking received shares...</p>

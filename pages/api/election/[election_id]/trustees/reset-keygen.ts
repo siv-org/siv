@@ -14,7 +14,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { auth, email } = req.body
 
   if (!email) return res.status(404)
-  if (!('david@secureinternetvoting.org' === email || email.includes('@dsernst.com')))
+  if (!('david@siv.org' === email || email.includes('@dsernst.com')))
     return res.status(401).json({ error: 'Not authorized to reset keygen' })
 
   const electionDoc = firebase
@@ -90,11 +90,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   await Promise.all([reset_pub_key, reset_admin(), reset_other_trustees()])
-  const success_msg = `Successfully reset db for election/${election_id}/keygen`
-  console.log(success_msg)
+  console.log(`Successfully reset db for election/${election_id}/keygen`)
 
   // Notify all participants to reset
   await pusher.trigger(`keygen-${election_id}`, 'reset-keygen', `${email} trigged reset`)
 
-  res.status(204).send(success_msg)
+  res.status(204).end()
 }

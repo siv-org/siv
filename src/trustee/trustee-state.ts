@@ -1,21 +1,15 @@
 import { merge } from 'lodash-es'
+import { stringifyPartial } from 'src/crypto/stringify-partials'
+import { CipherStrings, stringifyShuffle } from 'src/crypto/stringify-shuffle'
 
-import { ParametersString } from '../../pages/api/election/[election_id]/trustees/latest'
-import { Parameters } from '../crypto/threshold-keygen'
-import { big } from '../crypto/types'
 import { useLocalStorageReducer } from '../vote/useLocalStorage'
 import { diff } from './diff-objects'
 
 // Define our types
-type Cipher = { encrypted: string; unlock: string }
-export type Shuffled = Record<string, { proof: unknown; shuffled: Cipher[] }>
+export type Shuffled = Record<string, ReturnType<typeof stringifyShuffle>>
 export type Partial = {
   partial: string
-  proof: {
-    g_to_secret_r: string
-    obfuscated_trustee_secret: string
-    unlock_to_secret_r: string
-  }
+  proof: ReturnType<typeof stringifyPartial>
 }
 
 export type Trustee = {
@@ -26,7 +20,7 @@ export type Trustee = {
   name?: string
   partial_decryption?: string
   partials?: Record<string, Partial[]>
-  preshuffled?: Record<string, Cipher[]> // admin only
+  preshuffled?: Record<string, CipherStrings[]> // admin only
   recipient_key?: string
   shuffled?: Shuffled
   verified?: Record<string, boolean>
@@ -42,11 +36,11 @@ export type State = {
   own_index: number
   pairwise_randomizers_for?: Record<string, string>
   pairwise_shares_for?: Record<string, string>
-  parameters?: ParametersString
   partial_decryption?: string
-  personal_key_pair?: { decryption_key: string; public_key: { recipient: string } }
+  personal_key_pair?: { decryption_key: string; public_key: string }
   private_coefficients?: string[]
   private_keyshare?: string
+  t?: number
   threshold_public_key?: string
   trustees?: Trustee[]
   verified?: Record<string, boolean>
@@ -93,14 +87,3 @@ export const useTrusteeState = ({
   election_id: string
 }) =>
   useLocalStorageReducer(`observer-${election_id}-${auth}-${attempt}`, reducer, { auth, election_id, own_email: '' })
-
-/** Helper function to create Parameter from state.parameters */
-export function getParameters(state: State): Parameters {
-  if (!state.parameters) throw new TypeError('Missing params')
-
-  return {
-    g: big(state.parameters.g),
-    p: big(state.parameters.p),
-    q: big(state.parameters.q),
-  }
-}
