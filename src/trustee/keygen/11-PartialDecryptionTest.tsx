@@ -13,11 +13,11 @@ export const randomizer = BigInt('2417724384034137663855661539098615942228874043
 const unlock = RP.BASE.multiply(randomizer)
 
 export const PartialDecryptionTest = ({ dispatch, state }: StateAndDispatch) => {
-  const { parameters, partial_decryption: partial, private_keyshare, threshold_public_key, trustees = [] } = state
+  const { partial_decryption: partial, private_keyshare, threshold_public_key, trustees = [] } = state
 
   useEffect(() => {
     // Don't start until we have the threshold key
-    if (!threshold_public_key || !parameters || !private_keyshare) return
+    if (!threshold_public_key || !private_keyshare) return
 
     // Only calculate once
     if (partial) return
@@ -34,7 +34,7 @@ export const PartialDecryptionTest = ({ dispatch, state }: StateAndDispatch) => 
     })
   }, [threshold_public_key])
 
-  if (!threshold_public_key || !parameters) return <></>
+  if (!threshold_public_key) return <></>
 
   const encrypted = RP.fromHex(threshold_public_key).multiplyUnsafe(randomizer).add(stringToPoint(plaintext))
 

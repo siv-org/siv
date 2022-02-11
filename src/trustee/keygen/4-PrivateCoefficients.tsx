@@ -6,27 +6,27 @@ import { PrivateBox } from '../PrivateBox'
 import { StateAndDispatch } from '../trustee-state'
 
 export const PrivateCoefficients = ({ dispatch, state }: StateAndDispatch) => {
-  const trustees_w_recipient_keys = state.trustees?.filter((t) => t.recipient_key)
+  const { private_coefficients: coeffs, t, trustees } = state
+
+  const trustees_w_recipient_keys = trustees?.filter((t) => t.recipient_key)
 
   useEffect(() => {
     // This effect will run once all parties have broadcast a recipient key
-    if (!state.trustees || !state.parameters || trustees_w_recipient_keys?.length !== state.trustees.length) return
+    if (!trustees || !t || trustees_w_recipient_keys?.length !== trustees.length) return
 
     // Don't run if we don't have our own local private keys (already joined from another device)
     if (!state.personal_key_pair) return
 
     // Don't run more than once
-    if (state.private_coefficients) return
+    if (coeffs) return
 
     // Generate your private polynomial
-    const private_coefficients = pick_private_coefficients(state.parameters.t).map(String)
+    const private_coefficients = pick_private_coefficients(t).map(String)
 
     dispatch({ private_coefficients })
-  }, [state.trustees, trustees_w_recipient_keys?.length])
+  }, [trustees, trustees_w_recipient_keys?.length])
 
-  if (!state.trustees || !state.parameters || trustees_w_recipient_keys?.length !== state.trustees.length) return <></>
-
-  const coeffs = state.private_coefficients
+  if (!trustees || !t || trustees_w_recipient_keys?.length !== trustees.length) return <></>
 
   return (
     <>

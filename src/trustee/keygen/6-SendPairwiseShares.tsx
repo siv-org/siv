@@ -12,11 +12,11 @@ import { YouLabel } from '../YouLabel'
 
 export const SendPairwiseShares = ({ dispatch, state }: StateAndDispatch) => {
   const {
+    auth,
     encrypted_pairwise_shares_for: encrypteds_for,
     own_email,
     pairwise_randomizers_for: randomizers,
     pairwise_shares_for: shares,
-    parameters,
     private_coefficients: coeffs,
     trustees,
   } = state
@@ -25,7 +25,7 @@ export const SendPairwiseShares = ({ dispatch, state }: StateAndDispatch) => {
   // Runs once, after all commitments have been broadcast
   useEffect(() => {
     // Need these before we begin
-    if (!parameters || !trustees || !coeffs || trustees_w_commitments !== trustees.length) return
+    if (!trustees || !coeffs || trustees_w_commitments !== trustees.length) return
 
     // Don't run if we've already calculated these
     if (shares) return
@@ -76,7 +76,7 @@ export const SendPairwiseShares = ({ dispatch, state }: StateAndDispatch) => {
 
       // Send encrypted_pairwise_shares to admin to broadcast
       api(`election/${state.election_id}/trustees/update`, {
-        auth: state.auth,
+        auth,
         email: state.own_email,
         encrypted_pairwise_shares_for,
       })

@@ -2,7 +2,6 @@ import { merge } from 'lodash-es'
 import { stringifyPartial } from 'src/crypto/stringify-partials'
 import { CipherStrings, stringifyShuffle } from 'src/crypto/stringify-shuffle'
 
-import { ParametersString } from '../../pages/api/election/[election_id]/trustees/latest'
 import { useLocalStorageReducer } from '../vote/useLocalStorage'
 import { diff } from './diff-objects'
 
@@ -37,11 +36,11 @@ export type State = {
   own_index: number
   pairwise_randomizers_for?: Record<string, string>
   pairwise_shares_for?: Record<string, string>
-  parameters?: ParametersString
   partial_decryption?: string
   personal_key_pair?: { decryption_key: string; public_key: string }
   private_coefficients?: string[]
   private_keyshare?: string
+  t?: number
   threshold_public_key?: string
   trustees?: Trustee[]
   verified?: Record<string, boolean>

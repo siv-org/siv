@@ -3,10 +3,10 @@ import { CURVE, RP } from 'src/crypto/curve'
 import { State } from '../trustee-state'
 
 export const Parameters = ({ state }: { state: State }) => {
-  if (!state.parameters) return <></>
+  if (!state.t) return <></>
 
   const n = state.trustees?.length
-  const t = state.parameters.t
+  const { t } = state
 
   return (
     <>

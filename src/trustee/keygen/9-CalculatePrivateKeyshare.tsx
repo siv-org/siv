@@ -7,14 +7,14 @@ import { PrivateBox } from '../PrivateBox'
 import { StateAndDispatch } from '../trustee-state'
 
 export const CalculatePrivateKeyshare = ({ dispatch, state }: StateAndDispatch) => {
-  const { trustees = [], decrypted_shares_from = {}, parameters, private_keyshare = '...' } = state
+  const { trustees = [], decrypted_shares_from = {}, private_keyshare = '...' } = state
 
   const num_passed = sumBy(trustees, (t) => sumBy(Object.values(t.verified || {}), Number))
   const num_expected = trustees.length * (trustees.length - 1)
 
   useEffect(() => {
     // Don't start until all passed verifications
-    if (!num_passed || num_passed !== num_expected || !parameters) return
+    if (!num_passed || num_passed !== num_expected) return
 
     const incoming_bigs = Object.values(decrypted_shares_from).map(BigInt)
 

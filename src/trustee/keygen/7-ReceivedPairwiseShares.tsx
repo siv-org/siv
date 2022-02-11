@@ -6,20 +6,13 @@ import { PrivateBox } from '../PrivateBox'
 import { StateAndDispatch } from '../trustee-state'
 
 export const ReceivedPairwiseShares = ({ dispatch, state }: StateAndDispatch) => {
-  const {
-    decrypted_shares_from = {},
-    parameters,
-    pairwise_shares_for: shares,
-    trustees = [],
-    personal_key_pair,
-    own_email,
-  } = state
+  const { decrypted_shares_from = {}, pairwise_shares_for: shares, trustees = [], personal_key_pair, own_email } = state
 
   const num_encrypteds_broadcast = sumBy(trustees, (t) => Object.keys(t.encrypted_pairwise_shares_for || {}).length)
 
   // Reruns whenever more encrypted_pairwise_shares_for are broadcast
   useEffect(() => {
-    if (!personal_key_pair || !parameters) return
+    if (!personal_key_pair) return
 
     // For each trustee...
     trustees.forEach(({ email, encrypted_pairwise_shares_for = {} }) => {

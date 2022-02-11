@@ -7,11 +7,11 @@ import { StateAndDispatch } from '../trustee-state'
 import { plaintext, randomizer } from './11-PartialDecryptionTest'
 
 export const CombinePartials = ({ state }: StateAndDispatch) => {
-  const { trustees = [], parameters, threshold_public_key } = state
+  const { trustees = [], t, threshold_public_key } = state
 
   const partials = trustees.map((t) => t.partial_decryption).filter((p) => p)
 
-  if (!parameters || partials.length < parameters.t || !threshold_public_key) return <></>
+  if (!t || partials.length < t || !threshold_public_key) return <></>
 
   const indices = range(1, partials.length + 1)
   const indices_as_bigs = indices.map((index) => [BigInt(index)])
