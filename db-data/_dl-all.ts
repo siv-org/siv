@@ -33,6 +33,8 @@ bluebird.mapSeries(collectionsToDownload, async ([collection, subcollections, or
   fs.writeFileSync(path.join(__dirname, `/${collection}.json`), JSON.stringify(data))
   console.log(`  ✅ Wrote ${data.length} rows to ${collection}.json\n`)
 
+  // const data = elections
+
   if (subcollections?.length) {
     await bluebird.mapSeries(subcollections, async ([sub, , suborder, subdirection]) => {
       console.log(`  ⬇️  Downloading sub ${sub}...`)
