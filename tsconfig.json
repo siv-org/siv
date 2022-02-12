@@ -20,6 +20,12 @@
     "jsx": "preserve",
     "downlevelIteration": true
   },
+  "ts-node": {
+    "transpileOnly": true,
+    "compilerOptions": {
+      "module": "CommonJS"
+    }
+  },
   "exclude": ["node_modules", ".next", "out", "cypress"],
   "include": ["**/*.ts", "**/*.tsx"]
 }
