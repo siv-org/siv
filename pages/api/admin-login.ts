@@ -34,7 +34,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   const link = `${req.headers.origin}/admin?email=${email}&code=${login_code}`
   await sendEmail({
-    from: 'Secure Internet Voting',
+    from: 'SIV',
     recipient: email,
     subject: 'SIV Admin Login',
     text: `A request was made to access your SIV Admin Dashboard.
