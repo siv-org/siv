@@ -50,20 +50,23 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   const promises: Promise<unknown>[] = []
 
-  promises.push(
-    sendEmail({
-      attachment: { data: buildSubmissionReceipt(auth, encrypted_vote), filename: 'receipt.txt' },
-      from: election_manager,
-      recipient: email,
-      subject: 'Vote Confirmation',
-      text: `<h2 style="margin: 0">Your vote was successfully submitted.</h2>
+  // TEMPORARY for 2022-02-12 demo vid script
+  if (!(email.includes('demo-voter-') && email.includes('@siv.org'))) {
+    promises.push(
+      sendEmail({
+        attachment: { data: buildSubmissionReceipt(auth, encrypted_vote), filename: 'receipt.txt' },
+        from: election_manager,
+        recipient: email,
+        subject: 'Vote Confirmation',
+        text: `<h2 style="margin: 0">Your vote was successfully submitted.</h2>
   The tallied results will be posted at <a href="${link}">${link}</a> when the election closes.
 
   For your records, your encrypted vote is attached.
 
   <em style="font-size:13px">You can press reply if you have a problem.</em>`,
-    }),
-  )
+      }),
+    )
+  }
 
   promises.push(pusher.trigger(`status-${election_id}`, 'votes', auth))
 
