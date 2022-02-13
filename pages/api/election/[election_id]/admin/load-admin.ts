@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import UAParser from 'ua-parser-js'
 
 import { firebase } from '../../../_services'
-import { checkJwt } from '../../../validate-admin-jwt'
+import { checkJwtOwnsElection } from '../../../validate-admin-jwt'
 import { QueueLog } from './invite-voters'
 
 export type ReviewLog = { review: 'approve' | 'reject' }
@@ -47,8 +47,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Check required params
   if (!election_id) return res.status(401).json({ error: `Missing election_id` })
 
-  // Confirm they're a valid admin
-  if (!checkJwt(req, res).valid) return
+  // Confirm they're a valid admin that created this election
+  const jwt = await checkJwtOwnsElection(req, res, election_id)
+  if (!jwt.valid) return
 
   const election = firebase
     .firestore()
