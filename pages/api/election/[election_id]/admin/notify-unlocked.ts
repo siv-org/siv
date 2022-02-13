@@ -2,7 +2,7 @@ import bluebird from 'bluebird'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import { firebase, sendEmail } from '../../../_services'
-import { checkJwt } from '../../../validate-admin-jwt'
+import { checkJwtOwnsElection } from '../../../validate-admin-jwt'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { election_id } = req.query as { election_id?: string }
@@ -20,8 +20,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const loadVoters = election.collection('voters').orderBy('index', 'asc').get()
   const loadVotes = election.collection('votes').get()
 
-  // Confirm they're a valid admin
-  if (!checkJwt(req, res).valid) return
+  // Confirm they're a valid admin that created this election
+  const jwt = await checkJwtOwnsElection(req, res, election_id)
+  if (!jwt.valid) return
 
   // Is election_id in DB?
   const electionDoc = await loadElection

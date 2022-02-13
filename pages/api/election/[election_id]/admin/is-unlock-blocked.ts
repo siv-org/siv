@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { checkJwt } from 'pages/api/validate-admin-jwt'
+import { checkJwtOwnsElection } from 'pages/api/validate-admin-jwt'
 
 import { firebase } from '../../../_services'
 
@@ -19,8 +19,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Begin preloading all these docs
   const loadTrustees = election.collection('trustees').orderBy('index', 'asc').get()
 
-  // Confirm they're a valid admin
-  if (!checkJwt(req, res).valid) return
+  // Confirm they're a valid admin that created this election
+  const jwt = await checkJwtOwnsElection(req, res, election_id)
+  if (!jwt.valid) return
 
   // Grab trustees
   const trustees = (await loadTrustees).docs.map((doc) => ({ ...doc.data() }))
