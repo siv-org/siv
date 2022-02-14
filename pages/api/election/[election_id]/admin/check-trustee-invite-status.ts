@@ -40,13 +40,15 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     await bluebird
       .map(
         mgEventsList.items,
-        async (item: { event: string; recipient: string }) => {
+        async (item: { event: string; message: { headers: { to: string } } }) => {
+          const to = item.message.headers.to
+
           // Skip replies to us
-          if (item.recipient === 'election@siv.org') return
-          const trusteeDoc = electionDoc.collection('trustees').doc(item.recipient)
+          if (to === 'election@siv.org') return
+          const trusteeDoc = electionDoc.collection('trustees').doc(to)
           // Confirm trusteeDoc exists
           if (!(await trusteeDoc.get()).exists) {
-            return console.log(`No trustee doc for ${item.recipient}`)
+            return console.log(`No trustee doc for ${to}`)
           }
 
           num_events++
