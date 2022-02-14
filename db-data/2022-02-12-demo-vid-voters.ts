@@ -2,20 +2,19 @@
 The goal of this script is to simulate voters casting votes in our demo video election.
 
 Execute it w/:
-    NODE_OPTIONS='--experimental-fetch' npx ts-node db-data/2022-02-12-demo-vid-voters.ts
+    npx ts-node db-data/2022-02-12-demo-vid-voters.ts
 */
 
 import './_env'
 
 import { mapValues, round } from 'lodash'
+import fetch from 'node-fetch' // Replaced in node 17.5 w/ experimental native fetch
 
 import { firebase } from '../pages/api/_services'
 import { RP, random_bigint, stringToPoint } from '../src/crypto/curve'
 import encrypt from '../src/crypto/encrypt'
 import { CipherStrings } from '../src/crypto/stringify-shuffle'
 import { generateTrackingNum } from '../src/vote/tracking-num'
-
-// import fetch from 'node-fetch' // Replaced by node 17.5 experimental native fetch
 
 const api = (route: string, body?: Record<string, unknown>) =>
   fetch(`http://localhost:3000/api/${route}`, {

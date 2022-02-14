@@ -53,6 +53,7 @@
     "moment": "^2.29.1",
     "next": "11",
     "next-transpile-modules": "8",
+    "node-fetch": "2",
     "pdf-lib": "^1.16.0",
     "pusher": "^4.0.2",
     "pusher-js": "^7.0.2",
