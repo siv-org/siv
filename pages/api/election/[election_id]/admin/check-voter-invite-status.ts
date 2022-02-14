@@ -40,13 +40,16 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     await bluebird
       .map(
         mgEventsList.items,
-        async (item: { event: string; recipient: string }) => {
+        async (item: { event: string; message: { headers: { to: string } } }) => {
+          const to = item.message.headers.to
+
           // Skip replies to us
-          if (item.recipient === 'election@siv.org') return
-          const voterDoc = electionDoc.collection('voters').doc(item.recipient)
+          if (to === 'election@siv.org') return
+
+          const voterDoc = electionDoc.collection('voters').doc(to)
           // Confirm voterDoc exists
           if (!(await voterDoc.get()).exists) {
-            return console.log(`No voter doc for ${item.recipient}`)
+            return console.log(`No voter doc for ${to}`)
           }
 
           num_events++

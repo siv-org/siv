@@ -29,7 +29,7 @@ export const RequestEsignatures = () => {
     <div>
       <label onClick={toggleESignature}>
         <div style={{ display: 'inline-block', marginRight: 5, position: 'relative', top: 2 }}>
-          <Image height={(218 / 700) * 70} layout="fixed" placeholder="blur" src={esignatureIcon} width={70} />
+          <Image height={(218 / 700) * 70} layout="fixed" src={esignatureIcon} width={70} />
         </div>
         Request eSignatures?
       </label>
