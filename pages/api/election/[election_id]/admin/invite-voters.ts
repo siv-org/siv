@@ -1,5 +1,5 @@
-import bluebird from 'bluebird'
 import { NextApiRequest, NextApiResponse } from 'next'
+import throat from 'throat'
 
 import { firebase } from '../../../_services'
 import { buildSubject, send_invitation_email } from '../../../invite-voters'
@@ -23,10 +23,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   // Email each voter their auth token
-  await bluebird
-    .map(
-      voters,
-      async (email: string) => {
+  await Promise.all(
+    voters.map(
+      throat(10, async (email: string) => {
         // Lookup voter info
         const voter_doc = electionDoc.collection('voters').doc(email)
         const voter = await voter_doc.get()
@@ -49,11 +48,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           // Wait a second after sending to not overload Mailgun
           return new Promise((res) => setTimeout(res, 1000))
         })
-      },
-      { concurrency: 10 },
-    )
-    .catch((error) => {
-      throw res.status(400).json({ error })
-    })
-  await res.status(201).json({ message: 'Done' })
+      }),
+    ),
+  ).catch((error) => {
+    throw res.status(400).json({ error })
+  })
+
+  res.status(201).json({ message: 'Done' })
 }
