@@ -9,6 +9,7 @@ import { mask } from './mask-token'
 import { QueuedCell } from './QueuedCell'
 import { Signature, getStatus } from './Signature'
 import { use_multi_select } from './use-multi-select'
+import { useVoterInvites } from './useVoterInvites'
 
 export const ValidVotersTable = ({
   checked,
@@ -26,6 +27,8 @@ export const ValidVotersTable = ({
   const { election_id, esignature_requested, voters } = useStored()
   const [mask_tokens, toggle_tokens] = useReducer((state) => !state, true)
   const { last_selected, pressing_shift, set_last_selected } = use_multi_select()
+
+  const voterInvites = useVoterInvites()
 
   if (!voters) return null
 
@@ -140,7 +143,7 @@ export const ValidVotersTable = ({
               </td>
 
               <QueuedCell {...{ invite_queued }} />
-              <DeliveriesAndFailures {...mailgun_events} />
+              <DeliveriesAndFailures {...mailgun_events} deliveries={voterInvites[email]} />
 
               <td style={{ fontWeight: 700, textAlign: 'center' }}>{has_voted ? '✓' : ''}</td>
 

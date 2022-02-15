@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router'
+import { AdminData, Voter } from 'pages/api/election/[election_id]/admin/load-admin'
 import useSWR, { mutate } from 'swr'
-
-import { AdminData, Voter } from '../../pages/api/election/[election_id]/admin/load-admin'
 
 export function useStored(): AdminData & { valid_voters?: Voter[] } {
   const election_id = useRouter().query.election_id as string | undefined

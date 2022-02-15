@@ -6,11 +6,10 @@ import { NumVotedRow } from './NumVotedRow'
 import { getStatus } from './Signature'
 import { TopBarButtons } from './TopBarButtons'
 import { UnlockedStatus } from './UnlockedStatus'
-import { use_latest_mailgun_events } from './use-latest-mailgun-events'
 import { ValidVotersTable } from './ValidVotersTables'
 
 export const ExistingVoters = () => {
-  const { election_id, esignature_requested, valid_voters, voters } = useStored()
+  const { esignature_requested, valid_voters } = useStored()
   const [checked, set_checked] = useState<boolean[]>(new Array(valid_voters?.length).fill(false))
   const num_voted = valid_voters?.filter((v) => v.has_voted).length || 0
   const num_approved = !esignature_requested
@@ -19,8 +18,6 @@ export const ExistingVoters = () => {
 
   const [hide_voted, toggle_hide_voted] = useReducer((state) => !state, false)
   const [hide_approved, toggle_hide_approved] = useReducer((state) => !state, false)
-
-  use_latest_mailgun_events(election_id, voters)
 
   // Grow checked array to match voters list
   useEffect(() => {
