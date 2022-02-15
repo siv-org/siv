@@ -1,6 +1,7 @@
 import { MailOutlined } from '@ant-design/icons'
 import { useReducer } from 'react'
 import { api } from 'src/api-helper'
+import throat from 'throat'
 
 import { OnClickButton } from '../../landing-page/Button'
 import { Spinner } from '../Spinner'
@@ -34,23 +35,38 @@ export const SendInvitationsButton = ({
           return acc
         }, [])
 
-        try {
-          const response = await api(`election/${election_id}/admin/invite-voters`, {
-            voters: voters_to_invite,
-          })
+        // Revalidate every second
+        const revalidate_interval = setInterval(() => revalidate(election_id), 1000)
 
-          if (response.status === 201) {
-            revalidate(election_id)
-          } else {
-            const json = await response.json()
-            console.error(json)
-            set_error(json?.error || 'Error w/o message ')
-          }
+        // Split the recipients into chunks
+        const chunk_size = 10
+        const chunks: string[][] = []
+        for (let i = 0; i < voters_to_invite.length; i += chunk_size) {
+          chunks.push(voters_to_invite.slice(i, i + chunk_size))
+        }
+
+        try {
+          // Send one chunk at a time
+          await Promise.all(
+            chunks.map(
+              throat(1, async (chunk, index) => {
+                // console.log('Starting chunk', index)
+                const response = await api(`election/${election_id}/admin/invite-voters`, { voters: chunk })
+                // console.log('Got response to chunk', index)
+                if (response.status !== 201) {
+                  const json = await response.json()
+                  console.error(json)
+                  set_error(json?.error || `Error w/o message, in chunk ${index}`)
+                }
+              }),
+            ),
+          )
         } catch (e) {
           if (e instanceof Error) set_error(e.message)
           set_error('Caught error w/o message')
         }
 
+        clearInterval(revalidate_interval)
         toggle_sending()
       }}
     >
