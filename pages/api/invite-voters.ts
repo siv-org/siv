@@ -1,58 +1,8 @@
-import bluebird from 'bluebird'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { generateAuthToken } from 'src/crypto/generate-auth-tokens'
 
-import { firebase, pushover, sendEmail } from './_services'
+import { sendEmail } from './_services'
 
-const { ADMIN_PASSWORD } = process.env
-
-export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { ballot_design, election_id, election_title, password, voters } = req.body
-
-  // 1. Check for password
-  if (password !== ADMIN_PASSWORD) return res.status(401).send('Invalid Password.')
-
-  // 2. Generate auth token for each voter
-  const auth_tokens = voters.map(generateAuthToken)
-
-  // This will hold all our async tasks
-  const promises: Promise<unknown>[] = []
-
-  // 3. Store auth tokens in db
-  const election = firebase.firestore().collection('elections').doc(election_id)
-  promises.push(election.update({ ballot_design, election_title }))
-  promises.push(
-    Promise.all(
-      voters.map((voter: string, index: number) =>
-        election.collection('voters').doc(voter).set({ auth_token: auth_tokens[index], email: voter, index }),
-      ),
-    ),
-  )
-
-  // 4. Email each voter their auth token
-  promises.push(
-    bluebird.map(
-      voters,
-      (voter: string, index: number) => {
-        const link = `${req.headers.origin}/election/${election_id}/vote?auth=${auth_tokens[index]}`
-
-        return send_invitation_email({ link, subject_line: buildSubject(), voter }).then((result) => {
-          console.log(voter, result)
-          // Wait a second after sending to not overload Mailgun
-          return new Promise((res) => setTimeout(res, 1000))
-        })
-      },
-      { concurrency: 10 },
-    ),
-  )
-
-  // 5. Send Admin push notification
-  promises.push(pushover(`Invited ${voters.length} voters`, voters.join(', ')))
-
-  await Promise.all(promises)
-
-  return res.status(201).end(election_id)
-}
+export default async (req: NextApiRequest, res: NextApiResponse) => res.status(401).send('Deprecated')
 
 export const buildSubject = (election_title?: string) => `Vote Invitation${election_title ? `: ${election_title}` : ''}`
 
