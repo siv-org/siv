@@ -1,5 +1,4 @@
 import { supabase } from 'api/_supabase'
-import { buildSubject } from 'api/invite-voters'
 import { checkJwtOwnsElection } from 'api/validate-admin-jwt'
 import { NextApiRequest, NextApiResponse } from 'next'
 
@@ -13,15 +12,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const jwt = await checkJwtOwnsElection(req, res, election_id)
   if (!jwt.valid) return
 
-  const subject = buildSubject(jwt.election_title)
-
-  const headers = 'json->event-data->message->headers'
-  const toPath = headers + '->to'
-  const subjectPath = headers + '->subject'
   const { data, error } = await supabase
     .from('mailgun-deliveries')
-    .select(`${toPath}, created_at`)
-    .eq(subjectPath, JSON.stringify(subject))
+    .select(`to, created_at`)
+    .contains('tags', `{"invite-voter-${election_id}"}`)
 
   if (error) return res.status(400).json({ error })
 
