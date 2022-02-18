@@ -39,6 +39,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           from: election_manager,
           link,
           subject_line: buildSubject(election_title),
+          tag: `invite-voter-${election_id}`,
           voter: email,
         }).then((result) => {
           console.log(email, result)

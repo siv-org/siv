@@ -10,11 +10,13 @@ export const send_invitation_email = ({
   from,
   link,
   subject_line,
+  tag,
   voter,
 }: {
   from?: string
   link: string
   subject_line: string
+  tag: string
   voter: string
 }) => {
   // Don't send localhost emails to non-admins
@@ -29,6 +31,7 @@ export const send_invitation_email = ({
     preheader: `Click here to securely cast your vote: ${link}`,
     recipient: voter,
     subject: subject_line,
+    tag,
     text: `<h2 style="margin: 0">${subject_line}</h2>
 Click here to securely cast your vote: 
 <a href="${link}" style="font-weight: bold;">${link}</a> 
