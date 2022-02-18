@@ -6,7 +6,13 @@ import { supabase } from '../_supabase'
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   // console.log(req.body)
 
-  const { data, error } = await supabase.from('mailgun-deliveries').insert([{ json: req.body }])
+  const json = req.body
+  const eventData = json['event-data']
+  const { message, tags } = eventData
+  const { headers } = message
+  const { subject, to } = headers
+
+  const { data, error } = await supabase.from('mailgun-deliveries').insert([{ json, subject, tags, to }])
 
   if (error) {
     console.error(error)
