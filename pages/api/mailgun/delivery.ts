@@ -1,3 +1,4 @@
+import { pusher } from 'api/pusher'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import { pushover } from '../_services'
@@ -19,6 +20,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     await pushover('mailgun-deliveries webhook error', JSON.stringify(error))
     return res.status(400).send({ error })
   }
+
+  // Notify any pusher subscriptions listening for this tag
+  if (tags && Array.isArray(tags)) await Promise.all(tags.map((tag) => pusher.trigger(tag, 'delivery', '')))
 
   // console.log({ data })
 
