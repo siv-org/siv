@@ -169,6 +169,10 @@ export const ValidVotersTable = ({
           margin: 0;
         }
 
+        td {
+          white-space: nowrap;
+        }
+
         th {
           background: #f9f9f9;
           font-size: 11px;
