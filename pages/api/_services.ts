@@ -37,6 +37,7 @@ export const sendEmail = ({
   preheader,
   recipient,
   subject,
+  tag,
   text,
 }: {
   attachment?: AttachmentParams
@@ -45,6 +46,7 @@ export const sendEmail = ({
   preheader?: string
   recipient: string
   subject: string
+  tag?: string
   text: string
 }) =>
   mailgun.messages().send({
@@ -64,6 +66,7 @@ export const sendEmail = ({
           ${text.replace(/\n/g, '<br />')}
         </tr>
       </table></body>`,
+    'o:tag': tag,
     subject,
     to: recipient,
   })

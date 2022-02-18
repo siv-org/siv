@@ -39,14 +39,17 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           from: election_manager,
           link,
           subject_line: buildSubject(election_title),
+          tag: `invite-voter-${election_id}`,
           voter: email,
         }).then((result) => {
           console.log(email, result)
-          // Store queued_log in DB
-          voter_doc.update({ invite_queued: [...(invite_queued || []), { result, time: new Date() }] })
+          return Promise.all([
+            // Store queued_log in DB
+            voter_doc.update({ invite_queued: [...(invite_queued || []), { result, time: new Date() }] }),
 
-          // Wait a second after sending to not overload Mailgun
-          return new Promise((res) => setTimeout(res, 1000))
+            // Wait at least a second before starting next Mailgun send
+            new Promise((res) => setTimeout(res, 1000)),
+          ])
         })
       }),
     ),

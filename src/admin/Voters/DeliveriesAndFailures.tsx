@@ -3,10 +3,12 @@ import { Tooltip } from './Tooltip'
 export const DeliveriesAndFailures = ({
   checkmarkOnly,
   delivered,
+  deliveries,
   failed,
 }: {
   checkmarkOnly?: boolean
   delivered?: unknown[]
+  deliveries?: string[]
   failed?: unknown[]
 }) => {
   return (
@@ -15,23 +17,22 @@ export const DeliveriesAndFailures = ({
         interactive={!!failed}
         placement="top"
         title={
-          failed || delivered ? (
+          failed || deliveries ? (
             <>
-              {(failed as {
-                'delivery-status': { message: string }
-                id: string
-                severity: string
-              }[])?.map((event) => (
+              {(
+                failed as {
+                  'delivery-status': { message: string }
+                  id: string
+                  severity: string
+                }[]
+              )?.map((event) => (
                 <div key={event.id} style={{ fontSize: 14 }}>
                   <b>{event.severity} failure</b>: {event['delivery-status'].message.replace(/5.1.1 /g, '')}
                 </div>
               ))}
-              {(delivered as {
-                id: string
-                timestamp: number
-              }[])?.map((event) => (
-                <div key={event.id} style={{ fontSize: 14 }}>
-                  {new Date(event.timestamp * 1000).toLocaleString()}
+              {deliveries?.map((time, index) => (
+                <div key={index} style={{ fontSize: 14 }}>
+                  {new Date(time).toLocaleString()}
                 </div>
               ))}
             </>
@@ -44,7 +45,7 @@ export const DeliveriesAndFailures = ({
           <span className="failed-events">
             {(failed as { severity?: string }[])?.filter((e) => e.severity === 'temporary').length ? '⚠️ ' : ''}
           </span>
-          {checkmarkOnly ? (delivered ? '✓' : '') : delivered?.length}
+          {checkmarkOnly ? (delivered ? '✓' : '') : deliveries?.length}
           <span className="failed-events">
             {(failed as { severity?: string }[])?.filter(({ severity }) => severity === 'permanent').length ? ' X' : ''}
           </span>
