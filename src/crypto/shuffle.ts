@@ -1,15 +1,12 @@
 import { RP, random_bigint } from './curve'
-import { Shuffle_Proof, generate_shuffle_proof } from './shuffle-proof'
+// import { Shuffle_Proof, generate_shuffle_proof } from './shuffle-proof'
 
 export type Cipher = { encrypted: RP; lock: RP }
 
 export type Public_Key = RP
 const G = RP.BASE
 
-export async function shuffle(
-  pub_key: Public_Key,
-  inputs: Cipher[],
-): Promise<{ proof: Shuffle_Proof; shuffled: Cipher[] }> {
+export async function shuffle(pub_key: Public_Key, inputs: Cipher[]): Promise<{ shuffled: Cipher[] }> {
   // First, we need a permutation array and reencryption values
   const permutes = build_permutation_array(inputs.length)
 
@@ -34,15 +31,15 @@ export async function shuffle(
   })
 
   // Finally we generate a ZK proof that it's a valid shuffle
-  const proof = await generate_shuffle_proof(
-    rename_to_c1_and_2(inputs),
-    rename_to_c1_and_2(shuffled),
-    reencrypts,
-    permutes,
-    pub_key,
-  )
+  // const proof = await generate_shuffle_proof(
+  //   rename_to_c1_and_2(inputs),
+  //   rename_to_c1_and_2(shuffled),
+  //   reencrypts,
+  //   permutes,
+  //   pub_key,
+  // )
 
-  return { proof, shuffled }
+  return { shuffled }
 }
 
 /** Generates an array of all integers up to `size`, in a random order */
