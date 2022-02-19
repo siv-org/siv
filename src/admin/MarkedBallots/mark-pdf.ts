@@ -111,7 +111,7 @@ export const markPdf = async ({
       page.drawRectangle({
         borderColor: rgb(0, 0, 0),
         borderWidth: 2,
-        color: vote[id] === name.toUpperCase() ? rgb(0.2, 0.2, 0.2) : undefined,
+        color: vote[id] === name ? rgb(0.2, 0.2, 0.2) : undefined,
         height: 10,
         width: 16,
         x: x + 3,
@@ -131,7 +131,7 @@ export const markPdf = async ({
     // Draw write-in
     if (write_in_allowed) {
       currentY -= lineHeight
-      const did_write_in = vote[id] && !options.some(({ name }) => vote[id] === name.toUpperCase())
+      const did_write_in = vote[id] && !options.some(({ name }) => vote[id] === name)
 
       // Draw checkbox
       page.drawRectangle({
