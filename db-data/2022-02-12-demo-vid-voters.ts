@@ -108,7 +108,7 @@ const ballot_design = [
     write_in_allowed: false,
   },
 ]
-const pub_key = RP.fromHex('72389fa7e704205bfdf96f72f40428613ade193a15d6df6f6205c4578685d941')
+const pub_key = RP.fromHex('0a6becbe92272f6083053abf79662622af0b520971c5261f0045ba12e7606b55')
 type Vote = { mayor: CipherStrings; us_house_rep: CipherStrings }
 const random_vote = () => {
   const verification = generateTrackingNum()
@@ -138,7 +138,7 @@ const random_vote = () => {
     return memo
   }, {} as Vote)
 }
-const election_id = '1645223145915'
+const election_id = '1645244736891'
 const submit_random_encrypted_vote = async (auth_token: string) => {
   const response = await api('submit-vote', { auth: auth_token, election_id, encrypted_vote: random_vote() })
   if (response.status !== 200) {
