@@ -26,12 +26,15 @@ export const MarkedBallots = () => {
             </p>
           </div>
           <DownloadAllButton {...{ votes }} />
-          {votes.map((vote, index) => (
+          {votes.slice(0, 5).map((vote, index) => (
             <div key={index}>
               {/* <p key={vote.verification}>{JSON.stringify(vote)}</p> */}
               <EmbeddedPdf {...{ index, vote }} />
             </div>
           ))}
+          <p style={{ textAlign: 'center' }}>
+            <i>Displaying the first 5 examples</i>
+          </p>
         </>
       )}
     </>
