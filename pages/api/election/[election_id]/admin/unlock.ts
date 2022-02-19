@@ -15,13 +15,25 @@ import { ReviewLog } from './load-admin'
 const { ADMIN_EMAIL } = process.env
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
+  const times = [Date.now()]
+  const elapsed = (label: number | string) => {
+    const l = String(label)
+    const last = times[times.length - 1]
+    const now = Date.now()
+    times.push(now)
+    const diff = String(now - last)
+    console.log(`${l.padStart(23, ' ')} ${diff.padStart(5, ' ')}ms`)
+  }
+
   if (!ADMIN_EMAIL) return res.status(501).json({ error: 'Missing process.env.ADMIN_EMAIL' })
 
+  elapsed('init')
   const { election_id } = req.query as { election_id: string }
 
   // Confirm they're a valid admin that created this election
   const jwt = await checkJwtOwnsElection(req, res, election_id)
   if (!jwt.valid) return
+  elapsed('check jwt')
 
   const electionDoc = firebase
     .firestore()
@@ -34,15 +46,18 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const election = electionDoc.get()
   const adminDoc = electionDoc.collection('trustees').doc(ADMIN_EMAIL)
   const admin = adminDoc.get()
+  elapsed('preload db')
 
   // Is election_id in DB?
   if (!(await election).exists) return res.status(400).json({ error: `Unknown Election ID: '${election_id}'` })
+  elapsed('election exists?')
 
   const { esignature_requested, t, threshold_public_key } = { ...(await election).data() } as {
     esignature_requested: boolean
     t: number
     threshold_public_key: string
   }
+  elapsed('election data')
 
   // If esignature_requested, filter for only approved
   let votes_to_unlock = (await loadVotes).docs
@@ -58,9 +73,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       return getStatus(votersByAuth[auth].esignature_review) === 'approve'
     })
   }
+  elapsed('load votes, filter esig')
 
   // Admin removes the auth tokens
   const encrypteds_without_auth_tokens = votes_to_unlock.map((doc) => doc.data().encrypted_vote)
+  elapsed('remove auth tokens')
 
   // Then we split up the votes into individual lists for each item
   // input: [
@@ -79,6 +96,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     })
     return acc
   }, {})
+  elapsed('split')
 
   // Then admin does a SIV shuffle (permute + re-encryption) for each item's list
   const shuffled = await bluebird.props(
@@ -91,9 +109,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       ),
     ),
   )
+  elapsed('shuffle')
 
   // Store admins shuffled lists
   await adminDoc.update({ preshuffled: split, shuffled })
+  elapsed('store shuffled')
   try {
     await pusher.trigger(`keygen-${election_id}`, 'update', {
       'admin@secureintervoting.org': { shuffled: shuffled.length },
@@ -101,6 +121,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   } catch (e) {
     await pushover('Failed to Pusher.trigger(keygen, update, admin@, shuffled)', JSON.stringify(e))
   }
+  elapsed('notify shuffled')
 
   // Is admin the only trustee?
   if (t === 1) {
@@ -113,6 +134,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         pointToString(decrypt(BigInt(decryption_key), mapValues(cipher, RP.fromHex))),
       )
     })
+    elapsed('decrypt')
 
     const decrypteds_by_tracking = recombine_decrypteds(decrypted_and_split)
 
@@ -120,9 +142,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const decrypted = Object.values(decrypteds_by_tracking)
 
     await electionDoc.update({ decrypted, last_decrypted_at: new Date() })
+    elapsed('store decrypted')
 
     await pusher.trigger(election_id, 'decrypted', '')
+    elapsed('notify decrypted')
   }
+
+  console.log(`\ndone in ${Date.now() - times[0]}ms.\n`)
 
   res.status(201).json({ message: 'Triggered unlock' })
 }
