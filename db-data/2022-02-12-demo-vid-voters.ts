@@ -108,7 +108,7 @@ const ballot_design = [
     write_in_allowed: false,
   },
 ]
-const pub_key = RP.fromHex('22fc65439d2612d567676a85da165639102305a5b563b37a0a09de65e3b5bc65')
+const pub_key = RP.fromHex('72389fa7e704205bfdf96f72f40428613ade193a15d6df6f6205c4578685d941')
 type Vote = { mayor: CipherStrings; us_house_rep: CipherStrings }
 const random_vote = () => {
   const verification = generateTrackingNum()
@@ -138,7 +138,7 @@ const random_vote = () => {
     return memo
   }, {} as Vote)
 }
-const election_id = '1644707683266'
+const election_id = '1645223145915'
 const submit_random_encrypted_vote = async (auth_token: string) => {
   const response = await api('submit-vote', { auth: auth_token, election_id, encrypted_vote: random_vote() })
   if (response.status !== 200) {
@@ -190,7 +190,7 @@ const mainLoop = (currentSecond: number) => {
       //   console.log(`${email}: Simulating vote`)
       hasNotVoted.splice(index, 1)
       hasVoted++
-      random_vote()
+      // console.log(random_vote())
       submit_random_encrypted_vote(auth_token)
     }
   })
