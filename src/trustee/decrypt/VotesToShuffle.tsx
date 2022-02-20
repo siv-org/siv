@@ -80,17 +80,13 @@ export const VotesToShuffle = ({
         // except for admin, who provides the original split list.
         const inputs = index > 0 ? trustees[index - 1].shuffled![column].shuffled : trustees[0].preshuffled![column]
 
-        const {
-          // proof,
-          shuffled: shuffledCol,
-        } = destringifyShuffle(shuffled[column])
+        const { proof, shuffled: shuffledCol } = destringifyShuffle(shuffled[column])
 
-        // verify_shuffle_proof(
-        //   rename_to_c1_and_2(inputs.map((c) => mapValues(c, RP.fromHex))),
-        //   rename_to_c1_and_2(shuffledCol),
-        //   proof,
-        // )
-        Promise.resolve(false).then((result) => {
+        verify_shuffle_proof(
+          rename_to_c1_and_2(inputs.map((c) => mapValues(c, RP.fromHex))),
+          rename_to_c1_and_2(shuffledCol),
+          proof,
+        ).then((result) => {
           set_validated_proofs({ column, email, result, type: 'UPDATE' })
         })
       })
@@ -262,7 +258,7 @@ const ShuffleProof = ({ shuffled }: { shuffled: Shuffled }) => (
     {Object.keys(shuffled).map((column) => (
       <div key={column}>
         <h4>{column}</h4>
-        <code>Shuffle proofs temporarily disabled</code>
+        <code>{JSON.stringify(shuffled[column].proof)}</code>
       </div>
     ))}
     <style jsx>{`

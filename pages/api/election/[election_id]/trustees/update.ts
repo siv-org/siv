@@ -206,13 +206,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         // Confirm that every column's shuffle proof is valid
         const checks = await bluebird.map(Object.keys(shuffled), (column) => {
           const { shuffled: prevShuffle } = destringifyShuffle(trustees[trustee.index - 1].shuffled[column])
-          const {
-            // proof,
-            shuffled: currShuffle,
-          } = destringifyShuffle(shuffled[column])
+          const { proof, shuffled: currShuffle } = destringifyShuffle(shuffled[column])
 
-          // return verify_shuffle_proof(rename_to_c1_and_2(prevShuffle), rename_to_c1_and_2(currShuffle), proof)
-          return false
+          return verify_shuffle_proof(rename_to_c1_and_2(prevShuffle), rename_to_c1_and_2(currShuffle), proof)
         })
 
         if (!checks.length || !checks.every((x) => x)) {
