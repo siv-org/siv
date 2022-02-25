@@ -7,10 +7,10 @@ On page load, store:
     - [x] What is their browser
     - [x] What is their operating system
     - [x] What language is their browser
-    - [ ] Do they have any #hashtags in the url?
-    - [ ] What page referred them?
+    - [x] Do they have a #hash in the url?
     - [ ] How long did they stay on page?
     - [ ] What is their screen resolution
+    - [ ] What page referred them?
 */
 
 import { NextApiRequest, NextApiResponse } from 'next'
@@ -21,6 +21,7 @@ import { supabase } from './_supabase'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { headers } = req
+  const { hash } = req.body
 
   const domain = headers.origin || ''
   const page_url = headers.referer?.slice(domain.length)
@@ -28,12 +29,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const ua = UAParser(headers['user-agent'])
   const lang = headers['accept-language']
 
-  console.log(headers)
+  // return res.status(200).send('disabled insert for testing')
 
   const { error } = await supabase.from('analytics').insert({
     browser_name: ua.browser.name,
     browser_ver: ua.browser.version,
     domain,
+    hash,
     ip,
     lang,
     os_name: ua.os.name,
