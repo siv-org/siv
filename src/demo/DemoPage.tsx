@@ -1,43 +1,40 @@
 import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
+import { Footer } from '../homepage3/Footer'
 import { HeaderBar } from '../homepage3/HeaderBar'
-import { BlueDivider } from '../landing-page/BlueDivider'
-import { Footer } from '../landing-page/Footer'
 
 export const DemoPage = (): JSX.Element => {
   return (
     <>
       <Head title="SIV Demo" />
 
-      <div className="header-wrapper">
+      <div className="page">
         <HeaderBar />
+        <main>
+          <div className="video-container">
+            <iframe
+              allowFullScreen
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              className="video"
+              frameBorder="0"
+              src="https://www.youtube-nocookie.com/embed/PzUU_rcLurQ"
+              title="SIV Demo video"
+            ></iframe>
+          </div>
+        </main>
+        <Footer />
       </div>
-      <main>
-        <div className="video-container">
-          <iframe
-            allowFullScreen
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            className="video"
-            frameBorder="0"
-            src="https://www.youtube-nocookie.com/embed/PzUU_rcLurQ"
-            title="SIV Demo video"
-          ></iframe>
-        </div>
-      </main>
-      <BlueDivider />
-      <Footer />
       <style jsx>{`
+        .page {
+          width: 100%;
+          overflow-x: hidden;
+          padding: 1rem 2rem;
+        }
         main {
           max-width: 1050px;
           width: 100%;
-          margin: 1rem auto;
-          padding: 0 2rem;
+          margin: 6rem auto 10rem;
         }
-
-        .header-wrapper {
-          padding: 1rem 2rem;
-        }
-
         .video-container {
           position: relative;
           width: 100%;
