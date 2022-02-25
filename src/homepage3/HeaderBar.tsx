@@ -6,7 +6,11 @@ import { darkBlue } from './colors'
 
 export const HeaderBar = () => (
   <header>
-    <h3>SIV</h3>
+    <h3>
+      <Link href="/">
+        <a className="logo">SIV</a>
+      </Link>
+    </h3>
     <span>
       <Link href="/faq">
         <a>FAQ</a>
@@ -35,12 +39,18 @@ export const HeaderBar = () => (
 
       h3 {
         margin: 0;
-        color: ${darkBlue};
         font-size: 3vw;
+      }
+
+      h3 a:hover {
+        text-decoration: none;
       }
 
       a {
         color: ${darkBlue};
+      }
+
+      a:not(.logo) {
         text-decoration: none;
         padding: 0 1.5vw;
         margin: 0 0.4vw;
@@ -48,17 +58,17 @@ export const HeaderBar = () => (
         font-weight: 500;
       }
 
-      a:hover {
+      a:hover:not(.logo) {
         text-decoration: underline;
       }
 
-      a:last-child {
+      a:last-child:not(.logo) {
         margin-left: 4vw;
         position: relative;
         padding-bottom: 1vw;
       }
 
-      a:last-child:hover {
+      a:last-child:hover:not(.logo) {
         text-decoration: none;
         filter: drop-shadow(0 0 7px ${darkBlue}3f);
       }
@@ -86,7 +96,7 @@ export const HeaderBar = () => (
           margin-bottom: 3vw;
         }
 
-        a {
+        a:not(.logo) {
           font-size: 4vw;
         }
 
