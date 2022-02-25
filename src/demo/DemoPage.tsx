@@ -1,19 +1,19 @@
 import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
+import { HeaderBar } from '../homepage3/HeaderBar'
 import { BlueDivider } from '../landing-page/BlueDivider'
 import { Footer } from '../landing-page/Footer'
-import { HeaderBar } from './HeaderBar'
 
 export const DemoPage = (): JSX.Element => {
   return (
     <>
       <Head title="SIV Demo" />
 
-      <HeaderBar />
+      <div className="header-wrapper">
+        <HeaderBar />
+      </div>
       <main>
-        <h2>Election Demo</h2>
-
-        <div className="container">
+        <div className="video-container">
           <iframe
             allowFullScreen
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -30,11 +30,15 @@ export const DemoPage = (): JSX.Element => {
         main {
           max-width: 1050px;
           width: 100%;
-          margin: 2rem auto;
-          padding: 0 1rem;
+          margin: 1rem auto;
+          padding: 0 2rem;
         }
 
-        .container {
+        .header-wrapper {
+          padding: 1rem 2rem;
+        }
+
+        .video-container {
           position: relative;
           width: 100%;
           height: 0;
