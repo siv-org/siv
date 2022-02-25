@@ -1,19 +1,15 @@
 import Link from 'next/link'
+import { darkBlue } from 'src/homepage3/colors'
 
 export const HeaderBar = (): JSX.Element => (
   <div className="container">
     <div>
       <Link href="/">
-        <a>Secure Internet Voting</a>
+        <a>SIV</a>
       </Link>
     </div>
     <style jsx>{`
       .container {
-        background: rgb(1, 5, 11);
-        background: linear-gradient(90deg, #010b26 0%, #072054 100%);
-
-        color: #fff;
-
         cursor: default;
       }
 
@@ -28,9 +24,9 @@ export const HeaderBar = (): JSX.Element => (
       }
 
       a {
-        font-size: 24px;
+        font-size: 30px;
         font-weight: 700;
-        color: white;
+        color: ${darkBlue};
       }
 
       a:hover {

@@ -11,7 +11,7 @@ export const DemoPage = (): JSX.Element => {
 
       <HeaderBar />
       <main>
-        <h1>SIV Demonstration</h1>
+        <h2>Election Demo</h2>
 
         <div className="container">
           <iframe
@@ -31,7 +31,7 @@ export const DemoPage = (): JSX.Element => {
           max-width: 1050px;
           width: 100%;
           margin: 2rem auto;
-          padding: 1rem;
+          padding: 0 1rem;
         }
 
         .container {
