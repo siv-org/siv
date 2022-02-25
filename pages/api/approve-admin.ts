@@ -34,6 +34,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Send them an email with their login instructions
   sendEmail({
+    bcc: 'david@siv.org',
     from: 'David Ernst',
     fromEmail: 'david@siv.org',
     recipient: data.email,

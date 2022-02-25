@@ -32,6 +32,7 @@ export const mailgun = Mailgun({
 
 export const sendEmail = ({
   attachment,
+  bcc,
   from,
   fromEmail,
   preheader,
@@ -41,6 +42,7 @@ export const sendEmail = ({
   text,
 }: {
   attachment?: AttachmentParams
+  bcc?: string
   from?: string
   fromEmail?: string
   preheader?: string
@@ -51,6 +53,7 @@ export const sendEmail = ({
 }) =>
   mailgun.messages().send({
     attachment: !attachment ? undefined : new mailgun.Attachment(attachment),
+    bcc,
     from: `${from || 'SIV Admin'} <${fromEmail || 'election@siv.org'}>`,
     html: `<body style="background-color: #f5f5f5; padding: 2em 0.5em;">
     <table align="center" style="text-align: left; max-width: 600px; background-color: white;">
