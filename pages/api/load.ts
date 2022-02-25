@@ -8,7 +8,7 @@ On page load, store:
     - [x] What is their operating system
     - [x] What language is their browser
     - [x] Do they have a #hash in the url?
-    - [ ] How long did they stay on page?
+    - [x] How long did they stay on page? -- in api/unload
     - [ ] What is their screen resolution
     - [ ] What page referred them?
 */
@@ -31,7 +31,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // return res.status(200).send('disabled insert for testing')
 
-  const { error } = await supabase.from('analytics').insert({
+  const { data, error } = await supabase.from('analytics').insert({
     browser_name: ua.browser.name,
     browser_ver: ua.browser.version,
     domain,
@@ -44,11 +44,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   })
 
   if (error) {
-    pushover('Error inserting analytics', JSON.stringify(error))
-    console.log('ERROR!', error)
+    await pushover('Error inserting analytics', JSON.stringify(error))
+    console.log('Analytics error:', error)
+    return res.status(204).send('')
   }
 
-  // if (data) console.log(data)
-
-  res.status(200).send('Success')
+  if (data && data[0]) {
+    // console.log(data)
+    const { id } = data[0]
+    return res.status(200).send(id)
+  }
 }

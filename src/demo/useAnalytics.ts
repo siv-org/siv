@@ -8,6 +8,15 @@ export const useAnalytics = () => {
     if (!isBrowser) return
     const hash = window.location.hash
 
-    api('load', { hash })
+    api('load', { hash }).then(async (res) => {
+      if (res.status === 200) {
+        const id = await res.text()
+
+        window.onbeforeunload = async (e) => {
+          e.preventDefault()
+          if (id) api('unload', { id }, true)
+        }
+      }
+    })
   }, [])
 }
