@@ -2,8 +2,10 @@ import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
 import { Footer } from '../homepage3/Footer'
 import { HeaderBar } from '../homepage3/HeaderBar'
+import { useAnalytics } from './useAnalytics'
 
 export const DemoPage = (): JSX.Element => {
+  useAnalytics()
   return (
     <>
       <Head title="SIV Demo" />
