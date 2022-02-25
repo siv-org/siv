@@ -12,9 +12,8 @@ export const useAnalytics = () => {
       if (res.status === 200) {
         const id = await res.text()
 
-        window.onbeforeunload = async (e) => {
-          e.preventDefault()
-          if (id) api('unload', { id }, true)
+        window.onbeforeunload = async () => {
+          if (id) navigator.sendBeacon(`/api/unload?i=${id}`)
         }
       }
     })

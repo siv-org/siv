@@ -7,7 +7,7 @@ import { pushover } from './_services'
 import { supabase } from './_supabase'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { id } = req.body
+  const { i: id } = req.query
   const now = new Date()
 
   // console.log('Analytics unload:', id)
