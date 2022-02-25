@@ -9,7 +9,7 @@ On page load, store:
     - [x] What language is their browser
     - [x] Do they have a #hash in the url?
     - [x] How long did they stay on page? -- in api/unload
-    - [ ] What is their screen resolution
+    - [x] What is their screen size?
     - [ ] What page referred them?
 */
 
@@ -21,7 +21,7 @@ import { supabase } from './_supabase'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { headers } = req
-  const { hash } = req.body
+  const { hash, height, width } = req.body
 
   const domain = headers.origin || ''
   const page_url = headers.referer?.slice(domain.length)
@@ -36,11 +36,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     browser_ver: ua.browser.version,
     domain,
     hash,
+    height,
     ip,
     lang,
     os_name: ua.os.name,
     os_ver: ua.os.version,
     page_url,
+    width,
   })
 
   if (error) {

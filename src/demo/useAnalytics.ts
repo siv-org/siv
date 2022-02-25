@@ -3,14 +3,18 @@ import { api } from 'src/api-helper'
 
 const isBrowser = () => typeof window !== 'undefined'
 
-const startSession = (hash: string) => {
-  api('load', { hash }).then(async (res) => {
+const startSession = () => {
+  api('load', {
+    hash: window.location.hash,
+    height: window.innerHeight,
+    width: window.innerWidth,
+  }).then(async (res) => {
     if (res.status === 200) {
       const id = await res.text()
 
-      document.onvisibilitychange = async () => {
+      document.onvisibilitychange = () => {
         if (id && document.visibilityState === 'hidden') navigator.sendBeacon(`/api/unload?i=${id}`)
-        if (document.visibilityState === 'visible') startSession(hash)
+        if (document.visibilityState === 'visible') startSession()
       }
     }
   })
@@ -19,8 +23,7 @@ const startSession = (hash: string) => {
 export const useAnalytics = () => {
   useEffect(() => {
     if (!isBrowser) return
-    const hash = window.location.hash
 
-    startSession(hash)
+    startSession()
   }, [])
 }
