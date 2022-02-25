@@ -17,7 +17,7 @@ export const DemoPage = (): JSX.Element => {
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               className="video"
               frameBorder="0"
-              src="https://www.youtube-nocookie.com/embed/PzUU_rcLurQ"
+              src="https://www.youtube-nocookie.com/embed/PzUU_rcLurQ?modestbranding=1"
               title="SIV Demo video"
             ></iframe>
           </div>
