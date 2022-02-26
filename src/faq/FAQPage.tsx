@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { OnClickButton } from 'src/landing-page/Button'
+import { useAnalytics } from 'src/useAnalytics'
 
 import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
@@ -11,6 +12,7 @@ import { faq } from './faq'
 import { HeaderBar } from './HeaderBar'
 
 export const FAQPage = (): JSX.Element => {
+  useAnalytics()
   const [expanded, setExpanded] = useState<boolean[]>(new Array(faq.length).fill(false))
   const any_collapsed = expanded.some((s) => !s)
   const asPath = useRouter()?.asPath

@@ -1,3 +1,5 @@
+import { useAnalytics } from 'src/useAnalytics'
+
 import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
 import { Content } from './Content'
@@ -6,31 +8,34 @@ import { Sidebar } from './Sidebar'
 import { Topbar } from './Topbar'
 import { VoteContextProvider } from './VoteContext'
 
-export const ProtocolPage = (): JSX.Element => (
-  <>
-    <Head title="Protocol" />
+export const ProtocolPage = (): JSX.Element => {
+  useAnalytics()
+  return (
+    <>
+      <Head title="Protocol" />
 
-    <VoteContextProvider>
-      <ScrollContextProvider>
-        <Topbar />
-        <div className="columns">
-          <Sidebar />
-          <Content />
-        </div>
-      </ScrollContextProvider>
-    </VoteContextProvider>
+      <VoteContextProvider>
+        <ScrollContextProvider>
+          <Topbar />
+          <div className="columns">
+            <Sidebar />
+            <Content />
+          </div>
+        </ScrollContextProvider>
+      </VoteContextProvider>
 
-    <style jsx>{`
-      .columns {
-        display: flex;
-      }
-    `}</style>
+      <style jsx>{`
+        .columns {
+          display: flex;
+        }
+      `}</style>
 
-    <GlobalCSS />
-    <style global jsx>{`
-      body {
-        overflow: hidden;
-      }
-    `}</style>
-  </>
-)
+      <GlobalCSS />
+      <style global jsx>{`
+        body {
+          overflow: hidden;
+        }
+      `}</style>
+    </>
+  )
+}

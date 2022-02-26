@@ -1,4 +1,5 @@
 import { GlobalCSS } from 'src/GlobalCSS'
+import { useAnalytics } from 'src/useAnalytics'
 
 import { Head } from '../Head'
 import { AboveFold } from './AboveFold'
@@ -11,30 +12,33 @@ import { OnePersonOneVote } from './OnePersonOneVote'
 import { Privacy } from './Privacy'
 import { Verifiability } from './Verifiability'
 
-export const HomePage = () => (
-  <>
-    <Head title="Secure Internet Voting" />
+export const HomePage = () => {
+  useAnalytics()
+  return (
+    <>
+      <Head title="Secure Internet Voting" />
 
-    <div>
-      <AboveFold />
-      <Features />
-      <Privacy />
-      <OnePersonOneVote />
-      <Verifiability />
-      <AnAdditionalOption />
-      <NowPossible />
-      <AreYouAVoter />
-      <Footer />
+      <div>
+        <AboveFold />
+        <Features />
+        <Privacy />
+        <OnePersonOneVote />
+        <Verifiability />
+        <AnAdditionalOption />
+        <NowPossible />
+        <AreYouAVoter />
+        <Footer />
 
-      <GlobalCSS />
-    </div>
-    <style jsx>{`
-      div {
-        padding: 1rem 3rem;
+        <GlobalCSS />
+      </div>
+      <style jsx>{`
+        div {
+          padding: 1rem 3rem;
 
-        width: 100%;
-        overflow-x: hidden;
-      }
-    `}</style>
-  </>
-)
+          width: 100%;
+          overflow-x: hidden;
+        }
+      `}</style>
+    </>
+  )
+}
