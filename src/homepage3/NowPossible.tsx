@@ -43,8 +43,9 @@ export const NowPossible = () => (
       }
 
       a:hover {
+        background-color: #fff;
         border-color: ${darkBlue};
-        background-color: #000;
+        color: ${darkBlue};
         text-decoration: none;
       }
 
