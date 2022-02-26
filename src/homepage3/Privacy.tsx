@@ -5,8 +5,11 @@ export const Privacy = () => (
     <img className="second" src="/home3/privacy-background.gif" />
     <h2>Free and fair elections require strong privacy</h2>
     <h3>
-      SIV offers Multi-Party Encryption and strong Cryptographic <br /> Shuffles so that no one can see how anyone
-      votes.
+      SIV offers <i>Multi-Party Encryption</i> and strong{' '}
+      <i>
+        Cryptographic <br /> Shuffles
+      </i>{' '}
+      so that no one can see how anyone votes.
     </h3>
     <h5>All while maintaining full auditability and verifiability.</h5>
     <p>
