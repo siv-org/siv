@@ -14,7 +14,7 @@ export const useStepCounter = (initStep: number, maxStep: number, onStep: (step:
     setStep(initStep)
 
     // Start new interval
-    interval.current = setInterval(() => {
+    interval.current = global.setInterval(() => {
       setStep((s) => {
         onStep(s)
         if (s >= maxStep) {
