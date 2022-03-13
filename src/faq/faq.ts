@@ -181,6 +181,7 @@ Any voter who prefers traditional methods can still use them.
 Voter Authorization tokens can be invalidated as soon as a vote is recorded from another channel, or during later de-duplication stages. This ensures no voter can cast two ballots by using multiple methods.`,
   },
   {
+    id: 'better-voting-methods',
     q: 'Does SIV support other voting methods, like Approval Voting?',
     resp: `Currently, SIV supports Plurality Voting, Block Voting, and Approval Voting. We add new voting methods as requested. Please let us know if you need more: <a href="mailto:voting-methods@siv.org" target="_blank">voting-methods@siv.org</a>.
 
