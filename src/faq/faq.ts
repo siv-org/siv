@@ -57,6 +57,7 @@ This is a similar process as with paper ballots, where voters are confirmed, but
 The SIV system offers even more rigorous privacy, so nobody has the ability to connect votes to voter's identities, while maintaining complete auditability of who voted & verifiability of final results.`,
   },
   {
+    id: 'verifiable',
     q: 'How does SIV ensure election results are Verifiable?',
     resp: `All final election tallies can be independently recounted.
 
