@@ -40,7 +40,7 @@ export const groupedSteps: Group[] = [
       // Pre-req
       {
         name: 'Voter Registration',
-        subheader: `Election administrator collects list of all valid voters, using the usual methods (in person, DMV, etc).`,
+        subheader: `Election administrator collects list of all valid voters, via the same methods as currently used.`,
         then: [
           {
             left: [
@@ -48,6 +48,10 @@ export const groupedSteps: Group[] = [
               '',
               {
                 html: 'Individual voters should <a href="/#let-your-govt-know" target="_blank">opt-in to SIV</a> by registering an email address with their election administrator.',
+              },
+              '',
+              {
+                html: 'Using email is fast, easy, and highly affordable, but election administrator can also use other methods to contact voters, including traditional postal mail.',
               },
             ],
             right: [{ react: VoterList }],
