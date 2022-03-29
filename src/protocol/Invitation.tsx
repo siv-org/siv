@@ -51,7 +51,7 @@ export const Invitation = () => {
 export const InvitationExplanation = () => (
   <>
     <p>
-      The point of this step is to get each voter their {<AuthToken />}, highlighted in <Highlight>orange</Highlight>.
+      The purpose of this step is to get each voter their {<AuthToken />}, highlighted in <Highlight>orange</Highlight>.
     </p>
     <div>
       <p style={{ fontWeight: 'bold' }}>Key Properties of {<AuthToken s />}</p>
