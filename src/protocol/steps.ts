@@ -83,18 +83,19 @@ export const groupedSteps: Group[] = [
       // Pre-req
       {
         name: 'Observer Registration',
-        subheader: `Verifying Observers — who protect the privacy of the vote — are enrolled ahead of time.`,
+        subheader: `To give voters additional confidence that the election is run fairly, administrators have the option to add SIV “Verifying Observers”.`,
         then: [
           {
             left: [
               {
-                details: `As long as a single Observer works honestly, the privacy of the vote is ensured. This is shown in detail in Step 4.
+                details: `These are like the observers in our existing paper elections, but SIV Verifying Observers are vastly more powerful, because they use strong cryptography to ensure every vote is private and tamper-free.
 
-                No matter what, the accuracy of the vote can still always be verified.
-
-                To enroll, verifying observers need to generate a private key, and take part in a Threshold Key generation process with the election admin to create the corresponding public key for the election.
-
-                Their main job is explained in Step 4, but this shared public key is needed ahead-of-time for voters to encrypt their votes in Step 2.`,
+                After anonymization (Step 4), the Verifying Observers work together to unlock the votes for tallying (Step 5).`,
+              },
+              {
+                html: light(
+                  `Before the election begins, Verifying Observers take part in a SIV Threshold Key Generation ceremony to generate private key shares and create the election's public key.`,
+                ),
               },
             ],
             right: [
@@ -106,6 +107,12 @@ export const groupedSteps: Group[] = [
               {
                 html: light(
                   "The Observers ought to have competing interests. A reasonable choice would be one Observer selected by each candidate's political party, plus the election admin.",
+                ),
+              },
+              '',
+              {
+                html: light(
+                  'Verifying Observers do not need to trust each other, and cannot possibly tamper with votes.',
                 ),
               },
               '',
