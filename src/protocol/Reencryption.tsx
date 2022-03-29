@@ -13,15 +13,15 @@ export function Reencryption(): JSX.Element {
   // Put mutation logic in reducer to access prev values
   const [{ counter, votes }, dispatch] = useReducer((prev: typeof init): typeof init => {
     // Which field's turn is it to update?
-    const { nextField, nextVote } = calcNext(prev.counter)
+    const { counter } = prev
 
     // Update only that field
     const newVotes = [...prev.votes]
-    newVotes[nextVote] = { ...newVotes[nextVote], [nextField]: randEncrypted() }
+    newVotes[counter] = { ...newVotes[counter], mayor_vote: randEncrypted() }
 
     return {
       // Reset counter when it hits the end
-      counter: prev.counter < 9 ? prev.counter + 1 : 0,
+      counter: counter == 4 ? 0 : counter + 1,
       votes: newVotes,
     }
   }, init)
@@ -38,8 +38,7 @@ export function Reencryption(): JSX.Element {
         {votes.map((vote, index) => (
           <p key={index}>
             {`{`}
-            <HighlightDiff {...{ counter, index, vote }} field="mayor_vote" />,
-            <HighlightDiff {...{ counter, index, vote }} field="verification" />
+            <HighlightDiff {...{ counter, index, vote }} field="mayor_vote" />
             {' }'}
           </p>
         ))}
@@ -59,11 +58,10 @@ const HighlightDiff = ({
   index: number
   vote: Partial<AuthedVote>
 }) => {
-  const { nextField, nextVote } = calcNext(counter === 0 ? 9 : counter - 1)
+  const prevVote = counter === 0 ? 4 : counter - 1
   return (
     <>
-      {' '}
-      {field}: <span className={nextField === field && nextVote === index ? 'highlight' : ''}>{vote[field]}</span>
+      {field}: <span className={prevVote === index ? 'highlight' : ''}>{vote[field]}</span>
       <style jsx>{`
         .highlight {
           color: #9013fe;
@@ -72,8 +70,3 @@ const HighlightDiff = ({
     </>
   )
 }
-
-const calcNext = (counter: number) => ({
-  nextField: counter % 2 ? 'verification' : 'mayor_vote',
-  nextVote: Math.floor(counter / 2),
-})

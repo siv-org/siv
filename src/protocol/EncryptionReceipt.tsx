@@ -25,10 +25,14 @@ Encryption Formula
 Public Key
 ${public_key}
 
+---------
+
+Verification #: ${state.verification}
+
 ${map(
   state.plaintext,
   (value: string, key) => `${key}
-  plaintext: ${value}
+  plaintext: ${state.verification}:${value}
   encoded: ${stringToPoint(value)}
   randomizer: ${state.randomizer[key]}
   ${state.encrypted[key]?.slice(3, -2)}

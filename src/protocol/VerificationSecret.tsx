@@ -1,18 +1,10 @@
 import { NoSsr, TextField } from '@material-ui/core'
-import { useEffect } from 'react'
 
-import { generateTrackingNum } from '../vote/tracking-num'
 import { Paper } from './Paper'
 import { useVoteContext } from './VoteContext'
 
 export function VerificationSecret(): JSX.Element {
-  const { dispatch, state } = useVoteContext()
-
-  const generate = () => {
-    dispatch({ verification: generateTrackingNum() })
-  }
-
-  useEffect(generate, [])
+  const { state } = useVoteContext()
 
   return (
     <>
@@ -34,7 +26,7 @@ export function VerificationSecret(): JSX.Element {
               label=""
               size="small"
               style={{ backgroundColor: '#fff8' }}
-              value={state.plaintext.verification}
+              value={state.verification}
               variant="outlined"
             />
           </NoSsr>

@@ -28,6 +28,7 @@ export function EncryptedVote(): JSX.Element {
           margin: 0 15px;
           tab-size: 2;
           white-space: normal;
+          word-break: break-word;
         }
 
         span {

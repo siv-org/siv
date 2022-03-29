@@ -7,10 +7,9 @@ export function RemoveAuthTokens(): JSX.Element {
   return (
     <Paper>
       <code>
-        {[...state.otherSubmittedVotes, state.encrypted].map(({ auth, mayor_vote, verification }) => (
+        {[...state.otherSubmittedVotes, state.encrypted].map(({ auth, mayor_vote }) => (
           <p key={auth}>
-            {`{`} <span className="fade-out">auth: &apos;{auth}&apos;,</span> mayor_vote: {mayor_vote}, verification:{' '}
-            {verification} {`}`}
+            {`{`} <span className="fade-out">auth: &apos;{auth}&apos;,</span> mayor_vote: {mayor_vote} {`}`}
           </p>
         ))}
       </code>

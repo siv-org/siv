@@ -1,9 +1,10 @@
 import { map, mapValues, merge } from 'lodash-es'
 import { createContext, useContext, useMemo, useReducer } from 'react'
 import { RP, random_bigint, stringToPoint } from 'src/crypto/curve'
+import { generateTrackingNum } from 'src/vote/tracking-num'
 
 import encrypt from '../crypto/encrypt'
-import { candidates, public_key, voters } from './election-parameters'
+import { public_key, voters } from './election-parameters'
 
 const rand = () => RP.BASE.multiplyUnsafe(random_bigint()).toHex()
 export const randEncrypted = () => `{ encrypted: ${rand()}, lock: ${rand()} }`
@@ -13,21 +14,22 @@ const initState = {
   otherSubmittedVotes: voters.slice(1).map(({ auth }) => ({
     auth,
     mayor_vote: randEncrypted(),
-    verification: randEncrypted(),
   })),
-  plaintext: { mayor_vote: candidates[1], verification: '' },
+  plaintext: {},
   randomizer: {},
+  verification: generateTrackingNum(),
 }
 
 function reducer(prev: State, payload: Payload) {
-  const newState = merge({ ...prev }, { plaintext: payload })
+  const verification = generateTrackingNum()
+  const newState = merge({ ...prev }, { plaintext: payload, verification })
 
   // Encrypt values
   const randomizer: Partial<VoteMap> = {}
   const encrypted = mapValues(newState.plaintext as Record<string, string>, (value, key) => {
     const random = random_bigint()
     randomizer[key] = String(random)
-    const cipher = encrypt(RP.fromHex(public_key), random, stringToPoint(value))
+    const cipher = encrypt(RP.fromHex(public_key), random, stringToPoint(`${verification}:${value}`))
 
     return `{ \n${map(cipher, (v, k) => `${k}: ${v}`).join(',\n\t ')} \n}`
   })
@@ -37,13 +39,14 @@ function reducer(prev: State, payload: Payload) {
 
 // Boilerplate to be easier to use
 
-type VoteMap = { [index: string]: string; mayor_vote: string; verification: string }
+type VoteMap = { [index: string]: string; mayor_vote: string }
 export type AuthedVote = VoteMap & { auth: string }
 type State = {
   encrypted: Partial<AuthedVote>
   otherSubmittedVotes: AuthedVote[]
   plaintext: Partial<VoteMap>
   randomizer: Partial<VoteMap>
+  verification: string
 }
 
 type Payload = Partial<VoteMap>

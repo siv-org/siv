@@ -8,11 +8,17 @@ export function Plaintext(): JSX.Element {
       <div>
         {'{'}
         <br />
-        {Object.keys(state.plaintext).map((key) => (
-          <p key={key}>
-            {key}: <span>&apos;{state.plaintext[key]}&apos;</span>,
-          </p>
-        ))}
+        {Object.keys(state.plaintext)
+          .filter((k) => k !== 'verification')
+          .map((key) => (
+            <p key={key}>
+              {key}:{' '}
+              <span>
+                &apos;{state.verification}:{state.plaintext[key]}&apos;
+              </span>
+              ,
+            </p>
+          ))}
         {'}'}
       </div>
 

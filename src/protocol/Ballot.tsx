@@ -1,4 +1,5 @@
 import { FormControlLabel, NoSsr, Radio, RadioGroup } from '@material-ui/core'
+import { useEffect } from 'react'
 
 import { candidates } from './election-parameters'
 import { Paper } from './Paper'
@@ -6,6 +7,8 @@ import { useVoteContext } from './VoteContext'
 
 export const Ballot = (): JSX.Element => {
   const { dispatch, state } = useVoteContext()
+
+  useEffect(() => dispatch({ mayor_vote: candidates[1] }), [])
 
   return (
     <Paper marginBottom noFade>

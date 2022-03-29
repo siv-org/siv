@@ -14,9 +14,9 @@ export function Unlocked(): JSX.Element {
   const votes = useMemo(
     () => [
       ...voters.slice(1).map(() => ({ mayor_vote: randomCandidate(), verification: generateTrackingNum() })),
-      state.plaintext,
+      { ...state.plaintext, verification: state.verification },
     ],
-    [voters],
+    [voters, state.plaintext.mayor_vote],
   )
 
   const vote_counts = countBy(votes.map((v) => v.mayor_vote))
