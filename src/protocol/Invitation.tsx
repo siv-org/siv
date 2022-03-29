@@ -63,7 +63,7 @@ export const InvitationExplanation = () => (
           'infeasible to guess',
           'can only be used once',
           'election admin can invalidate individual Auth Tokens, & generate new ones, if necessary',
-          'after the election, the public can see all Auth Tokens generated, invalidated, or used (but not content of any votes)',
+          'used Auth Tokens can be audited after the election',
         ].map((item, index) => (
           <li key={index} style={{ fontSize: 7, marginBottom: 5 }}>
             <span style={{ fontSize: 14, position: 'relative', top: 2 }}>{item}</span>
