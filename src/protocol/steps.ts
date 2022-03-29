@@ -146,11 +146,11 @@ export const groupedSteps: Group[] = [
         then: [
           { left: ['', ''] },
           {
-            left: ['', '', { p: 'SIV shows voters a GUI to fill out their ballot:' }],
+            left: ['', '', { p: 'SIV shows voters a simple point-and-click interface to fill out their ballot:' }],
             right: ['', { react: Ballot }],
           },
           {
-            left: [{ html: `SIV adds a unique ${em('Verification #')} before votes are encrypted.` }],
+            left: [{ html: `A random ${em('Verification #')} is generated before votes are encrypted.` }],
             right: [{ react: VerificationSecret }],
           },
           {
