@@ -20,11 +20,17 @@ Currently, they are strings of 10 hexadecimal characters (e.g. `2378bf376d`), wh
 
 All assigned Voter Auth Tokens are known to the Election Administrator. When the election begins, they will be shared with the specific Voter they are assigned to. They act like a traditional API Authorization Token, and should be kept secret from everyone else.
 
-Election administrators can invalidate individual Auth Tokens & generate new ones, as necessary, such as if a Voter accidentally leaks or loses theirs.
+Election Administrators can invalidate individual Auth Tokens & generate new ones, as necessary, such as if a Voter accidentally leaks or loses theirs.
 
 All used Auth Tokens can be audited after the election.
 
 ### b. Finalize Ballot Content
+
+As with traditional paper elections, the Administrator must finalize the questions and options that appear on the ballot.
+
+The SIV Admin software provides both a simple Point-and-Click Ballot Designer interface, as well as a machine-readable JSON Schema interface for advanced editing.
+
+SIV is fully compatible with alternative voting methods such as Ranked Choice Voting and Approval Voting, and can prevent Voters from accidentally invalidating their ballot.
 
 ### c. Register Verifying Observers
 
@@ -46,4 +52,6 @@ All used Auth Tokens can be audited after the election.
 
 ### I. Voters Can Verify Their Own Vote
 
-### II. Voter Registration List Can Be Audited
+### II. Admins Can Print Submitted Votes Onto Paper Ballots
+
+### III. Voter Registration List Can Be Audited
