@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import { useReducer } from 'react'
 
 import { voters } from './election-parameters'
 import { Paper } from './Paper'
@@ -14,7 +13,6 @@ const Highlight = (props: { children: string }) => (
 )
 
 export const Invitation = () => {
-  const [helpLinkClicked, toggleHelpLink] = useReducer((state) => !state, false)
   return (
     <Paper marginBottom noFade style={{ position: 'relative' }}>
       <img
@@ -27,7 +25,7 @@ export const Invitation = () => {
         Subject: <b>Your Vote Invitation</b>
       </p>
       <p>Voting for our next Mayor is now open.</p>
-      <p>Votes accepted for the next 14 days.</p>
+      <p>Votes are accepted for the next 14 days.</p>
       <p>
         Click here to securely cast your vote: <br />
         <a style={{ cursor: 'pointer' }}>
@@ -38,10 +36,7 @@ export const Invitation = () => {
       <p>
         <i style={{ fontSize: 12 }}>
           This link is unique for you. Don&apos;t share it with anyone, or they&apos;ll be able to take your vote. (
-          <a style={{ cursor: 'pointer' }} onClick={toggleHelpLink}>
-            {!helpLinkClicked ? 'Help' : 'Just an example'}
-          </a>
-          )
+          <a style={{ cursor: 'pointer' }}>Help</a>)
         </i>
       </p>
     </Paper>
