@@ -11,6 +11,7 @@ export const BallotDesigner = () => (
     'Jane Kim',
 ]}]`}
     />
+    <label>An example ballot schema</label>
 
     <style jsx>{`
       textarea {
@@ -20,6 +21,14 @@ export const BallotDesigner = () => (
         padding: 10px;
         resize: none;
         width: 100%;
+      }
+
+      label {
+        font-size: 13px;
+        opacity: 0.5;
+        display: block;
+        font-style: italic;
+        margin-bottom: 15px;
       }
     `}</style>
   </>
