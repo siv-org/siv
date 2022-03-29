@@ -74,7 +74,7 @@ export const InvitationExplanation = () => (
     <br />
     <p>
       Here we use an easy distribution channel — a simple email. But election administrators can offer other options,
-      including 2-factor methods with SMS, TOTP, or IP address geolocation.
+      including 2-factor methods with drawn signatures, SMS, TOTP, or IP address geolocation.
     </p>
     <p>
       Admins can even send Voter Auth Tokens via traditional postal mail. This makes it easy for jurisdictions already
