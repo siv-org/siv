@@ -154,7 +154,7 @@ export const groupedSteps: Group[] = [
             right: [{ react: VerificationSecret }],
           },
           {
-            left: [{ html: `This example results in a ${blue(semibold('plaintext vote'))} like:` }],
+            left: [{ html: `This example results in a ${blue(semibold('plaintext vote'))}:` }],
             right: ['', { react: Plaintext }],
           },
           { left: ['', '', ''] },
@@ -163,7 +163,7 @@ export const groupedSteps: Group[] = [
               {
                 html: `Then the ${blue(semibold('plaintext vote'))} can be sealed, resulting in an ${purple(
                   semibold('encrypted vote'),
-                )} that looks like:`,
+                )}:`,
               },
             ],
             right: ['', { react: EncryptedVote }],
