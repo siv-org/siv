@@ -8,7 +8,21 @@ This document gives a technical specification of what defines a SIV (Secure Inte
 
 ## Before The Election
 
+These three pre-election steps — labeled `a`, `b`, & `c` — can be completed in any order, but are required before the election can begin.
+
 ### a. Compile Voter Roll
+
+The Election Administrator must define a list of who is an eligible voter. Every Voter gets assigned a unique Authorization Token ("`Voter Auth Token`").
+
+Auth Tokens are required to cast a vote and can only be used once. They are intentionally infeasible to guess, and only valid for a single election. The SIV Admin Software automatically generates them, using cryptographically secure randomness, whenever an Admin adds a new Voter.
+
+Currently, they are strings of 10 hexadecimal characters (e.g. `2378bf376d`), which creates $16^{10}$ (= $2^{40}$), a little over a trillion possibilities. Attempting to brute force auth tokens is not currently a risk, because validating them is logged per IP address, and can be rate-limited.
+
+All assigned Voter Auth Tokens are known to the Election Administrator. When the election begins, they will be shared with the specific Voter they are assigned to. They act like a traditional API Authorization Token, and should be kept secret from everyone else.
+
+Election administrators can invalidate individual Auth Tokens & generate new ones, as necessary, such as if a Voter accidentally leaks or loses theirs.
+
+All used Auth Tokens can be audited after the election.
 
 ### b. Finalize Ballot Content
 
