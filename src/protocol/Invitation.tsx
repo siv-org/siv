@@ -77,9 +77,9 @@ export const InvitationExplanation = () => (
       including 2-factor methods with drawn signatures, SMS, TOTP, or IP address geolocation.
     </p>
     <p>
-      Admins can even send Voter Auth Tokens via traditional postal mail. This makes it easy for jurisdictions already
-      offering Vote by Mail to begin accepting returned ballots online, gaining the powerful Speed, Privacy, &amp;
-      Verification features of SIV.{' '}
+      Admins can even send Voter Auth Tokens via traditional postal mail. In other words, SIV can match the Voter
+      Authentication requirements of existing processes, while upgrading the return ballot process to be faster, more
+      accessible, and fully verifiable.{' '}
       <em>
         See{' '}
         <Link href="/faq#1p1v">
