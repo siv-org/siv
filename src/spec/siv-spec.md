@@ -60,6 +60,35 @@ SIV's Observer software can be run entirely in the browser, from any relatively 
 
 ### Step 1. Invitations sent to Voters
 
+The Election begins with Administrators delivering to each voter their `Voter Auth Tokens`.
+
+The specific process for issuing Voter Tokens is up to Election Administrators.
+
+This can include any combination of:
+
+1. Verified email
+2. Verified SMS messages
+3. Verified physical mail letters
+4. Drawn signature verification
+5. Photo verification of Government IDs and/or selfies
+6. IP address geolocation
+7. Unique codes given in-person
+8. Time-based One-Time Passwords
+
+Each has their own trade-offs in terms of (a) speed, (b) cost, (c) ease-of-use, (d) difficulty to attack, and (e) accessibility.
+
+SIV is intentionally flexible and non-prescriptive on this point, to accommodate different elections' and jurisdictions' requirements.
+
+For some voters, such as Overseas voters who already receive invitations to vote via email, sticking with email alone might be sufficient. This can be augmented by also requiring additional factors like drawn signatures, to improve upon existing processes.
+
+For other voters that are easier to reach via physical mail, Admins can elect to continue to send them physical letters with unique codes per voter to verify their receipt.
+
+In this way, SIV can match the Voter Authentication requirements of existing processes, while upgrading the return ballot process to be faster, more accessible, and fully verifiable.
+
+No matter which methods are chosen, the entire process leaves a written audit trail, for independent verification.
+
+As already mentioned in Pre-A, Election Administrators can invalidate individual Auth Tokens & generate new ones, as necessary for remediation, such as if a voter accidentally leaks or loses theirs.
+
 ### Step 2. Voters Make Selections & Encrypt Their Vote
 
 ### Step 3. Voters Submit Encrypted Votes
