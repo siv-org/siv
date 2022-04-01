@@ -1,6 +1,6 @@
 # SIV Technical Specification
 
-**Last updated:** 2022.03.29
+**Last updated:** 2022.03.31
 
 This document gives a technical specification of what defines a SIV (Secure Internet Voting) election.
 
@@ -33,6 +33,28 @@ The SIV Admin software provides both a simple Point-and-Click Ballot Designer in
 SIV is fully compatible with alternative voting methods such as Ranked Choice Voting and Approval Voting, and can prevent Voters from accidentally invalidating their ballot.
 
 ### c. Register Verifying Observers
+
+The Election Administrator can enroll Verifying Observers. Each Verifying Observer adds additional assurance for voter privacy.
+
+Election Administrators choose who to invite, and Verifying Observers must also opt-in by accepting the invitation.
+
+Verifying Observers key role arrives later, after all votes have been submitted, but they must be registered before the election can begin. Later, they individually anonymize all the votes themselves, and verify the SIV Universal Zero-Knowledge Proofs to ensure all votes' integrity. Only after these two vital steps are completed, they work together to unlock the vote's encryption for final tallying.
+
+To ensure neutrally-credible acceptance of an election's fairness, Observers can be chosen to have competing interests. They are a more powerful version of the traditional concept of Election Observers from in-person elections. Similarly, a reasonable choice would be one Verifying Observer nominated by each candidate's political party, plus the Election Administrator themselves.
+
+Verifying Observers do not need to trust each other, and cannot possibly tamper with votes.
+
+Once all the Verifying Observers have been selected and accepted their invitation, they together preform a joint Decentralized Key Generation Ceremony to create a $t$-of-$n$ Threshold Public Key, with each of them holding a fractional share of the corresponding Private Key, where $n$ is the number of total trustees, and $t$ is the configured threshold — chosen by the election administrator — required to successfully use the private key.
+
+Vote privacy is protected even if individual Observers are malicious or compromised, as long as no more than $t$ Observers are compromised. For example, if the key is 4-of-5, up to 3 Observers can be compromised, and privacy is still protected.
+
+SIV currently uses the Pedersen DKG protocol first described in the 1992 paper "*Non-Interactive and Information-Theoretic Secure Verifiable Secret Sharing*" by Dr. Torben Pedersen. This protocol avoids ever centralizing the full key in any one location, and verifies that all ceremony members are following the protocol correctly.
+
+SIV provides Observer software to automatically run the ceremony for all participants, using cryptographically secure sources of randomness. Every Observer gets their own complete log of exactly each step taken. All private key material is stored in participants browsers' LocalStorage, as well as displayed visually for them to backup to additional locations.
+
+At the end of the ceremony a test encryption is created and jointly decrypted, to test the ceremony's success.
+
+SIV's Observer software can be run entirely in the browser, from any relatively modern desktop, laptop, or smartphone, without requiring any installations.
 
 ## Election Begins
 
