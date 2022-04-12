@@ -6,6 +6,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const fields = req.body
 
   if (typeof fields !== 'object') return res.status(400).json({ error: 'Invalid request' })
+  if (!Object.keys(fields).length) return res.status(400).json({ error: 'Invalid request' })
 
   // Store submission in Firestore
   await firebase
