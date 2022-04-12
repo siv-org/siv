@@ -1,9 +1,14 @@
+import { validate as validateEmail } from 'email-validator'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import { firebase, pushover } from './_services'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { email } = req.body
+
+  // Validate email
+  if (!email) return res.status(400).json({ error: 'Email is required' })
+  if (!validateEmail(email)) return res.status(400).json({ error: 'Invalid email' })
 
   // Store submission in Firestore
   await firebase

@@ -6,6 +6,7 @@ import { OnClickButton } from '../landing-page/Button'
 
 export const EmailSignup = (): JSX.Element => {
   const [saved, setSaved] = useState(false)
+  const [error, setError] = useState('')
 
   return (
     <>
@@ -15,12 +16,17 @@ export const EmailSignup = (): JSX.Element => {
       <div style={{ display: 'flex', marginTop: 15 }}>
         <NoSsr>
           <TextField
+            error={!!error}
+            helperText={error}
             id="newsletter-signup-field"
             label="Email Address"
             size="small"
             style={{ flex: 1, marginRight: 10, maxWidth: 250 }}
             variant="outlined"
-            onChange={() => setSaved(false)}
+            onChange={() => {
+              setSaved(false)
+              setError('')
+            }}
             onKeyPress={(event) =>
               event.key === 'Enter' && (document.getElementById('signup-btn') as HTMLButtonElement)?.click()
             }
@@ -29,12 +35,13 @@ export const EmailSignup = (): JSX.Element => {
         <OnClickButton
           disabled={saved}
           id="signup-btn"
-          style={{ margin: 0, padding: '8px 17px' }}
+          style={{ margin: 0, maxHeight: 40, padding: '8px 17px' }}
           onClick={async () => {
-            const { status } = await api('email-signup', {
+            const response = await api('email-signup', {
               email: (document.getElementById('newsletter-signup-field') as HTMLInputElement).value,
             })
-            if (status === 201) setSaved(true)
+            if (response.ok) return setSaved(true)
+            setError((await response.json()).error)
           }}
         >
           {saved ? 'Done!' : 'Sign Up'}
