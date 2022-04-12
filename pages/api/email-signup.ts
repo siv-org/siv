@@ -4,7 +4,8 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { firebase, pushover } from './_services'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { email } = req.body
+  const { email: untrimmed } = req.body
+  const email = untrimmed.trim()
 
   // Validate email
   if (!email) return res.status(400).json({ error: 'Email is required' })

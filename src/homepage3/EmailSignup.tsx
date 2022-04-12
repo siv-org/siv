@@ -37,6 +37,7 @@ export const EmailSignup = (): JSX.Element => {
           id="signup-btn"
           style={{ margin: 0, maxHeight: 40, padding: '8px 17px' }}
           onClick={async () => {
+            setError('')
             const response = await api('email-signup', {
               email: (document.getElementById('newsletter-signup-field') as HTMLInputElement).value,
             })
