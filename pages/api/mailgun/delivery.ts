@@ -22,9 +22,16 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   // Notify any pusher subscriptions listening for this tag
-  if (tags && Array.isArray(tags)) await Promise.all(tags.map((tag) => pusher.trigger(tag, 'delivery', '')))
+  if (tags && Array.isArray(tags))
+    await Promise.all(tags.map((tag) => pusher.trigger(fixPusherChannelName(tag), 'delivery', '')))
 
   // console.log({ data })
 
   res.status(200).send('Success')
+}
+
+function fixPusherChannelName(channelName: string) {
+  // See https://support.pusher.com/hc/en-us/articles/4411990469265-What-Does-The-Error-Invalid-channel-name-Mean-
+  const prohibitedChars = /[^a-zA-Z0-9_\-=@,.;]/g // first ^ is negation
+  return channelName.replace(prohibitedChars, '').slice(0, 164)
 }
