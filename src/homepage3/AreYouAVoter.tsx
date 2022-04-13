@@ -10,6 +10,7 @@ import { darkBlue } from './colors'
 export function AreYouAVoter(): JSX.Element {
   const idKey = 'home3'
   const [saved, setSaved] = useState(false)
+  const [error, setError] = useState('')
 
   // We'll reset 'saved' state if they try to edit the textfields again
   const onChange = () => setSaved(false)
@@ -46,19 +47,23 @@ export function AreYouAVoter(): JSX.Element {
             style={{ marginRight: 0 }}
             onClick={async () => {
               const fields: Record<string, string | Date> = { idKey }
+              setError('')
 
               // Get data from input fields
               ;['name', 'zip', 'email', 'message'].forEach((field) => {
                 fields[field] = (document.getElementById(toID(field)) as HTMLInputElement).value
               })
 
-              const { status } = await api('let-your-govt-know', fields)
-              if (status === 201) setSaved(true)
+              const response = await api('let-your-govt-know', fields)
+              if (response.ok) return setSaved(true)
+
+              setError((await response.json()).error)
             }}
           >
             Send
           </OnClickButton>
         </Row>
+        <p className="error">{error}</p>
       </form>
 
       <style jsx>{`
@@ -85,6 +90,12 @@ export function AreYouAVoter(): JSX.Element {
           font-size: 2.25vw;
           color: ${darkBlue};
           margin: 3vw 0;
+        }
+
+        .error {
+          color: red;
+          position: relative;
+          bottom: 6rem;
         }
 
         /* Small screens: single column */
