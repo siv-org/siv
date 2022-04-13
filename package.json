@@ -26,6 +26,10 @@
     "singleQuote": true,
     "trailingComma": "all"
   },
+  "resolutions": {
+    "@types/react": "17.0.14",
+    "@types/react-dom": "17.0.14"
+  },
   "dependencies": {
     "@ant-design/icons": "~4.7",
     "@fingerprintjs/fingerprintjs-pro": "^3.5.1",
