@@ -23,7 +23,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Notify any pusher subscriptions listening for this tag
   if (tags && Array.isArray(tags))
-    await Promise.all(tags.map((tag) => pusher.trigger(fixPusherChannelName(tag), 'delivery', '')))
+    await Promise.all(tags.map((tag) => tag && pusher.trigger(fixPusherChannelName(tag), 'delivery', '')))
 
   // console.log({ data })
 
