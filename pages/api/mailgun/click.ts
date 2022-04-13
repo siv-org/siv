@@ -6,11 +6,15 @@ import { supabase } from '../_supabase'
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   // console.log(req.body)
 
-  const { error } = await supabase.from('mailgun-permanent-failures').insert([{ json: req.body }])
+  const json = req.body
+  const eventData = json['event-data']
+  const { ip, recipient, tags, url } = eventData
+
+  const { error } = await supabase.from('mailgun-clicks').insert([{ ip, json, recipient, tags, url }])
 
   if (error) {
     console.error(error)
-    await pushover('mailgun-permanent-failures webhook error', JSON.stringify(error))
+    await pushover('mailgun-clicks webhook error', JSON.stringify(error))
     return res.status(400).send({ error })
   }
 
