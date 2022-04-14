@@ -9,6 +9,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   const json = req.body
   const eventData = json['event-data']
+  if (!eventData) {
+    console.error('Missing event data. req.body:', req.body)
+    res.status(400).json({ error: 'Missing event data.' })
+  }
   const { message, tags } = eventData
   const { headers } = message
   const { subject, to } = headers
