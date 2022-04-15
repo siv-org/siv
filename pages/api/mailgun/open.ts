@@ -8,6 +8,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   const json = req.body
   const eventData = json['event-data']
+  if (!eventData) {
+    console.error('Missing event data. req.body:', req.body)
+    console.error('req.headers:', req.headers)
+    return res.status(400).json({ error: 'Missing event data.' })
+  }
   const { recipient, tags } = eventData
 
   const { error } = await supabase.from('mailgun-opens').insert([{ json: req.body, recipient, tags }])
