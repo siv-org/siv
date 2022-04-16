@@ -1,3 +1,4 @@
+import { ElectionCompleted } from './ElectionCompleted'
 import { Milestone } from './Milestone'
 import styles from './protocol.module.css'
 import { useScrollContext } from './ScrollContext'
@@ -33,10 +34,7 @@ export const Content = () => (
       </div>
     ))}
 
-    {/* Fin */}
-    <div style={{ paddingBottom: 60, textAlign: 'center' }}>
-      <img src={`./protocol/step-fin.png`} style={{ maxWidth: 600, width: '100%' }} />
-    </div>
+    <ElectionCompleted />
 
     <style jsx>{`
       /* Add padding when Topbar is visible */
