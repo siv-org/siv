@@ -1,7 +1,15 @@
+import Image from 'next/image'
+
+import logo from './siv-logo.png'
+
 export const Introduction = () => {
   return (
     <div style={{ padding: '10px 30px' }}>
-      <h1 style={{ fontSize: 21, fontWeight: 700, marginBottom: 0 }}>Secure Internet Voting (SIV) Protocol</h1>
+      <div className="logo-container">
+        <Image src={logo} />
+      </div>
+
+      <h1 style={{ fontSize: 21, fontWeight: 700, marginBottom: 0 }}>Secure Internet Voting Protocol</h1>
       <h2 style={{ fontSize: 16, fontWeight: 700, marginTop: 3 }}>
         Voting Method with mathematically provable privacy &amp; vote verifiability
       </h2>
@@ -29,6 +37,11 @@ export const Introduction = () => {
       <p>Here&apos;s how SIV meets all three goals:</p>
 
       <style jsx>{`
+        .logo-container {
+          width: 40px;
+          margin: 20px 0;
+        }
+
         p {
           margin-top: 0;
           font-size: 15px;
