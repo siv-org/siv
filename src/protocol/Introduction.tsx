@@ -17,16 +17,13 @@ export const Introduction = () => {
       <p>There are three pillars that define a secure election:</p>
 
       <h4>I. Authenticated voters</h4>
-      <p>Only registered voters are allowed to vote, once each.</p>
+      <p>Only registered voters are allowed to vote, and only once.</p>
 
       <h4>II. Private voting</h4>
-      <p>
-        A &ldquo;Free and Fair Election&rdquo; requires that voters can make their selections without anyone else
-        learning how they voted.
-      </p>
+      <p>A fair election requires that voters can freely choose without anyone learning how they voted.</p>
 
       <h4>III. Independently verifiable tallies</h4>
-      <p>For widely accepted results, the final vote totals must be fully auditable for accuracy.</p>
+      <p>For widely accepted results, vote totals must be auditable for accuracy.</p>
 
       <br />
       <p>
