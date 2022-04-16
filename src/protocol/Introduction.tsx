@@ -15,15 +15,22 @@ export const Introduction = () => {
       </h2>
 
       <p>There are three pillars that define a secure election:</p>
+      <div className="pillars">
+        <div className="pillar">
+          <h4>Authenticated voters</h4>
+          <p>Only legitimately registered voters are allowed to vote, and only once per person.</p>
+        </div>
 
-      <h4>I. Authenticated voters</h4>
-      <p>Only registered voters are allowed to vote, and only once.</p>
+        <div className="pillar">
+          <h4>Private voting</h4>
+          <p>A fair election requires that voters can freely choose without anyone learning how they voted.</p>
+        </div>
 
-      <h4>II. Private voting</h4>
-      <p>A fair election requires that voters can freely choose without anyone learning how they voted.</p>
-
-      <h4>III. Independently verifiable tallies</h4>
-      <p>For widely accepted results, vote totals must be auditable for accuracy.</p>
+        <div className="pillar">
+          <h4>Verifiable tallies</h4>
+          <p>For widely accepted results, vote totals must be independently auditable for accuracy.</p>
+        </div>
+      </div>
 
       <br />
       <p>
@@ -48,9 +55,25 @@ export const Introduction = () => {
           margin-bottom: 1.5rem;
         }
 
+        .pillars {
+          display: flex;
+          justify-content: space-between;
+        }
+        .pillar {
+          text-align: left;
+          width: 26%;
+        }
+        @media (max-width: 420px) {
+          .pillars {
+            flex-direction: column;
+          }
+          .pillar {
+            width: 100%;
+          }
+        }
+
         h4 {
           opacity: 0.9;
-          margin-bottom: 0;
         }
       `}</style>
     </div>
