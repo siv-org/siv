@@ -32,7 +32,7 @@ export function Unlocked(): JSX.Element {
           ))}
         </code>
         <br />
-        <b>Final results:</b>
+        <b>Vote Totals:</b>
         <ol>
           {ordered.map(({ name, votes }) => (
             <li key={name}>

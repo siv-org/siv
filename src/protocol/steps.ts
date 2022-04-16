@@ -410,7 +410,7 @@ export const groupedSteps: Group[] = [
       // Step 5
       {
         name: 'Step 5: Votes Unlocked & Tallied',
-        subheader: 'A quorum of Verifying Observers then works together to Unlock the final shuffled list.',
+        subheader: 'The Verifying Observers then work together to Unlock the final shuffled list.',
         then: [
           {
             left: [
@@ -436,11 +436,11 @@ export const groupedSteps: Group[] = [
               '',
               '',
               {
-                p: `Any voter can Search (Ctrl+F) to find their individual vote, via their Verification #, and see that their vote was counted correctly.`,
+                p: `Any voter can Search (Ctrl+F) to find their individual submission, via their Verification #, and see that their vote was counted correctly.`,
               },
               '',
               '',
-              { details: `Anyone can tally the final vote count themselves.` },
+              { details: `Anyone can independently tally the vote totals themselves.` },
               '',
               '',
               {
