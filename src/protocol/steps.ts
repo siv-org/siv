@@ -399,7 +399,7 @@ export const groupedSteps: Group[] = [
                 p: `This way, all of the Observers independently shuffle the encrypted votes, like multiple people shuffling a deck of cards, then handing it off to the next person.`,
               },
               {
-                p: `Total privacy is ensured as long as at least a single Observer remains honest.`,
+                p: `This design creates multiple fail-safes. Even if some Observers' devices are compromised, vote privacy can still be protected.`,
               },
             ],
             right: ['', '', { react: MixnetAnimation }],
