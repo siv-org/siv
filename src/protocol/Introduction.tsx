@@ -9,12 +9,12 @@ export const Introduction = () => {
         <Image src={logo} />
       </div>
 
-      <h1 style={{ fontSize: 21, fontWeight: 700, marginBottom: 0 }}>Secure Internet Voting Protocol</h1>
-      <h2 style={{ fontSize: 16, fontWeight: 700, marginTop: 3 }}>
-        Voting Method with mathematically provable privacy &amp; vote verifiability
+      <h1 style={{ fontSize: 21, fontWeight: 700, marginBottom: 0, opacity: 0.9 }}>Secure Internet Voting Protocol</h1>
+      <h2 style={{ fontSize: 16, fontWeight: 600, marginTop: 3 }}>
+        Voting Option with Mathematically Provable Privacy &amp; Vote Verifiability
       </h2>
 
-      <p>There are three pillars that define a secure election:</p>
+      <h3 style={{ fontWeight: 400, marginBottom: 0, marginTop: 30 }}>A secure election has three requirements:</h3>
       <div className="pillars">
         <div className="pillar">
           <h4>Authenticated voters</h4>
@@ -34,11 +34,11 @@ export const Introduction = () => {
 
       <br />
       <p>
-        There have been digital systems in widespread use for decades that accomplish each of these properties
-        individually, but getting all three simultaneously is unsually challenging.
+        There have already been digital systems in widespread use that offer each of these properties individually. Yet
+        accomplishing all three at the same time has been unsually challenging.
       </p>
 
-      <p>Here&apos;s how SIV meets all three goals:</p>
+      <h3 style={{ fontWeight: 400, marginBottom: 0, marginTop: 35 }}>Here is how SIV meets all three requirements:</h3>
 
       <style jsx>{`
         .logo-container {
@@ -62,6 +62,9 @@ export const Introduction = () => {
         .pillar {
           text-align: left;
           width: 26%;
+        }
+        .pillar p {
+          opacity: 0.8;
         }
         @media (max-width: 420px) {
           .pillars {
