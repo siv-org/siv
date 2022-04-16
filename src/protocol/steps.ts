@@ -213,14 +213,14 @@ export const groupedSteps: Group[] = [
       {
         leftFirst: true,
         name: 'Step 3: Submit Encrypted Vote',
-        subheader: 'The voter sends their encrypted vote + Auth Token to the election administrator.',
+        subheader: 'The voter sends their encrypted vote, with their Auth Token, to the election administrator.',
         then: [
           {
             left: [
               {
-                html: `Election admin confirms the ${orange(
+                html: `The ${orange(
                   semibold('Voter Auth Token'),
-                )} matches an eligible voter, and hasn't already been used.`,
+                )} is confirmed to match an eligible voter, and that it hasn't already been used.`,
               },
             ],
             right: ['', '', { react: YourSubmittedBallot }, '', '', '', ''],
@@ -228,20 +228,25 @@ export const groupedSteps: Group[] = [
           {
             left: [
               {
-                details: 'If it passes, the admin adds it to a public list of all votes received so far.',
+                details: 'If it passes, the vote is added to a public list of all votes received so far.',
               },
             ],
             right: ['', { react: AllSubmittedBallots }, '', ''],
           },
           {
             left: [
+              { p: 'The voter is sent a confirmation that their encrypted vote has been received and accepted.' },
               {
-                html: `The election administrator has no way to know how a voter voted. Still, they can email voters a confirmation that their encrypted vote has been received and accepted.<br />
-            ${light(
-              `This lets the voter know their job is done. It also alerts the voter in case someone else somehow gained access to their auth token. And it serves as a written receipt that the vote was accepted, to allow for auditing.`,
-            )}`,
+                html: light(
+                  `This lets the voter know their job is done. It also alerts them in case someone else somehow gained access to their auth token. And it serves as a written receipt that the vote was accepted, to allow for auditing.`,
+                ),
               },
               '',
+              '',
+              '',
+              {
+                p: 'Because of the strong encryption, the election administrator still has no way to know how individual voters choose to vote.',
+              },
             ],
             right: [{ react: SubmissionConfirmation }],
           },
