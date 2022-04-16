@@ -371,16 +371,15 @@ export const groupedSteps: Group[] = [
               {
                 p: 'Now, the shuffled list is cryptographically mixed, with the original Auth Tokens unlinkable.',
               },
-              { p: 'Only Observer #1 can possibly know the exact way they shuffled.' },
               {
                 p: 'Their shuffled + re-encrypted list is now published publicly.',
               },
               '',
               {
                 html: `${light(
-                  `Each Observer also provides a ${em(
-                    `Zero-Knowledge Proof of a Valid Shuffle`,
-                  )}. The SIV Shuffling software generates this for them automatically. This proof allows anyone to verify vote accuracy, even if a Observer is dishonest or compromised.`,
+                  `${em(
+                    `Zero-Knowledge Proofs of a Valid Shuffle`,
+                  )} are also provided. These proofs verify vote accuracy, even in the face of a dishonest or compromised Observer.`,
                 )}`,
               },
               '',
@@ -399,7 +398,7 @@ export const groupedSteps: Group[] = [
                 p: `This way, all of the Observers independently shuffle the encrypted votes, like multiple people shuffling a deck of cards, then handing it off to the next person.`,
               },
               {
-                p: `Total privacy is ensured as long as at least a single Observer refuses to share their record of how they shuffled.`,
+                p: `Total privacy is ensured as long as at least a single Observer remains honest.`,
               },
             ],
             right: ['', '', { image: 'step-4-shuffle.png', maxWidth: 490 }],
