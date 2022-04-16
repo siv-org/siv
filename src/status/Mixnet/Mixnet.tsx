@@ -1,7 +1,5 @@
 import { useElectionInfo } from '../use-election-info'
 import { Animation } from './Animation'
-import { FadeAndSlideInCSS } from './FadeAndSlideInCSS'
-import { RandomPathsCSS } from './Shuffle/RandomPathsCSS'
 
 export const debug = false
 
@@ -19,9 +17,7 @@ export const Mixnet = () => {
         </a>
         .
       </p>
-      <Animation />
-      <RandomPathsCSS />
-      <FadeAndSlideInCSS />
+      <Animation {...{ observers }} />
       <style jsx>{`
         section {
           padding: 1rem;

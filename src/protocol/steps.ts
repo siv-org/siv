@@ -4,6 +4,7 @@ import { BallotDesigner } from './BallotDesigner'
 import { EncryptedVote } from './EncryptedVote'
 import { EncryptionReceipt } from './EncryptionReceipt'
 import { Invitation, InvitationExplanation } from './Invitation'
+import { MixnetAnimation } from './MixnetAnimation'
 import { Plaintext } from './Plaintext'
 import { Reencryption } from './Reencryption'
 import { RemoveAuthTokens } from './RemoveAuthTokens'
@@ -401,7 +402,7 @@ export const groupedSteps: Group[] = [
                 p: `Total privacy is ensured as long as at least a single Observer remains honest.`,
               },
             ],
-            right: ['', '', { image: 'step-4-shuffle.png', maxWidth: 490 }],
+            right: ['', '', { react: MixnetAnimation }],
           },
         ],
       },

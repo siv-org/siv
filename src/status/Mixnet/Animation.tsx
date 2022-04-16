@@ -1,9 +1,10 @@
 import { useEffect, useRef } from 'react'
 import smoothscroll from 'smoothscroll-polyfill'
 
-import { useElectionInfo } from '../use-election-info'
 import { ReplayButton } from './debug/ReplayButton'
+import { FadeAndSlideInCSS } from './FadeAndSlideInCSS'
 import { AfterShuffle } from './Shuffle/AfterShuffle'
+import { RandomPathsCSS } from './Shuffle/RandomPathsCSS'
 import { ShufflingVotes } from './Shuffle/ShufflingVotes'
 import { SlidingVotes } from './Shuffle/SlidingVotes'
 import { StaticPileOfVotes } from './Shuffle/StaticPileOfVotes'
@@ -12,8 +13,7 @@ import { useStepCounter } from './useStepCounter'
 
 const initStep = 0
 
-export const Animation = () => {
-  const { observers = [] } = useElectionInfo()
+export const Animation = ({ observers, protocolPage }: { observers: string[]; protocolPage?: boolean }) => {
   const el = useRef<HTMLDivElement>(null)
 
   const maxStep = observers.length * 3 + 4
@@ -33,6 +33,13 @@ export const Animation = () => {
 
   const { startInterval, step } = useStepCounter(initStep, !observers.length ? 0 : maxStep, scrollToEnd)
 
+  // If on /protocol, auto-loop forever
+  useEffect(() => {
+    if (protocolPage && step === initUnlockingStep) {
+      setTimeout(startInterval, 1 * 1000)
+    }
+  }, [step])
+
   return (
     <>
       <main ref={el}>
@@ -50,12 +57,15 @@ export const Animation = () => {
           </div>
         ))}
 
-        {step >= initUnlockingStep && <VotesUnlocked step={step - initUnlockingStep} />}
+        {step >= initUnlockingStep && !protocolPage && <VotesUnlocked step={step - initUnlockingStep} />}
 
         {/* Right padding spacer */}
         <div style={{ opacity: 0 }}>abc</div>
       </main>
       <ReplayButton {...{ maxStep, step }} onClick={startInterval} />
+
+      <RandomPathsCSS />
+      <FadeAndSlideInCSS />
 
       <style jsx>{`
         main {
