@@ -1,5 +1,3 @@
-import Link from 'next/link'
-
 import { useScrollContext } from './ScrollContext'
 import { stepHash } from './step-hash'
 import { groupedSteps } from './steps'
@@ -9,11 +7,6 @@ export const Sidebar = () => {
 
   return (
     <div className="sidebar">
-      <h2>
-        <Link href="/">
-          <a>SIV</a>
-        </Link>
-      </h2>
       <h3>Contents</h3>
 
       {groupedSteps.map(({ group, steps }) => (
@@ -47,19 +40,8 @@ export const Sidebar = () => {
           height: 100vh;
         }
 
-        h2 a {
-          cursor: pointer;
-          width: 43px;
-          color: #fffb;
-          transition: 0.05s color linear;
-          text-decoration: none;
-        }
-
-        h2 a:hover {
-          color: #fffffff8;
-        }
-
         h3 {
+          margin-top: 2rem;
           opacity: 0.75;
           font-size: 15px;
         }

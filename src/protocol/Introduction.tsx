@@ -1,13 +1,16 @@
 import Image from 'next/image'
+import Link from 'next/link'
 
 import logo from './siv-logo.png'
 
 export const Introduction = () => {
   return (
     <div style={{ padding: '10px 30px' }}>
-      <div className="logo-container">
-        <Image src={logo} />
-      </div>
+      <Link href="/">
+        <a className="logo-container">
+          <Image src={logo} />
+        </a>
+      </Link>
 
       <h1 style={{ fontSize: 21, fontWeight: 700, marginBottom: 0, opacity: 0.9 }}>Secure Internet Voting Protocol</h1>
       <h2 style={{ fontSize: 16, fontWeight: 600, marginTop: 3 }}>
@@ -44,6 +47,12 @@ export const Introduction = () => {
         .logo-container {
           width: 40px;
           margin: 20px 0;
+          display: block;
+          transition: 0.05s opacity linear;
+        }
+
+        .logo-container:hover {
+          opacity: 0.8;
         }
 
         p {
