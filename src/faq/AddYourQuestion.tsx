@@ -1,6 +1,6 @@
 import { NoSsr, TextField } from '@material-ui/core'
 import { useState } from 'react'
-import { OnClickButton } from 'src/landing-page/Button'
+import { OnClickButton } from 'src/_shared/Button'
 
 import { api } from '../api-helper'
 

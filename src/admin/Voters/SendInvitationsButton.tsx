@@ -3,7 +3,7 @@ import { useReducer } from 'react'
 import { api } from 'src/api-helper'
 import throat from 'throat'
 
-import { OnClickButton } from '../../landing-page/Button'
+import { OnClickButton } from '../../_shared/Button'
 import { Spinner } from '../Spinner'
 import { revalidate, useStored } from '../useStored'
 

@@ -1,9 +1,9 @@
 import { useAnalytics } from 'src/useAnalytics'
 
 import { Head } from '../Head'
-import { AboveFold } from '../landing-page/AboveFold'
-import { BlueDivider } from '../landing-page/BlueDivider'
-import { Footer } from '../landing-page/Footer'
+import { AboveFold } from '../_shared/AboveFold'
+import { BlueDivider } from '../_shared/BlueDivider'
+import { Footer } from '../_shared/Footer'
 import { Content } from './Content'
 import { HeaderBar } from './HeaderBar'
 

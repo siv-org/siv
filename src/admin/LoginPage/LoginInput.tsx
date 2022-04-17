@@ -2,8 +2,8 @@ import { TextField } from '@material-ui/core'
 import { validate as validateEmail } from 'email-validator'
 import { useRouter } from 'next/router'
 import { ChangeEventHandler, KeyboardEventHandler, useRef, useState } from 'react'
+import { OnClickButton } from 'src/_shared/Button'
 import { api } from 'src/api-helper'
-import { OnClickButton } from 'src/landing-page/Button'
 
 import { Spinner } from '../Spinner'
 

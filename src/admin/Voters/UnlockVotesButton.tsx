@@ -1,7 +1,7 @@
 import { useReducer } from 'react'
 import { api } from 'src/api-helper'
 
-import { OnClickButton } from '../../landing-page/Button'
+import { OnClickButton } from '../../_shared/Button'
 import { Spinner } from '../Spinner'
 import { useStored } from '../useStored'
 

@@ -3,8 +3,8 @@ import { omit } from 'lodash-es'
 import { useState } from 'react'
 import { Element } from 'react-scroll'
 
+import { OnClickButton } from '../_shared/Button'
 import { api } from '../api-helper'
-import { OnClickButton } from '../landing-page/Button'
 import { darkBlue } from './colors'
 
 export function AreYouAVoter(): JSX.Element {

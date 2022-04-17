@@ -1,5 +1,5 @@
 import { ReloadOutlined } from '@ant-design/icons'
-import { OnClickButton } from 'src/landing-page/Button'
+import { OnClickButton } from 'src/_shared/Button'
 
 import { debug } from '../Mixnet'
 
