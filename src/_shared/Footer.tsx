@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-import { EmailSignup } from '../homepage3/EmailSignup'
+import { EmailSignup } from '../homepage/EmailSignup'
 
 const email = 'questions@siv.org'
 
