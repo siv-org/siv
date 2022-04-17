@@ -1,9 +1,9 @@
 import { useAnalytics } from 'src/useAnalytics'
 
-import { Head } from '../Head'
 import { AboveFold } from '../_shared/AboveFold'
 import { BlueDivider } from '../_shared/BlueDivider'
-import { Footer } from '../_shared/Footer'
+import { OldFooter } from '../_shared/OldFooter'
+import { Head } from '../Head'
 import { Content } from './Content'
 import { HeaderBar } from './HeaderBar'
 
@@ -20,7 +20,7 @@ export const AboutPage = (): JSX.Element => {
       <a id="research" />
       <Content />
       <BlueDivider />
-      <Footer />
+      <OldFooter />
     </>
   )
 }

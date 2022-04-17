@@ -4,7 +4,7 @@ import { EmailSignup } from '../homepage/EmailSignup'
 
 const email = 'questions@siv.org'
 
-export const Footer = (): JSX.Element => {
+export const OldFooter = (): JSX.Element => {
   return (
     <div className="columns">
       <div className="column">

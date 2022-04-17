@@ -4,7 +4,7 @@ import { OnClickButton } from 'src/_shared/Button'
 import { useAnalytics } from 'src/useAnalytics'
 
 import { BlueDivider } from '../_shared/BlueDivider'
-import { Footer } from '../_shared/Footer'
+import { OldFooter } from '../_shared/OldFooter'
 import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
 import { AddYourQuestion } from './AddYourQuestion'
@@ -73,7 +73,7 @@ export const FAQPage = (): JSX.Element => {
         <AddYourQuestion />
       </main>
       <BlueDivider />
-      <Footer />
+      <OldFooter />
 
       <style global jsx>{`
         a {
