@@ -1,3 +1,4 @@
+import { LinkOutlined } from '@ant-design/icons'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { OnClickButton } from 'src/_shared/Button'
@@ -63,6 +64,11 @@ export const FAQPage = (): JSX.Element => {
               >
                 <span>
                   {index + 1}. {q}
+                  {id && (
+                    <a className="permalink" href={`#${id}`}>
+                      <LinkOutlined />
+                    </a>
+                  )}
                 </span>
                 <label>{!expanded[index] ? '+' : '–'}</label>
               </h3>
@@ -115,6 +121,21 @@ export const FAQPage = (): JSX.Element => {
 
         h3:hover {
           background: hsl(0, 0%, 90%);
+        }
+
+        .permalink {
+          margin-left: 5px;
+          padding: 3px 5px;
+          opacity: 0;
+          color: black;
+        }
+
+        h3:hover .permalink {
+          opacity: 1;
+        }
+
+        .permalink:hover {
+          color: blue;
         }
 
         label {
