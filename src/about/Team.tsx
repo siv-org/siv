@@ -31,7 +31,7 @@ const people = [
 export const Team = () => (
   <>
     <h2>Team</h2>
-    <div className="team">
+    <div className="people">
       {people.map(({ name, photo, title }) => (
         <div className="person" key={name}>
           <div className="photo">
@@ -48,21 +48,26 @@ export const Team = () => (
         font-size: 3vw;
         font-weight: 500;
         letter-spacing: 0.7vw;
+        margin-bottom: 4vw;
       }
 
-      .team {
+      .people {
         display: flex;
       }
 
       .photo {
-        padding-top: 1vw;
+        padding-top: 1.5vw;
         background: #ffd8a1;
         margin-bottom: 1rem;
+        display: flex;
+        align-items: flex-end;
       }
 
       .person {
         text-align: center;
         margin-right: 6vw;
+
+        font-size: min(1.4vw, 15.7px);
       }
 
       .name {
