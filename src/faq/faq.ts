@@ -80,6 +80,7 @@ This check requires little technical knowledge, can be explained in seconds, and
 In other words, you get thousands of independent recounts for free.`,
   },
   {
+    id: 'hacking',
     q: 'How does SIV protect elections from being hacked?',
     resp: `SIV creates an auditable record of each step along the process. Everything can be independently verified for correctness, from beginning to end.
 
@@ -88,6 +89,7 @@ The SIV design is built with extra redundant security so that SIV does not depen
 SIV is significantly more trustworthy than paper elections, because all election results can be independently verified.`,
   },
   {
+    id: 'malware',
     q: 'What if voters’ devices are compromised?',
     resp: `SIV is meant to be opt-in. If you don’t trust your devices, you can borrow another or continue to use Vote by Mail or In-Person options.
 
@@ -96,6 +98,7 @@ If a voting device is compromised, the malware may learn how one voted, but vote
 If needed, SIV still allows for votes to be corrected even after the shuffling & unlocking stage, with clear justification given for independent auditing. This is a powerful remedial ability not possible with paper elections.`,
   },
   {
+    id: 'remediation',
     q: 'How can SIV address election irregularities?',
     resp: `Unlike paper elections, SIV allows votes to be corrected even after anonymization.
 
@@ -144,6 +147,7 @@ Unlike most information systems, voting needs to be both authenticated (one vote
 The SIV team has understood these challenges and focused on solving them from day one. <a href="https://siv.org" target="_blank">siv.org</a> is now available to run fast, private, & verifiable elections.`,
   },
   {
+    id: 'vs-paper',
     q: 'How does Secure Internet Voting improve upon paper voting?',
     resp: `1. Voters can quickly and easily verify for themselves that their unique vote is in the final tally and independently recount the votes themselves for vastly stronger assurance that the election is fair and accurate.
 
@@ -230,6 +234,7 @@ Once the election closes, SIV can tally millions of ballots in seconds.`,
     resp: `SIV can significantly lower administrative costs for personnel, polling place locations, ballot printing, mail-voting processing, and more.`,
   },
   {
+    id: 'network-security',
     q: 'How does SIV protect voters in hostile or insecure network environments?',
     resp: `All connections to <a href="https://siv.org" target="_blank">siv.org</a> always require https Transport Layer Security.
 
@@ -269,6 +274,7 @@ RLAs are often currently used to double check vote tallies. SIV makes this unnec
 RLAs are still very useful to audit voter rolls & Voter Authorization token issuance, and to help voters check their Voter Verification #’s are in the final tally.`,
   },
   {
+    id: 'phishing',
     q: `What if voters are subject to phishing attacks?`,
     resp: `SIV automatically sends voters a confirmation email as soon as their encrypted vote is received. If there is unauthorized access, the voter is quickly alerted to it.
 
