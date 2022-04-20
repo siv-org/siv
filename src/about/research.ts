@@ -13,25 +13,25 @@ export const research = [
     group: `Decentralized Threshold Key Generation & Decryption`,
     papers: [
       {
-        author: 'Joseph-Louis Lagrange',
+        authors: ['Joseph-Louis Lagrange'],
         cover: lagrange,
         name: 'Polynomial Interpolation Method',
         year: 1795,
       },
       {
-        author: 'Dr. Adi Shamir',
+        authors: ['Dr. Adi Shamir'],
         cover: shamir,
         name: 'How to Share a Secret',
         year: 1979,
       },
       {
-        author: 'Dr. Paul Feldman',
+        authors: ['Dr. Paul Feldman'],
         cover: feldman,
         name: 'Verifiable Secret Sharing Scheme',
         year: 1991,
       },
       {
-        author: 'Dr. Torben Pedersen',
+        authors: ['Dr. Torben Pedersen'],
         cover: pedersen,
         name: 'Non-Interactive and Information-Theoretic Secure Verifiable Secret Sharing',
         year: 1992,
@@ -43,19 +43,19 @@ export const research = [
     group: `Discrete Logarithm Encryption`,
     papers: [
       {
-        author: 'Dr. Martin Hellman and Dr. Whitfield Diffie',
+        authors: ['Dr. Martin Hellman', 'Dr. Whitfield Diffie'],
         cover: diffie_hellman,
         name: 'New Directions in Cryptography',
         year: 1976,
       },
       {
-        author: 'Dr. Ralph Merkle',
+        authors: ['Dr. Ralph Merkle'],
         cover: merkle,
         name: 'Secure communications over insecure channels',
         year: 1978,
       },
       {
-        author: 'Dr. Taher Elgamal',
+        authors: ['Dr. Taher Elgamal'],
         cover: elgamal,
         name: 'A public key cryptosystem and a signature scheme based on discrete logarithms',
         year: 1985,
@@ -67,13 +67,13 @@ export const research = [
     group: `Anonymization Mixnet`,
     papers: [
       {
-        author: 'Dr. Amos Fiat and Dr. Adi Shamir',
+        authors: ['Dr. Amos Fiat', 'Dr. Adi Shamir'],
         cover: fiat_shamir,
         name: 'How To Prove Yourself: Practical Solutions to Identification and Signature Problems',
         year: 1986,
       },
       {
-        author: 'Dr. Andrew Neff',
+        authors: ['Dr. Andrew Neff'],
         cover: neff,
         name: 'A Verifiable Secret Shuffle and its Application to E-Voting',
         year: 2001,

@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import React, { Fragment } from 'react'
 import { darkBlue } from 'src/homepage/colors'
 
 import { research } from './research'
@@ -16,14 +17,19 @@ export const Content = () => (
           </h4>
 
           <div className="group">
-            {papers?.map(({ author, cover, name, year }) => (
-              <div className="paper" key={author}>
+            {papers?.map(({ authors, cover, name, year }) => (
+              <div className="paper" key={authors.join('')}>
                 <h3>{year}</h3>
                 <div className="img-container">{cover && <Image src={cover} />}</div>
                 <p className="name">{name}</p>
                 <p className="author">
                   <span>by </span>
-                  {author}
+                  {authors.map((author, i) => (
+                    <Fragment key={author}>
+                      {author}
+                      {i < authors.length - 1 && <span> & </span>}
+                    </Fragment>
+                  ))}
                 </p>
               </div>
             ))}
