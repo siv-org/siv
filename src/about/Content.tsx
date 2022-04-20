@@ -75,6 +75,17 @@ export const Content = () => (
         max-width: 180px;
         margin-right: 6vw;
       }
+      /* 2-column for small screens */
+      @media (max-width: 700px) {
+        .group {
+          flex-wrap: wrap;
+          justify-content: space-between;
+        }
+        .paper {
+          width: 40%;
+          margin: 0;
+        }
+      }
 
       .img-container {
         box-shadow: 4px 4px 8px 0 rgba(0, 0, 0, 0.3);
