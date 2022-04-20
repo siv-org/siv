@@ -5,7 +5,7 @@ import SignaturePad from 'react-signature-pad-wrapper'
 
 import { api } from '../../api-helper'
 import { GlobalCSS } from '../../GlobalCSS'
-import { OnClickButton } from '../../landing-page/Button'
+import { OnClickButton } from '../../_shared/Button'
 
 type Pad = {
   clear: () => void

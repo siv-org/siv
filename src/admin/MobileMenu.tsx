@@ -3,7 +3,7 @@ import { startCase } from 'lodash-es'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 
-import { OnClickButton } from '../landing-page/Button'
+import { OnClickButton } from '../_shared/Button'
 import { SidebarContent, steps } from './Sidebar'
 
 export const MobileMenu = () => {

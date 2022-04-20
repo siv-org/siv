@@ -1,12 +1,12 @@
+import { LinkOutlined } from '@ant-design/icons'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { OnClickButton } from 'src/landing-page/Button'
+import { OnClickButton } from 'src/_shared/Button'
+import { Footer } from 'src/homepage/Footer'
 import { useAnalytics } from 'src/useAnalytics'
 
 import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
-import { BlueDivider } from '../landing-page/BlueDivider'
-import { Footer } from '../landing-page/Footer'
 import { AddYourQuestion } from './AddYourQuestion'
 import { faq } from './faq'
 import { HeaderBar } from './HeaderBar'
@@ -38,42 +38,49 @@ export const FAQPage = (): JSX.Element => {
 
       <HeaderBar />
       <main>
-        <h1>Frequently Asked Questions</h1>
-        <div className="button-container">
-          <OnClickButton
-            style={{ margin: 0, padding: '5px 15px', textAlign: 'right' }}
-            onClick={() => {
-              const update = [...expanded].fill(any_collapsed)
-              setExpanded(update)
-            }}
-          >
-            <>{any_collapsed ? 'Expand' : 'Collapse'} all</>
-          </OnClickButton>
-        </div>
-
-        {faq.map(({ id, q, resp }, index) => (
-          <div className="question" key={index}>
-            <h3
-              id={id}
+        <section>
+          <h1>Frequently Asked Questions</h1>
+          <div className="button-container">
+            <OnClickButton
+              style={{ margin: 0, padding: '5px 15px', textAlign: 'right' }}
               onClick={() => {
-                const update = [...expanded]
-                update[index] = !update[index]
+                const update = [...expanded].fill(any_collapsed)
                 setExpanded(update)
               }}
             >
-              <span>
-                {index + 1}. {q}
-              </span>
-              <label>{!expanded[index] ? '+' : '–'}</label>
-            </h3>
-            {expanded[index] && <p dangerouslySetInnerHTML={{ __html: resp }} />}
+              <>{any_collapsed ? 'Expand' : 'Collapse'} all</>
+            </OnClickButton>
           </div>
-        ))}
 
-        <AddYourQuestion />
+          {faq.map(({ id, q, resp }, index) => (
+            <div className="question" key={index}>
+              <h3
+                id={id}
+                onClick={() => {
+                  const update = [...expanded]
+                  update[index] = !update[index]
+                  setExpanded(update)
+                }}
+              >
+                <span>
+                  {index + 1}. {q}
+                  {id && (
+                    <a className="permalink" href={`#${id}`}>
+                      <LinkOutlined />
+                    </a>
+                  )}
+                </span>
+                <label>{!expanded[index] ? '+' : '–'}</label>
+              </h3>
+              {expanded[index] && <p dangerouslySetInnerHTML={{ __html: resp }} />}
+            </div>
+          ))}
+
+          <AddYourQuestion />
+        </section>
+
+        <Footer />
       </main>
-      <BlueDivider />
-      <Footer />
 
       <style global jsx>{`
         a {
@@ -82,10 +89,14 @@ export const FAQPage = (): JSX.Element => {
       `}</style>
       <style jsx>{`
         main {
-          max-width: 750px;
           width: 100%;
-          margin: 2rem auto;
           padding: 1rem;
+          overflow-x: hidden;
+        }
+
+        section {
+          max-width: 750px;
+          margin: 2rem auto 5rem;
         }
 
         .button-container {
@@ -110,6 +121,21 @@ export const FAQPage = (): JSX.Element => {
 
         h3:hover {
           background: hsl(0, 0%, 90%);
+        }
+
+        .permalink {
+          margin-left: 5px;
+          padding: 3px 5px;
+          opacity: 0;
+          color: black;
+        }
+
+        h3:hover .permalink {
+          opacity: 1;
+        }
+
+        .permalink:hover {
+          color: blue;
         }
 
         label {

@@ -2,7 +2,7 @@ import * as Sentry from '@sentry/browser'
 import { Dispatch, useState } from 'react'
 
 import { api } from '../api-helper'
-import { OnClickButton } from '../landing-page/Button'
+import { OnClickButton } from '../_shared/Button'
 import { State } from './vote-state'
 
 export const SubmitButton = ({

@@ -1,4 +1,4 @@
-import { Button } from 'src/landing-page/Button'
+import { Button } from 'src/_shared/Button'
 
 import { useStored } from '../useStored'
 

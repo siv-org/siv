@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { darkBlue } from 'src/landing-page/Button'
+import { darkBlue } from 'src/_shared/Button'
 
 import { breakpoint } from './LoginPage'
 

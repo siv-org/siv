@@ -2,7 +2,7 @@ import { NoSsr, TextField } from '@material-ui/core'
 import { useState } from 'react'
 
 import { api } from '../api-helper'
-import { OnClickButton } from '../landing-page/Button'
+import { OnClickButton } from '../_shared/Button'
 
 export const EmailSignup = (): JSX.Element => {
   const [saved, setSaved] = useState(false)

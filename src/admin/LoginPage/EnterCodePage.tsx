@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { api } from 'src/api-helper'
 import { GlobalCSS } from 'src/GlobalCSS'
 import { Head } from 'src/Head'
-import { OnClickButton } from 'src/landing-page/Button'
+import { OnClickButton } from 'src/_shared/Button'
 
 import { checkLoginCode } from '../auth'
 import { Headerbar } from './Headerbar'

@@ -1,7 +1,7 @@
 import { DeleteOutlined } from '@ant-design/icons'
 import { api } from 'src/api-helper'
 
-import { OnClickButton } from '../../landing-page/Button'
+import { OnClickButton } from '../../_shared/Button'
 import { revalidate, useStored } from '../useStored'
 
 export const InvalidateVotersButton = ({

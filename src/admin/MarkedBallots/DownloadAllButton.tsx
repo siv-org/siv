@@ -1,7 +1,7 @@
 import { DownloadOutlined } from '@ant-design/icons'
 import { PDFDocument } from 'pdf-lib'
 import { useEffect, useRef } from 'react'
-import { darkBlue } from 'src/landing-page/Button'
+import { darkBlue } from 'src/_shared/Button'
 
 import { useStored } from '../useStored'
 import { markPdf } from './mark-pdf'

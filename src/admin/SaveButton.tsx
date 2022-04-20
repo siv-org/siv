@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { OnClickButton } from '../landing-page/Button'
+import { OnClickButton } from '../_shared/Button'
 import { Spinner } from './Spinner'
 
 export const SaveButton = ({

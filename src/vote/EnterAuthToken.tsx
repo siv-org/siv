@@ -2,7 +2,7 @@ import { TextField } from '@material-ui/core'
 import router from 'next/router'
 import { useRef, useState } from 'react'
 
-import { OnClickButton } from '../landing-page/Button'
+import { OnClickButton } from '../_shared/Button'
 
 export const EnterAuthToken = () => {
   const [error, setError] = useState('')

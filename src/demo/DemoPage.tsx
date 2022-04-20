@@ -1,7 +1,7 @@
 import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
-import { Footer } from '../homepage3/Footer'
-import { HeaderBar } from '../homepage3/HeaderBar'
+import { Footer } from '../homepage/Footer'
+import { HeaderBar } from '../homepage/HeaderBar'
 import { useAnalytics } from '../useAnalytics'
 
 export const DemoPage = (): JSX.Element => {
