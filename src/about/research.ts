@@ -4,9 +4,12 @@ import merkle from './cover-photos/1978 Secure communications over insecure chan
 import shamir from './cover-photos/1979 How to Share a Secret by Dr. Adi Shamir.png'
 import elgamal from './cover-photos/1985 A public key cryptosystem and a signature scheme based on discrete logarithms by Dr. Taher Elgamal.jpg'
 import fiat_shamir from './cover-photos/1986 How To Prove Yourself Practical Solutions to Identification and Signature Problems by Dr. Amos Fiat and Dr. Adi Shamir.png'
+import montgomery from './cover-photos/1987 Montgomery.png'
 import feldman from './cover-photos/1991 Verifiable Secret Sharing Scheme by Dr. Paul Feldman.png'
 import pedersen from './cover-photos/1992 Non-Interactive and Information-Theoretic Secure Verifiable Secret Sharing by Dr. Torben Pedersen.png'
 import neff from './cover-photos/2001 A Verifiable Secret Shuffle and its Application to E-Voting by Dr. Andrew Neff.png'
+import djb from './cover-photos/2006 curve25519.png'
+import ristretto from './cover-photos/2018 ristretto.png'
 
 export const research = [
   {
@@ -77,6 +80,30 @@ export const research = [
         cover: neff,
         name: 'A Verifiable Secret Shuffle and its Application to E-Voting',
         year: 2001,
+      },
+    ],
+  },
+
+  {
+    group: `Elliptic Curve Cryptography`,
+    papers: [
+      {
+        authors: ['Dr. Peter L. Montgomery'],
+        cover: montgomery,
+        name: 'Speeding the Pollard and Elliptic Curve Methods of Factorization',
+        year: 1987,
+      },
+      {
+        authors: ['Dr. Daniel J. Bernstein'],
+        cover: djb,
+        name: 'Curve25519: new Diffie-Hellman speed records',
+        year: 2006,
+      },
+      {
+        authors: ['Mike Hamburg et al.'],
+        cover: ristretto,
+        name: 'Ristretto 255: Prime Order Groups',
+        year: 2018,
       },
     ],
   },

@@ -8,35 +8,33 @@ import { Team } from './Team'
 export const Content = () => (
   <main>
     {/* Crypto Research */}
-    <div>
-      {research.map(({ group, papers }) => (
-        <div key={group}>
-          <h4>
-            <div className="horiz-line" />
-            {group}
-          </h4>
+    {research.map(({ group, papers }) => (
+      <div key={group}>
+        <h4>
+          <div className="horiz-line" />
+          {group}
+        </h4>
 
-          <div className="group">
-            {papers?.map(({ authors, cover, name, year }) => (
-              <div className="paper" key={authors.join('')}>
-                <h3>{year}</h3>
-                <div className="img-container">{cover && <Image src={cover} />}</div>
-                <p className="name">{name}</p>
-                <p className="author">
-                  <span>by </span>
-                  {authors.map((author, i) => (
-                    <Fragment key={author}>
-                      {author}
-                      {i < authors.length - 1 && <span> & </span>}
-                    </Fragment>
-                  ))}
-                </p>
-              </div>
-            ))}
-          </div>
+        <div className="group">
+          {papers?.map(({ authors, cover, name, year }) => (
+            <div className="paper" key={authors.join('')}>
+              <h3>{year}</h3>
+              <div className="img-container">{cover && <Image src={cover} />}</div>
+              <p className="name">{name}</p>
+              <p className="author">
+                <span>by </span>
+                {authors.map((author, i) => (
+                  <Fragment key={author}>
+                    {author}
+                    {i < authors.length - 1 && <span> & </span>}
+                  </Fragment>
+                ))}
+              </p>
+            </div>
+          ))}
         </div>
-      ))}
-    </div>
+      </div>
+    ))}
 
     <br />
     <br />
@@ -58,6 +56,7 @@ export const Content = () => (
 
       h4 {
         font-size: 20px;
+        margin-top: 5rem;
       }
 
       h4 .horiz-line {
