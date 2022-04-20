@@ -45,9 +45,9 @@ export const Content = () => (
 
     <style jsx>{`
       main {
-        max-width: 1020px;
+        max-width: 1220px;
         width: 100%;
-        margin: 10rem auto 2rem;
+        margin: 20vw auto 2rem;
       }
 
       .group {
@@ -55,8 +55,9 @@ export const Content = () => (
       }
 
       h4 {
-        font-size: 20px;
+        font-size: max(1.8vw, 14px);
         margin-top: 5rem;
+        display: flex;
       }
 
       h4 .horiz-line {
@@ -65,9 +66,7 @@ export const Content = () => (
         height: 2px;
         background: ${darkBlue};
 
-        position: relative;
-        bottom: 6px;
-
+        margin: auto 0;
         margin-right: 10px;
       }
 

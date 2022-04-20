@@ -53,6 +53,7 @@ export const Team = () => (
 
       .people {
         display: flex;
+        margin-bottom: 10vw;
       }
 
       .photo {

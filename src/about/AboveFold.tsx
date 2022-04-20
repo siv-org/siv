@@ -47,6 +47,11 @@ export const AboveFold = () => (
           align-items: center;
         }
 
+        h2 {
+          font-size: 4.5vw;
+          margin-top: 20vw;
+        }
+
         h1 {
           font-size: 6.2vw;
         }
@@ -54,27 +59,26 @@ export const AboveFold = () => (
         .underline-container {
           width: 23.4vw;
         }
-
-        h2 {
-          font-size: 4.5vw;
-          margin-top: 20vw;
-        }
       }
 
       /* fixed width for large screens */
-      @media (min-width: 1440px) {
+      @media (min-width: 1220px) {
         section {
-          max-width: 1440px;
+          max-width: 1220px;
           margin: 0 auto;
         }
 
+        h2 {
+          font-size: min(3vw, 40px);
+        }
+
         h1 {
-          font-size: min(4.5vw, 85px);
+          font-size: min(4.5vw, 60px);
         }
 
         .underline-container {
-          width: min(17vw, 320px);
-          top: min(2vw, 38px);
+          width: min(17vw, 227px);
+          top: min(2vw, 27px);
         }
       }
     `}</style>
