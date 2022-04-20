@@ -56,19 +56,37 @@ export const Team = () => (
         margin-bottom: 10vw;
       }
 
+      .person {
+        text-align: center;
+        margin-right: 6vw;
+
+        font-size: min(1.4vw, 15.7px);
+      }
+
+      /* 2-column for small screens */
+      @media (max-width: 700px) {
+        h2 {
+          font-size: 4.5vw;
+        }
+
+        .people {
+          flex-wrap: wrap;
+          justify-content: space-between;
+        }
+        .person {
+          max-width: 40%;
+          margin-right: 0;
+          font-size: 2.5vw;
+          margin-bottom: 1.5rem;
+        }
+      }
+
       .photo {
         padding-top: 1.5vw;
         background: #ffd8a1;
         margin-bottom: 1rem;
         display: flex;
         align-items: flex-end;
-      }
-
-      .person {
-        text-align: center;
-        margin-right: 6vw;
-
-        font-size: min(1.4vw, 15.7px);
       }
 
       .name {
