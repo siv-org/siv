@@ -1,10 +1,9 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { OnClickButton } from 'src/_shared/Button'
+import { Footer } from 'src/homepage/Footer'
 import { useAnalytics } from 'src/useAnalytics'
 
-import { BlueDivider } from '../_shared/BlueDivider'
-import { OldFooter } from '../_shared/OldFooter'
 import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
 import { AddYourQuestion } from './AddYourQuestion'
@@ -72,8 +71,7 @@ export const FAQPage = (): JSX.Element => {
 
         <AddYourQuestion />
       </main>
-      <BlueDivider />
-      <OldFooter />
+      <Footer />
 
       <style global jsx>{`
         a {
