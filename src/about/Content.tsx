@@ -16,7 +16,7 @@ export const Content = () => (
         </h4>
 
         <div className="group">
-          {papers?.map(({ authors, cover, name, year }) => (
+          {papers?.map(({ affiliation, authors, cover, name, year }) => (
             <div className="paper" key={authors.join('')}>
               <h3>{year}</h3>
               <div className="img-container">{cover && <Image src={cover} />}</div>
@@ -30,6 +30,7 @@ export const Content = () => (
                   </Fragment>
                 ))}
               </p>
+              <p className="affiliation">{affiliation}</p>
             </div>
           ))}
         </div>
@@ -98,6 +99,10 @@ export const Content = () => (
 
       .author span {
         color: #0006;
+      }
+
+      .affiliation {
+        font-size: 11px;
       }
     `}</style>
   </main>

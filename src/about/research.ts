@@ -16,24 +16,28 @@ export const research = [
     group: `Decentralized Threshold Key Generation & Decryption`,
     papers: [
       {
+        affiliation: 'The French Academy of Sciences',
         authors: ['Joseph-Louis Lagrange'],
         cover: lagrange,
         name: 'Polynomial Interpolation Method',
         year: 1795,
       },
       {
+        affiliation: 'Turing Award Winner, Weizmann Institute and Massachusetts Institute of Technology',
         authors: ['Dr. Adi Shamir'],
         cover: shamir,
         name: 'How to Share a Secret',
         year: 1979,
       },
       {
+        affiliation: 'MIT Computer Science & Artificial Intelligence Laboratory',
         authors: ['Dr. Paul Feldman'],
         cover: feldman,
         name: 'Verifiable Secret Sharing Scheme',
         year: 1991,
       },
       {
+        affiliation: 'Aarhus University, Denmark',
         authors: ['Dr. Torben Pedersen'],
         cover: pedersen,
         name: 'Non-Interactive and Information-Theoretic Secure Verifiable Secret Sharing',
@@ -46,18 +50,21 @@ export const research = [
     group: `Discrete Logarithm Encryption`,
     papers: [
       {
+        affiliation: 'Turing Award Winners, Stanford University',
         authors: ['Dr. Martin Hellman', 'Dr. Whitfield Diffie'],
         cover: diffie_hellman,
         name: 'New Directions in Cryptography',
         year: 1976,
       },
       {
+        affiliation: 'University of California Berkeley & Georgia Institute of Technology',
         authors: ['Dr. Ralph Merkle'],
         cover: merkle,
         name: 'Secure communications over insecure channels',
         year: 1978,
       },
       {
+        affiliation: 'Stanford University',
         authors: ['Dr. Taher Elgamal'],
         cover: elgamal,
         name: 'A public key cryptosystem and a signature scheme based on discrete logarithms',
@@ -70,12 +77,14 @@ export const research = [
     group: `Anonymization Mixnet`,
     papers: [
       {
+        affiliation: 'Tel Aviv University, Weizmann Institute of Science, and Massachusetts Institute of Technology',
         authors: ['Dr. Amos Fiat', 'Dr. Adi Shamir'],
         cover: fiat_shamir,
         name: 'How To Prove Yourself: Practical Solutions to Identification and Signature Problems',
         year: 1986,
       },
       {
+        affiliation: 'Princeton University',
         authors: ['Dr. Andrew Neff'],
         cover: neff,
         name: 'A Verifiable Secret Shuffle and its Application to E-Voting',
@@ -88,19 +97,22 @@ export const research = [
     group: `Elliptic Curve Cryptography`,
     papers: [
       {
+        affiliation: 'University of California, Los Angeles',
         authors: ['Dr. Peter L. Montgomery'],
         cover: montgomery,
         name: 'Speeding the Pollard and Elliptic Curve Methods of Factorization',
         year: 1987,
       },
       {
+        affiliation: 'University of Illinois at Chicago, Eindhoven University of Technology',
         authors: ['Dr. Daniel J. Bernstein'],
         cover: djb,
         name: 'Curve25519: new Diffie-Hellman speed records',
         year: 2006,
       },
       {
-        authors: ['Mike Hamburg et al.'],
+        affiliation: 'Stanford University',
+        authors: ['Dr. Mike Hamburg et al.'],
         cover: ristretto,
         name: 'Ristretto 255: Prime Order Groups',
         year: 2018,
@@ -108,33 +120,3 @@ export const research = [
     ],
   },
 ]
-
-// const research_v1 = [
-//   {
-//     history: `First described in 1992's "Non-Interactive and Information-Theoretic Secure Verifiable Secret Sharing" by Dr. Torben Pedersen, Aarhus University, Denmark
-
-// Built upon 1991's "Verifiable Secret Sharing Scheme" by Dr. Paul Feldman, MIT Computer Science & Artificial Intelligence Laboratory
-
-// Built upon 1979's "How to Share a Secret" by Dr. Adi Shamir, Turing Award Winner, Weizmann Institute and Massachusetts Institute of Technology
-
-// Built upon the 1795 Polynomial Interpolation Method discovered by Joseph-Louis Lagrange, the French Academy of Sciences.`,
-
-//     tech: `Decentralized Threshold Key Generation & Decryption`,
-//   },
-
-//   {
-//     history: `Based on 1985's "A public key cryptosystem and a signature scheme based on discrete logarithms" by Dr. Taher Elgamal, Stanford University
-
-// Built upon 1978's "Secure communications over insecure channels" by Dr. Ralph Merkle, University of California Berkeley & Georgia Institute of Technology
-
-// Built upon 1976's "New Directions in Cryptography" by Dr. Martin Hellman and Dr. Whitfield Diffie, Stanford University.`,
-//     tech: `Discrete Logarithm Encryption`,
-//   },
-
-//   {
-//     history: `Based on 2001's "A Verifiable Secret Shuffle and its Application to E-Voting" by Dr. Andrew Neff, Princeton University.
-
-// Improved by 1986's "How To Prove Yourself: Practical Solutions to Identification and Signature Problems" by Dr. Amos Fiat, Tel Aviv University, and Dr. Adi Shamir, Weizmann Institute and Massachusetts Institute of Technology`,
-//     tech: `Anonymization Mixnet`,
-//   },
-// ]
