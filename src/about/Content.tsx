@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { darkBlue } from 'src/homepage/colors'
 
 import { research } from './research'
 import { Team } from './Team'
@@ -9,7 +10,10 @@ export const Content = () => (
     <div>
       {research.map(({ group, papers }) => (
         <div key={group}>
-          <h4>{group}</h4>
+          <h4>
+            <div className="horiz-line" />
+            {group}
+          </h4>
 
           <div className="group">
             {papers?.map(({ author, cover, name, year }) => (
@@ -50,10 +54,22 @@ export const Content = () => (
         font-size: 20px;
       }
 
+      h4 .horiz-line {
+        display: inline-block;
+        width: 50px;
+        height: 2px;
+        background: ${darkBlue};
+
+        position: relative;
+        bottom: 6px;
+
+        margin-right: 10px;
+      }
+
       .paper {
         text-align: center;
         max-width: 180px;
-        margin-right: 2rem;
+        margin-right: 6vw;
       }
 
       .img-container {
