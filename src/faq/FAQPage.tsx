@@ -37,41 +37,44 @@ export const FAQPage = (): JSX.Element => {
 
       <HeaderBar />
       <main>
-        <h1>Frequently Asked Questions</h1>
-        <div className="button-container">
-          <OnClickButton
-            style={{ margin: 0, padding: '5px 15px', textAlign: 'right' }}
-            onClick={() => {
-              const update = [...expanded].fill(any_collapsed)
-              setExpanded(update)
-            }}
-          >
-            <>{any_collapsed ? 'Expand' : 'Collapse'} all</>
-          </OnClickButton>
-        </div>
-
-        {faq.map(({ id, q, resp }, index) => (
-          <div className="question" key={index}>
-            <h3
-              id={id}
+        <section>
+          <h1>Frequently Asked Questions</h1>
+          <div className="button-container">
+            <OnClickButton
+              style={{ margin: 0, padding: '5px 15px', textAlign: 'right' }}
               onClick={() => {
-                const update = [...expanded]
-                update[index] = !update[index]
+                const update = [...expanded].fill(any_collapsed)
                 setExpanded(update)
               }}
             >
-              <span>
-                {index + 1}. {q}
-              </span>
-              <label>{!expanded[index] ? '+' : '–'}</label>
-            </h3>
-            {expanded[index] && <p dangerouslySetInnerHTML={{ __html: resp }} />}
+              <>{any_collapsed ? 'Expand' : 'Collapse'} all</>
+            </OnClickButton>
           </div>
-        ))}
 
-        <AddYourQuestion />
+          {faq.map(({ id, q, resp }, index) => (
+            <div className="question" key={index}>
+              <h3
+                id={id}
+                onClick={() => {
+                  const update = [...expanded]
+                  update[index] = !update[index]
+                  setExpanded(update)
+                }}
+              >
+                <span>
+                  {index + 1}. {q}
+                </span>
+                <label>{!expanded[index] ? '+' : '–'}</label>
+              </h3>
+              {expanded[index] && <p dangerouslySetInnerHTML={{ __html: resp }} />}
+            </div>
+          ))}
+
+          <AddYourQuestion />
+        </section>
+
+        <Footer />
       </main>
-      <Footer />
 
       <style global jsx>{`
         a {
@@ -80,10 +83,14 @@ export const FAQPage = (): JSX.Element => {
       `}</style>
       <style jsx>{`
         main {
-          max-width: 750px;
           width: 100%;
-          margin: 2rem auto;
           padding: 1rem;
+          overflow-x: hidden;
+        }
+
+        section {
+          max-width: 750px;
+          margin: 2rem auto 5rem;
         }
 
         .button-container {

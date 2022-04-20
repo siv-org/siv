@@ -16,14 +16,17 @@ export const AboutPage = (): JSX.Element => {
         <AboveFold />
         <a id="research" />
         <Content />
+        <Footer />
       </div>
-      <Footer />
 
       <GlobalCSS />
 
       <style jsx>{`
         div {
           padding: 1rem 3rem;
+
+          width: 100%;
+          overflow-x: hidden;
         }
       `}</style>
     </>
