@@ -55,7 +55,7 @@ export const Content = () => (
       }
 
       h4 {
-        font-size: max(1.8vw, 14px);
+        font-size: max(1.9vw, 16px);
         margin-top: 5rem;
         display: flex;
       }
