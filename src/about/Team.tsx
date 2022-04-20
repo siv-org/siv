@@ -1,48 +1,72 @@
+import Image from 'next/image'
+
+import ariana from './team/ariana.png'
+import david from './team/david.png'
+import gino from './team/gino.png'
+import greg from './team/greg.png'
+
+const people = [
+  {
+    name: 'David Ernst',
+    photo: david,
+    title: 'CEO',
+  },
+  {
+    name: 'Greg Little, PhD',
+    photo: greg,
+    title: 'Director of Research',
+  },
+  {
+    name: 'Ariana Ivan',
+    photo: ariana,
+    title: 'COO',
+  },
+  {
+    name: 'Gino Parisi',
+    photo: gino,
+    title: 'Head of Outreach',
+  },
+]
+
 export const Team = () => (
   <>
-    <div className="columns">
-      <div className="left">
-        <img src="about/david.jpg" style={{ height: 'auto', width: '80%' }} />
-      </div>
-      <div>
-        <h4>SIV is led by David Ernst</h4>
-        <p>
-          David believes people should be able to vote as easily and securely as possible. This drives him to help
-          governments give citizens the opportunity to safely vote online.
-        </p>
-        <p>
-          Originally from Dallas, Texas, David left high school early to pursue a degree in Mathematics and Philosophy
-          at Bard College at Simon’s Rock.
-        </p>
-        <p>
-          Over the years he’s built software for education, personal health, finance, commercial construction, and more,
-          used by hundreds of thousands of people worldwide.
-        </p>
-        <p>He’s passionate about political reform, and even ran for office in California in the 2018 election.</p>
-      </div>
+    <h2>Team</h2>
+    <div className="team">
+      {people.map(({ name, photo, title }) => (
+        <div className="person" key={name}>
+          <div className="photo">
+            <Image src={photo} />
+          </div>
+          <div className="name">{name}</div>
+          <div>{title}</div>
+        </div>
+      ))}
     </div>
 
     <style jsx>{`
-      .columns {
+      h2 {
+        font-size: 3vw;
+        font-weight: 500;
+        letter-spacing: 0.7vw;
+      }
+
+      .team {
         display: flex;
-        justify-content: space-between;
-        margin-bottom: 8rem;
-      }
-      .columns > * {
-        width: 49%;
-      }
-      .left {
-        margin-top: 22px;
       }
 
-      @media (max-width: 600px) {
-        .columns {
-          flex-direction: column;
-        }
+      .photo {
+        padding-top: 1vw;
+        background: #ffd8a1;
+        margin-bottom: 1rem;
+      }
 
-        .columns > * {
-          width: 100%;
-        }
+      .person {
+        text-align: center;
+        margin-right: 6vw;
+      }
+
+      .name {
+        font-weight: 700;
       }
     `}</style>
   </>
