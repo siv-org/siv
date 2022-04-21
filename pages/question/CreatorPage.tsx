@@ -41,7 +41,7 @@ export const CreatorPage = () => {
           />
 
           <h3>
-            Min answers required to unlock? <h5>For privacy</h5>
+            Min answers required to unlock? <span>For privacy</span>
           </h3>
           <div className="range-container">
             <input
@@ -94,7 +94,8 @@ export const CreatorPage = () => {
             font-size: min(8vw, 60px);
           }
 
-          h5 {
+          h5,
+          h3 span {
             opacity: 0.6;
             margin-top: 0;
             font-size: min(4vw, 25px);
@@ -105,8 +106,8 @@ export const CreatorPage = () => {
             margin-bottom: min(1vw, 7.5px);
           }
 
-          h3 h5 {
-            margin-bottom: 0;
+          h3 span {
+            display: block;
           }
 
           textarea {
