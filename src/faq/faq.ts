@@ -170,12 +170,13 @@ Because SIV runs in web browsers, it works natively with freely accessible trans
 It also frees Election Administrators from needing to determine into which languages ballots must be translated.`,
   },
   {
+    id: 'accessibility',
     q: 'Does SIV support voters with disabilities?',
     resp: `Yes, because SIV votes can be securely sent from voters’ own devices, people no longer need to travel to polling places or drop boxes.
 
-SIV works in existing web browsers built on W3C Standards, thus leveraging decades of work poured into Accessibility APIs.
+SIV works in all web browsers and builds on W3C Standards, leveraging decades of work poured into Digital Accessibility.
 
-Voters with disabilities can use their own devices, with their own preferences for Text-to-Speech, Larger Font Sizes, High Contrast Mode, and other Accessibility options.`,
+Voters with disabilities can use their own devices in their own homes, with their own preferences for Text-to-Speech, Larger Font Sizes, High Contrast Mode, and other Accessibility options.`,
   },
   {
     q: 'Can SIV be used alongside paper methods?',
