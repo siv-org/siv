@@ -4,7 +4,7 @@ import { GlobalCSS } from 'src/GlobalCSS'
 import { CreatorPage } from './CreatorPage'
 import { ResponsePage } from './ResponsePage'
 
-const QuestionPage = () => {
+export const QuestionPage = () => {
   const { query } = useRouter()
   const { q, req } = query
 
@@ -28,5 +28,3 @@ const QuestionPage = () => {
     </div>
   )
 }
-
-export default QuestionPage
