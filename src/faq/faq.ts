@@ -50,7 +50,7 @@ The entire process leaves a written audit trail, for independent verification.
 Once a voter makes their selections, all their options get encrypted on their voting device.
 Their plaintext never leaves their device.
 
-Once all votes are received, the Verifying Observers' computers each add their own cryptographic shuffle to all the votes, for thorough anonymization, before working together to unlock the votes for tallying.
+Once all votes are received, the <a href="https://siv.org/faq#observers">Verifying Observers'</a> computers each add their own cryptographic shuffle to all the votes, for thorough anonymization, before working together to unlock the votes for tallying.
 
 This is a similar process as with paper ballots, where voters are confirmed, but the voter's identification is not on the submitted ballot.
 
