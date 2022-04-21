@@ -27,7 +27,9 @@ export const ResponsePage = () => {
           <button onClick={() => {}}>Submit</button>
 
           {!met_goal ? (
-            <p className="waiting">Need {remaining} more answers before results unlocked.</p>
+            <p className="waiting">
+              Need {remaining} more answer{remaining !== 1 ? 's' : ''} before results unlocked.
+            </p>
           ) : (
             <>
               <p>Submissions (order randomized):</p>
