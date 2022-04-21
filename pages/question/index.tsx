@@ -10,7 +10,7 @@ const QuestionPage = () => {
 
   return (
     <div>
-      {!(req && q) ? <CreatorPage /> : <ResponsePage />}
+      <section>{!(req && q) ? <CreatorPage /> : <ResponsePage />}</section>
       <GlobalCSS />
 
       <style jsx>{`
@@ -18,6 +18,11 @@ const QuestionPage = () => {
           background: rgb(225, 227, 255);
           background-image: linear-gradient(to right bottom, #ece3ff, #dfe8ff, #d0ecff, #c4f1ff, #bcf5ff);
           color: #000b;
+        }
+
+        section {
+          max-width: 1000px;
+          margin: 0 auto;
         }
       `}</style>
     </div>

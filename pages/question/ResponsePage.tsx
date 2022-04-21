@@ -44,7 +44,7 @@ export const ResponsePage = () => {
         </footer>
         <style jsx>{`
           main {
-            padding: 1rem;
+            padding: min(4vw, 30px);
             min-height: 100vh;
 
             display: flex;
@@ -53,29 +53,29 @@ export const ResponsePage = () => {
           }
 
           h1 {
-            font-size: 8vw;
-            margin-top: 2vw;
+            font-size: min(7vw, 50px);
+            margin-top: min(8vw, 15px);
             margin-bottom: 0;
           }
 
           h3 {
-            font-size: 5vw;
-            margin-bottom: 1vw;
+            font-size: min(5vw, 30.5px);
+            margin-bottom: min(1vw, 7.5px);
           }
 
           h5 {
             opacity: 0.6;
             margin-top: 0;
-            font-size: 4vw;
+            font-size: min(4vw, 25px);
           }
 
           textarea {
             width: 100%;
-            min-height: 34vw;
+            min-height: min(34vw, 255px);
             resize: vertical;
 
             padding: 8px 10px;
-            font-size: 4vw;
+            font-size: min(4vw, 25px);
 
             border-radius: 5px;
             background-color: #fffe;
@@ -83,10 +83,10 @@ export const ResponsePage = () => {
           }
 
           button {
-            margin-top: 2vw;
-            margin-bottom: 15vw;
+            margin-top: min(2vw, 12.5px);
+            margin-bottom: min(15vw, 94px);
 
-            font-size: 4.3vw;
+            font-size: min(4.3vw, 32px);
             padding: 9px 10px;
             width: 100%;
 
@@ -96,7 +96,7 @@ export const ResponsePage = () => {
 
             color: #000a;
             font-weight: 700;
-            letter-spacing: 0.5vw;
+            letter-spacing: min(0.5vw, 3.75px);
 
             cursor: pointer;
           }

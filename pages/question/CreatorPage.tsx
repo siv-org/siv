@@ -41,7 +41,7 @@ export const CreatorPage = () => {
           />
 
           <h3>
-            Min answers required to unlock? <span>For privacy</span>
+            Min answers required to unlock? <h5>For privacy</h5>
           </h3>
           <div className="range-container">
             <input
@@ -81,7 +81,7 @@ export const CreatorPage = () => {
 
         <style jsx>{`
           main {
-            padding: 4vw;
+            padding: min(4vw, 30px);
             min-height: 100vh;
 
             display: flex;
@@ -90,34 +90,32 @@ export const CreatorPage = () => {
           }
 
           h1 {
-            font-size: 8vw;
-            margin-bottom: 0;
+            margin: 0;
+            font-size: min(8vw, 60px);
           }
 
           h5 {
             opacity: 0.6;
             margin-top: 0;
-            font-size: 4vw;
+            font-size: min(4vw, 25px);
           }
 
           h3 {
-            font-size: 5vw;
-            margin-bottom: 1vw;
+            font-size: min(5vw, 30.5px);
+            margin-bottom: min(1vw, 7.5px);
           }
 
-          h3 span {
-            display: block;
-            font-size: 4vw;
-            opacity: 0.6;
+          h3 h5 {
+            margin-bottom: 0;
           }
 
           textarea {
             width: 100%;
-            min-height: 24vw;
+            min-height: min(24vw, 180px);
             resize: vertical;
 
             padding: 8px 10px;
-            font-size: 4vw;
+            font-size: min(4vw, 25px);
 
             border-radius: 5px;
             border: 1px solid #aaa;
@@ -136,15 +134,13 @@ export const CreatorPage = () => {
 
           input[type='number'] {
             width: ${4 * Math.floor(slider) + 14}%;
-            font-size: 6vw;
+            font-size: min(6vw, 45px);
             padding: 10px 3px;
             cursor: pointer;
           }
 
           button {
-            margin-top: 20vw;
-
-            font-size: 4.3vw;
+            font-size: min(4.3vw, 32px);
             padding: 9px 10px;
             width: 100%;
 
@@ -154,7 +150,7 @@ export const CreatorPage = () => {
 
             color: #000a;
             font-weight: 700;
-            letter-spacing: 0.5vw;
+            letter-spacing: min(0.5vw, 3.75px);
 
             cursor: pointer;
           }
