@@ -251,6 +251,7 @@ This protects voters' network connection to prevent tampering and surveillance.`
 SIV automatically creates complete end-to-end verifiable elections, so that anyone who submits record requests can simply be directed to the publicly posted election data.`,
   },
   {
+    id: 'observers',
     q: 'What are Verifying Observers?',
     resp: `Appointing Verifying Observers is a powerful SIV feature for Election Administrators.
 
