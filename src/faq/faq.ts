@@ -13,7 +13,7 @@ SIV encrypts votes on the voter's personal device, then uses advanced cryptograp
 <b>III. Independently verifiable tallies (“<i>Auditable results</i>”)</b>
 a)  Anyone can recount SIV final tallies
 b)  Voters can confirm their vote was counted correctly
-c)  SIV provides cryptographic Universal Verification that final results are tamper-free.`,
+c)  SIV provides cryptographic Universal Verification (mathematical proofs) that final results are tamper-free.`,
   },
   {
     q: 'Where does the name SIV come from? How is it pronounced?',
