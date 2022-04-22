@@ -262,6 +262,7 @@ Protocol <a href="/protocol#4" target="_blank">Steps 4</a> & <a href="/protocol#
 `,
   },
   {
+    id: 'picking-observers',
     q: 'How should Verifying Observers be picked?',
     resp: `The most secure and safest approach is to assign Verifying Observers with independent interests, such as one nominated by each participating political party.
 
