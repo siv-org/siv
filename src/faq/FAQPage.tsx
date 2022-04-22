@@ -64,15 +64,23 @@ export const FAQPage = (): JSX.Element => {
               >
                 <span>
                   {index + 1}. {q}
-                  {id && (
-                    <a className="permalink" href={`#${id}`}>
-                      <LinkOutlined />
-                    </a>
-                  )}
                 </span>
                 <label>{!expanded[index] ? '+' : '–'}</label>
               </h3>
-              {expanded[index] && <p dangerouslySetInnerHTML={{ __html: resp }} />}
+
+              {expanded[index] && (
+                <>
+                  <p dangerouslySetInnerHTML={{ __html: resp }} />
+
+                  {id && (
+                    <p className="permalink-row">
+                      <a className="permalink" href={`#${id}`}>
+                        <LinkOutlined /> #{id}
+                      </a>
+                    </p>
+                  )}
+                </>
+              )}
             </div>
           ))}
 
@@ -123,23 +131,26 @@ export const FAQPage = (): JSX.Element => {
           background: hsl(0, 0%, 90%);
         }
 
+        .permalink-row {
+          width: 100%;
+          text-align: right;
+          padding-top: 0px;
+          padding-bottom: 5px;
+        }
+
         .permalink {
-          margin-left: 5px;
+          display: inline-block;
           padding: 3px 5px;
-          opacity: 0;
           color: black;
-        }
-
-        h3:hover .permalink {
-          opacity: 1;
-        }
-
-        .permalink:hover {
-          color: blue;
+          opacity: 0.5;
+          font-weight: 400;
+          text-align: right;
         }
 
         label {
-          padding-left: 20px;
+          margin-left: 20px;
+          width: 11px;
+          cursor: pointer;
         }
 
         p {

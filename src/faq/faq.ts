@@ -13,7 +13,7 @@ SIV encrypts votes on the voter's personal device, then uses advanced cryptograp
 <b>III. Independently verifiable tallies (“<i>Auditable results</i>”)</b>
 a)  Anyone can recount SIV final tallies
 b)  Voters can confirm their vote was counted correctly
-c)  SIV provides cryptographic Universal Verification that final results are tamper-free.`,
+c)  SIV provides cryptographic Universal Verification (mathematical proofs) that final results are tamper-free.`,
   },
   {
     q: 'Where does the name SIV come from? How is it pronounced?',
@@ -50,7 +50,7 @@ The entire process leaves a written audit trail, for independent verification.
 Once a voter makes their selections, all their options get encrypted on their voting device.
 Their plaintext never leaves their device.
 
-Once all votes are received, the Verifying Observers' computers each add their own cryptographic shuffle to all the votes, for thorough anonymization, before working together to unlock the votes for tallying.
+Once all votes are received, the <a href="https://siv.org/faq#observers">Verifying Observers'</a> computers each add their own cryptographic shuffle to all the votes, for thorough anonymization, before working together to unlock the votes for tallying.
 
 This is a similar process as with paper ballots, where voters are confirmed, but the voter's identification is not on the submitted ballot.
 
@@ -170,12 +170,13 @@ Because SIV runs in web browsers, it works natively with freely accessible trans
 It also frees Election Administrators from needing to determine into which languages ballots must be translated.`,
   },
   {
+    id: 'accessibility',
     q: 'Does SIV support voters with disabilities?',
     resp: `Yes, because SIV votes can be securely sent from voters’ own devices, people no longer need to travel to polling places or drop boxes.
 
-SIV works in existing web browsers built on W3C Standards, thus leveraging decades of work poured into Accessibility APIs.
+SIV works in all web browsers and builds on W3C Standards, leveraging decades of work poured into Digital Accessibility.
 
-Voters with disabilities can use their own devices, with their own preferences for Text-to-Speech, Larger Font Sizes, High Contrast Mode, and other Accessibility options.`,
+Voters with disabilities can use their own devices in their own homes, with their own preferences for Text-to-Speech, Larger Font Sizes, High Contrast Mode, and other Accessibility options.`,
   },
   {
     q: 'Can SIV be used alongside paper methods?',
@@ -251,6 +252,7 @@ This protects voters' network connection to prevent tampering and surveillance.`
 SIV automatically creates complete end-to-end verifiable elections, so that anyone who submits record requests can simply be directed to the publicly posted election data.`,
   },
   {
+    id: 'observers',
     q: 'What are Verifying Observers?',
     resp: `Appointing Verifying Observers is a powerful SIV feature for Election Administrators.
 
