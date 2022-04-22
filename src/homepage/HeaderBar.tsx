@@ -12,6 +12,9 @@ export const HeaderBar = () => (
       </Link>
     </h3>
     <span>
+      <Link href="https://blog.siv.org">
+        <a>Blog</a>
+      </Link>
       <Link href="/faq">
         <a>FAQ</a>
       </Link>
