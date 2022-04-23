@@ -38,6 +38,13 @@ export const HomePage = () => {
           width: 100%;
           overflow-x: hidden;
         }
+
+        /* For small screens */
+        @media (max-width: 700px) {
+          div {
+            padding: 1rem 2rem;
+          }
+        }
       `}</style>
     </>
   )

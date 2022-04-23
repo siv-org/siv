@@ -100,7 +100,11 @@ export const HeaderBar = () => (
         }
 
         a:not(.logo) {
-          font-size: 4vw;
+          font-size: 3.7vw;
+        }
+
+        a:last-child:not(.logo) {
+          margin-left: 0;
         }
 
         .blue-underline {
