@@ -38,7 +38,7 @@ export const Introduction = () => {
       <br />
       <p>
         There have already been digital systems in widespread use that offer each of these properties individually. Yet
-        accomplishing all three at the same time has been unsually challenging.
+        accomplishing all three at the same time has been unusually challenging.
       </p>
 
       <h3 style={{ fontWeight: 400, marginBottom: 0, marginTop: 35 }}>Here is how SIV meets all three requirements:</h3>
