@@ -1,9 +1,10 @@
 import { validate as validateEmail } from 'email-validator'
 import { NextApiRequest, NextApiResponse } from 'next'
 
+import { allowCors } from './_cors'
 import { firebase, pushover } from './_services'
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+export default allowCors(async (req: NextApiRequest, res: NextApiResponse) => {
   const { email: untrimmed } = req.body
   const email = untrimmed.trim()
 
@@ -26,4 +27,4 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Send back success
   return res.status(201).json({ success: true })
-}
+})
