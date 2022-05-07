@@ -16,9 +16,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }
   const { message, tags } = eventData
   const { headers } = message
-  const { subject, to } = headers
+  const { from, subject, to } = headers
 
-  const { error } = await supabase.from('mailgun-deliveries').insert([{ json, subject, tags, to }])
+  const { error } = await supabase.from('mailgun-deliveries').insert([{ from, json, subject, tags, to }])
 
   if (error) {
     console.error(error)
