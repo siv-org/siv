@@ -1,5 +1,6 @@
 import { GlobalCSS } from 'src/GlobalCSS'
 
+import { EmailsSent } from './EmailsSent'
 import { LoginForm } from './LoginForm'
 
 export const OutreachPage = () => {
@@ -7,6 +8,7 @@ export const OutreachPage = () => {
     <div>
       <h1>Outreach page</h1>
       <LoginForm />
+      <EmailsSent />
 
       <GlobalCSS />
       <style jsx>{`
