@@ -1,12 +1,22 @@
 import { supabase } from 'api/_supabase'
+import { verify } from 'jsonwebtoken'
 import { NextApiRequest, NextApiResponse } from 'next'
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
-  // TODO: Check supabase JWT is for a valid for @siv.org user
-  // TEMP FIX: Block from non-localhost
-  if (!req.headers.host?.includes('localhost')) return res.status(403).json({ error: 'Forbidden' })
+const SUPABASE_JWT_SECRET = process.env.SUPABASE_JWT_SECRET
 
-  const { data } = await supabase.from('mailgun-opens').select('*').eq('messageId', req.query.messageId)
+export default async (req: NextApiRequest, res: NextApiResponse) => {
+  // Check supabase JWT is for a valid for @siv.org user
+  if (!SUPABASE_JWT_SECRET) return res.status(401).json({ error: 'Missing JWT_SECRET' })
+  const { jwt, messageId } = req.query
+  if (!jwt) return res.status(403).json({ error: 'Forbidden' })
+  try {
+    const jwt_payload = verify(jwt as string, SUPABASE_JWT_SECRET) as { email: string }
+    if (!jwt_payload?.email?.includes('@siv.org')) return res.status(403).json({ error: 'Forbidden' })
+  } catch (e) {
+    return res.status(403).json({ error: 'Forbidden' })
+  }
+
+  const { data } = await supabase.from('mailgun-opens').select('*').eq('messageId', messageId)
 
   if (!data) {
     return res.status(404).json({ opens: {} })

@@ -35,7 +35,7 @@ export const EmailsSent = () => {
 
     if (error) return alert(JSON.stringify(error))
 
-    setEmails(data)
+    setEmails(data || [])
   }
 
   async function getOpens(messageId: string) {
@@ -43,7 +43,9 @@ export const EmailsSent = () => {
     newLoading[messageId] = true
     setLoading(newLoading)
 
-    const response = await api(`/outreach/get-opens-for-sender?messageId=${messageId}`)
+    const jwt = supabase.auth.session()?.access_token
+
+    const response = await api(`/outreach/get-opens-for-sender?messageId=${messageId}&jwt=${jwt}`)
     const { opens }: { opens: Opens } = await response.json()
 
     const newOpens = { ...opensById }
