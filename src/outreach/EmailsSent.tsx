@@ -19,7 +19,7 @@ export const EmailsSent = () => {
 
     if (error) return alert(JSON.stringify(error))
 
-    setEmails(data)
+    setEmails(data as never)
   }
 
   useEffect(() => {
