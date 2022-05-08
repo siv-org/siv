@@ -3,15 +3,24 @@ import { useEffect, useState } from 'react'
 
 import { supabase } from './supabase'
 
+type EmailDelivery = {
+  created_at: string
+  from?: string
+  id: number
+  json: { 'event-data': { message: { headers: { 'message-id': string } } } }
+  subject: string
+  to: string
+}
+
 export const EmailsSent = () => {
   if (!supabase.auth.user()) return null
 
   const { email } = supabase.auth.user() as User
-  const [emails, setEmails] = useState([])
+  const [emails, setEmails] = useState<EmailDelivery[]>([])
 
   async function getSentEmails(email?: string) {
     const { data, error } = await supabase
-      .from('mailgun-deliveries')
+      .from<EmailDelivery>('mailgun-deliveries')
       .select('*')
       .eq('from', email)
       .order('id', { ascending: false })
@@ -19,7 +28,7 @@ export const EmailsSent = () => {
 
     if (error) return alert(JSON.stringify(error))
 
-    setEmails(data as never)
+    setEmails(data)
   }
 
   useEffect(() => {
@@ -29,16 +38,16 @@ export const EmailsSent = () => {
   return (
     <>
       <h3>Emails sent</h3>
-      <div className="header">
+      <label>
         <div style={{ width: 170 }}>created_at</div>
         <div style={{ width: 120 }}>from</div>
         <div style={{ width: 200 }}>to</div>
         <div style={{ width: 200 }}>subject</div>
-      </div>
+      </label>
 
       <ul>
         {emails.map((email) => {
-          const { created_at, from, subject, to } = email
+          const { created_at, from, json, subject, to } = email
           return (
             <li key={created_at}>
               <div style={{ width: 170 }}>{new Date(created_at).toLocaleString()}</div>
@@ -46,7 +55,10 @@ export const EmailsSent = () => {
               <div style={{ width: 200 }}>{to}</div>
               <div style={{ width: 200 }}>{subject}</div>
               <div>
-                <a onClick={() => alert(JSON.stringify(email))}>full json</a>
+                <a onClick={() => alert(JSON.stringify(email))}>json</a>
+              </div>
+              <div>
+                <a onClick={() => alert(json['event-data'].message.headers['message-id'])}>opens</a>
               </div>
             </li>
           )
@@ -59,7 +71,7 @@ export const EmailsSent = () => {
           margin-top: 0;
         }
 
-        .header {
+        label {
           opacity: 0.3;
         }
 
@@ -67,7 +79,7 @@ export const EmailsSent = () => {
           list-style-type: none;
         }
 
-        .header div,
+        label div,
         li div {
           overflow: scroll;
           display: inline-block;
@@ -80,9 +92,13 @@ export const EmailsSent = () => {
           display: none;
         }
 
-        .header div:first-child,
+        label div:first-child,
         li div:first-child {
           margin-left: 0;
+        }
+
+        a {
+          cursor: pointer;
         }
       `}</style>
     </>
