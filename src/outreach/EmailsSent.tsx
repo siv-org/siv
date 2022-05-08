@@ -30,7 +30,7 @@ export const EmailsSent = () => {
     <>
       <h3>Emails sent</h3>
       <div className="header">
-        <div style={{ width: 200 }}>created_at</div>
+        <div style={{ width: 170 }}>created_at</div>
         <div style={{ width: 120 }}>from</div>
         <div style={{ width: 200 }}>to</div>
         <div style={{ width: 200 }}>subject</div>
@@ -41,7 +41,7 @@ export const EmailsSent = () => {
           const { created_at, from, subject, to } = email
           return (
             <li key={created_at}>
-              <div style={{ width: 200 }}>{created_at}</div>
+              <div style={{ width: 170 }}>{new Date(created_at).toLocaleString()}</div>
               <div style={{ width: 120 }}>{from}</div>
               <div style={{ width: 200 }}>{to}</div>
               <div style={{ width: 200 }}>{subject}</div>
