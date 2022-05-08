@@ -1,5 +1,5 @@
 import { User } from '@supabase/supabase-js'
-import { useEffect, useState } from 'react'
+import { useEffect, useReducer, useState } from 'react'
 import { api } from 'src/api-helper'
 
 import { supabase } from './supabase'
@@ -22,7 +22,7 @@ export const EmailsSent = () => {
 
   const { email } = supabase.auth.user() as User
   const [emails, setEmails] = useState<EmailDelivery[]>([])
-  const [opensById, setOpens] = useState<OpensById>({})
+  const [opensById, setOpens] = useReducer((prev: OpensById, payload: OpensById) => ({ ...prev, ...payload }), {})
   const [loading, setLoading] = useState<Record<string, boolean>>({})
 
   async function getSentEmails(email?: string) {
@@ -47,10 +47,7 @@ export const EmailsSent = () => {
 
     const response = await api(`/outreach/get-opens-for-sender?messageId=${messageId}&jwt=${jwt}`)
     const { opens }: { opens: Opens } = await response.json()
-
-    const newOpens = { ...opensById }
-    newOpens[messageId] = opens
-    setOpens(newOpens)
+    setOpens({ [messageId]: opens })
   }
 
   useEffect(() => {
