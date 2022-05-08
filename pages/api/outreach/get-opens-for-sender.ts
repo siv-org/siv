@@ -2,19 +2,11 @@ import { supabase } from 'api/_supabase'
 import { verify } from 'jsonwebtoken'
 import { NextApiRequest, NextApiResponse } from 'next'
 
-const SUPABASE_JWT_SECRET = process.env.SUPABASE_JWT_SECRET
+const { SUPABASE_JWT_SECRET } = process.env
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  // Check supabase JWT is for a valid for @siv.org user
-  if (!SUPABASE_JWT_SECRET) return res.status(401).json({ error: 'Missing JWT_SECRET' })
   const { jwt, messageId } = req.query
-  if (!jwt) return res.status(403).json({ error: 'Forbidden' })
-  try {
-    const jwt_payload = verify(jwt as string, SUPABASE_JWT_SECRET) as { email: string }
-    if (!jwt_payload?.email?.includes('@siv.org')) return res.status(403).json({ error: 'Forbidden' })
-  } catch (e) {
-    return res.status(403).json({ error: 'Forbidden' })
-  }
+  if (!isSupabaseJwtValidSIVEmail(jwt)) return res.status(403).json({ error: 'Forbidden' })
 
   const { data } = await supabase.from('mailgun-opens').select('*').eq('messageId', messageId)
 
@@ -29,4 +21,23 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }, {})
 
   return res.status(200).json({ opens })
+}
+
+function isSupabaseJwtValidSIVEmail(jwt?: string | string[]): boolean {
+  // Have required params?
+  if (!SUPABASE_JWT_SECRET) return false
+  if (!jwt || typeof jwt !== 'string') return false
+
+  try {
+    // Is valid jwt?
+    const jwt_payload = verify(jwt, SUPABASE_JWT_SECRET) as { email: string }
+
+    // Is for a @siv.org user
+    if (!jwt_payload?.email?.includes('@siv.org')) return false
+  } catch (e) {
+    return false
+  }
+
+  // Passed all checks
+  return true
 }
