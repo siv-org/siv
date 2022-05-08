@@ -29,6 +29,13 @@ export const EmailsSent = () => {
   return (
     <>
       <h3>Emails sent</h3>
+      <div className="header">
+        <div style={{ width: 200 }}>created_at</div>
+        <div style={{ width: 120 }}>from</div>
+        <div style={{ width: 200 }}>to</div>
+        <div style={{ width: 200 }}>subject</div>
+      </div>
+
       <ul>
         {emails.map((email) => {
           const { created_at, from, subject, to } = email
@@ -49,12 +56,18 @@ export const EmailsSent = () => {
       <style jsx>{`
         ul {
           padding-inline: 0;
+          margin-top: 0;
+        }
+
+        .header {
+          opacity: 0.3;
         }
 
         li {
           list-style-type: none;
         }
 
+        .header div,
         li div {
           overflow: scroll;
           display: inline-block;
@@ -67,6 +80,7 @@ export const EmailsSent = () => {
           display: none;
         }
 
+        .header div:first-child,
         li div:first-child {
           margin-left: 0;
         }
