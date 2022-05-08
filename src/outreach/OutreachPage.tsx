@@ -1,3 +1,4 @@
+import { NoSsr } from '@material-ui/core'
 import Head from 'next/head'
 import { GlobalCSS } from 'src/GlobalCSS'
 
@@ -12,8 +13,11 @@ export const OutreachPage = () => {
       </Head>
 
       <h1>SIV Outreach</h1>
-      <LoginForm />
-      <EmailsSent />
+
+      <NoSsr>
+        <LoginForm />
+        <EmailsSent />
+      </NoSsr>
 
       <GlobalCSS />
       <style jsx>{`
