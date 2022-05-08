@@ -24,12 +24,14 @@ export const EmailsSent = () => {
   const [emails, setEmails] = useState<EmailDelivery[]>([])
   const [opensById, setOpens] = useReducer((prev: OpensById, payload: OpensById) => ({ ...prev, ...payload }), {})
   const [loading, setLoading] = useState<Record<string, boolean>>({})
+  const [filter, setFilter] = useState('')
 
-  async function getSentEmails(email?: string) {
+  async function getSentEmails(email?: string, filter?: string) {
     const { data, error } = await supabase
       .from<EmailDelivery>('mailgun-deliveries')
       .select('*')
       .eq('from', email)
+      .ilike('to', `%${filter}%`)
       .order('id', { ascending: false })
       .limit(50)
 
@@ -51,12 +53,21 @@ export const EmailsSent = () => {
   }
 
   useEffect(() => {
-    getSentEmails(email)
-  }, [email])
+    getSentEmails(email, filter)
+  }, [email, filter])
 
   return (
     <>
-      <h3>Emails sent</h3>
+      <div className="top-bar">
+        <h3>Emails sent</h3>
+        <input
+          placeholder="filter recipient@email"
+          type="text"
+          value={filter}
+          onChange={({ target }) => setFilter(target.value)}
+        />
+      </div>
+
       <label>
         <div style={{ width: 30 }}>#</div>
         <div style={{ width: 170 }}>created_at</div>
@@ -103,6 +114,17 @@ export const EmailsSent = () => {
       </ul>
 
       <style jsx>{`
+        .top-bar {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        input {
+          font-size: 14px;
+          padding: 5px;
+        }
+
         ul {
           padding-inline: 0;
           margin-top: 0;
