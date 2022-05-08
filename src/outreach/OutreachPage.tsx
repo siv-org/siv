@@ -6,7 +6,7 @@ import { LoginForm } from './LoginForm'
 export const OutreachPage = () => {
   return (
     <div>
-      <h1>Outreach page</h1>
+      <h1>SIV Outreach</h1>
       <LoginForm />
       <EmailsSent />
 

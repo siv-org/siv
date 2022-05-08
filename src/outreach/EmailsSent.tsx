@@ -1,5 +1,6 @@
 import { User } from '@supabase/supabase-js'
 import { useEffect, useState } from 'react'
+import { api } from 'src/api-helper'
 
 import { supabase } from './supabase'
 
@@ -7,16 +8,22 @@ type EmailDelivery = {
   created_at: string
   from?: string
   id: number
-  json: { 'event-data': { message: { headers: { 'message-id': string } } } }
+  json: { 'event-data': { message: { headers: { 'message-id': string } }; recipient: string } }
   subject: string
   to: string
 }
+type Opens = Record<string, string[]>
+const loadingMsg = '...'
+
+type OpensById = Record<string, Opens>
 
 export const EmailsSent = () => {
   if (!supabase.auth.user()) return null
 
   const { email } = supabase.auth.user() as User
   const [emails, setEmails] = useState<EmailDelivery[]>([])
+  const [opensById, setOpens] = useState<OpensById>({})
+  const [loading, setLoading] = useState<Record<string, boolean>>({})
 
   async function getSentEmails(email?: string) {
     const { data, error } = await supabase
@@ -31,6 +38,19 @@ export const EmailsSent = () => {
     setEmails(data)
   }
 
+  async function getOpens(messageId: string) {
+    const newLoading = { ...loading }
+    newLoading[messageId] = true
+    setLoading(newLoading)
+
+    const response = await api(`/outreach/get-opens-for-sender?messageId=${messageId}`)
+    const { opens }: { opens: Opens } = await response.json()
+
+    const newOpens = { ...opensById }
+    newOpens[messageId] = opens
+    setOpens(newOpens)
+  }
+
   useEffect(() => {
     getSentEmails(email)
   }, [email])
@@ -39,26 +59,44 @@ export const EmailsSent = () => {
     <>
       <h3>Emails sent</h3>
       <label>
+        <div style={{ width: 30 }}>#</div>
         <div style={{ width: 170 }}>created_at</div>
         <div style={{ width: 120 }}>from</div>
-        <div style={{ width: 200 }}>to</div>
-        <div style={{ width: 200 }}>subject</div>
+        <div style={{ width: 200 }}>recipient</div>
+        <div style={{ width: 40 }}>opens</div>
+        <div style={{ width: 250 }}>subject</div>
       </label>
 
       <ul>
-        {emails.map((email) => {
-          const { created_at, from, json, subject, to } = email
+        {emails.map((email, index) => {
+          const { created_at, from, json, subject } = email
+          const { recipient } = json['event-data']
+
+          const messageId = json['event-data'].message.headers['message-id']
+          const prevMessageId = emails[index - 1]?.json['event-data'].message.headers['message-id']
+          const isNewMessageId = messageId !== prevMessageId
+
+          const opens = opensById[messageId]
+          const isLoading = loading[messageId]
+
           return (
-            <li key={created_at}>
+            <li className={isNewMessageId ? 'first' : ''} key={created_at}>
+              <div style={{ width: 30 }}>{index + 1}</div>
               <div style={{ width: 170 }}>{new Date(created_at).toLocaleString()}</div>
               <div style={{ width: 120 }}>{from}</div>
-              <div style={{ width: 200 }}>{to}</div>
-              <div style={{ width: 200 }}>{subject}</div>
+              <div style={{ width: 200 }}>{recipient}</div>
+              <div style={{ width: 40 }}>
+                {opens ? (
+                  ((opensById[messageId] as Opens)[recipient] || []).length
+                ) : isLoading ? (
+                  loadingMsg
+                ) : (
+                  <a onMouseEnter={() => getOpens(messageId)}>load</a>
+                )}
+              </div>
+              <div style={{ width: 250 }}>{subject}</div>
               <div>
                 <a onClick={() => alert(JSON.stringify(email))}>json</a>
-              </div>
-              <div>
-                <a onClick={() => alert(json['event-data'].message.headers['message-id'])}>opens</a>
               </div>
             </li>
           )
@@ -86,6 +124,11 @@ export const EmailsSent = () => {
           white-space: nowrap;
 
           margin-left: 20px;
+        }
+
+        li.first {
+          border-top: 1px solid #ddd;
+          padding-top: 5px;
         }
 
         li div::-webkit-scrollbar {
