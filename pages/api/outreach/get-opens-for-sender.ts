@@ -10,7 +10,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   if (typeof messageId !== 'string') return res.status(400).json({ error: 'Missing messageId' })
 
-  const { data } = await supabase.from('mailgun-opens').select('*').eq('messageId', messageId.replaceAll(' ', '+'))
+  const { data } = await supabase.from('mailgun-opens').select('*').eq('messageId', messageId.replace(/ /g, '+'))
 
   if (!data) {
     return res.status(404).json({ opens: {} })
