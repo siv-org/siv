@@ -8,7 +8,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { jwt, messageId } = req.query
   if (!isSupabaseJwtValidSIVEmail(jwt)) return res.status(403).json({ error: 'Forbidden' })
 
-  const { data } = await supabase.from('mailgun-opens').select('*').eq('messageId', messageId)
+  if (typeof messageId !== 'string') return res.status(400).json({ error: 'Missing messageId' })
+
+  const { data } = await supabase.from('mailgun-opens').select('*').eq('messageId', messageId.replaceAll(' ', '+'))
 
   if (!data) {
     return res.status(404).json({ opens: {} })
