@@ -13,9 +13,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     console.error('req.headers:', req.headers)
     return res.status(400).json({ error: 'Missing event data.' })
   }
-  const { recipient, tags } = eventData
+  const { message, recipient, tags } = eventData
 
-  const { error } = await supabase.from('mailgun-opens').insert([{ json: req.body, recipient, tags }])
+  const { error } = await supabase
+    .from('mailgun-opens')
+    .insert([{ json: req.body, messageId: message.headers['message-id'], recipient, tags }])
 
   if (error) {
     console.error(error)
