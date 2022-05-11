@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 
-import { pushover } from '../_services'
+import { pushover, sendEmail } from '../_services'
 import { supabase } from '../_supabase'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -23,6 +23,19 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     console.error(error)
     await pushover('mailgun-permanent-failures webhook error', JSON.stringify(error))
     return res.status(400).send({ error })
+  }
+
+  // Notify siv senders of permanent fails
+  if (from.includes('@siv.org')) {
+    await sendEmail({
+      recipient: from,
+      subject: `Failure: ${to}`,
+      text: `Your email was not delivered to ${to}.
+
+${JSON.stringify(eventData, null, 2)}`,
+    }).catch((err) => {
+      pushover('mailgun-permanent-failures webhook error', JSON.stringify(err))
+    })
   }
 
   // console.log({ data })
