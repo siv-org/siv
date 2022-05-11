@@ -1,3 +1,4 @@
+import { omit } from 'lodash-es'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import { pushover, sendEmail } from '../_services'
@@ -32,7 +33,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       subject: `Failure: ${to}`,
       text: `Your email was not delivered to ${to}.
 
-${JSON.stringify(eventData, null, 2)}`,
+<code style="white-space: pre-wrap;">${JSON.stringify(omit(eventData, ['storage']), null, 2)}</code>`,
     }).catch((err) => {
       pushover('mailgun-permanent-failures webhook error', JSON.stringify(err))
     })
