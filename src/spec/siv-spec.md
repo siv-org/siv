@@ -1,6 +1,6 @@
 # SIV Technical Specification
 
-**Last updated:** 2022.03.31
+**Last updated:** 2022.05.23
 
 This document gives a technical specification of what defines a SIV — Secure Internet Voting — election.
 
@@ -30,6 +30,8 @@ As with traditional paper elections, the Administrator must finalize the questio
 
 The SIV Admin software provides both a simple Point-and-Click Ballot Designer interface, as well as a machine-readable JSON Schema interface for advanced editing.
 
+Every ballot item should have a unique key, such as "president", "governor", "mayor", "proposition_3".
+
 SIV is fully compatible with alternative voting methods such as Ranked Choice Voting and Approval Voting, and can prevent Voters from accidentally invalidating their ballot.
 
 ### c. Register Verifying Observers
@@ -38,7 +40,7 @@ The Election Administrator can enroll Verifying Observers. Each Verifying Observ
 
 Election Administrators choose who to invite, and Verifying Observers must also opt-in by accepting the invitation.
 
-Verifying Observers key role arrives later, after all votes have been submitted, but they must be registered before the election can begin. Later, they individually anonymize all the votes themselves, and verify the SIV Universal Zero-Knowledge Proofs to ensure all votes' integrity. Only after these two vital steps are completed, they work together to unlock the vote's encryption for final tallying.
+Verifying Observers main role arrives later, after all votes have been submitted, but they must be registered before the election can begin. Later, they individually anonymize all the votes themselves, and verify the SIV Universal Zero-Knowledge Proofs to ensure all votes' integrity. Only after these two vital steps are completed, they work together to unlock the vote's encryption for final tallying.
 
 To ensure neutrally-credible acceptance of an election's fairness, Observers can be chosen to have competing interests. They are a more powerful version of the traditional concept of Election Observers from in-person elections. Similarly, a reasonable choice would be one Verifying Observer nominated by each candidate's political party, plus the Election Administrator themselves.
 
@@ -189,6 +191,32 @@ Voters can delete this data if they want, but SIV defaults to storing it, to hel
 None of this data other than their encrypted ciphertexts leaves their device.
 
 ### Step 3. Voters Submit Encrypted Votes
+
+After the voter has reviewed their selections, they can press "Submit" to send their encrypted vote data, along with their unique Voter Auth Token, to the election administrator via the siv.org server.
+
+This looks like a standard POST request to https://siv.org/submit-vote, with a JSON body like:
+
+```
+{
+  auth: "20bc371dc4",
+  election_id:
+  mayor:
+    {
+      encrypted: "fc88a5d7e3996bb26c59ea99101571c377e2a4dbb0834f22d30d35ebf990997c",
+      lock: "28cb5650c9d9c3c3a93dac60d46702219ddd1f4c301287df7d6cbf6b27fdcc1a"
+    }
+}
+```
+
+The SIV server automatically checks that the Voter Auth Token matches an eligible voter, and that it hasn't already been used.
+
+If it passes, the vote is added to a public list of all votes received so far.
+
+The voter is sent a confirmation email that their encrypted vote has been received and accepted.
+
+This lets the voter know their job is done. It also alerts them in case someone else somehow gained access to their auth token. And it serves as a written receipt that the vote was accepted, to allow for auditing.
+
+Because of the strong encryption, the election administrator still has no way to know how individual voters choose to vote.
 
 ## Voting Period Ends
 
