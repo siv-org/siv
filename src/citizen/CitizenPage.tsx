@@ -3,6 +3,7 @@ import { useAnalytics } from 'src/useAnalytics'
 
 import { Head } from '../Head'
 import { Footer } from '../homepage/Footer'
+import { HeaderBar } from '../homepage/HeaderBar'
 import { Content } from './Content'
 
 export const CitizenPage = (): JSX.Element => {
@@ -12,6 +13,7 @@ export const CitizenPage = (): JSX.Element => {
       <Head title="Citizen" />
 
       <div>
+        <HeaderBar />
         <Content />
         <Footer />
       </div>
