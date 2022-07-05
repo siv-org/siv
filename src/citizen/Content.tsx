@@ -246,5 +246,21 @@ export const Content = () => (
 
     <h2>Submit your question</h2>
     <p>[ Your Name (optional) ] [ Your Email (optional — if you want a reply) ] [ Your Question ]</p>
+
+    <style jsx>{`
+      p,
+      ul,
+      h3 {
+        font-size: 20px;
+      }
+
+      h2 {
+        font-size: 25px;
+      }
+
+      hr {
+        opacity: 0.5;
+      }
+    `}</style>
   </div>
 )
