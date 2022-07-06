@@ -173,9 +173,6 @@ export const Content = () => (
     <h2>Ready to Invest in the Future of Free Society?</h2>
     <InvestmentForm />
     <p>
-      <i>Payment options: Credit/Debit Card, Paypal, Bank Transfer, Cryptocurrency</i>
-    </p>
-    <p>
       This SIV Token{' '}
       <b>
         <i>is registered</i>

@@ -34,6 +34,9 @@ export const InvestmentForm = () => {
       <Row>
         <Field fullWidth id="amount" label="Your Preferred Investment Amount" />
       </Row>
+      <p>
+        <i>Payment options: Bank Transfer, Credit/Debit Card, Cryptocurrency, Paypal</i>
+      </p>
       <Row style={{ alignItems: 'center', justifyContent: 'flex-end' }}>
         {saved && <p style={{ margin: 0, opacity: 0.7, width: 60 }}>Done.</p>}
         <OnClickButton
