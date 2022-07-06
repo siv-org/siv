@@ -1,3 +1,4 @@
+import { QuestionForm } from './QuestionForm'
 export const Content = () => (
   <div>
     <h1>The SIV Token</h1>
@@ -245,7 +246,7 @@ export const Content = () => (
     <hr />
 
     <h2>Submit your question</h2>
-    <p>[ Your Name (optional) ] [ Your Email (optional — if you want a reply) ] [ Your Question ]</p>
+    <QuestionForm />
 
     <style jsx>{`
       p,
