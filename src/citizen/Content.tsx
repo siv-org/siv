@@ -9,7 +9,7 @@ export const Content = () => (
 
     <hr />
 
-    <h2>Simple & Innovative Token Economics:</h2>
+    <h2>Simple Token Economics:</h2>
     <p>All future revenue that SIV earns from governments will be paid in USD dividends to SIV Token Holders.</p>
 
     <hr />
