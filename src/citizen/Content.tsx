@@ -190,12 +190,15 @@ export const Content = () => (
       <b>1. When can I start voting from my phone?</b>
     </p>
 
+    <p>As soon as your local government will allow you.</p>
     <p>
-      As soon as your local government will allow you. The technology is all ready, and we’ve run a number of highly
-      successful private pilots. The core barrier left is state and local legislative action. Thanks to the federal
-      UOCAVA Act, Secretaries of State and local election officials do have some legal leeway to run small-scale pilots,
-      especially for Overseas Voters (like military voters) and Disabled Voters. But these election officials can always
-      use more public encouragement.
+      The technology is all ready, and we’ve run a number of highly successful private pilots. The core barrier left is
+      state and local legislative action.
+    </p>
+    <p>
+      Thanks to the federal UOCAVA Act, Secretaries of State and local election officials do have some legal leeway to
+      run small-scale pilots, especially for Overseas Voters (like military voters) and Disabled Voters. But these
+      election officials can always use more public encouragement.
     </p>
 
     <p>
