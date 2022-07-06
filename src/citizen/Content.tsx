@@ -1,3 +1,4 @@
+import { InvestmentForm } from './InvestmentForm'
 import { QuestionForm } from './QuestionForm'
 export const Content = () => (
   <div>
@@ -169,7 +170,7 @@ export const Content = () => (
     <hr />
 
     <h2>Ready to Invest in the Future of Free Society?</h2>
-    <p>[ Your Name ] [ Your Email ] [ Your Preferred Investment Amount ]</p>
+    <InvestmentForm />
     <p>
       <i>Payment options: Credit/Debit Card, Paypal, Bank Transfer, Cryptocurrency</i>
     </p>
