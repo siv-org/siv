@@ -7,6 +7,8 @@ export const ContactRepForm = () => {
   const [saved, setSaved] = useState(false)
   const [error, setError] = useState('')
 
+  const formName = 'contactreps'
+
   // DRY-up TextField
   const Field = (props: TextFieldProps) => (
     <NoSsr>
@@ -15,6 +17,7 @@ export const ContactRepForm = () => {
         variant="outlined"
         onChange={() => setSaved(false)}
         {...props}
+        id={`${formName}-${props.id}`}
         style={{ ...props.style }}
       />
     </NoSsr>
@@ -45,7 +48,7 @@ export const ContactRepForm = () => {
 
             // Get data from input fields
             ;['name', 'zip', 'email', 'message'].forEach((field) => {
-              fields[field] = (document.getElementById(field) as HTMLInputElement).value
+              fields[field] = (document.getElementById(`${formName}-${field}`) as HTMLInputElement).value
             })
 
             const response = await api('citizen-forms/contact-reps', fields)

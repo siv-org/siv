@@ -7,6 +7,8 @@ export const QuestionForm = () => {
   const [saved, setSaved] = useState(false)
   const [error, setError] = useState('')
 
+  const formName = 'investmentquestion'
+
   // DRY-up TextField
   const Field = (props: TextFieldProps) => (
     <NoSsr>
@@ -15,6 +17,7 @@ export const QuestionForm = () => {
         variant="outlined"
         onChange={() => setSaved(false)}
         {...props}
+        id={`${formName}-${props.id}`}
         style={{ ...props.style }}
       />
     </NoSsr>
@@ -42,7 +45,7 @@ export const QuestionForm = () => {
 
             // Get data from input fields
             ;['name', 'email', 'question'].forEach((field) => {
-              fields[field] = (document.getElementById(field) as HTMLInputElement).value
+              fields[field] = (document.getElementById(`${formName}-${field}`) as HTMLInputElement).value
             })
 
             const response = await api('citizen-forms/question', fields)
