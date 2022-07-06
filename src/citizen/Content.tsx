@@ -1,3 +1,4 @@
+import { ContactRepForm } from './ContactRepForm'
 import { InvestmentForm } from './InvestmentForm'
 import { QuestionForm } from './QuestionForm'
 export const Content = () => (
@@ -122,7 +123,7 @@ export const Content = () => (
       You can write your message here. We’ll find your specific election officials & representatives, forward your
       message, and let you know of any replies.
     </p>
-    <p>[ Your name ] [ Your ZIP Code ] [ Your email (optional) ] [ Your message ]</p>
+    <ContactRepForm />
 
     <hr />
 
