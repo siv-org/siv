@@ -1,6 +1,7 @@
 import { BoxProps, NoSsr, TextField, TextFieldProps } from '@material-ui/core'
 import { useState } from 'react'
 import { OnClickButton } from 'src/_shared/Button'
+import { api } from 'src/api-helper'
 
 export const InvestmentForm = () => {
   const [saved, setSaved] = useState(false)
@@ -28,7 +29,7 @@ export const InvestmentForm = () => {
         <Field fullWidth id="email" label="Your Email" />
       </Row>
       <Row>
-        <Field fullWidth id="investment-amount" label="Your Preferred Investment Amount" />
+        <Field fullWidth id="amount" label="Your Preferred Investment Amount" />
       </Row>
       <Row style={{ alignItems: 'center', justifyContent: 'flex-end' }}>
         {saved && <p style={{ margin: 0, opacity: 0.7, width: 60 }}>Done.</p>}
@@ -36,18 +37,18 @@ export const InvestmentForm = () => {
           disabled={saved}
           style={{ marginRight: 0 }}
           onClick={async () => {
-            const fields: Record<string, string | Date> = {}
+            const fields: Record<string, string> = {}
             setError('')
 
             // Get data from input fields
-            ;['name', 'email', 'investment-amount'].forEach((field) => {
+            ;['name', 'email', 'amount'].forEach((field) => {
               fields[field] = (document.getElementById(field) as HTMLInputElement).value
             })
 
-            //   const response = await api('let-your-govt-know', fields)
-            //   if (response.ok) return setSaved(true)
+            const response = await api('citizen-forms/investment', fields)
+            if (response.ok) return setSaved(true)
 
-            //   setError((await response.json()).error)
+            setError((await response.json()).error)
           }}
         >
           Next

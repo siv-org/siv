@@ -1,6 +1,7 @@
 import { BoxProps, NoSsr, TextField, TextFieldProps } from '@material-ui/core'
 import { useState } from 'react'
 import { OnClickButton } from 'src/_shared/Button'
+import { api } from 'src/api-helper'
 
 export const ContactRepForm = () => {
   const [saved, setSaved] = useState(false)
@@ -39,18 +40,18 @@ export const ContactRepForm = () => {
           disabled={saved}
           style={{ marginRight: 0 }}
           onClick={async () => {
-            const fields: Record<string, string | Date> = {}
+            const fields: Record<string, string> = {}
             setError('')
 
             // Get data from input fields
-            ;['name', 'email', 'investment-amount'].forEach((field) => {
+            ;['name', 'zip', 'email', 'message'].forEach((field) => {
               fields[field] = (document.getElementById(field) as HTMLInputElement).value
             })
 
-            //   const response = await api('let-your-govt-know', fields)
-            //   if (response.ok) return setSaved(true)
+            const response = await api('citizen-forms/contact-reps', fields)
+            if (response.ok) return setSaved(true)
 
-            //   setError((await response.json()).error)
+            setError((await response.json()).error)
           }}
         >
           Send

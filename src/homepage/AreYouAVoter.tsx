@@ -46,7 +46,7 @@ export function AreYouAVoter(): JSX.Element {
             disabled={saved}
             style={{ marginRight: 0 }}
             onClick={async () => {
-              const fields: Record<string, string | Date> = { idKey }
+              const fields: Record<string, string> = { idKey }
               setError('')
 
               // Get data from input fields
