@@ -60,7 +60,7 @@ export const Content = () => (
       Learn more how it works: <a href="https://siv.org/protocol">The Secure Internet Voting (SIV) Protocol</a>
     </p>
     <hr />
-    <h2> But! There is one major barrier… </h2>
+    <h2> Getting SIV approved by the government</h2>
     <p>
       In order to be able to use Secure Internet Voting,{' '}
       <b>
@@ -70,11 +70,13 @@ export const Content = () => (
     </p>
     <p>This requires buy-in from:</p>
     <ul>
-      <li> our election officials — many of whom are hard-working, honest public servants!</li>
+      <li> our election officials</li>
       <li>
-        our state legislators — who are very busy, and have trouble knowing what citizens want them to prioritize!
+        our state legislators 
       </li>
     </ul>
+    <p>Both parties are obviously very busy and have trouble knowing what citizens want them to prioritize.</p>
+
 
     <hr />
 
