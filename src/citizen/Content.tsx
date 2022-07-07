@@ -268,6 +268,9 @@ export const Content = () => (
       div {
         padding-top: 2rem;
         padding-bottom: 3rem;
+
+        max-width: 1000px;
+        margin: 0 auto;
       }
     `}</style>
   </div>
