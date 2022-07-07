@@ -4,8 +4,8 @@ import { QuestionForm } from './QuestionForm'
 export const Content = () => (
   <div>
     <h1>The SIV Token</h1>
-    <h2>Permissionless Engagement using Powerful Cryptographic Tools</h2>
-    <p>The SIV Token is a way for anyone and everyone to invest in the success of upgrading democracy's core system: voting.</p>
+    <p>We want to create a way for anyone and everyone to be able to invest in SIV’s growth and success.</p>
+    <p>Using powerful new cryptographic tools, we can.</p>
 
     <hr />
 
