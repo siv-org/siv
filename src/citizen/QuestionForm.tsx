@@ -1,5 +1,5 @@
 import { BoxProps, NoSsr, TextField, TextFieldProps } from '@material-ui/core'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { OnClickButton } from 'src/_shared/Button'
 import { api } from 'src/api-helper'
 
@@ -10,17 +10,20 @@ export const QuestionForm = () => {
   const formName = 'investmentquestion'
 
   // DRY-up TextField
-  const Field = (props: TextFieldProps) => (
-    <NoSsr>
-      <TextField
-        size="small"
-        variant="outlined"
-        onChange={() => setSaved(false)}
-        {...props}
-        id={`${formName}-${props.id}`}
-        style={{ ...props.style }}
-      />
-    </NoSsr>
+  const Field = useCallback(
+    (props: TextFieldProps) => (
+      <NoSsr>
+        <TextField
+          size="small"
+          variant="outlined"
+          onChange={() => setSaved(false)}
+          {...props}
+          id={`${formName}-${props.id}`}
+          style={{ ...props.style }}
+        />
+      </NoSsr>
+    ),
+    [],
   )
 
   return (
