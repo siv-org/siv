@@ -7,12 +7,8 @@ export const Content = () => (
     <p>We want to create a way for anyone and everyone to be able to invest in SIV’s growth and success.</p>
     <p>Using powerful new cryptographic tools, we can.</p>
 
-    <hr />
-
     <h2>Simple Token Economics:</h2>
     <p>All future revenue that SIV earns from governments will be paid in USD dividends to SIV Token Holders.</p>
-
-    <hr />
 
     <h2>Right Now...</h2>
     <p>
@@ -26,8 +22,6 @@ export const Content = () => (
       The US government — aka, we the taxpayers — spends $4 billion every year on election administration. $8b in 2020
       because of COVID.
     </p>
-
-    <hr />
 
     <h2>SIV has created far superior technology:</h2>
     <ul>
@@ -59,7 +53,7 @@ export const Content = () => (
     <p>
       Learn more how it works: <a href="https://siv.org/protocol">The Secure Internet Voting (SIV) Protocol</a>
     </p>
-    <hr />
+
     <h2> But! There is one major barrier… </h2>
     <p>
       In order to be able to use Secure Internet Voting,{' '}
@@ -75,8 +69,6 @@ export const Content = () => (
         our state legislators — who are very busy, and have trouble knowing what citizens want them to prioritize!
       </li>
     </ul>
-
-    <hr />
 
     <h2>Your support directly improves the voting system</h2>
     <p>
@@ -100,8 +92,6 @@ export const Content = () => (
       .
     </p>
 
-    <hr />
-
     <h2>They need to SEE & HEAR from us citizens that this is something that we want.</h2>
     <p>
       Whenever you get the opportunity, please tell them you want to be able to vote from your phone in an easy, safe,
@@ -116,16 +106,12 @@ export const Content = () => (
       appreciate a positive impression.
     </p>
 
-    <hr />
-
     <h2> We’ve also made it easy to send them a note yourself </h2>
     <p>
       You can write your message here. We’ll find your specific election officials & representatives, forward your
       message, and let you know of any replies.
     </p>
     <ContactRepForm />
-
-    <hr />
 
     <h2>AND! You can personally invest in SIV’s Growth & Future Success.</h2>
     <p>Directly, right now, without needing anyone’s permission.</p>
@@ -157,8 +143,6 @@ export const Content = () => (
       </li>
     </ul>
 
-    <hr />
-
     <h2>Democracy is under siege worldwide.</h2>
     <p>We’re doing what we can to make our representative governments more trustworthy, accessible, and modern.</p>
 
@@ -168,7 +152,7 @@ export const Content = () => (
       </b>
     </p>
 
-    <hr />
+    <br />
 
     <h2>Ready to Invest in the Future of Free Society?</h2>
     <InvestmentForm />
@@ -180,7 +164,7 @@ export const Content = () => (
       under the Securities Act of 1933. Here is <a href="">our S-1 filing</a>.
     </p>
 
-    <hr />
+    <br />
 
     <h2>FAQ</h2>
     <p>
@@ -245,8 +229,6 @@ export const Content = () => (
       Effect, and voting method reform more generally.
     </p>
 
-    <hr />
-
     <h2>Submit your question</h2>
     <QuestionForm />
 
@@ -261,12 +243,15 @@ export const Content = () => (
         font-size: 25px;
       }
 
-      hr {
-        opacity: 0.5;
+      h1,
+      h2 {
+        margin: 2rem 0 0;
+        padding-bottom: 5px;
+        border-bottom: 1px solid #ccc;
       }
 
       div {
-        padding-top: 2rem;
+        padding-top: 1rem;
         padding-bottom: 3rem;
 
         max-width: 1000px;
