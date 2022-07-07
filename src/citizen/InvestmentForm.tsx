@@ -1,26 +1,32 @@
 import { BoxProps, NoSsr, TextField, TextFieldProps } from '@material-ui/core'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { OnClickButton } from 'src/_shared/Button'
 import { api } from 'src/api-helper'
+
+const suggestedAmounts = { 10: '10', 1_000: '1k', 100_000: '100k', 1_000_000: '1m' }
+const formName = 'investment'
 
 export const InvestmentForm = () => {
   const [saved, setSaved] = useState(false)
   const [error, setError] = useState('')
-
-  const formName = 'investment'
+  const [amountSelected, setAmountSelected] = useState(Object.keys(suggestedAmounts)[0])
+  const [custom, setCustom] = useState('')
 
   // DRY-up TextField
-  const Field = (props: TextFieldProps) => (
-    <NoSsr>
-      <TextField
-        size="small"
-        variant="outlined"
-        onChange={() => setSaved(false)}
-        {...props}
-        id={`${formName}-${props.id}`}
-        style={{ ...props.style }}
-      />
-    </NoSsr>
+  const Field = useCallback(
+    (props: TextFieldProps) => (
+      <NoSsr>
+        <TextField
+          size="small"
+          variant="outlined"
+          onChange={() => setSaved(false)}
+          {...props}
+          id={`${formName}-${props.id}`}
+          style={{ ...props.style }}
+        />
+      </NoSsr>
+    ),
+    [],
   )
 
   return (
@@ -31,8 +37,43 @@ export const InvestmentForm = () => {
       <Row>
         <Field fullWidth id="email" label="Your Email" />
       </Row>
-      <Row>
-        <Field fullWidth id="amount" label="Your Preferred Investment Amount" />
+      <p style={{ fontWeight: '600', marginBottom: 0 }}>Preferred Investment Amount:</p>
+      <Row style={{ alignItems: 'center', justifyContent: 'space-between', marginTop: 0 }}>
+        {Object.entries(suggestedAmounts).map(([amount, label], index) => (
+          <label
+            key={amount}
+            style={{
+              marginRight: 0,
+              padding: 5,
+              paddingLeft: index === 0 ? 0 : 5,
+              textAlign: 'center',
+            }}
+          >
+            <input
+              checked={amount === amountSelected}
+              name={`${formName}-amount-${amount}`}
+              type="radio"
+              value={amount}
+              onChange={() => {
+                setSaved(false)
+                setAmountSelected(amount)
+                setCustom('')
+              }}
+            />
+            ${label}
+          </label>
+        ))}
+        <Field
+          id="custom-amount"
+          label="Custom"
+          style={{ marginLeft: 10, width: 100 }}
+          value={custom}
+          onChange={({ target }) => {
+            setSaved(false)
+            setAmountSelected(target.value)
+            setCustom(target.value)
+          }}
+        />
       </Row>
       <p>
         <i>Payment options: Bank Transfer, Credit/Debit Card, Cryptocurrency, Paypal</i>
@@ -47,9 +88,10 @@ export const InvestmentForm = () => {
             setError('')
 
             // Get data from input fields
-            ;['name', 'email', 'amount'].forEach((field) => {
+            ;['name', 'email'].forEach((field) => {
               fields[field] = (document.getElementById(`${formName}-${field}`) as HTMLInputElement).value
             })
+            fields['amount'] = amountSelected
 
             const response = await api('citizen-forms/investment', fields)
             if (response.ok) return setSaved(true)

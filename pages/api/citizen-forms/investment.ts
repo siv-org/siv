@@ -14,6 +14,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(400).json({ error: 'Invalid email' })
   }
 
+  // Add comma separators to amount if it's a number
+  if (fields.amount === String(+fields.amount)) {
+    fields.amount = (+fields.amount).toLocaleString()
+  }
+
   // Store submission in Firestore
   await firebase
     .firestore()

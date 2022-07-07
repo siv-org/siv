@@ -78,7 +78,7 @@ export const Content = () => (
 
     <hr />
 
-    <h2>Your support directly improves the voting system  </h2>
+    <h2>Your support directly improves the voting system</h2>
     <p>
       We at <a href="https://siv.org">SIV.org</a> have spent the last 2 years reaching out and pitching to hundreds of
       election officials, throughout the country.
