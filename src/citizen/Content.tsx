@@ -29,7 +29,7 @@ export const Content = () => (
 
     <hr />
 
-    <h2>SIV has created far superior technology:</h2>
+    <h2>SIV has created a far more powerful technology:</h2>
     <ul>
       <li>Easier</li>
       <li>Faster </li>
@@ -39,16 +39,16 @@ export const Content = () => (
       <li>Pandemic-Resistant</li>
     </ul>
     <p>
-      This allows every day citizens like you and me to vote from the internet-connected supercomputers in our pockets.
+      This gives voters like you and I the power to vote from the supercomputers in our pockets.
     </p>
     <p>
-      And all in a way that creates <i>more trust</i> than the current election systems we use right now…
+      All in a way that creates <i>more transparency</i> than the election systems we currently use…
     </p>
     <p>
-      SIV allows us to verify for ourselves that our vote is cast and counted correctly, without tampering, and allows
-      each and every one of us to fully recount the vote for ourselves if we want.
+      SIV enables us to personally verify that our vote is cast and counted correctly, without tampering, and makes it possible for 
+      each and every one of us to fully recount the results for ourselves. 
     </p>
-    <p>No more vote-counts trapped behind closed doors, behind any curtains. </p>
+    <p>No more processes and vote-counts hidden behind closed doors. </p>
     <p>
       Each and every one of us can see for ourselves what the correct results are supposed to be — all{' '}
       <b>
