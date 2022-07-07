@@ -102,23 +102,19 @@ export const Content = () => (
 
     <hr />
 
-    <h2>They need to SEE & HEAR from us citizens that this is something that we want.</h2>
+    <h2>They need to SEE & HEAR from us voters that this is something we want.</h2>
     <p>
-      Whenever you get the opportunity, please tell them you want to be able to vote from your phone in an easy, safe,
+      Whenever you get the opportunity, it is valuable to tell them you want to be able to vote from your phone in an easy
       and secure way.
     </p>
     <p>
-      Tell them you’re excited about <a href="https://siv.org">SIV.org</a>, and would like to be{' '}
+      Being specific also helps: showing excitment about <a href="https://siv.org">SIV.org</a>, and that you'd like to be{' '}
       <a href="">able to try it out</a>!
-    </p>
-    <p>
-      Best is if you talk to them in person, or call them on the phone. Be polite. They’re human too, of course, and
-      appreciate a positive impression.
     </p>
 
     <hr />
 
-    <h2> We’ve also made it easy to send them a note yourself </h2>
+    <h2> Send them a note </h2>
     <p>
       You can write your message here. We’ll find your specific election officials & representatives, forward your
       message, and let you know of any replies.
