@@ -127,18 +127,23 @@ export const Content = () => (
 
     <hr />
 
-    <h2>AND! You can personally invest in SIV’s Growth & Future Success.</h2>
+    <h2>To get quicker results, you can personally invest in SIV’s success.</h2>
     <p>Directly, right now, without needing anyone’s permission.</p>
     <h3>How it works:</h3>
     <p>1) You send USD, and receive SIV Tokens.</p>
     <p>
-      2) <a href="https://siv.org/">SIV.org</a> can immediately make use of your investment, to further our mission of
-      letting all of us vote quickly, easily, and safely from our phones. All of our finances are transparently
-      published.
-    </p>
+      2) <a href="https://siv.org/">SIV.org</a> can immediately make use of your investment to further our mission of
+     giving  voters the power of nearly instantaneous, verifiable, and private voting, on any of our devices, 
+     at a fraction of the cost of current election systems.  
+     </p>
+
+     <p>
+     All of our finances are transparentl published.
+     </p>
+
     <p>
-      3) Everyone, including our election officials, can see that citizens really believe in, want SIV to exist, and be
-      more widely available. This furthers our mission, and allows us to overcome the network effects needed to create{' '}
+      3) Everyone, including our election officials, can see that citizens clearly want Secure Internet Voting to exist, and be
+      more widely available. This allows us to overcome the network effects needed to create{' '}
       <b>
         <i>Legislative Change</i>
       </b>{' '}
@@ -146,8 +151,7 @@ export const Content = () => (
     </p>
     <p>
       4) 100% of all future SIV revenue from governments is legally mandated to be distributed proportionally to SIV
-      Token Holders. <a href="https://siv.org/">SIV.org</a> itself is a Nonprofit Foundation, and all of our code is
-      open-source.
+      Token Holders. 
     </p>
     <ul>
       <li>SIV Tokens are a liquid asset, built using cryptocurrency, and can be sold at any time. </li>
@@ -156,11 +160,17 @@ export const Content = () => (
         dividends until ready to withdraw, with zero fees.
       </li>
     </ul>
+    <p>
+      5) <a href="https://siv.org/">SIV.org</a> itself is a Nonprofit Foundation, and all of our code is
+      open-source.
+    </p>
 
     <hr />
 
-    <h2>Democracy is under siege worldwide.</h2>
-    <p>We’re doing what we can to make our representative governments more trustworthy, accessible, and modern.</p>
+    <h2>Voting is the Foundation of our Democracy</h2>
+    <p>Today, widespread doubt about elections’ accurate results poses a significant threat to our free society.</p>
+    
+    <p> We’re working to make our representative governments more trustworthy and accessible for all.</p>
 
     <p>
       <b>
