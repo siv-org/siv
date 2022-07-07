@@ -43,6 +43,7 @@ export const InvestmentForm = () => {
           <label
             key={amount}
             style={{
+              cursor: 'pointer',
               marginRight: 0,
               padding: 5,
               paddingLeft: index === 0 ? 0 : 5,
