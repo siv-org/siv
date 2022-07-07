@@ -78,7 +78,7 @@ export const Content = () => (
 
     <hr />
 
-    <h2>This is where you come in!</h2>
+    <h2>Your support directly improves the voting system  </h2>
     <p>
       We at <a href="https://siv.org">SIV.org</a> have spent the last 2 years reaching out and pitching to hundreds of
       election officials, throughout the country.
@@ -89,7 +89,7 @@ export const Content = () => (
     </p>
     <p>
       We’ve heard from them over and over again: “I know electronic voting is the way things are of course eventually
-      heading, but are we ready yet?” For VERY GOOD REASONS, these officials are technologically conservative &
+      heading, but is that time now?” For very good reasons, these officials are technologically conservative &
       risk-averse.
     </p>
     <p>
