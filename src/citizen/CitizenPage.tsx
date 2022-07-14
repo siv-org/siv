@@ -12,7 +12,9 @@ export const CitizenPage = (): JSX.Element => {
     <>
       <Head title="Citizen" />
 
-      <HeaderBar />
+      <div style={{ padding: '1rem 0 0' }}>
+        <HeaderBar />
+      </div>
       <div>
         <Content />
         <Footer />
