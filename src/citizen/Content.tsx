@@ -102,8 +102,8 @@ export const Content = () => (
       <a href="">able to try it out</a>!
     </p>
     <p>
-      Best is if you talk to them in person, or call them on the phone. Be polite. They’re human too, of course, and
-      appreciate a positive impression.
+      Best is if you talk to them in person, or call them on the phone. Be polite. A positive impression is always
+      appreciated.
     </p>
 
     <h2> We’ve also made it easy to send them a note yourself </h2>
@@ -113,7 +113,7 @@ export const Content = () => (
     </p>
     <ContactRepForm />
 
-    <h2>AND! You can personally invest in SIV’s Growth & Future Success.</h2>
+    <h2>You can personally invest in SIV’s Growth & Future Success</h2>
     <p>Directly, right now, without needing anyone’s permission.</p>
     <h3>How it works:</h3>
     <p>1) You send USD, and receive SIV Tokens.</p>
