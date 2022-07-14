@@ -12,8 +12,8 @@ export const CitizenPage = (): JSX.Element => {
     <>
       <Head title="Citizen" />
 
+      <HeaderBar />
       <div>
-        <HeaderBar />
         <Content />
         <Footer />
       </div>
