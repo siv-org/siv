@@ -33,16 +33,16 @@ export const Content = () => (
       <li>Pandemic-Resistant</li>
     </ul>
     <p>
-      This allows every day citizens like you and me to vote from the internet-connected supercomputers in our pockets.
+      This gives voters like you and me the power to vote from the internet-connected supercomputers in our pockets.
     </p>
     <p>
-      And all in a way that creates <i>more trust</i> than the current election systems we use right now…
+      All in a way that creates <i>more trust</i> than the current election systems we use right now…
     </p>
     <p>
-      SIV allows us to verify for ourselves that our vote is cast and counted correctly, without tampering, and allows
-      each and every one of us to fully recount the vote for ourselves if we want.
+      SIV allows us to personally verify that our vote is cast and counted correctly, without tampering, and allows each
+      and every one of us to fully recount the results for ourselves if we want.
     </p>
-    <p>No more vote-counts trapped behind closed doors, behind any curtains. </p>
+    <p>No more vote-counts hidden behind closed doors. </p>
     <p>
       Each and every one of us can see for ourselves what the correct results are supposed to be — all{' '}
       <b>
