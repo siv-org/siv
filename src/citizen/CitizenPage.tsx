@@ -12,10 +12,8 @@ export const CitizenPage = (): JSX.Element => {
     <>
       <Head title="Citizen" />
 
-      <div style={{ padding: '1rem 0 0' }}>
-        <HeaderBar />
-      </div>
       <div>
+        <HeaderBar />
         <Content />
         <Footer />
       </div>
@@ -28,6 +26,12 @@ export const CitizenPage = (): JSX.Element => {
 
           width: 100%;
           overflow-x: hidden;
+        }
+
+        @media (max-width: 700px) {
+          div {
+            padding: 1rem 1.5rem;
+          }
         }
       `}</style>
     </>
