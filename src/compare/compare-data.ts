@@ -1,13 +1,29 @@
 const cats = { acc: 'Accurate Results', costs: 'Costs', hon: 'Honest Vote Selections', ux: 'Voter Experience' }
 
-type Row = { cat: string; d_prop: string; desc: string; scores: [number, number, number] }
+export type Score = number | [number, { adv: string; disadv: string }]
+
+type Row = { cat: string; d_prop: string; desc: string; scores: [Score, Score, Score] }
 
 export const tableData: Row[] = [
   {
     cat: cats.acc,
     d_prop: 'Auditable Voter Authentication',
     desc: 'How sure are we that only legitimate voters are voting, and only once each?',
-    scores: [7, 5, 7],
+    scores: [
+      [
+        7,
+        {
+          adv: `Have to show up in person
+Can limit to resident's unique precinct
+Can require photo ID`,
+          disadv: `Vulnerable to ballot stuffing: all ballot boxes must be watched at all times by multiple observers
+Limited post-election auditability
+Once ballots accepted, limited remediation options`,
+        },
+      ],
+      5,
+      7,
+    ],
   },
   {
     cat: cats.acc,

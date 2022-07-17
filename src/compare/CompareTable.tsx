@@ -1,4 +1,6 @@
-import { tableData } from './compare-data'
+import { Score, tableData } from './compare-data'
+
+const getScore = (s: Score): number => (typeof s === 'number' ? s : s[0])
 
 export const CompareTable = (): JSX.Element => {
   return (
@@ -41,10 +43,10 @@ export const CompareTable = (): JSX.Element => {
                       7: '#86efac',
                       8: '#4ade80',
                       9: '#22c55e',
-                    }[s],
+                    }[getScore(s)],
                   }}
                 >
-                  {s}
+                  {getScore(s)}
                 </td>
               ))}
             </tr>
