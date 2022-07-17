@@ -11,52 +11,54 @@ export const CompareTable = (): JSX.Element => {
         Secure Internet Voting (SIV) <i>vs</i> Vote-By-Mail <i>&amp;</i> In-Person
       </h2>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Category</th>
-            <th>Property</th>
-            <th>Description</th>
-            <th>SIV</th>
-            <th>By Mail</th>
-            <th>In Person</th>
-          </tr>
-        </thead>
-        <tbody>
-          {tableData.map((row, i) => (
-            <tr key={i}>
-              <td>{row.cat}</td>
-              <td className="bold">{row.d_prop}</td>
-              <td>{row.desc}</td>
-              {[...row.scores].reverse().map((s, j) => (
-                <td
-                  className="text-center"
-                  key={j}
-                  style={{
-                    backgroundColor: {
-                      1: '#ef4444',
-                      2: '#f87171',
-                      3: '#fca5a5',
-                      4: '#fecaca',
-                      5: '' && 'white',
-                      6: '#bbf7d0',
-                      7: '#86efac',
-                      8: '#4ade80',
-                      9: '#22c55e',
-                    }[getScore(s)],
-                  }}
-                >
-                  {getScore(s)}
-                </td>
-              ))}
+      <div>
+        <table>
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th>Property</th>
+              <th>Description</th>
+              <th>SIV</th>
+              <th>By Mail</th>
+              <th>In Person</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {tableData.map((row, i) => (
+              <tr key={i}>
+                <td>{row.cat}</td>
+                <td className="bold">{row.d_prop}</td>
+                <td>{row.desc}</td>
+                {[...row.scores].reverse().map((s, j) => (
+                  <td
+                    className="text-center"
+                    key={j}
+                    style={{
+                      backgroundColor: {
+                        1: '#ef4444',
+                        2: '#f87171',
+                        3: '#fca5a5',
+                        4: '#fecaca',
+                        5: '' && 'white',
+                        6: '#bbf7d0',
+                        7: '#86efac',
+                        8: '#4ade80',
+                        9: '#22c55e',
+                      }[getScore(s)],
+                    }}
+                  >
+                    {getScore(s)}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       <style jsx>{`
         main {
-          margin-top: 3rem;
+          margin-top: 2rem;
         }
 
         h1,
@@ -68,6 +70,10 @@ export const CompareTable = (): JSX.Element => {
           opacity: 0.5;
           padding: 0 1rem;
           font-weight: 400;
+        }
+
+        div {
+          overflow-x: scroll;
         }
 
         table {
@@ -102,6 +108,12 @@ export const CompareTable = (): JSX.Element => {
         tbody tr:hover {
           background-color: #f5f5f5;
           border-left-color: #e0e0e0;
+        }
+
+        @media (max-width: 700px) {
+          main {
+            padding: 0 5px;
+          }
         }
       `}</style>
     </main>

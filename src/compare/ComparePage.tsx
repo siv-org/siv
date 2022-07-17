@@ -14,7 +14,9 @@ export const ComparePage = (): JSX.Element => {
 
       <div>
         <HeaderBar />
-        <CompareTable />
+      </div>
+      <CompareTable />
+      <div>
         <Footer />
       </div>
 
