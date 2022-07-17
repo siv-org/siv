@@ -1,3 +1,5 @@
+import { RotateRightOutlined } from '@ant-design/icons'
+
 import { Score, tableData } from './compare-data'
 
 const getScore = (s: Score): number => (typeof s === 'number' ? s : s[0])
@@ -8,10 +10,14 @@ export const CompareTable = (): JSX.Element => {
       <h1>Voting Methods Compared</h1>
 
       <h2>
-        Secure Internet Voting (SIV) <i>vs</i> Vote-By-Mail <i>&amp;</i> In-Person
+        Secure Internet Voting (SIV) <i>vs</i> Vote-By-Mail <i>&amp;</i> In&#8209;Person
       </h2>
 
-      <div>
+      <section className="landscape-reminder">
+        <RotateRightOutlined /> &nbsp; <b>Tip:</b> Rotate to view in Landscape mode.
+      </section>
+
+      <section className="table">
         <table>
           <thead>
             <tr>
@@ -54,7 +60,7 @@ export const CompareTable = (): JSX.Element => {
             ))}
           </tbody>
         </table>
-      </div>
+      </section>
 
       <style jsx>{`
         main {
@@ -72,7 +78,20 @@ export const CompareTable = (): JSX.Element => {
           font-weight: 400;
         }
 
-        div {
+        .landscape-reminder {
+          text-align: center;
+          background: #c9ddff;
+          padding: 7px 0;
+          display: none;
+        }
+
+        @media (max-width: 515px) and (orientation: portrait) {
+          .landscape-reminder {
+            display: block;
+          }
+        }
+
+        section.table {
           overflow-x: scroll;
         }
 

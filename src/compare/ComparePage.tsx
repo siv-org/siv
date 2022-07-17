@@ -27,7 +27,7 @@ export const ComparePage = (): JSX.Element => {
           padding: 1rem 3rem;
 
           width: 100%;
-          overflow-x: hidden;
+          overflow: hidden;
         }
 
         @media (max-width: 700px) {
