@@ -1,4 +1,4 @@
-export type Score = number | [number, { adv: string; disadv: string }]
+export type Score = number | [number, { adv?: string; disadv: string }]
 
 type Row = { d_name: string; desc: string; scores: [Score, Score, Score] }
 type Category = { name: string; rows: Row[] }
@@ -43,9 +43,8 @@ Once ballots accepted, limited remediation options`,
           [
             6,
             {
-              adv: '',
-              disadv: `"Many elections often give ballot unique tracking numbers, making voter selections linkable back to voter's identity by administrators
-Voters are not in control of the space they vote in, and have limited time to inspect or test security"`,
+              disadv: `Many elections often give ballot unique tracking numbers, making voter selections linkable back to voter's identity by administrators
+Voters are not in control of the space they vote in, and have limited time to inspect or test security`,
             },
           ],
           4,

@@ -44,7 +44,7 @@ export const CompareTable = (): JSX.Element => {
                     <td className="text-center">{row.d_name}</td>
                     {[...row.scores].reverse().map((s, j) => (
                       <td
-                        className="text-center"
+                        className="text-center tooltip"
                         key={j}
                         style={{
                           backgroundColor: {
@@ -61,6 +61,23 @@ export const CompareTable = (): JSX.Element => {
                         }}
                       >
                         {getScore(s)}
+                        {typeof s !== 'number' && (
+                          <span className="tooltip-text">
+                            <i>Advantages:</i> <br />
+                            {!!s[1].adv &&
+                              s[1].adv
+                                .split('\n')
+                                .map((l) => ` + ${l}`)
+                                .join('\n')}
+                            <br />
+                            <br />
+                            <i>Disadvantages:</i> <br />
+                            {s[1].disadv
+                              .split('\n')
+                              .map((l) => ` - ${l}`)
+                              .join('\n')}
+                          </span>
+                        )}
                       </td>
                     ))}
                   </tr>
@@ -174,6 +191,42 @@ export const CompareTable = (): JSX.Element => {
               font-size: 12px;
             }
           }
+        }
+
+        .tooltip {
+          position: relative;
+        }
+
+        .tooltip .tooltip-text {
+          visibility: hidden;
+          width: 250px;
+          background-color: #000d;
+          color: #fff;
+          text-align: left;
+          padding: 5px;
+          border-radius: 6px;
+
+          /* Position the tooltip text - see examples below! */
+          position: absolute;
+          z-index: 1;
+          right: 105%;
+          top: 20%;
+
+          white-space: pre-line;
+        }
+
+        .tooltip .tooltip-text::after {
+          content: ' ';
+          position: absolute;
+          top: 9px;
+          left: 100%; /* To the right of the tooltip */
+          border-width: 7px;
+          border-style: solid;
+          border-color: transparent transparent transparent #000d;
+        }
+
+        .tooltip:hover .tooltip-text {
+          visibility: visible;
         }
       `}</style>
     </main>
