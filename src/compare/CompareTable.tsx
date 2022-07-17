@@ -14,7 +14,7 @@ export const CompareTable = (): JSX.Element => {
       </h2>
 
       <section className="landscape-reminder">
-        <RotateRightOutlined /> &nbsp; <b>Tip:</b> Rotate to view in Landscape mode.
+        <RotateRightOutlined /> &nbsp; <b>Tip:</b> Easier in Landscape orientation
       </section>
 
       <section className="table">
@@ -22,8 +22,8 @@ export const CompareTable = (): JSX.Element => {
           <thead>
             <tr>
               <th>Category</th>
-              <th>Property</th>
-              <th>Description</th>
+              <th style={{ minWidth: 120 }}>Description</th>
+              <th>Name</th>
               <th>SIV</th>
               <th>By Mail</th>
               <th>In Person</th>
@@ -33,8 +33,8 @@ export const CompareTable = (): JSX.Element => {
             {tableData.map((row, i) => (
               <tr key={i}>
                 <td>{row.cat}</td>
-                <td className="bold">{row.d_prop}</td>
-                <td>{row.desc}</td>
+                <td className="bold xs-text-xs">{row.desc}</td>
+                <td>{row.d_prop}</td>
                 {[...row.scores].reverse().map((s, j) => (
                   <td
                     className="text-center"
@@ -80,9 +80,10 @@ export const CompareTable = (): JSX.Element => {
 
         .landscape-reminder {
           text-align: center;
-          background: #c9ddff;
+          background: #dfebff;
           padding: 7px 0;
           display: none;
+          margin-bottom: 1rem;
         }
 
         @media (max-width: 515px) and (orientation: portrait) {
@@ -93,6 +94,7 @@ export const CompareTable = (): JSX.Element => {
 
         section.table {
           overflow-x: scroll;
+          padding-bottom: 0.5rem;
         }
 
         table {
@@ -132,6 +134,16 @@ export const CompareTable = (): JSX.Element => {
         @media (max-width: 700px) {
           main {
             padding: 0 5px;
+          }
+
+          th {
+            padding: 0 5px;
+          }
+
+          @media (orientation: portrait) {
+            .xs-text-xs {
+              font-size: 12px;
+            }
           }
         }
       `}</style>
