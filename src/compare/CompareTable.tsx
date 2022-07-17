@@ -1,4 +1,5 @@
 import { RotateRightOutlined } from '@ant-design/icons'
+import { Fragment } from 'react'
 
 import { Score, tableData } from './compare-data'
 
@@ -14,7 +15,7 @@ export const CompareTable = (): JSX.Element => {
       </h2>
 
       <section className="landscape-reminder">
-        <RotateRightOutlined /> &nbsp; <b>Tip:</b> Easier in Landscape orientation
+        <RotateRightOutlined /> &nbsp; <b>Tip:</b> Looks better in Landscape orientation
       </section>
 
       <section className="table">
@@ -30,33 +31,41 @@ export const CompareTable = (): JSX.Element => {
             </tr>
           </thead>
           <tbody>
-            {tableData.map((row, i) => (
-              <tr key={i}>
-                <td>{row.cat}</td>
-                <td className="bold xs-text-xs">{row.desc}</td>
-                <td>{row.d_prop}</td>
-                {[...row.scores].reverse().map((s, j) => (
-                  <td
-                    className="text-center"
-                    key={j}
-                    style={{
-                      backgroundColor: {
-                        1: '#ef4444',
-                        2: '#f87171',
-                        3: '#fca5a5',
-                        4: '#fecaca',
-                        5: '' && 'white',
-                        6: '#bbf7d0',
-                        7: '#86efac',
-                        8: '#4ade80',
-                        9: '#22c55e',
-                      }[getScore(s)],
-                    }}
-                  >
-                    {getScore(s)}
-                  </td>
+            {tableData.map((cat, c_i) => (
+              <Fragment key={c_i}>
+                {cat.rows.map((row, i) => (
+                  <tr className={i == 0 ? 'category-first' : ''} key={i}>
+                    {i === 0 && (
+                      <td className="no-hover" rowSpan={cat.rows.length}>
+                        {cat.name}
+                      </td>
+                    )}
+                    <td className="bold xs-text-xs">{row.desc}</td>
+                    <td>{row.d_name}</td>
+                    {[...row.scores].reverse().map((s, j) => (
+                      <td
+                        className="text-center"
+                        key={j}
+                        style={{
+                          backgroundColor: {
+                            1: '#ef4444',
+                            2: '#f87171',
+                            3: '#fca5a5',
+                            4: '#fecaca',
+                            5: '' && 'white',
+                            6: '#bbf7d0',
+                            7: '#86efac',
+                            8: '#4ade80',
+                            9: '#22c55e',
+                          }[getScore(s)],
+                        }}
+                      >
+                        {getScore(s)}
+                      </td>
+                    ))}
+                  </tr>
                 ))}
-              </tr>
+              </Fragment>
             ))}
           </tbody>
         </table>
@@ -65,6 +74,7 @@ export const CompareTable = (): JSX.Element => {
       <style jsx>{`
         main {
           margin-top: 2rem;
+          padding: 0 1rem;
         }
 
         h1,
@@ -99,6 +109,7 @@ export const CompareTable = (): JSX.Element => {
 
         table {
           border-collapse: collapse;
+          margin: 0 auto;
         }
 
         th {
@@ -124,11 +135,25 @@ export const CompareTable = (): JSX.Element => {
 
         tr {
           border: 3px solid #fff;
+          border-bottom-width: 0;
+        }
+
+        tr.category-first {
+          border-top-color: #e4e4e4;
+          border-top-width: 4px;
+        }
+
+        tr.category-first:first-child {
+          border-top-width: 1px;
         }
 
         tbody tr:hover {
           background-color: #f5f5f5;
-          border-left-color: #e0e0e0;
+        }
+
+        .no-hover {
+          background-color: white !important;
+          color: #555;
         }
 
         @media (max-width: 700px) {
