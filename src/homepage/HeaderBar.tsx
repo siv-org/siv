@@ -37,43 +37,40 @@ export const HeaderBar = () => (
       header {
         display: flex;
         justify-content: space-between;
+        align-items: center;
         padding-top: 2vw;
       }
 
       h3 {
         margin: 0;
-        font-size: 3vw;
       }
 
-      h3 a:hover {
-        text-decoration: none;
+      a.logo {
+        font-size: 3vw;
       }
 
       a {
         color: ${darkBlue};
+        text-decoration: none;
+        padding: 1vw 1.5vw;
+        margin: 0 0.4vw;
+        font-size: 2vw;
+        border-radius: 5px;
       }
 
       a:not(.logo) {
-        text-decoration: none;
-        padding: 0 1.5vw;
-        margin: 0 0.4vw;
-        font-size: 2vw;
         font-weight: 500;
       }
 
-      a:hover:not(.logo) {
-        text-decoration: underline;
+      a:hover {
+        background: #eee;
+        text-decoration: none;
       }
 
       a:last-child:not(.logo) {
         margin-left: 4vw;
         position: relative;
-        padding-bottom: 1vw;
-      }
-
-      a:last-child:hover:not(.logo) {
-        text-decoration: none;
-        filter: drop-shadow(0 0 7px ${darkBlue}3f);
+        padding-bottom: 0.5vw;
       }
 
       .blue-underline {
@@ -82,8 +79,8 @@ export const HeaderBar = () => (
         position: absolute;
         right: -1vw;
         left: -1vw;
-        top: 0;
-        z-index: -10;
+        top: 11px;
+        z-index: 10;
       }
 
       /* 1-column for small screens */
@@ -95,11 +92,14 @@ export const HeaderBar = () => (
         }
 
         h3 {
-          font-size: 8vw;
           margin-bottom: 3vw;
         }
 
-        a:not(.logo) {
+        a.logo {
+          font-size: 8vw;
+        }
+
+        a {
           font-size: 3.7vw;
         }
 
@@ -108,9 +108,9 @@ export const HeaderBar = () => (
         }
 
         .blue-underline {
-          width: 20vw;
+          width: 18vw;
           height: 10vw;
-          top: 1vw;
+          top: 1.3vw;
         }
       }
     `}</style>
