@@ -26,8 +26,24 @@ export const CompareTable = (): JSX.Element => {
               <td>{row.cat}</td>
               <td className="bold">{row.d_prop}</td>
               <td>{row.desc}</td>
-              {row.scores.map((s, j) => (
-                <td className="text-center" key={j}>
+              {[...row.scores].reverse().map((s, j) => (
+                <td
+                  className="text-center"
+                  key={j}
+                  style={{
+                    backgroundColor: {
+                      1: '#ef4444',
+                      2: '#f87171',
+                      3: '#fca5a5',
+                      4: '#fecaca',
+                      5: 'white',
+                      6: '#bbf7d0',
+                      7: '#86efac',
+                      8: '#4ade80',
+                      9: '#22c55e',
+                    }[s],
+                  }}
+                >
                   {s}
                 </td>
               ))}
@@ -57,7 +73,7 @@ export const CompareTable = (): JSX.Element => {
         }
 
         td {
-          padding: 0 4px 20px;
+          padding: 5px 4px;
         }
 
         .text-center {
