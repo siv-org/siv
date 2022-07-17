@@ -39,7 +39,18 @@ Once ballots accepted, limited remediation options`,
       {
         d_name: 'Vote privacy',
         desc: 'How confident can individual voters be that no one else will learn their ballot selections?',
-        scores: [6, 4, 8],
+        scores: [
+          [
+            6,
+            {
+              adv: '',
+              disadv: `"Many elections often give ballot unique tracking numbers, making voter selections linkable back to voter's identity by administrators
+Voters are not in control of the space they vote in, and have limited time to inspect or test security"`,
+            },
+          ],
+          4,
+          8,
+        ],
       },
       {
         d_name: 'Coercion resistance',
