@@ -5,6 +5,8 @@ import { Score, tableData } from './compare-data'
 
 const getScore = (s: Score): number => (typeof s === 'number' ? s : s[0])
 
+const methods = ['SIV', 'By Mail', 'In Person']
+
 export const CompareTable = (): JSX.Element => {
   return (
     <main>
@@ -25,9 +27,9 @@ export const CompareTable = (): JSX.Element => {
               <th>Category</th>
               <th style={{ minWidth: 120 }}>Description</th>
               <th>Name</th>
-              <th>SIV</th>
-              <th>By Mail</th>
-              <th>In Person</th>
+              <th>{methods[0]}</th>
+              <th>{methods[1]}</th>
+              <th>{methods[2]}</th>
             </tr>
           </thead>
           <tbody>
@@ -63,6 +65,9 @@ export const CompareTable = (): JSX.Element => {
                         {getScore(s)}
                         {typeof s !== 'number' && (
                           <span className="tooltip-text">
+                            {methods[j]} - {row.d_name}: {s[0]} / 10
+                            <br />
+                            <br />
                             <i>Advantages:</i> <br />
                             {!!s[1].adv &&
                               s[1].adv
@@ -199,7 +204,7 @@ export const CompareTable = (): JSX.Element => {
 
         .tooltip .tooltip-text {
           visibility: hidden;
-          width: 250px;
+          width: 340px;
           background-color: #000d;
           color: #fff;
           text-align: left;
