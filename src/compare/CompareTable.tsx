@@ -78,6 +78,11 @@ export const CompareTable = (): JSX.Element => {
           padding: 0 1rem;
         }
 
+        th:nth-child(-n + 3) {
+          text-align: left;
+          padding-left: 3px;
+        }
+
         td {
           padding: 5px 4px;
         }
@@ -90,7 +95,7 @@ export const CompareTable = (): JSX.Element => {
           font-weight: 600;
         }
 
-        tbody tr {
+        tr {
           border: 3px solid #fff;
         }
 
