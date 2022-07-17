@@ -38,7 +38,7 @@ export const CompareTable = (): JSX.Element => {
                       2: '#f87171',
                       3: '#fca5a5',
                       4: '#fecaca',
-                      5: 'white',
+                      5: '' && 'white',
                       6: '#bbf7d0',
                       7: '#86efac',
                       8: '#4ade80',
@@ -70,6 +70,10 @@ export const CompareTable = (): JSX.Element => {
           font-weight: 400;
         }
 
+        table {
+          border-collapse: collapse;
+        }
+
         th {
           padding: 0 1rem;
         }
@@ -84,6 +88,15 @@ export const CompareTable = (): JSX.Element => {
 
         .bold {
           font-weight: 600;
+        }
+
+        tbody tr {
+          border: 3px solid #fff;
+        }
+
+        tbody tr:hover {
+          background-color: #f5f5f5;
+          border-left-color: #e0e0e0;
         }
       `}</style>
     </main>

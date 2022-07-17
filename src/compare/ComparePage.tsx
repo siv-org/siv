@@ -10,7 +10,7 @@ export const ComparePage = (): JSX.Element => {
   useAnalytics()
   return (
     <>
-      <Head title="Citizen" />
+      <Head title="Voting Methods Compared" />
 
       <div>
         <HeaderBar />
