@@ -126,7 +126,7 @@ export const CompareTable = (): JSX.Element => {
 
         section.table {
           overflow-x: scroll;
-          padding-bottom: 0.5rem;
+          padding-bottom: 10rem;
         }
 
         table {
