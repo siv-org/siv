@@ -2,7 +2,7 @@ import { BoxProps, NoSsr, TextField, TextFieldProps } from '@material-ui/core'
 import { useCallback, useState } from 'react'
 import { OnClickButton } from 'src/_shared/Button'
 
-export const IfYesForm = () => {
+export const IfNoForm = () => {
   const [saved, setSaved] = useState(false)
   const [showBottom, setShowBottom] = useState(false)
   const [error, setError] = useState('')
