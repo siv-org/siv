@@ -4,6 +4,8 @@ import { GlobalCSS } from 'src/GlobalCSS'
 import { Head } from '../Head'
 import { Footer } from '../homepage/Footer'
 import { HeaderBar } from '../homepage/HeaderBar'
+import { NoContent } from './NoContent'
+import { YesContent } from './YesContent'
 
 export const CitizenSurvey = (): JSX.Element => {
   const [selected, setSelected] = useState<'Yes' | 'No'>()
@@ -27,6 +29,8 @@ export const CitizenSurvey = (): JSX.Element => {
             ))}
           </div>
         </div>
+        {selected === 'Yes' && <YesContent />}
+        {selected === 'No' && <NoContent />}
         <Footer />
       </div>
 
