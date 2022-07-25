@@ -95,7 +95,17 @@ export const IfYesForm = () => {
       </OnClickButton>
 
       {/* Bottom part */}
-      {showBottom && <div className="bottom-part">bottom</div>}
+      {showBottom && (
+        <>
+          <h2>Thank you for your time!</h2>
+
+          <p>
+            {' '}
+            Share this question with your friends 💙
+            <br /> More <i>Yes</i> = Faster availability
+          </p>
+        </>
+      )}
 
       <style jsx>{`
         .error {
@@ -118,6 +128,13 @@ export const IfYesForm = () => {
         input[type='checkbox'] {
           margin-right: 15px;
           transform: scale(1.2);
+        }
+
+        h2 {
+          text-align: center;
+        }
+        p {
+          text-align: center;
         }
       `}</style>
     </form>
