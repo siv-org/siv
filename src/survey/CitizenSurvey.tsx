@@ -17,9 +17,7 @@ export const CitizenSurvey = (): JSX.Element => {
         <HeaderBar />
         <div>
           <p className="aboveQuestion">If your goverment offers you the option: </p>
-          <h2>
-            Would you want to use <i>Secure Internet Voting (SIV)</i> to vote in upcoming elections?{' '}
-          </h2>
+          <h2>Would you want to use Secure Internet Voting (SIV) to vote in upcoming elections? </h2>
           <div className="btns">
             {['Yes', 'No'].map((label) => (
               <label key={label} onClick={() => setSelected(label as 'Yes' | 'No')}>
