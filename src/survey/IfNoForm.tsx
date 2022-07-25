@@ -30,10 +30,12 @@ export const IfNoForm = () => {
   return (
     <form autoComplete="off">
       <Row>
-        <Field fullWidth id="name" label="Your Name" />
+        <Field fullWidth multiline id="reson" label="What is the reason/concern?" rows={4} />
       </Row>
-      <Row style={{ marginBottom: 0 }}>
-        <Field fullWidth id="email" label="Your Email" />
+      <Row style={{ marginBottom: 15 }} />
+
+      <Row>
+        <Field fullWidth id="email" label="Your Email (if you'd like a reply)" />
       </Row>
       <Row style={{ marginTop: 10 }}>
         <label onClick={() => void 0}>
@@ -41,40 +43,6 @@ export const IfNoForm = () => {
           Keep me updated
         </label>
       </Row>
-      <Row>
-        <Field fullWidth id="city" label="City" style={{ marginRight: 30 }} />
-
-        <Field fullWidth id="state" label="State" style={{ marginRight: 30 }} />
-
-        <Field fullWidth id="country" label="Country" style={{ marginRight: 30 }} />
-
-        <Field fullWidth id="zip" label="ZIP" style={{ maxWidth: 80 }} />
-      </Row>
-      <Row>
-        <Field fullWidth multiline id="reson" label="Reason / Note" rows={4} />
-      </Row>
-      <Row style={{ marginBottom: 0 }}>
-        <Field
-          fullWidth
-          multiline
-          id="topics"
-          label="Questions or topics you'd like more information about "
-          rows={4}
-        />
-      </Row>
-      <div className="content-preference">
-        Preference:
-        {['Video', 'Audio', 'Text'].map((label) => (
-          <label key={label}>
-            <input
-              checked={selected[label]}
-              type="checkbox"
-              onClick={() => setSelected({ ...selected, [label]: !selected[label] })}
-            />
-            {label}
-          </label>
-        ))}
-      </div>
 
       <OnClickButton
         style={{ marginLeft: 0 }}
@@ -98,11 +66,23 @@ export const IfNoForm = () => {
         <>
           <h2>Thank you for your time!</h2>
 
-          <p>
-            {' '}
-            Share this question with your friends 💙
-            <br /> More <i>Yes</i> = Faster availability
+          <p className="learnmore-text">
+            <i>Learn more:</i>
           </p>
+          <div className="learnmore">
+            <p>
+              <a href="https://siv.org/">Homepage</a>
+            </p>
+            <p>
+              <a href="https://siv.org/protocol">SIV Protocol</a>
+            </p>
+            <p>
+              <a href="https://siv.org/faq">FAQ</a>
+            </p>
+            <p>
+              <a href="https://blog.siv.org/2022/04/top-internet-voting-concerns">Solutions to Top Concerns</a>
+            </p>
+          </div>
         </>
       )}
 
@@ -112,28 +92,20 @@ export const IfNoForm = () => {
           position: relative;
           bottom: 6rem;
         }
-        .content-preference {
-          display: flex;
-          margin-top: 10px;
-        }
-
-        .content-preference label {
-          display: flex;
-          font-size: 15px;
-          align-items: center;
-          margin-left: 1.5rem;
-        }
-
-        input[type='checkbox'] {
-          margin-right: 15px;
-          transform: scale(1.2);
-        }
 
         h2 {
           text-align: center;
         }
         p {
           text-align: center;
+        }
+        .learnmore-text {
+          color: grey;
+          opacity: 70%;
+        }
+        .learnmore {
+          display: flex;
+          justify-content: space-around;
         }
       `}</style>
     </form>
