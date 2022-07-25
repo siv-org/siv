@@ -5,6 +5,7 @@ import { api } from 'src/api-helper'
 
 export const IfYesForm = () => {
   const [saved, setSaved] = useState(false)
+  const [showBottom, setShowBottom] = useState(false)
   const [error, setError] = useState('')
   const [selected, setSelected] = useState<Record<string, boolean>>({})
 
@@ -76,30 +77,25 @@ export const IfYesForm = () => {
         ))}
       </div>
 
-      <Row style={{ alignItems: 'center', justifyContent: 'flex-end' }}>
-        {saved && <p style={{ margin: 0, opacity: 0.7, width: 60 }}>Done.</p>}
-        <OnClickButton
-          disabled={saved}
-          style={{ marginRight: 0 }}
-          onClick={async () => {
-            const fields: Record<string, string> = {}
-            setError('')
+      <OnClickButton
+        style={{ marginLeft: 0 }}
+        onClick={() => {
+          setShowBottom(true)
+        }}
+      >
+        Skip
+      </OnClickButton>
 
-            // Get data from input fields
-            ;['name', 'email', 'question'].forEach((field) => {
-              fields[field] = (document.getElementById(`${formName}-${field}`) as HTMLInputElement).value
-            })
+      <OnClickButton
+        onClick={() => {
+          setShowBottom(true)
+        }}
+      >
+        Submit
+      </OnClickButton>
 
-            const response = await api('citizen-forms/question', fields)
-            if (response.ok) return setSaved(true)
-
-            setError((await response.json()).error)
-          }}
-        >
-          Send
-        </OnClickButton>
-      </Row>
-      <p className="error">{error}</p>
+      {/* Bottom part */}
+      {showBottom && <div className="bottom-part">bottom</div>}
 
       <style jsx>{`
         .error {
