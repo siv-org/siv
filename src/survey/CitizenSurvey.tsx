@@ -3,9 +3,11 @@ import { GlobalCSS } from 'src/GlobalCSS'
 
 import { Head } from '../Head'
 import { Footer } from '../homepage/Footer'
-import { HeaderBar } from '../homepage/HeaderBar'
+import { Headerbar } from './Headerbar'
 import { NoContent } from './NoContent'
 import { YesContent } from './YesContent'
+
+// display HeaderBar without menu, just logo
 
 export const CitizenSurvey = (): JSX.Element => {
   const [selected, setSelected] = useState<'Yes' | 'No'>()
@@ -14,7 +16,7 @@ export const CitizenSurvey = (): JSX.Element => {
       <Head title="Citizen Survey" />
 
       <div>
-        <HeaderBar />
+        <Headerbar />
         <div>
           <p className="aboveQuestion">If your goverment offers you the option: </p>
           <h2>Would you want to use Secure Internet Voting (SIV) to vote in upcoming elections? </h2>
