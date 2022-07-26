@@ -7,19 +7,17 @@ import { Headerbar } from './Headerbar'
 import { NoContent } from './NoContent'
 import { YesContent } from './YesContent'
 
-// display HeaderBar without menu, just logo
-
-export const CitizenSurvey = (): JSX.Element => {
+export const WantPage = (): JSX.Element => {
   const [selected, setSelected] = useState<'Yes' | 'No'>()
   return (
     <>
-      <Head title="Citizen Survey" />
+      <Head title="Do you want SIV?" />
 
       <div>
         <Headerbar />
         <div>
-          <p className="aboveQuestion">If your goverment offers you the option: </p>
-          <h2>Would you want to use Secure Internet Voting (SIV) to vote in upcoming elections? </h2>
+          <p className="aboveQuestion">If your goverment offers you the option:</p>
+          <h2>Do you want to use Secure Internet Voting (SIV) to vote in upcoming elections? </h2>
           <div className="btns">
             {['Yes', 'No'].map((label) => (
               <label key={label} onClick={() => setSelected(label as 'Yes' | 'No')}>
