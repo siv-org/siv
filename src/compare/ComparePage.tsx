@@ -4,17 +4,19 @@ import { useAnalytics } from 'src/useAnalytics'
 import { Head } from '../Head'
 import { Footer } from '../homepage/Footer'
 import { HeaderBar } from '../homepage/HeaderBar'
-import { Content } from './Content'
+import { CompareTable } from './CompareTable'
 
-export const CitizenPage = (): JSX.Element => {
+export const ComparePage = (): JSX.Element => {
   useAnalytics()
   return (
     <>
-      <Head title="Citizen" />
+      <Head title="Voting Methods Compared" />
 
       <div>
         <HeaderBar />
-        <Content />
+      </div>
+      <CompareTable />
+      <div>
         <Footer />
       </div>
 
@@ -25,7 +27,7 @@ export const CitizenPage = (): JSX.Element => {
           padding: 1rem 3rem;
 
           width: 100%;
-          overflow-x: hidden;
+          overflow: hidden;
         }
 
         @media (max-width: 700px) {

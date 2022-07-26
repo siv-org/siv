@@ -32,7 +32,7 @@ export const QuestionForm = () => {
         <Field fullWidth id="name" label="Your Name (optional)" />
       </Row>
       <Row>
-        <Field fullWidth id="email" label="Your Email (optional - if you want a reply)" />
+        <Field fullWidth id="email" label="Your Email (optional — for replies)" />
       </Row>
       <Row>
         <Field fullWidth multiline id="question" label="Your Question" rows={4} />

@@ -28,6 +28,12 @@ export const AboutPage = (): JSX.Element => {
           width: 100%;
           overflow-x: hidden;
         }
+
+        @media (max-width: 700px) {
+          div {
+            padding: 1rem 2rem;
+          }
+        }
       `}</style>
     </>
   )

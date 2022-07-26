@@ -33,16 +33,16 @@ export const Content = () => (
       <li>Pandemic-Resistant</li>
     </ul>
     <p>
-      This allows every day citizens like you and me to vote from the internet-connected supercomputers in our pockets.
+      This gives voters like you and me the power to vote from the internet-connected supercomputers in our pockets.
     </p>
     <p>
-      And all in a way that creates <i>more trust</i> than the current election systems we use right now…
+      All in a way that creates <i>more trust</i> than the current election systems we use right now…
     </p>
     <p>
-      SIV allows us to verify for ourselves that our vote is cast and counted correctly, without tampering, and allows
-      each and every one of us to fully recount the vote for ourselves if we want.
+      SIV allows us to personally verify that our vote is cast and counted correctly, without tampering, and allows each
+      and every one of us to fully recount the results for ourselves if we want.
     </p>
-    <p>No more vote-counts trapped behind closed doors, behind any curtains. </p>
+    <p>No more vote-counts hidden behind closed doors. </p>
     <p>
       Each and every one of us can see for ourselves what the correct results are supposed to be — all{' '}
       <b>
@@ -102,8 +102,8 @@ export const Content = () => (
       <a href="">able to try it out</a>!
     </p>
     <p>
-      Best is if you talk to them in person, or call them on the phone. Be polite. They’re human too, of course, and
-      appreciate a positive impression.
+      Best is if you talk to them in person, or call them on the phone. Be polite. A positive impression is always
+      appreciated.
     </p>
 
     <h2> We’ve also made it easy to send them a note yourself </h2>
@@ -113,7 +113,7 @@ export const Content = () => (
     </p>
     <ContactRepForm />
 
-    <h2>AND! You can personally invest in SIV’s Growth & Future Success.</h2>
+    <h2>You can personally invest in SIV’s Growth & Future Success</h2>
     <p>Directly, right now, without needing anyone’s permission.</p>
     <h3>How it works:</h3>
     <p>1) You send USD, and receive SIV Tokens.</p>
