@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { api } from 'src/api-helper'
 import { GlobalCSS } from 'src/GlobalCSS'
 
 import { Head } from '../Head'
@@ -20,8 +21,15 @@ export const WantPage = (): JSX.Element => {
           <h2>Do you want to use Secure Internet Voting (SIV) to vote in upcoming elections? </h2>
           <div className="btns">
             {['Yes', 'No'].map((label) => (
-              <label key={label} onClick={() => setSelected(label as 'Yes' | 'No')}>
-                <input checked={selected === label} type="radio" />
+              <label key={label}>
+                <input
+                  checked={selected === label}
+                  type="radio"
+                  onClick={() => {
+                    setSelected(label as 'Yes' | 'No')
+                    api('citizen-forms/do-you-want-siv', { selected: label })
+                  }}
+                />
                 {label}
               </label>
             ))}

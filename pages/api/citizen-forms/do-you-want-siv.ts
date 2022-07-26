@@ -1,10 +1,12 @@
 import { validate as validateEmail } from 'email-validator'
 import { NextApiRequest, NextApiResponse } from 'next'
 
-import { firebase, pushover } from '../_services'
+// import { firebase, pushover } from '../_services'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const fields = req.body
+  console.log(fields)
+  return res.status(200).json({})
 
   // Validate submission
   if (typeof fields !== 'object') return res.status(400).json({ error: 'Invalid submission' })
