@@ -1,12 +1,11 @@
 import { validate as validateEmail } from 'email-validator'
 import { NextApiRequest, NextApiResponse } from 'next'
 
-// import { firebase, pushover } from '../_services'
+import { firebase, pushover } from '../_services'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const fields = req.body
   console.log(fields)
-  return res.status(200).json({})
 
   // Validate submission
   if (typeof fields !== 'object') return res.status(400).json({ error: 'Invalid submission' })
@@ -19,14 +18,15 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Store submission in Firestore
   await firebase
     .firestore()
-    .collection('investment-questions')
+    .collection('do-you-want-siv')
     .doc(new Date().toISOString() + ' ' + String(Math.random()).slice(2, 7))
     .set({
       ...fields,
       created_at: new Date().toString(),
     })
 
-  // Notify admin via Pushover
+  //  Notify admin via Pushover
+
   await pushover(`SIV investment-questions: ${fields.name} `, `${fields.email}\n\n${fields.question}`)
 
   // Send back success

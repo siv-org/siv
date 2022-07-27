@@ -1,6 +1,7 @@
 import { BoxProps, NoSsr, TextField, TextFieldProps } from '@material-ui/core'
 import { useCallback, useState } from 'react'
 import { OnClickButton } from 'src/_shared/Button'
+import { api } from 'src/api-helper'
 
 export const IfYesForm = () => {
   const [saved, setSaved] = useState(false)
@@ -37,7 +38,7 @@ export const IfYesForm = () => {
       </Row>
       <Row style={{ marginTop: 10 }}>
         <label onClick={() => void 0}>
-          <input type="checkbox" />
+          <input id={`${formName}-stay-updated`} type="checkbox" />
           Keep me updated
         </label>
       </Row>
@@ -51,7 +52,7 @@ export const IfYesForm = () => {
         <Field fullWidth id="zip" label="ZIP" style={{ maxWidth: 80 }} />
       </Row>
       <Row>
-        <Field fullWidth multiline id="reson" label="Reason / Note" rows={4} />
+        <Field fullWidth multiline id="reason" label="Reason / Note" rows={4} />
       </Row>
       <Row style={{ marginBottom: 0 }}>
         <Field
@@ -86,8 +87,19 @@ export const IfYesForm = () => {
       </OnClickButton>
 
       <OnClickButton
-        onClick={() => {
-          setShowBottom(true)
+        disabled={saved}
+        style={{ marginRight: 0 }}
+        onClick={async () => {
+          const fields: Record<string, string | boolean> = selected
+          setError('')
+
+          // Get data from input fields
+          ;['name', 'email', 'stay-updated', 'city', 'state', 'country', 'zip', 'reason', 'topics'].forEach((field) => {
+            fields[field] = (document.getElementById(`${formName}-${field}`) as HTMLInputElement).value
+          })
+
+          const response = await api('citizen-forms/do-you-want-siv', fields)
+          if (response.ok) return setSaved(true)
         }}
       >
         Submit
