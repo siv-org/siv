@@ -8,10 +8,13 @@ import { FormIntro } from './FormIntro'
 import { Headerbar } from './Headerbar'
 import { IfNoForm } from './IfNoForm'
 import { IfYesForm } from './IfYesForm'
+import { useRedirect } from './useRedirect'
 
 export const WantPage = (): JSX.Element => {
   const [selected, setSelected] = useState<'Yes' | 'No'>()
   const [id, setId] = useState<string>()
+  useRedirect('/do-you-want-siv')
+
   return (
     <>
       <Head title="Do you want SIV?" />
