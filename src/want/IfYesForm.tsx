@@ -1,3 +1,4 @@
+import { GlobalOutlined, LinkOutlined } from '@ant-design/icons'
 import { BoxProps, NoSsr, TextField, TextFieldProps } from '@material-ui/core'
 import { useCallback, useState } from 'react'
 import { OnClickButton } from 'src/_shared/Button'
@@ -115,9 +116,21 @@ export const IfYesForm = () => {
           <h2>Thank you for your time!</h2>
 
           <p>
-            {' '}
             Share this question with your friends 💙
             <br /> More <i>Yes</i> = Faster availability
+            <br />
+            <div className="icons">
+              <a href="/somewhere">
+                <LinkOutlined style={{ fontSize: 25, marginTop: 30 }} />
+                <span>Link</span>
+              </a>
+              <a href="/">
+                <GlobalOutlined style={{ fontSize: 25, marginTop: 30 }} />
+                <span>
+                  <a href="https://siv.org/">Homepage</a>
+                </span>
+              </a>
+            </div>
           </p>
         </>
       )}
@@ -150,6 +163,21 @@ export const IfYesForm = () => {
         }
         p {
           text-align: center;
+        }
+        .icons {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .icons a,
+        .icons a span {
+          display: block;
+          color: darkblue;
+        }
+
+        .icons > a:not(:last-child) {
+          margin-right: 3rem;
         }
       `}</style>
     </form>
