@@ -1,14 +1,12 @@
 import { BoxProps, NoSsr, TextField, TextFieldProps } from '@material-ui/core'
 import { useCallback, useState } from 'react'
-import { OnClickButton } from 'src/_shared/Button'
-import { api } from 'src/api-helper'
+
+import { FormSubmitBtns } from './FormSubmitBtns'
 
 export const IfNoForm = ({ id }: { id?: string }) => {
   const [saved, setSaved] = useState(false)
   const [showBottom, setShowBottom] = useState(false)
   // const [error, setError] = useState('')
-
-  const formName = 'ifyesform'
 
   // DRY-up TextField
   const Field = useCallback(
@@ -19,7 +17,7 @@ export const IfNoForm = ({ id }: { id?: string }) => {
           variant="outlined"
           onChange={() => setSaved(false)}
           {...props}
-          id={`${formName}-${props.id}`}
+          id={props.id}
           style={{ ...props.style }}
         />
       </NoSsr>
@@ -39,42 +37,15 @@ export const IfNoForm = ({ id }: { id?: string }) => {
       </Row>
       <Row style={{ marginTop: 10 }}>
         <label onClick={() => void 0}>
-          <input id={`${formName}-stay-updated`} type="checkbox" />
+          <input id="stay-updated" type="checkbox" />
           Keep me updated
         </label>
       </Row>
 
-      <OnClickButton
-        style={{ marginLeft: 0 }}
-        onClick={async () => {
-          setShowBottom(true)
-          // setError('')
-          const response = await api('citizen-forms/do-you-want-siv', { id, skipped: true })
-          if (response.ok) return setSaved(true)
-        }}
-      >
-        Skip
-      </OnClickButton>
-
-      <OnClickButton
-        disabled={saved}
-        style={{ marginRight: 0 }}
-        onClick={async () => {
-          setShowBottom(true)
-          const fields: Record<string, string | boolean> = {}
-          // setError('')
-
-          // Get data from input fields
-          ;['reason', 'email', 'stay-updated'].forEach((field) => {
-            fields[field] = (document.getElementById(`${formName}-${field}`) as HTMLInputElement).value
-          })
-
-          const response = await api('citizen-forms/do-you-want-siv', fields)
-          if (response.ok) return setSaved(true)
-        }}
-      >
-        Submit
-      </OnClickButton>
+      <FormSubmitBtns
+        formFieldNames={['reason', 'email', 'stay-updated']}
+        {...{ id, saved, setSaved, setShowBottom }}
+      />
 
       {/* Bottom part */}
       {showBottom && (
