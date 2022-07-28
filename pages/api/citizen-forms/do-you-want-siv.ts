@@ -15,20 +15,17 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(400).json({ error: 'Invalid email' })
   }
 
+  const record = { ...fields, created_at: new Date().toString() }
+
+  if (fields.id) {
+    const found = await firebase.firestore().collection('do-you-want-siv').doc(fields.id).get()
+    if (found.exists) record.prev = found.data()
+  }
+
   const id = fields.id || new Date().toISOString() + ' ' + String(Math.random()).slice(2, 7)
 
   // Store submission in Firestore
-  await firebase
-    .firestore()
-    .collection('do-you-want-siv')
-    .doc(id)
-    .set(
-      {
-        ...fields,
-        created_at: new Date().toString(),
-      },
-      { merge: true },
-    )
+  await firebase.firestore().collection('do-you-want-siv').doc(id).set(record, { merge: true })
 
   //  Notify admin via Pushover
 
