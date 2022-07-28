@@ -5,7 +5,7 @@ import { firebase, pushover } from '../_services'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const fields = req.body
-  console.log(fields)
+  // console.log(fields)
 
   // Validate submission
   if (typeof fields !== 'object') return res.status(400).json({ error: 'Invalid submission' })
