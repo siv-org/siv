@@ -86,7 +86,7 @@ export const IfYesForm = ({ id }: { id?: string }) => {
         <>
           <h2>Thank you for your time!</h2>
 
-          <p>
+          <div className="bottom-content">
             Share this question with your friends
             <br /> More <i>Yes</i> = Faster availability
             <br />
@@ -97,12 +97,10 @@ export const IfYesForm = ({ id }: { id?: string }) => {
               </a>
               <a href="/">
                 <GlobalOutlined style={{ fontSize: 25, marginTop: 30 }} />
-                <span>
-                  <a href="https://siv.org/">Homepage</a>
-                </span>
+                <span>Homepage</span>
               </a>
             </div>
-          </p>
+          </div>
         </>
       )}
 
@@ -133,7 +131,7 @@ export const IfYesForm = ({ id }: { id?: string }) => {
         h2 {
           text-align: center;
         }
-        p {
+        .bottom-content {
           text-align: center;
         }
         .icons {
