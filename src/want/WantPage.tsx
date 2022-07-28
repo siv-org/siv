@@ -34,9 +34,9 @@ export const WantPage = (): JSX.Element => {
                   type="radio"
                   onClick={async () => {
                     setSelected(label as 'Yes' | 'No')
-                    const response = await api('citizen-forms/do-you-want-siv', { selected: label })
-                    const { id } = await response.json()
-                    setId(id)
+                    const response = await api('citizen-forms/do-you-want-siv', { id, selected: label })
+                    const newId = (await response.json()).id
+                    setId(newId)
                   }}
                 />
                 {label}
