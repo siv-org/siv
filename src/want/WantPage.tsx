@@ -16,9 +16,10 @@ export const WantPage = (): JSX.Element => {
     <>
       <Head title="Do you want SIV?" />
 
-      <div>
+      <main>
         <Headerbar />
-        <div>
+        <section>
+          {/* 1st page */}
           <p className="aboveQuestion">If your goverment offers you the option:</p>
           <h2>Do you want to use Secure Internet Voting (SIV) to vote in upcoming elections? </h2>
           <div className="btns">
@@ -39,21 +40,28 @@ export const WantPage = (): JSX.Element => {
               </label>
             ))}
           </div>
-        </div>
-        {!!selected && <FormIntro />}
-        {selected === 'Yes' && <IfYesForm id={id} />}
-        {selected === 'No' && <IfNoForm id={id} />}
+
+          {/* 2nd page */}
+          {!!selected && <FormIntro />}
+          {selected === 'Yes' && <IfYesForm id={id} />}
+          {selected === 'No' && <IfNoForm id={id} />}
+        </section>
         <Footer />
-      </div>
+      </main>
 
       <GlobalCSS />
 
       <style jsx>{`
-        div {
+        main {
           padding: 1rem 3rem;
 
           width: 100%;
           overflow-x: hidden;
+        }
+
+        section {
+          max-width: 800px;
+          margin: 0 auto;
         }
 
         .aboveQuestion {
