@@ -4,9 +4,10 @@ import { GlobalCSS } from 'src/GlobalCSS'
 
 import { Head } from '../Head'
 import { Footer } from '../homepage/Footer'
+import { FormIntro } from './FormIntro'
 import { Headerbar } from './Headerbar'
-import { NoContent } from './NoContent'
-import { YesContent } from './YesContent'
+import { IfNoForm } from './IfNoForm'
+import { IfYesForm } from './IfYesForm'
 
 export const WantPage = (): JSX.Element => {
   const [selected, setSelected] = useState<'Yes' | 'No'>()
@@ -39,8 +40,9 @@ export const WantPage = (): JSX.Element => {
             ))}
           </div>
         </div>
-        {selected === 'Yes' && <YesContent id={id} />}
-        {selected === 'No' && <NoContent id={id} />}
+        {!!selected && <FormIntro />}
+        {selected === 'Yes' && <IfYesForm id={id} />}
+        {selected === 'No' && <IfNoForm id={id} />}
         <Footer />
       </div>
 
