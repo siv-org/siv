@@ -93,8 +93,6 @@ export const IfNoForm = ({ id }: { id?: string }) => {
         .learnmore {
           display: flex;
           justify-content: space-around;
-
-          margin-bottom: 8rem;
         }
 
         .learnmore a {

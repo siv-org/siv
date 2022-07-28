@@ -61,7 +61,7 @@ export const WantPage = (): JSX.Element => {
 
         section {
           max-width: 800px;
-          margin: 0 auto;
+          margin: 0 auto 8rem;
         }
 
         .aboveQuestion {

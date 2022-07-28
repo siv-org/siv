@@ -8,6 +8,8 @@ export const FormIntro = (): JSX.Element => {
         h3 {
           font-size: 20px;
           font-weight: 500;
+
+          margin-top: 4rem;
         }
 
         h5 {
