@@ -1,6 +1,7 @@
 import { BoxProps, NoSsr, TextField, TextFieldProps } from '@material-ui/core'
 import { useCallback, useState } from 'react'
 import { OnClickButton } from 'src/_shared/Button'
+import { api } from 'src/api-helper'
 
 export const IfNoForm = () => {
   const [saved, setSaved] = useState(false)
@@ -30,7 +31,7 @@ export const IfNoForm = () => {
   return (
     <form autoComplete="off">
       <Row>
-        <Field fullWidth multiline id="reson" label="What is the reason/concern?" rows={4} />
+        <Field fullWidth multiline id="reason" label="What is the reason/concern?" rows={4} />
       </Row>
       <Row style={{ marginBottom: 15 }} />
 
@@ -39,7 +40,7 @@ export const IfNoForm = () => {
       </Row>
       <Row style={{ marginTop: 10 }}>
         <label onClick={() => void 0}>
-          <input type="checkbox" />
+          <input id={`${formName}-stay-updated`} type="checkbox" />
           Keep me updated
         </label>
       </Row>
@@ -54,8 +55,19 @@ export const IfNoForm = () => {
       </OnClickButton>
 
       <OnClickButton
-        onClick={() => {
-          setShowBottom(true)
+        disabled={saved}
+        style={{ marginRight: 0 }}
+        onClick={async () => {
+          const fields: Record<string, string | boolean> = selected
+          setError('')
+
+          // Get data from input fields
+          ;['reason', 'email', 'stay-updated'].forEach((field) => {
+            fields[field] = (document.getElementById(`${formName}-${field}`) as HTMLInputElement).value
+          })
+
+          const response = await api('citizen-forms/do-you-want-siv', fields)
+          if (response.ok) return setSaved(true)
         }}
       >
         Submit
