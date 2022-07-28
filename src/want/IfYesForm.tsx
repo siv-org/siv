@@ -87,7 +87,7 @@ export const IfYesForm = ({ id }: { id?: string }) => {
           <h2>Thank you for your time!</h2>
 
           <p>
-            Share this question with your friends 💙
+            Share this question with your friends
             <br /> More <i>Yes</i> = Faster availability
             <br />
             <div className="icons">

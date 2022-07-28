@@ -81,6 +81,7 @@ export const IfNoForm = ({ id }: { id?: string }) => {
 
         h2 {
           text-align: center;
+          margin-top: 5rem;
         }
         p {
           text-align: center;
@@ -92,6 +93,12 @@ export const IfNoForm = ({ id }: { id?: string }) => {
         .learnmore {
           display: flex;
           justify-content: space-around;
+
+          margin-bottom: 8rem;
+        }
+
+        .learnmore a {
+          font-weight: 600;
         }
 
         input[type='checkbox'] {
