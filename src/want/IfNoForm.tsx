@@ -34,7 +34,7 @@ export const IfNoForm = ({ id }: { id?: string }) => {
       </Row>
       <Row style={{ marginBottom: 15 }} />
 
-      <Row>
+      <Row style={{ marginBottom: 0 }}>
         <Field fullWidth id="email" label="Your Email (if you'd like a reply)" />
       </Row>
       <Row style={{ marginTop: 10 }}>
@@ -121,6 +121,11 @@ export const IfNoForm = ({ id }: { id?: string }) => {
         .learnmore {
           display: flex;
           justify-content: space-around;
+        }
+
+        input[type='checkbox'] {
+          margin-right: 15px;
+          transform: scale(1.2);
         }
       `}</style>
     </form>
