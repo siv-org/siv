@@ -22,10 +22,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     .firestore()
     .collection('do-you-want-siv')
     .doc(id)
-    .set({
-      ...fields,
-      created_at: new Date().toString(),
-    })
+    .set(
+      {
+        ...fields,
+        created_at: new Date().toString(),
+      },
+      { merge: true },
+    )
 
   //  Notify admin via Pushover
 

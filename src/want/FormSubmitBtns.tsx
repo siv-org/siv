@@ -34,7 +34,7 @@ export const FormSubmitBtns = ({
       style={{ marginRight: 0 }}
       onClick={async () => {
         setShowBottom(true)
-        const fields: Record<string, string | boolean> = {}
+        const fields: Record<string, string | boolean | undefined> = { id }
         // setError('')
 
         // Get data from input fields
