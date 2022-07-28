@@ -8,7 +8,8 @@ export const IfYesForm = ({ id }: { id?: string }) => {
   const [saved, setSaved] = useState(false)
   const [showBottom, setShowBottom] = useState(false)
   // const [error, setError] = useState('')
-  const [selected, setSelected] = useState<Record<string, boolean>>({})
+  const [contentPreferences, setContentPreferences] = useState<Record<string, boolean>>({})
+  const [stayUpdated, setStayUpdated] = useState(false)
 
   // DRY-up TextField
   const Field = useCallback(
@@ -36,8 +37,8 @@ export const IfYesForm = ({ id }: { id?: string }) => {
         <Field fullWidth id="email" label="Your Email" />
       </Row>
       <Row style={{ marginTop: 10 }}>
-        <label onClick={() => void 0}>
-          <input id="stay-updated" type="checkbox" />
+        <label>
+          <input readOnly checked={stayUpdated} type="checkbox" onClick={() => setStayUpdated(!stayUpdated)} />
           Keep me updated
         </label>
       </Row>
@@ -67,9 +68,10 @@ export const IfYesForm = ({ id }: { id?: string }) => {
         {['Video', 'Audio', 'Text'].map((label) => (
           <label key={label}>
             <input
-              checked={selected[label]}
+              readOnly
+              checked={!!contentPreferences[label]}
               type="checkbox"
-              onClick={() => setSelected({ ...selected, [label]: !selected[label] })}
+              onClick={() => setContentPreferences({ ...contentPreferences, [label]: !contentPreferences[label] })}
             />
             {label}
           </label>
@@ -77,8 +79,9 @@ export const IfYesForm = ({ id }: { id?: string }) => {
       </div>
 
       <FormSubmitBtns
-        formFieldNames={['name', 'email', 'stay-updated', 'city', 'state', 'country', 'zip', 'reason', 'topics']}
-        {...{ id, saved, setSaved, setShowBottom }}
+        fields={{ contentPreferences, id, stayUpdated }}
+        formFieldNames={['name', 'email', 'city', 'state', 'country', 'zip', 'reason', 'topics']}
+        {...{ saved, setSaved, setShowBottom }}
       />
 
       {/* Bottom part */}

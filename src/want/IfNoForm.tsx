@@ -7,6 +7,7 @@ export const IfNoForm = ({ id }: { id?: string }) => {
   const [saved, setSaved] = useState(false)
   const [showBottom, setShowBottom] = useState(false)
   // const [error, setError] = useState('')
+  const [stayUpdated, setStayUpdated] = useState(false)
 
   // DRY-up TextField
   const Field = useCallback(
@@ -36,15 +37,16 @@ export const IfNoForm = ({ id }: { id?: string }) => {
         <Field fullWidth id="email" label="Your Email (if you'd like a reply)" />
       </Row>
       <Row style={{ marginTop: 10 }}>
-        <label onClick={() => void 0}>
-          <input id="stay-updated" type="checkbox" />
+        <label>
+          <input readOnly checked={stayUpdated} type="checkbox" onClick={() => setStayUpdated(!stayUpdated)} />
           Keep me updated
         </label>
       </Row>
 
       <FormSubmitBtns
-        formFieldNames={['reason', 'email', 'stay-updated']}
-        {...{ id, saved, setSaved, setShowBottom }}
+        fields={{ id, stayUpdated }}
+        formFieldNames={['reason', 'email']}
+        {...{ saved, setSaved, setShowBottom }}
       />
 
       {/* Bottom part */}

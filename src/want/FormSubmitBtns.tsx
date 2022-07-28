@@ -2,14 +2,14 @@ import { OnClickButton, darkBlue } from 'src/_shared/Button'
 import { api } from 'src/api-helper'
 
 export const FormSubmitBtns = ({
+  fields,
   formFieldNames,
-  id,
   saved,
   setSaved,
   setShowBottom,
 }: {
+  fields: Record<string, string | boolean | undefined | Record<string, boolean>>
   formFieldNames: string[]
-  id?: string
   saved: boolean
   setSaved: (s: boolean) => void
   setShowBottom: (s: boolean) => void
@@ -20,7 +20,7 @@ export const FormSubmitBtns = ({
       onClick={async () => {
         setShowBottom(true)
         // setError('')
-        const response = await api('citizen-forms/do-you-want-siv', { id, skipped: true })
+        const response = await api('citizen-forms/do-you-want-siv', { id: fields.id, skipped: true })
         if (response.ok) return setSaved(true)
       }}
     >
@@ -34,7 +34,6 @@ export const FormSubmitBtns = ({
       style={{ marginRight: 0 }}
       onClick={async () => {
         setShowBottom(true)
-        const fields: Record<string, string | boolean | undefined> = { id }
         // setError('')
 
         // Get data from input fields
