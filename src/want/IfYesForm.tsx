@@ -1,8 +1,6 @@
 import { GlobalOutlined, LinkOutlined } from '@ant-design/icons'
 import { BoxProps, NoSsr, TextField, TextFieldProps } from '@material-ui/core'
 import { useCallback, useState } from 'react'
-import { OnClickButton, darkBlue } from 'src/_shared/Button'
-import { api } from 'src/api-helper'
 
 import { FormSubmitBtns } from './FormSubmitBtns'
 
@@ -117,6 +115,7 @@ export const IfYesForm = ({ id }: { id?: string }) => {
         .content-preference {
           display: flex;
           margin-top: 10px;
+          margin-bottom: 1.5rem;
         }
 
         .content-preference label {

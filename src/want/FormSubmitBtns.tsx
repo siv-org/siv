@@ -14,7 +14,7 @@ export const FormSubmitBtns = ({
   setSaved: (s: boolean) => void
   setShowBottom: (s: boolean) => void
 }) => (
-  <>
+  <div>
     <OnClickButton
       style={{ backgroundColor: '#ccc', border: 0, color: '#666', marginLeft: 0 }}
       onClick={async () => {
@@ -48,5 +48,11 @@ export const FormSubmitBtns = ({
     >
       Submit
     </OnClickButton>
-  </>
+
+    <style jsx>{`
+      div {
+        text-align: right;
+      }
+    `}</style>
+  </div>
 )
