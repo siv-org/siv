@@ -48,6 +48,7 @@ export const IfNoForm = () => {
       <OnClickButton
         style={{ marginLeft: 0 }}
         onClick={async () => {
+          setShowBottom(true)
           setError('')
           const response = await api('citizen-forms/do-you-want-siv', { skipped: true })
           if (response.ok) return setSaved(true)
@@ -60,6 +61,7 @@ export const IfNoForm = () => {
         disabled={saved}
         style={{ marginRight: 0 }}
         onClick={async () => {
+          setShowBottom(true)
           const fields: Record<string, string | boolean> = selected
           setError('')
 
