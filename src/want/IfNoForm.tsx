@@ -3,11 +3,10 @@ import { useCallback, useState } from 'react'
 import { OnClickButton } from 'src/_shared/Button'
 import { api } from 'src/api-helper'
 
-export const IfNoForm = () => {
+export const IfNoForm = ({ id }: { id?: string }) => {
   const [saved, setSaved] = useState(false)
   const [showBottom, setShowBottom] = useState(false)
-  const [error, setError] = useState('')
-  const [selected, setSelected] = useState<Record<string, boolean>>({})
+  // const [error, setError] = useState('')
 
   const formName = 'ifyesform'
 
@@ -49,8 +48,8 @@ export const IfNoForm = () => {
         style={{ marginLeft: 0 }}
         onClick={async () => {
           setShowBottom(true)
-          setError('')
-          const response = await api('citizen-forms/do-you-want-siv', { skipped: true })
+          // setError('')
+          const response = await api('citizen-forms/do-you-want-siv', { id, skipped: true })
           if (response.ok) return setSaved(true)
         }}
       >
@@ -62,8 +61,8 @@ export const IfNoForm = () => {
         style={{ marginRight: 0 }}
         onClick={async () => {
           setShowBottom(true)
-          const fields: Record<string, string | boolean> = selected
-          setError('')
+          const fields: Record<string, string | boolean> = {}
+          // setError('')
 
           // Get data from input fields
           ;['reason', 'email', 'stay-updated'].forEach((field) => {

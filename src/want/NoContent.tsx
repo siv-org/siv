@@ -1,6 +1,6 @@
 import { IfNoForm } from './IfNoForm'
 
-export const NoContent = (): JSX.Element => {
+export const NoContent = ({ id }: { id?: string }): JSX.Element => {
   return (
     <>
       <p>
@@ -11,7 +11,7 @@ export const NoContent = (): JSX.Element => {
         <br />
         Your private information will never be sold.
       </p>
-      <IfNoForm />
+      <IfNoForm id={id} />
     </>
   )
 }

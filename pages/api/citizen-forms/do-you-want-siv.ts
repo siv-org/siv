@@ -15,11 +15,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(400).json({ error: 'Invalid email' })
   }
 
+  const id = fields.id || new Date().toISOString() + ' ' + String(Math.random()).slice(2, 7)
+
   // Store submission in Firestore
   await firebase
     .firestore()
     .collection('do-you-want-siv')
-    .doc(new Date().toISOString() + ' ' + String(Math.random()).slice(2, 7))
+    .doc(id)
     .set({
       ...fields,
       created_at: new Date().toString(),
@@ -30,5 +32,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   await pushover(`SIV investment-questions: ${fields.name} `, `${fields.email}\n\n${fields.question}`)
 
   // Send back success
-  return res.status(201).json({ success: true })
+  return res.status(201).json({ id, success: true })
 }

@@ -1,6 +1,6 @@
 import { IfYesForm } from './IfYesForm'
 
-export const YesContent = (): JSX.Element => {
+export const YesContent = ({ id }: { id?: string }): JSX.Element => {
   return (
     <>
       <p>
@@ -11,7 +11,7 @@ export const YesContent = (): JSX.Element => {
         <br />
         Your private information will never be sold.
       </p>
-      <IfYesForm />
+      <IfYesForm id={id} />
     </>
   )
 }

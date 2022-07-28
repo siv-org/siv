@@ -4,10 +4,10 @@ import { useCallback, useState } from 'react'
 import { OnClickButton } from 'src/_shared/Button'
 import { api } from 'src/api-helper'
 
-export const IfYesForm = () => {
+export const IfYesForm = ({ id }: { id?: string }) => {
   const [saved, setSaved] = useState(false)
   const [showBottom, setShowBottom] = useState(false)
-  const [error, setError] = useState('')
+  // const [error, setError] = useState('')
   const [selected, setSelected] = useState<Record<string, boolean>>({})
 
   const formName = 'ifyesform'
@@ -82,8 +82,8 @@ export const IfYesForm = () => {
         style={{ marginLeft: 0 }}
         onClick={async () => {
           setShowBottom(true)
-          setError('')
-          const response = await api('citizen-forms/do-you-want-siv', { skipped: true })
+          // setError('')
+          const response = await api('citizen-forms/do-you-want-siv', { id, skipped: true })
           if (response.ok) return setSaved(true)
         }}
       >
@@ -96,7 +96,7 @@ export const IfYesForm = () => {
         onClick={async () => {
           setShowBottom(true)
           const fields: Record<string, string | boolean> = selected
-          setError('')
+          // setError('')
 
           // Get data from input fields
           ;['name', 'email', 'stay-updated', 'city', 'state', 'country', 'zip', 'reason', 'topics'].forEach((field) => {

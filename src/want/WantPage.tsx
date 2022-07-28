@@ -10,6 +10,7 @@ import { YesContent } from './YesContent'
 
 export const WantPage = (): JSX.Element => {
   const [selected, setSelected] = useState<'Yes' | 'No'>()
+  const [id, setId] = useState<string>()
   return (
     <>
       <Head title="Do you want SIV?" />
@@ -23,11 +24,14 @@ export const WantPage = (): JSX.Element => {
             {['Yes', 'No'].map((label) => (
               <label key={label}>
                 <input
+                  readOnly
                   checked={selected === label}
                   type="radio"
-                  onClick={() => {
+                  onClick={async () => {
                     setSelected(label as 'Yes' | 'No')
-                    api('citizen-forms/do-you-want-siv', { selected: label })
+                    const response = await api('citizen-forms/do-you-want-siv', { selected: label })
+                    const { id } = await response.json()
+                    setId(id)
                   }}
                 />
                 {label}
@@ -35,8 +39,8 @@ export const WantPage = (): JSX.Element => {
             ))}
           </div>
         </div>
-        {selected === 'Yes' && <YesContent />}
-        {selected === 'No' && <NoContent />}
+        {selected === 'Yes' && <YesContent id={id} />}
+        {selected === 'No' && <NoContent id={id} />}
         <Footer />
       </div>
 
