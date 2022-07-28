@@ -4,7 +4,10 @@ export const NoContent = (): JSX.Element => {
   return (
     <>
       <p>
-        *All fields are optional. Answers very much appreciated!
+        Thank you for your answer!
+        <br />
+        <br />
+        *All fields below are optional.
         <br />
         Your private information will never be sold.
       </p>
