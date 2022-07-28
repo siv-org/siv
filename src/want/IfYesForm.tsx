@@ -79,8 +79,10 @@ export const IfYesForm = () => {
 
       <OnClickButton
         style={{ marginLeft: 0 }}
-        onClick={() => {
-          setShowBottom(true)
+        onClick={async () => {
+          setError('')
+          const response = await api('citizen-forms/do-you-want-siv', { skipped: true })
+          if (response.ok) return setSaved(true)
         }}
       >
         Skip
