@@ -10,6 +10,7 @@ export const IfYesForm = ({ id }: { id?: string }) => {
   // const [error, setError] = useState('')
   const [contentPreferences, setContentPreferences] = useState<Record<string, boolean>>({})
   const [stayUpdated, setStayUpdated] = useState(false)
+  const [copied, setCopied] = useState(false)
 
   // DRY-up TextField
   const Field = useCallback(
@@ -94,9 +95,20 @@ export const IfYesForm = ({ id }: { id?: string }) => {
             <br /> More <i>Yes</i> = Faster availability
             <br />
             <div className="icons">
-              <a href="/somewhere">
+              <a
+                style={{ cursor: 'pointer', position: 'relative' }}
+                onClick={() => {
+                  setCopied(true)
+                  navigator.clipboard.writeText('https://siv.org/do-you-want-siv')
+                }}
+              >
                 <LinkOutlined style={{ fontSize: 25, marginTop: 30 }} />
                 <span>Link</span>
+                {copied && (
+                  <span style={{ bottom: -50, color: 'blue', left: -20, position: 'absolute' }}>
+                    Copied to clipboard!
+                  </span>
+                )}
               </a>
               <a href="/">
                 <GlobalOutlined style={{ fontSize: 25, marginTop: 30 }} />
