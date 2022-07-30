@@ -25,7 +25,7 @@ export const WantPage = (): JSX.Element => {
           {/* 1st page */}
           <h2>
             Do you want the option to vote from your phone or computer in upcoming elections?{' '}
-            <span>Assuming strong verifiability and security</span>
+            <span>Assuming strong security and verifiability</span>
           </h2>
           <div className="btns">
             {['Yes', 'No'].map((label) => (
