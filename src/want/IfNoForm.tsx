@@ -105,6 +105,12 @@ export const IfNoForm = ({ id }: { id?: string }) => {
           margin-right: 15px;
           transform: scale(1.2);
         }
+
+        @media (max-width: 700px) {
+          .learnmore {
+            flex-direction: column;
+          }
+        }
       `}</style>
     </form>
   )
