@@ -43,14 +43,14 @@ export const IfYesForm = ({ id }: { id?: string }) => {
           Keep me updated
         </label>
       </Row>
-      <Row>
+      <Row className="location">
         <Field fullWidth id="city" label="City" style={{ marginRight: 30 }} />
 
         <Field fullWidth id="state" label="State" style={{ marginRight: 30 }} />
 
-        <Field fullWidth id="country" label="Country" style={{ marginRight: 30 }} />
+        <Field fullWidth id="zip" label="ZIP" style={{ marginRight: 30, maxWidth: 80 }} />
 
-        <Field fullWidth id="zip" label="ZIP" style={{ maxWidth: 80 }} />
+        <Field fullWidth id="country" label="Country" />
       </Row>
       <Row>
         <Field fullWidth multiline id="reason" label="Reason / Note" rows={4} />
@@ -163,6 +163,17 @@ export const IfYesForm = ({ id }: { id?: string }) => {
 
         .icons > a:not(:last-child) {
           margin-right: 3rem;
+        }
+      `}</style>
+
+      <style global jsx>{`
+        @media (max-width: 700px) {
+          .location {
+            flex-direction: column;
+          }
+
+          .location > div {
+            margin-bottom: 10px;
         }
       `}</style>
     </form>
