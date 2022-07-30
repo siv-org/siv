@@ -23,8 +23,10 @@ export const WantPage = (): JSX.Element => {
         <Headerbar />
         <section>
           {/* 1st page */}
-          <p className="aboveQuestion">If your goverment offers you the option:</p>
-          <h2>Do you want to use Secure Internet Voting (SIV) to vote in upcoming elections? </h2>
+          <h2>
+            Do you want the option to vote from your phone or computer in upcoming elections?{' '}
+            <span>Assuming strong verifiability and security</span>
+          </h2>
           <div className="btns">
             {['Yes', 'No'].map((label) => (
               <label key={label}>
@@ -63,7 +65,7 @@ export const WantPage = (): JSX.Element => {
         }
 
         section {
-          max-width: 800px;
+          max-width: 850px;
           margin: 0 auto 8rem;
         }
 
@@ -79,9 +81,17 @@ export const WantPage = (): JSX.Element => {
           text-align: center;
         }
 
+        h2 span {
+          font-weight: normal;
+          display: block;
+          margin-top: 0.5rem;
+          font-size: 17px;
+        }
+
         .btns {
           display: flex;
           justify-content: space-around;
+          margin-top: 2rem;
         }
 
         .btns label {
