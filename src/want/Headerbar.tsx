@@ -27,6 +27,12 @@ export const Headerbar = () => (
       a {
         color: ${darkBlue};
       }
+
+      @media (max-width: 700px) {
+        h3 {
+          font-size: 6.5vw;
+        }
+      }
     `}</style>
   </header>
 )
