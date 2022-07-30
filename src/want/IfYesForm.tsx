@@ -66,17 +66,19 @@ export const IfYesForm = ({ id }: { id?: string }) => {
       </Row>
       <div className="content-preference">
         Preference:
-        {['Video', 'Audio', 'Text'].map((label) => (
-          <label key={label}>
-            <input
-              readOnly
-              checked={!!contentPreferences[label]}
-              type="checkbox"
-              onClick={() => setContentPreferences({ ...contentPreferences, [label]: !contentPreferences[label] })}
-            />
-            {label}
-          </label>
-        ))}
+        <div>
+          {['Video', 'Audio', 'Text'].map((label) => (
+            <label key={label}>
+              <input
+                readOnly
+                checked={!!contentPreferences[label]}
+                type="checkbox"
+                onClick={() => setContentPreferences({ ...contentPreferences, [label]: !contentPreferences[label] })}
+              />
+              {label}
+            </label>
+          ))}
+        </div>
       </div>
 
       <FormSubmitBtns
@@ -130,6 +132,9 @@ export const IfYesForm = ({ id }: { id?: string }) => {
           margin-top: 10px;
           margin-bottom: 1.5rem;
         }
+        .content-preference > div {
+          display: flex;
+        }
 
         .content-preference label {
           display: flex;
@@ -174,6 +179,10 @@ export const IfYesForm = ({ id }: { id?: string }) => {
 
           .location > div {
             margin-bottom: 10px;
+          }
+          .content-preference > div {
+            flex-direction: column;
+          }
         }
       `}</style>
     </form>
