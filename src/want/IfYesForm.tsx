@@ -43,6 +43,9 @@ export const IfYesForm = ({ id }: { id?: string }) => {
           Keep me updated
         </label>
       </Row>
+      <Row>
+        <Field fullWidth id="age" label="Your Age" />
+      </Row>
       <Row className="location">
         <Field fullWidth id="city" label="City" style={{ marginRight: 30 }} />
 
