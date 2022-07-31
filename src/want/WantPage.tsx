@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { api } from 'src/api-helper'
 import { GlobalCSS } from 'src/GlobalCSS'
+import { useAnalytics } from 'src/useAnalytics'
 
 import { Head } from '../Head'
 import { Footer } from '../homepage/Footer'
@@ -14,6 +15,7 @@ export const WantPage = (): JSX.Element => {
   const [selected, setSelected] = useState<'Yes' | 'No'>()
   const [id, setId] = useState<string>()
   useRedirect('/do-you-want-siv')
+  useAnalytics()
 
   return (
     <>
