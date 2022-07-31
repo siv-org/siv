@@ -79,7 +79,7 @@
     "@types/jsonwebtoken": "^8.5.1",
     "@types/mailgun-js": "^0.22.10",
     "@types/node": "^13.9.5",
-    "@types/react": "17",
+    "@types/react": "^18.0.15",
     "@types/react-linkify": "^1.0.0",
     "@types/react-scroll": "^1.8.2",
     "@types/smoothscroll-polyfill": "^0.3.1",
