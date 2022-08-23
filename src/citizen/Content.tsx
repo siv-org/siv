@@ -200,9 +200,9 @@ export const Content = () => (
     </p>
 
     <p>
-      Whether they are or not, governments never need to touch cryptocurrency to use Secure Internet Voting. The SIV
-      Foundation interfaces with governments using the traditional financial infrastructure, ensuring the process is as
-      easy and straightforward as possible.
+      Governments never need to touch cryptocurrency to use Secure Internet Voting.{' '}
+      <a href="https://siv.org">SIV.org</a> interfaces with governments using the traditional financial infrastructure,
+      ensuring the process is as easy and straightforward as possible.
     </p>
 
     <p>
