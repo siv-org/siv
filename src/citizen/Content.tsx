@@ -99,12 +99,9 @@ export const Content = () => (
     </p>
     <p>
       Tell them you’re excited about <a href="https://siv.org">SIV.org</a>, and would like to be{' '}
-      <a href="">able to try it out</a>!
+      <a href="">able to try it out</a>.
     </p>
-    <p>
-      Best is if you talk to them in person, or call them on the phone. Be polite. A positive impression is always
-      appreciated.
-    </p>
+    <p>Best is if you talk to them in person, or call them on the phone. Be polite. Leave a positive impression.</p>
 
     <h2> We’ve also made it easy to send them a note yourself </h2>
     <p>
