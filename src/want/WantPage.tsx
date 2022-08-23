@@ -24,8 +24,10 @@ export const WantPage = (): JSX.Element => {
         <section>
           {/* 1st page */}
           <h2>
-            Do you want the option to vote from your phone or computer in upcoming elections?{' '}
-            <span>Assuming strong security and verifiability</span>
+            Do you want the option to <b>vote from your phone or computer</b> in upcoming elections?
+            <span>
+              with <b>strong security</b> and <b>verifiability</b>
+            </span>
           </h2>
           <div className="btns">
             {['Yes', 'No'].map((label) => (
@@ -79,6 +81,13 @@ export const WantPage = (): JSX.Element => {
 
         h2 {
           text-align: center;
+          font-weight: 400;
+        }
+
+        @media (min-width: 400px) {
+          h2 > b {
+            display: block;
+          }
         }
 
         h2 span {
@@ -86,6 +95,12 @@ export const WantPage = (): JSX.Element => {
           display: block;
           margin-top: 0.5rem;
           font-size: 17px;
+          color: #666;
+        }
+
+        h2 span b {
+          color: #222;
+          font-weight: 500;
         }
 
         .btns {
@@ -98,11 +113,13 @@ export const WantPage = (): JSX.Element => {
           display: flex;
           font-size: 24px;
           align-items: center;
+          cursor: pointer;
         }
 
         input[type='radio'] {
           margin-right: 15px;
           transform: scale(1.5);
+          cursor: pointer;
         }
       `}</style>
     </>
