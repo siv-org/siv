@@ -132,8 +132,7 @@ export const Content = () => (
     </p>
     <p>
       4) 100% of all future SIV revenue from governments is legally mandated to be distributed proportionally to SIV
-      Token Holders. <a href="https://siv.org/">SIV.org</a> itself is a Nonprofit Foundation, and all of our code is
-      open-source.
+      Token Holders.
     </p>
     <ul>
       <li>SIV Tokens are a liquid asset, built using cryptocurrency, and can be sold at any time. </li>
@@ -157,11 +156,7 @@ export const Content = () => (
     <h2>Ready to Invest in the Future of Free Society?</h2>
     <InvestmentForm />
     <p>
-      This SIV Token{' '}
-      <b>
-        <i>is registered</i>
-      </b>{' '}
-      under the Securities Act of 1933. Here is <a href="">our S-1 filing</a>.
+      We are in the process of registering this SIV Token legally with the US Securities & Exchange Commission (SEC).
     </p>
 
     <br />
