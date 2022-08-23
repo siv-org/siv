@@ -29,7 +29,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   //  Notify admin via Pushover
 
-  await pushover(`SIV investment-questions: ${fields.name} `, `${fields.email}\n\n${fields.question}`)
+  await pushover(`siv.org/want submission`, JSON.stringify(fields))
 
   // Send back success
   return res.status(201).json({ id, success: true })
