@@ -1,6 +1,6 @@
 # SIV Technical Specification
 
-**Last updated:** 2022.05.23
+**Last updated:** 2022.09.30
 
 This document gives a technical specification of what defines a SIV — Secure Internet Voting — election.
 
@@ -32,11 +32,11 @@ The SIV Admin software provides both a simple Point-and-Click Ballot Designer in
 
 Every ballot item should have a unique key, such as "president", "governor", "mayor", "proposition_3".
 
-SIV is fully compatible with alternative voting methods such as Ranked Choice Voting and Approval Voting, and can prevent Voters from accidentally invalidating their ballot.
+SIV is fully compatible with alternative voting methods such as Ranked Choice Voting and Approval Voting. SIV makes it easier to adopt these less common methods because SIV provides real-time user-interface feedback, and can prevent Voters from accidentally invalidating their ballot.
 
 ### c. Register Verifying Observers
 
-The Election Administrator can enroll Verifying Observers. Each Verifying Observer adds additional assurance for voter privacy.
+The Election Administrator can enroll "Verifying Observers". Each Verifying Observer adds additional assurance for voter privacy.
 
 Election Administrators choose who to invite, and Verifying Observers must also opt-in by accepting the invitation.
 
@@ -75,7 +75,8 @@ This can include any combination of:
 5. Photo verification of Government IDs and/or selfies
 6. IP address geolocation
 7. Unique codes given in-person
-8. Time-based One-Time Passwords
+8. Cryptographic public keys
+9. Time-based One-Time Passwords
 
 Each has their own trade-offs in terms of (a) speed, (b) cost, (c) ease-of-use, (d) difficulty to attack, and (e) accessibility.
 
@@ -199,7 +200,7 @@ This looks like a standard POST request to https://siv.org/submit-vote, with a J
 ```
 {
   auth: "20bc371dc4",
-  election_id:
+  election_id: "1658271670580",
   mayor:
     {
       encrypted: "fc88a5d7e3996bb26c59ea99101571c377e2a4dbb0834f22d30d35ebf990997c",
@@ -222,33 +223,31 @@ Because of the strong encryption, the election administrator still has no way to
 
 ### Step 4. Votes Are Anonymized
 
-The anonymization step is conceptually simple, but involves some fancy cryptography.
+Although the anonymization step is conceptually simple, it involves some strong cryptography.
 
 Conceptually, we're simply going to shuffle the list of encrypted votes.
 
-Of course, if we just shuffled the encrypted votes, people could see where they went, so the person shuffling them is also going to re-encrypt each vote in such a way that it cannot easily be matched with the original, and yet decrypts to the same value.
+If we just shuffled the encrypted votes, people could see where they were permuted, so the person shuffling them is also going to re-encrypt each vote in such a way that it cannot be matched with the original, and yet decrypts to the same value.
 
-However, this still allows the shuffler to know where the votes went, so we will have each Verifying Observer perform a shuffle sequencially. This way, no single Verifying Observer will know how the votes were shuffled, and neither will anyone else.
+However, this still allows the shuffler to know where the votes went, so we will have each Verifying Observer perform a shuffle sequentially. This way, no single Verifying Observer will know how the votes were shuffled, and neither will anyone else.
 
-All that remains now is to convince ourselves that this is possible.
+To accomplish this step, we need an operation that takes a list of encrypted votes as input, and outputs a shuffled list of re-encrypted votes, in such a way that external observers can verify that this is what happened, i.e., a zero-knowledge proof that the output list is a re-encrypted shuffle of the input list.
 
-What we need is an operation that takes a list of encrypted votes as input, and outputs a shuffled list of re-encrypted votes, in such a way that external observers can verify that this is what happened, i.e., a zero-knowledge proof that the output list is a re-encrypted shuffle of the input list.
+We use an algorithm based on Dr. Andrew Neff's 2004 paper "Verifiable Mixing (Shuffling) of ElGamal Pairs", with the only difference being that we replace modular exponentiation with Elliptic Curve Point Multiplication.
 
-We use an algorithm based on Neff's 2004 paper "Verifiable Mixing (Shuffling) of ElGamal Pairs", with the only difference being that we replace modular exponentiation with Elliptic Curve Point Multiplication.
-
-The proofs of completness, soundness and zero-knowledge remain the same in the case of Elliptic Curve Point Multiplication, and we get the benefit of a higher ratio of encryption strength to key-size.
+The proofs of completeness, soundness and zero-knowledge remain the same in the case of Elliptic Curve Point Multiplication, and we get the benefit of a higher ratio of encryption strength to key-size.
 
 ### Step 5. Encrypted Votes Are Unlocked and Tallied
 
-Now that the encrypted votes have been shuffled and re-encrypted, it is ok to decrypt them without anyone knowing whos vote is whos.
+Now that the encrypted votes have been shuffled and re-encrypted, it is ok to decrypt them without anyone knowing whose vote is whose.
 
-Of course, we need to decrypt them without leaking the secret key, because then it could be used to decrypt the original encrypted votes, before they were shuffled.
+We need to decrypt them without leaking the secret key, because then it could be used to decrypt the original encrypted votes, before they were shuffled.
 
-This decryption is done in a ceremony invovling a sufficient number of Verifying Observers, whereby each Verifying Observer submits information to the group specificially tailored to decrypt each vote, but the information is useless beyond that.
+This decryption is done in another decentralized ceremony, involving a sufficient threshold number of Verifying Observers, whereby each Verifying Observer submits a partial decryption of each vote, but the information is useless beyond that.
 
-Note that this decryption is also provable -- meaning parties cannot cheat in such a way as to make the vote decrypt to something else without people knowing. These proofs are verifyable by everyone.
+Note that this decryption is also provable -- meaning parties cannot cheat in such a way as to make the vote decrypt to something else without people knowing. These ZK Proofs of a Valid Shuffle are verifiable by everyone, and automatically checked by all the other Verifying Observers & SIV Admin Server.
 
-Once the votes are decrypted, they are shown to everyone, and it is trivial to tally them.
+Once the votes are decrypted, their complete contents are shown to everyone, and it is trivial to tally them. The tally totals can be independently recounted, for confirmation.
 
 ## Post Election Verification
 
