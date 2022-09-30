@@ -253,6 +253,13 @@ Once the votes are decrypted, their complete contents are shown to everyone, and
 
 ### I. Voters Can Verify Their Own Vote
 
+We go over the steps for conducting post election verification here: https://docs.google.com/spreadsheets/d/13NDrSCkqdy7r90tJ9ivCKTM3oDWpHOU09Mb1_qI8qy4/edit?usp=sharing
+
 ### II. Admins Can Print Submitted Votes Onto Paper Ballots
 
+The SIV Admin software has a digital-vote-to-paper-ballot automatic PDF creation function. This allows election administrators to merge SIV votes into their collection of paper votes. Every generated vote is stamped with its unique Voter Verification #, so it can still be tracked and audited after the fact.
+
 ### III. Voter Registration List Can Be Audited
+
+Anyone with access to the voter registration list can go through the list and see independently confirm with the voter's that they did indeed vote in the election, and additionally are able to confirm their vote is in the final tally. This does not require all voters, but can use similar statistical sampling for high confidence, using the Risk-Limiting Audit Math detailed in
+https://docs.google.com/spreadsheets/d/13NDrSCkqdy7r90tJ9ivCKTM3oDWpHOU09Mb1_qI8qy4/edit?usp=sharing
