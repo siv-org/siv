@@ -26,26 +26,30 @@ export const RequestEsignatures = () => {
   }
 
   return (
-    <div>
+    <section>
       <label onClick={toggleESignature}>
         <div style={{ display: 'inline-block', marginRight: 5, position: 'relative', top: 2 }}>
           <Image height={(218 / 700) * 70} layout="fixed" src={esignatureIcon} width={70} />
         </div>
-        Request eSignatures?
+        Request <i>eSignatures</i>?
       </label>
       <div style={{ bottom: 3, display: 'inline-block', position: 'relative' }}>
         <Switch checked={!!esignature_requested} color="primary" onClick={toggleESignature} />
       </div>
       {updating && <Spinner />}
       <style jsx>{`
-        div {
+        section {
           margin-bottom: 30px;
         }
 
         label {
           cursor: pointer;
         }
+
+        i {
+          font-weight: 500;
+        }
       `}</style>
-    </div>
+    </section>
   )
 }

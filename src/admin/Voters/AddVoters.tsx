@@ -6,6 +6,7 @@ import { revalidate, useStored } from '../useStored'
 import { ExistingVoters } from './ExistingVoters'
 import { MultilineInput } from './MultilineInput'
 import { RequestEsignatures } from './RequestEsignatures'
+import { ToggleRegistration } from './ToggleRegistration'
 
 export const AddVoters = () => {
   const [new_voters, set_new_voters] = useState('')
@@ -36,6 +37,7 @@ export const AddVoters = () => {
           }}
         />
       )}
+      <ToggleRegistration />
       <RequestEsignatures />
       <ExistingVoters />
       <style jsx>
