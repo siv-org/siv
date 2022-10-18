@@ -48,7 +48,7 @@ export const EnterAuthToken = () => {
                 try {
                   testAuthToken(event.target.value)
                 } catch (e) {
-                  if (typeof e === 'string') setError(e)
+                  if (typeof e === 'string') return setError(e)
                   setError('Caught error w/o message')
                 }
 
@@ -84,7 +84,7 @@ export const EnterAuthToken = () => {
 
       {voter_applications_allowed && (
         <div className="application">
-          <h2>—————— &nbsp; or &nbsp; ——————</h2>
+          <h2>— &nbsp; or &nbsp; —</h2>
           <OnClickButton
             style={{ margin: 0, padding: '10px 15px' }}
             onClick={() => setOpenedRegistration(!openedRegistration)}

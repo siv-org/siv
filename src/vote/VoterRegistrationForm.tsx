@@ -1,6 +1,6 @@
 export const VoterRegistrationForm = () => {
   return (
-    <section>
+    <section className="text-lg rounded bg-blue-900/20">
       The Election Administrator is accepting applications to join this vote.
       <style jsx>{`
         section {
