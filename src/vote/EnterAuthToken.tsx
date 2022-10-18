@@ -16,7 +16,7 @@ export const EnterAuthToken = () => {
   const submitBtn = useRef<HTMLAnchorElement>(null)
 
   return (
-    <div className="container">
+    <div className="enter-auth-token">
       <h1>To cast a vote...</h1>
       {voter_applications_allowed ? (
         <div style={{ textAlign: 'center' }}>
@@ -96,7 +96,7 @@ export const EnterAuthToken = () => {
       )}
 
       <style jsx>{`
-        .container {
+        .enter-auth-token {
           max-width: 350px;
           margin: 0 auto;
         }

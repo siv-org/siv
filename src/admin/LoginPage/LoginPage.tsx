@@ -18,7 +18,7 @@ export const LoginPage = () => {
     <main>
       <Head title="Admin Login" />
       <Headerbar />
-      <div className="container">
+      <div className="login-page">
         <div className="columns">
           <AboutSection />
           <div className="spacer" />
@@ -27,7 +27,7 @@ export const LoginPage = () => {
         </div>
       </div>
       <style jsx>{`
-        .container {
+        .login-page {
           display: flex;
           justify-content: center;
           padding: 0 3vw;

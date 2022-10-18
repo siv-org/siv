@@ -20,7 +20,7 @@ export const Observers = () => {
   useLatestMailgunEvents(election_id, trustees, election_manager)
 
   return (
-    <div className="container">
+    <div>
       <h2>
         Verifying Observers <span>(Optional)</span>
       </h2>

@@ -9,7 +9,7 @@ export const HeaderBar = (): JSX.Element => {
   const { user } = useUser()
   const { election_id, election_title } = useStored()
   return (
-    <div className="container">
+    <div className="header-bar">
       <section className="left">
         <Link href="/">
           <a className="logo">SIV</a>
@@ -47,7 +47,7 @@ export const HeaderBar = (): JSX.Element => {
         </div>
       </section>
       <style jsx>{`
-        .container {
+        .header-bar {
           background: rgb(1, 5, 11);
           background: linear-gradient(90deg, #010b26 0%, #072054 100%);
 
@@ -142,7 +142,7 @@ export const HeaderBar = (): JSX.Element => {
 
         /* When Sidebar disappears */
         @media (max-width: 500px) {
-          .container {
+          .header-bar {
             justify-content: space-between;
           }
 

@@ -11,7 +11,7 @@ export const Verifiability = () => (
       Unlike paper elections, SIV gives voters the ability to personally confirm their
       <br /> own submission is counted correctly, and recount all results themselves.
     </p>
-    <div className="container">
+    <div className="screenshots">
       <Screenshot n={1} />
       <Screenshot n={2} />
     </div>
@@ -37,7 +37,7 @@ export const Verifiability = () => (
         margin-bottom: 5vw;
       }
 
-      .container {
+      .screenshots {
         width: 100%;
         display: flex;
         justify-content: space-between;
@@ -59,7 +59,7 @@ export const Verifiability = () => (
           display: none;
         }
 
-        .container {
+        .screenshots {
           flex-direction: column;
         }
       }

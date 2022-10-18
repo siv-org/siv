@@ -1,7 +1,7 @@
 import Link from 'next/link'
 
 export const HeaderBar = (): JSX.Element => (
-  <div className="container">
+  <section>
     <div>
       <Link href="/">
         <a className="big">Secure Internet Voting</a>
@@ -11,7 +11,7 @@ export const HeaderBar = (): JSX.Element => (
       </Link>
     </div>
     <style jsx>{`
-      .container {
+      section {
         background: rgb(1, 5, 11);
         background: linear-gradient(90deg, #010b26 0%, #072054 100%);
 
@@ -20,7 +20,7 @@ export const HeaderBar = (): JSX.Element => (
         cursor: default;
       }
 
-      .container > div {
+      section > div {
         max-width: 750px;
         width: 100%;
         margin: 0 auto;
@@ -63,5 +63,5 @@ export const HeaderBar = (): JSX.Element => (
         }
       }
     `}</style>
-  </div>
+  </section>
 )
