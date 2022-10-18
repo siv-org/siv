@@ -26,8 +26,8 @@ export const ToggleRegistration = () => {
   }
 
   return (
-    <section onClick={toggleVoterApplications}>
-      <label>
+    <section>
+      <label onClick={toggleVoterApplications}>
         <div style={{ display: 'inline-block', marginRight: 5, position: 'relative', top: 5 }}>
           <Image height={(587 / 554) * 20} layout="fixed" src={registrationIcon} width={20} />
         </div>
@@ -37,6 +37,16 @@ export const ToggleRegistration = () => {
         <Switch checked={!!voter_applications_allowed} color="primary" onClick={toggleVoterApplications} />
       </div>
       {updating && <Spinner />}
+
+      {voter_applications_allowed && (
+        <div style={{ marginBottom: 20 }}>
+          <span>Voter’s Registration link:</span>{' '}
+          <a href={`/election/${election_id}/vote`} rel="noreferrer" target="_blank">
+            {window.location.origin}/election/{election_id}/vote
+          </a>
+        </div>
+      )}
+
       <style jsx>{`
         section {
           padding: 5px;
@@ -50,6 +60,11 @@ export const ToggleRegistration = () => {
 
         i {
           font-weight: 500;
+        }
+
+        span {
+          font-size: 11px;
+          opacity: 0.9;
         }
       `}</style>
     </section>
