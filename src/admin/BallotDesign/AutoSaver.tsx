@@ -47,7 +47,7 @@ export const AutoSaver = ({ design }: { design: string }) => {
         }
 
         .visible {
-          opacity: 0;
+          opacity: 0; // Disabled
         }
       `}</style>
     </div>
