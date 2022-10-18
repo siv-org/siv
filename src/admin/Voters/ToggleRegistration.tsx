@@ -1,9 +1,11 @@
 import { Switch } from '@material-ui/core'
+import Image from 'next/image'
 import { useState } from 'react'
 
 import { api } from '../../api-helper'
 import { Spinner } from '../Spinner'
 import { revalidate, useStored } from '../useStored'
+import registrationIcon from './registration-icon.png'
 
 export const ToggleRegistration = () => {
   const [updating, setUpdating] = useState(false)
@@ -26,7 +28,10 @@ export const ToggleRegistration = () => {
   return (
     <section onClick={toggleVoterApplications}>
       <label>
-        Enable <i>Voter Registration Link</i>?
+        <div style={{ display: 'inline-block', marginRight: 5, position: 'relative', top: 5 }}>
+          <Image height={(587 / 554) * 20} layout="fixed" src={registrationIcon} width={20} />
+        </div>
+        Allow <i>Public Registration Link</i>?
       </label>
       <div style={{ bottom: 3, display: 'inline-block', position: 'relative' }}>
         <Switch checked={!!voter_applications_allowed} color="primary" onClick={toggleVoterApplications} />
