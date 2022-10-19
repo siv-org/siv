@@ -1,4 +1,5 @@
 import { TextField } from '@material-ui/core'
+import { validate as validateEmail } from 'email-validator'
 import { useRef, useState } from 'react'
 import { OnClickButton } from 'src/_shared/Button'
 
@@ -17,30 +18,18 @@ export const VoterRegistrationForm = () => {
           autoFocus
           InputLabelProps={{ style: { fontSize: 22 } }}
           InputProps={{ style: { fontSize: 22 } }}
-          error={!!error}
-          helperText={error}
           label="First Name"
           style={{ flex: 1, fontSize: 20 }}
           variant="outlined"
-          onChange={(event) => {
-            setError('')
-
-            setFirstName(event.target.value)
-          }}
+          onChange={(event) => setFirstName(event.target.value)}
         />
         <TextField
           InputLabelProps={{ style: { fontSize: 22 } }}
           InputProps={{ style: { fontSize: 22 } }}
-          error={!!error}
-          helperText={error}
           label="Last Name"
           style={{ flex: 1, fontSize: 20 }}
           variant="outlined"
-          onChange={(event) => {
-            setError('')
-
-            setLastName(event.target.value)
-          }}
+          onChange={(event) => setLastName(event.target.value)}
         />
       </div>
       <div className="flex mx-auto mb-4 sm:max-w-md">
@@ -54,7 +43,6 @@ export const VoterRegistrationForm = () => {
           variant="outlined"
           onChange={(event) => {
             setError('')
-
             setEmail(event.target.value)
           }}
           onKeyPress={(event) => event.key === 'Enter' && submitBtn.current?.click()}
@@ -65,6 +53,9 @@ export const VoterRegistrationForm = () => {
         ref={submitBtn}
         style={{ margin: 0, padding: '19px 15px' }}
         onClick={() => {
+          // Validate email
+          if (!validateEmail(email)) return setError('Invalid email address')
+
           // Update auth in URL
           // const url = new URL(window.location.toString())
           // url.searchParams.set('auth', text.toLowerCase())
