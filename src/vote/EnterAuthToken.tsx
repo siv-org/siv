@@ -17,74 +17,82 @@ export const EnterAuthToken = () => {
 
   return (
     <div className="enter-auth-token">
-      <h1>To cast a vote...</h1>
-      {voter_applications_allowed ? (
-        <div style={{ textAlign: 'center' }}>
-          <OnClickButton
-            style={{ margin: 0, marginTop: 20, padding: '10px 15px' }}
-            onClick={() => setOpenedVoterAuthInput(!openedVoterAuthInput)}
-          >
-            Enter your Voter Authorization Token
-          </OnClickButton>
-        </div>
-      ) : (
-        <p>Enter your Voter Authorization Token:</p>
-      )}
-      {openedVoterAuthInput && (
-        <>
-          <div className="row" style={{ marginTop: 25 }}>
-            <TextField
-              autoFocus
-              InputLabelProps={{ style: { fontSize: 22 } }}
-              InputProps={{ style: { fontSize: 22 } }}
-              error={!!error}
-              helperText={error}
-              label="Auth token"
-              style={{ flex: 1, fontSize: 20 }}
-              variant="outlined"
-              onChange={(event) => {
-                setError('')
-
-                try {
-                  testAuthToken(event.target.value)
-                } catch (e) {
-                  if (typeof e === 'string') return setError(e)
-                  setError('Caught error w/o message')
-                }
-
-                setText(event.target.value)
-              }}
-              onKeyPress={(event) => event.key === 'Enter' && submitBtn.current?.click()}
-            />
+      <div className="max-w-[350px] mx-auto">
+        <h1>To cast a vote...</h1>
+        {voter_applications_allowed ? (
+          <div style={{ textAlign: 'center' }}>
             <OnClickButton
-              disabled={text.length !== 10 || !!error}
-              ref={submitBtn}
-              style={{ margin: 0, marginLeft: 10, padding: '19px 15px' }}
-              onClick={() => {
-                // Update auth in URL
-                const url = new URL(window.location.toString())
-                url.searchParams.set('auth', text.toLowerCase())
-                router.push(url)
-              }}
+              style={{ margin: 0, marginTop: 20, padding: '10px 15px' }}
+              onClick={() => setOpenedVoterAuthInput(!openedVoterAuthInput)}
             >
-              Submit
+              Enter your Voter Authorization Token
             </OnClickButton>
           </div>
-          <p className="grey">
-            <i>Example:</i> 22671df063
-            <br />
-            <br />
-            Auth tokens are 10 characters long, made up of the numbers <i>0–9</i> and the letters <i>a–f</i>.
-            <br />
-            <br />
-            Unique for each election.
-          </p>
-        </>
-      )}
+        ) : (
+          <p>Enter your Voter Authorization Token:</p>
+        )}
+
+        {openedVoterAuthInput && (
+          <>
+            <div className="row" style={{ marginTop: 25 }}>
+              <TextField
+                autoFocus
+                InputLabelProps={{ style: { fontSize: 22 } }}
+                InputProps={{ style: { fontSize: 22 } }}
+                error={!!error}
+                helperText={error}
+                label="Auth token"
+                style={{ flex: 1, fontSize: 20 }}
+                variant="outlined"
+                onChange={(event) => {
+                  setError('')
+
+                  try {
+                    testAuthToken(event.target.value)
+                  } catch (e) {
+                    if (typeof e === 'string') return setError(e)
+                    setError('Caught error w/o message')
+                  }
+
+                  setText(event.target.value)
+                }}
+                onKeyPress={(event) => event.key === 'Enter' && submitBtn.current?.click()}
+              />
+              <OnClickButton
+                disabled={text.length !== 10 || !!error}
+                ref={submitBtn}
+                style={{ margin: 0, marginLeft: 10, padding: '19px 15px' }}
+                onClick={() => {
+                  // Update auth in URL
+                  const url = new URL(window.location.toString())
+                  url.searchParams.set('auth', text.toLowerCase())
+                  router.push(url)
+                }}
+              >
+                Submit
+              </OnClickButton>
+            </div>
+            <p className="grey">
+              <i>Example:</i> 22671df063
+              <br />
+              <br />
+              Auth tokens are 10 characters long, made up of the numbers <i>0–9</i> and the letters <i>a–f</i>.
+              <br />
+              <br />
+              Unique for each election.
+            </p>
+          </>
+        )}
+      </div>
 
       {voter_applications_allowed && (
         <div className="application">
-          <h2>— &nbsp; or &nbsp; —</h2>
+          <h2 className="my-12">— &nbsp; or &nbsp; —</h2>
+
+          <section className="py-2 mb-6 text-lg rounded bg-blue-900/10">
+            The Election Administrator is accepting applications to join this vote.
+          </section>
+
           <OnClickButton
             style={{ margin: 0, padding: '10px 15px' }}
             onClick={() => setOpenedRegistration(!openedRegistration)}
@@ -97,7 +105,6 @@ export const EnterAuthToken = () => {
 
       <style jsx>{`
         .enter-auth-token {
-          max-width: 350px;
           margin: 0 auto;
         }
 
@@ -116,7 +123,6 @@ export const EnterAuthToken = () => {
         }
 
         h2 {
-          margin: 30px 0;
           font-weight: 500;
           letter-spacing: -1px;
           font-style: italic;
