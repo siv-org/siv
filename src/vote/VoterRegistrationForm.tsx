@@ -1,12 +1,14 @@
 import { TextField } from '@material-ui/core'
 import { validate as validateEmail } from 'email-validator'
+import router from 'next/router'
 import { useRef, useState } from 'react'
 import { OnClickButton } from 'src/_shared/Button'
+import { api } from 'src/api-helper'
 
 export const VoterRegistrationForm = () => {
   const [error, setError] = useState('')
-  const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
+  const [first_name, setFirstName] = useState('')
+  const [last_name, setLastName] = useState('')
   const [email, setEmail] = useState('')
   const submitBtn = useRef<HTMLAnchorElement>(null)
 
@@ -49,17 +51,27 @@ export const VoterRegistrationForm = () => {
         />
       </div>
       <OnClickButton
-        disabled={!firstName || !lastName || !email || !!error}
+        disabled={!first_name || !last_name || !email || !!error}
         ref={submitBtn}
         style={{ margin: 0, padding: '19px 15px' }}
-        onClick={() => {
+        onClick={async () => {
           // Validate email
           if (!validateEmail(email)) return setError('Invalid email address')
 
-          // Update auth in URL
-          // const url = new URL(window.location.toString())
-          // url.searchParams.set('auth', text.toLowerCase())
-          // router.push(url)
+          // Submit details to server
+          const response = await api(`election/${election_id}/submit-registration`, {
+            email,
+            first_name,
+            last_name,
+          })
+          // Server sends back auth token
+          // if (response.error) return setError(response.error)
+          const { auth_token } = await response.json()
+
+          // Redirect to update auth in URL
+          const url = new URL(window.location.toString())
+          url.searchParams.set('auth', auth_token.toLowerCase())
+          router.push(url)
         }}
       >
         Continue to Vote

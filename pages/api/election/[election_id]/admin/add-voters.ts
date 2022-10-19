@@ -1,9 +1,8 @@
+import { firebase } from 'api/_services'
+import { checkJwtOwnsElection } from 'api/validate-admin-jwt'
 import { firestore } from 'firebase-admin'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { generateAuthToken } from 'src/crypto/generate-auth-tokens'
-
-import { firebase } from '../../../_services'
-import { checkJwtOwnsElection } from '../../../validate-admin-jwt'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { new_voters } = req.body
