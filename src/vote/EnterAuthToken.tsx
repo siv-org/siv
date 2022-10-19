@@ -16,7 +16,7 @@ export const EnterAuthToken = () => {
   const submitBtn = useRef<HTMLAnchorElement>(null)
 
   return (
-    <div className="enter-auth-token">
+    <div>
       <div className="max-w-[350px] mx-auto">
         <h1>To cast a vote...</h1>
         {voter_applications_allowed ? (
@@ -34,7 +34,7 @@ export const EnterAuthToken = () => {
 
         {openedVoterAuthInput && (
           <>
-            <div className="row" style={{ marginTop: 25 }}>
+            <div className="flex items-start mt-6">
               <TextField
                 autoFocus
                 InputLabelProps={{ style: { fontSize: 22 } }}
@@ -72,7 +72,7 @@ export const EnterAuthToken = () => {
                 Submit
               </OnClickButton>
             </div>
-            <p className="grey">
+            <p className="opacity-60">
               <i>Example:</i> 22671df063
               <br />
               <br />
@@ -86,8 +86,8 @@ export const EnterAuthToken = () => {
       </div>
 
       {voter_applications_allowed && (
-        <div className="application">
-          <h2 className="my-12">— &nbsp; or &nbsp; —</h2>
+        <div className="text-center">
+          <h2 className="my-12 italic font-medium opacity-70">— &nbsp; or &nbsp; —</h2>
 
           <section className="py-2 mb-6 text-lg rounded bg-blue-900/10">
             The Election Administrator is accepting applications to join this vote.
@@ -102,33 +102,6 @@ export const EnterAuthToken = () => {
           {openedRegistration && <VoterRegistrationForm />}
         </div>
       )}
-
-      <style jsx>{`
-        .enter-auth-token {
-          margin: 0 auto;
-        }
-
-        .row {
-          display: flex;
-          flex-direction: row;
-          align-items: flex-start;
-        }
-
-        .grey {
-          opacity: 0.6;
-        }
-
-        .application {
-          text-align: center;
-        }
-
-        h2 {
-          font-weight: 500;
-          letter-spacing: -1px;
-          font-style: italic;
-          opacity: 0.7;
-        }
-      `}</style>
     </div>
   )
 }
