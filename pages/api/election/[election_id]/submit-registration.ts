@@ -1,5 +1,6 @@
 import { firebase } from 'api/_services'
 import { validate as validateEmail } from 'email-validator'
+import { firestore } from 'firebase-admin'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { generateAuthToken } from 'src/crypto/generate-auth-tokens'
 
@@ -18,7 +19,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (!validateEmail(email)) return res.status(400).json({ error: 'Invalid email address' })
 
   // Does this election allow registrations?
-  if (!((await loadElection).data() || {}).voter_applications_allowed)
+  const election = (await loadElection).data() || {}
+  if (!election.voter_applications_allowed)
     return res.status(401).json({ error: 'This election disabled Voter Applications' })
 
   // Is there already a voter or voter application w/ this email?
@@ -37,20 +39,23 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       return true
     }
   })
-  if (found_conflict) return res.status(409).json({ error: 'Already applied ... ?' })
+  if (found_conflict) return res.status(409).json({ error: 'Already applied' })
 
   // Server assigns them a temp Voter Auth Token,
   const auth_token = generateAuthToken()
   // store as pending review
-  await votersCollection.doc(email).set({
-    applied: true,
-    applied_at: new Date(),
-    auth_token,
-    email,
-    first_name,
-    last_name,
-    status: 'pending',
-  })
+  await Promise.all([
+    votersCollection.doc(email).set({
+      applied_at: new Date(),
+      auth_token,
+      email,
+      first_name,
+      index: election.num_voters,
+      last_name,
+      status: 'pending',
+    }),
+    electionDoc.update({ num_voters: firestore.FieldValue.increment(1) }),
+  ])
 
   // Send new auth token down to voter
   return res.status(201).json({ auth_token })

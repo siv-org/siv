@@ -1,6 +1,6 @@
 import { TextField } from '@material-ui/core'
 import { validate as validateEmail } from 'email-validator'
-import router from 'next/router'
+import { useRouter } from 'next/router'
 import { useRef, useState } from 'react'
 import { OnClickButton } from 'src/_shared/Button'
 import { api } from 'src/api-helper'
@@ -11,6 +11,8 @@ export const VoterRegistrationForm = () => {
   const [last_name, setLastName] = useState('')
   const [email, setEmail] = useState('')
   const submitBtn = useRef<HTMLAnchorElement>(null)
+  const router = useRouter()
+  const { election_id } = router.query as { auth?: string; election_id?: string }
 
   return (
     <section className="text-lg">
@@ -65,7 +67,7 @@ export const VoterRegistrationForm = () => {
             last_name,
           })
           // Server sends back auth token
-          // if (response.error) return setError(response.error)
+          if (!response.ok) return setError((await response.json()).error)
           const { auth_token } = await response.json()
 
           // Redirect to update auth in URL
