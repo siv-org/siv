@@ -103,7 +103,7 @@ export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => voi
 
           height: 100%;
 
-          overflow-y: scroll;
+          overflow-y: auto;
 
           display: flex;
           flex-direction: column;

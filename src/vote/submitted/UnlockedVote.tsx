@@ -25,7 +25,7 @@ export const UnlockedVote = ({ columns, state }: { columns: string[]; state: Sta
       table {
         border-collapse: collapse;
         display: block;
-        overflow: scroll;
+        overflow: auto;
         overflow-wrap: break-word;
       }
 

@@ -140,7 +140,7 @@ export const EmailsSent = () => {
 
         label div,
         li div {
-          overflow: scroll;
+          overflow: auto;
           display: inline-block;
           white-space: nowrap;
 

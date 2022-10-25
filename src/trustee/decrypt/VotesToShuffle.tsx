@@ -222,7 +222,7 @@ const ShuffledVotesTable = ({
         table {
           border-collapse: collapse;
           display: block;
-          overflow: scroll;
+          overflow: auto;
           margin-bottom: 10px;
         }
 
