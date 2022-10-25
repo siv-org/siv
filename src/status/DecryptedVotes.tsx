@@ -72,7 +72,7 @@ export const DecryptedVotes = ({ proofsPage }: { proofsPage?: boolean }): JSX.El
         table {
           border-collapse: collapse;
           display: block;
-          overflow: scroll;
+          overflow: auto;
         }
 
         th,

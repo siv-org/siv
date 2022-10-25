@@ -211,7 +211,7 @@ const PartialsTable = ({
         table {
           border-collapse: collapse;
           display: block;
-          overflow: scroll;
+          overflow: auto;
           margin-bottom: 15px;
         }
 

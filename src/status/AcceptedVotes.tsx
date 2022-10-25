@@ -133,7 +133,7 @@ export const AcceptedVotes = ({
         table {
           border-collapse: collapse;
           display: block;
-          overflow: scroll;
+          overflow: auto;
           margin-top: 2rem;
         }
 

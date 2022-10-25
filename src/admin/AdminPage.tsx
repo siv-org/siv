@@ -48,7 +48,7 @@ export const AdminPage = (): JSX.Element => {
 
         #main-content {
           padding: 1rem 2rem;
-          overflow: scroll;
+          overflow: auto;
           position: absolute;
           left: 215px;
           top: 66px;

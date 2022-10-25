@@ -41,7 +41,7 @@ export const EncryptedVote = ({ auth, columns, state }: { auth: string; columns:
       table {
         border-collapse: collapse;
         display: block;
-        overflow: scroll;
+        overflow: auto;
         overflow-wrap: break-word;
       }
 
