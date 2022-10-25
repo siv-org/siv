@@ -2,6 +2,7 @@ import { NoSsr } from '@material-ui/core'
 import { flatten } from 'lodash-es'
 import Link from 'next/link'
 import { useEffect } from 'react'
+import { useReducer } from 'react'
 
 import { State } from '../vote-state'
 import { DetailedEncryptionReceipt } from './DetailedEncryptionReceipt'
@@ -17,6 +18,8 @@ export function SubmittedScreen({
   election_id: string
   state: State & { submitted_at: Date }
 }): JSX.Element {
+  const [showEncryptionDetails, toggleEncryptionDetails] = useReducer((state) => !state, false)
+
   // Widen the page for the tables
   useEffect(() => {
     const mainEl = document.getElementsByTagName('main')[0]
@@ -41,7 +44,6 @@ export function SubmittedScreen({
           Click here to visit the Election Status page.
         </a>
       </Link>
-
       <h3>How to verify your vote:</h3>
       <p>
         Once the election closes and votes are unlocked, you can find yours on the{' '}
@@ -52,32 +54,40 @@ export function SubmittedScreen({
         </Link>{' '}
         using its <em>Verification #</em>:
       </p>
-
       <UnlockedVote {...{ columns, state }} />
-      <p className="small grey">
+      <p className="text-xs opacity-60">
         This secret <em>Verification #</em> is a random number, generated and encrypted on your own device.
         <br />
         No one else can possibly know it.
       </p>
 
-      <br />
-      <br />
-
-      <h3>How your vote was submitted:</h3>
+      {/* Encryption */}
+      <h3 className="mt-10">How your vote was submitted:</h3>
 
       <p>
         <img id="lock-icon" src="/vote/lock.png" width="12px" />
-        To protect your privacy, your vote was encrypted before submission:
+        To protect your privacy, your vote was encrypted before submission.
       </p>
 
-      <EncryptedVote {...{ auth, columns, state }} />
-
-      <p className="small grey">
+      <p className="text-xs opacity-60">
         Its contents will only be unlocked after the election closes and all votes have been shuffled for safe
         anonymization.
       </p>
-      <DetailedEncryptionReceipt {...{ state }} />
 
+      <p className="mt-3 text-xs opacity-70">
+        <a className="cursor-pointer" onClick={toggleEncryptionDetails}>
+          {showEncryptionDetails ? '[-] Hide' : '[+] Show'} Encryption Details
+        </a>
+      </p>
+      {showEncryptionDetails && (
+        <>
+          <EncryptedVote {...{ auth, columns, state }} />
+
+          <h4>Encryption Receipt:</h4>
+
+          <DetailedEncryptionReceipt {...{ state }} />
+        </>
+      )}
       <style jsx>{`
         #lock-icon {
           margin-right: 7px;
@@ -98,14 +108,6 @@ export function SubmittedScreen({
           position: relative;
           top: 1px;
           opacity: 0.8;
-        }
-
-        .small {
-          font-size: 12px;
-        }
-
-        .grey {
-          opacity: 0.6;
         }
       `}</style>
     </NoSsr>
