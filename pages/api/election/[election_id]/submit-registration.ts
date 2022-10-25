@@ -24,8 +24,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(401).json({ error: 'This election disabled Voter Applications' })
 
   // Is there already a voter or voter application w/ this email?
-  // TODO: define how to handle
-  // Ideally we aren't leaking info about who is already registered
+  // TODO: Ideally we aren't leaking info about who is already registered
+  // see https://github.com/dsernst/siv/issues/13#issuecomment-1289732427
   let found_conflict = false
   ;(await loadVoters).docs.find((d) => {
     if (d.data().email === email) {
@@ -39,7 +39,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       return true
     }
   })
-  if (found_conflict) return res.status(409).json({ error: 'Already applied' })
+  if (found_conflict) return res.status(409).json({ error: 'Email already applied' })
 
   // Server assigns them a temp Voter Auth Token,
   const auth_token = generateAuthToken()
