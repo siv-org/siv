@@ -20,7 +20,7 @@ export const CompareTable = (): JSX.Element => {
         <RotateRightOutlined /> &nbsp; <b>Tip:</b> Looks better in Landscape orientation
       </section>
 
-      <section className="table">
+      <section className="compare-table">
         <table>
           <thead>
             <tr>
