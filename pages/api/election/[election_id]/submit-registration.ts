@@ -1,4 +1,5 @@
-import { firebase } from 'api/_services'
+import { firebase, sendEmail } from 'api/_services'
+import { button, generateAdminLoginCode } from 'api/admin-login'
 import { validate as validateEmail } from 'email-validator'
 import { firestore } from 'firebase-admin'
 import { NextApiRequest, NextApiResponse } from 'next'
@@ -24,7 +25,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(401).json({ error: 'This election disabled Voter Applications' })
 
   // Is there already a voter or voter application w/ this email?
-  // TODO: Ideally we aren't leaking info about who is already registered
+  // TODO: Ideally we wouldn't leak who already registered
   // see https://github.com/dsernst/siv/issues/13#issuecomment-1289732427
   let found_conflict = false
   ;(await loadVoters).docs.find((d) => {
@@ -41,10 +42,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   })
   if (found_conflict) return res.status(409).json({ error: 'Email already applied' })
 
-  // Server assigns them a temp Voter Auth Token,
+  // Server assigns them a temp Voter Auth Token & Email-Verification code
   const auth_token = generateAuthToken()
-  // store as pending review
+  const verification_code = generateAdminLoginCode()
+
   await Promise.all([
+    // store as pending review
     votersCollection.doc(email).set({
       applied_at: new Date(),
       auth_token,
@@ -53,8 +56,24 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       index: election.num_voters,
       last_name,
       status: 'pending',
+      verification_code,
     }),
+    // Update election's voter count
     electionDoc.update({ num_voters: firestore.FieldValue.increment(1) }),
+    // Send them a verification email
+    sendEmail({
+      from: 'SIV',
+      recipient: email,
+      subject: 'SIV Verification Email',
+      text: `Please verify your email address by clicking the link below:
+
+      ${button(
+        `${req.headers.origin}/verify_registration?email=${email}&code=${verification_code}`,
+        'Verify Your Email',
+      )}
+
+  <em style="font-size:10px; opacity: 0.6;">If you did not authorize this request, press reply to let us know.</em>`,
+    }),
   ])
 
   // Send new auth token down to voter

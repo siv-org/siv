@@ -56,5 +56,5 @@ ${button(link, 'Or Click Here to Login Directly')}
 export const generateAdminLoginCode = () =>
   (pick_random_bigint(BigInt(900_000)) + BigInt(100_000)).toString().slice(0, 6)
 
-const button = (link: string, text: string) =>
+export const button = (link: string, text: string) =>
   `<table width="100%" cellspacing="0" cellpadding="0"><tr><td align="center"><table cellspacing="0" cellpadding="0"><tr><td style="border-radius: 8px;" bgcolor="#072054"><a href="${link}" target="_blank" style="padding: 8px 22px; border: 1px solid #072054;border-radius: 8px;font-family: Helvetica, Arial, sans-serif;font-size: 14px; color: #ffffff;text-decoration: none;font-weight:bold;display: inline-block;">${text}</a></td></tr></table></td></tr></table>`
