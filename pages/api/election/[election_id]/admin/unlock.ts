@@ -15,6 +15,8 @@ import { ReviewLog } from './load-admin'
 const { ADMIN_EMAIL } = process.env
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
+  const start = new Date()
+
   if (!ADMIN_EMAIL) return res.status(501).json({ error: 'Missing process.env.ADMIN_EMAIL' })
 
   const { election_id } = req.query as { election_id: string }
@@ -103,6 +105,17 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     await electionDoc.update({ decrypted, last_decrypted_at: new Date() })
 
     await pusher.trigger(election_id, 'decrypted', '')
+
+    const done = new Date()
+    const time = done.getTime() - start.getTime()
+    const numUnlocked = votes_to_unlock.length
+    const numColumns = Object.keys(split).length
+    const numCiphertexts = numUnlocked * numColumns
+    console.log(
+      `🔑 Unlocked ${numUnlocked} votes with ${numColumns} columns (${numCiphertexts} ciphertexts) in ${time}ms. (${(
+        time / numCiphertexts
+      ).toFixed(2)} ms/ciphertext)`,
+    )
   } else {
     // Then admin does a SIV shuffle (permute + re-encryption) for each item's list
     const shuffled = await bluebird.props(
