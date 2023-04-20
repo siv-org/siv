@@ -1,5 +1,6 @@
 import { DeleteOutlined } from '@ant-design/icons'
 import { api } from 'src/api-helper'
+import { useWindowDimensions } from 'src/protocol/useWindowDimensions'
 
 import { OnClickButton } from '../../_shared/Button'
 import { revalidate, useStored } from '../useStored'
@@ -16,11 +17,19 @@ export const InvalidateVotersButton = ({
   set_error: (error: string) => void
 }) => {
   const { election_id, valid_voters = [] } = useStored()
+  const { width } = useWindowDimensions()
 
   return (
     <OnClickButton
       disabled={!displayOnly && !num_checked}
-      style={{ borderWidth: 1, margin: 0, marginLeft: num_checked === 1 ? 15 : 5, padding: '5px 10px' }}
+      style={{
+        alignSelf: 'flex-start',
+        borderWidth: 1,
+        margin: 0,
+        marginLeft: width < 400 ? 0 : num_checked === 1 ? 15 : 5,
+        marginTop: width < 400 ? 3 : 0,
+        padding: '5px 10px',
+      }}
       onClick={async () => {
         if (displayOnly) return
 

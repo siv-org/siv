@@ -18,7 +18,7 @@ export const UnlockVotesButton = ({ num_approved, num_voted }: { num_approved: n
         !!num_voted &&
         "No votes with approved signatures.\n\nHover over individual signatures to Approve/Reject them, or click 'Signature' column header to Approve All."
       }
-      style={{ margin: 0, marginLeft: 5, padding: '5px 10px' }}
+      style={{ alignSelf: 'baseline', margin: 0, marginLeft: 5, padding: '5px 10px' }}
       onClick={async () => {
         toggle_unlocking()
         const response = await api(`election/${election_id}/admin/unlock`)
