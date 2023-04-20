@@ -4,7 +4,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { getStatus } from 'src/admin/Voters/Signature'
 import { RP, pointToString } from 'src/crypto/curve'
 import decrypt from 'src/crypto/decrypt'
-import { shuffle } from 'src/crypto/shuffle'
+import { fastShuffle, shuffle } from 'src/crypto/shuffle'
 import { CipherStrings, stringifyShuffle } from 'src/crypto/stringify-shuffle'
 
 import { firebase, pushover } from '../../../_services'
@@ -80,39 +80,20 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     return acc
   }, {})
 
-  // Then admin does a SIV shuffle (permute + re-encryption) for each item's list
-  const shuffled = await bluebird.props(
-    mapValues(split, async (list) =>
-      stringifyShuffle(
-        await shuffle(
-          RP.fromHex(threshold_public_key),
-          list.map((row) => mapValues(row, RP.fromHex)),
-        ),
-      ),
-    ),
-  )
-
-  // Store admins shuffled lists
-  await adminDoc.update({ preshuffled: split, shuffled })
-  try {
-    await pusher.trigger(`keygen-${election_id}`, 'update', {
-      'admin@secureintervoting.org': { shuffled: shuffled.length },
-    })
-  } catch (e) {
-    await pushover('Failed to Pusher.trigger(keygen, update, admin@, shuffled)', JSON.stringify(e))
-  }
-
   // Is admin the only trustee?
   if (t === 1) {
     // Yes, we can begin decryption...
     const { private_keyshare: decryption_key } = { ...(await admin).data() } as { private_keyshare: string }
 
+    // Fast shuffle, without building proofs, since there are no verifying observers. We can still build a proof later
+    const shuffled = await bluebird.props(
+      mapValues(split, async (list) => fastShuffle(list.map((row) => mapValues(row, RP.fromHex)))),
+    )
+
     // Decrypt votes
-    const decrypted_and_split = mapValues(shuffled, (list) => {
-      return list.shuffled.map((cipher) =>
-        pointToString(decrypt(BigInt(decryption_key), mapValues(cipher, RP.fromHex))),
-      )
-    })
+    const decrypted_and_split = mapValues(shuffled, (list) =>
+      list.map((cipher) => pointToString(decrypt(BigInt(decryption_key), cipher))),
+    )
 
     const decrypteds_by_tracking = recombine_decrypteds(decrypted_and_split)
 
@@ -122,6 +103,28 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     await electionDoc.update({ decrypted, last_decrypted_at: new Date() })
 
     await pusher.trigger(election_id, 'decrypted', '')
+  } else {
+    // Then admin does a SIV shuffle (permute + re-encryption) for each item's list
+    const shuffled = await bluebird.props(
+      mapValues(split, async (list) =>
+        stringifyShuffle(
+          await shuffle(
+            RP.fromHex(threshold_public_key),
+            list.map((row) => mapValues(row, RP.fromHex)),
+          ),
+        ),
+      ),
+    )
+
+    // Store admins shuffled lists
+    await adminDoc.update({ preshuffled: split, shuffled })
+    try {
+      await pusher.trigger(`keygen-${election_id}`, 'update', {
+        'admin@secureintervoting.org': { shuffled: shuffled.length },
+      })
+    } catch (e) {
+      await pushover('Failed to Pusher.trigger(keygen, update, admin@, shuffled)', JSON.stringify(e))
+    }
   }
 
   res.status(201).json({ message: 'Triggered unlock' })
