@@ -113,10 +113,16 @@ const create_and_store_random_votes = async (voters: Voter[]) => {
 
   const electionDoc = db.collection('elections').doc(election_id)
 
-  voters.forEach((voter) => {
+  // Get all existing votes
+  const votes = await electionDoc.collection('votes').get()
+  const votesByAuth = votes.docs.reduce((memo, doc) => ({ ...memo, [memo[doc.data().auth]]: true }), {})
+
+  voters.forEach(({ auth_token }) => {
+    if (votesByAuth[auth_token]) return // Skip if already voted
+
     // Store the encrypted vote in db
     const voteDoc = electionDoc.collection('votes').doc()
-    batch.set(voteDoc, { auth: voter.auth_token, created_at: new Date(), encrypted_vote: random_vote() })
+    batch.set(voteDoc, { auth: auth_token, created_at: new Date(), encrypted_vote: random_vote() })
   })
   batch.update(electionDoc, { num_votes: voters.length })
 
