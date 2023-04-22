@@ -1,4 +1,5 @@
 import bluebird from 'bluebird'
+import { validate } from 'email-validator'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import { firebase, sendEmail } from '../../../_services'
@@ -50,6 +51,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       invalidated_at?: Date
     }
 
+    if (!validate(email)) return
     if (invalidated_at) return
     if (!votesByAuth[auth_token]) return
 

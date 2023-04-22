@@ -1,3 +1,4 @@
+import { validate as validateEmail } from 'email-validator'
 import { firestore } from 'firebase-admin'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { CipherStrings } from 'src/crypto/stringify-shuffle'
@@ -41,29 +42,32 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   ])
 
   // 3. Email the voter their submission receipt
-  const link = `${req.headers.origin}/election/${election_id}`
   const { email } = (await voter).docs[0].data()
-  const { election_manager } = (await election).data() as {
-    election_manager?: string
-    election_title?: string
-  }
-
   const promises: Promise<unknown>[] = []
 
-  promises.push(
-    sendEmail({
-      attachment: { data: buildSubmissionReceipt(auth, encrypted_vote), filename: 'receipt.txt' },
-      from: election_manager,
-      recipient: email,
-      subject: 'Vote Confirmation',
-      text: `<h2 style="margin: 0">Your vote was successfully submitted.</h2>
+  // Skip if email isn't valid (e.g. used QR invitations)
+  if (validateEmail(email)) {
+    const link = `${req.headers.origin}/election/${election_id}`
+    const { election_manager } = (await election).data() as {
+      election_manager?: string
+      election_title?: string
+    }
+
+    promises.push(
+      sendEmail({
+        attachment: { data: buildSubmissionReceipt(auth, encrypted_vote), filename: 'receipt.txt' },
+        from: election_manager,
+        recipient: email,
+        subject: 'Vote Confirmation',
+        text: `<h2 style="margin: 0">Your vote was successfully submitted.</h2>
   The tallied results will be posted at <a href="${link}">${link}</a> when the election closes.
 
   For your records, your encrypted vote is attached.
 
   <em style="font-size:13px">You can press reply if you have a problem.</em>`,
-    }),
-  )
+      }),
+    )
+  }
 
   promises.push(pusher.trigger(`status-${election_id}`, 'votes', auth))
 
