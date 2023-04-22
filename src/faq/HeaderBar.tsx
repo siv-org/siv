@@ -6,9 +6,6 @@ export const HeaderBar = (): JSX.Element => (
       <Link href="/">
         <a className="big">Secure Internet Voting</a>
       </Link>
-      <Link href="/protocol">
-        <a>Protocol</a>
-      </Link>
     </div>
     <style jsx>{`
       .container {
