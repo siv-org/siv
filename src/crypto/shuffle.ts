@@ -1,4 +1,5 @@
 import { RP, random_bigint } from './curve'
+import { pick_random_bigint } from './pick-random-bigint'
 import { Shuffle_Proof, generate_shuffle_proof } from './shuffle-proof'
 
 export type Cipher = { encrypted: RP; lock: RP }
@@ -45,12 +46,12 @@ export async function shuffle(
   return { proof, shuffled }
 }
 
-/** Generates an array of all integers up to `size`, in a random order */
+/** Generates an array of all integers up to `size`, in a random order, using cryptographic randomness */
 function build_permutation_array(size: number) {
   const array: number[] = []
   const options = [...new Array(size).keys()]
   while (options.length) {
-    const i = Math.floor(Math.random() * options.length)
+    const i = Number(pick_random_bigint(BigInt(options.length + 1))) - 1
     array.push(options.splice(i, 1)[0])
   }
   return array
