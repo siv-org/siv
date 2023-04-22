@@ -23,9 +23,9 @@ const admin_email = ''
 
   elections.forEach((election, n) => {
     const data = election.data()
-    const { ballot_design, election_title, num_voters } = data
+    const { ballot_design, election_title, num_voters, num_votes } = data
     const numCols = JSON.parse(ballot_design || []).length
 
-    console.log(`${n}. ${election_title}: ${num_voters} voters x ${numCols} col`)
+    console.log(`${n + 1}. ${election_title}: ${num_voters} voters x ${numCols} col — ${num_votes} votes`)
   })
 })()
