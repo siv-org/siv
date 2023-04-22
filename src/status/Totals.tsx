@@ -42,6 +42,11 @@ export const Totals = ({ proofsPage }: { proofsPage?: boolean }): JSX.Element =>
       tallies[item][vote[key]]++
     })
   })
+  const totalsCastPerItems: Record<string, number> = {}
+  Object.keys(tallies).forEach((item) => {
+    totalsCastPerItems[item] = 0
+    Object.keys(tallies[item]).forEach((choice) => (totalsCastPerItems[item] += tallies[item][choice]))
+  })
 
   // Sort each item's totals from highest to lowest, with ties sorted alphabetically
   const ordered = mapValues(tallies, (item_totals, item_id) =>
@@ -68,7 +73,10 @@ export const Totals = ({ proofsPage }: { proofsPage?: boolean }): JSX.Element =>
           <ul>
             {ordered[id].map((selection) => (
               <li key={selection}>
-                {selection}: {tallies[id][selection]}
+                {selection}: {tallies[id][selection]}{' '}
+                <i style={{ fontSize: 12, marginLeft: 5, opacity: 0.5 }}>
+                  ({((100 * tallies[id][selection]) / totalsCastPerItems[id]).toFixed(1)}%)
+                </i>
               </li>
             ))}
           </ul>
