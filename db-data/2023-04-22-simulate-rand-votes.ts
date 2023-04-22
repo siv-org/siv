@@ -15,91 +15,25 @@ import encrypt from '../src/crypto/encrypt'
 import { CipherStrings } from '../src/crypto/stringify-shuffle'
 import { generateTrackingNum } from '../src/vote/tracking-num'
 
-const election_id = '1682164290853'
-
-const ballot_design = [
-  {
-    id: 'Chair',
-    options: [
-      {
-        name: 'Kassandra Hila',
-        weight: 0.9,
-      },
-    ],
-    write_in_allowed: false,
-  },
-  {
-    id: 'Vice-Chair',
-    options: [
-      {
-        name: 'Byron Rhudy',
-        weight: 0.85,
-      },
-    ],
-    write_in_allowed: false,
-  },
-  {
-    id: 'Secretary',
-    options: [
-      {
-        name: 'Nancy Risch',
-
-        weight: 0.2,
-      },
-      {
-        name: 'Elin Vitucci',
-        weight: 0.4,
-      },
-      {
-        name: 'Will Bilderback',
-
-        weight: 0.26,
-      },
-    ],
-    write_in_allowed: false,
-  },
-  {
-    id: 'Treasurer',
-    options: [
-      {
-        name: 'Tyler Goodall',
-
-        weight: 0.4,
-      },
-      {
-        name: 'Lilah Notti',
-
-        weight: 0.56,
-      },
-    ],
-    write_in_allowed: false,
-  },
-]
+const election_id = '1682168554981'
 
 let pub_key: RP
+let ballot_design: { id: string; options: { name: string }[] }[]
 type Vote = { Chair: CipherStrings; Secretary: CipherStrings; Treasurer: CipherStrings; 'Vice-Chair': CipherStrings }
 const random_vote = () => {
   const verification = generateTrackingNum()
   let num_blank = 0
   return ballot_design.reduce((memo, { id, options }) => {
-    const random = Math.random()
-    let total_weights_so_far = 0
-    const choice = options.find(({ weight }) => {
-      total_weights_so_far += weight
-      return random < total_weights_so_far
-    })
-    let plaintext = verification + ':BLANK'
-    if (choice) {
-      plaintext = verification + ':' + choice.name
-    } else {
-      // Don't allow a fully blank vote
+    const choice = options[Math.floor(Math.random() * (options.length + 1))]?.name || 'BLANK'
+    let plaintext = verification + ':' + choice
+
+    // Don't allow a fully blank vote
+    if (choice === 'BLANK') {
       num_blank++
-      if (num_blank === options.length) {
-        const random_choice = options[Math.floor(Math.random() * options.length)]
-        plaintext = verification + ':' + random_choice.name
-      }
+      if (num_blank === options.length)
+        plaintext = verification + ':' + options[Math.floor(Math.random() * options.length)].name
     }
-    const encoded = stringToPoint(plaintext)
+    const encoded = stringToPoint(plaintext.slice(0, 30))
     const cipher = encrypt(pub_key, random_bigint(), encoded)
     memo[id] = mapValues(cipher, String)
 
@@ -114,7 +48,8 @@ const create_and_store_random_votes = async (voters: Voter[]) => {
 
   // Get all existing votes
   const votes = await electionDoc.collection('votes').get()
-  const votesByAuth = votes.docs.reduce((memo, doc) => ({ ...memo, [memo[doc.data().auth]]: true }), {})
+  console.log(`Found ${votes.docs.length} existing votes`)
+  const votesByAuth = votes.docs.reduce((memo, doc) => ({ ...memo, [doc.data().auth]: true }), {})
 
   // Firebase batches have size limits
   const maxBatchSize = 500
@@ -147,12 +82,18 @@ const getVoters = async (): Promise<Voter[]> => {
 }
 
 /** Load this election's pub key from the db */
-const getPubkey = async (): Promise<RP> =>
-  RP.fromHex((await firebase.firestore().collection('elections').doc(election_id).get()).data()?.threshold_public_key)
+const getPubkeyAndBallotDesign = async () => {
+  const data = (await firebase.firestore().collection('elections').doc(election_id).get()).data()
+  pub_key = RP.fromHex(data?.threshold_public_key)
+  console.log(`Found pubkey ${pub_key}`)
+
+  ballot_design = JSON.parse(data?.ballot_design)
+  console.log(`Found ballot: ${ballot_design.map((col) => col.id)}`)
+}
 
 ;(async () => {
-  pub_key = await getPubkey()
-  console.log(`Found pubkey ${pub_key}`)
+  await getPubkeyAndBallotDesign()
+
   const voters = await getVoters()
   console.log(`Found ${voters.length} voters`)
 
