@@ -2,8 +2,7 @@ import bluebird from 'bluebird'
 import { mapValues } from 'lodash-es'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getStatus } from 'src/admin/Voters/Signature'
-import { RP, pointToString } from 'src/crypto/curve'
-import decrypt from 'src/crypto/decrypt'
+import { RP } from 'src/crypto/curve'
 import { fastShuffle, shuffle } from 'src/crypto/shuffle'
 import { CipherStrings, stringifyShuffle } from 'src/crypto/stringify-shuffle'
 
@@ -93,8 +92,22 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     )
 
     // Decrypt votes
-    const decrypted_and_split = mapValues(shuffled, (list) =>
-      list.map((cipher) => pointToString(decrypt(BigInt(decryption_key), cipher))),
+    const decrypted_and_split = await bluebird.props(
+      mapValues(shuffled, async (list) => {
+        // Decrypt each column in parallel
+        const apiUrl = req.headers.host
+        const protocol = apiUrl?.startsWith('localhost') ? 'http://' : 'https://'
+
+        const response = await fetch(`${protocol}${apiUrl}/api/election/${election_id}/admin/decrypt-column`, {
+          body: JSON.stringify({ column: list.map((cipher) => mapValues(cipher, String)), decryption_key }),
+          headers: { 'Content-Type': 'application/json' },
+          method: 'POST',
+        })
+
+        if (!response.ok) throw new Error(`Failed to decrypt column: ${await response.text()}`)
+
+        return (await response.json()).decryptedColumn
+      }),
     )
 
     const decrypteds_by_tracking = recombine_decrypteds(decrypted_and_split)

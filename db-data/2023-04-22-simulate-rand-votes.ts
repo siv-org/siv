@@ -15,7 +15,7 @@ import encrypt from '../src/crypto/encrypt'
 import { CipherStrings } from '../src/crypto/stringify-shuffle'
 import { generateTrackingNum } from '../src/vote/tracking-num'
 
-const election_id = '1682159924547'
+const election_id = '1682164290853'
 
 const ballot_design = [
   {
