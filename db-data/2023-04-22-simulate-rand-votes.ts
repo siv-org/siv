@@ -109,7 +109,6 @@ const random_vote = () => {
 
 const create_and_store_random_votes = async (voters: Voter[]) => {
   const db = firebase.firestore()
-  const batch = db.batch()
 
   const electionDoc = db.collection('elections').doc(election_id)
 
@@ -117,17 +116,27 @@ const create_and_store_random_votes = async (voters: Voter[]) => {
   const votes = await electionDoc.collection('votes').get()
   const votesByAuth = votes.docs.reduce((memo, doc) => ({ ...memo, [memo[doc.data().auth]]: true }), {})
 
-  voters.forEach(({ auth_token }) => {
-    if (votesByAuth[auth_token]) return // Skip if already voted
+  // Firebase batches have size limits
+  const maxBatchSize = 500
+  const numBatches = Math.ceil((voters.length + 1) / maxBatchSize)
+  const batches = Array(numBatches)
+    .fill(0)
+    .map(() => db.batch())
+
+  voters.forEach(({ auth_token }, index) => {
+    if (votesByAuth[auth_token]) return // Skip if voted already
 
     // Store the encrypted vote in db
     const voteDoc = electionDoc.collection('votes').doc()
-    batch.set(voteDoc, { auth: auth_token, created_at: new Date(), encrypted_vote: random_vote() })
+    const batchIndex = Math.floor(index / maxBatchSize)
+    batches[batchIndex].set(voteDoc, { auth: auth_token, created_at: new Date(), encrypted_vote: random_vote() })
   })
-  batch.update(electionDoc, { num_votes: voters.length })
 
-  // Commit the batch write
-  await batch.commit()
+  // Update the electionDoc in the last batch
+  batches[batches.length - 1].update(electionDoc, { num_votes: voters.length })
+
+  // Commit all batches
+  await Promise.all(batches.map((batch) => batch.commit()))
 }
 
 type Voter = { auth_token: string }

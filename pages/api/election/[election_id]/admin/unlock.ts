@@ -112,7 +112,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const numColumns = Object.keys(split).length
     const numCiphertexts = numUnlocked * numColumns
     console.log(
-      `🔑 Unlocked ${numUnlocked} votes with ${numColumns} columns (${numCiphertexts} ciphertexts) in ${time}ms. (${(
+      `🔑 Unlocked ${numUnlocked} votes with ${numColumns} columns (${numCiphertexts} ciphertexts) in ${time.toLocaleString()}ms. (${(
         time / numCiphertexts
       ).toFixed(2)} ms/ciphertext)`,
     )
