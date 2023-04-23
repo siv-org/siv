@@ -93,10 +93,6 @@ export const ECompareTable = (): JSX.Element => {
           padding: 5px 4px;
         }
 
-        .text-center {
-          text-align: center;
-        }
-
         .bold {
           font-weight: 600;
         }
