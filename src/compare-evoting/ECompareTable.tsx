@@ -11,7 +11,7 @@ export const ECompareTable = (): JSX.Element => {
         <RotateRightOutlined /> &nbsp; <b>Tip:</b> Looks better in Landscape orientation
       </section>
 
-      <section className="table">
+      <section className="overflow-x-scroll pb-40">
         <table>
           <thead>
             <tr>
@@ -68,11 +68,6 @@ export const ECompareTable = (): JSX.Element => {
           .landscape-reminder {
             display: block;
           }
-        }
-
-        section.table {
-          overflow-x: scroll;
-          padding-bottom: 10rem;
         }
 
         table {
