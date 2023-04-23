@@ -31,7 +31,7 @@ export const UnlockVotesButton = ({ num_approved, num_voted }: { num_approved: n
       }}
     >
       <>
-        {unlocking && <Spinner />}
+        {unlocking && <Spinner countSeconds />}
         Unlock{unlocking ? 'ing' : ''} {num_approved} Vote{num_approved === 1 ? '' : 's'}
       </>
     </OnClickButton>
