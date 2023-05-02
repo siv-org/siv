@@ -47,5 +47,7 @@ export function tallyVotes(ballot_items_by_id: Record<string, unknown>, votes: R
     ),
   ) as Record<string, string[]>
 
+  // const ordered = {}
+
   return { ordered, tallies, totalsCastPerItems }
 }
