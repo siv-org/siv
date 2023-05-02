@@ -73,7 +73,7 @@ if (!ADMIN_EMAIL) throw 'Missing process.env.ADMIN_EMAIL'
       ip: headers['x-real-ip'],
     }
     const submittedAt = new Date(data.created_at._seconds * 1000)
-    const ua = UAParser(data.headers['user-agent'])
+    const ua = UAParser(headers['user-agent'])
 
     // console.log(data)
 
