@@ -83,37 +83,37 @@ export const groupedSteps: Group[] = [
 
       // Pre-req
       {
-        name: 'Observer Registration',
-        subheader: `To give voters additional confidence that the election is run fairly, administrators have the option to add SIV “Verifying Observers”.`,
+        name: 'Privacy Protectors Registration',
+        subheader: `To give voters additional confidence that the election is run fairly, administrators have the option to add SIV “Privacy Protectors”.`,
         then: [
           {
             left: [
               {
-                details: `These are like the observers in our existing paper elections, but SIV Verifying Observers are vastly more powerful, because they use strong cryptography to ensure every vote is private and tamper-free.
+                details: `These are like the observers in our existing paper elections, but SIV Privacy Protectors are vastly more powerful, because they use strong cryptography to ensure every vote is private and tamper-free.
 
-                After anonymization (Step 4), the Verifying Observers work together to unlock the votes for tallying (Step 5).`,
+                After anonymization (Step 4), the Privacy Protectors work together to unlock the votes for tallying (Step 5).`,
               },
               {
                 html: light(
-                  `Before the election begins, Verifying Observers take part in a SIV Threshold Key Generation ceremony to generate private key shares and create the election's public key.`,
+                  `Before the election begins, Privacy Protectors take part in a SIV Threshold Key Generation ceremony to generate private key shares and create the election's public key.`,
                 ),
               },
             ],
             right: [
-              { html: '<b>Each Observer contributes a share of the unlocking key.</b>' },
+              { html: '<b>Each Privacy Protector contributes a share of the unlocking key.</b>' },
               '',
               { image: 'pre-c-key.png', maxWidth: 200 },
               '',
               '',
               {
                 html: light(
-                  "The Observers ought to have competing interests. A reasonable choice would be one Observer selected by each candidate's political party, plus the election admin.",
+                  "The Privacy Protectors ought to have competing interests. A reasonable choice would be one Privacy Protector selected by each candidate's political party, plus the election admin.",
                 ),
               },
               '',
               {
                 html: light(
-                  'Verifying Observers do not need to trust each other, and cannot possibly tamper with votes.',
+                  'Privacy Protectors do not need to trust each other, and cannot possibly tamper with votes.',
                 ),
               },
               '',
@@ -288,7 +288,7 @@ export const groupedSteps: Group[] = [
       {
         leftFirst: true,
         name: 'Step 4: Verifiable Shuffle',
-        subheader: 'All the encrypted votes are then anonymized by the Verifying Observers.',
+        subheader: 'All the encrypted votes are then anonymized by the Privacy Protectors.',
         then: [
           {
             left: [
@@ -321,7 +321,7 @@ export const groupedSteps: Group[] = [
               '',
               '',
               {
-                html: `Observer #1 then shuffles the votes.`,
+                html: `Privacy Protector #1 then shuffles the votes.`,
               },
               '',
             ],
@@ -345,7 +345,7 @@ export const groupedSteps: Group[] = [
               '',
               '',
               {
-                html: `So, Observer #1 then picks new Randomizer integers for each encrypted field, and ${purple(
+                html: `So, Privacy Protector #1 then picks new Randomizer integers for each encrypted field, and ${purple(
                   em(semibold('Re-encrypts')),
                 )} the shuffled votes.`,
               },
@@ -353,7 +353,7 @@ export const groupedSteps: Group[] = [
               {
                 html: `This is like ${semibold(
                   em('painting over'),
-                )} the outside of the safes. The vote content is still safely locked within, and the Observer still has no ability to see or modify what's inside.`,
+                )} the outside of the safes. The vote content is still safely locked within, and the Privacy Protector still has no ability to see or modify what's inside.`,
               },
               '',
               {
@@ -380,7 +380,7 @@ export const groupedSteps: Group[] = [
                 html: `${light(
                   `${em(
                     `Zero-Knowledge Proofs of a Valid Shuffle`,
-                  )} are also provided. These proofs verify vote accuracy, even in the face of a dishonest or compromised Observer.`,
+                  )} are also provided. These proofs verify vote accuracy, even in the face of a dishonest or compromised Privacy Protector.`,
                 )}`,
               },
               '',
@@ -392,14 +392,14 @@ export const groupedSteps: Group[] = [
           {
             left: [
               {
-                p: 'For strong cryptographic privacy, Observer #2 then repeats this same shuffle + re-encryption process, starting with the mixed list from Observer #1.',
+                p: 'For strong cryptographic privacy, Privacy Protector #2 then repeats this same shuffle + re-encryption process, starting with the mixed list from Privacy Protector #1.',
               },
               '',
               {
-                p: `This way, all of the Observers independently shuffle the encrypted votes, like multiple people shuffling a deck of cards, then handing it off to the next person.`,
+                p: `This way, all of the Privacy Protectors independently shuffle the encrypted votes, like multiple people shuffling a deck of cards, then handing it off to the next person.`,
               },
               {
-                p: `This design creates multiple fail-safes. Even if some Observers' devices are compromised, vote privacy can still be protected.`,
+                p: `This design creates multiple fail-safes. Even if some Privacy Protectors' devices are compromised, vote privacy can still be protected.`,
               },
             ],
             right: ['', '', { react: MixnetAnimation }],
@@ -410,7 +410,7 @@ export const groupedSteps: Group[] = [
       // Step 5
       {
         name: 'Step 5: Votes Unlocked & Tallied',
-        subheader: 'The Verifying Observers then work together to Unlock the final shuffled list.',
+        subheader: 'The Privacy Protectors then work together to Unlock the final shuffled list.',
         then: [
           {
             left: [
@@ -423,7 +423,7 @@ export const groupedSteps: Group[] = [
             ],
             right: [
               '',
-              { html: "<b>Each Observer's individual key can partially unlock the final votes.</b>" },
+              { html: "<b>Each Privacy Protector's individual key can partially unlock the final votes.</b>" },
               '',
               { image: 'pre-c-key.png', maxWidth: 200 },
               '',
