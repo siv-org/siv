@@ -1,4 +1,5 @@
 import '../src/reset.css'
+import '../src/tailwind.css'
 
 import { AppProps } from 'next/app'
 

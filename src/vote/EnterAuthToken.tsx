@@ -11,7 +11,7 @@ export const EnterAuthToken = () => {
   const submitBtn = useRef<HTMLAnchorElement>(null)
 
   return (
-    <div className="container">
+    <div className="enter-auth-container">
       <h1>To cast a vote...</h1>
       <p>Enter your Voter Authorization Token:</p>
       <div className="row">
@@ -62,7 +62,7 @@ export const EnterAuthToken = () => {
         Unique for each election.
       </p>
       <style jsx>{`
-        .container {
+        .enter-auth-container {
           max-width: 350px;
           margin: 0 auto;
         }

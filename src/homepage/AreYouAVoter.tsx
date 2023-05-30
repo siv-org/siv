@@ -21,7 +21,7 @@ export function AreYouAVoter(): JSX.Element {
   const fieldProps = { onChange, toID }
 
   return (
-    <div className="container">
+    <div className="are-you-container">
       <div className="column">
         <a id="let-your-govt-know" />
         <Element name="let-your-govt-know" />
@@ -67,7 +67,7 @@ export function AreYouAVoter(): JSX.Element {
       </form>
 
       <style jsx>{`
-        .container {
+        .are-you-container {
           margin-top: 13vw;
           display: flex;
         }
@@ -100,7 +100,7 @@ export function AreYouAVoter(): JSX.Element {
 
         /* Small screens: single column */
         @media (max-width: 700px) {
-          .container {
+          .are-you-container {
             flex-direction: column;
           }
 
@@ -119,7 +119,7 @@ export function AreYouAVoter(): JSX.Element {
 
         /* fixed width for large screens */
         @media (min-width: 1440px) {
-          .container {
+          .are-you-container {
             max-width: 1440px;
             margin: 0 auto;
 
