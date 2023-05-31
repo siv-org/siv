@@ -18,7 +18,7 @@ export const EnterAuthToken = () => {
   return (
     <div>
       <div className="max-w-[350px] mx-auto">
-        <h1>To cast a vote...</h1>
+        <h1 className="text-center">To cast a vote...</h1>
         {voter_applications_allowed ? (
           <div style={{ textAlign: 'center' }}>
             <OnClickButton
