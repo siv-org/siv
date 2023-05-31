@@ -8,6 +8,7 @@ import { State } from '../vote-state'
 import { DetailedEncryptionReceipt } from './DetailedEncryptionReceipt'
 import { EncryptedVote } from './EncryptedVote'
 import { UnlockedVote } from './UnlockedVote'
+import { UnverifiedEmailModal } from './UnverifiedEmailModal'
 
 export function SubmittedScreen({
   auth,
@@ -38,6 +39,7 @@ export function SubmittedScreen({
 
   return (
     <NoSsr>
+      <UnverifiedEmailModal />
       <Link as={`/election/${election_id}`} href="/election/[election_id]">
         <a id="status-page" target="_blank">
           <img src="/vote/externallinkicon.jpg" width="15px" />
