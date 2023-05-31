@@ -1,11 +1,11 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import Pusher from 'pusher'
 
-const { PUSHER_KEY, PUSHER_SECRET } = process.env
+const { PUSHER_APP_ID, PUSHER_KEY, PUSHER_SECRET } = process.env
 
 /** Send updates to subscribed browsers over Websockets */
 export const pusher = new Pusher({
-  appId: '1122652',
+  appId: PUSHER_APP_ID || '1122652',
   cluster: 'us3',
   key: PUSHER_KEY as string,
   secret: PUSHER_SECRET as string,
