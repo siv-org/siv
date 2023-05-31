@@ -20,7 +20,7 @@ export const CompareTable = (): JSX.Element => {
         <RotateRightOutlined /> &nbsp; <b>Tip:</b> Looks better in Landscape orientation
       </section>
 
-      <section className="compare-table">
+      <section className="pb-40 overflow-x-scroll">
         <table>
           <thead>
             <tr>
@@ -124,11 +124,6 @@ export const CompareTable = (): JSX.Element => {
           }
         }
 
-        section.table {
-          overflow-x: auto;
-          padding-bottom: 10rem;
-        }
-
         table {
           border-collapse: collapse;
           margin: 0 auto;
@@ -145,10 +140,6 @@ export const CompareTable = (): JSX.Element => {
 
         td {
           padding: 5px 4px;
-        }
-
-        .text-center {
-          text-align: center;
         }
 
         .bold {

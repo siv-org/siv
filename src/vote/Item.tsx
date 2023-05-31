@@ -93,8 +93,10 @@ export const Item = ({
 
 export const Label = ({ name, sub }: { name: string; sub?: string }) => (
   <div>
-    {name}
-    {sub && <p>{sub}</p>}
+    <Linkify>
+      {name}
+      {sub && <p>{sub}</p>}
+    </Linkify>
     <style jsx>{`
       div {
         position: relative;

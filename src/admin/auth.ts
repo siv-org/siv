@@ -31,7 +31,7 @@ export async function checkLoginCode({
   code: string
   email: string
   onExpired: () => void
-  onInvalid: () => void
+  onInvalid: (message: string) => void
   router: NextRouter
 }) {
   // Ask backend if login code is valid
@@ -50,7 +50,7 @@ export async function checkLoginCode({
   if (response.status === 412) return onExpired()
 
   // Else, Invalid login token: redirect back to login w/ error message
-  onInvalid()
+  onInvalid((await response.json()).error)
 }
 
 export function useLoginRequired(loggedOut: boolean) {

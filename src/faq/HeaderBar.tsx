@@ -1,35 +1,13 @@
 import Link from 'next/link'
 
 export const HeaderBar = (): JSX.Element => (
-  <section>
-    <div>
+  <div className="bg-gradient-to-r p-4 from-[#010b26] to-[#072054] text-white">
+    <div className="max-w-[750px] w-full mx-auto">
       <Link href="/">
         <a className="big">Secure Internet Voting</a>
       </Link>
-      <Link href="/protocol">
-        <a>Protocol</a>
-      </Link>
     </div>
     <style jsx>{`
-      section {
-        background: rgb(1, 5, 11);
-        background: linear-gradient(90deg, #010b26 0%, #072054 100%);
-
-        color: #fff;
-
-        cursor: default;
-      }
-
-      section > div {
-        max-width: 750px;
-        width: 100%;
-        margin: 0 auto;
-        padding: 1rem;
-
-        display: flex;
-        align-items: baseline;
-      }
-
       .big {
         font-size: 24px;
         font-weight: 700;
@@ -63,5 +41,5 @@ export const HeaderBar = (): JSX.Element => (
         }
       }
     `}</style>
-  </section>
+  </div>
 )

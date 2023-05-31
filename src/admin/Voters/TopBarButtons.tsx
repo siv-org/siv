@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useWindowDimensions } from 'src/protocol/useWindowDimensions'
 
 import { InvalidateVotersButton } from './InvalidateVotersButton'
 import { SendInvitationsButton } from './SendInvitationsButton'
@@ -15,10 +16,11 @@ export const TopBarButtons = ({
 }) => {
   const num_checked = checked.filter((c) => c).length
   const [error, set_error] = useState('')
+  const { width } = useWindowDimensions()
 
   return (
     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
-      <div>
+      <div style={{ display: 'flex', flexDirection: width < 400 ? 'column' : 'row' }}>
         <SendInvitationsButton {...{ checked, num_checked, set_error }} />
         <InvalidateVotersButton {...{ checked, num_checked, set_error }} />
       </div>
