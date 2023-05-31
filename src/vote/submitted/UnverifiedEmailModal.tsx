@@ -8,11 +8,11 @@ export const UnverifiedEmailModal = () => {
       {/* Modal */}
       {isModalOpen && (
         <div className="flex flex-col items-center justify-center h-full">
-          <div className="p-8 bg-white rounded-lg">
+          <div className="p-3 bg-white rounded-lg">
             <div className="flex justify-end">
               {/* Close Button */}
-              <button
-                className="text-gray-500 bg-transparent hover:text-gray-700 focus:outline-none"
+              <a
+                className="text-gray-500 bg-transparent shadow-none hover:text-gray-700"
                 onClick={() => setModalOpen(false)}
               >
                 <svg
@@ -24,9 +24,9 @@ export const UnverifiedEmailModal = () => {
                 >
                   <path d="M6 18L18 6M6 6l12 12" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
                 </svg>
-              </button>
+              </a>
             </div>
-            <div className="mt-4 text-center">
+            <div className="p-4 text-center">
               {/* Message Box */}
               <p className="text-lg">A Verification Email has been sent to [email_address].</p>
             </div>
