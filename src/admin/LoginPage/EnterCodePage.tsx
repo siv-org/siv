@@ -1,10 +1,10 @@
 import { TextField } from '@material-ui/core'
 import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
+import { OnClickButton } from 'src/_shared/Button'
 import { api } from 'src/api-helper'
 import { GlobalCSS } from 'src/GlobalCSS'
 import { Head } from 'src/Head'
-import { OnClickButton } from 'src/_shared/Button'
 
 import { checkLoginCode } from '../auth'
 import { Headerbar } from './Headerbar'
@@ -78,7 +78,7 @@ export const EnterCodePage = () => {
                   setLoginCode('')
                   handleExpired()
                 },
-                onInvalid: () => setError('Incorrect code'),
+                onInvalid: (message: string) => setError(message || 'Unknown error signing in'),
                 router,
               })
             }}

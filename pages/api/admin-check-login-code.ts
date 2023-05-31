@@ -42,7 +42,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   pushover('Invalid admin login code', `${email} attempted w/ code '${code}'`)
 
-  return res.status(401).send({ error: `Invalid login token` })
+  return res.status(401).send({ error: `Invalid login code` })
 }
 
 export function setJWT({
@@ -56,7 +56,7 @@ export function setJWT({
   req: NextApiRequest
   res: NextApiResponse
 }) {
-  if (!JWT_SECRET) return res.status(401).send({ error: `Missing process.env JWT_SECRET` })
+  if (!JWT_SECRET) return res.status(501).send({ error: `Missing process.env JWT_SECRET` })
 
   const payload: JWT_Payload = { email, name }
 
