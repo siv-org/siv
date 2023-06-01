@@ -68,7 +68,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       text: `Please verify your email address by clicking the link below:
 
       ${button(
-        `${req.headers.origin}/verify_registration?email=${email}&code=${verification_code}`,
+        `${req.headers.origin}/verify_registration?email=${email}&code=${verification_code}&election_id=${election_id}`,
         'Verify Your Email',
       )}
 

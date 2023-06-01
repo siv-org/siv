@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-export const UnverifiedEmailModal = () => {
+export const UnverifiedEmailModal = ({ emailAddress }: { emailAddress: string }) => {
   const [isModalOpen, setModalOpen] = useState(true)
 
   return (
@@ -28,7 +28,7 @@ export const UnverifiedEmailModal = () => {
             </div>
             <div className="p-4 text-center">
               {/* Message Box */}
-              <p className="text-lg">A Verification Email has been sent to [email_address].</p>
+              <p className="text-lg">A Verification Email has been sent to {emailAddress}.</p>
             </div>
           </div>
         </div>

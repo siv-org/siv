@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./src/**/*.tsx'],
+  content: ['./src/**/*.tsx', './pages/**/*.tsx'],
   corePlugins: { preflight: false },
   plugins: [],
   theme: {
