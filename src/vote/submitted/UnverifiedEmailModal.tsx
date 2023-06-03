@@ -18,40 +18,46 @@ export const UnverifiedEmailModal = () => {
     }
     getVerificationStatus()
   }, [])
+
   return (
     <div>
       {email && email.includes('@') && <p>A verification email was sent to {email} </p>}
 
       {/* Modal */}
-      {isModalOpen && (
-        <div className="absolute inset-0 z-20 bg-gray-900/60">
-          <div className="flex flex-col items-center justify-center h-full">
-            <div className="p-3 bg-white rounded-lg">
-              <div className="flex justify-end">
-                {/* Close Button */}
-                <a
-                  className="text-gray-500 bg-transparent shadow-none hover:text-gray-700"
-                  onClick={() => setModalOpen(false)}
+      <div
+        className={`absolute inset-0  transition-opacity duration-500 ease-in-out bg-gray-900/60 ${
+          isModalOpen ? 'opacity-100 z-20' : 'opacity-0 -z-10'
+        }`}
+      >
+        <div className="flex flex-col items-center justify-center h-full">
+          <div
+            className={`p-3 transition-transform duration-500 ease-in-out transform  bg-white rounded-lg ${
+              isModalOpen ? 'scale-100' : 'scale-0'
+            }`}
+          >
+            <div className="flex justify-end">
+              {/* Close Button */}
+              <a
+                className="text-gray-500 bg-transparent shadow-none cursor-pointer hover:text-gray-700"
+                onClick={() => setModalOpen(false)}
+              >
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
-                  <svg
-                    className="w-6 h-6"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M6 18L18 6M6 6l12 12" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
-                  </svg>
-                </a>
-              </div>
-              <div className="p-4 text-center">
-                {/* Message Box */}
-                <p className="text-lg">A Verification Email has been sent to {email}.</p>
-              </div>
+                  <path d="M6 18L18 6M6 6l12 12" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
+                </svg>
+              </a>
             </div>
+
+            {/* Message Box */}
+            <p className="p-4 text-lg text-center">A Verification Email has been sent to {email}.</p>
           </div>
         </div>
-      )}
+      </div>
     </div>
   )
 }
