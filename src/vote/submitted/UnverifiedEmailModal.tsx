@@ -21,7 +21,11 @@ export const UnverifiedEmailModal = () => {
 
   return (
     <div>
-      {email && email.includes('@') && <p>A verification email was sent to {email} </p>}
+      {email && email.includes('@') && (
+        <p className="inline-block w-auto p-2 font-medium border-2 border-yellow-400 border-dashed">
+          ⚠️ A verification email was sent to {email}{' '}
+        </p>
+      )}
 
       {/* Modal */}
       <div
@@ -54,7 +58,7 @@ export const UnverifiedEmailModal = () => {
             </div>
 
             {/* Message Box */}
-            <p className="p-4 text-lg text-center">A Verification Email has been sent to {email}.</p>
+            <p className="p-4 text-lg text-center">A Verification Email has been sent to {email}</p>
           </div>
         </div>
       </div>
