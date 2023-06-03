@@ -39,7 +39,7 @@ export function SubmittedScreen({
 
   return (
     <NoSsr>
-      <UnverifiedEmailModal emailAddress={'email_here'} />
+      <UnverifiedEmailModal />
       <Link as={`/election/${election_id}`} href="/election/[election_id]">
         <a id="status-page" target="_blank">
           <img src="/vote/externallinkicon.jpg" width="15px" />

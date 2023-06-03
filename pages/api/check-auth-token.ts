@@ -45,7 +45,6 @@ export async function validateAuthToken(
   const [vote] = (await votes).docs
   if (vote) {
     const previous_at = new Date(vote.data().created_at?._seconds * 1000)
-    return fail(`Vote already recorded. (${format(previous_at)})`)
   }
 
   // Has Auth Token been invalidated?
@@ -53,11 +52,13 @@ export async function validateAuthToken(
 
   // Is Auth Token pending review?
   if (voter.data().applied_at) {
+    const { email } = voter.data()
+
     // if they verified email
 
     // if they didn't verify email
 
-    return pass('Application submitted. You can now submit a vote.')
+    return pass(`Application submitted. You can now submit a vote. email:${email}`)
   }
 
   // Passed all checks

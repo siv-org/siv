@@ -1,8 +1,22 @@
-import { useState } from 'react'
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
+import { api } from 'src/api-helper'
 
-export const UnverifiedEmailModal = ({ emailAddress }: { emailAddress: string }) => {
+export const UnverifiedEmailModal = () => {
   const [isModalOpen, setModalOpen] = useState(true)
+  const [email, setEmail] = useState('')
+  const { auth, election_id } = useRouter().query as { auth?: string; election_id?: string }
 
+  useEffect(() => {
+    async function getVerificationStatus() {
+      const response = await api(`election/${election_id}/get-application-status`, { auth })
+
+      const { email } = await response.json()
+      setEmail(email)
+      if (email == 'Verified') setModalOpen(false)
+    }
+    getVerificationStatus()
+  }, [])
   return (
     <div className={`${isModalOpen ? 'bg-gray-900/60' : ''} absolute inset-0 z-20`}>
       {/* Modal */}
@@ -28,7 +42,7 @@ export const UnverifiedEmailModal = ({ emailAddress }: { emailAddress: string })
             </div>
             <div className="p-4 text-center">
               {/* Message Box */}
-              <p className="text-lg">A Verification Email has been sent to {emailAddress}.</p>
+              <p className="text-lg">A Verification Email has been sent to {email}.</p>
             </div>
           </div>
         </div>

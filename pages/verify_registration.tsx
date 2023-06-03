@@ -33,7 +33,7 @@ const VerifyRegistrationPage = () => {
     if (email && code && election_id) verifyRegistration()
   }, [email, code, election_id, router])
 
-  return <p className="px-6 text-2xl">{isSuccess ? `✅ Your email ${email} has been successfully verified` : error}</p>
+  return <p className="px-6 text-2xl">{isSuccess ? `✅ Your email ${email} has been successfully verified.` : error}</p>
 }
 
 export default VerifyRegistrationPage
