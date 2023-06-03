@@ -21,9 +21,10 @@ export const UnverifiedEmailModal = () => {
   return (
     <div>
       {email && email.includes('@') && <p>A verification email was sent to {email} </p>}
-      <div className={`${isModalOpen ? 'bg-gray-900/60' : ''} absolute inset-0 z-20`}>
-        {/* Modal */}
-        {isModalOpen && (
+
+      {/* Modal */}
+      {isModalOpen && (
+        <div className="absolute inset-0 z-20 bg-gray-900/60">
           <div className="flex flex-col items-center justify-center h-full">
             <div className="p-3 bg-white rounded-lg">
               <div className="flex justify-end">
@@ -49,8 +50,8 @@ export const UnverifiedEmailModal = () => {
               </div>
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   )
 }
