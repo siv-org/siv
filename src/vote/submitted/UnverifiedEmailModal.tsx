@@ -12,9 +12,9 @@ export const UnverifiedEmailModal = () => {
       const response = await api(`election/${election_id}/get-application-status`, { auth })
 
       if (response.status >= 400) return
-      const { email } = await response.json()
-      setEmail(email)
-      if (email.includes('@')) setModalOpen(true)
+      const status = await response.text()
+      if (status == 'Unverified') setModalOpen(true)
+      setEmail(localStorage.getItem(`registration-${auth}`) || 'your email')
     }
     getVerificationStatus()
   }, [])

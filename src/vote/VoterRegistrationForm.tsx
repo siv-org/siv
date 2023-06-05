@@ -70,6 +70,9 @@ export const VoterRegistrationForm = () => {
           if (!response.ok) return setError((await response.json()).error)
           const { auth_token } = await response.json()
 
+          // Store the email address so we can remind them later to check it
+          localStorage.setItem(`registration-${auth_token}`, email)
+
           // Redirect to update auth in URL
           const url = new URL(window.location.toString())
           url.searchParams.set('auth', auth_token.toLowerCase())

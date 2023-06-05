@@ -7,7 +7,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   await getEmail(auth, election_id, {
     fail: () => res.status(400).send('no pending application'),
-    pass: (email) => res.status(200).json({ email }),
+    pass: (status) => res.status(200).send(status),
   })
 }
 
@@ -34,7 +34,6 @@ export async function getEmail(
   const wasVerified = voter.data().status == 'verified'
   if (wasVerified) return pass('Verified')
 
-  // Must still be pending application, pass the email
-  const { email } = voter.data()
-  pass(email)
+  // Must still be pending application
+  pass('Unverified')
 }
