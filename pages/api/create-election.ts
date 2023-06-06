@@ -22,6 +22,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     election_title,
     num_voters: 0,
     num_votes: 0,
+    voter_applications_allowed: true,
   })
 
   // Send back our new election_id
