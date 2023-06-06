@@ -62,7 +62,10 @@ export const ValidVotersTable = ({
               />
             </th>
             <th>#</th>
+            <th>first name</th>
+            <th>last name</th>
             <th>email</th>
+            <th>email verified?</th>
             <th className="hoverable" onClick={toggle_tokens}>
               {mask_tokens ? 'masked' : 'full'}
               <br />
@@ -90,7 +93,21 @@ export const ValidVotersTable = ({
         </thead>
         <tbody>
           {(showAll ? shown_voters : onThisPage).map(
-            ({ auth_token, email, esignature, esignature_review, has_voted, invite_queued, mailgun_events }, index) => (
+            (
+              {
+                auth_token,
+                email,
+                esignature,
+                esignature_review,
+                first_name,
+                has_voted,
+                invite_queued,
+                last_name,
+                mailgun_events,
+                status,
+              },
+              index,
+            ) => (
               <tr className={`${checked[index] ? 'checked' : ''}`} key={email}>
                 {/* Checkbox cell */}
 
@@ -114,6 +131,9 @@ export const ValidVotersTable = ({
                   <input readOnly checked={!!checked[index]} className="hoverable" type="checkbox" />
                 </td>
                 <td className="show-strikethrough">{index + 1}</td>
+                <td>{first_name}</td>
+                <td>{last_name}</td>
+
                 <td className="show-strikethrough">
                   <span style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <span>{email}</span>
@@ -146,6 +166,7 @@ export const ValidVotersTable = ({
                     </span>
                   </span>
                 </td>
+                <td className="text-center">{status == 'verified' ? '✓' : ''}</td>
                 <td className="show-strikethrough" style={{ fontFamily: 'monospace' }}>
                   {mask_tokens ? mask(auth_token) : auth_token}
                 </td>

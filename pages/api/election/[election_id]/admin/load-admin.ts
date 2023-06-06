@@ -12,11 +12,14 @@ export type Voter = {
   email: string
   esignature?: string
   esignature_review: ReviewLog[]
+  first_name: string
   has_voted: boolean
   index: number
   invalidated?: boolean
   invite_queued?: QueueLog[]
+  last_name: string
   mailgun_events: { accepted?: MgEvent[]; delivered?: MgEvent[]; failed?: MgEvent[] }
+  status: string
 }
 export type Trustee = {
   device?: string
@@ -127,16 +130,30 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Build voters objects
   const voters: Voter[] = (await loadVoters).docs.reduce((acc: Voter[], doc) => {
-    const { auth_token, email, esignature_review, index, invalidated_at, invite_queued, mailgun_events } = {
+    const {
+      auth_token,
+      email,
+      esignature_review,
+      first_name,
+      index,
+      invalidated_at,
+      invite_queued,
+      last_name,
+      mailgun_events,
+      status,
+    } = {
       ...doc.data(),
     } as {
       auth_token: string
       email: string
       esignature_review: ReviewLog[]
+      first_name: string
       index: number
       invalidated_at?: Date
       invite_queued: QueueLog[]
+      last_name: string
       mailgun_events: { accepted: MgEvent[]; delivered: MgEvent[] }
+      status: string
     }
     return [
       ...acc,
@@ -145,11 +162,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         email,
         esignature: (votesByAuth[auth_token] || [])[1],
         esignature_review,
+        first_name,
         has_voted: !!votesByAuth[auth_token],
         index,
         invalidated: invalidated_at ? true : undefined,
         invite_queued,
+        last_name,
         mailgun_events,
+        status,
       },
     ]
   }, [])
