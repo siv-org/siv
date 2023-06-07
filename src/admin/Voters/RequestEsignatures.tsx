@@ -33,7 +33,7 @@ export const RequestEsignatures = () => {
         </div>
         Request <i>eSignatures</i>?
       </label>
-      <div style={{ bottom: 3, display: 'inline-block', position: 'relative' }}>
+      <div style={{ bottom: 3, display: 'inline-block', left: 10, position: 'relative' }}>
         <Switch checked={!!esignature_requested} color="primary" onClick={toggleESignature} />
       </div>
       {updating && <Spinner />}

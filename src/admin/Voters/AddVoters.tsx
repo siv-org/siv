@@ -37,6 +37,7 @@ export const AddVoters = () => {
           }}
         />
       )}
+
       <ToggleRegistration />
       <RequestEsignatures />
       <ExistingVoters />
