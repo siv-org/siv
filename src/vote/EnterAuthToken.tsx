@@ -28,8 +28,8 @@ export const EnterAuthToken = () => {
 
   return (
     <div>
+      <h1 className="text-center">{election_title}</h1>
       <div className="max-w-[350px] mx-auto">
-        <h1 className="text-center">{election_title}</h1>
         <h2 className="text-center">To cast a vote...</h2>
         {voter_applications_allowed ? (
           <div style={{ textAlign: 'center' }}>
