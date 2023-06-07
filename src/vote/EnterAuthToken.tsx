@@ -2,12 +2,13 @@ import { TextField } from '@material-ui/core'
 import { ElectionInfo } from 'api/election/[election_id]/info'
 import router, { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
+import { Spinner } from 'src/admin/Spinner'
 
 import { OnClickButton } from '../_shared/Button'
 import { VoterRegistrationForm } from './VoterRegistrationForm'
 
 export const EnterAuthToken = () => {
-  const { election_title, voter_applications_allowed } = useElectionInfo()
+  const { election_title, loaded, voter_applications_allowed } = useElectionInfo()
   const [error, setError] = useState('')
   const [text, setText] = useState('')
   const [openedVoterAuthInput, setOpenedVoterAuthInput] = useState(false)
@@ -16,6 +17,14 @@ export const EnterAuthToken = () => {
   const [openedRegistration, setOpenedRegistration] = useState(false)
 
   const submitBtn = useRef<HTMLAnchorElement>(null)
+
+  if (!loaded)
+    return (
+      <h2>
+        <Spinner />
+        Loading...
+      </h2>
+    )
 
   return (
     <div>
@@ -122,12 +131,12 @@ function testAuthToken(s: string) {
 
 function useElectionInfo() {
   const { election_id } = useRouter().query
-  const [info, setInfo] = useState<ElectionInfo>({})
+  const [info, setInfo] = useState<ElectionInfo & { loaded: boolean }>({ loaded: false })
   useEffect(() => {
     async function getElectionInfo() {
       const response = await fetch(`/api/election/${election_id}/info`)
 
-      setInfo(await response.json())
+      setInfo({ ...(await response.json()), loaded: true })
     }
     if (!election_id) return
     getElectionInfo()
