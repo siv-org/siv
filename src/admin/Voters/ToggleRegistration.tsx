@@ -31,7 +31,7 @@ export const ToggleRegistration = () => {
         <div style={{ display: 'inline-block', marginRight: 5, position: 'relative', top: 5 }}>
           <Image height={(587 / 554) * 20} layout="fixed" src={registrationIcon} width={20} />
         </div>
-        Allow <i>Public Registration Link</i>?
+        Allow new registrations
       </label>
       <div style={{ bottom: 3, display: 'inline-block', position: 'relative' }}>
         <Switch checked={!!voter_applications_allowed} color="primary" onClick={toggleVoterApplications} />
