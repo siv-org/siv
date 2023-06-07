@@ -85,23 +85,22 @@ export const EnterAuthToken = () => {
         )}
       </div>
 
-      {voter_applications_allowed && (
-        <div className="text-center">
-          <h2 className="my-12 italic font-medium opacity-70">— &nbsp; or &nbsp; —</h2>
+      <div className="text-center">
+        <h2 className="my-12 italic font-medium opacity-70">— &nbsp; or &nbsp; —</h2>
 
-          <section className="py-2 mb-6 text-lg rounded bg-blue-900/10">
-            The Election Administrator is accepting applications to join this vote.
-          </section>
-
-          <OnClickButton
-            style={{ margin: 0, padding: '10px 15px' }}
-            onClick={() => setOpenedRegistration(!openedRegistration)}
-          >
-            Apply to Join This Election
-          </OnClickButton>
-          {openedRegistration && <VoterRegistrationForm />}
-        </div>
-      )}
+        <OnClickButton
+          style={{ margin: 0, padding: '10px 15px' }}
+          onClick={() => setOpenedRegistration(!openedRegistration)}
+        >
+          Enter Your Info To Join Election
+        </OnClickButton>
+        {!voter_applications_allowed && (
+          <p className="italic font-semibold text-rose-700">
+            This election is not accepting any more voters at this time.
+          </p>
+        )}
+        {openedRegistration && voter_applications_allowed && <VoterRegistrationForm />}
+      </div>
     </div>
   )
 }
