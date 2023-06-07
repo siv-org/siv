@@ -12,6 +12,7 @@ export type ElectionInfo = {
   observers?: string[]
   p?: string
   threshold_public_key?: string
+  voter_applications_allowed?: boolean
 }
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -38,7 +39,16 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   const observers = (await loadObservers).docs.map((doc, index) => doc.data().name || `Verifying Observer ${index + 1}`)
 
-  const { ballot_design, election_title, esignature_requested, g, last_decrypted_at, p, threshold_public_key } = data
+  const {
+    ballot_design,
+    election_title,
+    esignature_requested,
+    g,
+    last_decrypted_at,
+    p,
+    threshold_public_key,
+    voter_applications_allowed,
+  } = data
 
   const info: ElectionInfo = {
     ballot_design: ballot_design ? JSON.parse(ballot_design) : undefined,
@@ -50,6 +60,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     observers,
     p,
     threshold_public_key,
+    voter_applications_allowed,
   }
 
   // Return public election fields

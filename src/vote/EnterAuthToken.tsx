@@ -1,16 +1,18 @@
 import { TextField } from '@material-ui/core'
-import router from 'next/router'
-import { useRef, useState } from 'react'
+import { ElectionInfo } from 'api/election/[election_id]/info'
+import router, { useRouter } from 'next/router'
+import { useEffect, useRef, useState } from 'react'
 
 import { OnClickButton } from '../_shared/Button'
 import { VoterRegistrationForm } from './VoterRegistrationForm'
 
-const voter_applications_allowed = true
-
 export const EnterAuthToken = () => {
+  const { election_title, voter_applications_allowed } = useElectionInfo()
   const [error, setError] = useState('')
   const [text, setText] = useState('')
-  const [openedVoterAuthInput, setOpenedVoterAuthInput] = useState(!voter_applications_allowed)
+  const [openedVoterAuthInput, setOpenedVoterAuthInput] = useState(false)
+  useEffect(() => setOpenedVoterAuthInput(!voter_applications_allowed), [voter_applications_allowed])
+
   const [openedRegistration, setOpenedRegistration] = useState(false)
 
   const submitBtn = useRef<HTMLAnchorElement>(null)
@@ -18,7 +20,8 @@ export const EnterAuthToken = () => {
   return (
     <div>
       <div className="max-w-[350px] mx-auto">
-        <h1 className="text-center">To cast a vote...</h1>
+        <h1 className="text-center">{election_title}</h1>
+        <h2 className="text-center">To cast a vote...</h2>
         {voter_applications_allowed ? (
           <div style={{ textAlign: 'center' }}>
             <OnClickButton
@@ -115,4 +118,19 @@ function testAuthToken(s: string) {
 
   // Check for too many characters
   if (s.length > 10) throw `Too many characters (by ${s.length - 10})`
+}
+
+function useElectionInfo() {
+  const { election_id } = useRouter().query
+  const [info, setInfo] = useState<ElectionInfo>({})
+  useEffect(() => {
+    async function getElectionInfo() {
+      const response = await fetch(`/api/election/${election_id}/info`)
+
+      setInfo(await response.json())
+    }
+    if (!election_id) return
+    getElectionInfo()
+  }, [election_id])
+  return info
 }
