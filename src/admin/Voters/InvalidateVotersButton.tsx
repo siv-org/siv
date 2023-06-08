@@ -33,25 +33,27 @@ export const InvalidateVotersButton = ({
       onClick={async () => {
         if (displayOnly) return
 
-        const voters_selected = checked.reduce((acc: string[], is_checked, index) => {
-          if (is_checked) acc.push(valid_voters[index].email)
+        const voters_selected = checked.reduce((acc: { email: string; hasVoted: boolean }[], is_checked, index) => {
+          if (is_checked)
+            acc.push({
+              email: valid_voters[index].email,
+              hasVoted: valid_voters[index].has_voted,
+            })
           return acc
         }, [])
 
-        const amount_to_show = 10
-
+        const hasVotedMsg =
+          'Are you sure you want to invalidate this voter & their submitted vote? ' +
+          'The public will be able to see the vote was invalidated (but not its contents).'
+        const noVoteMsg = 'Are you sure you want to invalidate this voter & their auth token?'
         const confirmed = confirm(
-          `Are you sure you want to invalidate ${
-            num_checked === 1 ? 'this voter' : `these ${num_checked} voters`
-          } & their auth token${num_checked === 1 ? '' : 's'}?\n\n${voters_selected
-            .slice(0, amount_to_show)
-            .join('\n')}${num_checked > amount_to_show ? `\n\n and ${num_checked - amount_to_show} more.` : ''}`,
+          voters_selected.map((voter) => (voter.hasVoted ? hasVotedMsg : noVoteMsg)).join('\n\n'),
         )
 
         if (!confirmed) return
 
         const response = await api(`election/${election_id}/admin/invalidate-voters`, {
-          voters: voters_selected,
+          voters: voters_selected.map((voter) => voter.email),
         })
 
         try {
