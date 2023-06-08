@@ -65,7 +65,7 @@ export const InvalidateVotersButton = ({
         if (!confirmed) return
 
         const response = await api(`election/${election_id}/admin/invalidate-voters`, {
-          voters: voters_selected.map((voter) => voter.email),
+          voters_to_invalidate: voters_selected,
         })
 
         try {
