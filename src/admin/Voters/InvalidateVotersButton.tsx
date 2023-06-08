@@ -42,13 +42,25 @@ export const InvalidateVotersButton = ({
           return acc
         }, [])
 
-        const hasVotedMsg =
-          'Are you sure you want to invalidate this voter & their submitted vote? ' +
-          'The public will be able to see the vote was invalidated (but not its contents).'
-        const noVoteMsg = 'Are you sure you want to invalidate this voter & their auth token?'
-        const confirmed = confirm(
-          voters_selected.map((voter) => (voter.hasVoted ? hasVotedMsg : noVoteMsg)).join('\n\n'),
-        )
+        const votersWhoVoted = voters_selected.filter((voter) => voter.hasVoted)
+        const votersWhoDidNotVote = voters_selected.filter((voter) => !voter.hasVoted)
+
+        let message = ''
+        if (votersWhoVoted.length > 0) {
+          message += `Are you sure you want to invalidate ${
+            votersWhoVoted.length === 1 ? 'this voter' : `these ${votersWhoVoted.length} voters`
+          } & their submitted votes? The public will see the vote was invalidated, but they won't see the vote details.\n\nVoters:\n${votersWhoVoted
+            .map((voter) => voter.email)
+            .join('\n')}\n\n`
+        }
+
+        if (votersWhoDidNotVote.length > 0) {
+          message += `Are you sure you want to invalidate ${
+            votersWhoDidNotVote.length === 1 ? 'this voter' : `these ${votersWhoDidNotVote.length} voters`
+          } & their auth tokens?\n\nVoters:\n${votersWhoDidNotVote.map((voter) => voter.email).join('\n')}`
+        }
+
+        const confirmed = confirm(message)
 
         if (!confirmed) return
 
