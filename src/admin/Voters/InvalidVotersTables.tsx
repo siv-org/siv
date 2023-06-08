@@ -32,103 +32,103 @@ export const InvalidVotersTable = ({
   if (!shown_voters || !shown_voters.length) return null
 
   return (
-    <table>
-      Invalidated voters:
-      <thead>
-        <tr>
-          <th>
-            <input
-              style={{ cursor: 'pointer' }}
-              type="checkbox"
-              onChange={(event) => {
-                const new_checked = [...checked]
-                new_checked.fill(event.target.checked)
-                set_checked(new_checked)
-                set_last_selected(undefined)
-              }}
-            />
-          </th>
-          <th>#</th>
-          <th>email</th>
-          <th className="hoverable" onClick={toggle_tokens}>
-            {mask_tokens ? 'masked' : 'full'}
-            <br />
-            auth token
-          </th>
-          <th style={{ width: 50 }}>invite queued</th>
-          <th style={{ width: 50 }}>invite delivered</th>
-          <th>voted</th>
-          {esignature_requested && (
-            <th
-              className="hoverable"
-              onClick={() => {
-                if (confirm(`Do you want to approve all ${num_voted} signatures?`)) {
-                  api(`election/${election_id}/admin/review-signature`, {
-                    emails: shown_voters.filter(({ has_voted }) => has_voted).map((v) => v.email),
-                    review: 'approve',
-                  })
-                }
-              }}
-            >
-              signature
+    <>
+      <p className="mt-12 mb-1">Invalidated voters:</p>
+      <table>
+        <thead>
+          <tr>
+            <th>
+              <input
+                style={{ cursor: 'pointer' }}
+                type="checkbox"
+                onChange={(event) => {
+                  const new_checked = [...checked]
+                  new_checked.fill(event.target.checked)
+                  set_checked(new_checked)
+                  set_last_selected(undefined)
+                }}
+              />
             </th>
-          )}
-        </tr>
-      </thead>
-      <tbody>
-        {shown_voters.map(
-          ({ auth_token, email, esignature, esignature_review, has_voted, invite_queued, mailgun_events }, index) => (
-            <tr className={`${checked[index] ? 'checked' : ''}`} key={email}>
-              {/* Checkbox cell */}
-
-              <td
+            <th>#</th>
+            <th>email</th>
+            <th className="hoverable" onClick={toggle_tokens}>
+              {mask_tokens ? 'masked' : 'full'}
+              <br />
+              auth token
+            </th>
+            <th style={{ width: 50 }}>invite queued</th>
+            <th style={{ width: 50 }}>invite delivered</th>
+            <th>voted</th>
+            {esignature_requested && (
+              <th
                 className="hoverable"
                 onClick={() => {
-                  const new_checked = [...checked]
-                  if (pressing_shift && last_selected !== undefined) {
-                    // If they're holding shift, set all between last_selected and this index to !checked[index]
-                    for (let i = Math.min(index, last_selected); i <= Math.max(index, last_selected); i += 1) {
-                      new_checked[i] = !checked[index]
-                    }
-                  } else {
-                    new_checked[index] = !checked[index]
+                  if (confirm(`Do you want to approve all ${num_voted} signatures?`)) {
+                    api(`election/${election_id}/admin/review-signature`, {
+                      emails: shown_voters.filter(({ has_voted }) => has_voted).map((v) => v.email),
+                      review: 'approve',
+                    })
                   }
-
-                  set_last_selected(index)
-                  set_checked(new_checked)
                 }}
               >
-                <input readOnly checked={checked[index]} className="hoverable" type="checkbox" />
-              </td>
-              <td className="show-strikethrough">{index + 1}</td>
-              <td className="show-strikethrough">
-                <span style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <span>{email}</span>
-                </span>
-              </td>
-              <td className="show-strikethrough" style={{ fontFamily: 'monospace' }}>
-                {mask_tokens ? mask(auth_token) : auth_token}
-              </td>
+                signature
+              </th>
+            )}
+          </tr>
+        </thead>
+        <tbody>
+          {shown_voters.map(
+            ({ auth_token, email, esignature, esignature_review, has_voted, invite_queued, mailgun_events }, index) => (
+              <tr className={`${checked[index] ? 'checked' : ''}`} key={email}>
+                {/* Checkbox cell */}
 
-              <QueuedCell {...{ invite_queued }} />
-              <DeliveriesAndFailures {...mailgun_events} />
+                <td
+                  className="hoverable"
+                  onClick={() => {
+                    const new_checked = [...checked]
+                    if (pressing_shift && last_selected !== undefined) {
+                      // If they're holding shift, set all between last_selected and this index to !checked[index]
+                      for (let i = Math.min(index, last_selected); i <= Math.max(index, last_selected); i += 1) {
+                        new_checked[i] = !checked[index]
+                      }
+                    } else {
+                      new_checked[index] = !checked[index]
+                    }
 
-              <td style={{ fontWeight: 700, textAlign: 'center' }}>{has_voted ? '✓' : ''}</td>
+                    set_last_selected(index)
+                    set_checked(new_checked)
+                  }}
+                >
+                  <input readOnly checked={checked[index]} className="hoverable" type="checkbox" />
+                </td>
+                <td className="show-strikethrough">{index + 1}</td>
+                <td className="show-strikethrough">
+                  <span style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <span>{email}</span>
+                  </span>
+                </td>
+                <td className="show-strikethrough" style={{ fontFamily: 'monospace' }}>
+                  {mask_tokens ? mask(auth_token) : auth_token}
+                </td>
 
-              {esignature_requested &&
-                (has_voted ? <Signature {...{ election_id, email, esignature, esignature_review }} /> : <td />)}
-            </tr>
-          ),
-        )}
-      </tbody>
+                <QueuedCell {...{ invite_queued }} />
+                <DeliveriesAndFailures {...mailgun_events} />
+
+                <td style={{ fontWeight: 700, textAlign: 'center' }}>{has_voted ? '✓' : ''}</td>
+
+                {esignature_requested &&
+                  (has_voted ? <Signature {...{ election_id, email, esignature, esignature_review }} /> : <td />)}
+              </tr>
+            ),
+          )}
+        </tbody>
+      </table>
       <style jsx>{`
         table {
           border-collapse: collapse;
           display: block;
           overflow: scroll;
           width: 100%;
-
-          margin-top: 3rem;
         }
 
         th,
@@ -178,6 +178,6 @@ export const InvalidVotersTable = ({
           opacity: 1 !important;
         }
       `}</style>
-    </table>
+    </>
   )
 }
