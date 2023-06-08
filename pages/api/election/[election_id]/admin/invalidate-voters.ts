@@ -19,10 +19,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
       // Do all in parallel
       return Promise.all([
-        // Mark the auth token as invalidated
+        // 1. Mark the auth token as invalidated
         voterRef.update({ invalidated_at: new Date() }),
 
-        // If votes were cast with this auth, move them to an 'invalidated-votes' collection
+        // 2. If votes were cast with this auth, move them to an 'invalidated-votes' collection
         (async function invalidateVotes() {
           const votes = await db
             .collection('elections')
@@ -45,11 +45,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           )
         })(),
 
-        // Notify the voter over email
+        // 3. Notify the voter over email
         sendEmail({
           recipient: voter.email,
           subject: 'Your vote has been invalidated',
-          text: `The election administrator invalidated your submitted vote.
+          text: `The election administrator ${jwt.election_manager} invalidated your submitted vote in the election "${jwt.election_title}".
         
         If you believe this was an error, you can press reply to write to the Election Administrator.`,
         }),
