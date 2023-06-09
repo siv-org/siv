@@ -17,6 +17,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       const db = firebase.firestore()
       const voterRef = db.collection('elections').doc(election_id).collection('voters').doc(voter.email)
 
+      const votes = await db
+        .collection('elections')
+        .doc(election_id)
+        .collection('votes')
+        .where('auth', '==', voter.auth_token)
+        .get()
+
       // Do all in parallel
       return Promise.all([
         // 1. Mark the auth token as invalidated
@@ -24,13 +31,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
         // 2. If votes were cast with this auth, move them to an 'invalidated-votes' collection
         (async function invalidateVotes() {
-          const votes = await db
-            .collection('elections')
-            .doc(election_id)
-            .collection('votes')
-            .where('auth', '==', voter.auth_token)
-            .get()
-
           await Promise.all(
             votes.docs.map(async (vote) => {
               const invalidatedVote = { ...vote.data(), invalidated_at: new Date() }
@@ -46,13 +46,17 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         })(),
 
         // 3. Notify the voter over email
-        sendEmail({
-          recipient: voter.email,
-          subject: 'Your vote has been invalidated',
-          text: `The election administrator ${jwt.election_manager} invalidated your submitted vote in the election "${jwt.election_title}".
+        // Skip if they have not voted
+        votes.docs.length &&
+          // TODO: Skip if voter's email address is unverified, BLOCKED by PR #125 Registration link
+          // voter.status !== 'pending' &&
+          sendEmail({
+            recipient: voter.email,
+            subject: 'Your vote has been invalidated',
+            text: `The election administrator ${jwt.election_manager} invalidated your submitted vote in the election "${jwt.election_title}".
         
         If you believe this was an error, you can press reply to write to the Election Administrator.`,
-        }),
+          }),
       ])
     }),
   )
