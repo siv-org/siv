@@ -16,7 +16,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     voters_to_invalidate.map(async (voter) => {
       const db = firebase.firestore()
       const voterRef = db.collection('elections').doc(election_id).collection('voters').doc(voter.email)
-
       const votes = await db
         .collection('elections')
         .doc(election_id)

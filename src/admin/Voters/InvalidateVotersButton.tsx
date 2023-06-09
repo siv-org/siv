@@ -33,14 +33,18 @@ export const InvalidateVotersButton = ({
       onClick={async () => {
         if (displayOnly) return
 
-        const voters_selected = checked.reduce((acc: { email: string; hasVoted: boolean }[], is_checked, index) => {
-          if (is_checked)
-            acc.push({
-              email: valid_voters[index].email,
-              hasVoted: valid_voters[index].has_voted,
-            })
-          return acc
-        }, [])
+        const voters_selected = checked.reduce(
+          (acc: { auth_token: string; email: string; hasVoted: boolean }[], is_checked, index) => {
+            if (is_checked)
+              acc.push({
+                auth_token: valid_voters[index].auth_token,
+                email: valid_voters[index].email,
+                hasVoted: valid_voters[index].has_voted,
+              })
+            return acc
+          },
+          [],
+        )
 
         const votersWhoVoted = voters_selected.filter((voter) => voter.hasVoted)
         const votersWhoDidNotVote = voters_selected.filter((voter) => !voter.hasVoted)
