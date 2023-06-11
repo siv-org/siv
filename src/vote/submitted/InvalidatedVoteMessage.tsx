@@ -1,12 +1,15 @@
+import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { api } from 'src/api-helper'
 
 export const InvalidatedVoteMessage = () => {
   const [message, setMessage] = useState('')
   const [wasVoteInvalidated, setWasVoteInvalidated] = useState(null)
+  const router = useRouter()
+  const { auth, election_id } = router.query
 
   useEffect(() => {
-    api('/election/foobar/was-vote-invalidated')
+    api(`/election/${election_id}/was-vote-invalidated?auth=${auth}`)
       .then((response) => response.json())
       .then((data) => setWasVoteInvalidated(data))
   }, [])
