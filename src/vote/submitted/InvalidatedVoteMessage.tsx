@@ -26,7 +26,13 @@ export const InvalidatedVoteMessage = () => {
         onChange={(e) => setMessage(e.target.value)}
       />
       <br />
-      <button>Submit</button>
+      <button
+        onClick={() => {
+          api(`/election/${election_id}/submit-invalidation-response`, { auth, message })
+        }}
+      >
+        Submit
+      </button>
     </div>
   )
 }
