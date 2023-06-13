@@ -2,9 +2,7 @@ import { useReducer, useState } from 'react'
 import { api } from 'src/api-helper'
 
 import { useStored } from '../useStored'
-import { DeliveriesAndFailures } from './DeliveriesAndFailures'
 import { mask } from './mask-token'
-import { QueuedCell } from './QueuedCell'
 import { Signature, getStatus } from './Signature'
 import { use_multi_select } from './use-multi-select'
 
@@ -56,8 +54,6 @@ export const InvalidVotersTable = ({
               <br />
               auth token
             </th>
-            <th style={{ width: 50 }}>invite queued</th>
-            <th style={{ width: 50 }}>invite delivered</th>
             <th>voted</th>
             {esignature_requested && (
               <th
@@ -77,50 +73,45 @@ export const InvalidVotersTable = ({
           </tr>
         </thead>
         <tbody>
-          {shown_voters.map(
-            ({ auth_token, email, esignature, esignature_review, has_voted, invite_queued, mailgun_events }, index) => (
-              <tr className={`${checked[index] ? 'checked' : ''}`} key={email}>
-                {/* Checkbox cell */}
+          {shown_voters.map(({ auth_token, email, esignature, esignature_review, has_voted }, index) => (
+            <tr className={`${checked[index] ? 'checked' : ''}`} key={email}>
+              {/* Checkbox cell */}
 
-                <td
-                  className="hoverable"
-                  onClick={() => {
-                    const new_checked = [...checked]
-                    if (pressing_shift && last_selected !== undefined) {
-                      // If they're holding shift, set all between last_selected and this index to !checked[index]
-                      for (let i = Math.min(index, last_selected); i <= Math.max(index, last_selected); i += 1) {
-                        new_checked[i] = !checked[index]
-                      }
-                    } else {
-                      new_checked[index] = !checked[index]
+              <td
+                className="hoverable"
+                onClick={() => {
+                  const new_checked = [...checked]
+                  if (pressing_shift && last_selected !== undefined) {
+                    // If they're holding shift, set all between last_selected and this index to !checked[index]
+                    for (let i = Math.min(index, last_selected); i <= Math.max(index, last_selected); i += 1) {
+                      new_checked[i] = !checked[index]
                     }
+                  } else {
+                    new_checked[index] = !checked[index]
+                  }
 
-                    set_last_selected(index)
-                    set_checked(new_checked)
-                  }}
-                >
-                  <input readOnly checked={checked[index]} className="hoverable" type="checkbox" />
-                </td>
-                <td className="show-strikethrough">{index + 1}</td>
-                <td className="show-strikethrough">
-                  <span style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <span>{email}</span>
-                  </span>
-                </td>
-                <td className="show-strikethrough" style={{ fontFamily: 'monospace' }}>
-                  {mask_tokens ? mask(auth_token) : auth_token}
-                </td>
+                  set_last_selected(index)
+                  set_checked(new_checked)
+                }}
+              >
+                <input readOnly checked={checked[index]} className="hoverable" type="checkbox" />
+              </td>
+              <td className="show-strikethrough">{index + 1}</td>
+              <td className="show-strikethrough">
+                <span style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <span>{email}</span>
+                </span>
+              </td>
+              <td className="show-strikethrough" style={{ fontFamily: 'monospace' }}>
+                {mask_tokens ? mask(auth_token) : auth_token}
+              </td>
 
-                <QueuedCell {...{ invite_queued }} />
-                <DeliveriesAndFailures {...mailgun_events} />
+              <td style={{ fontWeight: 700, textAlign: 'center' }}>{has_voted ? '✓' : ''}</td>
 
-                <td style={{ fontWeight: 700, textAlign: 'center' }}>{has_voted ? '✓' : ''}</td>
-
-                {esignature_requested &&
-                  (has_voted ? <Signature {...{ election_id, email, esignature, esignature_review }} /> : <td />)}
-              </tr>
-            ),
-          )}
+              {esignature_requested &&
+                (has_voted ? <Signature {...{ election_id, email, esignature, esignature_review }} /> : <td />)}
+            </tr>
+          ))}
         </tbody>
       </table>
       <style jsx>{`
