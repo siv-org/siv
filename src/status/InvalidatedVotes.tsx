@@ -54,6 +54,7 @@ export const InvalidatedVotes = ({
           {votes.map((vote, index) => (
             <tr key={index}>
               <td>{vote.auth}</td>
+              <td>{JSON.stringify(vote.encrypted_vote)}</td>
             </tr>
           ))}
         </tbody>
