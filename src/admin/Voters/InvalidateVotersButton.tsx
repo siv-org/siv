@@ -53,15 +53,23 @@ export const InvalidateVotersButton = ({
         if (votersWhoVoted.length > 0) {
           message += `Are you sure you want to invalidate ${
             votersWhoVoted.length === 1 ? 'this voter' : `these ${votersWhoVoted.length} voters`
-          } & their submitted votes? The public will see the vote was invalidated, but they won't see the vote details.\n\nVoters:\n${votersWhoVoted
-            .map((voter) => voter.email)
-            .join('\n')}\n\n`
+          } & their submitted vote${votersWhoVoted.length === 1 ? '' : 's'}? The public will see the vote${
+            votersWhoVoted.length === 1 ? ' was' : 's were'
+          } invalidated, but not the vote details.\n\nVoters with votes:\n${votersWhoVoted
+            .map((voter) => `- ${voter.email}`)
+            .join('\n')}`
+        }
+
+        if (votersWhoVoted.length > 0 && votersWhoDidNotVote.length > 0) {
+          message += '\n\n————————————\n\n'
         }
 
         if (votersWhoDidNotVote.length > 0) {
           message += `Are you sure you want to invalidate ${
             votersWhoDidNotVote.length === 1 ? 'this voter' : `these ${votersWhoDidNotVote.length} voters`
-          } & their auth tokens?\n\nVoters:\n${votersWhoDidNotVote.map((voter) => voter.email).join('\n')}`
+          } & their auth token${
+            votersWhoDidNotVote.length === 1 ? '' : 's'
+          }?\n\nVoters without votes:\n${votersWhoDidNotVote.map((voter) => `- ${voter.email}`).join('\n')}`
         }
 
         const confirmed = confirm(message)
