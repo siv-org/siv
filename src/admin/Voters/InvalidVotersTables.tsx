@@ -1,7 +1,9 @@
+import Image from 'next/image'
 import { useReducer, useState } from 'react'
 import { api } from 'src/api-helper'
 
 import { useStored } from '../useStored'
+import InvalidatedVoteIcon from './invalidated.png'
 import { mask } from './mask-token'
 import { Signature, getStatus } from './Signature'
 import { use_multi_select } from './use-multi-select'
@@ -106,7 +108,11 @@ export const InvalidVotersTable = ({
                 {mask_tokens ? mask(auth_token) : auth_token}
               </td>
 
-              <td style={{ fontWeight: 700, textAlign: 'center' }}>{has_voted ? '✓' : ''}</td>
+              <td className="p-0 text-center">
+                {has_voted ? (
+                  <Image className="object-contain scale-25 " height={23} src={InvalidatedVoteIcon} width={23} />
+                ) : null}
+              </td>
 
               {esignature_requested &&
                 (has_voted ? <Signature {...{ election_id, email, esignature, esignature_review }} /> : <td />)}
