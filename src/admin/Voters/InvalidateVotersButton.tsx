@@ -53,9 +53,9 @@ export const InvalidateVotersButton = ({
         if (votersWhoVoted.length > 0) {
           message += `Are you sure you want to invalidate ${
             votersWhoVoted.length === 1 ? 'this voter' : `these ${votersWhoVoted.length} voters`
-          } & their submitted vote${votersWhoVoted.length === 1 ? '' : 's'}? The public will see the vote${
+          } & their submitted vote${votersWhoVoted.length === 1 ? '' : 's'}? The public will be able to see the vote${
             votersWhoVoted.length === 1 ? ' was' : 's were'
-          } invalidated, but not the vote details.\n\nVoters with votes:\n${votersWhoVoted
+          } invalidated, but not the vote content.\n\nVoters with votes:\n${votersWhoVoted
             .map((voter) => `- ${voter.email}`)
             .join('\n')}`
         }
