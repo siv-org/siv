@@ -53,9 +53,7 @@ export const ElectionStatusPage = (): JSX.Element => {
           <div style={{ display: show_encrypteds || !has_decrypted_votes ? 'block' : 'none' }}>
             {show_encrypteds && has_decrypted_votes && <Mixnet />}
             <AcceptedVotes {...{ ballot_design, esignature_requested, has_decrypted_votes }} />
-          </div>
-          <div>
-            <InvalidatedVotes {...{ ballot_design, esignature_requested, has_decrypted_votes }} />
+            <InvalidatedVotes />
           </div>
         </div>
         <Footer />
