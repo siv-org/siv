@@ -40,21 +40,21 @@ export const InvalidatedVotes = ({
   )
 
   return (
-    <section>
-      <h3>{title_prefix}Invalidated Votes</h3>
-      <p>These votes were invalidated by the election administrator.</p>
+    <section className="p-4 mb-8 bg-white rounded shadow-md">
+      <h3 className="mb-1">{title_prefix}Invalidated Votes</h3>
+      <p className="text-sm italic opacity-70">These votes were invalidated by the election administrator.</p>
       <table>
         <thead>
           <tr>
-            <th>Auth Token</th>
-            <th>Encrypted Vote</th>
+            <th></th>
+            <th className="py-2 text-left">Auth Token</th>
           </tr>
         </thead>
         <tbody>
           {votes.map((vote, index) => (
             <tr key={index}>
-              <td>{vote.auth}</td>
-              <td>{JSON.stringify(vote.encrypted_vote)}</td>
+              <td>{index + 1}.</td>
+              <td className="py-2">{vote.auth}</td>
             </tr>
           ))}
         </tbody>
