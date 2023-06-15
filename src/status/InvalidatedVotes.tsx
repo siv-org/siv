@@ -6,7 +6,7 @@ import { EncryptedVote, subscribeToUpdates } from './AcceptedVotes'
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
-export const InvalidatedVotes = (): JSX.Element => {
+export const InvalidatedVotes = () => {
   const { election_id } = useRouter().query
   const [isTableVisible, setTableVisibility] = useState(false)
 
@@ -18,7 +18,7 @@ export const InvalidatedVotes = (): JSX.Element => {
   // Subscribe to pusher updates of new votes
   subscribeToUpdates(mutate, election_id)
 
-  if (!votes) return <div>Loading...</div>
+  if (!votes || !votes.length) return null
 
   return (
     <section className="p-4 mb-8 bg-white rounded shadow-md">
