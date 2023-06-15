@@ -45,17 +45,21 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         })(),
 
         // 3. Notify the voter over email
-        // Skip if they have not voted
-        votes.docs.length &&
+        (function notifyVoter() {
+          // Skip if they have not voted
+          if (!votes.docs.length) return
+
           // TODO: Skip if voter's email address is unverified, BLOCKED by PR #125 Registration link
-          // voter.status !== 'pending' &&
-          sendEmail({
+          // if (voter.status == 'pending') return
+
+          return sendEmail({
             recipient: voter.email,
             subject: 'Your vote has been invalidated',
             text: `The election administrator ${jwt.election_manager} invalidated your submitted vote in the election "${jwt.election_title}".
         
         If you believe this was an error, you can press reply to write to the Election Administrator.`,
-          }),
+          })
+        })(),
       ])
     }),
   )
