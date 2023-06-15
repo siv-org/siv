@@ -171,7 +171,7 @@ export const stringifyEncryptedVote = (vote: EncryptedVote) =>
     )
     .join('')} }`
 
-function subscribeToUpdates(loadVotes: () => void, election_id?: string | string[]) {
+export function subscribeToUpdates(loadVotes: () => void, election_id?: string | string[]) {
   function subscribe() {
     if (!pusher) return alert('Pusher not initialized')
 
