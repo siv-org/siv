@@ -11,10 +11,15 @@ export const UnverifiedEmailModal = () => {
     async function getVerificationStatus() {
       const response = await api(`election/${election_id}/get-application-status`, { auth })
 
+      // No voter found or already pre-approved
       if (response.status >= 400) return
+
       const status = await response.text()
-      if (status == 'Unverified') setModalOpen(true)
-      setEmail(localStorage.getItem(`registration-${auth}`) || 'your email')
+      // Show warning if unverified
+      if (status == 'Unverified') {
+        setModalOpen(true)
+        setEmail(localStorage.getItem(`registration-${auth}`) || 'your email')
+      }
     }
     getVerificationStatus()
   }, [])
@@ -23,7 +28,7 @@ export const UnverifiedEmailModal = () => {
     <div>
       {email && email.includes('@') && (
         <p className="inline-block w-auto p-2 font-medium border-2 border-yellow-400 border-dashed">
-          ⚠️ A verification email was sent to {email}{' '}
+          ⚠️ A verification email was sent to {email}
         </p>
       )}
 
