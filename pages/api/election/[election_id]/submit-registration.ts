@@ -1,5 +1,5 @@
 import { firebase, sendEmail } from 'api/_services'
-import { button, generateAdminLoginCode } from 'api/admin-login'
+import { button, generateEmailLoginCode } from 'api/admin-login'
 import { validate as validateEmail } from 'email-validator'
 import { firestore } from 'firebase-admin'
 import { NextApiRequest, NextApiResponse } from 'next'
@@ -44,7 +44,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Server assigns them a temp Voter Auth Token & Email-Verification code
   const auth_token = generateAuthToken()
-  const verification_code = generateAdminLoginCode()
+  const verification_code = generateEmailLoginCode()
 
   await Promise.all([
     // store as pending review
