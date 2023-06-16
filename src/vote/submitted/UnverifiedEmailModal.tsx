@@ -26,7 +26,7 @@ export const UnverifiedEmailModal = () => {
 
   return (
     <div>
-      {email && email.includes('@') && (
+      {email && (
         <p className="inline-block w-auto p-2 font-medium border-2 border-yellow-400 border-dashed">
           ⚠️ A verification email was sent to {email}
         </p>
