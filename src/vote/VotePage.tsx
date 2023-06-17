@@ -4,8 +4,8 @@ import { useRouter } from 'next/router'
 import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
 import { AuthenticatedContent } from './AuthenticatedContent'
-import { EnterAuthToken } from './EnterAuthToken'
 import { Footer } from './Footer'
+import { NoAuthTokenScreen } from './NoAuthTokenScreen'
 
 export const VotePage = (): JSX.Element => {
   // Grab election parameters from URL
@@ -23,7 +23,7 @@ export const VotePage = (): JSX.Element => {
                 <AuthenticatedContent {...{ auth, election_id }} />
               </NoSsr>
             ) : (
-              <EnterAuthToken />
+              <NoAuthTokenScreen />
             ))}
         </div>
 
