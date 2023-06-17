@@ -17,7 +17,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     // Check if the voter document exists and has the same verification code
     if (voterSnapshot.exists && code && voterSnapshot.data()?.verification_code === code) {
       // Update the status to 'verified'
-      await voterSnapshot.ref.update({ status: 'verified' })
+      await voterSnapshot.ref.update({ is_email_verified: true })
 
       // Return a success response
       return res.status(200).json({ message: 'Email verified successfully.' })
