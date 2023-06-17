@@ -29,7 +29,7 @@ export const ToggleRegistration = () => {
     <section>
       <label onClick={toggleVoterApplications}>
         <div style={{ display: 'inline-block', marginRight: 5, position: 'relative', top: 5 }}>
-          <Image height={(587 / 554) * 20} layout="fixed" src={registrationIcon} width={20} />
+          <Image height={21} layout="fixed" src={registrationIcon} width={20} />
         </div>
         Allow new registrations
       </label>
