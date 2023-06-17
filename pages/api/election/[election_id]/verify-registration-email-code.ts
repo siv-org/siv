@@ -3,7 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { code, election_id, email } = req.body
-  console.log(code, election_id, email)
+
   try {
     // Fetch the voter document based on the email
     const voterSnapshot = await firebase
