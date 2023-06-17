@@ -54,8 +54,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       email,
       first_name,
       index: election.num_voters,
+      is_email_verified: false,
       last_name,
-      status: 'pending',
       verification_code,
     }),
     // Update election's voter count

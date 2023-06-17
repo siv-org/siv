@@ -18,7 +18,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (wasPreApproved) return res.status(400).send('No pending application')
 
   // Was the email already verified
-  const wasVerified = voter.data().status == 'verified'
+  const wasVerified = voter.data().is_email_verified == true
   if (wasVerified) return res.status(200).send('Verified')
 
   // Must still be pending application

@@ -38,7 +38,9 @@ export const ValidVotersTable = ({
       !invalidated && (!has_voted || !hide_voted) && (getStatus(esignature_review) !== 'approve' || !hide_approved),
   )
 
-  const shouldShowRegistrationColumns = voter_applications_allowed || shown_voters.some((voter) => voter.status)
+  const shouldShowRegistrationColumns =
+    // eslint-disable-next-line no-prototype-builtins
+    voter_applications_allowed || shown_voters.some((voter) => voter.hasOwnProperty('is_email_verified'))
 
   // Pagination logic
   const pageSize = 200
@@ -108,9 +110,9 @@ export const ValidVotersTable = ({
                 first_name,
                 has_voted,
                 invite_queued,
+                is_email_verified,
                 last_name,
                 mailgun_events,
-                status,
               },
               index,
             ) => (
@@ -176,7 +178,7 @@ export const ValidVotersTable = ({
                     </span>
                   </span>
                 </td>
-                {shouldShowRegistrationColumns && <td className="text-center">{status == 'verified' ? '✓' : ''}</td>}
+                {shouldShowRegistrationColumns && <td className="text-center">{is_email_verified ? '✓' : ''}</td>}
                 <td className="show-strikethrough" style={{ fontFamily: 'monospace' }}>
                   {mask_tokens ? mask(auth_token) : auth_token}
                 </td>

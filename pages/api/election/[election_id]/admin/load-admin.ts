@@ -17,9 +17,9 @@ export type Voter = {
   index: number
   invalidated?: boolean
   invite_queued?: QueueLog[]
+  is_email_verified?: boolean
   last_name: string
   mailgun_events: { accepted?: MgEvent[]; delivered?: MgEvent[]; failed?: MgEvent[] }
-  status: string
 }
 export type Trustee = {
   device?: string
@@ -138,9 +138,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       index,
       invalidated_at,
       invite_queued,
+      is_email_verified,
       last_name,
       mailgun_events,
-      status,
     } = {
       ...doc.data(),
     } as {
@@ -151,9 +151,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       index: number
       invalidated_at?: Date
       invite_queued: QueueLog[]
+      is_email_verified?: boolean
       last_name: string
       mailgun_events: { accepted: MgEvent[]; delivered: MgEvent[] }
-      status: string
     }
     return [
       ...acc,
@@ -167,9 +167,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         index,
         invalidated: invalidated_at ? true : undefined,
         invite_queued,
+        is_email_verified,
         last_name,
         mailgun_events,
-        status,
       },
     ]
   }, [])
