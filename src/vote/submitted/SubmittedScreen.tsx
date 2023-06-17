@@ -64,7 +64,7 @@ export function SubmittedScreen({
       </p>
 
       {/* Encryption */}
-      <h3 className="mt-10">How your vote was submitted:</h3>
+      <h3 className="mt-16">How your vote was submitted:</h3>
 
       <p>
         <img id="lock-icon" src="/vote/lock.png" width="12px" />

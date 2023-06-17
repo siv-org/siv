@@ -29,7 +29,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Otherwise trigger their login email...
 
   // First we'll make & store a login code for them.
-  const login_code = generateAdminLoginCode()
+  const login_code = generateEmailLoginCode()
   adminDoc.collection('logins').doc(new Date().toISOString()).set({ created_at: new Date(), login_code })
 
   const link = `${req.headers.origin}/admin?email=${email}&code=${login_code}`
@@ -53,7 +53,7 @@ ${button(link, 'Or Click Here to Login Directly')}
  * greater than 100,000
  * less than 999,999.
  */
-export const generateAdminLoginCode = () =>
+export const generateEmailLoginCode = () =>
   (pick_random_bigint(BigInt(900_000)) + BigInt(100_000)).toString().slice(0, 6)
 
 export const button = (link: string, text: string) =>
