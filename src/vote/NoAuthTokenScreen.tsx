@@ -54,7 +54,7 @@ export const NoAuthTokenScreen = () => {
         </OnClickButton>
         {!voter_applications_allowed && (
           <p className="italic font-semibold text-rose-700">
-            This election is not accepting any more voters at this time.
+            This election is not accepting new voter registrations at this time.
           </p>
         )}
         {openedRegistration && voter_applications_allowed && <VoterRegistrationForm />}
