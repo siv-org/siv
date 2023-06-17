@@ -3,8 +3,7 @@ import { useEffect, useState } from 'react'
 import { api } from 'src/api-helper'
 
 const VerifyRegistrationPage = () => {
-  const router = useRouter()
-  const { code, election_id, email } = router.query
+  const { code, election_id, email } = useRouter().query
   const [isSuccess, setIsSuccess] = useState(false)
   const [error, setError] = useState('Loading...')
 
@@ -31,7 +30,7 @@ const VerifyRegistrationPage = () => {
     }
 
     if (email && code && election_id) verifyRegistration()
-  }, [email, code, election_id, router])
+  }, [email, code, election_id])
 
   return <p className="px-6 text-2xl">{isSuccess ? `✅ Your email ${email} has been successfully verified.` : error}</p>
 }
