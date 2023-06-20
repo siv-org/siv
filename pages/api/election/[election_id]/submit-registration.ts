@@ -27,6 +27,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Is there already a voter or voter application w/ this email?
   // TODO: Ideally we wouldn't leak who already registered
   // see https://github.com/dsernst/siv/issues/13#issuecomment-1289732427
+  // and https://github.com/dsernst/siv/pull/125#issuecomment-1595388903
   let found_conflict = false
   ;(await loadVoters).docs.find((d) => {
     if (d.data().email === email) {
