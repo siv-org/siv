@@ -32,7 +32,7 @@ export const InvalidVotersTable = ({
   if (!shown_voters || !shown_voters.length) return null
 
   return (
-    <table>
+    <table className="pb-3">
       Invalidated voters:
       <thead>
         <tr>
