@@ -13,7 +13,7 @@ export const AddVoters = () => {
   const { election_id } = useStored()
 
   return (
-    <div className="max-w-2xl">
+    <div className="max-w-[50rem]">
       <h2>Voters</h2>
       <h4>Add new voters by email address:</h4>
       <MultilineInput state={new_voters} update={set_new_voters} />
