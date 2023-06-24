@@ -7,6 +7,10 @@ import { Item } from './Item'
 import { MultiVoteItem } from './MultiVoteItem'
 import { State } from './vote-state'
 
+// Calculate maximum write-in string length
+const verification_num_length = 15
+export const max_string_length = maxLength - verification_num_length
+
 export const Ballot = ({
   dispatch,
   state,
@@ -19,10 +23,6 @@ export const Ballot = ({
     return <p>Loading ballot...</p>
   }
 
-  // Calculate maximum write-in string length
-  const verification_num_length = 15
-  const max_string_length = maxLength - verification_num_length
-
   return (
     <NoSsr>
       <Paper noFade>
@@ -34,14 +34,13 @@ export const Ballot = ({
                 {...{
                   ...item,
                   dispatch,
-                  max_string_length,
                   multiple_votes_allowed: item.multiple_votes_allowed,
                   state,
                 }}
                 key={index}
               />
             ) : (
-              <Item {...{ ...item, dispatch, max_string_length, state }} key={index} />
+              <Item {...{ ...item, dispatch, state }} key={index} />
             ),
           )}
         </>

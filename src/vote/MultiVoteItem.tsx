@@ -1,6 +1,7 @@
 import { Checkbox, FormControlLabel, FormGroup } from '@material-ui/core'
 import { Dispatch, useEffect, useState } from 'react'
 
+import { max_string_length } from './Ballot'
 import { Label, TitleDescriptionQuestion } from './Item'
 import { Item as ItemType } from './storeElectionInfo'
 import { State } from './vote-state'
@@ -9,7 +10,6 @@ export const MultiVoteItem = ({
   description,
   dispatch,
   id = 'vote',
-  max_string_length,
   multiple_votes_allowed,
   options,
   question,
@@ -17,7 +17,6 @@ export const MultiVoteItem = ({
 }: ItemType & {
   dispatch: Dispatch<Record<string, string>>
   election_id?: string
-  max_string_length: number
   multiple_votes_allowed: number
   state: State
 }): JSX.Element => {
