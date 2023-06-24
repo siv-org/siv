@@ -13,6 +13,8 @@ checks the ballot design, looks through the options for that particular question
 If there is a match, replace the truncated text with the original selection option.
 */
 export function unTruncateSelection(selection: string, ballot_design: Item[], column_key: string): string {
+  if (!selection) return selection
+
   if (selection.length !== max_string_length) return selection
 
   const ballot_design_item = ballot_design.find((item) => item.id === column_key)
