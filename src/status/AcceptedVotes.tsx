@@ -25,6 +25,7 @@ export const AcceptedVotes = ({
   const { data: votes } = useSWR<EncryptedVote[]>(
     !election_id ? null : `/api/election/${election_id}/accepted-votes`,
     fetcher,
+    { revalidateOnFocus: false, revalidateOnReconnect: false },
   )
 
   if (!votes || !ballot_design) return <div>Loading...</div>
