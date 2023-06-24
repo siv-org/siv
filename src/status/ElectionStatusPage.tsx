@@ -49,10 +49,12 @@ export const ElectionStatusPage = (): JSX.Element => {
               <a onClick={toggle_encrypteds}>{show_encrypteds ? '[-] Hide' : '[+] Show'} Encrypted Submissions</a>
             </p>
           )}
-          <div style={{ display: show_encrypteds || !has_decrypted_votes ? 'block' : 'none' }}>
-            {show_encrypteds && has_decrypted_votes && <Mixnet />}
-            <AcceptedVotes {...{ ballot_design, esignature_requested, has_decrypted_votes }} />
-          </div>
+          {(show_encrypteds || has_decrypted_votes === false) && (
+            <div>
+              {show_encrypteds && has_decrypted_votes && <Mixnet />}
+              <AcceptedVotes {...{ ballot_design, esignature_requested, has_decrypted_votes }} />
+            </div>
+          )}
         </div>
         <Footer />
       </main>
