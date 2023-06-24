@@ -1,8 +1,7 @@
 import { flatten } from 'lodash-es'
 import { useRouter } from 'next/router'
-import { Fragment, useEffect } from 'react'
+import { Fragment } from 'react'
 import { CipherStrings } from 'src/crypto/stringify-shuffle'
-import { pusher } from 'src/pusher-helper'
 import useSWR from 'swr'
 
 import { Item } from '../vote/storeElectionInfo'
@@ -23,13 +22,10 @@ export const AcceptedVotes = ({
 }): JSX.Element => {
   const { election_id } = useRouter().query
 
-  const { data: votes, mutate } = useSWR<EncryptedVote[]>(
+  const { data: votes } = useSWR<EncryptedVote[]>(
     !election_id ? null : `/api/election/${election_id}/accepted-votes`,
     fetcher,
   )
-
-  // Subscribe to pusher updates of new votes
-  subscribeToUpdates(mutate, election_id)
 
   if (!votes || !ballot_design) return <div>Loading...</div>
 
@@ -170,28 +166,3 @@ export const stringifyEncryptedVote = (vote: EncryptedVote) =>
       key === 'auth' ? '' : `, ${key}: { encrypted: '${vote[key].encrypted}', lock: '${vote[key].lock}' }`,
     )
     .join('')} }`
-
-function subscribeToUpdates(loadVotes: () => void, election_id?: string | string[]) {
-  function subscribe() {
-    if (!pusher) return alert('Pusher not initialized')
-
-    const channel = pusher.subscribe(`status-${election_id}`)
-
-    channel.bind(`votes`, () => {
-      console.log('🆕 Pusher new vote submitted')
-      loadVotes()
-    })
-
-    // Return cleanup code
-    return () => {
-      channel.unbind()
-    }
-  }
-
-  // Subscribe when we get election_id
-  useEffect(() => {
-    if (election_id) {
-      return subscribe()
-    }
-  }, [election_id])
-}
