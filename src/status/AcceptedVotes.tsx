@@ -5,6 +5,8 @@ import { CipherStrings } from 'src/crypto/stringify-shuffle'
 import useSWR from 'swr'
 
 import { Item } from '../vote/storeElectionInfo'
+import { TotalVotesCast } from './TotalVotesCast'
+import { useSWRExponentialBackoff } from './useSWRExponentialBackoff'
 
 export type EncryptedVote = { auth: string } & { [index: string]: CipherStrings }
 const fetcher = (url: string) => fetch(url).then((r) => r.json())
@@ -22,7 +24,16 @@ export const AcceptedVotes = ({
 }): JSX.Element => {
   const { election_id } = useRouter().query
 
-  const { data: votes } = useSWR<EncryptedVote[]>(
+  // Exponentially poll for num votes (just a single read)
+  const { data: numVotes } = useSWRExponentialBackoff(
+    !election_id ? null : `/api/election/${election_id}/num-accepted-votes`,
+    fetcher,
+    1,
+  ) as { data: number }
+
+  // Load all the encrypted votes
+  // (heavy, so only on first load and if they press "Load new")
+  const { data: votes, mutate } = useSWR<EncryptedVote[]>(
     !election_id ? null : `/api/election/${election_id}/accepted-votes`,
     fetcher,
     { revalidateOnFocus: false, revalidateOnReconnect: false },
@@ -39,125 +50,114 @@ export const AcceptedVotes = ({
   )
 
   return (
-    <section>
-      <h3>{title_prefix}All Submitted Votes</h3>
-      <p>
-        Ordered oldest to newest.{' '}
-        {has_decrypted_votes ? (
-          <>
-            These are the encrypted votes submitted by each authenticated voter.
-            <br />
-            For more, see{' '}
-            <a href="../protocol#3" target="_blank">
-              SIV Protocol Step 3: Submit Encrypted Vote
-            </a>
-            .
-          </>
-        ) : (
-          `When the election closes, ${esignature_requested ? 'all approved' : 'these'} votes will
+    <>
+      <TotalVotesCast {...{ numVotes }} />
+      <section className="p-4 mb-8 bg-white rounded-lg shadow-[0px_2px_2px_hsl(0_0%_50%_/0.333),0px_4px_4px_hsl(0_0%_50%_/0.333),0px_6px_6px_hsl(0_0%_50%_/0.333)]">
+        <h3 className="mt-0 mb-1">{title_prefix}All Submitted Votes</h3>
+        <p className='mt-0 text-sm italic opacity-70"'>
+          Ordered oldest to newest.{' '}
+          {has_decrypted_votes ? (
+            <>
+              These are the encrypted votes submitted by each authenticated voter.
+              <br />
+              For more, see{' '}
+              <a href="../protocol#3" target="_blank">
+                SIV Protocol Step 3: Submit Encrypted Vote
+              </a>
+              .
+            </>
+          ) : (
+            `When the election closes, ${esignature_requested ? 'all approved' : 'these'} votes will
         be shuffled and then unlocked.`
-        )}
-      </p>
-      <table>
-        <thead>
-          <tr>
-            <td rowSpan={2}></td>
-            {esignature_requested && <th rowSpan={2}>signature approved</th>}
-            <th rowSpan={2}>auth</th>
-            {columns.map((c) => (
-              <th colSpan={2} key={c}>
-                {c}
-              </th>
-            ))}
-          </tr>
-
-          <tr className="subheading">
-            {columns.map((c) => (
-              <Fragment key={c}>
-                <th>encrypted</th>
-                <th>lock</th>
-              </Fragment>
-            ))}
-          </tr>
-        </thead>
-
-        <tbody>
-          {votes.map((vote, index) => (
-            <tr key={index}>
-              <td>{index + 1}.</td>
-              {esignature_requested && <td className="approved">{vote.signature_approved ? '✓' : ''}</td>}
-              <td>{vote.auth}</td>
-              {columns.map((key) => {
-                if (key !== 'auth') {
-                  return (
-                    <Fragment key={key}>
-                      <td className="monospaced">{vote[key]?.encrypted}</td>
-                      <td className="monospaced">{vote[key]?.lock}</td>
-                    </Fragment>
-                  )
-                }
-              })}
+          )}
+        </p>
+        <table>
+          <thead>
+            <tr>
+              <td rowSpan={2}></td>
+              {esignature_requested && <th rowSpan={2}>signature approved</th>}
+              <th rowSpan={2}>auth</th>
+              {columns.map((c) => (
+                <th colSpan={2} key={c}>
+                  {c}
+                </th>
+              ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
-      <style jsx>{`
-        section {
-          background: #fff;
-          padding: 1rem;
-          border-radius: 8px;
-          box-shadow: 0px 2px 2px hsl(0 0% 50% / 0.333), 0px 4px 4px hsl(0 0% 50% / 0.333),
-            0px 6px 6px hsl(0 0% 50% / 0.333);
 
-          margin-bottom: 2rem;
-        }
+            <tr className="subheading">
+              {columns.map((c) => (
+                <Fragment key={c}>
+                  <th>encrypted</th>
+                  <th>lock</th>
+                </Fragment>
+              ))}
+            </tr>
+          </thead>
 
-        h3 {
-          margin: 0 0 5px;
-        }
+          <tbody>
+            {votes.map((vote, index) => (
+              <tr key={index}>
+                <td>{index + 1}.</td>
+                {esignature_requested && (
+                  <td className="font-bold text-center">{vote.signature_approved ? '✓' : ''}</td>
+                )}
+                <td>{vote.auth}</td>
+                {columns.map((key) => {
+                  if (key !== 'auth') {
+                    return (
+                      <Fragment key={key}>
+                        <td className="monospaced">{vote[key]?.encrypted}</td>
+                        <td className="monospaced">{vote[key]?.lock}</td>
+                      </Fragment>
+                    )
+                  }
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
 
-        p {
-          margin-top: 0px;
-          font-size: 13px;
-          font-style: italic;
-          opacity: 0.7;
-        }
+        {!!(numVotes - votes.length) && (
+          <p
+            className="inline-block mt-3 text-xs text-blue-500 cursor-pointer opacity-70 hover:underline"
+            onClick={() => mutate()}
+          >
+            + Load {numVotes - votes.length} new
+          </p>
+        )}
 
-        a {
-          font-weight: 600;
-        }
+        <style jsx>{`
+          a {
+            font-weight: 600;
+          }
 
-        table {
-          border-collapse: collapse;
-          display: block;
-          overflow: auto;
-          margin-top: 2rem;
-        }
+          table {
+            border-collapse: collapse;
+            display: block;
+            overflow: auto;
+            margin-top: 2rem;
+          }
 
-        th,
-        td {
-          border: 1px solid #ccc;
-          padding: 3px 10px;
-          margin: 0;
-          max-width: 240px;
-        }
+          th,
+          td {
+            border: 1px solid #ccc;
+            padding: 3px 10px;
+            margin: 0;
+            max-width: 240px;
+          }
 
-        td.monospaced {
-          font-family: monospace;
-        }
+          td.monospaced {
+            font-family: monospace;
+          }
 
-        th,
-        .subheading td {
-          font-size: 11px;
-          font-weight: 700;
-        }
-
-        .approved {
-          font-weight: bold;
-          text-align: center;
-        }
-      `}</style>
-    </section>
+          th,
+          .subheading td {
+            font-size: 11px;
+            font-weight: 700;
+          }
+        `}</style>
+      </section>
+    </>
   )
 }
 
