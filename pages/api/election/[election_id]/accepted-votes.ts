@@ -5,7 +5,7 @@ import { firebase } from '../../_services'
 import { ReviewLog } from './admin/load-admin'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { election_id } = req.query
+  const { election_id, limitToLast } = req.query
 
   const electionDoc = firebase
     .firestore()
@@ -13,7 +13,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     .doc(election_id as string)
 
   // Begin preloading
-  const loadVotes = electionDoc.collection('votes').orderBy('created_at').get()
+  let votesQuery = electionDoc.collection('votes').orderBy('created_at')
+  if (typeof limitToLast === 'string') votesQuery = votesQuery.limitToLast(+limitToLast)
+  const loadVotes = votesQuery.get()
 
   const election = await electionDoc.get()
 

@@ -1,8 +1,8 @@
 import { flatten } from 'lodash-es'
 import { useRouter } from 'next/router'
-import { Fragment } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { CipherStrings } from 'src/crypto/stringify-shuffle'
-import useSWR from 'swr'
+import { EncryptedVote } from 'src/protocol/EncryptedVote'
 
 import { Item } from '../vote/storeElectionInfo'
 import { TotalVotesCast } from './TotalVotesCast'
@@ -23,6 +23,7 @@ export const AcceptedVotes = ({
   title_prefix?: string
 }): JSX.Element => {
   const { election_id } = useRouter().query
+  const [votes, setVotes] = useState<EncryptedVote[]>()
 
   // Exponentially poll for num votes (just a single read)
   const { data: numVotes } = useSWRExponentialBackoff(
@@ -31,15 +32,17 @@ export const AcceptedVotes = ({
     1,
   ) as { data: number }
 
-  // Load all the encrypted votes
-  // (heavy, so only on first load and if they press "Load new")
-  const { data: votes, mutate } = useSWR<EncryptedVote[]>(
-    !election_id ? null : `/api/election/${election_id}/accepted-votes`,
-    fetcher,
-    { revalidateOnFocus: false, revalidateOnReconnect: false },
-  )
+  // Load all the encrypted votes (heavy, so only on first load)
+  useEffect(() => {
+    if (!election_id) return
+    fetch(`/api/election/${election_id}/accepted-votes`)
+      .then((r) => r.json())
+      .then(setVotes)
+  }, [election_id])
 
   if (!votes || !ballot_design) return <div>Loading...</div>
+
+  const newVotes = numVotes - votes.length
 
   const columns = flatten(
     ballot_design.map(({ id, multiple_votes_allowed }) => {
@@ -117,12 +120,16 @@ export const AcceptedVotes = ({
           </tbody>
         </table>
 
-        {!!(numVotes - votes.length) && (
+        {!!newVotes && (
           <p
             className="inline-block mt-3 text-xs text-blue-500 cursor-pointer opacity-70 hover:underline"
-            onClick={() => mutate()}
+            onClick={() =>
+              fetch(`/api/election/${election_id}/accepted-votes?limitToLast=${newVotes}`)
+                .then((r) => r.json())
+                .then((newVotes) => setVotes(() => [...votes, ...newVotes]))
+            }
           >
-            + Load {numVotes - votes.length} new
+            + Load {newVotes} new
           </p>
         )}
 
