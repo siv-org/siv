@@ -48,7 +48,7 @@ export const RecombinedTable = (): JSX.Element => {
         table {
           border-collapse: collapse;
           display: block;
-          overflow: scroll;
+          overflow: auto;
         }
 
         th,

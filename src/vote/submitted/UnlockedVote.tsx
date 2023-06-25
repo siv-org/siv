@@ -1,3 +1,5 @@
+import { unTruncateSelection } from 'src/status/un-truncate-selection'
+
 import { State } from '../vote-state'
 
 export const UnlockedVote = ({ columns, state }: { columns: string[]; state: State }) => (
@@ -16,7 +18,7 @@ export const UnlockedVote = ({ columns, state }: { columns: string[]; state: Sta
           <td style={{ backgroundColor: 'rgba(10, 232, 10, 0.24)' }}>{state.tracking?.padStart(14, '0')}</td>
           {columns.map((c) => {
             const vote = state.plaintext[c]
-            return <td key={c}>{vote === 'BLANK' ? '' : vote}</td>
+            return <td key={c}>{vote === 'BLANK' ? '' : unTruncateSelection(vote, state.ballot_design || [], c)}</td>
           })}
         </tr>
       </tbody>
@@ -25,7 +27,7 @@ export const UnlockedVote = ({ columns, state }: { columns: string[]; state: Sta
       table {
         border-collapse: collapse;
         display: block;
-        overflow: scroll;
+        overflow: auto;
         overflow-wrap: break-word;
       }
 

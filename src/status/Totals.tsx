@@ -2,6 +2,7 @@ import { keyBy } from 'lodash-es'
 import TimeAgo from 'timeago-react'
 
 import { tallyVotes } from './tally-votes'
+import { unTruncateSelection } from './un-truncate-selection'
 import { useDecryptedVotes } from './use-decrypted-votes'
 import { useElectionInfo } from './use-election-info'
 
@@ -31,7 +32,7 @@ export const Totals = ({ proofsPage }: { proofsPage?: boolean }): JSX.Element =>
           <ul>
             {ordered[id].map((selection) => (
               <li key={selection}>
-                {selection}: {tallies[id][selection]}{' '}
+                {unTruncateSelection(selection, ballot_design, id)}: {tallies[id][selection]}{' '}
                 <i style={{ fontSize: 12, marginLeft: 5, opacity: 0.5 }}>
                   ({((100 * tallies[id][selection]) / totalsCastPerItems[id]).toFixed(1)}%)
                 </i>

@@ -1,6 +1,7 @@
 import { orderBy } from 'lodash-es'
 import { flatten } from 'lodash-es'
 
+import { unTruncateSelection } from './un-truncate-selection'
 import { useDecryptedVotes } from './use-decrypted-votes'
 import { useElectionInfo } from './use-election-info'
 
@@ -43,7 +44,7 @@ export const DecryptedVotes = ({ proofsPage }: { proofsPage?: boolean }): JSX.El
               <td>{index + 1}.</td>
               <td>{vote.tracking?.padStart(14, '0')}</td>
               {columns.map((c) => (
-                <td key={c}>{vote[c]}</td>
+                <td key={c}>{unTruncateSelection(vote[c], ballot_design, c)}</td>
               ))}
             </tr>
           ))}
@@ -72,7 +73,7 @@ export const DecryptedVotes = ({ proofsPage }: { proofsPage?: boolean }): JSX.El
         table {
           border-collapse: collapse;
           display: block;
-          overflow: scroll;
+          overflow: auto;
         }
 
         th,

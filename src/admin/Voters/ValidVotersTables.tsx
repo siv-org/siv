@@ -166,7 +166,7 @@ export const ValidVotersTable = ({
           table {
             border-collapse: collapse;
             display: block;
-            overflow: scroll;
+            overflow: auto;
             width: 100%;
           }
 
