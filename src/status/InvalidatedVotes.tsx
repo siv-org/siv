@@ -2,7 +2,7 @@ import { useRouter } from 'next/router'
 import { useState } from 'react'
 import useSWR from 'swr'
 
-import { EncryptedVote, subscribeToUpdates } from './AcceptedVotes'
+import { EncryptedVote } from './AcceptedVotes'
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
@@ -10,13 +10,10 @@ export const InvalidatedVotes = () => {
   const { election_id } = useRouter().query
   const [isTableVisible, setTableVisibility] = useState(false)
 
-  const { data: votes, mutate } = useSWR<EncryptedVote[]>(
+  const { data: votes } = useSWR<EncryptedVote[]>(
     !election_id ? null : `/api/election/${election_id}/invalidated-votes`,
     fetcher,
   )
-
-  // Subscribe to pusher updates of new votes
-  subscribeToUpdates(mutate, election_id)
 
   if (!votes || !votes.length) return null
 
