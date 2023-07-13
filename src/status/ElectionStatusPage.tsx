@@ -6,6 +6,7 @@ import { Head } from '../Head'
 import { Footer } from '../vote/Footer'
 import { AcceptedVotes } from './AcceptedVotes'
 import { DecryptedVotes } from './DecryptedVotes'
+import { InvalidatedVotes } from './InvalidatedVotes'
 import { Mixnet, debug } from './Mixnet/Mixnet'
 import { OnlyMixnet } from './OnlyMixnet'
 import { Totals } from './Totals'
@@ -49,10 +50,12 @@ export const ElectionStatusPage = (): JSX.Element => {
               <a onClick={toggle_encrypteds}>{show_encrypteds ? '[-] Hide' : '[+] Show'} Encrypted Submissions</a>
             </p>
           )}
+
           {(show_encrypteds || has_decrypted_votes === false) && (
             <div>
               {show_encrypteds && has_decrypted_votes && <Mixnet />}
               <AcceptedVotes {...{ ballot_design, esignature_requested, has_decrypted_votes }} />
+              <InvalidatedVotes />
             </div>
           )}
         </div>

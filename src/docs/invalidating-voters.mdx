@@ -87,24 +87,26 @@ SIV prevents accidentally sending invitations for invalidated tokens.
 
 ### Scenario III: The voter already voted, but votes haven’t been unlocked and tallied yet
 
+In the rare circumstance where a vote must be invalidated after it has already been submitted and accepted, SIV prioritizes security.
+
+SIV allows admins to remove votes after they've been cast, but only in a transparent way, and with the vote contents still protected by encryption.
+
 <Todo>
 
-> In the rare circumstance where a vote must be invalidated after it has already been submitted and accepted, SIV prioritizes security.
->
-> SIV allows admins to remove votes after they've been cast, but only in a transparent way, and with the vote contents still protected by encryption.
->
 > The voter, Verifying Observers, and public will all be able to see that the encrypted vote was invalidated.
 >
 > This ensures voters can be confident that submitted votes cannot be secretly removed.
 >
 > This is powered by a Merkle Tree, a powerful cryptographic data structure. This is like a blockchain, but very fast & environmentally-friendly.
 
+</Todo>
+
 **_Admin Interface:_**
 
 - The admin is asked to confirm.
   > Are you sure you want to invalidate this voter & their submitted vote?
   >
-  > The public will be able to see the vote was invalidated (but not its contents).
+  > The public will be able to see the vote was invalidated, but not its contents.
 
 **_Voter Interface:_**
 
@@ -126,15 +128,17 @@ SIV prevents accidentally sending invitations for invalidated tokens.
   >
   > ***
 
+<Todo>
+
 **_Verifying Observers Interface:_**
 
 - They will see that an encrypted vote was invalidated by the admin.
 
+</Todo>
+
 **_General Public Interface:_**
 
 - If they review the encrypted votes list, they will see that there was an invalidation issued for this submitted encrypted vote.
-
-</Todo>
 
 ---
 

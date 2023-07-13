@@ -6,6 +6,7 @@ import { useEffect } from 'react'
 import { State } from '../vote-state'
 import { DetailedEncryptionReceipt } from './DetailedEncryptionReceipt'
 import { EncryptedVote } from './EncryptedVote'
+import { InvalidatedVoteMessage } from './InvalidatedVoteMessage'
 import { UnlockedVote } from './UnlockedVote'
 
 export function SubmittedScreen({
@@ -35,6 +36,7 @@ export function SubmittedScreen({
 
   return (
     <NoSsr>
+      <InvalidatedVoteMessage />
       <Link as={`/election/${election_id}`} href="/election/[election_id]">
         <a id="status-page" target="_blank">
           <img src="/vote/externallinkicon.jpg" width="15px" />

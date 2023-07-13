@@ -33,25 +33,51 @@ export const InvalidateVotersButton = ({
       onClick={async () => {
         if (displayOnly) return
 
-        const voters_selected = checked.reduce((acc: string[], is_checked, index) => {
-          if (is_checked) acc.push(valid_voters[index].email)
-          return acc
-        }, [])
-
-        const amount_to_show = 10
-
-        const confirmed = confirm(
-          `Are you sure you want to invalidate ${
-            num_checked === 1 ? 'this voter' : `these ${num_checked} voters`
-          } & their auth token${num_checked === 1 ? '' : 's'}?\n\n${voters_selected
-            .slice(0, amount_to_show)
-            .join('\n')}${num_checked > amount_to_show ? `\n\n and ${num_checked - amount_to_show} more.` : ''}`,
+        const voters_selected = checked.reduce(
+          (acc: { auth_token: string; email: string; hasVoted: boolean }[], is_checked, index) => {
+            if (is_checked)
+              acc.push({
+                auth_token: valid_voters[index].auth_token,
+                email: valid_voters[index].email,
+                hasVoted: valid_voters[index].has_voted,
+              })
+            return acc
+          },
+          [],
         )
+
+        const votersWhoVoted = voters_selected.filter((voter) => voter.hasVoted)
+        const votersWhoDidNotVote = voters_selected.filter((voter) => !voter.hasVoted)
+
+        let message = ''
+        if (votersWhoVoted.length > 0) {
+          message += `Are you sure you want to invalidate ${
+            votersWhoVoted.length === 1 ? 'this voter' : `these ${votersWhoVoted.length} voters`
+          } & their submitted vote${votersWhoVoted.length === 1 ? '' : 's'}? The public will be able to see the vote${
+            votersWhoVoted.length === 1 ? ' was' : 's were'
+          } invalidated, but not the vote content.\n\nVoters with votes:\n${votersWhoVoted
+            .map((voter) => `- ${voter.email}`)
+            .join('\n')}`
+        }
+
+        if (votersWhoVoted.length > 0 && votersWhoDidNotVote.length > 0) {
+          message += '\n\n————————————\n\n'
+        }
+
+        if (votersWhoDidNotVote.length > 0) {
+          message += `Are you sure you want to invalidate ${
+            votersWhoDidNotVote.length === 1 ? 'this voter' : `these ${votersWhoDidNotVote.length} voters`
+          } & their auth token${
+            votersWhoDidNotVote.length === 1 ? '' : 's'
+          }?\n\nVoters without votes:\n${votersWhoDidNotVote.map((voter) => `- ${voter.email}`).join('\n')}`
+        }
+
+        const confirmed = confirm(message)
 
         if (!confirmed) return
 
         const response = await api(`election/${election_id}/admin/invalidate-voters`, {
-          voters: voters_selected,
+          voters_to_invalidate: voters_selected,
         })
 
         try {

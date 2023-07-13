@@ -61,6 +61,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const loadTrustees = election.collection('trustees').orderBy('index', 'asc').get()
   const loadVoters = election.collection('voters').orderBy('index', 'asc').get()
   const loadVotes = election.collection('votes').get()
+  const loadInvalidatedVotes = election.collection('invalidated_votes').get()
 
   // Is election_id in DB?
   const electionDoc = await loadElection
@@ -122,6 +123,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     return { ...acc, [data.auth]: [true, data.esignature] }
   }, {})
 
+  // Gather whose votes were invalidated
+  const invalidatedVotesByAuth: Record<string, boolean> = {}
+  ;(await loadInvalidatedVotes).docs.forEach((doc) => {
+    const data = doc.data()
+    invalidatedVotesByAuth[data.auth] = true
+  })
+
   // Build voters objects
   const voters: Voter[] = (await loadVoters).docs.reduce((acc: Voter[], doc) => {
     const { auth_token, email, esignature_review, index, invalidated_at, invite_queued, mailgun_events } = {
@@ -142,7 +150,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         email,
         esignature: (votesByAuth[auth_token] || [])[1],
         esignature_review,
-        has_voted: !!votesByAuth[auth_token],
+        has_voted: !!votesByAuth[auth_token] || !!invalidatedVotesByAuth[auth_token],
         index,
         invalidated: invalidated_at ? true : undefined,
         invite_queued,
