@@ -35,7 +35,8 @@ export const HeaderBar = (): JSX.Element => {
                 </a>
               </Link>
               <div className="text-[14px]">
-                Managing: <i>{election_title}</i> <div className="text-[10px] opacity-80">ID: {election_id}</div>
+                Managing: <i>{election_title}</i>
+                <div className="text-[10px] opacity-80 mt-1">ID: {election_id}</div>
               </div>
             </>
           )}
