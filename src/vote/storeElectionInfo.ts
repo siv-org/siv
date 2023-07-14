@@ -10,6 +10,7 @@ export type Item = {
   options: { name: string; sub?: string; value?: string }[]
   question?: string
   title: string
+  type?: string
   write_in_allowed: boolean
 }
 

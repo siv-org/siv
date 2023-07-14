@@ -67,6 +67,28 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
               </a>
             </Tooltip>
           </div>
+
+          {/* Type selector */}
+          <div className="mt-4">
+            <label className="text-[10px] italic">Voting Type:</label>
+
+            {/* Type dropdown */}
+            <div className="relative">
+              <span className="absolute z-20 scale-75 right-3 top-2 opacity-60">▼</span>
+              <select
+                className="appearance-none border border-solid border-gray-200 text-[13px] rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 shadow-sm relative"
+                onChange={({ target }) => {
+                  const new_json = [...json]
+                  new_json[questionIndex].type = target.value as string
+                  setDesign(JSON.stringify(new_json, undefined, 2))
+                }}
+              >
+                <option value="choose-only-one">Choose Only One — FPTP</option>
+                <option value="instant-runoff">Ranked Choice — IRV</option>
+              </select>
+            </div>
+          </div>
+
           {/* Question Title Label */}
           <label className="block mt-4 text-[10px] italic">Question Title:</label>
           {/* Question Title Input */}
@@ -81,6 +103,7 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
               }}
             />
           </div>
+
           {/* Options list */}
           <ul>
             {options?.map(({ name }, optionIndex) => (
