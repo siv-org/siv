@@ -3,14 +3,17 @@ import Head from 'next/head'
 import Link from 'next/link'
 
 import { promptLogout, useUser } from './auth'
+import { useDynamicHeaderbarHeight } from './useDynamicHeaderbarHeight'
 import { useStored } from './useStored'
 
 export const HeaderBar = (): JSX.Element => {
   const { user } = useUser()
   const { election_id, election_title } = useStored()
 
+  const headerId = useDynamicHeaderbarHeight(election_title)
+
   return (
-    <div className="bg-gradient-to-r from-[#010b26] to-[#072054] text-white flex  w-full justify-between">
+    <div className="bg-gradient-to-r from-[#010b26] to-[#072054] text-white flex w-full justify-between" id={headerId}>
       {/* Logo */}
       <section className="min-w-[75px] py-4 sm:min-w-[281px]">
         <Link href={'/admin'}>
