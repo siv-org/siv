@@ -17,7 +17,7 @@ export const HeaderBar = (): JSX.Element => {
       </section>
 
       <section className="right">
-        <div className="title">
+        <div className="flex">
           {election_id && (
             <>
               <Head>
@@ -34,8 +34,8 @@ export const HeaderBar = (): JSX.Element => {
                   ←
                 </a>
               </Link>
-              <div className="current-election">
-                Managing: <i>{election_title}</i> <span>ID: {election_id}</span>
+              <div className="text-[14px]">
+                Managing: <i>{election_title}</i> <div className="text-[10px] opacity-80">ID: {election_id}</div>
               </div>
             </>
           )}
@@ -79,10 +79,6 @@ export const HeaderBar = (): JSX.Element => {
           justify-content: space-between;
         }
 
-        .title {
-          display: flex;
-        }
-
         .back-btn {
           margin-right: 18px;
           color: #fff;
@@ -100,17 +96,6 @@ export const HeaderBar = (): JSX.Element => {
           background: #fff2;
           cursor: pointer;
           text-decoration: none;
-        }
-
-        .current-election span {
-          display: block;
-          text-transform: uppercase;
-          font-size: 10px;
-          opacity: 0.8;
-        }
-
-        .current-election {
-          font-size: 14px;
         }
 
         .login-status {
