@@ -14,7 +14,7 @@ import { TextDesigner } from './TextDesigner'
 import { Wizard } from './Wizard'
 
 export const BallotDesign = () => {
-  const { ballot_design: stored_ballot_design, ballot_design_finalized, election_id } = useStored()
+  const { ballot_design: stored_ballot_design, ballot_design_finalized, election_id, election_title } = useStored()
   const [selected, setSelected] = useState(0)
 
   const designState = useState(stored_ballot_design || default_ballot_design)
@@ -29,6 +29,13 @@ export const BallotDesign = () => {
   useEffect(() => {
     set_saving_errors(null)
   }, [design])
+
+  // Restore stored ballot design on hard refresh
+  useEffect(() => {
+    if (!election_title) return
+    if (!stored_ballot_design) return
+    setDesign(stored_ballot_design)
+  }, [election_title])
 
   return (
     <>
