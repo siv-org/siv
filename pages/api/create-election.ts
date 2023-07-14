@@ -20,6 +20,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     creator: jwt.email,
     election_manager: jwt.name,
     election_title,
+    num_invalidated_votes: 0,
     num_voters: 0,
     num_votes: 0,
   })

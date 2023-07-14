@@ -14,7 +14,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Is election_id in DB?
   if (!electionDoc.exists) return res.status(400).json({ error: 'Unknown Election ID.' })
 
-  const { num_votes } = { ...electionDoc.data() } as { num_votes: number }
+  const { num_invalidated_votes = 0, num_votes } = { ...electionDoc.data() } as {
+    num_invalidated_votes?: number
+    num_votes: number
+  }
 
-  return res.status(200).json(num_votes)
+  return res.status(200).json(num_votes - num_invalidated_votes)
 }

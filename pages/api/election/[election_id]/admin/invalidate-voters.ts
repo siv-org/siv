@@ -1,4 +1,5 @@
 import { firebase, sendEmail } from 'api/_services'
+import { firestore } from 'firebase-admin'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import { checkJwtOwnsElection } from '../../../validate-admin-jwt'
@@ -15,13 +16,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   await Promise.all(
     voters_to_invalidate.map(async (voter) => {
       const db = firebase.firestore()
-      const voterRef = db.collection('elections').doc(election_id).collection('voters').doc(voter.email)
-      const votes = await db
-        .collection('elections')
-        .doc(election_id)
-        .collection('votes')
-        .where('auth', '==', voter.auth_token)
-        .get()
+      const electionDoc = db.collection('elections').doc(election_id)
+      const voterRef = electionDoc.collection('voters').doc(voter.email)
+      const votes = await electionDoc.collection('votes').where('auth', '==', voter.auth_token).get()
 
       // Do all in parallel
       return Promise.all([
@@ -33,13 +30,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           await Promise.all(
             votes.docs.map(async (vote) => {
               const invalidatedVote = { ...vote.data(), invalidated_at: new Date() }
-              await db
-                .collection('elections')
-                .doc(election_id)
-                .collection('invalidated_votes')
-                .doc(vote.id)
-                .set(invalidatedVote)
+              await electionDoc.collection('invalidated_votes').doc(vote.id).set(invalidatedVote)
               await vote.ref.delete()
+              await electionDoc.update({ num_invalidated_votes: firestore.FieldValue.increment(1) })
             }),
           )
         })(),
