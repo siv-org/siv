@@ -7,28 +7,6 @@ import { check_for_urgent_ballot_errors } from './check_for_ballot_errors'
 import { IOSSwitch } from './IOSSwitch'
 
 export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: string) => void }) => {
-  /* Features to support
-
-    - [x] See current design
-
-    - [x] Edit item title
-    - [x] Edit options name
-    - [x] Delete existing options
-    - [x] Toggle 'Write in' allowed
-    - [x] Create new options
-    - [x] Add new questions
-    - [x] Delete questions
-    - [x] Set item ID
-
-    - [ ] Edit option's subline (e.g. Party affiliation)
-    - [ ] Edit item description
-    - [ ] Edit item final question ("Should this bill be")
-    - [ ] Re-order items
-    - [ ] Reorder existing options
-    - [ ] Edit option's short_id (if too long)
-
-    - [ ] Collapse item's options
-*/
   const [json, setJson] = useState<Item[]>()
 
   const errors = check_for_urgent_ballot_errors(design)
