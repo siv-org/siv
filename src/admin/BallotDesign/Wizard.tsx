@@ -77,6 +77,7 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
               <span className="absolute z-20 scale-75 right-3 top-2 opacity-60">▼</span>
               <select
                 className="appearance-none border border-solid border-gray-200 text-[13px] rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 shadow-sm relative"
+                value={json[questionIndex].type}
                 onChange={({ target }) => {
                   const new_json = [...json]
                   new_json[questionIndex].type = target.value as string
