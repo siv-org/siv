@@ -5,6 +5,7 @@ import { maxLength } from 'src/crypto/curve'
 import { Paper } from '../protocol/Paper'
 import { Item } from './Item'
 import { MultiVoteItem } from './MultiVoteItem'
+import { RankedChoiceItem } from './RankedChoiceItem'
 import { State } from './vote-state'
 
 // Calculate maximum write-in string length
@@ -19,16 +20,17 @@ export const Ballot = ({
   election_id?: string
   state: State
 }): JSX.Element => {
-  if (!state.ballot_design || !state.public_key) {
-    return <p>Loading ballot...</p>
-  }
+  if (!state.ballot_design || !state.public_key) return <p>Loading ballot...</p>
 
   return (
     <NoSsr>
       <Paper noFade>
         <>
-          {state.election_title && <h2>{state.election_title}</h2>}
+          {/* Election Title */}
+          {state.election_title && <h2 className="ml-[13px]">{state.election_title}</h2>}
+
           {state.ballot_design.map((item, index) =>
+            // Is it "Choose-up-to" ?
             item.multiple_votes_allowed && item.multiple_votes_allowed > 1 ? (
               <MultiVoteItem
                 {...{
@@ -39,17 +41,23 @@ export const Ballot = ({
                 }}
                 key={index}
               />
+            ) : // Is it "Ranked Choice"?
+            item.type === 'ranked-choice-irv' ? (
+              <RankedChoiceItem
+                {...{
+                  ...item,
+                  dispatch,
+                  state,
+                }}
+                key={index}
+              />
             ) : (
+              // Otherwise, load default "Choose-only-one"
               <Item {...{ ...item, dispatch, state }} key={index} />
             ),
           )}
         </>
       </Paper>
-      <style jsx>{`
-        h2 {
-          margin-left: 13px;
-        }
-      `}</style>
     </NoSsr>
   )
 }
