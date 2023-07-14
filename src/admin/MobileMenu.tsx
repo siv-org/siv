@@ -15,10 +15,16 @@ export const MobileMenu = () => {
   const iOS = process?.browser && /iPad|iPhone|iPod/.test(navigator.userAgent)
 
   return (
-    <div className="mobile-menu">
-      <OnClickButton style={{ marginLeft: 0, padding: '5px 11px' }} onClick={() => set_menu(true)}>
-        {section && steps.includes(name) ? `Step ${steps.indexOf(name) + 1}: ${name}` : 'Menu'}
-      </OnClickButton>
+    /* Hidden for all but small screens */
+    <div className="sm:hidden">
+      {/* Activation button */}
+      {section && (
+        <OnClickButton style={{ marginLeft: 0, padding: '5px 11px' }} onClick={() => set_menu(true)}>
+          {section && steps.includes(name) ? `Step ${steps.indexOf(name) + 1}: ${name}` : 'Menu'}
+        </OnClickButton>
+      )}
+
+      {/* Sliding in Sidebar */}
       <SwipeableDrawer
         anchor="left"
         disableBackdropTransition={!iOS}
@@ -29,14 +35,6 @@ export const MobileMenu = () => {
       >
         <SidebarContent closeMenu={() => set_menu(false)} />
       </SwipeableDrawer>
-      <style jsx>{`
-        /* Hide for all but small screens */
-        @media (min-width: 640px) {
-          .mobile-menu {
-            display: none;
-          }
-        }
-      `}</style>
     </div>
   )
 }
