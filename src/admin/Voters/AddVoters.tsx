@@ -13,7 +13,7 @@ export const AddVoters = () => {
 
   return (
     <div className="max-w-2xl">
-      <h2>Voters</h2>
+      <h2 className="hidden sm:block">Voters</h2>
       <h4>Add new voters by email address:</h4>
       <MultilineInput state={new_voters} update={set_new_voters} />
 
@@ -38,14 +38,6 @@ export const AddVoters = () => {
       )}
       <RequestEsignatures />
       <ExistingVoters />
-      <style jsx>{`
-        /* When sidebar disappears */
-        @media (max-width: 500px) {
-          h2 {
-            display: none;
-          }
-        }
-      `}</style>
     </div>
   )
 }

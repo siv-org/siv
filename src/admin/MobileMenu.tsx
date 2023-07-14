@@ -31,7 +31,7 @@ export const MobileMenu = () => {
       </SwipeableDrawer>
       <style jsx>{`
         /* Hide for all but small screens */
-        @media (min-width: 500px) {
+        @media (min-width: 640px) {
           .mobile-menu {
             display: none;
           }

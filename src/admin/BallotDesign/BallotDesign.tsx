@@ -39,7 +39,7 @@ export const BallotDesign = () => {
 
   return (
     <>
-      <h2>Ballot Design</h2>
+      <h2 className="hidden sm:block">Ballot Design</h2>
       <AutoSaver {...{ design }} />
       <Errors {...{ error }} />
       <ModeControls {...{ selected, setSelected }} />
@@ -71,14 +71,6 @@ export const BallotDesign = () => {
       )}
 
       <style jsx>{`
-        /* When sidebar disappears */
-        @media (max-width: 500px) {
-          h2 {
-            opacity: 0;
-            margin: 0px;
-          }
-        }
-
         .mode-container {
           display: flex;
           width: 100%;

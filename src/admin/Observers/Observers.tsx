@@ -21,11 +21,11 @@ export const Observers = () => {
 
   return (
     <div className="container">
-      <h2>
+      <h2 className="hidden sm:block">
         Verifying Observers <span>(Optional)</span>
       </h2>
       <p>
-        This lets you give indepedent Verifying Observers complete cryptographic proof that votes are private & tallied
+        This lets you give independent Verifying Observers complete cryptographic proof that votes are private & tallied
         correctly.
       </p>
       <p>
@@ -219,13 +219,6 @@ export const Observers = () => {
         }
       `}</style>
       <style jsx>{`
-        /* When sidebar disappears */
-        @media (max-width: 500px) {
-          h2 {
-            display: none;
-          }
-        }
-
         h2 span {
           font-size: 12px;
           font-weight: 500;
