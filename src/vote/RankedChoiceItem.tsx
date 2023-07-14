@@ -34,7 +34,7 @@ export const RankedChoiceItem = ({
             <th />
 
             {new Array(rankings_allowed).fill(0).map((_, index) => (
-              <th className="text-center" key={index}>
+              <th className="text-[11px] text-center" key={index}>
                 {getOrdinal(index + 1)}
               </th>
             ))}
@@ -48,7 +48,7 @@ export const RankedChoiceItem = ({
 
             return (
               <tr key={name}>
-                <td className="relative pr-1 bottom-0.5">
+                <td className="relative pr-4 bottom-0.5">
                   <Label {...{ name, sub }} />
                 </td>
 
