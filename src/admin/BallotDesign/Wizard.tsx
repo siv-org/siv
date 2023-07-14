@@ -84,7 +84,7 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
                 }}
               >
                 <option value="choose-only-one">Choose Only One — FPTP</option>
-                <option value="instant-runoff">Ranked Choice — IRV</option>
+                <option value="ranked-choice-irv">Ranked Choice — IRV</option>
               </select>
             </div>
           </div>
@@ -171,6 +171,8 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
           const new_question_number = new_json.length + 1
           new_json.push({
             id: `item${new_question_number}`,
+            type: 'choose-only-one',
+            // eslint-disable-next-line sort-keys-fix/sort-keys-fix
             title: `Question ${new_question_number}`,
             // eslint-disable-next-line sort-keys-fix/sort-keys-fix
             options: [{ name: 'Option 1' }, { name: 'Option 2' }],
