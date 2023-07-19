@@ -3,6 +3,7 @@ import { flatten } from 'lodash-es'
 import Link from 'next/link'
 import { useEffect } from 'react'
 
+import { defaultRankingsAllowed } from '../RankedChoiceItem'
 import { State } from '../vote-state'
 import { DetailedEncryptionReceipt } from './DetailedEncryptionReceipt'
 import { EncryptedVote } from './EncryptedVote'
@@ -21,15 +22,15 @@ export function SubmittedScreen({
   // Widen the page for the tables
   useEffect(() => {
     const mainEl = document.getElementsByTagName('main')[0]
-    if (mainEl) {
-      mainEl.style.maxWidth = '880px'
-    }
+    if (mainEl) mainEl.style.maxWidth = '880px'
   })
 
   const columns = flatten(
-    state.ballot_design?.map(({ id, multiple_votes_allowed }) => {
-      return multiple_votes_allowed
-        ? new Array(multiple_votes_allowed).fill('').map((_, index) => `${id || 'vote'}_${index + 1}`)
+    state.ballot_design?.map(({ id, multiple_votes_allowed, type }) => {
+      return multiple_votes_allowed || type === 'ranked-choice-irv'
+        ? new Array(multiple_votes_allowed || defaultRankingsAllowed)
+            .fill('')
+            .map((_, index) => `${id || 'vote'}_${index + 1}`)
         : id || 'vote'
     }),
   )

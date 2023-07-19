@@ -6,13 +6,15 @@ import { Label, TitleDescriptionQuestion } from './Item'
 import { Item as ItemType } from './storeElectionInfo'
 import { State } from './vote-state'
 
+export const defaultRankingsAllowed = 3
+
 export const RankedChoiceItem = ({
   description,
   dispatch,
   id = 'vote',
   options,
   question,
-  rankings_allowed = 4,
+  rankings_allowed = defaultRankingsAllowed,
   state,
   title,
 }: ItemType & {
