@@ -26,13 +26,13 @@ export function SubmittedScreen({
   })
 
   const columns = flatten(
-    state.ballot_design?.map(({ id, multiple_votes_allowed, type }) => {
-      return multiple_votes_allowed || type === 'ranked-choice-irv'
+    state.ballot_design?.map(({ id, multiple_votes_allowed, type }) =>
+      multiple_votes_allowed || type === 'ranked-choice-irv'
         ? new Array(multiple_votes_allowed || defaultRankingsAllowed)
             .fill('')
             .map((_, index) => `${id || 'vote'}_${index + 1}`)
-        : id || 'vote'
-    }),
+        : id || 'vote',
+    ),
   )
 
   return (
