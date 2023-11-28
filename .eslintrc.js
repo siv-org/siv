@@ -10,6 +10,7 @@ module.exports = {
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:typescript-sort-keys/recommended',
+    'plugin:import/typescript',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -19,10 +20,11 @@ module.exports = {
     ecmaVersion: 2018,
     sourceType: 'module',
   },
-  plugins: ['react', '@typescript-eslint', 'typescript-sort-keys', 'sort-destructure-keys', 'sort-keys-fix'],
+  plugins: ['react', '@typescript-eslint', 'typescript-sort-keys', 'sort-destructure-keys', 'sort-keys-fix', 'import'],
   rules: {
     '@typescript-eslint/explicit-module-boundary-types': 0, // Verbose
     '@typescript-eslint/no-empty-function': 0, // unnecessary
+    'import/no-unused-modules': [1, { unusedExports: true }], // Warn about dead code noise
     'react/jsx-sort-props': [2, { callbacksLast: true, shorthandFirst: true }], // style
     'react/react-in-jsx-scope': 0, // Handled by Next.js
     'sort-destructure-keys/sort-destructure-keys': 2, // style
