@@ -37,7 +37,7 @@ export const EncodedsTable = (): JSX.Element => {
             <tr key={index}>
               <td>{index + 1}.</td>
               {columns.map((c) => (
-                <td key={c}>{stringToPoint(`${vote.tracking}:${vote[c]}`)}</td>
+                <td key={c}>{stringToPoint(`${vote.tracking}:${vote[c]}`).toString()}</td>
               ))}
             </tr>
           ))}
