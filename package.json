@@ -28,8 +28,8 @@
     "trailingComma": "all"
   },
   "resolutions": {
-    "@types/react": "17.0.14",
-    "@types/react-dom": "17.0.14"
+    "@types/react": "18.2.6",
+    "@types/react-dom": "18.2.0"
   },
   "dependencies": {
     "@ant-design/icons": "~4.7",
@@ -44,7 +44,7 @@
     "@supabase/supabase-js": "^1.21.3",
     "@types/bluebird": "^3.5.33",
     "@types/lodash-es": "^4.17.3",
-    "@types/react": "17",
+    "@types/react": "18.2.6",
     "bigint-mod-arith": "^3.0.2",
     "bluebird": "^3.7.2",
     "codemirror": "^5.62.2",
@@ -63,9 +63,9 @@
     "postinstall-postinstall": "^2.1.0",
     "pusher": "^4.0.2",
     "pusher-js": "^7.0.2",
-    "react": "^17",
+    "react": "^18.2.0",
     "react-codemirror2": "scniro/react-codemirror2#0f2bb13",
-    "react-dom": "^17",
+    "react-dom": "^18.2.0",
     "react-flip-move": "^3.0.4",
     "react-linkify": "^1.0.0-alpha",
     "react-scroll": "^1.8.3",
