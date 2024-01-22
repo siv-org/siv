@@ -31,7 +31,7 @@ export const Ballot = ({
 
           {state.ballot_design.map((item, index) =>
             // Is it "Choose-up-to" ?
-            item.multiple_votes_allowed && item.multiple_votes_allowed > 1 ? (
+            item.type === 'multiple-votes-allowed' && item.multiple_votes_allowed && item.multiple_votes_allowed > 1 ? (
               <MultiVoteItem
                 {...{
                   ...item,

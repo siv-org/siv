@@ -22,7 +22,7 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
         errors ? 'bg-gray-100 opacity-30 cursor-not-allowed' : ''
       }`}
     >
-      {json?.map(({ id, options, title, write_in_allowed }, questionIndex) => (
+      {json?.map(({ id, multiple_votes_allowed, options, title, write_in_allowed }, questionIndex) => (
         // Each question
         <div className="p-2.5 bg-white mt-4 first:mt-0" key={questionIndex}>
           {/* Question ID Label */}
@@ -81,14 +81,37 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
                 onChange={({ target }) => {
                   const new_json = [...json]
                   new_json[questionIndex].type = target.value as string
+                  if (
+                    new_json[questionIndex].type == 'multiple-votes-allowed' &&
+                    !new_json[questionIndex].multiple_votes_allowed
+                  ) {
+                    new_json[questionIndex].multiple_votes_allowed = 3
+                  }
                   setDesign(JSON.stringify(new_json, undefined, 2))
                 }}
               >
                 <option value="choose-only-one">Choose Only One — FPTP</option>
                 <option value="ranked-choice-irv">Ranked Choice — IRV</option>
+                <option value="multiple-votes-allowed">Multiple Votes Allowed — Choose Up to X</option>
               </select>
             </div>
           </div>
+
+          {json[questionIndex].type == 'multiple-votes-allowed' && (
+            <div className="mt-1">
+              <label className="text-[10px] italic">Max Selections Allowed?</label>
+              <input
+                className="p-1 ml-1 text-sm"
+                value={multiple_votes_allowed}
+                onChange={({ target }) => {
+                  const update = +target.value
+                  const new_json = [...json]
+                  new_json[questionIndex].multiple_votes_allowed = update
+                  setDesign(JSON.stringify(new_json, undefined, 2))
+                }}
+              />
+            </div>
+          )}
 
           {/* Question Title Label */}
           <label className="block mt-4 text-[10px] italic">Question Title:</label>
