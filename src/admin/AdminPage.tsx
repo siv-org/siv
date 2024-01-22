@@ -57,7 +57,7 @@ export const AdminPage = (): JSX.Element => {
         }
 
         /* When sidebar disappears */
-        @media (max-width: 500px) {
+        @media (max-width: 640px) {
           #main-content {
             left: 0;
 

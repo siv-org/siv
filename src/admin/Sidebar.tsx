@@ -5,20 +5,8 @@ import { useRouter } from 'next/router'
 import { useStored } from './useStored'
 
 export const Sidebar = () => (
-  <div className="sidebar">
+  <div className="hidden sm:block" style={{ height: 'calc(100vh - 66px)' }}>
     <SidebarContent />
-    <style jsx>{`
-      .sidebar {
-        height: calc(100vh - 66px);
-      }
-
-      /* Hide for small screens */
-      @media (max-width: 500px) {
-        .sidebar {
-          display: none;
-        }
-      }
-    `}</style>
   </div>
 )
 
@@ -38,9 +26,22 @@ export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => voi
   return (
     <div className="sidebar">
       <main>
-        <h2 className="logo">SIV</h2>
+        <Link href="/admin">
+          <a
+            className="hover:!bg-white/0 !p-0"
+            onClick={() => {
+              closeMenu()
+              const el = document.getElementById('main-content')
+              if (el) el.scrollTop = 0
+            }}
+          >
+            <h2 className="logo sm:hidden">SIV</h2>
+          </a>
+        </Link>
+
         {election_id && (
           <>
+            {/* Election Management section */}
             <>
               <label>
                 <ApartmentOutlined style={{ marginRight: 5 }} /> Election Management
@@ -54,6 +55,8 @@ export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => voi
                 </Link>
               ))}
             </>
+
+            {/* Post Election section */}
             <>
               <label>
                 <SnippetsOutlined style={{ marginRight: 5 }} />
@@ -65,6 +68,8 @@ export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => voi
                 </a>
               </Link>
             </>
+
+            {/* Public pages section */}
             <>
               <label>
                 <LinkOutlined style={{ marginRight: 5 }} />
@@ -115,13 +120,6 @@ export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => voi
           font-weight: 700;
           color: #010b26;
           margin: 16px 8px;
-        }
-
-        /* Rules for persistent sidebar */
-        @media (min-width: 500px) {
-          .logo {
-            display: none;
-          }
         }
 
         label {

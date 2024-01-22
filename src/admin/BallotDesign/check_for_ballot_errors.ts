@@ -57,14 +57,14 @@ export function check_for_less_urgent_ballot_errors(design: string): string | nu
       ids[id] = true
 
       // Validate options
-      const options: Record<string, boolean> = {}
+      const optionsSeen: Record<string, boolean> = {}
       question.options.forEach(({ name = '' }: { name?: string }, oIndex: number) => {
         if (name === '') throw `Can't have empty options. Fix \`${id}\` option #${oIndex + 1}`
 
         // Check no duplicate options (case insensitive)
-        if (options[name.toLowerCase()])
+        if (optionsSeen[name.toLowerCase()])
           throw `Question ${question.id ? `'${question.id}'` : ''} has duplicate option: ${name}`
-        options[name.toLowerCase()] = true
+        optionsSeen[name.toLowerCase()] = true
       })
     })
   } catch (e) {

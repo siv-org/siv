@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import { Fragment, useEffect, useState } from 'react'
 import { CipherStrings } from 'src/crypto/stringify-shuffle'
 import { EncryptedVote } from 'src/protocol/EncryptedVote'
+import { defaultRankingsAllowed } from 'src/vote/RankedChoiceItem'
 
 import { Item } from '../vote/storeElectionInfo'
 import { TotalVotesCast } from './TotalVotesCast'
@@ -45,11 +46,13 @@ export const AcceptedVotes = ({
   const newVotes = numVotes - votes.length
 
   const columns = flatten(
-    ballot_design.map(({ id, multiple_votes_allowed }) => {
-      return multiple_votes_allowed
-        ? new Array(multiple_votes_allowed).fill('').map((_, index) => `${id || 'vote'}_${index + 1}`)
-        : id || 'vote'
-    }),
+    ballot_design?.map(({ id, multiple_votes_allowed, type }) =>
+      multiple_votes_allowed || type === 'ranked-choice-irv'
+        ? new Array(multiple_votes_allowed || defaultRankingsAllowed)
+            .fill('')
+            .map((_, index) => `${id || 'vote'}_${index + 1}`)
+        : id || 'vote',
+    ),
   )
 
   return (

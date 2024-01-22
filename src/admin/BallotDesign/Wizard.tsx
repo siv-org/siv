@@ -7,28 +7,6 @@ import { check_for_urgent_ballot_errors } from './check_for_ballot_errors'
 import { IOSSwitch } from './IOSSwitch'
 
 export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: string) => void }) => {
-  /* Features to support
-
-    - [x] See current design
-
-    - [x] Edit item title
-    - [x] Edit options name
-    - [x] Delete existing options
-    - [x] Toggle 'Write in' allowed
-    - [x] Create new options
-    - [x] Add new questions
-    - [x] Delete questions
-    - [x] Set item ID
-
-    - [ ] Edit option's subline (e.g. Party affiliation)
-    - [ ] Edit item description
-    - [ ] Edit item final question ("Should this bill be")
-    - [ ] Re-order items
-    - [ ] Reorder existing options
-    - [ ] Edit option's short_id (if too long)
-
-    - [ ] Collapse item's options
-*/
   const [json, setJson] = useState<Item[]>()
 
   const errors = check_for_urgent_ballot_errors(design)
@@ -38,10 +16,17 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
   }, [design])
 
   return (
-    <div className={`ballot ${errors ? 'errors' : ''}`}>
-      {json?.map(({ id, options, title, write_in_allowed }, questionIndex) => (
-        <div className="question" key={questionIndex}>
-          <label className="id-label">
+    // Wizard container
+    <div
+      className={`flex-1 border border-solid border-gray-300 text-gray-700 p-2.5 bg-[#eee] pb-0 ${
+        errors ? 'bg-gray-100 opacity-30 cursor-not-allowed' : ''
+      }`}
+    >
+      {json?.map(({ id, multiple_votes_allowed, options, title, write_in_allowed }, questionIndex) => (
+        // Each question
+        <div className="p-2.5 bg-white mt-4 first:mt-0" key={questionIndex}>
+          {/* Question ID Label */}
+          <label className="block mt-3.5 text-[10px] italic">
             Question ID{' '}
             <Tooltip
               placement="top"
@@ -51,14 +36,15 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
                 </span>
               }
             >
-              <span className="question-id-tooltip">
+              <span className="relative top-0 text-sm text-indigo-500 left-1">
                 <QuestionCircleOutlined />
               </span>
             </Tooltip>
           </label>
-          <div className="id-line">
+          {/* Question ID Input */}
+          <div className="flex items-center justify-between">
             <input
-              className="id-input"
+              className="p-1 text-sm"
               value={id}
               onChange={({ target }) => {
                 const new_json = [...json]
@@ -66,9 +52,11 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
                 setDesign(JSON.stringify(new_json, undefined, 2))
               }}
             />
+
+            {/* Delete Question btn */}
             <Tooltip placement="top" title="Delete Question">
               <a
-                className="delete-question-btn"
+                className="relative ml-1 text-xl text-center text-gray-700 rounded-full cursor-pointer w-7 bottom-[30px] hover:bg-gray-500 hover:text-white"
                 onClick={() => {
                   const new_json = [...json]
                   new_json.splice(questionIndex, 1)
@@ -79,10 +67,58 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
               </a>
             </Tooltip>
           </div>
-          <label className="title-label">Question Title:</label>
-          <div className="title-line">
+
+          {/* Type selector */}
+          <div className="mt-4">
+            <label className="text-[10px] italic">Voting Type:</label>
+
+            {/* Type dropdown */}
+            <div className="relative">
+              <span className="absolute z-20 scale-75 right-3 top-2 opacity-60">▼</span>
+              <select
+                className="appearance-none border border-solid border-gray-200 text-[13px] rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 shadow-sm relative"
+                value={json[questionIndex].type}
+                onChange={({ target }) => {
+                  const new_json = [...json]
+                  new_json[questionIndex].type = target.value as string
+                  if (
+                    new_json[questionIndex].type == 'multiple-votes-allowed' &&
+                    !new_json[questionIndex].multiple_votes_allowed
+                  ) {
+                    new_json[questionIndex].multiple_votes_allowed = 3
+                  }
+                  setDesign(JSON.stringify(new_json, undefined, 2))
+                }}
+              >
+                <option value="choose-only-one">Choose Only One — FPTP</option>
+                <option value="ranked-choice-irv">Ranked Choice — IRV</option>
+                <option value="multiple-votes-allowed">Multiple Votes Allowed — Choose Up to X</option>
+              </select>
+            </div>
+          </div>
+
+          {json[questionIndex].type == 'multiple-votes-allowed' && (
+            <div className="mt-1">
+              <label className="text-[10px] italic">Max Selections Allowed?</label>
+              <input
+                className="p-1 ml-1 text-sm"
+                value={multiple_votes_allowed}
+                onChange={({ target }) => {
+                  const update = +target.value
+                  const new_json = [...json]
+                  new_json[questionIndex].multiple_votes_allowed = update
+                  setDesign(JSON.stringify(new_json, undefined, 2))
+                }}
+              />
+            </div>
+          )}
+
+          {/* Question Title Label */}
+          <label className="block mt-4 text-[10px] italic">Question Title:</label>
+          {/* Question Title Input */}
+          <div className="flex items-center">
             <input
-              className="title-input"
+              className="flex-1 p-1 text-sm"
               value={title}
               onChange={({ target }) => {
                 const new_json = [...json]
@@ -91,11 +127,14 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
               }}
             />
           </div>
-          <ul className="options">
+
+          {/* Options list */}
+          <ul>
             {options?.map(({ name }, optionIndex) => (
               <li key={optionIndex}>
+                {/* Option input */}
                 <input
-                  className="name-input"
+                  className="p-[5px] mb-1.5 text-[13px]"
                   value={name}
                   onChange={({ target }) => {
                     const new_json = [...json]
@@ -103,8 +142,9 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
                     setDesign(JSON.stringify(new_json, undefined, 2))
                   }}
                 />
+                {/* Delete Option btn */}
                 <a
-                  className="delete-option-btn"
+                  className="inline-block pl-px w-5 h-5 ml-[5px] leading-4 text-center text-gray-600 border border-gray-300 border-solid rounded-full cursor-pointer hover:no-underline hover:bg-gray-500 hover:border-transparent hover:text-white"
                   onClick={() => {
                     const new_json = [...json]
                     new_json[questionIndex].options.splice(optionIndex, 1)
@@ -115,8 +155,9 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
                 </a>
               </li>
             ))}
+            {/* Add another option btn */}
             <a
-              className="add-option"
+              className="block pl-2 mt-1 mb-[14px] text-[13px] italic cursor-pointer"
               onClick={() => {
                 const new_json = [...json]
                 new_json[questionIndex].options.push({ name: '' })
@@ -125,8 +166,14 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
             >
               + Add another option
             </a>
-            <li className={`write-in ${write_in_allowed ? 'allowed' : 'disabled'}`}>
-              <span>{`Write-in ${write_in_allowed ? 'Allowed' : 'Disabled'}`}</span>
+
+            {/* Write-in Allowed toggle */}
+            <li className={`${write_in_allowed ? '' : 'list-none'}`}>
+              <span
+                className={`inline-block w-32 pl-2 text-[13px] italic text-gray-800 ${
+                  !write_in_allowed ? 'opacity-60' : ''
+                }`}
+              >{`Write-in ${write_in_allowed ? 'Allowed' : 'Disabled'}`}</span>
               <IOSSwitch
                 checked={write_in_allowed}
                 onChange={() => {
@@ -139,13 +186,17 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
           </ul>
         </div>
       ))}
+
+      {/* "Add another question" btn */}
       <a
-        className="add-question"
+        className="block w-full p-2.5 italic bg-white my-[15px] text-[13px] cursor-pointer"
         onClick={() => {
           const new_json = [...(json || [])]
           const new_question_number = new_json.length + 1
           new_json.push({
             id: `item${new_question_number}`,
+            type: 'choose-only-one',
+            // eslint-disable-next-line sort-keys-fix/sort-keys-fix
             title: `Question ${new_question_number}`,
             // eslint-disable-next-line sort-keys-fix/sort-keys-fix
             options: [{ name: 'Option 1' }, { name: 'Option 2' }],
@@ -156,150 +207,6 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
       >
         + Add another question
       </a>
-      <style jsx>{`
-        .ballot {
-          flex: 1;
-          border: 1px solid #ccc;
-          color: #444;
-          padding: 10px;
-          background: #eee;
-          padding-bottom: 0;
-        }
-
-        .errors {
-          background-color: hsl(0, 0%, 90%);
-          opacity: 0.3;
-          cursor: not-allowed;
-        }
-
-        .question {
-          padding: 10px;
-          background: #fff;
-        }
-
-        .question:not(:first-child) {
-          margin-top: 15px;
-        }
-
-        .id-label,
-        .title-label {
-          margin-top: 15px;
-          font-style: italic;
-          display: block;
-          font-size: 10px;
-        }
-
-        .question-id-tooltip {
-          font-size: 12px;
-          position: relative;
-          left: 4px;
-          top: 1px;
-          color: rgb(90, 102, 233);
-        }
-
-        .id-line {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-        }
-
-        .title-line {
-          display: flex;
-          align-items: center;
-        }
-
-        .id-input,
-        .title-input {
-          font-size: 14px;
-          padding: 5px;
-        }
-
-        .title-input {
-          flex: 1;
-        }
-
-        .delete-question-btn {
-          font-size: 20px;
-          color: hsl(0, 0%, 28%);
-          cursor: pointer;
-          margin-left: 5px;
-          width: 29px;
-          text-align: center;
-          border-radius: 99px;
-          position: relative;
-          bottom: 30px;
-        }
-
-        .delete-question-btn:hover {
-          background-color: hsl(0, 0%, 50%);
-          color: #fff;
-        }
-
-        .name-input {
-          padding: 5px;
-          font-size: 13px;
-          margin-bottom: 6px;
-        }
-
-        .options li {
-          white-space: nowrap;
-        }
-
-        .delete-option-btn {
-          border: 1px solid hsl(0, 0%, 82%);
-          border-radius: 100px;
-          width: 20px;
-          height: 20px;
-          display: inline-block;
-          text-align: center;
-          color: hsl(0, 0%, 42%);
-          line-height: 16px;
-          padding-left: 1px;
-          cursor: pointer;
-          margin-left: 5px;
-        }
-
-        .delete-option-btn:hover {
-          background-color: hsl(0, 0%, 42%);
-          border-color: #0000;
-          color: white;
-          text-decoration: none;
-        }
-
-        .add-option,
-        .add-question {
-          font-style: italic;
-          padding-left: 8px;
-          margin: 3px 0 14px;
-          display: inline-block;
-          font-size: 13px;
-          cursor: pointer;
-        }
-
-        .write-in span {
-          font-size: 13px;
-          font-style: italic;
-          width: 123px;
-          display: inline-block;
-          color: hsl(0, 0%, 17%);
-          padding-left: 8px;
-        }
-
-        .write-in.disabled {
-          list-style: none; /* Remove bullet */
-        }
-
-        .write-in.disabled span {
-          opacity: 0.6;
-        }
-
-        .add-question {
-          margin: 15px 0 !important;
-          background: #fff;
-          padding: 10px;
-          width: 100%;
-        }
-      `}</style>
     </div>
   )
 }
