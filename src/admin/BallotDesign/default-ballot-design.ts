@@ -1,6 +1,7 @@
 export const default_ballot_design = `[
   {
     "id": "president",
+    "type": "choose-only-one",
     "title": "Who should become President?",
     "options": [
       {

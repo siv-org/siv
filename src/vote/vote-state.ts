@@ -48,8 +48,8 @@ function reducer(prev: State, payload: Map) {
     return prev
   }
 
-  // Generate a new tracking number
-  newState.tracking = generateTrackingNum()
+  // Generate Verification number if needed
+  if (!prev.tracking) newState.tracking = generateTrackingNum()
 
   // Initialize empty dicts for intermediary steps
   const randomizer: Map = {}

@@ -2,6 +2,7 @@ import { keyBy } from 'lodash-es'
 import TimeAgo from 'timeago-react'
 
 import { tallyVotes } from './tally-votes'
+import { unTruncateSelection } from './un-truncate-selection'
 import { useDecryptedVotes } from './use-decrypted-votes'
 import { useElectionInfo } from './use-election-info'
 
@@ -25,13 +26,27 @@ export const Totals = ({ proofsPage }: { proofsPage?: boolean }): JSX.Element =>
           </span>
         )}
       </div>
-      {ballot_design.map(({ id = 'vote', title }) => (
+      {ballot_design.map(({ id = 'vote', title, type }) => (
         <div key={id}>
           <h4>{title}</h4>
+
+          {type === 'ranked-choice-irv' && (
+            <div className="p-1 border-2 border-red-400 border-dashed rounded">
+              This was a Ranked Choice question. SIV does not yet support Ranked Choice tallying. The numbers below
+              represent who received <i>any</i> votes, ignoring rankings.
+              <p className="mt-1 mb-0 text-xs text-gray-500">
+                You can paste the Decrypted Votes table into a tallying program such as{' '}
+                <a href="https://rcvis.com" rel="noreferrer" target="_blank">
+                  rcvis.com
+                </a>
+              </p>
+            </div>
+          )}
+
           <ul>
             {ordered[id].map((selection) => (
               <li key={selection}>
-                {selection}: {tallies[id][selection]}{' '}
+                {unTruncateSelection(selection, ballot_design, id)}: {tallies[id][selection]}{' '}
                 <i style={{ fontSize: 12, marginLeft: 5, opacity: 0.5 }}>
                   ({((100 * tallies[id][selection]) / totalsCastPerItems[id]).toFixed(1)}%)
                 </i>

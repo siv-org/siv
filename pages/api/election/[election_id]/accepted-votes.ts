@@ -5,7 +5,7 @@ import { firebase } from '../../_services'
 import { ReviewLog } from './admin/load-admin'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { election_id } = req.query
+  const { election_id, limitToLast } = req.query
 
   const electionDoc = firebase
     .firestore()
@@ -13,28 +13,35 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     .doc(election_id as string)
 
   // Begin preloading
-  const loadVotes = electionDoc.collection('votes').orderBy('created_at').get()
-  const loadVoters = electionDoc.collection('voters').get()
+  let votesQuery = electionDoc.collection('votes').orderBy('created_at')
+  if (typeof limitToLast === 'string') votesQuery = votesQuery.limitToLast(+limitToLast)
+  const loadVotes = votesQuery.get()
+
+  const election = await electionDoc.get()
 
   // Is election_id in DB?
-  if (!(await electionDoc.get()).exists) return res.status(400).json({ error: 'Unknown Election ID.' })
+  if (!election.exists) return res.status(400).json({ error: 'Unknown Election ID.' })
 
-  type VotersByAuth = Record<string, { esignature_review: ReviewLog[] }>
-  const votersByAuth: VotersByAuth = (await loadVoters).docs.reduce((acc: VotersByAuth, doc) => {
-    const data = doc.data()
-    return { ...acc, [data.auth_token]: data }
-  }, {})
-
-  // Grab public votes fields
-  const votes = (await loadVotes).docs.map((doc) => {
+  let votes = (await loadVotes).docs.map((doc) => {
     const { auth, encrypted_vote } = doc.data()
-    const voter = votersByAuth[auth]
-    return {
-      auth,
-      ...encrypted_vote,
-      signature_approved: getStatus(voter?.esignature_review) === 'approve',
-    }
+    return { auth, ...encrypted_vote }
   })
 
-  res.status(200).json(votes)
+  // If we need esignatures, we need to load all voters as well to get their esignature status
+  if (election.data()?.esignature_requested) {
+    type VotersByAuth = Record<string, { esignature_review: ReviewLog[] }>
+    const voters = await electionDoc.collection('voters').get()
+    const votersByAuth: VotersByAuth = voters.docs.reduce((acc: VotersByAuth, doc) => {
+      const data = doc.data()
+      return { ...acc, [data.auth_token]: data }
+    }, {})
+
+    // Add signature status
+    votes = votes.map((vote) => {
+      const voter = votersByAuth[vote.auth]
+      return { ...vote, signature_approved: getStatus(voter?.esignature_review) === 'approve' }
+    })
+  }
+
+  return res.status(200).json(votes)
 }

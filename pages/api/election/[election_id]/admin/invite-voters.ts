@@ -54,7 +54,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       }),
     ),
   ).catch((error) => {
-    throw res.status(400).json({ error })
+    console.log('🟥 Error sending voter invitations:', error)
+    throw res.status(400).json({ error: error.message || JSON.stringify(error) })
   })
 
   res.status(201).json({ message: 'Done' })

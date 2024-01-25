@@ -12,7 +12,7 @@ export const HeaderBar = () => (
       </Link>
     </h3>
     <span>
-      <Link href="https://book.siv.org">
+      <Link href="https://docs.siv.org">
         <a>Docs</a>
       </Link>
       <Link href="https://blog.siv.org">

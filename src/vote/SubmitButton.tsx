@@ -1,8 +1,8 @@
 import * as Sentry from '@sentry/browser'
 import { Dispatch, useState } from 'react'
 
-import { api } from '../api-helper'
 import { OnClickButton } from '../_shared/Button'
+import { api } from '../api-helper'
 import { State } from './vote-state'
 
 export const SubmitButton = ({
@@ -29,7 +29,12 @@ export const SubmitButton = ({
           // Add plaintext "BLANK" for questions left blank
           state.ballot_design?.map((item) => {
             const id = item.id || 'vote'
-            if (!state.plaintext[id]) dispatch({ [id]: 'BLANK' })
+
+            if (state.plaintext[id]) return
+            if (item.multiple_votes_allowed) return
+            if (item.type === 'ranked-choice-irv') return
+
+            dispatch({ [id]: 'BLANK' })
           })
 
           const response = await api('submit-vote', { auth, election_id, encrypted_vote: state.encrypted })

@@ -1,14 +1,17 @@
 import router from 'next/router'
 import { useState } from 'react'
 
-import { api } from '../../api-helper'
-import { SaveButton } from '../SaveButton'
+import { api } from '../api-helper'
+import { SaveButton } from './SaveButton'
 
-export const TitleInput = () => {
+export const CreateNewElection = () => {
   const [election_title, set_title] = useState('')
 
   return (
     <>
+      <h2>Create New Election</h2>
+      <label>Election Title:</label>
+
       <input
         id="election-title"
         placeholder="Give your election a name your voters will recognize"

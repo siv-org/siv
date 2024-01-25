@@ -1,10 +1,10 @@
+import Image from 'next/image'
 import { useReducer, useState } from 'react'
 import { api } from 'src/api-helper'
 
 import { useStored } from '../useStored'
-import { DeliveriesAndFailures } from './DeliveriesAndFailures'
+import InvalidatedVoteIcon from './invalidated.png'
 import { mask } from './mask-token'
-import { QueuedCell } from './QueuedCell'
 import { Signature, getStatus } from './Signature'
 import { use_multi_select } from './use-multi-select'
 
@@ -32,52 +32,50 @@ export const InvalidVotersTable = ({
   if (!shown_voters || !shown_voters.length) return null
 
   return (
-    <table className="pb-3">
-      Invalidated voters:
-      <thead>
-        <tr>
-          <th>
-            <input
-              style={{ cursor: 'pointer' }}
-              type="checkbox"
-              onChange={(event) => {
-                const new_checked = [...checked]
-                new_checked.fill(event.target.checked)
-                set_checked(new_checked)
-                set_last_selected(undefined)
-              }}
-            />
-          </th>
-          <th>#</th>
-          <th>email</th>
-          <th className="hoverable" onClick={toggle_tokens}>
-            {mask_tokens ? 'masked' : 'full'}
-            <br />
-            auth token
-          </th>
-          <th style={{ width: 50 }}>invite queued</th>
-          <th style={{ width: 50 }}>invite delivered</th>
-          <th>voted</th>
-          {esignature_requested && (
-            <th
-              className="hoverable"
-              onClick={() => {
-                if (confirm(`Do you want to approve all ${num_voted} signatures?`)) {
-                  api(`election/${election_id}/admin/review-signature`, {
-                    emails: shown_voters.filter(({ has_voted }) => has_voted).map((v) => v.email),
-                    review: 'approve',
-                  })
-                }
-              }}
-            >
-              signature
+    <>
+      <p className="mt-12 mb-1">Invalidated voters:</p>
+      <table className="pb-3">
+        <thead>
+          <tr>
+            <th>
+              <input
+                style={{ cursor: 'pointer' }}
+                type="checkbox"
+                onChange={(event) => {
+                  const new_checked = [...checked]
+                  new_checked.fill(event.target.checked)
+                  set_checked(new_checked)
+                  set_last_selected(undefined)
+                }}
+              />
             </th>
-          )}
-        </tr>
-      </thead>
-      <tbody>
-        {shown_voters.map(
-          ({ auth_token, email, esignature, esignature_review, has_voted, invite_queued, mailgun_events }, index) => (
+            <th>#</th>
+            <th>email</th>
+            <th className="hoverable" onClick={toggle_tokens}>
+              {mask_tokens ? 'masked' : 'full'}
+              <br />
+              auth token
+            </th>
+            <th>voted</th>
+            {esignature_requested && (
+              <th
+                className="hoverable"
+                onClick={() => {
+                  if (confirm(`Do you want to approve all ${num_voted} signatures?`)) {
+                    api(`election/${election_id}/admin/review-signature`, {
+                      emails: shown_voters.filter(({ has_voted }) => has_voted).map((v) => v.email),
+                      review: 'approve',
+                    })
+                  }
+                }}
+              >
+                signature
+              </th>
+            )}
+          </tr>
+        </thead>
+        <tbody>
+          {shown_voters.map(({ auth_token, email, esignature, esignature_review, has_voted }, index) => (
             <tr className={`${checked[index] ? 'checked' : ''}`} key={email}>
               {/* Checkbox cell */}
 
@@ -110,25 +108,24 @@ export const InvalidVotersTable = ({
                 {mask_tokens ? mask(auth_token) : auth_token}
               </td>
 
-              <QueuedCell {...{ invite_queued }} />
-              <DeliveriesAndFailures {...mailgun_events} />
-
-              <td style={{ fontWeight: 700, textAlign: 'center' }}>{has_voted ? '✓' : ''}</td>
+              <td className="p-0 text-center">
+                {has_voted ? (
+                  <Image className="object-contain scale-25 " height={23} src={InvalidatedVoteIcon} width={23} />
+                ) : null}
+              </td>
 
               {esignature_requested &&
                 (has_voted ? <Signature {...{ election_id, email, esignature, esignature_review }} /> : <td />)}
             </tr>
-          ),
-        )}
-      </tbody>
+          ))}
+        </tbody>
+      </table>
       <style jsx>{`
         table {
           border-collapse: collapse;
           display: block;
           overflow: auto;
           width: 100%;
-
-          margin-top: 3rem;
         }
 
         th,
@@ -178,6 +175,6 @@ export const InvalidVotersTable = ({
           opacity: 1 !important;
         }
       `}</style>
-    </table>
+    </>
   )
 }

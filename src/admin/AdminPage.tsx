@@ -5,11 +5,11 @@ import { Head } from '../Head'
 import { AllYourElections } from './AllYourElections'
 import { useLoginRequired, useUser } from './auth'
 import { BallotDesign } from './BallotDesign/BallotDesign'
+import { CreateNewElection } from './CreateNewElection'
 import { HeaderBar } from './HeaderBar'
 import { MarkedBallots } from './MarkedBallots/MarkedBallots'
 import { MobileMenu } from './MobileMenu'
 import { Observers } from './Observers/Observers'
-import { ElectionOverview } from './Overview/ElectionOverview'
 import { Sidebar } from './Sidebar'
 import { usePusher } from './usePusher'
 import { AddVoters } from './Voters/AddVoters'
@@ -31,8 +31,8 @@ export const AdminPage = (): JSX.Element => {
         <Sidebar />
         <div id="main-content">
           <MobileMenu />
-          <AllYourElections />
-          {(section === 'overview' || !election_id) && <ElectionOverview />}
+          {!election_id && <AllYourElections />}
+          {!election_id && <CreateNewElection />}
           {section === 'observers' && <Observers />}
           {section === 'ballot-design' && <BallotDesign />}
           {section === 'voters' && <AddVoters />}
@@ -57,7 +57,7 @@ export const AdminPage = (): JSX.Element => {
         }
 
         /* When sidebar disappears */
-        @media (max-width: 500px) {
+        @media (max-width: 640px) {
           #main-content {
             left: 0;
 

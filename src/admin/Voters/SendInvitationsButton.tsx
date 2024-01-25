@@ -55,7 +55,7 @@ export const SendInvitationsButton = ({
                 // console.log('Got response to chunk', index)
                 if (response.status !== 201) {
                   const json = await response.json()
-                  console.error(json)
+                  console.error('Send Invitation error:', json)
                   set_error(json?.error || `Error w/o message, in chunk ${index}`)
                 }
               }),

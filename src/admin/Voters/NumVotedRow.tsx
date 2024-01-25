@@ -23,7 +23,8 @@ export const NumVotedRow = ({
     <p className="num-voted-row">
       <span>
         <i>
-          {num_voted} of {valid_voters.length} voted ({Math.round((num_voted / valid_voters.length) * 100)}%)
+          {num_voted} of {valid_voters.length} voted (
+          {valid_voters.length == 0 ? 0 : Math.round((num_voted / valid_voters.length) * 100)}%)
         </i>
         {/* Toggle hide voted */}
         <a style={{ cursor: 'pointer', fontSize: 12, marginLeft: 10 }} onClick={toggle_hide_voted}>

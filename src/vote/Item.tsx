@@ -2,6 +2,7 @@ import { FormControlLabel, Radio, RadioGroup, TextField } from '@material-ui/cor
 import { Dispatch, useState } from 'react'
 import Linkify from 'react-linkify'
 
+import { max_string_length } from './Ballot'
 import { Item as ItemType } from './storeElectionInfo'
 import { State } from './vote-state'
 
@@ -9,7 +10,6 @@ export const Item = ({
   description,
   dispatch,
   id = 'vote',
-  max_string_length,
   options,
   question,
   state,
@@ -18,7 +18,6 @@ export const Item = ({
 }: ItemType & {
   dispatch: Dispatch<Record<string, string>>
   election_id?: string
-  max_string_length: number
   state: State
 }): JSX.Element => {
   const [other, setOther] = useState<string>()

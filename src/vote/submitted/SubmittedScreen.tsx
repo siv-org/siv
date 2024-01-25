@@ -4,9 +4,11 @@ import Link from 'next/link'
 import { useEffect } from 'react'
 import { useReducer } from 'react'
 
+import { defaultRankingsAllowed } from '../Ballot'
 import { State } from '../vote-state'
 import { DetailedEncryptionReceipt } from './DetailedEncryptionReceipt'
 import { EncryptedVote } from './EncryptedVote'
+import { InvalidatedVoteMessage } from './InvalidatedVoteMessage'
 import { UnlockedVote } from './UnlockedVote'
 import { UnverifiedEmailModal } from './UnverifiedEmailModal'
 
@@ -24,22 +26,23 @@ export function SubmittedScreen({
   // Widen the page for the tables
   useEffect(() => {
     const mainEl = document.getElementsByTagName('main')[0]
-    if (mainEl) {
-      mainEl.style.maxWidth = '880px'
-    }
+    if (mainEl) mainEl.style.maxWidth = '880px'
   })
 
   const columns = flatten(
-    state.ballot_design?.map(({ id, multiple_votes_allowed }) => {
-      return multiple_votes_allowed
-        ? new Array(multiple_votes_allowed).fill('').map((_, index) => `${id || 'vote'}_${index + 1}`)
-        : id || 'vote'
-    }),
+    state.ballot_design?.map(({ id, multiple_votes_allowed, type }) =>
+      multiple_votes_allowed || type === 'ranked-choice-irv'
+        ? new Array(multiple_votes_allowed || defaultRankingsAllowed)
+            .fill('')
+            .map((_, index) => `${id || 'vote'}_${index + 1}`)
+        : id || 'vote',
+    ),
   )
 
   return (
     <NoSsr>
       <UnverifiedEmailModal />
+      <InvalidatedVoteMessage />
       <Link as={`/election/${election_id}`} href="/election/[election_id]">
         <a id="status-page" target="_blank">
           <img src="/vote/externallinkicon.jpg" width="15px" />

@@ -14,7 +14,7 @@ import { TextDesigner } from './TextDesigner'
 import { Wizard } from './Wizard'
 
 export const BallotDesign = () => {
-  const { ballot_design: stored_ballot_design, ballot_design_finalized, election_id } = useStored()
+  const { ballot_design: stored_ballot_design, ballot_design_finalized, election_id, election_title } = useStored()
   const [selected, setSelected] = useState(0)
 
   const designState = useState(stored_ballot_design || default_ballot_design)
@@ -30,9 +30,16 @@ export const BallotDesign = () => {
     set_saving_errors(null)
   }, [design])
 
+  // Restore stored ballot design on hard refresh
+  useEffect(() => {
+    if (!election_title) return
+    if (!stored_ballot_design) return
+    setDesign(stored_ballot_design)
+  }, [election_title])
+
   return (
     <>
-      <h2>Ballot Design</h2>
+      <h2 className="hidden sm:block">Ballot Design</h2>
       <AutoSaver {...{ design }} />
       <Errors {...{ error }} />
       <ModeControls {...{ selected, setSelected }} />
@@ -64,14 +71,6 @@ export const BallotDesign = () => {
       )}
 
       <style jsx>{`
-        /* When sidebar disappears */
-        @media (max-width: 500px) {
-          h2 {
-            opacity: 0;
-            margin: 0px;
-          }
-        }
-
         .mode-container {
           display: flex;
           width: 100%;

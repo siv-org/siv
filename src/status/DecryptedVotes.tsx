@@ -1,6 +1,8 @@
 import { orderBy } from 'lodash-es'
 import { flatten } from 'lodash-es'
+import { defaultRankingsAllowed } from 'src/vote/Ballot'
 
+import { unTruncateSelection } from './un-truncate-selection'
 import { useDecryptedVotes } from './use-decrypted-votes'
 import { useElectionInfo } from './use-election-info'
 
@@ -13,11 +15,13 @@ export const DecryptedVotes = ({ proofsPage }: { proofsPage?: boolean }): JSX.El
   const sorted_votes = orderBy(votes, 'tracking')
 
   const columns = flatten(
-    ballot_design.map(({ id, multiple_votes_allowed }) => {
-      return multiple_votes_allowed
-        ? new Array(multiple_votes_allowed).fill('').map((_, index) => `${id || 'vote'}_${index + 1}`)
-        : id || 'vote'
-    }),
+    ballot_design?.map(({ id, multiple_votes_allowed, type }) =>
+      multiple_votes_allowed || type === 'ranked-choice-irv'
+        ? new Array(multiple_votes_allowed || defaultRankingsAllowed)
+            .fill('')
+            .map((_, index) => `${id || 'vote'}_${index + 1}`)
+        : id || 'vote',
+    ),
   )
 
   return (
@@ -43,7 +47,7 @@ export const DecryptedVotes = ({ proofsPage }: { proofsPage?: boolean }): JSX.El
               <td>{index + 1}.</td>
               <td>{vote.tracking?.padStart(14, '0')}</td>
               {columns.map((c) => (
-                <td key={c}>{vote[c]}</td>
+                <td key={c}>{unTruncateSelection(vote[c], ballot_design, c)}</td>
               ))}
             </tr>
           ))}

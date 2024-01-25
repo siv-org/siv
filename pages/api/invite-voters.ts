@@ -20,8 +20,9 @@ export const send_invitation_email = ({
   voter: string
 }) => {
   // Don't send localhost emails to non-admins
-  if (link.includes('localhost') && !voter.endsWith('@dsernst.com'))
+  if (link.includes('localhost') && !voter.endsWith('@dsernst.com') && !voter.endsWith('@arianaivan.com')) {
     throw `Blocking sending 'localhost' email link to ${voter}`
+  }
 
   // Make sure auth_token is well formed
   if (!/auth=(\d|[a-f]){10}$/.test(link)) throw `Blocking sending malformed auth invite ${link} to ${voter}`

@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import { useRouter } from 'next/router'
 import { useReducer } from 'react'
 import useSWR from 'swr'
 import TimeAgo from 'timeago-react'
@@ -16,12 +15,10 @@ export const AllYourElections = () => {
     }),
   )
 
-  if (useRouter().query.election_id) return <></>
-
   return (
     <>
       <h2>
-        Your Existing Elections: <i>{data?.elections?.length}</i>{' '}
+        Your Elections: <i>{data?.elections?.length}</i>{' '}
         {!!data?.elections?.length && (
           <span>
             <a onClick={toggle}>[ {show ? '- Hide' : '+ Show'} ]</a>
