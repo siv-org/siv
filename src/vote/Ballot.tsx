@@ -30,44 +30,49 @@ export const Ballot = ({
           {/* Election Title */}
           {state.election_title && <h2 className="ml-[13px]">{state.election_title}</h2>}
 
-          {state.ballot_design.map((item, index) =>
+          {state.ballot_design.map((item, index) => {
+            const max_options = item.options.length + +item.write_in_allowed
+
             // Is it "Approval" ?
-            item.type === 'approval' ? (
-              <MultiVoteItem
-                {...{
-                  ...item,
-                  dispatch,
-                  multiple_votes_allowed: item.options.length + +item.write_in_allowed,
-                  state,
-                }}
-                key={index}
-              />
-            ) : // Is it "Choose-up-to" ?
-            item.type === 'multiple-votes-allowed' && item.multiple_votes_allowed && item.multiple_votes_allowed > 1 ? (
-              <MultiVoteItem
-                {...{
-                  ...item,
-                  dispatch,
-                  multiple_votes_allowed: item.multiple_votes_allowed,
-                  state,
-                }}
-                key={index}
-              />
-            ) : // Is it "Ranked Choice"?
-            item.type === 'ranked-choice-irv' ? (
-              <RankedChoiceItem
-                {...{
-                  ...item,
-                  dispatch,
-                  state,
-                }}
-                key={index}
-              />
-            ) : (
-              // Otherwise, load default "Choose-only-one"
-              <Item {...{ ...item, dispatch, state }} key={index} />
-            ),
-          )}
+            if (item.type === 'approval')
+              return (
+                <MultiVoteItem {...{ ...item, dispatch, multiple_votes_allowed: max_options, state }} key={index} />
+              )
+
+            // Is it "Choose-up-to" ?
+            if (
+              item.type === 'multiple-votes-allowed' &&
+              item.multiple_votes_allowed &&
+              item.multiple_votes_allowed > 1
+            )
+              return (
+                <MultiVoteItem
+                  {...{
+                    ...item,
+                    dispatch,
+                    multiple_votes_allowed: Math.min(item.multiple_votes_allowed, max_options),
+                    state,
+                  }}
+                  key={index}
+                />
+              )
+
+            // Is it "Ranked Choice"?
+            if (item.type === 'ranked-choice-irv')
+              return (
+                <RankedChoiceItem
+                  {...{
+                    ...item,
+                    dispatch,
+                    state,
+                  }}
+                  key={index}
+                />
+              )
+
+            // Otherwise, load default "Choose-only-one"
+            return <Item {...{ ...item, dispatch, state }} key={index} />
+          })}
         </>
       </Paper>
     </NoSsr>
