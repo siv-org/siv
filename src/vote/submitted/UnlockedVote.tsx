@@ -3,7 +3,7 @@ import { unTruncateSelection } from 'src/status/un-truncate-selection'
 import { State } from '../vote-state'
 
 export const UnlockedVote = ({ columns, state }: { columns: string[]; state: State }) => (
-  <div className="overflow-auto">
+  <div className="pb-2 overflow-auto">
     <table className="w-auto border-collapse table-auto whitespace-nowrap">
       <thead>
         <tr>

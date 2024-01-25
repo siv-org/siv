@@ -26,9 +26,15 @@ export function SubmittedScreen({
   })
 
   const columns = flatten(
-    state.ballot_design?.map(({ id, multiple_votes_allowed, type }) =>
-      multiple_votes_allowed || type === 'ranked-choice-irv'
-        ? new Array(multiple_votes_allowed || defaultRankingsAllowed)
+    state.ballot_design?.map(({ id, multiple_votes_allowed, options, type, write_in_allowed }) =>
+      multiple_votes_allowed || type === 'ranked-choice-irv' || type === 'approval'
+        ? new Array(
+            multiple_votes_allowed
+              ? multiple_votes_allowed
+              : type === 'approval'
+              ? options.length + +!!write_in_allowed
+              : Math.min(defaultRankingsAllowed, options.length + +!!write_in_allowed),
+          )
             .fill('')
             .map((_, index) => `${id || 'vote'}_${index + 1}`)
         : id || 'vote',
@@ -57,7 +63,7 @@ export function SubmittedScreen({
       </p>
 
       <UnlockedVote {...{ columns, state }} />
-      <p className="small grey">
+      <p className="mt-0 small grey">
         This secret <em>Verification #</em> is a random number, generated and encrypted on your own device.
         <br />
         No one else can possibly know it.
