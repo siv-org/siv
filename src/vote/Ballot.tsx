@@ -32,7 +32,7 @@ export const Ballot = ({
           {state.election_title && <h2 className="ml-[13px]">{state.election_title}</h2>}
 
           {state.ballot_design.map((item, index) => {
-            const max_options = item.options.length + +item.write_in_allowed
+            const max_options = item.options.length + +!!item.write_in_allowed
 
             // Is it "Approval" ?
             if (item.type === 'approval')
