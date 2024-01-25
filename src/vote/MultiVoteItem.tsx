@@ -14,6 +14,7 @@ export const MultiVoteItem = ({
   options,
   question,
   title,
+  type,
 }: ItemType & {
   dispatch: Dispatch<Record<string, string>>
   election_id?: string
@@ -41,8 +42,15 @@ export const MultiVoteItem = ({
   return (
     <>
       <TitleDescriptionQuestion {...{ description, question, title }} />
-      <p className="remaining">
-        Remaining votes: {multiple_votes_allowed - selected.size} of {multiple_votes_allowed}
+
+      <p className="ml-[13px] italic ">
+        {type === 'approval' ? (
+          'Vote for all the options you approve of:'
+        ) : (
+          <>
+            Remaining votes: {multiple_votes_allowed - selected.size} of {multiple_votes_allowed}
+          </>
+        )}
       </p>
       <FormGroup style={{ paddingLeft: '1.5rem' }}>
         {options.map(({ name, sub, value }) => {
@@ -78,11 +86,6 @@ export const MultiVoteItem = ({
         })}
       </FormGroup>
       <br />
-      <style jsx>{`
-        .remaining {
-          margin: 13px;
-        }
-      `}</style>
     </>
   )
 }

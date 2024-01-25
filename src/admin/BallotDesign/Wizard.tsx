@@ -90,8 +90,9 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
                   setDesign(JSON.stringify(new_json, undefined, 2))
                 }}
               >
-                <option value="choose-only-one">Choose Only One — FPTP</option>
-                <option value="ranked-choice-irv">Ranked Choice — IRV</option>
+                <option value="choose-only-one">Choose Only One — Plurality (FPTP)</option>
+                <option value="ranked-choice-irv">Ranked Choice — Instant Runoff (IRV)</option>
+                <option value="approval">Approval — Vote for All That You Approve Of</option>
                 <option value="multiple-votes-allowed">Multiple Votes Allowed — Choose Up to X</option>
               </select>
             </div>

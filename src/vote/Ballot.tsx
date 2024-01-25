@@ -20,7 +20,8 @@ export const Ballot = ({
   election_id?: string
   state: State
 }): JSX.Element => {
-  if (!state.ballot_design || !state.public_key) return <p>Loading ballot...</p>
+  if (!state.ballot_design) return <p>Loading ballot...</p>
+  if (!state.public_key) return <p>This ballot is not ready for votes yet</p>
 
   return (
     <NoSsr>
@@ -30,7 +31,18 @@ export const Ballot = ({
           {state.election_title && <h2 className="ml-[13px]">{state.election_title}</h2>}
 
           {state.ballot_design.map((item, index) =>
-            // Is it "Choose-up-to" ?
+            // Is it "Approval" ?
+            item.type === 'approval' ? (
+              <MultiVoteItem
+                {...{
+                  ...item,
+                  dispatch,
+                  multiple_votes_allowed: item.options.length + +item.write_in_allowed,
+                  state,
+                }}
+                key={index}
+              />
+            ) : // Is it "Choose-up-to" ?
             item.type === 'multiple-votes-allowed' && item.multiple_votes_allowed && item.multiple_votes_allowed > 1 ? (
               <MultiVoteItem
                 {...{
