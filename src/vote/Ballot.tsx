@@ -11,6 +11,7 @@ import { State } from './vote-state'
 // Calculate maximum write-in string length
 const verification_num_length = 15
 export const max_string_length = maxLength - verification_num_length
+export const defaultRankingsAllowed = 3
 
 export const Ballot = ({
   dispatch,
@@ -64,6 +65,7 @@ export const Ballot = ({
                   {...{
                     ...item,
                     dispatch,
+                    rankings_allowed: Math.min(defaultRankingsAllowed, max_options),
                     state,
                   }}
                   key={index}

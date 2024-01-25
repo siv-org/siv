@@ -6,21 +6,19 @@ import { Label, TitleDescriptionQuestion } from './Item'
 import { Item as ItemType } from './storeElectionInfo'
 import { State } from './vote-state'
 
-export const defaultRankingsAllowed = 3
-
 export const RankedChoiceItem = ({
   description,
   dispatch,
   id = 'vote',
   options,
   question,
-  rankings_allowed = defaultRankingsAllowed,
+  rankings_allowed,
   state,
   title,
 }: ItemType & {
   dispatch: Dispatch<Record<string, string>>
   election_id?: string
-  rankings_allowed?: number
+  rankings_allowed: number
   state: State
 }): JSX.Element => {
   // console.log(state.plaintext)

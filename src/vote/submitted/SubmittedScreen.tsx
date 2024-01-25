@@ -3,7 +3,7 @@ import { flatten } from 'lodash-es'
 import Link from 'next/link'
 import { useEffect } from 'react'
 
-import { defaultRankingsAllowed } from '../RankedChoiceItem'
+import { defaultRankingsAllowed } from '../Ballot'
 import { State } from '../vote-state'
 import { DetailedEncryptionReceipt } from './DetailedEncryptionReceipt'
 import { EncryptedVote } from './EncryptedVote'

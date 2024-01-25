@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import { Fragment, useEffect, useState } from 'react'
 import { CipherStrings } from 'src/crypto/stringify-shuffle'
 import { EncryptedVote } from 'src/protocol/EncryptedVote'
-import { defaultRankingsAllowed } from 'src/vote/RankedChoiceItem'
+import { defaultRankingsAllowed } from 'src/vote/Ballot'
 
 import { Item } from '../vote/storeElectionInfo'
 import { TotalVotesCast } from './TotalVotesCast'

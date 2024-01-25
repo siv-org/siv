@@ -1,6 +1,6 @@
 import { orderBy } from 'lodash-es'
 import { flatten } from 'lodash-es'
-import { defaultRankingsAllowed } from 'src/vote/RankedChoiceItem'
+import { defaultRankingsAllowed } from 'src/vote/Ballot'
 
 import { unTruncateSelection } from './un-truncate-selection'
 import { useDecryptedVotes } from './use-decrypted-votes'
