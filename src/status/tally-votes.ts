@@ -1,12 +1,15 @@
 import { orderBy } from 'lodash-es'
+import { Item } from 'src/vote/storeElectionInfo'
 
 import { mapValues } from '../utils'
+import { triage_IRV_items } from './tallying/rcv-irv'
 
-export function tallyVotes(ballot_items_by_id: Record<string, unknown>, votes: Record<string, string>[]) {
+export function tallyVotes(ballot_items_by_id: Record<string, Item>, votes: Record<string, string>[]) {
   const multi_vote_regex = /_\d+$/
 
   // Sum up votes
   const tallies: Record<string, Record<string, number>> = {}
+  const IRV_columns_seen: Record<string, boolean> = {}
   votes.forEach((vote) => {
     Object.keys(vote).forEach((key) => {
       // Skip 'tracking' key
@@ -20,6 +23,9 @@ export function tallyVotes(ballot_items_by_id: Record<string, unknown>, votes: R
       if (multi_suffix && !ballot_items_by_id[key]) {
         // If so, we need to add all tallies to seed id, not the derived keys
         item = key.slice(0, -(multi_suffix.length + 1))
+
+        // RCV-IRV items use a different tallying algorithm, so we skip them for now
+        if (ballot_items_by_id[item].type === 'ranked-choice-irv') return (IRV_columns_seen[key] = true)
       }
 
       // Init item if new
@@ -47,7 +53,8 @@ export function tallyVotes(ballot_items_by_id: Record<string, unknown>, votes: R
     ),
   ) as Record<string, string[]>
 
-  // const ordered = {}
+  // Go back and RCV-IRV tally any of those that we skipped
+  triage_IRV_items(IRV_columns_seen, ballot_items_by_id, votes)
 
   return { ordered, tallies, totalsCastPerItems }
 }
