@@ -89,4 +89,6 @@ describe('IRV tallying', () => {
   test.todo('handles when a ballot runs out of non-eliminated candidates')
   test.todo('handles when there is a tie in the final round')
   test.todo('handles a ballot w/ multiple IRV items, and other types as well')
+  test.todo('good when someone wins in the first round')
+  test.todo('supports write-ins')
 })
