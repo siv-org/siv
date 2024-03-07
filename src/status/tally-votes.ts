@@ -2,7 +2,7 @@ import { orderBy } from 'lodash-es'
 import { Item } from 'src/vote/storeElectionInfo'
 
 import { mapValues } from '../utils'
-import { triage_IRV_items } from './tallying/rcv-irv'
+import { tally_IRV_Items } from './tallying/rcv-irv'
 
 export function tallyVotes(ballot_items_by_id: Record<string, Item>, votes: Record<string, string>[]) {
   const multi_vote_regex = /_\d+$/
@@ -38,6 +38,8 @@ export function tallyVotes(ballot_items_by_id: Record<string, Item>, votes: Reco
       tallies[item][vote[key]]++
     })
   })
+
+  // Calc total votes cast per item, to speed up calc'ing %s
   const totalsCastPerItems: Record<string, number> = {}
   Object.keys(tallies).forEach((item) => {
     totalsCastPerItems[item] = 0
@@ -53,8 +55,8 @@ export function tallyVotes(ballot_items_by_id: Record<string, Item>, votes: Reco
     ),
   ) as Record<string, string[]>
 
-  // Go back and RCV-IRV tally any of those that we skipped
-  triage_IRV_items(IRV_columns_seen, ballot_items_by_id, votes)
+  // Go back and IRV tally any of those that we skipped
+  const irv = tally_IRV_Items(IRV_columns_seen, ballot_items_by_id, votes)
 
-  return { ordered, tallies, totalsCastPerItems }
+  return { irv, ordered, tallies, totalsCastPerItems }
 }

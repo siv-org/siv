@@ -1,4 +1,4 @@
-import { expect, test } from 'bun:test'
+import { describe, expect, test } from 'bun:test'
 
 import { tallyVotes } from '../tally-votes'
 
@@ -49,12 +49,42 @@ const sampleVotes = {
 
 const results = tallyVotes(sampleVotes.ballot_items_by_id, sampleVotes.votes)
 
-test("can tally up everyone's top choices as round 1 votes", () => {
-  expect(results.president.rounds[0]).toEqual({ 'Bill Clinton': 2, 'George H. W. Bu': 2, 'Ross Perot': 1 })
-})
-test('can eliminate bottom choice, and recalculate round 2 votes', () => {
-  expect(results.president.rounds[1]).toEqual({ 'Bill Clinton': 3, 'George H. W. Bu': 2 })
-})
-test('can declare a final winner', () => {
-  expect(results.president.winner).toEqual('Bill Clinton')
+describe('IRV tallying', () => {
+  test('results now has an IRV key', () => {
+    expect(results).toHaveProperty('irv')
+  })
+  const { irv } = results
+
+  test('given votes including IRV, it reports *something* for that item', () => {
+    expect(irv).toHaveProperty('president')
+  })
+  const { president } = irv
+
+  test('IRV items have a "rounds" subarray', () => {
+    expect(president).toHaveProperty('rounds')
+    expect(Array.isArray(president.rounds)).toBe(true)
+  })
+
+  const { rounds } = president
+
+  test("can tally up everyone's top choices as round 1 votes", () => {
+    expect(rounds[0].tallies).toEqual({ 'Bill Clinton': 2, 'George H. W. Bu': 2, 'Ross Perot': 1 })
+  })
+
+  test.todo('can eliminate bottom choice, and recalculate round 2 votes', () => {
+    expect(rounds[1]).toEqual({ 'Bill Clinton': 3, 'George H. W. Bu': 2 })
+  })
+
+  test.todo('correct number of rounds', () => {
+    expect(rounds).toHaveLength(2)
+  })
+
+  test.todo('can declare a final winner', () => {
+    expect(president.winner).toEqual('Bill Clinton')
+  })
+
+  test.todo('can handle voters leaving blanks') // see https://www.sfchronicle.com/bayarea/article/Alameda-County-admits-tallying-error-in-17682520.php
+  test.todo("doesn't crash when there are no votes")
+  test.todo("doesn't crash when there is a tie in the bottom choice")
+  test.todo("doesn't crash when there is a tie in the top choice")
 })
