@@ -49,3 +49,6 @@ export const omit = (obj: Obj, props: string[]) =>
     }
     return acc
   }, {})
+
+/** Custom type guard to check if a value is not undefined */
+export const isNotUndefined = <T>(value: T | undefined): value is T => value !== undefined
