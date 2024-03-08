@@ -50,15 +50,10 @@ const sampleVotes = {
 const results = tallyVotes(sampleVotes.ballot_items_by_id, sampleVotes.votes)
 
 describe('IRV tallying', () => {
-  test('results now has an IRV key', () => {
+  test('results now includes an IRV key', () => {
     expect(results).toHaveProperty('irv')
   })
-  const { irv } = results
-
-  test('given votes including IRV, it reports *something* for that item', () => {
-    expect(irv).toHaveProperty('president')
-  })
-  const { president } = irv
+  const { president } = results.irv
 
   test('IRV items have a "rounds" subarray', () => {
     expect(president).toHaveProperty('rounds')
@@ -74,16 +69,17 @@ describe('IRV tallying', () => {
     expect(rounds[1].tallies).toEqual({ 'Bill Clinton': 3, 'George H. W. Bu': 2 })
   })
 
-  test('correct number of rounds', () => {
+  test('shows the correct number of rounds', () => {
     expect(rounds).toHaveLength(2)
   })
 
-  test('can declare a final winner', () => {
+  test('can declare a single final winner', () => {
     expect(president.winner).toEqual('Bill Clinton')
   })
 
-  // see https://www.sfchronicle.com/bayarea/article/Alameda-County-admits-tallying-error-in-17682520.php
   test('can handle voters leaving blanks', () => {
+    // see https://www.sfchronicle.com/bayarea/article/Alameda-County-admits-tallying-error-in-17682520.php
+
     // Whether it's left empty (from the unlocking algorithm skipping it)
     const modifiedVotes = [
       ...sampleVotes.votes,
@@ -112,11 +108,10 @@ describe('IRV tallying', () => {
     expect(rounds2[1].tallies).toEqual({ 'Bill Clinton': 4, 'George H. W. Bu': 2 })
   })
 
-  test("doesn't crash when there are no votes", () => {
+  test('ok when there are no votes', () => {
     expect(() => tallyVotes(sampleVotes.ballot_items_by_id, [])).not.toThrow()
   })
-  test.todo("doesn't crash when there is a tie in the bottom choice")
-  test.todo("doesn't crash when there is a tie in the top choice early on")
+
   test('handles when a ballot runs out of non-eliminated candidates', () => {
     const results2 = tallyVotes(sampleVotes.ballot_items_by_id, [
       ...sampleVotes.votes,
@@ -125,9 +120,19 @@ describe('IRV tallying', () => {
     // Since we only added a blank vote, the results should be the same
     expect(results2.irv.president.rounds[1].tallies).toEqual(results.irv.president.rounds[1].tallies)
   })
-  test.todo('handles when there is a tie in the final round')
-  test.todo('handles a ballot w/ multiple IRV items, and other types as well')
-  test('good when someone wins in the first round', () => {
+
+  test('handles a ballot w/ both IRV and non-IRV questions', () => {
+    const modifiedVotes = sampleVotes.votes.map((vote) => ({
+      ...vote,
+      another_race: 'banana',
+    }))
+    const results2 = tallyVotes(sampleVotes.ballot_items_by_id, modifiedVotes)
+
+    expect(results2.irv.president).toEqual(results.irv.president)
+    expect(results2.tallies.another_race).toEqual({ banana: 5 })
+  })
+
+  test('ok when someone wins in the first round', () => {
     const results2 = tallyVotes(sampleVotes.ballot_items_by_id, [
       ...sampleVotes.votes,
       { president_1: 'Bill Clinton', tracking: '3333-3333-3333' },
@@ -138,6 +143,7 @@ describe('IRV tallying', () => {
     expect(rounds.length).toEqual(1)
     expect(rounds[0].tallies).toEqual({ 'Bill Clinton': 4, 'George H. W. Bu': 2, 'Ross Perot': 1 })
   })
+
   test('supports write-ins', () => {
     const results2 = tallyVotes(sampleVotes.ballot_items_by_id, [
       ...sampleVotes.votes,
@@ -156,4 +162,8 @@ describe('IRV tallying', () => {
     expect(rounds.length).toEqual(3)
     expect(rounds[2].tallies).toEqual({ 'Abraham Lincoln': 4, 'Bill Clinton': 5 })
   })
+
+  test.todo('handles when there is a tie in the bottom choice')
+  test.todo('handles when there is a tie in the top choice early on')
+  test.todo('handles when there is a tie in the final round')
 })
