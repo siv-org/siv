@@ -112,7 +112,9 @@ describe('IRV tallying', () => {
     expect(rounds2[1].tallies).toEqual({ 'Bill Clinton': 4, 'George H. W. Bu': 2 })
   })
 
-  test.todo("doesn't crash when there are no votes")
+  test("doesn't crash when there are no votes", () => {
+    expect(() => tallyVotes(sampleVotes.ballot_items_by_id, [])).not.toThrow()
+  })
   test.todo("doesn't crash when there is a tie in the bottom choice")
   test.todo("doesn't crash when there is a tie in the top choice early on")
   test.todo('handles when a ballot runs out of non-eliminated candidates')
