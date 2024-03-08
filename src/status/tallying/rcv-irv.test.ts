@@ -82,7 +82,36 @@ describe('IRV tallying', () => {
     expect(president.winner).toEqual('Bill Clinton')
   })
 
-  test.todo('can handle voters leaving blanks') // see https://www.sfchronicle.com/bayarea/article/Alameda-County-admits-tallying-error-in-17682520.php
+  // see https://www.sfchronicle.com/bayarea/article/Alameda-County-admits-tallying-error-in-17682520.php
+  test('can handle voters leaving blanks', () => {
+    // Whether it's left empty (from the unlocking algorithm skipping it)
+    const modifiedVotes = [
+      ...sampleVotes.votes,
+      {
+        president_2: 'Bill Clinton',
+        president_3: 'Ross Perot',
+        tracking: '1111-1111-1111',
+      },
+    ]
+    const resultsWithBlanks = tallyVotes(sampleVotes.ballot_items_by_id, modifiedVotes)
+    const { rounds } = resultsWithBlanks.irv.president
+    expect(rounds[1].tallies).toEqual({ 'Bill Clinton': 4, 'George H. W. Bu': 2 })
+
+    // Or if it's the explicit codeword "BLANK"
+    const modifiedVotes2 = [
+      ...sampleVotes.votes,
+      {
+        president_1: 'BLANK',
+        president_2: 'Bill Clinton',
+        president_3: 'Ross Perot',
+        tracking: '2222-2222-2222',
+      },
+    ]
+    const resultsWithBlanks2 = tallyVotes(sampleVotes.ballot_items_by_id, modifiedVotes2)
+    const { rounds: rounds2 } = resultsWithBlanks2.irv.president
+    expect(rounds2[1].tallies).toEqual({ 'Bill Clinton': 4, 'George H. W. Bu': 2 })
+  })
+
   test.todo("doesn't crash when there are no votes")
   test.todo("doesn't crash when there is a tie in the bottom choice")
   test.todo("doesn't crash when there is a tie in the top choice early on")

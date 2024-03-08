@@ -36,7 +36,7 @@ export const tally_IRV_Items = (
           const choice = vote[`${item}_${choice_num}`]
 
           // If this choice hasn't been eliminated, we're good!
-          if (!eliminated.includes(choice)) {
+          if (choice && !eliminated.includes(choice) && choice !== 'BLANK') {
             return { [item]: choice }
           }
         }
