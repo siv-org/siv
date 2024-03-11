@@ -18,11 +18,14 @@ export const Totals = ({ proofsPage }: { proofsPage?: boolean }): JSX.Element =>
   const { irv, ordered, tallies, totalsCastPerItems } = tallyVotes(ballot_items_by_id, votes)
 
   return (
-    <div className="totals" style={{ display: proofsPage ? 'inline-block' : undefined }}>
-      <div className="title-line">
-        <h3>Vote Totals:</h3>
+    <div
+      className="p-4 bg-white rounded-lg custom-box-shadow"
+      style={{ display: proofsPage ? 'inline-block' : undefined }}
+    >
+      <div className="flex items-baseline justify-between">
+        <h3 className="mt-0">Vote Totals:</h3>
         {last_decrypted_at && !proofsPage && (
-          <span>
+          <span className="text-[11px] opacity-50 text-right italic">
             Last updated: <TimeAgo datetime={last_decrypted_at} opts={{ minInterval: 60 }} />
           </span>
         )}
@@ -41,30 +44,9 @@ export const Totals = ({ proofsPage }: { proofsPage?: boolean }): JSX.Element =>
         </div>
       ))}
       <style jsx>{`
-        .totals {
-          background: #fff;
-          border-radius: 8px;
-          padding: 1rem;
-
+        .custom-box-shadow {
           box-shadow: 0px 1px 2px hsl(0 0% 50% / 0.333), 0px 3px 4px hsl(0 0% 50% / 0.333),
             0px 4px 6px hsl(0 0% 50% / 0.333);
-        }
-
-        .title-line {
-          display: flex;
-          justify-content: space-between;
-          align-items: baseline;
-        }
-
-        h3 {
-          margin-top: 0;
-        }
-
-        span {
-          font-size: 11px;
-          opacity: 0.5;
-          text-align: right;
-          font-style: italic;
         }
       `}</style>
     </div>
