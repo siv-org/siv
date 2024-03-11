@@ -1,8 +1,9 @@
 import { keyBy } from 'lodash-es'
 import TimeAgo from 'timeago-react'
 
+import { IRVTallies } from './IRVTallies'
+import { RoundResults } from './RoundResults'
 import { tallyVotes } from './tally-votes'
-import { unTruncateSelection } from './un-truncate-selection'
 import { useDecryptedVotes } from './use-decrypted-votes'
 import { useElectionInfo } from './use-election-info'
 
@@ -14,7 +15,7 @@ export const Totals = ({ proofsPage }: { proofsPage?: boolean }): JSX.Element =>
   if (!ballot_design || !votes || !votes.length) return <></>
 
   const ballot_items_by_id = keyBy(ballot_design, 'id')
-  const { ordered, tallies, totalsCastPerItems } = tallyVotes(ballot_items_by_id, votes)
+  const { irv, ordered, tallies, totalsCastPerItems } = tallyVotes(ballot_items_by_id, votes)
 
   return (
     <div className="totals" style={{ display: proofsPage ? 'inline-block' : undefined }}>
@@ -30,20 +31,13 @@ export const Totals = ({ proofsPage }: { proofsPage?: boolean }): JSX.Element =>
         <div key={id}>
           <h4>{title}</h4>
 
-          {type === 'ranked-choice-irv' && (
-            <div className="p-1 border-2 border-red-400 border-dashed rounded">This was a Ranked Choice question.</div>
+          {type === 'ranked-choice-irv' ? (
+            <IRVTallies {...{ ballot_design, id, results: irv[id] }} />
+          ) : (
+            <RoundResults
+              {...{ ballot_design, id, ordered: ordered[id], tallies: tallies[id], totalVotes: totalsCastPerItems[id] }}
+            />
           )}
-
-          <ul>
-            {ordered[id]?.map((selection) => (
-              <li key={selection}>
-                {unTruncateSelection(selection, ballot_design, id)}: {tallies[id][selection]}{' '}
-                <i style={{ fontSize: 12, marginLeft: 5, opacity: 0.5 }}>
-                  ({((100 * tallies[id][selection]) / totalsCastPerItems[id]).toFixed(1)}%)
-                </i>
-              </li>
-            ))}
-          </ul>
         </div>
       ))}
       <style jsx>{`
