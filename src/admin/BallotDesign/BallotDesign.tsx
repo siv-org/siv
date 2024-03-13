@@ -1,4 +1,4 @@
-import { NoSsr } from '@material-ui/core'
+import { NoSsr } from '@mui/material'
 import router from 'next/router'
 import { useEffect, useState } from 'react'
 

@@ -1,5 +1,5 @@
-import { Tooltip as MUITooltip, TooltipProps } from '@material-ui/core'
-import { withStyles } from '@material-ui/core/styles'
+import { Tooltip as MUITooltip, TooltipProps } from '@mui/material'
+import withStyles from '@mui/styles/withStyles';
 
 const LightTooltip = withStyles(() => ({
   tooltip: {

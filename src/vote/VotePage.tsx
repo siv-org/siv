@@ -1,4 +1,4 @@
-import { NoSsr } from '@material-ui/core'
+import { NoSsr } from '@mui/material'
 import { useRouter } from 'next/router'
 
 import { GlobalCSS } from '../GlobalCSS'

@@ -1,5 +1,6 @@
-import { Theme, withStyles } from '@material-ui/core/styles'
-import Switch, { SwitchClassKey, SwitchProps } from '@material-ui/core/Switch'
+import { Theme } from '@mui/material/styles';
+import withStyles from '@mui/styles/withStyles';
+import Switch, { SwitchClassKey, SwitchProps } from '@mui/material/Switch'
 
 const height = 22
 

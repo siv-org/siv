@@ -1,5 +1,5 @@
 import { GlobalOutlined, LinkOutlined } from '@ant-design/icons'
-import { BoxProps, NoSsr, TextField, TextFieldProps } from '@material-ui/core'
+import { BoxProps, NoSsr, TextField, TextFieldProps } from '@mui/material'
 import { useCallback, useState } from 'react'
 
 import { FormSubmitBtns } from './FormSubmitBtns'

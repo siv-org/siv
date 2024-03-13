@@ -1,4 +1,4 @@
-import { NoSsr } from '@material-ui/core'
+import { NoSsr } from '@mui/material'
 import { flatten } from 'lodash-es'
 import Link from 'next/link'
 import { useEffect } from 'react'

@@ -1,4 +1,4 @@
-import { NoSsr } from '@material-ui/core'
+import { NoSsr } from '@mui/material'
 import { Dispatch } from 'react'
 import { maxLength } from 'src/crypto/curve'
 

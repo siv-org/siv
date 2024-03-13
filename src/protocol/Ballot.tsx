@@ -1,4 +1,4 @@
-import { FormControlLabel, NoSsr, Radio, RadioGroup } from '@material-ui/core'
+import { FormControlLabel, NoSsr, Radio, RadioGroup } from '@mui/material'
 import { useEffect } from 'react'
 
 import { candidates } from './election-parameters'

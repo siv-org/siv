@@ -1,4 +1,4 @@
-import { NoSsr, TextField } from '@material-ui/core'
+import { NoSsr, TextField } from '@mui/material'
 import { useState } from 'react'
 import { OnClickButton } from 'src/_shared/Button'
 

@@ -1,4 +1,4 @@
-import { NoSsr, TextField } from '@material-ui/core'
+import { NoSsr, TextField } from '@mui/material'
 import { useState } from 'react'
 
 import { api } from '../api-helper'

@@ -1,4 +1,4 @@
-import { Switch } from '@material-ui/core'
+import { Switch } from '@mui/material'
 import Image from 'next/image'
 import esignatureIcon from 'public/esignature.png'
 import { useState } from 'react'

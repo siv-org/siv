@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles'
+import makeStyles from '@mui/styles/makeStyles';
 import { useState } from 'react'
 
 import { ReviewLog } from '../../../pages/api/election/[election_id]/admin/load-admin'

@@ -1,4 +1,4 @@
-import { BoxProps, NoSsr, TextField, TextFieldProps } from '@material-ui/core'
+import { BoxProps, NoSsr, TextField, TextFieldProps } from '@mui/material'
 import { validate as validateEmail } from 'email-validator'
 import router from 'next/router'
 import { useEffect, useState } from 'react'
