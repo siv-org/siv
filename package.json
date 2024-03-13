@@ -66,7 +66,7 @@
     "react": "^18.2.0",
     "react-codemirror2": "scniro/react-codemirror2#0f2bb13",
     "react-dom": "^18.2.0",
-    "react-flip-move": "^3.0.4",
+    "react-flip-move": "3.0.5",
     "react-linkify": "^1.0.0-alpha",
     "react-scroll": "^1.8.3",
     "react-signature-pad-wrapper": "^1.3.0",
