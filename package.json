@@ -33,12 +33,9 @@
   },
   "dependencies": {
     "@ant-design/icons": "~4.7",
-    "@emotion/react": "^11.11.4",
-    "@emotion/styled": "^11.11.0",
     "@fingerprintjs/fingerprintjs-pro": "^3.5.1",
     "@mdx-js/loader": "^2.0.0",
     "@mui/material": "^5.15.13",
-    "@mui/styles": "^5.15.13",
     "@next/mdx": "^11.0.1",
     "@noble/ed25519": "1.6.0",
     "@peculiar/webcrypto": "^1.1.7",
