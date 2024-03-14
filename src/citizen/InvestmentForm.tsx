@@ -1,4 +1,5 @@
-import { BoxProps, NoSsr, TextField, TextFieldProps } from '@mui/material'
+import { BoxProps, TextField, TextFieldProps } from '@mui/material'
+import { NoSsr } from 'src/_shared/NoSsr'
 import { useCallback, useState } from 'react'
 import { OnClickButton } from 'src/_shared/Button'
 import { api } from 'src/api-helper'

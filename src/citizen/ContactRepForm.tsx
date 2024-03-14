@@ -1,6 +1,7 @@
-import { BoxProps, NoSsr, TextField, TextFieldProps } from '@mui/material'
+import { BoxProps, TextField, TextFieldProps } from '@mui/material'
 import { useCallback, useState } from 'react'
 import { OnClickButton } from 'src/_shared/Button'
+import { NoSsr } from 'src/_shared/NoSsr'
 import { api } from 'src/api-helper'
 
 export const ContactRepForm = () => {

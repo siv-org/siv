@@ -1,5 +1,5 @@
-import { NoSsr } from '@mui/material'
 import Head from 'next/head'
+import { NoSsr } from 'src/_shared/NoSsr'
 import { GlobalCSS } from 'src/GlobalCSS'
 
 import { EmailsSent } from './EmailsSent'

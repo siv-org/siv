@@ -1,5 +1,5 @@
-import { NoSsr } from '@mui/material'
 import { Dispatch } from 'react'
+import { NoSsr } from 'src/_shared/NoSsr'
 import { maxLength } from 'src/crypto/curve'
 
 import { Paper } from '../protocol/Paper'
