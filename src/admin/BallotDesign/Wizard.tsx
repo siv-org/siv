@@ -4,7 +4,7 @@ import { Tooltip } from 'src/admin/Voters/Tooltip'
 import { Item } from 'src/vote/storeElectionInfo'
 
 import { check_for_urgent_ballot_errors } from './check_for_ballot_errors'
-import { IOSSwitch } from './IOSSwitch'
+import { Switch } from './Switch'
 
 export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: string) => void }) => {
   const [json, setJson] = useState<Item[]>()
@@ -175,9 +175,10 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
                   !write_in_allowed ? 'opacity-60' : ''
                 }`}
               >{`Write-in ${write_in_allowed ? 'Allowed' : 'Disabled'}`}</span>
-              <IOSSwitch
+              <Switch
                 checked={write_in_allowed}
-                onChange={() => {
+                label={''}
+                onClick={() => {
                   const new_json = [...json]
                   new_json[questionIndex].write_in_allowed = !write_in_allowed
                   setDesign(JSON.stringify(new_json, undefined, 2))
