@@ -33,6 +33,8 @@
   },
   "dependencies": {
     "@ant-design/icons": "~4.7",
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.0",
     "@fingerprintjs/fingerprintjs-pro": "^3.5.1",
     "@mdx-js/loader": "^2.0.0",
     "@mui/material": "^5.15.13",
