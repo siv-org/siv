@@ -1,4 +1,4 @@
-import { BoxProps, TextField, TextFieldProps } from '@mui/material'
+import { TextField, TextFieldProps } from '@mui/material'
 import { omit } from 'lodash-es'
 import { useState } from 'react'
 import { Element } from 'react-scroll'
@@ -137,7 +137,7 @@ export function AreYouAVoter(): JSX.Element {
   )
 }
 
-const Row = (props: BoxProps) => (
+export const Row = (props: { children?: React.ReactNode; style?: React.CSSProperties }) => (
   <div
     {...props}
     style={{

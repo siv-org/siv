@@ -1,11 +1,11 @@
-import { BoxProps, TextField, TextFieldProps } from '@mui/material'
-import { NoSsr } from 'src/_shared/NoSsr'
-
+import { TextField, TextFieldProps } from '@mui/material'
 import { validate as validateEmail } from 'email-validator'
 import router from 'next/router'
 import { useEffect, useState } from 'react'
 import { OnClickButton, darkBlue } from 'src/_shared/Button'
+import { NoSsr } from 'src/_shared/NoSsr'
 import { api } from 'src/api-helper'
+import { Row } from 'src/homepage/AreYouAVoter'
 
 import { CreatedAccountWaiting } from './CreatedAccountWaiting'
 import { breakpoint } from './LoginPage'
@@ -100,20 +100,6 @@ export const CreateAccount = () => {
     </section>
   )
 }
-
-const Row = (props: BoxProps) => (
-  <div
-    style={{
-      alignItems: 'center',
-      display: 'flex',
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      margin: '1.5rem 0',
-    }}
-  >
-    {props.children}
-  </div>
-)
 
 const Field = (props: TextFieldProps & { label: string }) => (
   <TextField

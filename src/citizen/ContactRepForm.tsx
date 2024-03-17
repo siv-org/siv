@@ -1,6 +1,7 @@
-import { BoxProps, TextField, TextFieldProps } from '@mui/material'
+import { TextField, TextFieldProps } from '@mui/material'
 import { useCallback, useState } from 'react'
 import { OnClickButton } from 'src/_shared/Button'
+import { Row } from 'src/_shared/Forms/Row'
 import { NoSsr } from 'src/_shared/NoSsr'
 import { api } from 'src/api-helper'
 
@@ -76,14 +77,3 @@ export const ContactRepForm = () => {
     </form>
   )
 }
-
-const Row = (props: BoxProps) => (
-  <div
-    {...props}
-    style={{
-      display: 'flex',
-      margin: '1.5rem 0',
-      ...props.style,
-    }}
-  />
-)
