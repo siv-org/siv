@@ -26,24 +26,24 @@ export const Signature = ({
   const status = getStatus(esignature_review)
 
   return (
-    <td>
+    <td className="px-0.5 hover:bg-black/5 cursor-pointer" style={{ border: '1px solid #ccc' }}>
       <Tooltip
         className="w-72"
         enterDelay={200}
         leaveDelay={200}
         placement="top"
         tooltip={({ setIsShown }: { setIsShown: (setting: boolean) => void }) => (
-          <div className="tooltip">
-            {esignature ? <img src={esignature} /> : <p>Signature missing</p>}
-            <div className="row">
+          <div>
+            {esignature ? <img className="max-w-[280px]" src={esignature} /> : <p>Signature missing</p>}
+            <div className="flex justify-between">
               <a
-                className={status === 'reject' ? 'bold' : ''}
+                className={`cursor-pointer ${status === 'reject' ? 'font-bold' : ''}`}
                 onClick={storeReview(status === 'reject' ? 'pending' : 'reject', setIsShown)}
               >
                 ❌ Reject{status === 'reject' ? 'ed' : ''}
               </a>
               <a
-                className={status === 'approve' ? 'bold' : ''}
+                className={`cursor-pointer ${status === 'approve' ? 'font-bold' : ''}`}
                 onClick={storeReview(status === 'approve' ? 'pending' : 'approve', setIsShown)}
               >
                 ✅ Approve{status === 'approve' ? 'd' : ''}
@@ -52,58 +52,12 @@ export const Signature = ({
           </div>
         )}
       >
-        <img className={`small ${status || ''}`} src={esignature} />
+        <img
+          className="min-h-5 min-h-[20px] max-w-[100px] -mb-1.5 overflow-hidden"
+          src={esignature}
+          style={{ border: `2px solid ${status === 'approve' ? 'green' : status === 'reject' ? 'red' : '#fff0'}` }}
+        />
       </Tooltip>
-      <style jsx>{`
-        td {
-          border: 1px solid #ccc;
-          margin: 0;
-          padding: 2px;
-        }
-
-        td:hover {
-          cursor: pointer;
-          background-color: #f2f2f2;
-        }
-
-        img.small {
-          min-height: 20px;
-          max-width: 100px;
-          overflow: hidden;
-          border: 2px solid #fff0;
-          margin-bottom: -6px;
-        }
-
-        img.small.approve {
-          border-color: green;
-        }
-
-        img.small.reject {
-          border-color: red;
-        }
-
-        .tooltip img {
-          max-width: 280px;
-        }
-
-        .row {
-          display: flex;
-          justify-content: space-between;
-        }
-
-        .tooltip a {
-          cursor: pointer;
-          font-size: 12px;
-        }
-
-        .tooltip a:first-child {
-          margin-right: 2rem;
-        }
-
-        .bold {
-          font-weight: bold;
-        }
-      `}</style>
     </td>
   )
 }
