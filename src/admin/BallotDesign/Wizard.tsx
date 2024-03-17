@@ -30,7 +30,7 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
             Question ID{' '}
             <Tooltip
               placement="top"
-              title={
+              tooltip={
                 <span style={{ fontSize: 14 }}>
                   This unique short ID is used as the column header for the table of submitted votes.
                 </span>
@@ -54,7 +54,7 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
             />
 
             {/* Delete Question btn */}
-            <Tooltip placement="top" title="Delete Question">
+            <Tooltip placement="top" tooltip="Delete Question">
               <a
                 className="relative ml-1 text-xl text-center text-gray-700 rounded-full cursor-pointer w-7 bottom-[30px] hover:bg-gray-500 hover:text-white"
                 onClick={() => {
