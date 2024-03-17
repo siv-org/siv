@@ -1,15 +1,7 @@
-import makeStyles from '@mui/styles/makeStyles';
-import { useState } from 'react'
+import { ReviewLog } from 'api/election/[election_id]/admin/load-admin'
 
-import { ReviewLog } from '../../../pages/api/election/[election_id]/admin/load-admin'
 import { api } from '../../api-helper'
 import { Tooltip } from './Tooltip'
-
-const useStyles = makeStyles(() => ({
-  customWidth: {
-    width: 300,
-  },
-}))
 
 export const getStatus = (esignature_review?: ReviewLog[]) =>
   esignature_review ? esignature_review[esignature_review.length - 1]?.review : undefined
@@ -25,49 +17,40 @@ export const Signature = ({
   esignature?: string
   esignature_review?: ReviewLog[]
 }) => {
-  const classes = useStyles()
-  const [open, setOpen] = useState(false)
-
-  const storeReview = (review: 'approve' | 'reject' | 'pending') => async () => {
-    await api(`election/${election_id}/admin/review-signature`, {
+  const storeReview = (review: 'approve' | 'reject' | 'pending', setIsShown: (setting: boolean) => void) => async () =>
+    (await api(`election/${election_id}/admin/review-signature`, {
       emails: [email],
       review,
-    })
-    setOpen(false)
-  }
+    })) && setIsShown(false)
 
   const status = getStatus(esignature_review)
 
   return (
     <td>
       <Tooltip
-        interactive
-        className={classes.customWidth}
+        className="w-72"
         enterDelay={200}
-        open={open}
+        leaveDelay={200}
         placement="top"
-        title={
+        tooltip={({ setIsShown }: { setIsShown: (setting: boolean) => void }) => (
           <div className="tooltip">
             {esignature ? <img src={esignature} /> : <p>Signature missing</p>}
             <div className="row">
               <a
                 className={status === 'reject' ? 'bold' : ''}
-                onClick={storeReview(status === 'reject' ? 'pending' : 'reject')}
+                onClick={storeReview(status === 'reject' ? 'pending' : 'reject', setIsShown)}
               >
                 ❌ Reject{status === 'reject' ? 'ed' : ''}
               </a>
               <a
                 className={status === 'approve' ? 'bold' : ''}
-                onClick={storeReview(status === 'approve' ? 'pending' : 'approve')}
+                onClick={storeReview(status === 'approve' ? 'pending' : 'approve', setIsShown)}
               >
                 ✅ Approve{status === 'approve' ? 'd' : ''}
               </a>
             </div>
           </div>
-        }
-        onClick={() => setOpen(!open)}
-        onClose={() => setOpen(false)}
-        onOpen={() => ['approve', 'reject'].includes(status || '') || setOpen(true)}
+        )}
       >
         <img className={`small ${status || ''}`} src={esignature} />
       </Tooltip>
