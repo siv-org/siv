@@ -1,5 +1,6 @@
 import React, { Fragment, ReactElement, ReactNode, cloneElement, useEffect, useRef, useState } from 'react'
 import ReactDOM from 'react-dom'
+import { CSSTransition } from 'react-transition-group'
 
 type Placement = 'top' | 'bottom' | 'left' | 'right'
 interface TooltipProps {
@@ -63,8 +64,9 @@ export const Tooltip = ({
       {child}
 
       {/* Tooltip element */}
-      {tooltip && isShown
-        ? ReactDOM.createPortal(
+      {tooltip &&
+        ReactDOM.createPortal(
+          <CSSTransition unmountOnExit classNames="tooltip" in={isShown} timeout={10}>
             <div
               className={`bg-white/90 rounded p-1 fixed z-50 ${className}`}
               ref={tooltipRef}
@@ -77,10 +79,29 @@ export const Tooltip = ({
               }}
             >
               {typeof tooltip === 'function' ? tooltip({ setIsShown }) : tooltip}
-            </div>,
-            document.body,
-          )
-        : null}
+            </div>
+          </CSSTransition>,
+          document.body,
+        )}
+
+      {/* Transitions */}
+      <style global jsx>{`
+        .tooltip-enter,
+        .tooltip-exit-active {
+          opacity: 0;
+          transform: translateY(7px);
+        }
+
+        .tooltip-enter-active,
+        .tooltip-exit {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        .tooltip-enter-active {
+          transition: opacity 200ms, transform 100ms;
+        }
+      `}</style>
     </Fragment>
   )
 }
