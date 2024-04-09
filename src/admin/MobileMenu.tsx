@@ -1,4 +1,4 @@
-import SwipeableDrawer from '@material-ui/core/SwipeableDrawer'
+import SwipeableDrawer from '@mui/material/SwipeableDrawer'
 import { startCase } from 'lodash-es'
 import { useRouter } from 'next/router'
 import { useState } from 'react'

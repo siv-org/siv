@@ -1,15 +1,7 @@
-import { makeStyles } from '@material-ui/core/styles'
-import { useState } from 'react'
+import { ReviewLog } from 'api/election/[election_id]/admin/load-admin'
 
-import { ReviewLog } from '../../../pages/api/election/[election_id]/admin/load-admin'
 import { api } from '../../api-helper'
 import { Tooltip } from './Tooltip'
-
-const useStyles = makeStyles(() => ({
-  customWidth: {
-    width: 300,
-  },
-}))
 
 export const getStatus = (esignature_review?: ReviewLog[]) =>
   esignature_review ? esignature_review[esignature_review.length - 1]?.review : undefined
@@ -25,102 +17,47 @@ export const Signature = ({
   esignature?: string
   esignature_review?: ReviewLog[]
 }) => {
-  const classes = useStyles()
-  const [open, setOpen] = useState(false)
-
-  const storeReview = (review: 'approve' | 'reject' | 'pending') => async () => {
-    await api(`election/${election_id}/admin/review-signature`, {
+  const storeReview = (review: 'approve' | 'reject' | 'pending', setIsShown: (setting: boolean) => void) => async () =>
+    (await api(`election/${election_id}/admin/review-signature`, {
       emails: [email],
       review,
-    })
-    setOpen(false)
-  }
+    })) && setIsShown(false)
 
   const status = getStatus(esignature_review)
 
   return (
-    <td>
+    <td className="px-0.5 hover:bg-black/5 cursor-pointer" style={{ border: '1px solid #ccc' }}>
       <Tooltip
-        interactive
-        className={classes.customWidth}
+        className="w-72"
         enterDelay={200}
-        open={open}
+        leaveDelay={200}
         placement="top"
-        title={
-          <div className="tooltip">
-            {esignature ? <img src={esignature} /> : <p>Signature missing</p>}
-            <div className="row">
+        tooltip={({ setIsShown }: { setIsShown: (setting: boolean) => void }) => (
+          <div>
+            {esignature ? <img className="max-w-[280px]" src={esignature} /> : <p>Signature missing</p>}
+            <div className="flex justify-between">
               <a
-                className={status === 'reject' ? 'bold' : ''}
-                onClick={storeReview(status === 'reject' ? 'pending' : 'reject')}
+                className={`cursor-pointer ${status === 'reject' ? 'font-bold' : ''}`}
+                onClick={storeReview(status === 'reject' ? 'pending' : 'reject', setIsShown)}
               >
                 ❌ Reject{status === 'reject' ? 'ed' : ''}
               </a>
               <a
-                className={status === 'approve' ? 'bold' : ''}
-                onClick={storeReview(status === 'approve' ? 'pending' : 'approve')}
+                className={`cursor-pointer ${status === 'approve' ? 'font-bold' : ''}`}
+                onClick={storeReview(status === 'approve' ? 'pending' : 'approve', setIsShown)}
               >
                 ✅ Approve{status === 'approve' ? 'd' : ''}
               </a>
             </div>
           </div>
-        }
-        onClick={() => setOpen(!open)}
-        onClose={() => setOpen(false)}
-        onOpen={() => ['approve', 'reject'].includes(status || '') || setOpen(true)}
+        )}
       >
-        <img className={`small ${status || ''}`} src={esignature} />
+        <img
+          className="min-h-5 min-h-[20px] max-w-[100px] -mb-1.5 overflow-hidden"
+          src={esignature}
+          style={{ border: `2px solid ${status === 'approve' ? 'green' : status === 'reject' ? 'red' : '#fff0'}` }}
+        />
       </Tooltip>
-      <style jsx>{`
-        td {
-          border: 1px solid #ccc;
-          margin: 0;
-          padding: 2px;
-        }
-
-        td:hover {
-          cursor: pointer;
-          background-color: #f2f2f2;
-        }
-
-        img.small {
-          min-height: 20px;
-          max-width: 100px;
-          overflow: hidden;
-          border: 2px solid #fff0;
-          margin-bottom: -6px;
-        }
-
-        img.small.approve {
-          border-color: green;
-        }
-
-        img.small.reject {
-          border-color: red;
-        }
-
-        .tooltip img {
-          max-width: 280px;
-        }
-
-        .row {
-          display: flex;
-          justify-content: space-between;
-        }
-
-        .tooltip a {
-          cursor: pointer;
-          font-size: 12px;
-        }
-
-        .tooltip a:first-child {
-          margin-right: 2rem;
-        }
-
-        .bold {
-          font-weight: bold;
-        }
-      `}</style>
     </td>
   )
 }

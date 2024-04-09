@@ -4,7 +4,7 @@ import { Tooltip } from 'src/admin/Voters/Tooltip'
 import { Item } from 'src/vote/storeElectionInfo'
 
 import { check_for_urgent_ballot_errors } from './check_for_ballot_errors'
-import { IOSSwitch } from './IOSSwitch'
+import { Switch } from './Switch'
 
 export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: string) => void }) => {
   const [json, setJson] = useState<Item[]>()
@@ -30,7 +30,7 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
             Question ID{' '}
             <Tooltip
               placement="top"
-              title={
+              tooltip={
                 <span style={{ fontSize: 14 }}>
                   This unique short ID is used as the column header for the table of submitted votes.
                 </span>
@@ -54,7 +54,7 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
             />
 
             {/* Delete Question btn */}
-            <Tooltip placement="top" title="Delete Question">
+            <Tooltip placement="top" tooltip="Delete Question">
               <a
                 className="relative ml-1 text-xl text-center text-gray-700 rounded-full cursor-pointer w-7 bottom-[30px] hover:bg-gray-500 hover:text-white"
                 onClick={() => {
@@ -175,9 +175,10 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
                   !write_in_allowed ? 'opacity-60' : ''
                 }`}
               >{`Write-in ${write_in_allowed ? 'Allowed' : 'Disabled'}`}</span>
-              <IOSSwitch
+              <Switch
                 checked={write_in_allowed}
-                onChange={() => {
+                label={''}
+                onClick={() => {
                   const new_json = [...json]
                   new_json[questionIndex].write_in_allowed = !write_in_allowed
                   setDesign(JSON.stringify(new_json, undefined, 2))

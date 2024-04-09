@@ -1,6 +1,8 @@
-import { BoxProps, NoSsr, TextField, TextFieldProps } from '@material-ui/core'
+import { TextField, TextFieldProps } from '@mui/material'
 import { useCallback, useState } from 'react'
 import { OnClickButton } from 'src/_shared/Button'
+import { Row } from 'src/_shared/Forms/Row'
+import { NoSsr } from 'src/_shared/NoSsr'
 import { api } from 'src/api-helper'
 
 const suggestedAmounts = { 10: '10', 1_000: '1k', 100_000: '100k', 1_000_000: '1m' }
@@ -115,14 +117,3 @@ export const InvestmentForm = () => {
     </form>
   )
 }
-
-const Row = (props: BoxProps) => (
-  <div
-    {...props}
-    style={{
-      display: 'flex',
-      margin: '1.5rem 0',
-      ...props.style,
-    }}
-  />
-)

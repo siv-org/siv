@@ -24,6 +24,7 @@ module.exports = {
     '@typescript-eslint/explicit-module-boundary-types': 0, // Verbose
     '@typescript-eslint/no-empty-function': 0, // unnecessary
     'react/jsx-sort-props': [2, { callbacksLast: true, shorthandFirst: true }], // style
+    'react/no-unknown-property': [2, { ignore: ['jsx', 'global'] }], // inserted by next's styled-jsx
     'react/react-in-jsx-scope': 0, // Handled by Next.js
     'sort-destructure-keys/sort-destructure-keys': 2, // style
     'sort-keys-fix/sort-keys-fix': 2, // style

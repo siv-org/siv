@@ -1,7 +1,7 @@
 // Beginning of an algorithm to calculate max burst.
 // Goal is to use this to see the highest # of votes submitted in a 60 window, 10 second window, 1 second etc.
 
-function calculateMaxBurst(timestamps: number[], windowSize: number): number {
+export function calculateMaxBurst(timestamps: number[], windowSize: number): number {
   // Initialize variables
   let startIdx = 0
   let endIdx = 0

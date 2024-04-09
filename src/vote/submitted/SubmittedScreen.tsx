@@ -1,7 +1,7 @@
-import { NoSsr } from '@material-ui/core'
 import { flatten } from 'lodash-es'
 import Link from 'next/link'
 import { useEffect } from 'react'
+import { NoSsr } from 'src/_shared/NoSsr'
 
 import { defaultRankingsAllowed } from '../Ballot'
 import { State } from '../vote-state'

@@ -1,4 +1,5 @@
-import { NoSsr, TextField } from '@material-ui/core'
+import { TextField } from '@mui/material'
+import { NoSsr } from 'src/_shared/NoSsr'
 
 import { Paper } from './Paper'
 import { useVoteContext } from './VoteContext'

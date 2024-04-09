@@ -18,7 +18,7 @@ export const VotesToShuffle = ({
   set_final_shuffle_verifies,
   state,
 }: StateAndDispatch & { set_final_shuffle_verifies: Dispatch<SetStateAction<boolean>> }) => {
-  const { own_index, trustees = [], threshold_public_key } = state
+  const { own_index, threshold_public_key, trustees = [] } = state
   const [proofs_shown, set_proofs_shown] = useState<Record<string, boolean>>({})
 
   /* Object to track which proofs have been validated

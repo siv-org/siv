@@ -4,7 +4,7 @@ describe('The webapp should render', () => {
   })
 
   it('/protocol', () => {
-    cy.visit('/protocol').contains('Secure Internet Voting (SIV) Protocol Overview')
+    cy.visit('/protocol').contains('Secure Internet Voting Protocol')
   })
 
   it('/about', () => {

@@ -7,7 +7,7 @@ import { StateAndDispatch } from '../trustee-state'
 import { plaintext, randomizer } from './11-PartialDecryptionTest'
 
 export const CombinePartials = ({ state }: StateAndDispatch) => {
-  const { trustees = [], t, threshold_public_key } = state
+  const { t, threshold_public_key, trustees = [] } = state
 
   const partials = trustees.map((t) => t.partial_decryption).filter((p) => p)
 
