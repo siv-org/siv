@@ -3,8 +3,8 @@ import { useState } from 'react'
 import { api } from '../../api-helper'
 import { SaveButton } from '../SaveButton'
 import { revalidate, useStored } from '../useStored'
+import { AddVoterTextarea } from './AddVotersTextarea'
 import { ExistingVoters } from './ExistingVoters'
-import { MultilineInput } from './MultilineInput'
 import { RequestEsignatures } from './RequestEsignatures'
 
 export const AddVoters = () => {
@@ -15,7 +15,7 @@ export const AddVoters = () => {
     <div className="max-w-2xl">
       <h2 className="hidden sm:block">Voters</h2>
       <h4>Add new voters by email address:</h4>
-      <MultilineInput state={new_voters} update={set_new_voters} />
+      <AddVoterTextarea state={new_voters} update={set_new_voters} />
 
       {/* Show save button if there are new voters to add */}
       {new_voters === '' ? (
