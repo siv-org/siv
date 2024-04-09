@@ -6,7 +6,7 @@ import { PrivateBox } from '../PrivateBox'
 import { StateAndDispatch } from '../trustee-state'
 
 export const ReceivedPairwiseShares = ({ dispatch, state }: StateAndDispatch) => {
-  const { decrypted_shares_from = {}, pairwise_shares_for: shares, trustees = [], personal_key_pair, own_email } = state
+  const { decrypted_shares_from = {}, own_email, pairwise_shares_for: shares, personal_key_pair, trustees = [] } = state
 
   const num_encrypteds_broadcast = sumBy(trustees, (t) => Object.keys(t.encrypted_pairwise_shares_for || {}).length)
 

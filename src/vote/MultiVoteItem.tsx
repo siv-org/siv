@@ -1,4 +1,4 @@
-import { Checkbox, FormControlLabel, FormGroup } from '@material-ui/core'
+import { Checkbox, FormControlLabel, FormGroup } from '@mui/material'
 import { Dispatch, useEffect, useState } from 'react'
 
 import { max_string_length } from './Ballot'

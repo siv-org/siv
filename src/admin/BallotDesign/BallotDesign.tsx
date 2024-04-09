@@ -1,6 +1,6 @@
-import { NoSsr } from '@material-ui/core'
 import router from 'next/router'
 import { useEffect, useState } from 'react'
+import { NoSsr } from 'src/_shared/NoSsr'
 
 import { api } from '../../api-helper'
 import { SaveButton } from '../SaveButton'

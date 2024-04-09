@@ -1,4 +1,4 @@
-import { Tab, Tabs } from '@material-ui/core'
+import { Tab, Tabs } from '@mui/material'
 import { useRouter } from 'next/router'
 import { useReducer } from 'react'
 

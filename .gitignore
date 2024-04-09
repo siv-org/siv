@@ -14,3 +14,5 @@ cypress.env.json
 TODO.md
 *.log
 *.todo
+
+*.tsbuildinfo
