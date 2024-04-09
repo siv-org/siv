@@ -51,5 +51,5 @@ function appendBuffer(buffer1: ArrayBuffer, buffer2: ArrayBuffer) {
   const temporary = new Uint8Array(buffer1.byteLength + buffer2.byteLength)
   temporary.set(new Uint8Array(buffer1), 0)
   temporary.set(new Uint8Array(buffer2), buffer1.byteLength)
-  return temporary.buffer
+  return temporary.buffer as ArrayBuffer
 }

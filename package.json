@@ -12,7 +12,8 @@
     "lint": "eslint . --ext ts --ext tsx --ext js",
     "start": "next start",
     "test": "yarn lint && yarn typecheck && yarn e2e",
-    "typecheck": "tsc --pretty --noEmit"
+    "typecheck": "tsc --pretty --noEmit",
+    "unit": "bun test src"
   },
   "husky": {
     "hooks": {
@@ -85,6 +86,7 @@
     "ua-parser-js": "^0.7.28"
   },
   "devDependencies": {
+    "@types/bun": "^1.0.8",
     "@types/cookies": "^0.7.6",
     "@types/jsonwebtoken": "^8.5.1",
     "@types/mailgun-js": "^0.22.10",

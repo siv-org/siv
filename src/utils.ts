@@ -40,3 +40,15 @@ export const range = (start: number, end?: number) => {
   }
   return [...new Array(end - start).keys()].map((i) => i + start)
 }
+
+/** Build a new object excluding the omitted props */
+export const omit = (obj: Obj, props: string[]) =>
+  Object.keys(obj).reduce((acc: Obj, key: string) => {
+    if (!props.includes(key)) {
+      acc[key] = obj[key]
+    }
+    return acc
+  }, {})
+
+/** Custom type guard to check if a value is not undefined */
+export const isNotUndefined = <T>(value: T | undefined): value is T => value !== undefined

@@ -24,7 +24,7 @@ export const Tooltip = ({
   const [tooltipPos, setTooltipPos] = useState({ left: 0, top: 0 })
   const tooltipRef = useRef<HTMLDivElement>(null)
   const targetRef = useRef<HTMLElement>(null)
-  const closeTimeoutId = useRef<NodeJS.Timeout | null>(null)
+  const closeTimeoutId = useRef<number | null>(null)
 
   // Calc position whenever shown
   useEffect(() => {
@@ -39,7 +39,7 @@ export const Tooltip = ({
     // Setup a delay for leaving, but allow cancellation if re-entering
     closeTimeoutId.current = setTimeout(() => {
       setIsShown(false)
-    }, leaveDelay)
+    }, leaveDelay) as unknown as number
   }
 
   // Clone the child and inject props

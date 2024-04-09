@@ -28,6 +28,6 @@
       "module": "CommonJS"
     }
   },
-  "exclude": ["node_modules", ".next", "out", "cypress", "db-data"],
+  "exclude": ["node_modules", ".next", "out", "cypress", "db-data", "**/*.test.ts"],
   "include": ["**/*.ts", "**/*.tsx"]
 }
