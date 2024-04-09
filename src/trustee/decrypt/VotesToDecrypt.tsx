@@ -23,7 +23,7 @@ export const VotesToDecrypt = ({
   final_shuffle_verifies,
   state,
 }: StateAndDispatch & { final_shuffle_verifies: boolean }) => {
-  const { own_index, trustees = [], private_keyshare } = state
+  const { own_index, private_keyshare, trustees = [] } = state
   const [proofs_shown, set_proofs_shown] = useState<Record<string, boolean>>({})
 
   /* Object to track which proofs have been validated

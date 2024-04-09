@@ -5,7 +5,7 @@ import { compute_pub_key } from '../../crypto/threshold-keygen'
 import { StateAndDispatch } from '../trustee-state'
 
 export const PublicThresholdKey = ({ dispatch, state }: StateAndDispatch) => {
-  const { private_keyshare, trustees = [], threshold_public_key = '...' } = state
+  const { private_keyshare, threshold_public_key = '...', trustees = [] } = state
 
   useEffect(() => {
     // Don't start until after private keyshare is calculated

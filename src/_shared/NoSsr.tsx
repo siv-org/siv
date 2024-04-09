@@ -10,7 +10,7 @@ interface NoSSRProps {
 const EmptySpan = () => <span />
 
 export const NoSsr = (props: NoSSRProps) => {
-  const { onSSR = EmptySpan, children = <EmptySpan /> } = props
+  const { children = <EmptySpan />, onSSR = EmptySpan } = props
 
   const [isMounted, setIsMounted] = useState<boolean>(false)
 
