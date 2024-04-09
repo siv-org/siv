@@ -9,7 +9,6 @@ const theme = createTheme({
     foreground: '#444',
     gutterBackground: '#fff',
     gutterForeground: '#999',
-    lineHighlight: '#eef6ffe8 !important',
     selectionMatch: '#036dd626',
   },
   styles: [],
@@ -18,7 +17,13 @@ const theme = createTheme({
 
 const CodeMirrorComponent = (props: ReactCodeMirrorProps) => (
   <>
-    <CodeMirror {...props} extensions={[zebraStripes({ step: 2 })]} theme={theme} />
+    <CodeMirror
+      {...props}
+      autoFocus
+      basicSetup={{ highlightActiveLine: false, highlightActiveLineGutter: false, indentOnInput: false }}
+      extensions={[zebraStripes({ step: 2 })]}
+      theme={theme}
+    />
     <style global jsx>{`
       .cm-focused {
         outline: none !important;
