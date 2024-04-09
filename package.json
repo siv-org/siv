@@ -74,7 +74,7 @@
     "react-flip-move": "3.0.5",
     "react-linkify": "^1.0.0-alpha",
     "react-scroll": "^1.8.3",
-    "react-signature-pad-wrapper": "^1.3.0",
+    "react-signature-pad-wrapper": "^3.3.4",
     "react-simple-code-editor": "^0.11.0",
     "react-transition-group": "^4.4.5",
     "smoothscroll-polyfill": "^0.4.4",
