@@ -15,14 +15,14 @@ export const ConventionsPage = () => {
           Use this tool to create re-usable login credentials for voters to use across multiple votes in a single day.
         </p>
 
-        <figure className="my-12 ml-6">
+        <figure className="mb-12 ml-6 mt-9">
           QR code <i className="px-6 opacity-60">{'→'}</i>{' '}
-          <i>siv.org/c/{new Date().getFullYear()}/[convention_id]/[convention_voter_id]</i>
+          <i>siv.org/c/{new Date().getFullYear()}/[convention_id]/[voter_id]</i>
           <b className="block mt-3 mb-0 font-semibold">Lets you redirect to different elections throughout the day</b>
           <ul>
-            <li>Unique Voter Auth tokens handled automatically</li>
-            <li>Voters can vote in seconds</li>
-            <li>Same great SIV verifiability</li>
+            <li>Reusable voter credentials</li>
+            <li>Collect votes in seconds</li>
+            <li>End-to-end Verification</li>
           </ul>
         </figure>
 
