@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { GlobalCSS } from 'src/GlobalCSS'
 import { Head } from 'src/Head'
 
@@ -5,6 +6,7 @@ import { HeaderBar } from '../HeaderBar'
 import { QRCode } from './QRCode'
 
 export const ConventionsPage = () => {
+  const [numVoters, setNumVoters] = useState<string>()
   return (
     <>
       <Head title="Your Conventions" />
@@ -40,10 +42,17 @@ export const ConventionsPage = () => {
 
         <div>
           <label>Create how many voter credentials?</label>
-          <input className="w-20 ml-3 text-lg" min="0" placeholder="200" type="number" />
+          <input
+            className="w-20 ml-3 text-lg"
+            min="0"
+            placeholder="200"
+            type="number"
+            value={numVoters}
+            onChange={(e) => setNumVoters(e.target.value)}
+          />
         </div>
 
-        <button>Download your 200 unique QR codes</button>
+        <button>Download your{numVoters ? ` ${numVoters}` : ''} unique QR codes</button>
 
         <div className="">
           <h3>Redirect your convention QR codes to which ballot?</h3>
