@@ -21,8 +21,8 @@ export const AdminPage = (): JSX.Element => {
 
   useLoginRequired(loggedOut)
   usePusher(election_id as string | undefined)
+  if (loading || loggedOut) return <p className="p-4 text-[21px]">Loading...</p>
 
-  if (loading || loggedOut) return <p style={{ fontSize: 21, padding: '1rem' }}>Loading...</p>
   return (
     <>
       <Head title="Create new election" />

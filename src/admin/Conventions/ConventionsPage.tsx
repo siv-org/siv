@@ -3,11 +3,17 @@ import { useState } from 'react'
 import { GlobalCSS } from 'src/GlobalCSS'
 import { Head } from 'src/Head'
 
+import { useLoginRequired, useUser } from '../auth'
 import { HeaderBar } from '../HeaderBar'
 import { QRCode } from './QRCode'
 
 export const ConventionsPage = () => {
   const [numVoters, setNumVoters] = useState<string>()
+
+  const { loading, loggedOut } = useUser()
+  useLoginRequired(loggedOut)
+  if (loading || loggedOut) return <p className="p-4 text-[21px]">Loading...</p>
+
   return (
     <>
       <Head title="Your Conventions" />
