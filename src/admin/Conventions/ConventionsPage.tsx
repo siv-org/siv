@@ -1,7 +1,8 @@
 import { GlobalCSS } from 'src/GlobalCSS'
 import { Head } from 'src/Head'
 
-import { HeaderBar } from './HeaderBar'
+import { HeaderBar } from '../HeaderBar'
+import { QRCode } from './QRCode'
 
 export const ConventionsPage = () => {
   return (
@@ -16,6 +17,7 @@ export const ConventionsPage = () => {
         </p>
 
         <figure className="mb-12 ml-6 mt-9">
+          <QRCode />
           QR code <i className="px-6 opacity-60">{'→'}</i>{' '}
           <i>siv.org/c/{new Date().getFullYear()}/[convention_id]/[voter_id]</i>
           <b className="block mt-3 mb-0 font-semibold">Lets you redirect to different elections throughout the day</b>

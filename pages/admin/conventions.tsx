@@ -1,1 +1,1 @@
-export { ConventionsPage as default } from 'src/admin/ConventionsPage'
+export { ConventionsPage as default } from 'src/admin/Conventions/ConventionsPage'
