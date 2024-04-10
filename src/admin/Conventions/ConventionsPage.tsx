@@ -1,3 +1,4 @@
+import Router from 'next/router'
 import { useState } from 'react'
 import { GlobalCSS } from 'src/GlobalCSS'
 import { Head } from 'src/Head'
@@ -52,7 +53,9 @@ export const ConventionsPage = () => {
           />
         </div>
 
-        <button>Download your{numVoters ? ` ${numVoters}` : ''} unique QR codes</button>
+        <button onClick={() => Router.push(`/admin/conventions/download?n=${numVoters}`)}>
+          Download your{numVoters ? ` ${numVoters}` : ''} unique QR codes
+        </button>
 
         <div className="">
           <h3>Redirect your convention QR codes to which ballot?</h3>
