@@ -5,6 +5,7 @@ import { Head } from '../Head'
 import { AllYourElections } from './AllYourElections'
 import { useLoginRequired, useUser } from './auth'
 import { BallotDesign } from './BallotDesign/BallotDesign'
+import { CreateConvention } from './CreateConvention'
 import { CreateNewElection } from './CreateNewElection'
 import { HeaderBar } from './HeaderBar'
 import { MarkedBallots } from './MarkedBallots/MarkedBallots'
@@ -39,6 +40,7 @@ export const AdminPage = (): JSX.Element => {
             <>
               <AllYourElections />
               <CreateNewElection />
+              <CreateConvention />
             </>
           )}
 
