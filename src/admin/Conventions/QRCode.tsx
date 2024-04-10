@@ -21,7 +21,7 @@ const qrOptions: Options = {
   width: 111,
 }
 
-export const QRCode = () => {
+export const QRCode = ({ className }: { className?: string }) => {
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -35,9 +35,5 @@ export const QRCode = () => {
     })
   }, [])
 
-  return (
-    <div>
-      <div ref={ref} />
-    </div>
-  )
+  return <div {...{ className, ref }} />
 }

@@ -10,16 +10,26 @@ export const ConventionsPage = () => {
       <Head title="Your Conventions" />
 
       <HeaderBar />
-      <main className="p-4 px-8">
+      <main className="p-4 sm:px-8 overflow-clip">
         <h1>Manage Your Conventions</h1>
-        <p>
-          Use this tool to create re-usable login credentials for voters to use across multiple votes in a single day.
-        </p>
+        <p>Create re-usable login credentials for voters to use across multiple votes in a single day.</p>
 
-        <figure className="mb-12 ml-6 mt-9">
-          <QRCode />
-          QR code <i className="px-6 opacity-60">{'→'}</i>{' '}
-          <i>siv.org/c/{new Date().getFullYear()}/[convention_id]/[voter_id]</i>
+        <figure className="mx-0 mb-12">
+          <div className="flex items-center">
+            <div className="text-center">
+              <QRCode className="relative scale-75 top-3" />
+              <span className="text-xs opacity-70">QR code</span>
+            </div>
+            <i
+              className="pl-3 pr-6 text-[30px] opacity-80"
+              style={{ fontFamily: '"Proxima Nova", "Helvetica Neue", Helvetica, Arial, sans-serif' }}
+            >
+              {'→'}
+            </i>{' '}
+            <i className="relative top-0.5 overflow-auto break-words">
+              siv.org/c/{new Date().getFullYear()}/:conv_id/:voter_id
+            </i>
+          </div>
           <b className="block mt-3 mb-0 font-semibold">Lets you redirect to different elections throughout the day</b>
           <ul>
             <li>Reusable voter credentials</li>
@@ -33,7 +43,7 @@ export const ConventionsPage = () => {
           <input className="w-20 ml-3 text-lg" min="0" placeholder="200" type="number" />
         </div>
 
-        <button>Download your [200] unique QR codes</button>
+        <button>Download your 200 unique QR codes</button>
 
         <div className="">
           <h3>Redirect your convention QR codes to which ballot?</h3>
