@@ -6,6 +6,9 @@ export const DownloadQRsPage = () => {
   const {
     query: { n },
   } = useRouter()
+
+  if (!n || !Number(n) || isNaN(Number(n))) return <p className="p-4">Invalid number</p>
+
   return (
     <div className="p-4 overflow-auto">
       <p>Right Click {'→'} Print</p>
