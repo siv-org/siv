@@ -8,7 +8,7 @@ import TimeAgo from 'timeago-react'
 
 import { useLoginRequired, useUser } from '../auth'
 import { HeaderBar } from '../HeaderBar'
-import { QRCode } from './QRCode'
+import { QRFigure } from './QRFigure'
 import { SaveButton } from './SaveButton'
 import { useConventionInfo } from './useConventionInfo'
 
@@ -22,6 +22,7 @@ export const ManageConventionPage = () => {
   const { loading, loggedOut } = useUser()
   useLoginRequired(loggedOut)
   if (loading || loggedOut || !convention_title) return <p className="p-4 text-[21px]">Loading...</p>
+  if (typeof convention_id !== 'string') return <p>Convention ID error</p>
 
   return (
     <>
@@ -33,24 +34,6 @@ export const ManageConventionPage = () => {
           <a className="block mt-2 transition opacity-60 hover:opacity-100">← Back to all Conventions</a>
         </Link>
         <h2>Manage: {convention_title}</h2>
-
-        <figure className="mx-0 mb-12">
-          <div className="flex items-center">
-            <div className="text-center">
-              <QRCode className="relative scale-75 top-3" />
-              <span className="text-xs opacity-70">QR code</span>
-            </div>
-            <i
-              className="pl-3 pr-6 text-[30px] opacity-80"
-              style={{ fontFamily: '"Proxima Nova", "Helvetica Neue", Helvetica, Arial, sans-serif' }}
-            >
-              {'→'}
-            </i>{' '}
-            <i className="relative top-0.5 overflow-auto break-words">
-              siv.org/c/{new Date().getFullYear()}/{convention_id}/:voter_id
-            </i>
-          </div>
-        </figure>
 
         {/* Set # voters */}
         <div>
@@ -71,24 +54,29 @@ export const ManageConventionPage = () => {
             }}
           />
         </div>
-        <ol className="mt-0">
+
+        {/* List of voter sets */}
+        <ol className="inset-0 pl-6 mt-0 ml-0">
           {voters?.map(({ createdAt, number }, i) => (
             <li key={i}>
-              <span>
+              <span className="inline-block w-20">Set of {number} </span>
+              <Link href={`/admin/conventions/download?n=${number}`} target="_blank">
+                <a className="pl-1" target="_blank">
+                  Download
+                </a>
+              </Link>
+              <span className="inline-block w-32 text-[13px] text-right opacity-60">
                 {+new Date() - +new Date(createdAt._seconds * 1000) < 60 * 1000 ? (
                   'Just now'
                 ) : (
                   <TimeAgo datetime={new Date(createdAt._seconds * 1000)} />
-                )}
-                :{' '}
+                )}{' '}
               </span>
-              Set of {number}{' '}
-              <Link href={`/admin/conventions/download?n=${number}`}>
-                <a className="pl-1">Download</a>
-              </Link>
             </li>
           ))}
         </ol>
+
+        <QRFigure {...{ convention_id }} />
 
         {/* Set redirection */}
         <div className="">
