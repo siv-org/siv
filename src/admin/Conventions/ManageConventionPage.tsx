@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { api } from 'src/api-helper'
 import { GlobalCSS } from 'src/GlobalCSS'
 import { Head } from 'src/Head'
+import TimeAgo from 'timeago-react'
 
 import { useLoginRequired, useUser } from '../auth'
 import { HeaderBar } from '../HeaderBar'
@@ -16,11 +17,11 @@ export const ManageConventionPage = () => {
   const {
     query: { convention_id },
   } = useRouter()
-  const { convention_title } = useConventionInfo()
+  const { convention_title, voters } = useConventionInfo()
 
   const { loading, loggedOut } = useUser()
   useLoginRequired(loggedOut)
-  if (loading || loggedOut) return <p className="p-4 text-[21px]">Loading...</p>
+  if (loading || loggedOut || !convention_title) return <p className="p-4 text-[21px]">Loading...</p>
 
   return (
     <>
@@ -69,11 +70,17 @@ export const ManageConventionPage = () => {
               await api(`/conventions/${convention_id}/add-voters`, { numVoters: Number(numVoters) })
             }}
           />
-
-          {/* <button className="block" onClick={() => Router.push(`/admin/conventions/download?n=${numVoters}`)}>
-            Download your{numVoters ? ` ${numVoters}` : ''} unique QR codes
-          </button> */}
         </div>
+        <ol className="mt-0">
+          {voters?.map(({ createdAt, number }, i) => (
+            <li key={i}>
+              <TimeAgo datetime={new Date(createdAt._seconds * 1000)} />: {number}{' '}
+              <Link href={`/admin/conventions/download?n=${number}`}>
+                <a className="pl-1">Download</a>
+              </Link>
+            </li>
+          ))}
+        </ol>
 
         {/* Set redirection */}
         <div className="">

@@ -1,4 +1,4 @@
-import { Convention } from 'api/conventions/list-all-conventions'
+import { Convention } from 'api/validate-admin-jwt'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 

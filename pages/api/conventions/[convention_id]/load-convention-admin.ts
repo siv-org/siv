@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 
-// import { firebase } from '../_services'
 import { checkJwtOwnsConvention } from '../../validate-admin-jwt'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {

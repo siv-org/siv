@@ -69,18 +69,28 @@ export async function checkJwtOwnsElection(
   }
 }
 
+export type Convention = {
+  convention_title: string
+  created_at: { _seconds: number }
+  creator: string
+  id: string
+  voters: { createdAt: { _seconds: number }; number: number }[]
+}
+
 export async function checkJwtOwnsConvention(
   req: NextApiRequest,
   res: NextApiResponse,
   convention_id: string,
-): Promise<{ res: void; valid: false } | ({ convention_title: string; valid: true } & JWT_Payload)> {
+): Promise<{ res: void; valid: false } | ({ valid: true } & Convention & JWT_Payload)> {
   const jwt_status = checkJwt(req, res)
 
   // Fail immediately if checkJwt failed
   if (!jwt_status.valid) return jwt_status
 
   // Grab this convention info
-  const convention = { ...(await firebase.firestore().collection('conventions').doc(convention_id).get()).data() }
+  const convention = {
+    ...(await firebase.firestore().collection('conventions').doc(convention_id).get()).data(),
+  } as Convention
 
   // Check if this this admin is the creator of the given convention
   if (jwt_status.email !== convention.creator) {
@@ -92,7 +102,7 @@ export async function checkJwtOwnsConvention(
 
   // Otherwise it passes
   return {
-    convention_title: convention.convention_title,
+    ...convention,
     ...jwt_status,
   }
 }
