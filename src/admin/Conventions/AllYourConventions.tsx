@@ -1,13 +1,13 @@
-import { Election } from 'api/admin-all-elections'
+import { Convention } from 'api/conventions/list-all-conventions'
 import Link from 'next/link'
 import { useReducer } from 'react'
 import useSWR from 'swr'
 import TimeAgo from 'timeago-react'
 
-export const AllYourElections = () => {
-  const [show, toggle] = useReducer((state) => !state, false)
+export const AllYourConventions = () => {
+  const [show, toggle] = useReducer((state) => !state, true)
 
-  const { data } = useSWR('/api/admin-all-elections', (url: string) =>
+  const { data } = useSWR('/api/conventions/list-all-conventions', (url: string) =>
     fetch(url).then(async (r) => {
       if (!r.ok) throw await r.json()
       return await r.json()
@@ -17,8 +17,8 @@ export const AllYourElections = () => {
   return (
     <>
       <h2>
-        Your Elections: <span className="font-normal">{data?.elections?.length}</span>{' '}
-        {!!data?.elections?.length && (
+        Your Conventions: <span className="font-normal">{data?.conventions?.length}</span>{' '}
+        {!!data?.conventions?.length && (
           <a className="text-[14px] font-normal ml-1 cursor-pointer" onClick={toggle}>
             [ {show ? '- Hide' : '+ Show'} ]
           </a>
@@ -26,11 +26,11 @@ export const AllYourElections = () => {
       </h2>
       {show && (
         <ul>
-          {data?.elections?.map(({ created_at, election_title, id }: Election) => (
+          {data?.conventions?.map(({ convention_title, created_at, id }: Convention) => (
             <li key={id}>
-              <Link href={`/admin/${id}/voters`}>
+              <Link href={`/admin/conventions/${id}`}>
                 <a>
-                  <TimeAgo datetime={new Date(created_at._seconds * 1000)} />: {election_title}
+                  <TimeAgo datetime={new Date(created_at._seconds * 1000)} />: {convention_title}
                 </a>
               </Link>
             </li>

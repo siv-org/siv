@@ -3,6 +3,7 @@ import { Head } from 'src/Head'
 
 import { useLoginRequired, useUser } from '../auth'
 import { HeaderBar } from '../HeaderBar'
+import { AllYourConventions } from './AllYourConventions'
 import { CreateNewConvention } from './CreateNewConvention'
 import { QRCode } from './QRCode'
 
@@ -39,6 +40,8 @@ export const ConventionsOverviewPage = () => {
         </figure>
 
         <CreateNewConvention />
+
+        <AllYourConventions />
       </main>
 
       <GlobalCSS />
