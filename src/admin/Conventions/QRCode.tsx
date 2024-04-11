@@ -21,7 +21,15 @@ const qrOptions: Options = {
   width: 111,
 }
 
-export const QRCode = ({ className }: { className?: string }) => {
+export const QRCode = ({
+  className,
+  convention_id = ':conv_id',
+  voter_id = ':voter_id',
+}: {
+  className?: string
+  convention_id?: string
+  voter_id?: string
+}) => {
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -29,7 +37,8 @@ export const QRCode = ({ className }: { className?: string }) => {
 
     import('qr-code-styling').then(({ default: QRCodeStyling }) => {
       if (!ref.current) return console.warn('Missing QR container ref')
-      const qrCode = new QRCodeStyling(qrOptions)
+      const customData = `https://siv.org/c/${convention_id}/${voter_id}`
+      const qrCode = new QRCodeStyling({ ...qrOptions, data: customData })
       if (ref.current.firstChild) ref.current.removeChild(ref.current.firstChild)
       qrCode.append(ref.current)
     })

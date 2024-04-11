@@ -55,7 +55,7 @@ export const DownloadQRsPage = () => {
         {sortedVoters.map(({ index, voter_id }, i) => (
           <span className="mx-2.5 my-1.5 text-center" key={i}>
             <span className="text-sm opacity-50">{voter_id}</span>
-            <QRCode />
+            <QRCode {...{ convention_id: c, voter_id }} />
             <span>{index}</span>
           </span>
         ))}
