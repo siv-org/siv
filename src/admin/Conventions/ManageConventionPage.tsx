@@ -1,24 +1,26 @@
+import Router from 'next/router'
+import { useState } from 'react'
 import { GlobalCSS } from 'src/GlobalCSS'
 import { Head } from 'src/Head'
 
 import { useLoginRequired, useUser } from '../auth'
 import { HeaderBar } from '../HeaderBar'
-import { CreateNewConvention } from './CreateNewConvention'
 import { QRCode } from './QRCode'
 
-export const ConventionsOverviewPage = () => {
+export const ManageConventionPage = () => {
+  const [numVoters, setNumVoters] = useState<string>()
+
   const { loading, loggedOut } = useUser()
   useLoginRequired(loggedOut)
   if (loading || loggedOut) return <p className="p-4 text-[21px]">Loading...</p>
 
   return (
     <>
-      <Head title="Your Conventions" />
+      <Head title="Manage Convention" />
 
       <HeaderBar />
       <main className="p-4 sm:px-8 overflow-clip">
-        <h2>SIV Conventions</h2>
-        <p>Create re-usable login credentials for voters to use across multiple votes in a single day.</p>
+        <h2>Manage Conventions</h2>
 
         <figure className="mx-0 mb-12">
           <div className="flex items-center">
@@ -38,7 +40,30 @@ export const ConventionsOverviewPage = () => {
           </div>
         </figure>
 
-        <CreateNewConvention />
+        {/* Set # voters */}
+        <div>
+          <label>Create how many voter credentials?</label>
+          <input
+            className="w-20 ml-3 text-lg"
+            min="0"
+            placeholder="200"
+            type="number"
+            value={numVoters}
+            onChange={(e) => setNumVoters(e.target.value)}
+          />
+
+          <button className="block" onClick={() => Router.push(`/admin/conventions/download?n=${numVoters}`)}>
+            Download your{numVoters ? ` ${numVoters}` : ''} unique QR codes
+          </button>
+        </div>
+
+        {/* Set redirection */}
+        <div className="">
+          <h3>Redirect your convention QR codes to which ballot?</h3>
+          <select>
+            <option>Menu of your current elections</option>
+          </select>
+        </div>
       </main>
 
       <GlobalCSS />
