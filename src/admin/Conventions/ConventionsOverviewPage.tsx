@@ -5,9 +5,10 @@ import { Head } from 'src/Head'
 
 import { useLoginRequired, useUser } from '../auth'
 import { HeaderBar } from '../HeaderBar'
+import { CreateNewConvention } from './CreateNewConvention'
 import { QRCode } from './QRCode'
 
-export const ConventionsPage = () => {
+export const ConventionsOverviewPage = () => {
   const [numVoters, setNumVoters] = useState<string>()
 
   const { loading, loggedOut } = useUser()
@@ -39,14 +40,19 @@ export const ConventionsPage = () => {
               siv.org/c/{new Date().getFullYear()}/:conv_id/:voter_id
             </i>
           </div>
+
+          {/*
           <b className="block mt-3 mb-0 font-semibold">Lets you redirect to different elections throughout the day</b>
           <ul>
             <li>Reusable voter credentials</li>
             <li>Collect votes in seconds</li>
             <li>End-to-end Verification</li>
-          </ul>
+          </ul> */}
         </figure>
 
+        <CreateNewConvention />
+
+        {/* Set # voters */}
         <div>
           <label>Create how many voter credentials?</label>
           <input
@@ -57,12 +63,13 @@ export const ConventionsPage = () => {
             value={numVoters}
             onChange={(e) => setNumVoters(e.target.value)}
           />
+
+          <button className="block" onClick={() => Router.push(`/admin/conventions/download?n=${numVoters}`)}>
+            Download your{numVoters ? ` ${numVoters}` : ''} unique QR codes
+          </button>
         </div>
 
-        <button onClick={() => Router.push(`/admin/conventions/download?n=${numVoters}`)}>
-          Download your{numVoters ? ` ${numVoters}` : ''} unique QR codes
-        </button>
-
+        {/* Set redirection */}
         <div className="">
           <h3>Redirect your convention QR codes to which ballot?</h3>
           <select>
