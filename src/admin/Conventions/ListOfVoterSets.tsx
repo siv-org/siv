@@ -4,7 +4,7 @@ import TimeAgo from 'timeago-react'
 import { useConventionInfo } from './useConventionInfo'
 
 export const ListOfVoterSets = () => {
-  const { voters } = useConventionInfo()
+  const { id, voters } = useConventionInfo()
 
   return (
     <ol className="inset-0 pl-6 mt-0 ml-0">
@@ -14,7 +14,7 @@ export const ListOfVoterSets = () => {
           <span className="inline-block w-20">Set of {number} </span>
 
           {/* Download */}
-          <Link href={`/admin/conventions/download?n=${number}`} target="_blank">
+          <Link href={`/admin/conventions/download?c=${id}&set=${i}`} target="_blank">
             <a className="pl-1" target="_blank">
               Download
             </a>

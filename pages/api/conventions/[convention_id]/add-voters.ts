@@ -37,7 +37,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       .doc(voter_id)
       .set({
         createdAt,
-        index: i + prev_num_voters,
+        index: i + prev_num_voters + 1,
         setIndex: newSetIndex,
         voter_id,
       }),
