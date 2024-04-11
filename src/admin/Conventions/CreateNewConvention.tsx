@@ -30,12 +30,12 @@ export const CreateNewConvention = () => {
       <SaveButton
         ref={$saveBtn}
         onPress={async () => {
-          const response = await api('create-creation', { convention_title })
+          const response = await api('conventions/create-convention', { convention_title })
           if (response.status !== 201) throw await response.json()
 
           // Set convention_id in URL
           const { convention_id } = await response.json()
-          router.push(`${window.location.origin}/admin/conventions/${convention_id}/ballot-design`)
+          router.push(`${window.location.origin}/admin/conventions/${convention_id}`)
         }}
       />
     </>

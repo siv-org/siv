@@ -21,7 +21,7 @@ export const ConventionsOverviewPage = () => {
 
       <HeaderBar />
       <main className="p-4 sm:px-8 overflow-clip">
-        <h2>Manage Your Conventions</h2>
+        <h2>SIV Conventions</h2>
         <p>Create re-usable login credentials for voters to use across multiple votes in a single day.</p>
 
         <figure className="mx-0 mb-12">
