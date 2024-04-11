@@ -3,10 +3,15 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 import { checkJwtOwnsConvention } from '../../validate-admin-jwt'
 
-export type ConventionVoter = {
+type ConventionVoter = {
+  createdAt: { _seconds: number }
   index: number
   setIndex: number
   voter_id: string
+}
+export type ConventionSet = {
+  convention_title: string
+  voters: ConventionVoter[]
 }
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -29,7 +34,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     .where('setIndex', '==', Number(set))
     .get()
 
-  const voters = voterDocs.docs.map((d) => d.data()) as ConventionVoter[]
+  const voters = voterDocs.docs.map((d) => d.data())
 
-  res.status(200).send({ convention_title: jwt.convention_title, voters })
+  res.status(200).send({ convention_title: jwt.convention_title, voters } as ConventionSet)
 }

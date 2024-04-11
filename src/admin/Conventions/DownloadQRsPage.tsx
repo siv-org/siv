@@ -1,4 +1,4 @@
-import { ConventionVoter } from 'api/conventions/[convention_id]/download-set'
+import type { ConventionSet } from 'api/conventions/[convention_id]/download-set'
 import { useRouter } from 'next/router'
 import { Head } from 'src/Head'
 import useSWR from 'swr'
@@ -25,10 +25,12 @@ export const DownloadQRsPage = () => {
   // console.log('swr ran:', { c, data, isLoading, set })
   if (!data || isLoading) return <p className="p-4">Loading...</p>
 
-  const { convention_title, voters } = data
+  const { convention_title, voters } = data as ConventionSet
   if (!voters.length) return <p className="p-4">Empty set</p>
 
   const createdAt = new Date(voters[0].createdAt._seconds * 1000)
+
+  const sortedVoters = voters.sort((a, b) => a.index - b.index)
 
   return (
     <div className="p-4 overflow-auto">
@@ -50,7 +52,7 @@ export const DownloadQRsPage = () => {
 
       {/* Grid of QRs */}
       <div className="flex flex-wrap -mx-2.5">
-        {(voters as ConventionVoter[]).map(({ index, voter_id }, i) => (
+        {sortedVoters.map(({ index, voter_id }, i) => (
           <span className="mx-2.5 my-1.5 text-center" key={i}>
             <span className="text-sm opacity-50">{voter_id}</span>
             <QRCode />
