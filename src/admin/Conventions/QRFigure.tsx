@@ -4,7 +4,7 @@ export const QRFigure = ({ convention_id }: { convention_id?: string }) => (
   <figure className="mx-0 mt-12 -ml-4">
     <div className="flex items-center">
       <div className="text-center">
-        <QRCode className="relative scale-75 top-3" />
+        <QRCode {...{ convention_id }} className="relative scale-75 top-3" />
         <span className="text-xs opacity-70">QR code</span>
       </div>
       <i
