@@ -1,16 +1,18 @@
 import Link from 'next/link'
-import Router, { useRouter } from 'next/router'
+import { useRouter } from 'next/router'
 import { useState } from 'react'
+import { api } from 'src/api-helper'
 import { GlobalCSS } from 'src/GlobalCSS'
 import { Head } from 'src/Head'
 
 import { useLoginRequired, useUser } from '../auth'
 import { HeaderBar } from '../HeaderBar'
 import { QRCode } from './QRCode'
+import { SaveButton } from './SaveButton'
 import { useConventionInfo } from './useConventionInfo'
 
 export const ManageConventionPage = () => {
-  const [numVoters, setNumVoters] = useState<string>()
+  const [numVoters, setNumVoters] = useState<string>('')
   const {
     query: { convention_id },
   } = useRouter()
@@ -54,16 +56,23 @@ export const ManageConventionPage = () => {
           <label>Create how many voter credentials?</label>
           <input
             className="w-20 ml-3 text-lg"
-            min="0"
+            min="1"
             placeholder="200"
             type="number"
             value={numVoters}
             onChange={(e) => setNumVoters(e.target.value)}
           />
+          <SaveButton
+            disabled={!numVoters}
+            text="Create"
+            onPress={async () => {
+              await api(`/conventions/${convention_id}/add-voters`, { numVoters: Number(numVoters) })
+            }}
+          />
 
-          <button className="block" onClick={() => Router.push(`/admin/conventions/download?n=${numVoters}`)}>
+          {/* <button className="block" onClick={() => Router.push(`/admin/conventions/download?n=${numVoters}`)}>
             Download your{numVoters ? ` ${numVoters}` : ''} unique QR codes
-          </button>
+          </button> */}
         </div>
 
         {/* Set redirection */}
