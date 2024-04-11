@@ -1,11 +1,9 @@
 import { Convention } from 'api/validate-admin-jwt'
 import { useRouter } from 'next/router'
-import useSWR from 'swr'
+import useSWR, { mutate } from 'swr'
 
 export const useConventionInfo = () => {
-  const {
-    query: { convention_id },
-  } = useRouter()
+  const { convention_id } = useRouter().query
 
   const { data }: { data?: Convention } = useSWR(
     !convention_id ? null : `/api/conventions/${convention_id}/load-convention-admin`,
@@ -17,4 +15,8 @@ export const useConventionInfo = () => {
   )
 
   return { ...data }
+}
+
+export function revalidate(convention_id: string) {
+  mutate(`/api/conventions/${convention_id}/load-convention-admin`)
 }
