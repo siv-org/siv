@@ -1,4 +1,5 @@
-import Router from 'next/router'
+import Link from 'next/link'
+import Router, { useRouter } from 'next/router'
 import { useState } from 'react'
 import { GlobalCSS } from 'src/GlobalCSS'
 import { Head } from 'src/Head'
@@ -6,9 +7,14 @@ import { Head } from 'src/Head'
 import { useLoginRequired, useUser } from '../auth'
 import { HeaderBar } from '../HeaderBar'
 import { QRCode } from './QRCode'
+import { useConventionInfo } from './useConventionInfo'
 
 export const ManageConventionPage = () => {
   const [numVoters, setNumVoters] = useState<string>()
+  const {
+    query: { convention_id },
+  } = useRouter()
+  const { convention_title } = useConventionInfo()
 
   const { loading, loggedOut } = useUser()
   useLoginRequired(loggedOut)
@@ -20,7 +26,10 @@ export const ManageConventionPage = () => {
 
       <HeaderBar />
       <main className="p-4 sm:px-8 overflow-clip">
-        <h2>Manage Conventions</h2>
+        <Link href="/admin/conventions">
+          <a className="block mt-2 transition opacity-60 hover:opacity-100">← Back to all Conventions</a>
+        </Link>
+        <h2>Manage: {convention_title}</h2>
 
         <figure className="mx-0 mb-12">
           <div className="flex items-center">
@@ -35,7 +44,7 @@ export const ManageConventionPage = () => {
               {'→'}
             </i>{' '}
             <i className="relative top-0.5 overflow-auto break-words">
-              siv.org/c/{new Date().getFullYear()}/:conv_id/:voter_id
+              siv.org/c/{new Date().getFullYear()}/{convention_id}/:voter_id
             </i>
           </div>
         </figure>
