@@ -1,10 +1,10 @@
 import { useRouter } from 'next/router'
 
-export const useConventionID = () => {
+/** Grabs `convention_id` from the router. Blocks `string[]` type */
+export const useConventionID = (): { convention_id?: string } => {
   const { convention_id } = useRouter().query
 
-  // Return `string` convention_id or undefined
-  return {
-    convention_id: typeof convention_id === 'string' ? convention_id : undefined,
-  }
+  if (Array.isArray(convention_id)) return {}
+
+  return { convention_id }
 }
