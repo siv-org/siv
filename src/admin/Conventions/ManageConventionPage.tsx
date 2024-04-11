@@ -74,7 +74,15 @@ export const ManageConventionPage = () => {
         <ol className="mt-0">
           {voters?.map(({ createdAt, number }, i) => (
             <li key={i}>
-              <TimeAgo datetime={new Date(createdAt._seconds * 1000)} />: {number}{' '}
+              <span>
+                {+new Date() - +new Date(createdAt._seconds * 1000) < 60 * 1000 ? (
+                  'Just now'
+                ) : (
+                  <TimeAgo datetime={new Date(createdAt._seconds * 1000)} />
+                )}
+                :{' '}
+              </span>
+              Set of {number}{' '}
               <Link href={`/admin/conventions/download?n=${number}`}>
                 <a className="pl-1">Download</a>
               </Link>
