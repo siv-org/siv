@@ -4,15 +4,17 @@ import { useReducer } from 'react'
 import useSWR from 'swr'
 import TimeAgo from 'timeago-react'
 
+const fetcher = (url: string) =>
+  fetch(url).then(async (resp) => {
+    if (!resp.ok) throw await resp.json()
+    return await resp.json()
+  })
+export const useAllYourElections = () => useSWR('/api/admin-all-elections', fetcher)
+
 export const AllYourElections = () => {
   const [show, toggle] = useReducer((state) => !state, false)
 
-  const { data } = useSWR('/api/admin-all-elections', (url: string) =>
-    fetch(url).then(async (r) => {
-      if (!r.ok) throw await r.json()
-      return await r.json()
-    }),
-  )
+  const { data } = useAllYourElections()
 
   return (
     <>
@@ -24,6 +26,7 @@ export const AllYourElections = () => {
           </a>
         )}
       </h2>
+
       {show && (
         <ul>
           {data?.elections?.map(({ created_at, election_title, id }: Election) => (

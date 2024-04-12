@@ -7,6 +7,7 @@ import { HeaderBar } from '../HeaderBar'
 import { CreateVoterCredentials } from './CreateVoterCredentials'
 import { ListOfVoterSets } from './ListOfVoterSets'
 import { QRFigure } from './QRFigure'
+import { SetRedirection } from './SetRedirection'
 import { useConventionID } from './useConventionID'
 import { useConventionInfo } from './useConventionInfo'
 
@@ -42,12 +43,7 @@ export const ManageConventionPage = () => {
         <QRFigure {...{ convention_id }} className="mt-12 -ml-5" />
 
         {/* Set redirection */}
-        <div className="">
-          <h3>Redirect your convention QRs to which ballot?</h3>
-          <select>
-            <option>Menu of your current elections</option>
-          </select>
-        </div>
+        <SetRedirection />
       </main>
 
       <GlobalCSS />
