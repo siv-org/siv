@@ -39,11 +39,11 @@ export const ManageConventionPage = () => {
         {/* List of voter sets */}
         <ListOfVoterSets />
 
-        <QRFigure {...{ convention_id }} />
+        <QRFigure {...{ convention_id }} className="mt-12 -ml-5" />
 
         {/* Set redirection */}
         <div className="">
-          <h3>Redirect your convention QR codes to which ballot?</h3>
+          <h3>Redirect your convention QRs to which ballot?</h3>
           <select>
             <option>Menu of your current elections</option>
           </select>

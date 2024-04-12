@@ -5,7 +5,7 @@ import { useLoginRequired, useUser } from '../auth'
 import { HeaderBar } from '../HeaderBar'
 import { AllYourConventions } from './AllYourConventions'
 import { CreateNewConvention } from './CreateNewConvention'
-import { QRCode } from './QRCode'
+import { QRFigure } from './QRFigure'
 
 export const ConventionsOverviewPage = () => {
   const { loading, loggedOut } = useUser()
@@ -18,26 +18,12 @@ export const ConventionsOverviewPage = () => {
 
       <HeaderBar />
       <main className="p-4 sm:px-8 overflow-clip">
-        <h2>SIV Conventions</h2>
-        <p>Create re-usable login credentials for voters to use across multiple votes in a single day.</p>
+        <div className="text-center">
+          <h2>SIV Conventions</h2>
+          <p>Create re-usable login credentials for voters to use across multiple votes in a single day.</p>
 
-        <figure className="mx-0 mb-12">
-          <div className="flex items-center">
-            <div className="text-center">
-              <QRCode className="relative scale-75 top-3" />
-              <span className="text-xs opacity-70">QR code</span>
-            </div>
-            <i
-              className="pl-3 pr-6 text-[30px] opacity-80"
-              style={{ fontFamily: '"Proxima Nova", "Helvetica Neue", Helvetica, Arial, sans-serif' }}
-            >
-              {'→'}
-            </i>{' '}
-            <i className="relative top-0.5 overflow-auto break-words">
-              siv.org/c/{new Date().getFullYear()}/:conv_id/:voter_id
-            </i>
-          </div>
-        </figure>
+          <QRFigure className="mb-12" />
+        </div>
 
         <CreateNewConvention />
 
