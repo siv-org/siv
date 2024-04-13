@@ -9,7 +9,7 @@ export const EncryptedVote = ({ auth, columns, state }: { auth: string; columns:
         <tr>
           <th>auth</th>
           {columns.map((c) => (
-            <th colSpan={2} key={c}>
+            <th colSpan={2} key={c} style={{ WebkitTextSizeAdjust: 'none' }}>
               {c}
             </th>
           ))}
