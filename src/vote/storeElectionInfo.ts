@@ -6,6 +6,8 @@ import { State } from './vote-state'
 export type Item = {
   description?: string
   id?: string
+  max_score?: number
+  min_score?: number
   multiple_votes_allowed?: number
   options: { name: string; sub?: string; value?: string }[]
   question?: string

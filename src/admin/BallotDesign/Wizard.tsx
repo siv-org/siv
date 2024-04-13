@@ -22,172 +22,213 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
         errors ? 'bg-gray-100 opacity-30 cursor-not-allowed' : ''
       }`}
     >
-      {json?.map(({ id, multiple_votes_allowed, options, title, write_in_allowed }, questionIndex) => (
-        // Each question
-        <div className="p-2.5 bg-white mt-4 first:mt-0" key={questionIndex}>
-          {/* Question ID Label */}
-          <label className="block mt-3.5 text-[10px] italic">
-            Question ID{' '}
-            <Tooltip
-              placement="top"
-              tooltip={
-                <span style={{ fontSize: 14 }}>
-                  This unique short ID is used as the column header for the table of submitted votes.
+      {json?.map(
+        ({ id, max_score, min_score, multiple_votes_allowed, options, title, write_in_allowed }, questionIndex) => (
+          // Each question
+          <div className="p-2.5 bg-white mt-4 first:mt-0" key={questionIndex}>
+            {/* Question ID Label */}
+            <label className="block mt-3.5 text-[10px] italic">
+              Question ID{' '}
+              <Tooltip
+                placement="top"
+                tooltip={
+                  <span style={{ fontSize: 14 }}>
+                    This unique short ID is used as the column header for the table of submitted votes.
+                  </span>
+                }
+              >
+                <span className="relative top-0 text-sm text-indigo-500 left-1">
+                  <QuestionCircleOutlined />
                 </span>
-              }
-            >
-              <span className="relative top-0 text-sm text-indigo-500 left-1">
-                <QuestionCircleOutlined />
-              </span>
-            </Tooltip>
-          </label>
-          {/* Question ID Input */}
-          <div className="flex items-center justify-between">
-            <input
-              className="p-1 text-sm"
-              value={id}
-              onChange={({ target }) => {
-                const new_json = [...json]
-                new_json[questionIndex].id = target.value
-                setDesign(JSON.stringify(new_json, undefined, 2))
-              }}
-            />
-
-            {/* Delete Question btn */}
-            <Tooltip placement="top" tooltip="Delete Question">
-              <a
-                className="relative ml-1 text-xl text-center text-gray-700 rounded-full cursor-pointer w-7 bottom-[30px] hover:bg-gray-500 hover:text-white"
-                onClick={() => {
-                  const new_json = [...json]
-                  new_json.splice(questionIndex, 1)
-                  setDesign(JSON.stringify(new_json, undefined, 2))
-                }}
-              >
-                <DeleteOutlined />
-              </a>
-            </Tooltip>
-          </div>
-
-          {/* Type selector */}
-          <div className="mt-4">
-            <label className="text-[10px] italic">Voting Type:</label>
-
-            {/* Type dropdown */}
-            <div className="relative">
-              <span className="absolute z-20 scale-75 right-3 top-2 opacity-60">▼</span>
-              <select
-                className="appearance-none border border-solid border-gray-200 text-[13px] rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 shadow-sm relative"
-                value={json[questionIndex].type}
-                onChange={({ target }) => {
-                  const new_json = [...json]
-                  new_json[questionIndex].type = target.value as string
-                  if (
-                    new_json[questionIndex].type == 'multiple-votes-allowed' &&
-                    !new_json[questionIndex].multiple_votes_allowed
-                  ) {
-                    new_json[questionIndex].multiple_votes_allowed = 3
-                  }
-                  setDesign(JSON.stringify(new_json, undefined, 2))
-                }}
-              >
-                <option value="choose-only-one">Choose Only One — Plurality (FPTP)</option>
-                <option value="ranked-choice-irv">Ranked Choice — Instant Runoff (IRV)</option>
-                <option value="approval">Approval — Vote for All That You Approve Of</option>
-                <option value="multiple-votes-allowed">Multiple Votes Allowed — Choose Up to X</option>
-              </select>
-            </div>
-          </div>
-
-          {json[questionIndex].type == 'multiple-votes-allowed' && (
-            <div className="mt-1">
-              <label className="text-[10px] italic">Max Selections Allowed?</label>
+              </Tooltip>
+            </label>
+            {/* Question ID Input */}
+            <div className="flex items-center justify-between">
               <input
-                className="p-1 ml-1 text-sm"
-                value={multiple_votes_allowed}
+                className="p-1 text-sm"
+                value={id}
                 onChange={({ target }) => {
-                  const update = +target.value
                   const new_json = [...json]
-                  new_json[questionIndex].multiple_votes_allowed = update
+                  new_json[questionIndex].id = target.value
                   setDesign(JSON.stringify(new_json, undefined, 2))
                 }}
               />
-            </div>
-          )}
 
-          {/* Question Title Label */}
-          <label className="block mt-4 text-[10px] italic">Question Title:</label>
-          {/* Question Title Input */}
-          <div className="flex items-center">
-            <input
-              className="flex-1 p-1 text-sm"
-              value={title}
-              onChange={({ target }) => {
-                const new_json = [...json]
-                new_json[questionIndex].title = target.value
-                setDesign(JSON.stringify(new_json, undefined, 2))
-              }}
-            />
-          </div>
-
-          {/* Options list */}
-          <ul>
-            {options?.map(({ name }, optionIndex) => (
-              <li key={optionIndex}>
-                {/* Option input */}
-                <input
-                  className="p-[5px] mb-1.5 text-[13px]"
-                  value={name}
-                  onChange={({ target }) => {
-                    const new_json = [...json]
-                    new_json[questionIndex].options[optionIndex].name = target.value
-                    setDesign(JSON.stringify(new_json, undefined, 2))
-                  }}
-                />
-                {/* Delete Option btn */}
+              {/* Delete Question btn */}
+              <Tooltip placement="top" tooltip="Delete Question">
                 <a
-                  className="inline-block pl-px w-5 h-5 ml-[5px] leading-4 text-center text-gray-600 border border-gray-300 border-solid rounded-full cursor-pointer hover:no-underline hover:bg-gray-500 hover:border-transparent hover:text-white"
+                  className="relative ml-1 text-xl text-center text-gray-700 rounded-full cursor-pointer w-7 bottom-[30px] hover:bg-gray-500 hover:text-white"
                   onClick={() => {
                     const new_json = [...json]
-                    new_json[questionIndex].options.splice(optionIndex, 1)
+                    new_json.splice(questionIndex, 1)
                     setDesign(JSON.stringify(new_json, undefined, 2))
                   }}
                 >
-                  ✕
+                  <DeleteOutlined />
                 </a>
-              </li>
-            ))}
-            {/* Add another option btn */}
-            <a
-              className="block pl-2 mt-1 mb-[14px] text-[13px] italic cursor-pointer"
-              onClick={() => {
-                const new_json = [...json]
-                new_json[questionIndex].options.push({ name: '' })
-                setDesign(JSON.stringify(new_json, undefined, 2))
-              }}
-            >
-              + Add another option
-            </a>
+              </Tooltip>
+            </div>
 
-            {/* Write-in Allowed toggle */}
-            <li className={`${write_in_allowed ? '' : 'list-none'}`}>
-              <span
-                className={`inline-block w-32 pl-2 text-[13px] italic text-gray-800 ${
-                  !write_in_allowed ? 'opacity-60' : ''
-                }`}
-              >{`Write-in ${write_in_allowed ? 'Allowed' : 'Disabled'}`}</span>
-              <Switch
-                checked={write_in_allowed}
-                label={''}
-                onClick={() => {
+            {/* Type selector */}
+            <div className="mt-4">
+              <label className="text-[10px] italic">Voting Type:</label>
+
+              {/* Type dropdown */}
+              <div className="relative">
+                <span className="absolute z-20 scale-75 right-3 top-2 opacity-60">▼</span>
+                <select
+                  className="appearance-none border border-solid border-gray-200 text-[13px] rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 shadow-sm relative"
+                  value={json[questionIndex].type}
+                  onChange={({ target }) => {
+                    const new_json = [...json]
+                    new_json[questionIndex].type = target.value as string
+                    if (
+                      new_json[questionIndex].type == 'multiple-votes-allowed' &&
+                      !new_json[questionIndex].multiple_votes_allowed
+                    ) {
+                      new_json[questionIndex].multiple_votes_allowed = 3
+                    }
+                    if (
+                      (new_json[questionIndex].type == 'score' && !new_json[questionIndex].min_score) ||
+                      !new_json[questionIndex].max_score
+                    ) {
+                      new_json[questionIndex].min_score = -5
+                      new_json[questionIndex].max_score = 5
+                    }
+
+                    setDesign(JSON.stringify(new_json, undefined, 2))
+                  }}
+                >
+                  <option value="choose-only-one">Choose Only One — Plurality (FPTP)</option>
+                  <option value="ranked-choice-irv">Ranked Choice — Instant Runoff (IRV)</option>
+                  <option value="approval">Approval — Vote for All That You Approve Of</option>
+                  <option value="multiple-votes-allowed">Multiple Votes Allowed — Choose Up to X</option>
+                  <option value="score">Score — Scale from Low to High</option>
+                </select>
+              </div>
+            </div>
+
+            {json[questionIndex].type == 'multiple-votes-allowed' && (
+              <div className="mt-1">
+                <label className="text-[10px] italic">Max Selections Allowed?</label>
+                <input
+                  className="p-1 ml-1 text-sm"
+                  value={multiple_votes_allowed}
+                  onChange={({ target }) => {
+                    const update = +target.value
+                    const new_json = [...json]
+                    new_json[questionIndex].multiple_votes_allowed = update
+                    setDesign(JSON.stringify(new_json, undefined, 2))
+                  }}
+                />
+              </div>
+            )}
+
+            {json[questionIndex].type == 'score' && (
+              <div className="mt-1">
+                <label className="text-[10px] italic">Min score?</label>
+                <input
+                  className="p-1 m-1 text-sm w-14"
+                  type="number"
+                  value={min_score}
+                  onChange={({ target }) => {
+                    const update = +target.value
+                    const new_json = [...json]
+                    new_json[questionIndex].min_score = update
+                    setDesign(JSON.stringify(new_json, undefined, 2))
+                  }}
+                />
+
+                <label className="ml-5 text-[10px] italic">Max score?</label>
+                <input
+                  className="p-1 ml-1 text-sm w-14"
+                  type="number"
+                  value={max_score}
+                  onChange={({ target }) => {
+                    const update = +target.value
+                    const new_json = [...json]
+                    new_json[questionIndex].max_score = update
+                    setDesign(JSON.stringify(new_json, undefined, 2))
+                  }}
+                />
+              </div>
+            )}
+
+            {/* Question Title Label */}
+            <label className="block mt-4 text-[10px] italic">Question Title:</label>
+            {/* Question Title Input */}
+            <div className="flex items-center">
+              <input
+                className="flex-1 p-1 text-sm"
+                value={title}
+                onChange={({ target }) => {
                   const new_json = [...json]
-                  new_json[questionIndex].write_in_allowed = !write_in_allowed
+                  new_json[questionIndex].title = target.value
                   setDesign(JSON.stringify(new_json, undefined, 2))
                 }}
               />
-            </li>
-          </ul>
-        </div>
-      ))}
+            </div>
+
+            {/* Options list */}
+            <ul>
+              {options?.map(({ name }, optionIndex) => (
+                <li key={optionIndex}>
+                  {/* Option input */}
+                  <input
+                    className="p-[5px] mb-1.5 text-[13px]"
+                    value={name}
+                    onChange={({ target }) => {
+                      const new_json = [...json]
+                      new_json[questionIndex].options[optionIndex].name = target.value
+                      setDesign(JSON.stringify(new_json, undefined, 2))
+                    }}
+                  />
+                  {/* Delete Option btn */}
+                  <a
+                    className="inline-block pl-px w-5 h-5 ml-[5px] leading-4 text-center text-gray-600 border border-gray-300 border-solid rounded-full cursor-pointer hover:no-underline hover:bg-gray-500 hover:border-transparent hover:text-white"
+                    onClick={() => {
+                      const new_json = [...json]
+                      new_json[questionIndex].options.splice(optionIndex, 1)
+                      setDesign(JSON.stringify(new_json, undefined, 2))
+                    }}
+                  >
+                    ✕
+                  </a>
+                </li>
+              ))}
+              {/* Add another option btn */}
+              <a
+                className="block pl-2 mt-1 mb-[14px] text-[13px] italic cursor-pointer"
+                onClick={() => {
+                  const new_json = [...json]
+                  new_json[questionIndex].options.push({ name: '' })
+                  setDesign(JSON.stringify(new_json, undefined, 2))
+                }}
+              >
+                + Add another option
+              </a>
+
+              {/* Write-in Allowed toggle */}
+              <li className={`${write_in_allowed ? '' : 'list-none'}`}>
+                <span
+                  className={`inline-block w-32 pl-2 text-[13px] italic text-gray-800 ${
+                    !write_in_allowed ? 'opacity-60' : ''
+                  }`}
+                >{`Write-in ${write_in_allowed ? 'Allowed' : 'Disabled'}`}</span>
+                <Switch
+                  checked={write_in_allowed}
+                  label={''}
+                  onClick={() => {
+                    const new_json = [...json]
+                    new_json[questionIndex].write_in_allowed = !write_in_allowed
+                    setDesign(JSON.stringify(new_json, undefined, 2))
+                  }}
+                />
+              </li>
+            </ul>
+          </div>
+        ),
+      )}
 
       {/* "Add another question" btn */}
       <a
