@@ -19,7 +19,7 @@ export const Totals = ({ proofsPage }: { proofsPage?: boolean }): JSX.Element =>
 
   return (
     <div
-      className="p-4 bg-white rounded-lg custom-box-shadow"
+      className={`p-4 bg-white rounded-lg ${custom_box_shadow}`}
       style={{ display: proofsPage ? 'inline-block' : undefined }}
     >
       <div className="flex items-baseline justify-between">
@@ -43,12 +43,9 @@ export const Totals = ({ proofsPage }: { proofsPage?: boolean }): JSX.Element =>
           )}
         </div>
       ))}
-      <style jsx>{`
-        .custom-box-shadow {
-          box-shadow: 0px 1px 2px hsl(0 0% 50% / 0.333), 0px 3px 4px hsl(0 0% 50% / 0.333),
-            0px 4px 6px hsl(0 0% 50% / 0.333);
-        }
-      `}</style>
     </div>
   )
 }
+
+const custom_box_shadow =
+  'shadow-[0px_1px_2px_hsl(0_0%_50%/_0.333),0px_3px_4px_hsl(0_0%_50%/_0.333),0px_4px_6px_hsl(0_0%_50%/_0.333)]'
