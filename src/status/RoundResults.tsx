@@ -20,9 +20,7 @@ export const RoundResults = ({
       {ordered?.map((selection) => (
         <li key={selection}>
           {unTruncateSelection(selection, ballot_design, id)}: {tallies[selection]}{' '}
-          <i style={{ fontSize: 12, marginLeft: 5, opacity: 0.5 }}>
-            ({((100 * tallies[selection]) / totalVotes).toFixed(1)}%)
-          </i>
+          <i className="opacity-50 text-[12px] ml-1">({((100 * tallies[selection]) / totalVotes).toFixed(1)}%)</i>
         </li>
       ))}
     </ul>
