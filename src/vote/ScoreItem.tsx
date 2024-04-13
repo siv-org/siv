@@ -21,7 +21,7 @@ export const ScoreItem = ({
   election_id?: string
   state: State
 }): JSX.Element => {
-  // console.log(state.plaintext)
+  console.log('state.plaintext:', state.plaintext)
 
   const scoreOptions = range(min_score, max_score + 1)
 
