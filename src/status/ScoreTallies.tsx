@@ -1,4 +1,4 @@
-import { mapValues, mean } from 'lodash-es'
+import { mapValues, mean, sortBy } from 'lodash-es'
 import { Item } from 'src/vote/storeElectionInfo'
 
 import { useDecryptedVotes } from './use-decrypted-votes'
@@ -18,6 +18,7 @@ export const ScoreTallies = ({ id, options }: { id: string; options: Item['optio
   })
 
   const averagesPerOption = mapValues(scoresPerOption, mean)
+  const sorted = sortBy(options, ({ name, value }) => averagesPerOption[value || name] || -Infinity).reverse()
 
   return (
     <table>
@@ -29,7 +30,7 @@ export const ScoreTallies = ({ id, options }: { id: string; options: Item['optio
         </tr>
       </thead>
       <tbody>
-        {options.map(({ name, value }) => {
+        {sorted.map(({ name, value }) => {
           const option = value || name
 
           return (
