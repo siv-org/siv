@@ -3,6 +3,7 @@ import TimeAgo from 'timeago-react'
 
 import { IRVTallies } from './IRVTallies'
 import { RoundResults } from './RoundResults'
+import { ScoreTallies } from './ScoreTallies'
 import { tallyVotes } from './tally-votes'
 import { useDecryptedVotes } from './use-decrypted-votes'
 import { useElectionInfo } from './use-election-info'
@@ -30,12 +31,14 @@ export const Totals = ({ proofsPage }: { proofsPage?: boolean }): JSX.Element =>
           </span>
         )}
       </div>
-      {ballot_design.map(({ id = 'vote', title, type }) => (
+      {ballot_design.map(({ id = 'vote', options, title, type }) => (
         <div key={id}>
           <h4>{title}</h4>
 
           {type === 'ranked-choice-irv' ? (
             <IRVTallies {...{ ballot_design, id, results: irv[id] }} />
+          ) : type === 'score' ? (
+            <ScoreTallies {...{ id, options, votes }} />
           ) : (
             <RoundResults
               {...{ ballot_design, id, ordered: ordered[id], tallies: tallies[id], totalVotes: totalsCastPerItems[id] }}
