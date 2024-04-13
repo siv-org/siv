@@ -2,7 +2,6 @@ import { range } from 'lodash-es'
 import { Dispatch } from 'react'
 import { default_max_score, default_min_score } from 'src/admin/BallotDesign/Wizard'
 
-import { max_string_length } from './Ballot'
 import { Label, TitleDescriptionQuestion } from './Item'
 import { Item as ItemType } from './storeElectionInfo'
 import { State } from './vote-state'
@@ -47,7 +46,7 @@ export const ScoreItem = ({
         {/* List one row for each candidate */}
         <tbody>
           {options.map(({ name, sub, value }) => {
-            const val = value || name.slice(0, max_string_length)
+            const val = value || name
 
             return (
               <tr key={name}>
