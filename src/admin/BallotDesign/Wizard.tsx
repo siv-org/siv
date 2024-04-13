@@ -6,8 +6,13 @@ import { Item } from 'src/vote/storeElectionInfo'
 import { check_for_urgent_ballot_errors } from './check_for_ballot_errors'
 import { Switch } from './Switch'
 
+export const default_multiple_votes_allowed = 3
+export const default_min_score = -5
+export const default_max_score = 5
+
 export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: string) => void }) => {
   const [json, setJson] = useState<Item[]>()
+  const saveDesign = (json: Item[]) => setDesign(JSON.stringify(json, undefined, 2))
 
   const errors = check_for_urgent_ballot_errors(design)
 
@@ -50,7 +55,7 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
                 onChange={({ target }) => {
                   const new_json = [...json]
                   new_json[questionIndex].id = target.value
-                  setDesign(JSON.stringify(new_json, undefined, 2))
+                  saveDesign(new_json)
                 }}
               />
 
@@ -61,7 +66,7 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
                   onClick={() => {
                     const new_json = [...json]
                     new_json.splice(questionIndex, 1)
-                    setDesign(JSON.stringify(new_json, undefined, 2))
+                    saveDesign(new_json)
                   }}
                 >
                   <DeleteOutlined />
@@ -86,17 +91,17 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
                       new_json[questionIndex].type == 'multiple-votes-allowed' &&
                       !new_json[questionIndex].multiple_votes_allowed
                     ) {
-                      new_json[questionIndex].multiple_votes_allowed = 3
+                      new_json[questionIndex].multiple_votes_allowed = default_multiple_votes_allowed
                     }
                     if (
                       (new_json[questionIndex].type == 'score' && !new_json[questionIndex].min_score) ||
                       !new_json[questionIndex].max_score
                     ) {
-                      new_json[questionIndex].min_score = -5
-                      new_json[questionIndex].max_score = 5
+                      new_json[questionIndex].min_score = default_min_score
+                      new_json[questionIndex].max_score = default_max_score
                     }
 
-                    setDesign(JSON.stringify(new_json, undefined, 2))
+                    saveDesign(new_json)
                   }}
                 >
                   <option value="choose-only-one">Choose Only One — Plurality (FPTP)</option>
@@ -118,7 +123,7 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
                     const update = +target.value
                     const new_json = [...json]
                     new_json[questionIndex].multiple_votes_allowed = update
-                    setDesign(JSON.stringify(new_json, undefined, 2))
+                    saveDesign(new_json)
                   }}
                 />
               </div>
@@ -135,7 +140,7 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
                     const update = +target.value
                     const new_json = [...json]
                     new_json[questionIndex].min_score = update
-                    setDesign(JSON.stringify(new_json, undefined, 2))
+                    saveDesign(new_json)
                   }}
                 />
 
@@ -148,7 +153,7 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
                     const update = +target.value
                     const new_json = [...json]
                     new_json[questionIndex].max_score = update
-                    setDesign(JSON.stringify(new_json, undefined, 2))
+                    saveDesign(new_json)
                   }}
                 />
               </div>
@@ -164,7 +169,7 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
                 onChange={({ target }) => {
                   const new_json = [...json]
                   new_json[questionIndex].title = target.value
-                  setDesign(JSON.stringify(new_json, undefined, 2))
+                  saveDesign(new_json)
                 }}
               />
             </div>
@@ -180,7 +185,7 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
                     onChange={({ target }) => {
                       const new_json = [...json]
                       new_json[questionIndex].options[optionIndex].name = target.value
-                      setDesign(JSON.stringify(new_json, undefined, 2))
+                      saveDesign(new_json)
                     }}
                   />
                   {/* Delete Option btn */}
@@ -189,7 +194,7 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
                     onClick={() => {
                       const new_json = [...json]
                       new_json[questionIndex].options.splice(optionIndex, 1)
-                      setDesign(JSON.stringify(new_json, undefined, 2))
+                      saveDesign(new_json)
                     }}
                   >
                     ✕
@@ -202,7 +207,7 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
                 onClick={() => {
                   const new_json = [...json]
                   new_json[questionIndex].options.push({ name: '' })
-                  setDesign(JSON.stringify(new_json, undefined, 2))
+                  saveDesign(new_json)
                 }}
               >
                 + Add another option
@@ -221,7 +226,7 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
                   onClick={() => {
                     const new_json = [...json]
                     new_json[questionIndex].write_in_allowed = !write_in_allowed
-                    setDesign(JSON.stringify(new_json, undefined, 2))
+                    saveDesign(new_json)
                   }}
                 />
               </li>
@@ -245,7 +250,7 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
             options: [{ name: 'Option 1' }, { name: 'Option 2' }],
             write_in_allowed: false,
           })
-          setDesign(JSON.stringify(new_json, undefined, 2))
+          saveDesign(new_json)
         }}
       >
         + Add another question

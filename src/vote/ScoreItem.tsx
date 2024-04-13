@@ -1,5 +1,6 @@
 import { range } from 'lodash-es'
 import { Dispatch } from 'react'
+import { default_max_score, default_min_score } from 'src/admin/BallotDesign/Wizard'
 
 import { max_string_length } from './Ballot'
 import { Label, TitleDescriptionQuestion } from './Item'
@@ -10,8 +11,8 @@ export const ScoreItem = ({
   description,
   dispatch,
   id = 'vote',
-  max_score = 5,
-  min_score = -5,
+  max_score = default_max_score,
+  min_score = default_min_score,
   options,
   question,
   state,
@@ -21,7 +22,7 @@ export const ScoreItem = ({
   election_id?: string
   state: State
 }): JSX.Element => {
-  console.log('state.plaintext:', state.plaintext)
+  // console.log('state.plaintext:', state.plaintext)
 
   const scoreOptions = range(min_score, max_score + 1)
 
