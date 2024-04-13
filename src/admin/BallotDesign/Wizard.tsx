@@ -191,7 +191,7 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
 
       {/* "Add another question" btn */}
       <a
-        className="block w-full p-2.5 italic bg-white my-[15px] text-[13px] cursor-pointer"
+        className="block w-full p-2.5 italic bg-white my-[15px] text-[13px] cursor-pointer hover:bg-gray-50/80 hover:no-underline"
         onClick={() => {
           const new_json = [...(json || [])]
           const new_question_number = new_json.length + 1
