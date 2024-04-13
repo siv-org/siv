@@ -27,7 +27,7 @@ export const Ballot = ({
 
   return (
     <NoSsr>
-      <Paper noFade>
+      <Paper noFade className="overflow-x-scroll">
         <>
           {/* Election Title */}
           {state.election_title && <h2 className="ml-[13px]">{state.election_title}</h2>}
