@@ -36,7 +36,7 @@ export const ScoreTallies = ({ id, options }: { id: string; options: Item['optio
           return (
             <tr key={option}>
               <td>{name}</td>
-              <td className="text-center">{averagesPerOption[option] || ''}</td>
+              <td className="text-center">{formatNumber(averagesPerOption[option]) || ''}</td>
               <td className="opacity-50 text-[12px] text-center">{(scoresPerOption[option] || []).length}</td>
             </tr>
           )
@@ -44,4 +44,13 @@ export const ScoreTallies = ({ id, options }: { id: string; options: Item['optio
       </tbody>
     </table>
   )
+}
+
+/** Show at most `maxPrecision` decimal places */
+const formatNumber = (num?: number, maxPrecision = 2) => {
+  if (!num) return
+  if (num % 1 === 0) return num
+  const currentPrecision = num.toString().split('.')[1].length
+  const precision = Math.min(currentPrecision, maxPrecision)
+  return num.toFixed(precision)
 }
