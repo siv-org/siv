@@ -6,6 +6,7 @@ import { Paper } from '../protocol/Paper'
 import { Item } from './Item'
 import { MultiVoteItem } from './MultiVoteItem'
 import { RankedChoiceItem } from './RankedChoiceItem'
+import { ScoreItem } from './ScoreItem'
 import { State } from './vote-state'
 
 // Calculate maximum write-in string length
@@ -71,6 +72,9 @@ export const Ballot = ({
                   key={index}
                 />
               )
+
+            // Is it "Score"?
+            if (item.type === 'score') return <ScoreItem {...{ ...item, dispatch, state }} key={index} />
 
             // Otherwise, load default "Choose-only-one"
             return <Item {...{ ...item, dispatch, state }} key={index} />
