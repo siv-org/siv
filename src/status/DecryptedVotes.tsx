@@ -40,6 +40,9 @@ export const DecryptedVotes = ({ proofsPage }: { proofsPage?: boolean }): JSX.El
               {columns.map((c) => (
                 <td className="text-center" key={c}>
                   {unTruncateSelection(vote[c], ballot_design, c)}
+
+                  {/* Fix centering for negative Scores */}
+                  {vote[c]?.match(/^-\d$/) && <span className="inline-block w-1.5" />}
                 </td>
               ))}
             </tr>
