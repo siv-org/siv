@@ -23,7 +23,7 @@ export const UnlockedVote = ({ columns, state }: { columns: string[]; state: Sta
           {columns.map((c) => {
             const vote = state.plaintext[c]
             return (
-              <td className="p-1 border border-gray-300 border-solid max-w-90" key={c}>
+              <td className="p-1 text-center border border-gray-300 border-solid max-w-90" key={c}>
                 {vote === 'BLANK' ? '' : unTruncateSelection(vote, state.ballot_design || [], c)}
               </td>
             )

@@ -1,9 +1,8 @@
-import { flatten } from 'lodash-es'
 import Link from 'next/link'
 import { useEffect } from 'react'
 import { NoSsr } from 'src/_shared/NoSsr'
 
-import { defaultRankingsAllowed } from '../Ballot'
+import { generateColumnNames } from '../generateColumnNames'
 import { State } from '../vote-state'
 import { DetailedEncryptionReceipt } from './DetailedEncryptionReceipt'
 import { EncryptedVote } from './EncryptedVote'
@@ -25,21 +24,7 @@ export function SubmittedScreen({
     if (mainEl) mainEl.style.maxWidth = '880px'
   })
 
-  const columns = flatten(
-    state.ballot_design?.map(({ id, multiple_votes_allowed, options, type, write_in_allowed }) =>
-      multiple_votes_allowed || type === 'ranked-choice-irv' || type === 'approval'
-        ? new Array(
-            multiple_votes_allowed
-              ? multiple_votes_allowed
-              : type === 'approval'
-              ? options.length + +!!write_in_allowed
-              : Math.min(defaultRankingsAllowed, options.length + +!!write_in_allowed),
-          )
-            .fill('')
-            .map((_, index) => `${id || 'vote'}_${index + 1}`)
-        : id || 'vote',
-    ),
-  )
+  const { columns } = generateColumnNames({ ballot_design: state.ballot_design })
 
   return (
     <NoSsr>

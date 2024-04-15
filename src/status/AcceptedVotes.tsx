@@ -1,9 +1,8 @@
-import { flatten } from 'lodash-es'
 import { useRouter } from 'next/router'
 import { Fragment, useEffect, useState } from 'react'
 import { CipherStrings } from 'src/crypto/stringify-shuffle'
 import { EncryptedVote } from 'src/protocol/EncryptedVote'
-import { defaultRankingsAllowed } from 'src/vote/Ballot'
+import { generateColumnNames } from 'src/vote/generateColumnNames'
 
 import { Item } from '../vote/storeElectionInfo'
 import { TotalVotesCast } from './TotalVotesCast'
@@ -45,15 +44,7 @@ export const AcceptedVotes = ({
 
   const newVotes = numVotes - votes.length
 
-  const columns = flatten(
-    ballot_design?.map(({ id, multiple_votes_allowed, type }) =>
-      multiple_votes_allowed || type === 'ranked-choice-irv'
-        ? new Array(multiple_votes_allowed || defaultRankingsAllowed)
-            .fill('')
-            .map((_, index) => `${id || 'vote'}_${index + 1}`)
-        : id || 'vote',
-    ),
-  )
+  const { columns } = generateColumnNames({ ballot_design })
 
   return (
     <>
@@ -112,8 +103,8 @@ export const AcceptedVotes = ({
                   if (key !== 'auth') {
                     return (
                       <Fragment key={key}>
-                        <td className="monospaced">{vote[key]?.encrypted}</td>
-                        <td className="monospaced">{vote[key]?.lock}</td>
+                        <td className="monospaced text-[11px]">{vote[key]?.encrypted}</td>
+                        <td className="monospaced text-[11px]">{vote[key]?.lock}</td>
                       </Fragment>
                     )
                   }
