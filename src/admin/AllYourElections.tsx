@@ -4,7 +4,7 @@ import { useReducer } from 'react'
 import useSWR from 'swr'
 import TimeAgo from 'timeago-react'
 
-const fetcher = (url: string) =>
+export const fetcher = (url: string) =>
   fetch(url).then(async (resp) => {
     if (!resp.ok) throw await resp.json()
     return await resp.json()

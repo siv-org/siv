@@ -70,6 +70,7 @@ export async function checkJwtOwnsElection(
 }
 
 export type Convention = {
+  active_redirect?: string
   convention_title: string
   created_at: { _seconds: number }
   creator: string

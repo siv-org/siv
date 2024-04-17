@@ -1,14 +1,16 @@
 import { Election } from 'api/admin-all-elections'
 import { useEffect, useState } from 'react'
+import { api } from 'src/api-helper'
 import TimeAgo from 'timeago-react'
 
 import { useAllYourElections } from '../AllYourElections'
+import { revalidate, useConventionInfo } from './useConventionInfo'
 
 export const SetRedirection = () => {
   const { data } = useAllYourElections()
   const [filteredData, setFilteredData] = useState<Election[]>([])
   const [searchText, setSearchText] = useState('')
-  const [selectedId, setSelectedId] = useState('')
+  const { active_redirect, id: convention_id } = useConventionInfo()
 
   const { elections } = (data as { elections: Election[] }) || {}
 
@@ -20,7 +22,7 @@ export const SetRedirection = () => {
     setFilteredData(filtered)
   }, [searchText, elections])
 
-  if (!elections) return <p>Error loading elections</p>
+  if (!elections) return <p>Loading elections...</p>
 
   return (
     <div>
@@ -42,12 +44,15 @@ export const SetRedirection = () => {
         {filteredData.map(({ created_at, election_title, id }, i) => (
           <li
             className={`flex justify-between items-center py-1 px-1.5 rounded cursor-pointer hover:bg-gray-200 group ${
-              selectedId === id ? 'bg-blue-800/20 hover:!bg-blue-800/30' : ''
+              active_redirect === id ? 'bg-blue-800/20 hover:!bg-blue-800/30' : ''
             }`}
             key={id}
-            onClick={() =>
-              confirm(`${selectedId !== id ? `Redirect QRs to '${election_title}'?` : 'Remove redirection?'}`) &&
-              setSelectedId(selectedId !== id ? id : '')
+            onClick={async () =>
+              confirm(`${active_redirect !== id ? `Redirect QRs to '${election_title}'?` : 'Remove redirection?'}`) &&
+              (await api(`/conventions/${convention_id}/set-redirect`, {
+                election_id: active_redirect !== id ? id : '',
+              })) &&
+              revalidate(convention_id || '')
             }
           >
             <span>
