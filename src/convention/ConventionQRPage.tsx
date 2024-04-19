@@ -1,3 +1,5 @@
+import Link from 'next/link'
+
 import { Spinner } from '../admin/Spinner'
 import { useConventionRedirect } from './useConventionRedirect'
 
@@ -27,9 +29,14 @@ export const ConventionQRPage = () => {
         </div>
         <div className="mt-10 opacity-70">
           <div>Convention ID: {convention_id}</div>
-          <div>Voter ID: {voter_id}</div>
+          {convention_title && <div className="mb-3">Title: {convention_title}</div>}
+          <div className="mb-3">Voter ID: {voter_id}</div>
 
-          {convention_title && <div className="mt-3">Convention: {convention_title}</div>}
+          {active_redirect && (
+            <div>
+              Active Redirect: <Link href={`/election/${active_redirect}`}>{active_redirect}</Link>
+            </div>
+          )}
         </div>
       </div>
 
