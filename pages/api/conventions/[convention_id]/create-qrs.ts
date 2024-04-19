@@ -27,7 +27,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     qrs: firestore.FieldValue.arrayUnion({ createdAt, number: numQRs }),
   })
 
-  const { num_qrs: prev_num_qrs } = jwt
+  const { num_qrs: prev_num_qrs = 0 } = jwt
   const newSetIndex = jwt.qrs?.length || 0
 
   // Assign unique qr_ids

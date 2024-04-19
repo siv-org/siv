@@ -4,9 +4,9 @@ import { firebase } from 'api/_services'
 export const createBallotAuthsForQrs = async (convention_id: string, ballot_id: string) => {
   // Lookup current QR codes
   const conventionDoc = firebase.firestore().collection('conventions').doc(convention_id)
-  const currentQrs = conventionDoc.collection('qr_ids')
+  const currentQrs = (await conventionDoc.collection('qr_ids').get()).docs.map((d) => d.data())
 
-  console.log(currentQrs, ballot_id) // silence warnings,
+  console.log(ballot_id, currentQrs)
 
   // Create unique ballot auth tokens for each QR code
   // Store each ballot auth token in QR doc
