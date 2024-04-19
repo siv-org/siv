@@ -75,8 +75,8 @@ export type Convention = {
   created_at: { _seconds: number }
   creator: string
   id: string
-  num_voters: number
-  voters: { createdAt: { _seconds: number }; number: number }[]
+  num_qrs: number
+  qrs: { createdAt: { _seconds: number }; number: number }[]
 }
 
 export async function checkJwtOwnsConvention(

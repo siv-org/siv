@@ -16,7 +16,7 @@ export const QRFigure = ({ className, convention_id = ':conv_id' }: { className?
         {'→'}
       </i>{' '}
       {/* Right of Arrow */}
-      <i className="relative top-0.5 overflow-auto break-words">siv.org/c/{convention_id}/:voter_id</i>
+      <i className="relative top-0.5 overflow-auto break-words">siv.org/c/{convention_id}/:qr_id</i>
     </div>
   </figure>
 )

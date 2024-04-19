@@ -36,7 +36,7 @@ export const ConventionQRPage = () => {
 
           {active_redirect && (
             <div>
-              Active Redirect: <Link href={`/election/${active_redirect}`}>{active_redirect}</Link>
+              Active Redirect: <Link href={`/election/${active_redirect}/vote`}>{active_redirect}</Link>
             </div>
           )}
         </div>

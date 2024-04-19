@@ -5,7 +5,7 @@ import { Head } from 'src/Head'
 import { useLoginRequired, useUser } from '../auth'
 import { HeaderBar } from '../HeaderBar'
 import { CreateVoterCredentials } from './CreateVoterCredentials'
-import { ListOfVoterSets } from './ListOfVoterSets'
+import { ListOfQRSets } from './ListOfQRSets'
 import { QRFigure } from './QRFigure'
 import { SetRedirection } from './SetRedirection'
 import { useConventionID } from './useConventionID'
@@ -38,7 +38,7 @@ export const ManageConventionPage = () => {
         <CreateVoterCredentials {...{ convention_id }} />
 
         {/* List of voter sets */}
-        <ListOfVoterSets />
+        <ListOfQRSets />
 
         <QRFigure {...{ convention_id }} className="mt-12 -ml-5" />
 

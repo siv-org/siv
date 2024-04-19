@@ -6,12 +6,12 @@ import { checkJwtOwnsConvention } from '../../validate-admin-jwt'
 type ConventionVoter = {
   createdAt: { _seconds: number }
   index: number
+  qr_id: string
   setIndex: number
-  voter_id: string
 }
 export type ConventionSet = {
   convention_title: string
-  voters: ConventionVoter[]
+  qrs: ConventionVoter[]
 }
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -26,15 +26,15 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (!set || typeof set !== 'string') return res.status(401).json({ error: `Missing set` })
 
   // Get all voters in this set
-  const voterDocs = await firebase
+  const qrDocs = await firebase
     .firestore()
     .collection('conventions')
     .doc(convention_id)
-    .collection('voter_ids')
+    .collection('qr_ids')
     .where('setIndex', '==', Number(set))
     .get()
 
-  const voters = voterDocs.docs.map((d) => d.data())
+  const qrs = qrDocs.docs.map((d) => d.data())
 
-  res.status(200).send({ convention_title: jwt.convention_title, voters } as ConventionSet)
+  res.status(200).send({ convention_title: jwt.convention_title, qrs } as ConventionSet)
 }

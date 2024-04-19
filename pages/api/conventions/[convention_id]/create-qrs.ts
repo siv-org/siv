@@ -10,8 +10,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (!convention_id || typeof convention_id !== 'string')
     return res.status(401).json({ error: `Missing convention_id` })
 
-  const { numVoters } = req.body
-  if (!numVoters || typeof numVoters !== 'number') return res.status(401).json({ error: `Missing numVoters` })
+  const { numQRs } = req.body
+  if (!numQRs || typeof numQRs !== 'number') return res.status(401).json({ error: `Missing numQRs` })
 
   // Confirm they created this convention
   const jwt = await checkJwtOwnsConvention(req, res, convention_id)
@@ -23,27 +23,27 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Insert new voters in DB
   const updateConventionDoc = doc.update({
-    num_voters: firestore.FieldValue.increment(numVoters),
-    voters: firestore.FieldValue.arrayUnion({ createdAt, number: numVoters }),
+    num_qrs: firestore.FieldValue.increment(numQRs),
+    qrs: firestore.FieldValue.arrayUnion({ createdAt, number: numQRs }),
   })
 
-  const { num_voters: prev_num_voters } = jwt
-  const newSetIndex = jwt.voters?.length || 0
+  const { num_qrs: prev_num_qrs } = jwt
+  const newSetIndex = jwt.qrs?.length || 0
 
-  // Assign unique voter_ids
-  const createNewVoterIds = Array.from({ length: numVoters }, () => generateAuthToken()).map((voter_id, i) =>
+  // Assign unique qr_ids
+  const createNewQrIds = Array.from({ length: numQRs }, () => generateAuthToken()).map((qr_id, i) =>
     doc
-      .collection('voter_ids')
-      .doc(voter_id)
+      .collection('qr_ids')
+      .doc(qr_id)
       .set({
         createdAt,
-        index: i + prev_num_voters + 1,
+        index: i + prev_num_qrs + 1,
+        qr_id,
         setIndex: newSetIndex,
-        voter_id,
       }),
   )
 
-  await Promise.all(createNewVoterIds)
+  await Promise.all(createNewQrIds)
   await updateConventionDoc
 
   return res.status(201).send({ success: true })

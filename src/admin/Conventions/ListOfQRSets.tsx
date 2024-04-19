@@ -3,12 +3,12 @@ import TimeAgo from 'timeago-react'
 
 import { useConventionInfo } from './useConventionInfo'
 
-export const ListOfVoterSets = () => {
-  const { id, voters } = useConventionInfo()
+export const ListOfQRSets = () => {
+  const { id, qrs } = useConventionInfo()
 
   return (
     <ol className="inset-0 pl-6 mt-0 ml-0">
-      {voters?.map(({ createdAt, number }, i) => (
+      {qrs?.map(({ createdAt, number }, i) => (
         <li key={i}>
           {/* Size */}
           <span className="inline-block w-20">Set of {number} </span>

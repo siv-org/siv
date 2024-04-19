@@ -25,23 +25,23 @@ export const DownloadQRsPage = () => {
   // console.log('swr ran:', { c, data, isLoading, set })
   if (!data || isLoading) return <p className="p-4">Loading...</p>
 
-  const { convention_title, voters } = data as ConventionSet
-  if (!voters.length) return <p className="p-4">Empty set</p>
+  const { convention_title, qrs } = data as ConventionSet
+  if (!qrs.length) return <p className="p-4">Empty set</p>
 
-  const createdAt = new Date(voters[0].createdAt._seconds * 1000)
+  const createdAt = new Date(qrs[0].createdAt._seconds * 1000)
 
-  const sortedVoters = voters.sort((a, b) => a.index - b.index)
+  const sortedQrs = qrs.sort((a, b) => a.index - b.index)
 
   return (
     <div className="p-4 overflow-auto">
-      <Head title={`${voters.length} for ${convention_title}`} />
+      <Head title={`${qrs.length} for ${convention_title}`} />
 
       {/* Header row */}
       <p className="flex justify-between">
         <span className="font-bold">Right Click {'→'} Print </span>
 
         <span>
-          {convention_title}: Set of {voters.length}
+          {convention_title}: Set of {qrs.length}
         </span>
 
         <span>
@@ -52,10 +52,10 @@ export const DownloadQRsPage = () => {
 
       {/* Grid of QRs */}
       <div className="flex flex-wrap -mx-2.5">
-        {sortedVoters.map(({ index, voter_id }, i) => (
+        {sortedQrs.map(({ index, qr_id }, i) => (
           <span className="mx-2.5 my-1.5 text-center" key={i}>
-            <span className="text-sm opacity-50">{voter_id}</span>
-            <QRCode {...{ convention_id: c, voter_id }} />
+            <span className="text-sm opacity-50">{qr_id}</span>
+            <QRCode {...{ convention_id: c, qr_id }} />
             <span>{index}</span>
           </span>
         ))}
