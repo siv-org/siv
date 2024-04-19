@@ -15,12 +15,16 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const jwt = await checkJwtOwnsConvention(req, res, convention_id)
   if (!jwt.valid) return
 
-  // TODO: Confirm they own the election
+  const conventionDoc = firebase.firestore().collection('conventions').doc(convention_id)
+  const electionDoc = firebase.firestore().collection('elections').doc(election_id)
 
-  const doc = firebase.firestore().collection('conventions').doc(convention_id)
+  // Confirm they own the election
+  const election = { ...(await electionDoc.get()).data() }
+  if (election.creator !== jwt.email)
+    return res.status(401).send({ error: `This user did not create election ${election_id}` })
 
   // Save redirect in DB
-  const updateConventionDoc = doc.update({ active_redirect: election_id })
+  const updateConventionDoc = conventionDoc.update({ active_redirect: election_id })
 
   await updateConventionDoc
 
