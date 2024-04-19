@@ -4,9 +4,9 @@ import { Spinner } from '../admin/Spinner'
 import { useConventionRedirect } from './useConventionRedirect'
 
 export const ConventionQRPage = () => {
-  const { convention_id, errorMessage, loading, publicConventionInfo, voter_id } = useConventionRedirect()
+  const { convention_id, conventionRedirectInfo, errorMessage, loading, qr_id } = useConventionRedirect()
 
-  const { active_redirect, convention_title } = publicConventionInfo || {}
+  const { active_ballot_auth, active_redirect, convention_title } = conventionRedirectInfo || {}
 
   return (
     <div className="flex flex-col justify-between min-h-screen p-4 pt-6 font-sans bg-gradient-to-b from-gray-200 to-gray-500/80">
@@ -32,11 +32,12 @@ export const ConventionQRPage = () => {
         <div className="mt-10 opacity-70">
           <div>Convention ID: {convention_id}</div>
           {convention_title && <div className="mb-3">Title: {convention_title}</div>}
-          <div className="mb-3">QR ID: {voter_id}</div>
+          <div className="mb-3">QR ID: {qr_id}</div>
 
           {active_redirect && (
             <div>
-              Active Redirect: <Link href={`/election/${active_redirect}/vote`}>{active_redirect}</Link>
+              Active Redirect:{' '}
+              <Link href={`/election/${active_redirect}/vote?auth=${active_ballot_auth}`}>{active_redirect}</Link>
             </div>
           )}
         </div>
