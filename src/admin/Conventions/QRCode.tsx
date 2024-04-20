@@ -14,11 +14,11 @@ const qrOptions: Options = {
 export const QRCode = ({
   className,
   convention_id = ':conv_id',
-  voter_id = ':voter_id',
+  qr_id = ':qr_id',
 }: {
   className?: string
   convention_id?: string
-  voter_id?: string
+  qr_id?: string
 }) => {
   const ref = useRef<HTMLDivElement>(null)
 
@@ -27,7 +27,7 @@ export const QRCode = ({
 
     import('qr-code-styling').then(({ default: QRCodeStyling }) => {
       if (!ref.current) return console.warn('Missing QR container ref')
-      const customData = `${window.location.origin}/c/${convention_id}/${voter_id}`
+      const customData = `${window.location.origin}/c/${convention_id}/${qr_id}`
       const qrCode = new QRCodeStyling({ ...qrOptions, data: customData })
       if (ref.current.firstChild) ref.current.removeChild(ref.current.firstChild)
       qrCode.append(ref.current)

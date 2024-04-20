@@ -1,4 +1,4 @@
-import { ConventionRedirectInfo } from 'api/conventions/[convention_id]/load-voter-redirect'
+import { ConventionRedirectInfo } from 'api/conventions/[convention_id]/load-qr-redirect'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { api } from 'src/api-helper'
@@ -16,7 +16,7 @@ export const useConventionRedirect = () => {
     if (typeof qr_id !== 'string') return setErrorMessage('Missing qr_id')
 
     setLoading(true)
-    api(`conventions/${convention_id}/load-voter-redirect?qr_id=${qr_id}`).then(async (res) => {
+    api(`conventions/${convention_id}/load-qr-redirect?qr_id=${qr_id}`).then(async (res) => {
       const json = await res.json()
       setLoading(false)
       if (!res.ok) return setErrorMessage(json.error)
