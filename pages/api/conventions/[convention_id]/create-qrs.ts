@@ -5,6 +5,14 @@ import { generateAuthToken } from 'src/crypto/generate-auth-tokens'
 import { firebase } from '../../_services'
 import { checkJwtOwnsConvention } from '../../validate-admin-jwt'
 
+export type QR_Id = {
+  ballot_auths?: { [ballot_id: string]: string }
+  createdAt: Date
+  index: number
+  qr_id: string
+  setIndex: number
+}
+
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { convention_id } = req.query
   if (!convention_id || typeof convention_id !== 'string')
@@ -40,7 +48,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         index: i + prev_num_qrs + 1,
         qr_id,
         setIndex: newSetIndex,
-      }),
+      } as QR_Id),
   )
 
   await Promise.all(createNewQrIds)
