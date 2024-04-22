@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 import { firebase } from '../../_services'
 import { checkJwtOwnsConvention } from '../../validate-admin-jwt'
-import { createBallotAuthsForQrs } from './create-ballot-auths-for-qrs'
+import { ensureBallotAuthsForQrs } from './ensure-ballot-auths-for-qrs'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { convention_id } = req.query
@@ -24,14 +24,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     if (election.creator !== jwt.email)
       return res.status(401).send({ error: `This user did not create election ${election_id}` })
 
-    // Create new ballot auth tokens for each QR
-    await createBallotAuthsForQrs(convention_id, election_id)
+    await ensureBallotAuthsForQrs(convention_id, election_id)
   }
 
   // Save redirect in DB
-  const updateConventionDoc = conventionDoc.update({ active_redirect: election_id })
-
-  await updateConventionDoc
+  await conventionDoc.update({ active_redirect: election_id })
 
   return res.status(201).send({ success: true })
 }

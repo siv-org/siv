@@ -5,10 +5,23 @@ import { QR_Id } from './create-qrs'
 
 const qrToEmail = (convention_id: string) => (qr: QR_Id) => `${qr.index}.${qr.qr_id}@convention.${convention_id}`
 
-/** Given a convention ID and ballot ID, make sure all the current generated QR Codes for that Convention have matching ballot auth tokens */
-export const createBallotAuthsForQrs = async (convention_id: string, ballot_id: string) => {
-  // Lookup current QR codes
+/** Make sure all the current QR Codes for a Convention have matching ballot auth tokens for the active redirect
+ *  Optionally pass in `election_id` if already known, to skip loading it
+ */
+export const ensureBallotAuthsForQrs = async (convention_id: string, known_election_id?: string) => {
   const conventionDoc = firebase.firestore().collection('conventions').doc(convention_id)
+
+  let ballot_id = known_election_id
+  if (ballot_id === undefined) {
+    // Lookup active redirect
+    const { active_redirect } = (await conventionDoc.get()).data() as { active_redirect?: string }
+    ballot_id = active_redirect
+  }
+
+  // Stop if no active redirect
+  if (!ballot_id || ballot_id === '') return
+
+  // Lookup current QR codes
   const currentQrs = (await conventionDoc.collection('qr_ids').get()).docs.map((d) => d.data() as QR_Id)
 
   // Filter out only those that need new ballot auths

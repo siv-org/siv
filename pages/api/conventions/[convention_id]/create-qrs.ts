@@ -4,6 +4,8 @@ import { firestore } from 'firebase-admin'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { generateAuthToken } from 'src/crypto/generate-auth-tokens'
 
+import { ensureBallotAuthsForQrs } from './ensure-ballot-auths-for-qrs'
+
 export type QR_Id = {
   ballot_auths?: { [ballot_id: string]: string }
   createdAt: ReturnType<typeof newSerializedTimestamp>
@@ -52,6 +54,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   await Promise.all(createNewQrIds)
   await updateConventionDoc
+
+  await ensureBallotAuthsForQrs(convention_id)
 
   return res.status(201).send({ success: true })
 }
