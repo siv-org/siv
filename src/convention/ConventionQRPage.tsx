@@ -24,8 +24,10 @@ export const ConventionQRPage = () => {
               <Spinner />
               <span className="ml-2">Looking up redirect info...</span>
             </>
+          ) : active_redirect ? (
+            'Redirecting...'
           ) : (
-            <>Unknown error</>
+            'Unknown error'
           )}
         </div>
         {/* Details */}
