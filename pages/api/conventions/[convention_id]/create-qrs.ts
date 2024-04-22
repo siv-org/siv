@@ -1,13 +1,12 @@
+import { firebase, newSerializedTimestamp } from 'api/_services'
+import { checkJwtOwnsConvention } from 'api/validate-admin-jwt'
 import { firestore } from 'firebase-admin'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { generateAuthToken } from 'src/crypto/generate-auth-tokens'
 
-import { firebase } from '../../_services'
-import { checkJwtOwnsConvention } from '../../validate-admin-jwt'
-
 export type QR_Id = {
   ballot_auths?: { [ballot_id: string]: string }
-  createdAt: Date
+  createdAt: ReturnType<typeof newSerializedTimestamp>
   index: number
   qr_id: string
   setIndex: number
@@ -27,7 +26,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   const doc = firebase.firestore().collection('conventions').doc(convention_id)
 
-  const createdAt = new Date()
+  const createdAt = newSerializedTimestamp()
 
   // Insert new voters in DB
   const updateConventionDoc = doc.update({

@@ -2,16 +2,11 @@ import { firebase } from 'api/_services'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import { checkJwtOwnsConvention } from '../../validate-admin-jwt'
+import { QR_Id } from './create-qrs'
 
-type ConventionVoter = {
-  createdAt: { _seconds: number }
-  index: number
-  qr_id: string
-  setIndex: number
-}
 export type ConventionSet = {
   convention_title: string
-  qrs: ConventionVoter[]
+  qrs: QR_Id[]
 }
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
