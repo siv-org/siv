@@ -3,7 +3,7 @@ import { addVotersToElection } from 'api/election/[election_id]/admin/add-voters
 
 import { QR_Id } from './create-qrs'
 
-const qrToEmail = (convention_id: string) => (qr: QR_Id) => `${qr.index}.${qr.qr_id}@convention.${convention_id}`
+const qrToEmail = (convention_id: string) => (qr: QR_Id) => `${qr.index}.qr.${qr.qr_id}@convention.${convention_id}`
 
 /** Make sure all the current QR Codes for a Convention have matching ballot auth tokens for the active redirect
  *  Optionally pass in `election_id` if already known, to skip loading it
