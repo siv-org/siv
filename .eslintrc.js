@@ -23,11 +23,12 @@ module.exports = {
   rules: {
     '@typescript-eslint/explicit-module-boundary-types': 0, // Verbose
     '@typescript-eslint/no-empty-function': 0, // unnecessary
+    '@typescript-eslint/no-unused-vars': 1, // hint not error
     'react/jsx-sort-props': [2, { callbacksLast: true, shorthandFirst: true }], // style
     'react/no-unknown-property': [2, { ignore: ['jsx', 'global'] }], // inserted by next's styled-jsx
     'react/react-in-jsx-scope': 0, // Handled by Next.js
-    'sort-destructure-keys/sort-destructure-keys': 2, // style
-    'sort-keys-fix/sort-keys-fix': 2, // style
+    'sort-destructure-keys/sort-destructure-keys': 1, // style
+    'sort-keys-fix/sort-keys-fix': 1, // style
   },
   settings: {
     react: {

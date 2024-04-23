@@ -24,6 +24,10 @@ export const firebase = !Firebase.apps.length
     })
   : Firebase.app()
 
+type SerializedTimestamp = { _seconds: number }
+/** `new Date()`, which Firebase will automatically serialize into `{ _seconds: number }` */
+export const newSerializedTimestamp = () => new Date() as unknown as SerializedTimestamp
+
 /** Init mailgun */
 export const mailgun = Mailgun({
   apiKey: MAILGUN_API_KEY as string,

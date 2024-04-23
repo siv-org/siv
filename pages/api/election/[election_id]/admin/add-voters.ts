@@ -1,23 +1,31 @@
+import { firebase } from 'api/_services'
+import { checkJwtOwnsElection } from 'api/validate-admin-jwt'
 import { firestore } from 'firebase-admin'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { generateAuthToken } from 'src/crypto/generate-auth-tokens'
 
-import { firebase } from '../../../_services'
-import { checkJwtOwnsElection } from '../../../validate-admin-jwt'
-
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { new_voters } = req.body
-  const { election_id } = req.query as { election_id: string }
+  const { election_id } = req.query
+
+  if (typeof election_id !== 'string') return res.status(401).json({ error: 'Missing election_id' })
 
   // Confirm they're a valid admin that created this election
   const jwt = await checkJwtOwnsElection(req, res, election_id)
   if (!jwt.valid) return
 
-  if (!election_id) return res.status(401).json({ error: 'Missing election_id' })
+  const { already_added, unique_new_emails: unique_new_voters } = await addVotersToElection(new_voters, election_id)
 
-  // Generate auth token for each voter
-  const auth_tokens = new_voters.map(generateAuthToken)
+  return res.status(201).json({ already_added, unique_new_voters })
+}
 
+/** IMPORTANT: Assumes you already checked user owns election
+ *
+ * 1. Adds non-duplicate email addresses to ballot voter list
+ * 2. Creates and stores unique auth tokens for each
+ * 3. Updates election's num_voters tally
+ */
+export async function addVotersToElection(new_voters: string[], election_id: string) {
   // Get existing voter from DB
   const electionDoc = firebase.firestore().collection('elections').doc(election_id)
   const loadVoters = electionDoc.collection('voters').get()
@@ -25,33 +33,36 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   ;(await loadVoters).docs.map((d) => existing_voters.add(d.data().email))
 
   // Separate uniques from already_added
-  const unique_new_voters: string[] = []
+  const unique_new_emails: string[] = []
   const already_added: string[] = []
   new_voters.forEach((v: string) => {
     if (v) {
-      existing_voters.has(v) ? already_added.push(v) : unique_new_voters.push(v)
+      existing_voters.has(v) ? already_added.push(v) : unique_new_emails.push(v)
     }
   })
 
-  console.log({ already_added, unique_new_voters })
+  console.log('Add-voters:', { already_added, election_id, unique_new_emails })
+  const email_to_auth: Record<string, string> = {}
 
-  // Add uniques to DB
+  // Generate and store auths for uniques
   await Promise.all(
-    unique_new_voters
-      .map((voter: string, index: number) =>
-        electionDoc
+    unique_new_emails
+      .map((email: string, index: number) => {
+        const auth_token = generateAuthToken()
+        email_to_auth[email] = auth_token
+        return electionDoc
           .collection('voters')
-          .doc(voter)
+          .doc(email)
           .set({
             added_at: new Date(),
-            auth_token: auth_tokens[index],
-            email: voter,
+            auth_token,
+            email,
             index: index + existing_voters.size,
-          }),
-      )
+          })
+      })
       // Increment electionDoc's num_voters cached tally
-      .concat(electionDoc.update({ num_voters: firestore.FieldValue.increment(unique_new_voters.length) })),
+      .concat(electionDoc.update({ num_voters: firestore.FieldValue.increment(unique_new_emails.length) })),
   )
 
-  return res.status(201).json({ already_added, unique_new_voters })
+  return { already_added, email_to_auth, unique_new_emails }
 }

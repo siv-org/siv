@@ -46,7 +46,7 @@ export const ValidVotersTable = ({
 
   return (
     <>
-      <table>
+      <table className="pb-2.5">
         <thead>
           <tr>
             <th>

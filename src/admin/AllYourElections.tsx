@@ -1,30 +1,32 @@
+import { Election } from 'api/admin-all-elections'
 import Link from 'next/link'
 import { useReducer } from 'react'
 import useSWR from 'swr'
 import TimeAgo from 'timeago-react'
 
-import { Election } from '../../pages/api/admin-all-elections'
+export const fetcher = (url: string) =>
+  fetch(url).then(async (resp) => {
+    if (!resp.ok) throw await resp.json()
+    return await resp.json()
+  })
+export const useAllYourElections = () => useSWR('/api/admin-all-elections', fetcher)
 
 export const AllYourElections = () => {
   const [show, toggle] = useReducer((state) => !state, false)
 
-  const { data } = useSWR('/api/admin-all-elections', (url: string) =>
-    fetch(url).then(async (r) => {
-      if (!r.ok) throw await r.json()
-      return await r.json()
-    }),
-  )
+  const { data } = useAllYourElections()
 
   return (
     <>
       <h2>
-        Your Elections: <i>{data?.elections?.length}</i>{' '}
+        Your Elections: <span className="font-normal">{data?.elections?.length}</span>{' '}
         {!!data?.elections?.length && (
-          <span>
-            <a onClick={toggle}>[ {show ? '- Hide' : '+ Show'} ]</a>
-          </span>
+          <a className="text-[14px] font-normal ml-1 cursor-pointer" onClick={toggle}>
+            [ {show ? '- Hide' : '+ Show'} ]
+          </a>
         )}
       </h2>
+
       {show && (
         <ul>
           {data?.elections?.map(({ created_at, election_title, id }: Election) => (
@@ -39,23 +41,6 @@ export const AllYourElections = () => {
           <br />
         </ul>
       )}
-
-      <style jsx>{`
-        h2 i {
-          font-weight: 400;
-          font-style: normal;
-        }
-
-        h2 span {
-          font-size: 14px;
-          font-weight: normal;
-          margin-left: 5px;
-        }
-
-        h2 span:hover {
-          cursor: pointer;
-        }
-      `}</style>
     </>
   )
 }
