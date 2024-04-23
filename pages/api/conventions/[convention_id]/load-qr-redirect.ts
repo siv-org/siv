@@ -1,10 +1,13 @@
 import { firebase } from 'api/_services'
 import { NextApiRequest, NextApiResponse } from 'next'
 
-export type ConventionRedirectInfo = {
-  active_ballot_auth?: string
+type ConventionInfo = {
   active_redirect?: string
   convention_title: string
+}
+
+export type ConventionRedirectInfo = ConventionInfo & {
+  active_ballot_auth?: string
 }
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -20,17 +23,22 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Do they both exist?
   if (!(await loadConvention).exists) return res.status(401).json({ error: `Convention not found` })
-  if (!qrDoc.exists) return res.status(401).json({ error: `QR ID not found` })
 
   const convention = { ...(await loadConvention).data() }
+
+  const conventionInfo = {
+    active_redirect: convention.active_redirect,
+    convention_title: convention.convention_title,
+  } as ConventionInfo
+
+  if (!qrDoc.exists) return res.status(401).json({ error: `QR ID not found`, info: conventionInfo })
   const qr = { ...qrDoc.data() }
   const active_ballot_auth = (qr.ballot_auths || {})[convention.active_redirect]
 
-  res.status(200).send({
+  return res.status(200).send({
     info: {
       active_ballot_auth,
-      active_redirect: convention.active_redirect,
-      convention_title: convention.convention_title,
+      ...conventionInfo,
     } as ConventionRedirectInfo,
   })
 }

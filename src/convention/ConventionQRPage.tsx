@@ -1,5 +1,3 @@
-import Link from 'next/link'
-
 import { Spinner } from '../admin/Spinner'
 import { useConventionRedirect } from './useConventionRedirect'
 
@@ -8,42 +6,51 @@ export const ConventionQRPage = () => {
 
   const { active_ballot_auth, active_redirect, convention_title } = conventionRedirectInfo || {}
 
+  if (!convention_id) return null
+
   return (
-    <div className="flex flex-col justify-between min-h-screen p-4 pt-6 font-sans bg-gradient-to-b from-gray-200 to-gray-500/80">
+    <div className="flex flex-col justify-between max-w-lg min-h-screen p-4 pt-6 mx-auto font-sans">
       {/* Headerbar */}
       <header className="font-semibold text-center">Secure Internet Voting</header>
 
       {/* Middle section */}
-      <main>
-        {/* Header line */}
-        <div className="text-2xl -mt-28 opacity-90">
-          {errorMessage ? (
-            <>Error: {errorMessage}</>
-          ) : loading ? (
-            <>
-              <Spinner />
-              <span className="ml-2">Looking up redirect info...</span>
-            </>
-          ) : active_redirect ? (
-            'Redirecting...'
-          ) : (
-            'Unknown error'
-          )}
-        </div>
-        {/* Details */}
-        <div className="mt-10 opacity-70">
-          <div>Convention ID: {convention_id}</div>
-          {convention_title && <div className="mb-3">Title: {convention_title}</div>}
-          <div className="mb-3">QR ID: {qr_id}</div>
-
-          {active_redirect && (
-            <div>
-              Active Redirect:{' '}
-              <Link href={`/election/${active_redirect}/vote?auth=${active_ballot_auth}`}>{active_redirect}</Link>
+      {convention_id && (
+        <main>
+          {!errorMessage ? (
+            // Loading or happy path
+            <div className="-mt-24 text-2xl text-center opacity-90">
+              {!loading && !active_redirect ? (
+                <>
+                  <div className="text-lg">{convention_title}</div>
+                  No active election yet.
+                </>
+              ) : (
+                <div className="-ml-10 ">
+                  <Spinner />
+                  <span className="ml-2 ">Loading your ballot...</span>
+                </div>
+              )}
             </div>
+          ) : (
+            // Error
+            <>
+              <div className="text-2xl -mt-28 opacity-90">Error: {errorMessage}</div>
+
+              {/* Debug info */}
+              <div className="mt-10 opacity-70">
+                <div className="text-sm opacity-70">Debug Info</div>
+                <div>Convention ID: {convention_id}</div>
+                <div>QR ID: {qr_id}</div>
+
+                <div className="mt-3 text-sm opacity-70">Loaded:</div>
+                <div>Convention Title: {convention_title}</div>
+                <div>Active ballot: {active_redirect}</div>
+                <div>Ballot auth: {active_ballot_auth}</div>
+              </div>
+            </>
           )}
-        </div>
-      </main>
+        </main>
+      )}
 
       {/* Bottom spacer */}
       <footer />
