@@ -11,13 +11,13 @@ export const CreateNewElection = () => {
 
   return (
     <>
-      <h2>Create New Election</h2>
-      <label>Election Title:</label>
+      <h2>Create New Ballot</h2>
+      <label>Ballot Title:</label>
 
       <input
         className="w-full p-2 text-sm border border-gray-300 border-solid rounded"
         id="election-title"
-        placeholder="Give your election a name your voters will recognize"
+        placeholder="Give your ballot a name your voters will recognize"
         value={election_title}
         onChange={(event) => set_title(event.target.value)}
         onKeyDown={(event) => {

@@ -19,7 +19,7 @@ export const AllYourElections = () => {
   return (
     <>
       <h2>
-        Your Elections: <span className="font-normal">{data?.elections?.length}</span>{' '}
+        Your Ballots: <span className="font-normal">{data?.elections?.length}</span>{' '}
         {!!data?.elections?.length && (
           <a className="text-[14px] font-normal ml-1 cursor-pointer" onClick={toggle}>
             [ {show ? '- Hide' : '+ Show'} ]
