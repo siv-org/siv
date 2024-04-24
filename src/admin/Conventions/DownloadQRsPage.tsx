@@ -51,13 +51,13 @@ export const DownloadQRsPage = () => {
       </p>
 
       {/* Grid of QRs */}
-      <div className="flex flex-wrap -mx-2.5">
+      <div className="-mx-2.5">
         {sortedQrs.map(({ index, qr_id }, i) => (
-          <span className="mx-2.5 my-1.5 text-center" key={i}>
+          <div className="mx-2.5 my-1.5 text-center inline-block break-inside-avoid" key={i}>
             <span className="text-sm opacity-50">{qr_id}</span>
             <QRCode {...{ convention_id: c, qr_id }} />
             <span>{index}</span>
-          </span>
+          </div>
         ))}
       </div>
     </div>
