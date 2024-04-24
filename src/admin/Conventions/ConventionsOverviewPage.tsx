@@ -20,7 +20,7 @@ export const ConventionsOverviewPage = () => {
       <main className="p-4 sm:px-8 overflow-clip">
         <div className="text-center">
           <h2>SIV Conventions</h2>
-          <p>Create re-usable login credentials for voters to use across multiple votes in a single day.</p>
+          <p>Create re-usable login credentials for voters to use across multiple ballots in a single day.</p>
 
           <QRFigure className="mb-12" />
         </div>
