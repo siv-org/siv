@@ -30,6 +30,9 @@ export const ensureBallotAuthsForQrs = async (convention_id: string, known_elect
 
   if (!needsNewAuth.length) return
 
+  // Make sure they're ordered lowest to highest
+  needsNewAuth.sort((a, b) => a.index - b.index)
+
   // Generate unique emails for each QR
   const newEmails = needsNewAuth.map(qrToEmail(convention_id))
 
