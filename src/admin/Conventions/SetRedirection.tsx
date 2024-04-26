@@ -28,35 +28,41 @@ export const SetRedirection = () => {
     <div>
       <h3>Redirect your convention QRs to which of your ballots?</h3>
 
-      {/* Filter input */}
-      <input
-        className="w-full px-3 text-[15px] py-2 text-gray-700 border rounded shadow"
-        placeholder="Filter ballot by title"
-        type="text"
-        value={searchText}
-        onChange={(e) => setSearchText(e.target.value)}
-      />
-
-      {!filteredData.length && <p className="italic opacity-70">No elections found</p>}
-
-      {/* Filtered list */}
       <table className="mt-1 h-64 px-1.5 py-2 mb-4 overflow-y-scroll rounded-lg shadow-inner bg-neutral-50">
         <thead>
-          <tr className="text-[12px] opacity-70 [&>*]:px-1">
+          <tr>
+            <th colSpan={7}>
+              {/* Set filter textbox */}
+              <input
+                className="w-full px-3 text-[15px] py-2 text-gray-700 border rounded shadow"
+                placeholder="Filter ballot by title"
+                type="text"
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
+              />
+
+              {!filteredData.length && <p className="italic opacity-70">No elections found</p>}
+            </th>
+          </tr>
+
+          {/* Table header */}
+          <tr className="text-[12px] opacity-60 [&>*]:p-1 [&>*]:py-2">
             <th></th>
             <th className="text-left">Ballot name</th>
             <th>Created</th>
             <th>Voters</th>
             <th>Votes Cast</th>
-            <th>Finalized?</th>
+            <th className="relative bottom-px">Finalized?</th>
             <th>Redirect</th>
           </tr>
         </thead>
+
+        {/* Filtered list */}
         {filteredData.map((e, i) => {
           const is_active_redirect = e.id === active_redirect
           return (
             <tr
-              className={`text-center py-1 px-1.5 rounded hover:bg-gray-200 group ${
+              className={`text-center py-1 px-1.5 rounded hover:bg-gray-200 group [&>td]:px-1 ${
                 is_active_redirect ? 'bg-blue-800/20 hover:!bg-blue-800/30' : ''
               }`}
               key={e.id}
@@ -72,13 +78,47 @@ export const SetRedirection = () => {
                   {e.election_title}
                 </a>
               </td>
-              <td className="opacity-50">
+              <td className="opacity-50 text-[11px]">
                 <TimeAgo datetime={new Date(e.created_at._seconds * 1000)} />
               </td>
               <td className={!e.num_voters ? 'opacity-30' : ''}>{e.num_voters}</td>
               <td className={!e.num_votes ? 'opacity-30' : ''}>{e.num_votes}</td>
-              <td>
+              <td className="!px-2">
                 <input disabled checked={e.ballot_design_finalized && !!e.threshold_public_key} type="checkbox" />
+                {is_active_redirect && (
+                  <>
+                    {!e.ballot_design_finalized ? (
+                      <div>
+                        <span className="text-[8px] relative bottom-0.5 opacity-70 hover:no-underline">❌ </span>
+                        <a
+                          className="text-black/60 hover:text-blue-700"
+                          href={`/admin/${e.id}/ballot-design`}
+                          rel="noreferrer"
+                          target="_blank"
+                        >
+                          Ballot design not finalized
+                        </a>
+                      </div>
+                    ) : (
+                      ''
+                    )}
+                    {!e.threshold_public_key ? (
+                      <div className="text-left">
+                        <span className="text-[8px] relative bottom-0.5 opacity-70">❌ </span>
+                        <a
+                          className="text-black/60 hover:text-blue-700"
+                          href={`/admin/${e.id}/observers`}
+                          rel="noreferrer"
+                          target="_blank"
+                        >
+                          Observers not set
+                        </a>
+                      </div>
+                    ) : (
+                      ''
+                    )}
+                  </>
+                )}
               </td>
 
               {/* 'Set' hover hint */}
