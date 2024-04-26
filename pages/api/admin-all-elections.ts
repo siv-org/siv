@@ -4,11 +4,13 @@ import { firebase } from './_services'
 import { checkJwt } from './validate-admin-jwt'
 
 export type Election = {
+  ballot_design_finalized?: boolean
   created_at: { _seconds: number }
   election_title: string
   id: string
   num_voters?: number
   num_votes?: number
+  threshold_public_key?: string
 }
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
