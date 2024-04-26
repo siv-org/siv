@@ -47,9 +47,7 @@ export const SetRedirection = () => {
             <th className="text-left">Ballot name</th>
             <th>Created</th>
             <th>Voters</th>
-            <th>Linked QRs</th>
             <th>Votes Cast</th>
-            <th>Manage</th>
             <th>Finalized?</th>
             <th>Redirect</th>
           </tr>
@@ -64,20 +62,23 @@ export const SetRedirection = () => {
               key={e.id}
             >
               <td className="opacity-50 text-[11px]">{i + 1}</td>
-              <td className="max-w-[300px] text-left">{e.election_title} </td>
+              <td className="max-w-[300px] text-left">
+                <a
+                  className="text-black/90 hover:text-blue-700"
+                  href={`/admin/${e.id}/voters`}
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  {e.election_title}
+                </a>
+              </td>
               <td className="opacity-50">
                 <TimeAgo datetime={new Date(e.created_at._seconds * 1000)} />
               </td>
               <td className={!e.num_voters ? 'opacity-30' : ''}>{e.num_voters}</td>
-              <td></td>
               <td className={!e.num_votes ? 'opacity-30' : ''}>{e.num_votes}</td>
-              <td className="cursor-pointer text-[11px]">
-                <a className="hover:no-underline" href={`/admin/${e.id}/voters`} rel="noreferrer" target="_blank">
-                  🔗
-                </a>
-              </td>
               <td>
-                <input checked={e.ballot_design_finalized && !!e.threshold_public_key} type="checkbox" />
+                <input disabled checked={e.ballot_design_finalized && !!e.threshold_public_key} type="checkbox" />
               </td>
 
               {/* 'Set' hover hint */}
