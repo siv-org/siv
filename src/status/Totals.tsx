@@ -41,7 +41,13 @@ export const Totals = ({ proofsPage }: { proofsPage?: boolean }): JSX.Element =>
             <ScoreTallies {...{ id, options, votes }} />
           ) : (
             <RoundResults
-              {...{ ballot_design, id, ordered: ordered[id], tallies: tallies[id], totalVotes: totalsCastPerItems[id] }}
+              {...{
+                ballot_design,
+                id,
+                ordered: ordered[id],
+                tallies: tallies[id],
+                totalVotes: type === 'approval' ? votes.length : totalsCastPerItems[id],
+              }}
             />
           )}
         </div>
