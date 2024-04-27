@@ -39,9 +39,22 @@ export const BallotDesign = () => {
 
   return (
     <>
-      <h2 className="hidden sm:block">Ballot Design</h2>
+      <h2 className="hidden sm:block">
+        Ballot Design
+        {/* Preview button */}
+        <a
+          className="inline-block text-[12px] font-semibold !no-underline hover:bg-gray-100 ml-3 px-3 py-1 border border-blue-900 border-solid rounded-lg relative bottom-0.5 text-blue-900"
+          href={`/election/${election_id}/vote?auth=preview`}
+          rel="noreferrer"
+          target="_blank"
+        >
+          🔍 Preview
+        </a>
+      </h2>
+
       <AutoSaver {...{ design }} />
       <Errors {...{ error }} />
+
       <ModeControls {...{ selected, setSelected }} />
       <div className="mode-container">
         {selected !== 1 && <Wizard {...{ design, setDesign }} />}

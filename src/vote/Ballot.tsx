@@ -3,6 +3,7 @@ import { NoSsr } from 'src/_shared/NoSsr'
 import { maxLength } from 'src/crypto/curve'
 
 import { Paper } from '../protocol/Paper'
+import { BallotPreview } from './BallotPreview'
 import { Item } from './Item'
 import { MultiVoteItem } from './MultiVoteItem'
 import { RankedChoiceItem } from './RankedChoiceItem'
@@ -23,14 +24,15 @@ export const Ballot = ({
   state: State
 }): JSX.Element => {
   if (!state.ballot_design) return <p>Loading ballot...</p>
-  if (!state.public_key) return <p>This ballot is not ready for votes yet</p>
 
   return (
     <NoSsr>
-      <Paper noFade className="overflow-x-scroll">
+      <Paper noFade className="pt-4 overflow-x-scroll">
         <>
+          <BallotPreview {...{ state }} />
+
           {/* Election Title */}
-          {state.election_title && <h2 className="ml-[13px]">{state.election_title}</h2>}
+          {state.election_title && <h2 className="mt-2 ml-[13px]">{state.election_title}</h2>}
 
           {state.ballot_design.map((item, index) => {
             const max_options = item.options.length + +!!item.write_in_allowed

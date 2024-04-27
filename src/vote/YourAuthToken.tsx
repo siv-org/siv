@@ -2,13 +2,18 @@ import { useEffect, useState } from 'react'
 
 import { api } from '../api-helper'
 
-type Status = undefined | 'fail' | 'pass'
+type Status = undefined | 'fail' | 'pass' | 'warn'
 
 export const YourAuthToken = ({ auth, election_id }: { auth?: string; election_id?: string }) => {
   const [message, setMessage] = useState('')
   const [status, setStatus] = useState<Status>()
 
   async function validateAuthToken() {
+    if (auth === 'preview') {
+      setStatus('warn')
+      return setMessage('Preview mode, skipping auth check')
+    }
+
     // Wait for election_id
     if (!election_id) return
 
@@ -36,6 +41,10 @@ export const YourAuthToken = ({ auth, election_id }: { auth?: string; election_i
       ) : status === 'fail' ? (
         <p className="error">
           <span className="x">❌</span> <b>Error:</b> {message}
+        </p>
+      ) : status === 'warn' ? (
+        <p className="italic opacity-70">
+          <span className="mr-2">🔍</span> {message}
         </p>
       ) : (
         <p className="authorized">✅ {message}</p>

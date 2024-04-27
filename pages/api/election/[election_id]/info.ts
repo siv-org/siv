@@ -4,6 +4,7 @@ import { Item } from 'src/vote/storeElectionInfo'
 
 export type ElectionInfo = {
   ballot_design?: Item[]
+  ballot_design_finalized?: boolean
   election_title?: string
   esignature_requested?: boolean
   g?: string
@@ -38,10 +39,20 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   const observers = (await loadObservers).docs.map((doc, index) => doc.data().name || `Verifying Observer ${index + 1}`)
 
-  const { ballot_design, election_title, esignature_requested, g, last_decrypted_at, p, threshold_public_key } = data
+  const {
+    ballot_design,
+    ballot_design_finalized,
+    election_title,
+    esignature_requested,
+    g,
+    last_decrypted_at,
+    p,
+    threshold_public_key,
+  } = data
 
   const info: ElectionInfo = {
     ballot_design: ballot_design ? JSON.parse(ballot_design) : undefined,
+    ballot_design_finalized,
     election_title,
     esignature_requested,
     g,
