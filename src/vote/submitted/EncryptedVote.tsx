@@ -4,7 +4,7 @@ import { State } from '../vote-state'
 
 export const EncryptedVote = ({ auth, columns, state }: { auth: string; columns: string[]; state: State }) => (
   <div>
-    <table>
+    <table className="pb-3">
       <thead>
         <tr>
           <th>auth</th>
