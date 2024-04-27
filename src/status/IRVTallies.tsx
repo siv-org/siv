@@ -2,6 +2,7 @@ import { Item } from 'src/vote/storeElectionInfo'
 
 import { RoundResults } from './RoundResults'
 import { tally_IRV_Items } from './tallying/rcv-irv'
+import { unTruncateSelection } from './un-truncate-selection'
 
 export const IRVTallies = ({
   ballot_design,
@@ -16,7 +17,7 @@ export const IRVTallies = ({
     <div>
       {results.winner && (
         <div>
-          Winner: <b className="font-semibold">{results.winner}</b>{' '}
+          Winner: <b className="font-semibold">{unTruncateSelection(results.winner, ballot_design, id)}</b>{' '}
           <span className="text-xs opacity-50">
             (after {results.rounds.length} round
             {results.rounds.length === 1 ? '' : 's'})
