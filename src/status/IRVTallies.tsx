@@ -26,7 +26,7 @@ export const IRVTallies = ({
       )}
 
       {/* Horizontal list of rounds */}
-      <div className="flex -ml-5">
+      <div className="flex pb-3 -ml-5 overflow-x-scroll">
         {results.rounds.map((round, index) => (
           // Vertical round results
           <div key={index}>
