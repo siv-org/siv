@@ -25,7 +25,7 @@ export function tallyVotes(ballot_items_by_id: Record<string, Item>, votes: Reco
         item = key.slice(0, -(multi_suffix.length + 1))
 
         // RCV-IRV items use a different tallying algorithm, so we skip them for now
-        if (ballot_items_by_id[item].type === 'ranked-choice-irv') return (IRV_columns_seen[key] = true)
+        if (ballot_items_by_id[item]?.type === 'ranked-choice-irv') return (IRV_columns_seen[key] = true)
       }
 
       // Init item if new
