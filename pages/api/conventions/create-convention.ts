@@ -18,7 +18,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     created_at: new Date(),
     creator: jwt.email,
     id: convention_id,
-    num_voters: 0,
+    num_qrs: 0,
   })
 
   // Send back our new convention_id
