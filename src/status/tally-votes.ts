@@ -4,12 +4,17 @@ import { Item } from 'src/vote/storeElectionInfo'
 import { mapValues } from '../utils'
 import { tally_IRV_Items } from './tallying/rcv-irv'
 
-export function tallyVotes(ballot_items_by_id: Record<string, Item>, votes: Record<string, string>[]) {
+type SafeRecord<V> = Partial<Record<string, V>>
+
+export function tallyVotes(
+  ballot_items_by_id: Partial<Record<string, Item>>,
+  votes: Partial<Record<string, string>>[],
+) {
   const multi_vote_regex = /_(\d+)$/
 
   // Sum up votes
-  const tallies: Record<string, Record<string, number>> = {}
-  const IRV_columns_seen: Record<string, boolean> = {}
+  const tallies: SafeRecord<SafeRecord<number>> = {}
+  const IRV_columns_seen: SafeRecord<boolean> = {}
   votes.forEach((vote) => {
     Object.keys(vote).forEach((key) => {
       // Skip 'tracking' key
@@ -41,7 +46,7 @@ export function tallyVotes(ballot_items_by_id: Record<string, Item>, votes: Reco
   })
 
   // Calc total votes cast per item, to speed up calc'ing %s
-  const totalsCastPerItems: Record<string, number> = {}
+  const totalsCastPerItems: SafeRecord<number> = {}
   Object.keys(tallies).forEach((item) => {
     totalsCastPerItems[item] = 0
     Object.keys(tallies[item]).forEach((choice) => (totalsCastPerItems[item] += tallies[item][choice]))
@@ -50,11 +55,11 @@ export function tallyVotes(ballot_items_by_id: Record<string, Item>, votes: Reco
   // Sort each item's totals from highest to lowest, with ties sorted alphabetically
   const ordered = mapValues(tallies, (item_totals, item_id) =>
     orderBy(
-      orderBy(Object.keys(item_totals as Record<string, number>)),
+      orderBy(Object.keys(item_totals as SafeRecord<number>)),
       (selection) => tallies[item_id][selection],
       'desc',
     ),
-  ) as Record<string, string[]>
+  ) as SafeRecord<string[]>
 
   // Go back and IRV tally any of those that we skipped
   const irv = tally_IRV_Items(IRV_columns_seen, ballot_items_by_id, votes)
