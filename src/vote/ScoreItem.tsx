@@ -1,5 +1,5 @@
 import { range } from 'lodash-es'
-import { Dispatch } from 'react'
+import { Dispatch, useEffect } from 'react'
 import { default_max_score, default_min_score } from 'src/admin/BallotDesign/Wizard'
 
 import { Label, TitleDescriptionQuestion } from './Item'
@@ -24,6 +24,21 @@ export const ScoreItem = ({
   // console.log('state.plaintext:', state.plaintext)
 
   const scoreOptions = range(min_score, max_score + 1)
+
+  // On first load, set all scores to 'BLANK'
+  useEffect(() => {
+    const update: Record<string, string> = {}
+    options.forEach(({ name, value }) => {
+      const val = value || name
+      const key = `${id}_${val}`
+
+      // Stop if we already have a stored value
+      if (state.plaintext[key]) return
+
+      update[key] = `BLANK`
+    })
+    dispatch(update)
+  }, [])
 
   return (
     <>
