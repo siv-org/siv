@@ -5,8 +5,8 @@ const qrOptions: Options = {
   cornersSquareOptions: { color: '#000000', type: 'square' },
   dotsOptions: { type: 'classy-rounded' },
   height: 111,
-  //   image: '10cc19bd484118dbcd0a7886a38ceddc.png',
-  imageOptions: { hideBackgroundDots: true, imageSize: 0.4, margin: 0 },
+  image: '/VOTE.png',
+  imageOptions: { hideBackgroundDots: true, imageSize: 0.5, margin: 0 },
   qrOptions: { errorCorrectionLevel: 'H' },
   width: 111,
 }
