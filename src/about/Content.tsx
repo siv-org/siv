@@ -3,7 +3,8 @@ import React, { Fragment } from 'react'
 import { darkBlue } from 'src/homepage/colors'
 
 import { research } from './research'
-import { Team } from './Team'
+
+// import { Team } from './Team'
 
 export const Content = () => (
   <main>
@@ -42,7 +43,7 @@ export const Content = () => (
     <br />
     <br />
 
-    <Team />
+    {/* <Team /> */}
 
     <style jsx>{`
       main {
