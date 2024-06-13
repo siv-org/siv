@@ -48,7 +48,7 @@ const SingleLink = ({ customClasses, href, text }: { customClasses: CustomClasse
     <>
       <a
         className={twMerge(
-          'block p-2 mb-2 border rounded-lg font-medium bg-opacity-50 hover:bg-opacity-70 active:bg-opacity-100 cursor-pointer',
+          'block p-2 mb-2 border rounded font-medium bg-opacity-50 hover:bg-opacity-70 active:bg-opacity-100 cursor-pointer',
           customClasses,
         )}
         href={href}
