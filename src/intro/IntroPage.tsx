@@ -1,3 +1,5 @@
+import { TailwindPreflight } from 'src/TailwindPreflight'
+
 export const IntroPage = () => {
   return (
     <main className="max-w-sm p-3 mx-auto text-center">
@@ -12,6 +14,7 @@ export const IntroPage = () => {
         <div>✅</div>
         <div>Voter Verifiable Results</div>
       </div>
+      <TailwindPreflight />
     </main>
   )
 }
