@@ -21,7 +21,7 @@ const linkArray: [Text, Href?, CustomClasses?][] = [
   ],
   ['Contribute', undefined, 'border-pink-800 bg-pink-200'],
   ['Blog', 'https://blog.siv.org', 'border-gray-600 bg-gray-50 hover:bg-gray-100 active:bg-gray-200/80'],
-  ['Technical Documentation', 'https://docs.siv.org', 'border-red-800 bg-red-200'],
+  ['Technical Documentation', 'https://docs.siv.org'],
   ['CS Research Powering SIV', '/about'],
   ['Spoiler-Free Voting Methods', 'https://docs.siv.org/benefits#6-spoiler-resistant-voting-methods'],
   [
