@@ -4,11 +4,13 @@ import { Links } from './Links'
 
 export const IntroPage = () => {
   return (
-    <body className="max-w-[22rem] min-h-screen p-3 py-6 mx-auto text-center flex flex-col">
-      <main className="flex-grow">
+    <main className="max-w-[22rem] min-h-screen p-3 py-6 mx-auto text-center flex flex-col">
+      <section className="flex-grow">
         {/* Header */}
-        <h1 className="text-4xl font-bold text-blue-950">SIV</h1>
-        <h2 className="text-2xl">Secure Internet Voting</h2>
+        <header>
+          <h1 className="text-4xl font-bold text-blue-950">SIV</h1>
+          <h2 className="text-2xl">Secure Internet Voting</h2>
+        </header>
 
         {/* 1-2-3 Graphic */}
         <ol className="flex mt-10 space-between">
@@ -26,12 +28,12 @@ export const IntroPage = () => {
 
         {/* Links */}
         <Links />
-      </main>
+      </section>
 
       {/* Footer */}
-      <div className="mt-6 text-sm opacity-50">© 2024 SIV, Inc.</div>
+      <footer className="mt-6 text-sm opacity-50">© 2024 SIV, Inc.</footer>
 
       <TailwindPreflight />
-    </body>
+    </main>
   )
 }
