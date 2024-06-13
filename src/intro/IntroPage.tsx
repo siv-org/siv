@@ -1,4 +1,5 @@
 import { TailwindPreflight } from 'src/TailwindPreflight'
+import { twMerge } from 'tailwind-merge'
 
 export const IntroPage = () => {
   return (
@@ -42,7 +43,10 @@ export const IntroPage = () => {
         ['Malware-Resistant Verification'],
       ].map(([text, customClasses = 'border-gray-300 hover:bg-gray-100 active:bg-gray-200/80']) => (
         <a
-          className={`block p-2 mb-2 border rounded-lg font-medium bg-opacity-50 hover:bg-opacity-70 active:bg-opacity-100 cursor-pointer ${customClasses}`}
+          className={twMerge(
+            'block p-2 mb-2 border rounded-lg font-medium bg-opacity-50 hover:bg-opacity-70 active:bg-opacity-100 cursor-pointer',
+            customClasses,
+          )}
           key={text}
         >
           {text}
