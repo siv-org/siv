@@ -1,5 +1,6 @@
 import { TailwindPreflight } from 'src/TailwindPreflight'
-import { twMerge } from 'tailwind-merge'
+
+import { Links } from './Links'
 
 export const IntroPage = () => {
   return (
@@ -23,35 +24,7 @@ export const IntroPage = () => {
       </div>
 
       {/* Links */}
-      {[
-        ['Demo — How SIV Works', 'border-green-800 bg-green-200'],
-        ['Bring to my area', 'border-orange-800 bg-orange-200'],
-        ['Create Own SIV Election', 'border-blue-800 bg-blue-200'],
-        ['Questions? FAQ', 'border-gray-400 bg-gray-200'],
-        [
-          'Earn up to $10,000 for finding Security Flaws',
-          'border-purple-800 text-purple-700 bg-purple-100 bg-opacity-0',
-        ],
-        ['Compare vs Paper', 'border-amber-800 bg-amber-800 bg-opacity-10 hover:bg-opacity-20 active:bg-opacity-30'],
-        ['Contribute', 'border-pink-800 bg-pink-200'],
-        ['Blog', 'border-gray-600 bg-gray-50 hover:bg-gray-100 active:bg-gray-200/80'],
-        ['Technical Documentation'],
-        ['CS Research Powering SIV'],
-        ['Spoiler-Free Voting Methods'],
-        ['Preventing Future Authoritarianism'],
-        ['Use in War Zones'],
-        ['Malware-Resistant Verification'],
-      ].map(([text, customClasses = 'border-gray-300 hover:bg-gray-100 active:bg-gray-200/80']) => (
-        <a
-          className={twMerge(
-            'block p-2 mb-2 border rounded-lg font-medium bg-opacity-50 hover:bg-opacity-70 active:bg-opacity-100 cursor-pointer',
-            customClasses,
-          )}
-          key={text}
-        >
-          {text}
-        </a>
-      ))}
+      <Links />
 
       {/* Footer */}
       <div className="mt-6 opacity-50">© 2024 SIV, Inc.</div>
