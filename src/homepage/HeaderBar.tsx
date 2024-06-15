@@ -12,6 +12,9 @@ export const HeaderBar = () => (
       </Link>
     </h3>
     <span>
+      <Link href="/hacksiv">
+        <a>Hack SIV</a>
+      </Link>
       <Link href="https://docs.siv.org">
         <a>Docs</a>
       </Link>
