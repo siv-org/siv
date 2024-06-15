@@ -1,5 +1,4 @@
-/* Turned off for opt-in <TailwindPreflight /> instead */
-/* @tailwind base; */
-
+/* Preflight turned off for opt-in <TailwindPreflight /> instead */
+@tailwind base;
 @tailwind components;
 @tailwind utilities;
