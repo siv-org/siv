@@ -40,6 +40,9 @@ export const FAQPage = (): JSX.Element => {
       <main>
         <section>
           <h1>Frequently Asked Questions</h1>
+
+          <AddYourQuestion />
+
           <div className="button-container">
             <OnClickButton
               style={{ margin: 0, padding: '5px 15px', textAlign: 'right' }}
@@ -83,8 +86,6 @@ export const FAQPage = (): JSX.Element => {
               )}
             </div>
           ))}
-
-          <AddYourQuestion />
         </section>
 
         <Footer />
