@@ -8,7 +8,7 @@ import { api } from '../api-helper'
 export const AddYourQuestion = () => {
   const [saved, setSaved] = useState(false)
   return (
-    <div>
+    <div className="py-3">
       <NoSsr>
         <TextField
           id="question-field"

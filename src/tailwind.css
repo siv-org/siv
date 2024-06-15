@@ -1,3 +1,5 @@
-@tailwind base;
+/* Turned off for opt-in <TailwindPreflight /> instead */
+/* @tailwind base; */
+
 @tailwind components;
 @tailwind utilities;

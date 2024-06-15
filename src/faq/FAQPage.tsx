@@ -40,7 +40,10 @@ export const FAQPage = (): JSX.Element => {
       <main>
         <section>
           <h1>Frequently Asked Questions</h1>
-          <div className="button-container">
+
+          <AddYourQuestion />
+
+          <div className="flex mt-5 button-container">
             <OnClickButton
               style={{ margin: 0, padding: '5px 15px', textAlign: 'right' }}
               onClick={() => {
@@ -83,7 +86,6 @@ export const FAQPage = (): JSX.Element => {
               )}
             </div>
           ))}
-
           <AddYourQuestion />
         </section>
 
