@@ -86,6 +86,7 @@ export const FAQPage = (): JSX.Element => {
               )}
             </div>
           ))}
+          <AddYourQuestion />
         </section>
 
         <Footer />
