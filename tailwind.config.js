@@ -5,7 +5,5 @@ module.exports = {
     preflight: false,
   },
   plugins: [],
-  theme: {
-    extend: {},
-  },
+  theme: { extend: {} },
 }
