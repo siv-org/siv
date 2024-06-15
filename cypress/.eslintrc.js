@@ -4,4 +4,7 @@ module.exports = {
   },
   extends: ['plugin:cypress/recommended'],
   plugins: ['cypress'],
+  rules: {
+    'cypress/unsafe-to-chain-command': 0,
+  },
 }
