@@ -43,7 +43,7 @@ export const FAQPage = (): JSX.Element => {
 
           <AddYourQuestion />
 
-          <div className="button-container">
+          <div className="flex mt-5 button-container">
             <OnClickButton
               style={{ margin: 0, padding: '5px 15px', textAlign: 'right' }}
               onClick={() => {
