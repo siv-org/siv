@@ -8,7 +8,7 @@ export const HackSIV = (): JSX.Element => {
       <TailwindPreflight />
       <HeaderBar />
 
-      <div className="p-4 text-[#060067]">
+      <main className="p-4 text-[#060067]">
         <div className="max-w-[750px] mx-auto">
           <div className="text-[24px] font-bold">Hack SIV</div>
 
@@ -66,7 +66,7 @@ export const HackSIV = (): JSX.Element => {
             </p>
           </div>
         </div>
-      </div>
+      </main>
     </>
   )
 }
