@@ -1,4 +1,3 @@
-import { List } from '@mui/material'
 import { TailwindPreflight } from 'src/TailwindPreflight'
 
 import { HeaderBar } from '../faq/HeaderBar'
