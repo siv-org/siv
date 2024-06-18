@@ -1,3 +1,6 @@
+import { GlobalCSS } from 'src/GlobalCSS'
+import { Head } from 'src/Head'
+import { Footer } from 'src/homepage/Footer'
 import { TailwindPreflight } from 'src/TailwindPreflight'
 
 import { HeaderBar } from '../faq/HeaderBar'
@@ -5,7 +8,7 @@ import { HeaderBar } from '../faq/HeaderBar'
 export const HackSIV = (): JSX.Element => {
   return (
     <>
-      <TailwindPreflight />
+      <Head title="Hack SIV" />
       <HeaderBar />
 
       <main className="p-4 text-[#060067]">
@@ -15,12 +18,9 @@ export const HackSIV = (): JSX.Element => {
           {/* What to find vulnerabilities for */}
           <div className="px-5 py-3 mt-3 rounded-lg bg-blue-500/10">
             <p className="mb-4">
-              In order to make the Secure Internet Voting Protocol{' '}
-              <a className="hover:underline" href="https://docs.siv.org">
-                (docs.siv.org)
-              </a>{' '}
-              as secure as possible, we explicitly encourage and reward anyone who discovers and Responsibly Discloses
-              (see details below) any exploit to:
+              In order to make the Secure Internet Voting Protocol <a href="https://docs.siv.org">(docs.siv.org)</a> as
+              secure as possible, we explicitly encourage and reward anyone who discovers and Responsibly Discloses (see
+              details below) any exploit to:
             </p>
 
             <ol className="py-2 pl-8 space-y-1 list-decimal shadow-md bg-blue-500/20 rounded-xl">
@@ -49,11 +49,8 @@ export const HackSIV = (): JSX.Element => {
             Responsible Disclosure strict requirements:
             <ol className="py-2 pl-8 pr-4 mt-2 space-y-1 list-decimal shadow-md bg-gray-500/20 rounded-xl">
               <li>
-                Your exploit must be privately disclosed to{' '}
-                <a className="hover:underline" href="mailto:security@siv.org">
-                  security@siv.org
-                </a>
-                . This must include the original intended behavior, what you changed it to, and how you did so.
+                Your exploit must be privately disclosed to <a href="mailto:security@siv.org">security@siv.org</a>. This
+                must include the original intended behavior, what you changed it to, and how you did so.
               </li>
               <li>
                 You must give us at least 3 months (from when you provide your exploit details above) to investigate &
@@ -66,7 +63,11 @@ export const HackSIV = (): JSX.Element => {
             </p>
           </div>
         </div>
+        <Footer />
       </main>
+
+      <TailwindPreflight />
+      <GlobalCSS />
     </>
   )
 }
