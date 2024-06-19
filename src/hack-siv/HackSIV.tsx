@@ -11,7 +11,7 @@ export const HackSIV = (): JSX.Element => {
       <Head title="Hack SIV" />
       <HeaderBar />
 
-      <main className="p-4 text-[#060067]">
+      <main className="p-4 text-[#060067] w-full overflow-x-hidden">
         <div className="max-w-[750px] mx-auto mb-20">
           <div className="text-[24px] font-bold">Hack SIV</div>
 
