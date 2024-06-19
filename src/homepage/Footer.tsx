@@ -9,10 +9,12 @@ export const Footer = (): JSX.Element => (
       <EmailSignup />
     </div>
     <div className="text-align-right">
-      <h3>SIV</h3>
+      <h3 className="my-4">SIV</h3>
       <p>&ldquo;SIV&rdquo;, like civilization</p>
       <p>
-        <a href={`mailto:${email}`}>{email}</a>
+        <a className="font-semibold text-black" href={`mailto:${email}`}>
+          {email}
+        </a>
       </p>
     </div>
     <style jsx>{`
@@ -30,6 +32,7 @@ export const Footer = (): JSX.Element => (
         left: -30vw;
         right: -30vw;
         width: 148vw;
+        max-width: unset;
       }
 
       div:first-child {
@@ -47,16 +50,6 @@ export const Footer = (): JSX.Element => (
       .text-align-right {
         text-align: right;
         padding-top: 1rem;
-      }
-
-      a {
-        color: #000;
-        font-weight: bold;
-        text-decoration: none;
-      }
-
-      a:hover {
-        text-decoration: underline;
       }
 
       /* Small screens: single column */

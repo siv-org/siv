@@ -12,7 +12,7 @@ export const HackSIV = (): JSX.Element => {
       <HeaderBar />
 
       <main className="p-4 text-[#060067]">
-        <div className="max-w-[750px] mx-auto">
+        <div className="max-w-[750px] mx-auto mb-20">
           <div className="text-[24px] font-bold">Hack SIV</div>
 
           {/* What to find vulnerabilities for */}
