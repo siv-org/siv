@@ -23,7 +23,7 @@ export const HackSIV = (): JSX.Element => {
               details below) any exploit to:
             </p>
 
-            <ol className="py-2 pl-8 space-y-1 list-decimal shadow-md bg-blue-500/20 rounded-xl">
+            <ol className="py-2 pl-8 pr-4 space-y-1 list-decimal shadow-md bg-blue-500/20 rounded-xl">
               <li>Vote multiple times</li>
               <li>Change someone else&apos;s vote without them realizing</li>
               <li>Destroy a vote that&apos;s been confirmed submitted</li>

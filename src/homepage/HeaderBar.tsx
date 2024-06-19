@@ -11,10 +11,11 @@ export const HeaderBar = () => (
         <a className="logo">SIV</a>
       </Link>
     </h3>
-    <span>
+    <span className="text-xs">
       <Link href="/hacksiv">
         <a>Hack SIV</a>
       </Link>
+
       <Link href="https://docs.siv.org">
         <a>Docs</a>
       </Link>
@@ -27,6 +28,8 @@ export const HeaderBar = () => (
       <Link href="/about">
         <a>Research</a>
       </Link>
+    </span>
+    <span className="mt-1">
       <Link href="/admin">
         <a>
           Sign In
