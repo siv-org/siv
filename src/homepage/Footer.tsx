@@ -12,10 +12,10 @@ export const Footer = (): JSX.Element => (
       <EmailSignup />
     </div>
     <div className="pt-4 text-align-right">
-      <h3 className="my-4 text-[2.5vw]">SIV</h3>
+      <h3 className="my-4 text-[2.5vw] font-bold">SIV</h3>
       <p className="text-[1.625vw]">&ldquo;SIV&rdquo;, like civilization</p>
       <p className="text-[1.625vw]">
-        <a className="font-semibold text-black" href={`mailto:${email}`}>
+        <a className="font-semibold text-inherit" href={`mailto:${email}`}>
           {email}
         </a>
       </p>

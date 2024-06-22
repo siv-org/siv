@@ -65,7 +65,6 @@ export const HackSIV = (): JSX.Element => {
         </div>
         <Footer />
       </main>
-
       <TailwindPreflight />
       <GlobalCSS />
     </>
