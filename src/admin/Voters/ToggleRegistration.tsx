@@ -1,8 +1,8 @@
-import { Switch } from '@material-ui/core'
 import Image from 'next/image'
 import { useState } from 'react'
 
 import { api } from '../../api-helper'
+import { Switch } from '../BallotDesign/Switch'
 import { Spinner } from '../Spinner'
 import { revalidate, useStored } from '../useStored'
 import registrationIcon from './registration-icon.png'
@@ -34,7 +34,7 @@ export const ToggleRegistration = () => {
         Allow new registrations
       </label>
       <div style={{ bottom: 3, display: 'inline-block', position: 'relative' }}>
-        <Switch checked={!!voter_applications_allowed} color="primary" onClick={toggleVoterApplications} />
+        <Switch checked={!!voter_applications_allowed} label="" onClick={toggleVoterApplications} />
       </div>
       {updating && <Spinner />}
 
