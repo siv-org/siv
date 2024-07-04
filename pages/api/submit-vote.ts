@@ -52,7 +52,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Skip if email isn't valid (e.g. used QR invitations)
   if (validateEmail(email)) {
-    const link = `${req.headers.origin}/election/${election_id}`
+    const link = `${req.headers.origin || req.headers.host}/election/${election_id}`
     const { election_manager } = (await election).data() as {
       election_manager?: string
       election_title?: string
