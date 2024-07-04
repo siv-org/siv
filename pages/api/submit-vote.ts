@@ -9,7 +9,10 @@ import { validateAuthToken } from './check-auth-token'
 import { pusher } from './pusher'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { auth, election_id, encrypted_vote } = req.body
+  const payload = req.method === 'POST' ? req.body : req.query
+  const { auth, election_id, encrypted_vote } = payload
+
+  // return res.status(200).json({ auth, election_id, encrypted_vote })
 
   const electionDoc = firebase.firestore().collection('elections').doc(election_id)
 
