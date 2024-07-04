@@ -1,4 +1,4 @@
-import { firebase } from 'api/_services'
+import { firebase, pushover } from 'api/_services'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -22,6 +22,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       // Return a success response
       return res.status(200).json({ message: 'Email verified successfully.' })
     } else {
+      pushover(
+        'Reg link verification bad code',
+        `Email:${email}\n\nInput code: ${code}\nDB code: ${
+          voterSnapshot.data()?.verification_code
+        }\n\nElection ID: ${election_id}`,
+      )
       // Verification failed, return an error response
       return res.status(400).json({ error: 'Invalid email or verification code.' })
     }
