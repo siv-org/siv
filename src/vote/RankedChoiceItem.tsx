@@ -163,9 +163,9 @@ function OneRow({
       <div className="sm:hidden">
         {new Array(rankings_allowed).fill(0).map((_, index) => (
           <td className="ml-2 text-center" key={index}>
-            <span className="text-[11px] font-bold" key={index}>
+            <div className="text-[11px] font-bold" key={index}>
               {getOrdinal(index + 1)}
-            </span>
+            </div>
             <OneCircle {...{ index }} />
           </td>
         ))}
