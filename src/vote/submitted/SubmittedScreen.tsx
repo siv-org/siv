@@ -39,6 +39,7 @@ export function SubmittedScreen({
           Click here to visit the Election Status page.
         </a>
       </Link>
+
       <h3>How to verify your vote:</h3>
       <p>
         Once the election closes and votes are unlocked, you can find yours on the{' '}
@@ -49,7 +50,9 @@ export function SubmittedScreen({
         </Link>{' '}
         using its <em>Verification #</em>:
       </p>
+
       <UnlockedVote {...{ columns, state }} />
+
       <p className="text-xs opacity-60">
         This secret <em>Verification #</em> is a random number, generated and encrypted on your own device.
         <br />
@@ -61,7 +64,7 @@ export function SubmittedScreen({
 
       <p>
         <img id="lock-icon" src="/vote/lock.png" width="12px" />
-        To protect your privacy, your vote was encrypted before submission.
+        To protect your privacy, your vote was encrypted before submission:
       </p>
 
       <EncryptedVote {...{ auth, columns, state }} />
@@ -84,6 +87,7 @@ export function SubmittedScreen({
           <DetailedEncryptionReceipt {...{ state }} />
         </>
       )}
+
       <style jsx>{`
         #lock-icon {
           margin-right: 7px;
