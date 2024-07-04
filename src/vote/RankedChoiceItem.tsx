@@ -22,7 +22,7 @@ export const RankedChoiceItem = ({
   rankings_allowed: number
   state: State
 }): JSX.Element => {
-  console.log(state.plaintext)
+  // console.log(state.plaintext)
 
   return (
     <>
