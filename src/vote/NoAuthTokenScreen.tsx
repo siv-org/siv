@@ -10,9 +10,13 @@ import { VoterRegistrationForm } from './VoterRegistrationForm'
 export const NoAuthTokenScreen = () => {
   const { election_title, loaded, voter_applications_allowed } = useElectionInfo()
   const [openedVoterAuthInput, setOpenedVoterAuthInput] = useState(false)
-  useEffect(() => setOpenedVoterAuthInput(!voter_applications_allowed), [voter_applications_allowed])
-
   const [openedRegistration, setOpenedRegistration] = useState(false)
+
+  // If Registrations allowed, default to opening those, otherwise default to opening Auth Token input.
+  useEffect(() => {
+    setOpenedVoterAuthInput(!voter_applications_allowed)
+    setOpenedRegistration(!!voter_applications_allowed)
+  }, [voter_applications_allowed])
 
   if (!loaded)
     return (
@@ -22,15 +26,13 @@ export const NoAuthTokenScreen = () => {
       </h2>
     )
 
-  return (
-    <div>
-      <h1 className="text-center">{election_title}</h1>
+  function EnterAuth() {
+    return (
       <div className="max-w-[350px] mx-auto">
-        <h2 className="text-center">To cast a vote...</h2>
         {voter_applications_allowed ? (
-          <div style={{ textAlign: 'center' }}>
+          <div>
             <OnClickButton
-              style={{ margin: 0, marginTop: 20, padding: '10px 15px' }}
+              style={{ margin: 0, padding: '10px 15px' }}
               onClick={() => setOpenedVoterAuthInput(!openedVoterAuthInput)}
             >
               Enter your Voter Authorization Token
@@ -42,10 +44,16 @@ export const NoAuthTokenScreen = () => {
 
         {openedVoterAuthInput && <EnterAuthToken />}
       </div>
+    )
+  }
 
-      <div className="text-center">
-        <h2 className="my-12 italic font-medium opacity-70">— &nbsp; or &nbsp; —</h2>
+  function Or() {
+    return <h2 className="my-12 italic font-medium opacity-70">— &nbsp; or &nbsp; —</h2>
+  }
 
+  function EnterRegistrationInfo() {
+    return (
+      <div>
         <OnClickButton
           style={{ margin: 0, padding: '10px 15px' }}
           onClick={() => setOpenedRegistration(!openedRegistration)}
@@ -59,6 +67,26 @@ export const NoAuthTokenScreen = () => {
         )}
         {openedRegistration && voter_applications_allowed && <VoterRegistrationForm />}
       </div>
+    )
+  }
+
+  return (
+    <div className="text-center">
+      <h1>{election_title}</h1>
+
+      {!voter_applications_allowed ? (
+        <>
+          <EnterAuth />
+          <Or />
+          <EnterRegistrationInfo />
+        </>
+      ) : (
+        <>
+          <EnterRegistrationInfo />
+          <Or />
+          <EnterAuth />
+        </>
+      )}
     </div>
   )
 }
