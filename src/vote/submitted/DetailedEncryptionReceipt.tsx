@@ -1,11 +1,33 @@
 import { Paper } from '../../protocol/Paper'
 import { State } from '../vote-state'
 
-export const DetailedEncryptionReceipt = ({ state }: { state: State & { submitted_at: Date } }) => {
+export const DetailedEncryptionReceipt = ({
+  auth,
+  election_id,
+  state,
+}: {
+  auth?: string
+  election_id?: string
+  state: State & { submitted_at?: Date }
+}) => {
   return (
     <Paper noFade style={{ maxWidth: 815, padding: '1.5rem' }}>
       <code>
-        {`Submitted @ ${new Date(state.submitted_at)}
+        {`DETAILED ENCRYPTION RECEIPT
+
+Election: ${state.election_title}
+Election ID: ${election_id}
+Voter Auth Token: ${auth}
+
+---------
+
+${
+  state.submitted_at
+    ? `Submitted at: ${new Date(state.submitted_at)}`
+    : `Last modified: ${new Date(state.last_modified_at || new Date())}\nSubmitted: Not yet`
+}
+
+---------
 
 Encryption Formula
   https://en.wikipedia.org/wiki/ElGamal_encryption
@@ -14,7 +36,7 @@ Encryption Formula
   Encrypted = Encoded + (Recipient * randomizer)
   Lock = (Generator * randomizer)
 
-Public Key
+Encryption Public Key (Recipient):
   ${state.public_key}
 
 ---------
@@ -22,6 +44,7 @@ Public Key
 Verification #: ${state.tracking}
 
 ${Object.keys(state.plaintext)
+  .sort()
   .map(
     (key) => `${key}
   plaintext: ${state.tracking}:${state.plaintext[key]}
