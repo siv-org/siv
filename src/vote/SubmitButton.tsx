@@ -19,9 +19,14 @@ export const SubmitButton = ({
   const [buttonText, setButtonText] = useState('Submit')
 
   return (
-    <div>
+    <div className="text-right">
       <OnClickButton
-        disabled={Object.keys(state.plaintext).length === 0 || buttonText !== 'Submit'}
+        disabled={
+          !state.ballot_design_finalized ||
+          !state.public_key ||
+          Object.keys(state.plaintext).length === 0 ||
+          buttonText !== 'Submit'
+        }
         style={{ marginRight: 0 }}
         onClick={async () => {
           setButtonText('Submitting...')
@@ -61,11 +66,6 @@ export const SubmitButton = ({
       >
         {buttonText}
       </OnClickButton>
-      <style jsx>{`
-        div {
-          text-align: right;
-        }
-      `}</style>
     </div>
   )
 }

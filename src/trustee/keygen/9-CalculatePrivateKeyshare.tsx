@@ -7,7 +7,7 @@ import { PrivateBox } from '../PrivateBox'
 import { StateAndDispatch } from '../trustee-state'
 
 export const CalculatePrivateKeyshare = ({ dispatch, state }: StateAndDispatch) => {
-  const { trustees = [], decrypted_shares_from = {}, private_keyshare = '...' } = state
+  const { decrypted_shares_from = {}, private_keyshare = '...', trustees = [] } = state
 
   const num_passed = sumBy(trustees, (t) => sumBy(Object.values(t.verified || {}), Number))
   const num_expected = trustees.length * (trustees.length - 1)

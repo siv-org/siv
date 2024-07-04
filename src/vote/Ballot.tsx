@@ -1,11 +1,13 @@
-import { NoSsr } from '@material-ui/core'
 import { Dispatch } from 'react'
+import { NoSsr } from 'src/_shared/NoSsr'
 import { maxLength } from 'src/crypto/curve'
 
 import { Paper } from '../protocol/Paper'
+import { BallotPreview } from './BallotPreview'
 import { Item } from './Item'
 import { MultiVoteItem } from './MultiVoteItem'
 import { RankedChoiceItem } from './RankedChoiceItem'
+import { ScoreItem } from './ScoreItem'
 import { State } from './vote-state'
 
 // Calculate maximum write-in string length
@@ -22,17 +24,18 @@ export const Ballot = ({
   state: State
 }): JSX.Element => {
   if (!state.ballot_design) return <p>Loading ballot...</p>
-  if (!state.public_key) return <p>This ballot is not ready for votes yet</p>
 
   return (
     <NoSsr>
-      <Paper noFade>
+      <Paper noFade className="pt-4 overflow-x-scroll">
         <>
+          <BallotPreview {...{ state }} />
+
           {/* Election Title */}
-          {state.election_title && <h2 className="ml-[13px]">{state.election_title}</h2>}
+          {state.election_title && <h2 className="mt-2 ml-[13px]">{state.election_title}</h2>}
 
           {state.ballot_design.map((item, index) => {
-            const max_options = item.options.length + +item.write_in_allowed
+            const max_options = item.options.length + +!!item.write_in_allowed
 
             // Is it "Approval" ?
             if (item.type === 'approval')
@@ -71,6 +74,9 @@ export const Ballot = ({
                   key={index}
                 />
               )
+
+            // Is it "Score"?
+            if (item.type === 'score') return <ScoreItem {...{ ...item, dispatch, state }} key={index} />
 
             // Otherwise, load default "Choose-only-one"
             return <Item {...{ ...item, dispatch, state }} key={index} />

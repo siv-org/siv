@@ -1,5 +1,5 @@
-import { NoSsr } from '@material-ui/core'
 import { useRouter } from 'next/router'
+import { NoSsr } from 'src/_shared/NoSsr'
 
 import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'

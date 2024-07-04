@@ -1,26 +1,29 @@
 import router from 'next/router'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 
 import { api } from '../api-helper'
 import { SaveButton } from './SaveButton'
 
 export const CreateNewElection = () => {
   const [election_title, set_title] = useState('')
+  const $input = useRef<HTMLInputElement>(null)
+  const $saveBtn = useRef<HTMLAnchorElement>(null)
 
   return (
     <>
-      <h2>Create New Election</h2>
-      <label>Election Title:</label>
+      <h2>Create New Ballot</h2>
+      <label>Ballot Title:</label>
 
       <input
+        className="w-full p-2 text-sm border border-gray-300 border-solid rounded"
         id="election-title"
-        placeholder="Give your election a name your voters will recognize"
+        placeholder="Give your ballot a name your voters will recognize"
         value={election_title}
         onChange={(event) => set_title(event.target.value)}
-        onKeyPress={(event) => {
+        onKeyDown={(event) => {
           if (event.key === 'Enter') {
-            document.getElementById('election-title')?.blur()
-            document.getElementById('election-title-save')?.click()
+            $input.current?.blur()
+            $saveBtn.current?.click()
           }
         }}
       />
@@ -28,27 +31,13 @@ export const CreateNewElection = () => {
         id="election-title-save"
         onPress={async () => {
           const response = await api('create-election', { election_title })
+          if (response.status !== 201) throw await response.json()
 
-          if (response.status === 201) {
-            const { election_id } = await response.json()
-
-            // Set election_id in URL
-            router.push(`${window.location.origin}/admin/${election_id}/ballot-design`)
-          } else {
-            throw await response.json()
-          }
+          // Set election_id in URL
+          const { election_id } = await response.json()
+          router.push(`${window.location.origin}/admin/${election_id}/ballot-design`)
         }}
       />
-
-      <style jsx>{`
-        input {
-          border: 1px solid #ccc;
-          border-radius: 4px;
-          font-size: 14px;
-          padding: 8px;
-          width: 100%;
-        }
-      `}</style>
     </>
   )
 }

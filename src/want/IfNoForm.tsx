@@ -1,5 +1,7 @@
-import { BoxProps, NoSsr, TextField, TextFieldProps } from '@material-ui/core'
+import { TextField, TextFieldProps } from '@mui/material'
 import { useCallback, useState } from 'react'
+import { Row } from 'src/_shared/Forms/Row'
+import { NoSsr } from 'src/_shared/NoSsr'
 
 import { FormSubmitBtns } from './FormSubmitBtns'
 
@@ -115,14 +117,3 @@ export const IfNoForm = ({ id }: { id?: string }) => {
     </form>
   )
 }
-
-const Row = (props: BoxProps) => (
-  <div
-    {...props}
-    style={{
-      display: 'flex',
-      margin: '1.5rem 0',
-      ...props.style,
-    }}
-  />
-)

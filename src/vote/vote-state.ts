@@ -11,6 +11,7 @@ import { useLocalStorageReducer } from './useLocalStorage'
 type Map = Record<string, string>
 export type State = {
   ballot_design?: Item[]
+  ballot_design_finalized?: boolean
   election_title?: string
   encoded: Map
   encrypted: Record<string, CipherStrings>
@@ -42,11 +43,8 @@ function reducer(prev: State, payload: Map) {
     }
   })
 
-  // Make sure we have a public key
-  if (Object.keys(newState.plaintext) && !prev.public_key) {
-    alert('The election admin has not finished setting an encryption address yet.')
-    return prev
-  }
+  // Stop if no public key
+  if (Object.keys(newState.plaintext) && !prev.public_key) return prev
 
   // Generate Verification number if needed
   if (!prev.tracking) newState.tracking = generateTrackingNum()

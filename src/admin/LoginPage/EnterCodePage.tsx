@@ -1,4 +1,4 @@
-import { TextField } from '@material-ui/core'
+import { TextField } from '@mui/material'
 import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
 import { OnClickButton } from 'src/_shared/Button'
@@ -129,5 +129,5 @@ export const EnterCodePage = () => {
       `}</style>
       <GlobalCSS />
     </main>
-  )
+  );
 }

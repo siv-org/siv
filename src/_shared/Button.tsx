@@ -54,14 +54,14 @@ type OnClickProps = ButtonProps & {
 export const OnClickButton = forwardRef<HTMLAnchorElement, OnClickProps>(
   (
     {
+      background,
       children,
       disabled,
       disabledExplanation,
-      onClick,
-      invertColor,
       id,
-      background,
+      invertColor,
       noBorder,
+      onClick,
       style = {},
     }: OnClickProps,
     ref,

@@ -4,12 +4,12 @@ import { State } from '../vote-state'
 
 export const EncryptedVote = ({ auth, columns, state }: { auth: string; columns: string[]; state: State }) => (
   <div>
-    <table>
+    <table className="pb-3">
       <thead>
         <tr>
           <th>auth</th>
           {columns.map((c) => (
-            <th colSpan={2} key={c}>
+            <th colSpan={2} key={c} style={{ WebkitTextSizeAdjust: 'none' }}>
               {c}
             </th>
           ))}
@@ -30,8 +30,8 @@ export const EncryptedVote = ({ auth, columns, state }: { auth: string; columns:
           <td>{auth}</td>
           {columns.map((key) => (
             <Fragment key={key}>
-              <td className="monospaced">{state.encrypted[key]?.encrypted}</td>
-              <td className="monospaced">{state.encrypted[key]?.lock}</td>
+              <td className="monospaced text-[11px]">{state.encrypted[key]?.encrypted}</td>
+              <td className="monospaced text-[11px]">{state.encrypted[key]?.lock}</td>
             </Fragment>
           ))}
         </tr>

@@ -34,16 +34,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (!ADMIN_EMAIL) return res.status(501).send('Missing process.env.ADMIN_EMAIL')
 
   const { election_id } = req.query
+  if (typeof election_id !== 'string') return res.status(400).send('Malformed election_id')
   const { body } = req
   const { auth, email } = body
   console.log('/api/update received:', body)
 
   if (!email) return res.status(404).end()
 
-  const electionDoc = firebase
-    .firestore()
-    .collection('elections')
-    .doc(election_id as string)
+  const electionDoc = firebase.firestore().collection('elections').doc(election_id)
 
   // Begin preloading these docs
   const trusteeDoc = electionDoc.collection('trustees').doc(email)

@@ -19,7 +19,8 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "downlevelIteration": true
+    "downlevelIteration": true,
+    "incremental": true
   },
   "ts-node": {
     "transpileOnly": true,
@@ -27,6 +28,6 @@
       "module": "CommonJS"
     }
   },
-  "exclude": ["node_modules", ".next", "out", "cypress", "db-data"],
+  "exclude": ["node_modules", ".next", "out", "cypress", "db-data", "**/*.test.ts"],
   "include": ["**/*.ts", "**/*.tsx"]
 }

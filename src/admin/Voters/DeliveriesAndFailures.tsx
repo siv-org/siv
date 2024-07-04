@@ -14,9 +14,8 @@ export const DeliveriesAndFailures = ({
   return (
     <>
       <Tooltip
-        interactive={!!failed}
         placement="top"
-        title={
+        tooltip={
           failed || deliveries ? (
             <>
               {(

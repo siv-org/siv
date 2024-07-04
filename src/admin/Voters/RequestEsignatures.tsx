@@ -1,9 +1,9 @@
-import { Switch } from '@material-ui/core'
 import Image from 'next/image'
 import esignatureIcon from 'public/esignature.png'
 import { useState } from 'react'
 
 import { api } from '../../api-helper'
+import { Switch } from '../BallotDesign/Switch'
 import { Spinner } from '../Spinner'
 import { revalidate, useStored } from '../useStored'
 
@@ -26,30 +26,17 @@ export const RequestEsignatures = () => {
   }
 
   return (
-    <section>
-      <label onClick={toggleESignature}>
-        <div style={{ display: 'inline-block', marginRight: 5, position: 'relative', top: 2 }}>
+    <div className="mb-8">
+      <label className="cursor-pointer" onClick={toggleESignature}>
+        <span className="mr-1.5 relative top-0.5">
           <Image height={(218 / 700) * 70} layout="fixed" src={esignatureIcon} width={70} />
-        </div>
-        Request <i>eSignatures</i>?
+        </span>
+        Request eSignatures?
       </label>
-      <div style={{ bottom: 3, display: 'inline-block', left: 10, position: 'relative' }}>
-        <Switch checked={!!esignature_requested} color="primary" onClick={toggleESignature} />
-      </div>
+      <span className="relative bottom-[3px] ml-3">
+        <Switch checked={!!esignature_requested} label="" onClick={toggleESignature} />
+      </span>
       {updating && <Spinner />}
-      <style jsx>{`
-        section {
-          margin-bottom: 30px;
-        }
-
-        label {
-          cursor: pointer;
-        }
-
-        i {
-          font-weight: 500;
-        }
-      `}</style>
-    </section>
+    </div>
   )
 }

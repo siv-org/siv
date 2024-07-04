@@ -5,12 +5,14 @@ export const QueuedCell = ({ invite_queued }: { invite_queued?: unknown[] }) => 
     <>
       <Tooltip
         placement="top"
-        title={
+        tooltip={
           invite_queued ? (
             <>
-              {(invite_queued as {
-                time: { _seconds: number }
-              }[])?.map((event, index) => (
+              {(
+                invite_queued as {
+                  time: { _seconds: number }
+                }[]
+              )?.map((event, index) => (
                 <div key={index} style={{ fontSize: 14 }}>
                   {new Date(event.time._seconds * 1000).toLocaleString()}
                 </div>

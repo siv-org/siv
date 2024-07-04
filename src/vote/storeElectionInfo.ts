@@ -6,6 +6,8 @@ import { State } from './vote-state'
 export type Item = {
   description?: string
   id?: string
+  max_score?: number
+  min_score?: number
   multiple_votes_allowed?: number
   options: { name: string; sub?: string; value?: string }[]
   question?: string
@@ -22,11 +24,17 @@ export function storeElectionInfo(dispatch: Dispatch<Partial<State>>, election_i
       // Get info from API
       const response = await fetch(`/api/election/${election_id}/info`)
 
-      const { ballot_design, election_title, esignature_requested, threshold_public_key }: ElectionInfo =
-        await response.json()
+      const {
+        ballot_design,
+        ballot_design_finalized,
+        election_title,
+        esignature_requested,
+        threshold_public_key,
+      }: ElectionInfo = await response.json()
 
       dispatch({
         ballot_design,
+        ballot_design_finalized,
         election_title,
         esignature_requested,
         public_key: threshold_public_key,

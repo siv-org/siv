@@ -1,10 +1,8 @@
-import { NoSsr } from '@material-ui/core'
-import { flatten } from 'lodash-es'
 import Link from 'next/link'
-import { useEffect } from 'react'
-import { useReducer } from 'react'
+import { useEffect, useReducer } from 'react'
+import { NoSsr } from 'src/_shared/NoSsr'
 
-import { defaultRankingsAllowed } from '../Ballot'
+import { generateColumnNames } from '../generateColumnNames'
 import { State } from '../vote-state'
 import { DetailedEncryptionReceipt } from './DetailedEncryptionReceipt'
 import { EncryptedVote } from './EncryptedVote'
@@ -29,15 +27,7 @@ export function SubmittedScreen({
     if (mainEl) mainEl.style.maxWidth = '880px'
   })
 
-  const columns = flatten(
-    state.ballot_design?.map(({ id, multiple_votes_allowed, type }) =>
-      multiple_votes_allowed || type === 'ranked-choice-irv'
-        ? new Array(multiple_votes_allowed || defaultRankingsAllowed)
-            .fill('')
-            .map((_, index) => `${id || 'vote'}_${index + 1}`)
-        : id || 'vote',
-    ),
-  )
+  const { columns } = generateColumnNames({ ballot_design: state.ballot_design })
 
   return (
     <NoSsr>
@@ -84,6 +74,7 @@ export function SubmittedScreen({
           {showEncryptionDetails ? '[-] Hide' : '[+] Show'} Encryption Details
         </a>
       </p>
+
       {showEncryptionDetails && (
         <>
           <EncryptedVote {...{ auth, columns, state }} />

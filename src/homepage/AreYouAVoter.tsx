@@ -1,7 +1,8 @@
-import { BoxProps, NoSsr, TextField, TextFieldProps } from '@material-ui/core'
+import { TextField, TextFieldProps } from '@mui/material'
 import { omit } from 'lodash-es'
 import { useState } from 'react'
 import { Element } from 'react-scroll'
+import { NoSsr } from 'src/_shared/NoSsr'
 
 import { OnClickButton } from '../_shared/Button'
 import { api } from '../api-helper'
@@ -136,7 +137,7 @@ export function AreYouAVoter(): JSX.Element {
   )
 }
 
-const Row = (props: BoxProps) => (
+export const Row = (props: { children?: React.ReactNode; style?: React.CSSProperties }) => (
   <div
     {...props}
     style={{

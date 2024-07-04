@@ -1,4 +1,4 @@
-import { NoSsr } from '@material-ui/core'
+import { NoSsr } from 'src/_shared/NoSsr'
 
 const GA_ID = 'UA-84279342-7'
 

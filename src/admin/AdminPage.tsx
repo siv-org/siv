@@ -5,6 +5,7 @@ import { Head } from '../Head'
 import { AllYourElections } from './AllYourElections'
 import { useLoginRequired, useUser } from './auth'
 import { BallotDesign } from './BallotDesign/BallotDesign'
+import { YourConventionsLink } from './Conventions/YourConventionsLink'
 import { CreateNewElection } from './CreateNewElection'
 import { HeaderBar } from './HeaderBar'
 import { MarkedBallots } from './MarkedBallots/MarkedBallots'
@@ -20,53 +21,35 @@ export const AdminPage = (): JSX.Element => {
 
   useLoginRequired(loggedOut)
   usePusher(election_id as string | undefined)
+  if (loading || loggedOut) return <p className="p-4 text-[21px]">Loading...</p>
 
-  if (loading || loggedOut) return <p style={{ fontSize: 21, padding: '1rem' }}>Loading...</p>
   return (
     <>
       <Head title="Create new election" />
 
       <HeaderBar />
-      <main>
+      <main className="flex w-full">
         <Sidebar />
-        <div id="main-content">
+        <div
+          className="w-full p-4 overflow-auto absolute top-[66px] right-0 bottom-0 sm:left-[215px] sm:px-8 sm:w-auto"
+          id="main-content"
+        >
           <MobileMenu />
-          {!election_id && <AllYourElections />}
-          {!election_id && <CreateNewElection />}
+
+          {!election_id && (
+            <>
+              <AllYourElections />
+              <CreateNewElection />
+              <YourConventionsLink />
+            </>
+          )}
+
           {section === 'observers' && <Observers />}
           {section === 'ballot-design' && <BallotDesign />}
           {section === 'voters' && <AddVoters />}
           {section === 'marked-ballots' && <MarkedBallots />}
         </div>
       </main>
-
-      <style jsx>{`
-        main {
-          width: 100%;
-          display: flex;
-        }
-
-        #main-content {
-          padding: 1rem 2rem;
-          overflow: auto;
-          position: absolute;
-          left: 215px;
-          top: 66px;
-          right: 0;
-          bottom: 0;
-        }
-
-        /* When sidebar disappears */
-        @media (max-width: 640px) {
-          #main-content {
-            left: 0;
-
-            width: 100%;
-
-            padding: 1rem;
-          }
-        }
-      `}</style>
       <GlobalCSS />
       <style global jsx>{`
         body {

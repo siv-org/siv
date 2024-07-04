@@ -12,7 +12,7 @@ export function useSWRExponentialBackoff(
 
   useEffect(() => {
     let retries = 0
-    let timerId: NodeJS.Timeout | null = null
+    let timerId: number | null = null
 
     function revalidate() {
       mutate(key)
@@ -20,7 +20,7 @@ export function useSWRExponentialBackoff(
 
       // Calculate delay using exponential backoff logic
       const delay = baseDelaySeconds * 1000 * 2 ** retries
-      timerId = setTimeout(revalidate, delay)
+      timerId = setTimeout(revalidate, delay) as unknown as number
     }
 
     revalidate()
