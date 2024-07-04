@@ -9,6 +9,7 @@ import { Switch } from './Switch'
 export const default_multiple_votes_allowed = 3
 export const default_min_score = -2
 export const default_max_score = 2
+const supports_max_selections_allowed = (type = '') => ['multiple-votes-allowed', 'ranked-choice-irv'].includes(type)
 
 export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: string) => void }) => {
   const [json, setJson] = useState<Item[]>()
@@ -87,18 +88,29 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
                   onChange={({ target }) => {
                     const new_json = [...json]
                     new_json[questionIndex].type = target.value as string
-                    if (
-                      new_json[questionIndex].type == 'multiple-votes-allowed' &&
-                      !new_json[questionIndex].multiple_votes_allowed
-                    ) {
-                      new_json[questionIndex].multiple_votes_allowed = default_multiple_votes_allowed
+
+                    // Handling `multiple_votes_allowed`
+                    if (supports_max_selections_allowed(new_json[questionIndex].type)) {
+                      // Set default if missing
+                      if (!new_json[questionIndex].multiple_votes_allowed) {
+                        new_json[questionIndex].multiple_votes_allowed = default_multiple_votes_allowed
+                      }
+                    } else {
+                      // Unsupported, remove
+                      delete new_json[questionIndex].multiple_votes_allowed
                     }
-                    if (
-                      (new_json[questionIndex].type == 'score' && !new_json[questionIndex].min_score) ||
-                      !new_json[questionIndex].max_score
-                    ) {
-                      new_json[questionIndex].min_score = default_min_score
-                      new_json[questionIndex].max_score = default_max_score
+
+                    // Handling `min_score` & `max_score`
+                    if (new_json[questionIndex].type == 'score') {
+                      // Set default if missing
+                      if (!new_json[questionIndex].min_score || !new_json[questionIndex].max_score) {
+                        new_json[questionIndex].min_score = default_min_score
+                        new_json[questionIndex].max_score = default_max_score
+                      }
+                    } else {
+                      // Unsupported, remove
+                      delete new_json[questionIndex].min_score
+                      delete new_json[questionIndex].max_score
                     }
 
                     saveDesign(new_json)
@@ -113,7 +125,7 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
               </div>
             </div>
 
-            {json[questionIndex].type == 'multiple-votes-allowed' && (
+            {supports_max_selections_allowed(json[questionIndex].type) && (
               <div className="mt-1">
                 <label className="text-[10px] italic">Max Selections Allowed?</label>
                 <input
