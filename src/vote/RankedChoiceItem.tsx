@@ -28,14 +28,15 @@ export const RankedChoiceItem = ({
     <>
       <TitleDescriptionQuestion {...{ description, question, title }} />
 
-      <table className="ml-3">
+      <table className="sm:ml-3">
         {/* Top row Choice labels */}
         <thead>
           <tr>
             <th />
 
+            {/* One label for each column of whole table, only visible on big screens */}
             {new Array(rankings_allowed).fill(0).map((_, index) => (
-              <th className="text-[11px] text-center" key={index}>
+              <th className="text-[11px] text-center hidden sm:table-cell" key={index}>
                 {getOrdinal(index + 1)}
               </th>
             ))}
@@ -81,17 +82,45 @@ function OneRow({
 
   const [error, setError] = useState(' ')
 
+  function OneCircle({ index }: { index: number }) {
+    return (
+      <input
+        readOnly
+        checked={state.plaintext[`${id}_${index + 1}`] === val}
+        className="w-7 h-7 bg-white border-gray-300 border-solid rounded-full appearance-none cursor-pointer hover:bg-blue-100 checked:!bg-[#002868] border-2 checked:border-white/30"
+        type="radio"
+        onClick={() => {
+          const update: Record<string, string> = {}
+
+          // Fill in all unchecked rankings to prevent encryption holes
+          for (let i = 1; i <= rankings_allowed; i++) {
+            update[`${id}_${i}`] = state.plaintext[`${id}_${i}`] || 'BLANK'
+          }
+
+          const key = `${id}_${index + 1}`
+          update[key] = val
+          // console.log(key, val)
+
+          // Are they deselecting their existing selection?
+          if (state.plaintext[key] === val) update[key] = 'BLANK'
+
+          dispatch(update)
+        }}
+      />
+    )
+  }
+
   return (
-    <tr key={name}>
+    <tr className="flex flex-col sm:table-row" key={name}>
       {/* Display Name */}
-      <td className="relative pr-4 bottom-0.5">
+      <td className="relative pr-4 sm:bottom-0.5 sm:top-auto top-2">
         {!isWriteIn ? (
-          <Label {...{ name, sub }} />
+          <Label {...{ name: `${name}:`, sub }} />
         ) : (
           // Write-in input field
           <div className="relative">
             <input
-              className="w-[10rem] -ml-2.5 px-2 py-1 text-base font-medium text-black/60 border-2 border-black/40 focus:border-black/70 rounded outline-none"
+              className="w-[10rem] sm:-ml-2.5 px-2 py-1 text-base font-medium text-black/60 border-2 border-black/40 focus:border-black/70 rounded outline-none sm:mb-0 mb-1.5 sm:mt-0 mt-1.5"
               id="write-in"
               placeholder="Write-in"
               value={writeIn}
@@ -125,32 +154,24 @@ function OneRow({
         )}
       </td>
 
-      {/* And one column for each ranking option */}
+      {/* And one column for each ranking option... */}
+
+      {/* On small screens, display them below each name */}
+      <div className="sm:hidden">
+        {new Array(rankings_allowed).fill(0).map((_, index) => (
+          <td className="ml-2 text-center" key={index}>
+            <span className="text-[11px] font-bold" key={index}>
+              {getOrdinal(index + 1)}
+            </span>
+            <OneCircle {...{ index }} />
+          </td>
+        ))}
+      </div>
+
+      {/* On large screens, to the side */}
       {new Array(rankings_allowed).fill(0).map((_, index) => (
-        <td className="ml-2 align-top" key={index}>
-          <input
-            readOnly
-            checked={state.plaintext[`${id}_${index + 1}`] === val}
-            className="w-7 h-7 bg-white border-gray-300 border-solid rounded-full appearance-none cursor-pointer hover:bg-blue-100 checked:!bg-[#002868] border-2 checked:border-white/30"
-            type="radio"
-            onClick={() => {
-              const update: Record<string, string> = {}
-
-              // Fill in all unchecked rankings to prevent encryption holes
-              for (let i = 1; i <= rankings_allowed; i++) {
-                update[`${id}_${i}`] = state.plaintext[`${id}_${i}`] || 'BLANK'
-              }
-
-              const key = `${id}_${index + 1}`
-              update[key] = val
-              // console.log(key, val)
-
-              // Are they deselecting their existing selection?
-              if (state.plaintext[key] === val) update[key] = 'BLANK'
-
-              dispatch(update)
-            }}
-          />
+        <td className="hidden ml-2 sm:table-cell" key={index}>
+          <OneCircle {...{ index }} />
         </td>
       ))}
     </tr>
