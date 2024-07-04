@@ -97,6 +97,16 @@ function OneRow({
               value={writeIn}
               onChange={(event) => {
                 setError(' ')
+
+                // When write-in changes, unset any matching selections
+                const update: Record<string, string> = {}
+                for (let i = 1; i <= rankings_allowed; i++) {
+                  if (state.plaintext[`${id}_${i}`] === writeIn) {
+                    update[`${id}_${i}`] = 'BLANK'
+                  }
+                }
+                dispatch(update)
+
                 // Check for too many characters
                 if (event.target.value.length > max_string_length) return setError('Too many characters')
 
