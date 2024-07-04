@@ -26,47 +26,26 @@ export const ToggleRegistration = () => {
   }
 
   return (
-    <section>
-      <label onClick={toggleVoterApplications}>
+    <section className="p-1 ml-[-5px]">
+      <label className="cursor-pointer" onClick={toggleVoterApplications}>
         <div style={{ display: 'inline-block', marginRight: 5, position: 'relative', top: 5 }}>
           <Image height={21} layout="fixed" src={registrationIcon} width={20} />
         </div>
-        Allow new registrations
+        Allow new voters to join via link?
       </label>
-      <div style={{ bottom: 3, display: 'inline-block', position: 'relative' }}>
+      <span className="relative bottom-[3px] ml-2">
         <Switch checked={!!voter_applications_allowed} label="" onClick={toggleVoterApplications} />
-      </div>
+      </span>
       {updating && <Spinner />}
 
       {voter_applications_allowed && (
-        <div style={{ marginBottom: 20 }}>
-          <span>Voter’s Registration link:</span>{' '}
+        <div className="mt-1 mb-5">
+          <span className="text-xs opacity-90">Voter’s Registration link:</span>{' '}
           <a href={`/election/${election_id}/vote`} rel="noreferrer" target="_blank">
             {window.location.origin}/election/{election_id}/vote
           </a>
         </div>
       )}
-
-      <style jsx>{`
-        section {
-          padding: 5px;
-          margin-left: -5px;
-        }
-
-        label,
-        section {
-          cursor: pointer;
-        }
-
-        i {
-          font-weight: 500;
-        }
-
-        span {
-          font-size: 11px;
-          opacity: 0.9;
-        }
-      `}</style>
     </section>
   )
 }
