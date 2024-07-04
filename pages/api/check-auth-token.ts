@@ -52,7 +52,7 @@ export async function validateAuthToken(
   if (voter.data().invalidated_at) return fail('This voter authorization token was invalidated.')
 
   // Is Auth Token pending review?
-  if (voter.data().applied_at) return pass('Application submitted. You can now submit a vote.')
+  if (voter.data().applied_at) return pass('Application submitted. You can now vote.')
 
   // Passed all checks
   pass('Your Voter Authorization Token is valid.')
