@@ -92,9 +92,12 @@ function OneRow({
         onClick={() => {
           const update: Record<string, string> = {}
 
-          // Fill in all unchecked rankings to prevent encryption holes
           for (let i = 1; i <= rankings_allowed; i++) {
+            // Fill in all unchecked rankings to prevent encryption holes
             update[`${id}_${i}`] = state.plaintext[`${id}_${i}`] || 'BLANK'
+
+            // Unset any rankings already given to this row
+            if (state.plaintext[`${id}_${i}`] === val) update[`${id}_${i}`] = 'BLANK'
           }
 
           const key = `${id}_${index + 1}`
