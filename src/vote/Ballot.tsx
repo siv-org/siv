@@ -68,7 +68,7 @@ export const Ballot = ({
                   {...{
                     ...item,
                     dispatch,
-                    rankings_allowed: Math.min(defaultRankingsAllowed, max_options),
+                    rankings_allowed: Math.min(item.multiple_votes_allowed || defaultRankingsAllowed, max_options),
                     state,
                   }}
                   key={index}
