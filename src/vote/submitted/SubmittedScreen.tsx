@@ -64,12 +64,12 @@ export function SubmittedScreen({
         To protect your privacy, your vote was encrypted before submission.
       </p>
 
+      <EncryptedVote {...{ auth, columns, state }} />
+
       <p className="text-xs opacity-60">
         Its contents will only be unlocked after the election closes and all votes have been shuffled for safe
         anonymization.
       </p>
-
-      <EncryptedVote {...{ auth, columns, state }} />
 
       <p className="mt-3 text-xs opacity-70">
         <a className="cursor-pointer" onClick={toggleEncryptionDetails}>
