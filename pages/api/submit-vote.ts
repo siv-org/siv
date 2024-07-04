@@ -10,7 +10,9 @@ import { pusher } from './pusher'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const payload = req.method === 'POST' ? req.body : req.query
-  const { auth, election_id, encrypted_vote } = payload
+  const { auth, election_id } = payload
+  let { encrypted_vote } = payload
+  if (typeof encrypted_vote === 'string') encrypted_vote = JSON.parse(encrypted_vote)
 
   // return res.status(200).json({ auth, election_id, encrypted_vote })
 
