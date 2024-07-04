@@ -69,6 +69,8 @@ export function SubmittedScreen({
         anonymization.
       </p>
 
+      <EncryptedVote {...{ auth, columns, state }} />
+
       <p className="mt-3 text-xs opacity-70">
         <a className="cursor-pointer" onClick={toggleEncryptionDetails}>
           {showEncryptionDetails ? '[-] Hide' : '[+] Show'} Encryption Details
@@ -77,8 +79,6 @@ export function SubmittedScreen({
 
       {showEncryptionDetails && (
         <>
-          <EncryptedVote {...{ auth, columns, state }} />
-
           <h4>Encryption Receipt:</h4>
 
           <DetailedEncryptionReceipt {...{ state }} />
