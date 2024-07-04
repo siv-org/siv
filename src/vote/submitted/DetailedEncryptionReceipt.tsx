@@ -24,7 +24,7 @@ Voter Auth Token: ${auth}
 ${
   state.submitted_at
     ? `Submitted at: ${new Date(state.submitted_at)}`
-    : `Last modified: ${new Date(state.last_modified_at || new Date())}\nSubmitted: Not yet`
+    : `Submitted: Not yet\nLast modified: ${new Date(state.last_modified_at || new Date())}`
 }
 
 ---------

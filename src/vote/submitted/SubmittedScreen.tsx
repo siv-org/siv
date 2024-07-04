@@ -84,7 +84,7 @@ export function SubmittedScreen({
         <>
           <h4>Encryption Receipt:</h4>
 
-          <DetailedEncryptionReceipt {...{ state }} />
+          <DetailedEncryptionReceipt {...{ auth, election_id, state }} />
         </>
       )}
 
