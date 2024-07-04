@@ -155,21 +155,20 @@ function OneRow({
             {error && <div className="absolute left-0 text-sm text-red-500/70 bottom-[-18px]">{error}</div>}
           </div>
         )}
-      </td>
+        {/* And one column for each ranking option... */}
 
-      {/* And one column for each ranking option... */}
-
-      {/* On small screens, display them below each name */}
-      <div className="sm:hidden">
-        {new Array(rankings_allowed).fill(0).map((_, index) => (
-          <td className="ml-2 text-center" key={index}>
-            <div className="text-[11px] font-bold" key={index}>
-              {getOrdinal(index + 1)}
+        {/* On small screens, display them below each name */}
+        <div className="flex space-x-1 sm:hidden">
+          {new Array(rankings_allowed).fill(0).map((_, index) => (
+            <div className="text-center" key={index}>
+              <div className="text-[11px] font-bold" key={index}>
+                {getOrdinal(index + 1)}
+              </div>
+              <OneCircle {...{ index }} />
             </div>
-            <OneCircle {...{ index }} />
-          </td>
-        ))}
-      </div>
+          ))}
+        </div>
+      </td>
 
       {/* On large screens, to the side */}
       {new Array(rankings_allowed).fill(0).map((_, index) => (
