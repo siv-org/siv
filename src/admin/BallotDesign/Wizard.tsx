@@ -7,8 +7,8 @@ import { check_for_urgent_ballot_errors } from './check_for_ballot_errors'
 import { Switch } from './Switch'
 
 export const default_multiple_votes_allowed = 3
-export const default_min_score = -5
-export const default_max_score = 5
+export const default_min_score = -2
+export const default_max_score = 2
 
 export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: string) => void }) => {
   const [json, setJson] = useState<Item[]>()
