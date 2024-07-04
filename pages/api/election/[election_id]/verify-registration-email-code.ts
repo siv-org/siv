@@ -3,7 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { code, election_id, email } = req.body
-  // Validate the request has require parameters
+  // Validate the request has required parameters
   if (!code || !email || !election_id) return res.status(400).json({ error: 'Missing parameters.' })
 
   // Lookup the voter doc
