@@ -1,19 +1,11 @@
-import { useReducer } from 'react'
-
 import { Paper } from '../../protocol/Paper'
 import { State } from '../vote-state'
 
 export const DetailedEncryptionReceipt = ({ state }: { state: State & { submitted_at: Date } }) => {
-  const [show, toggle] = useReducer((state) => !state, false)
   return (
-    <>
-      <p className="toggle">
-        <a onClick={toggle}>{show ? '[-] Hide' : '[+] Show'} Encryption Details</a>
-      </p>
-
-      <Paper noFade style={{ display: show ? 'block' : 'none', maxWidth: 815, padding: '1.5rem' }}>
-        <code>
-          {`Submitted @ ${new Date(state.submitted_at)}
+    <Paper noFade style={{ maxWidth: 815, padding: '1.5rem' }}>
+      <code>
+        {`Submitted @ ${new Date(state.submitted_at)}
 
 Encryption Formula
   https://en.wikipedia.org/wiki/ElGamal_encryption
@@ -40,24 +32,14 @@ ${Object.keys(state.plaintext)
 `,
   )
   .join('\n')}`}
-        </code>
-      </Paper>
+      </code>
       <style jsx>{`
-        p.toggle {
-          font-size: 12px;
-          opacity: 0.7;
-        }
-
-        p.toggle a {
-          cursor: pointer;
-        }
-
         code {
           font-size: 11px;
           max-width: 100%;
           white-space: pre-wrap;
         }
       `}</style>
-    </>
+    </Paper>
   )
 }

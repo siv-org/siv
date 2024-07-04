@@ -6,13 +6,14 @@ import { revalidate, useStored } from '../useStored'
 import { AddVoterTextarea } from './AddVotersTextarea'
 import { ExistingVoters } from './ExistingVoters'
 import { RequestEsignatures } from './RequestEsignatures'
+import { ToggleRegistration } from './ToggleRegistration'
 
 export const AddVoters = () => {
   const [new_voters, set_new_voters] = useState('')
   const { election_id } = useStored()
 
   return (
-    <div className="max-w-2xl">
+    <div className="max-w-[50rem]">
       <h2 className="hidden sm:block">Voters</h2>
       <h4>Add new voters by email address:</h4>
       <AddVoterTextarea state={new_voters} update={set_new_voters} />
@@ -36,6 +37,8 @@ export const AddVoters = () => {
           }}
         />
       )}
+
+      <ToggleRegistration />
       <RequestEsignatures />
       <ExistingVoters />
     </div>

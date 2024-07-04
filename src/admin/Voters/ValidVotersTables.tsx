@@ -24,7 +24,7 @@ export const ValidVotersTable = ({
   num_voted: number
   set_checked: (checked: boolean[]) => void
 }) => {
-  const { election_id, esignature_requested, voters } = useStored()
+  const { election_id, esignature_requested, voter_applications_allowed, voters } = useStored()
   const [mask_tokens, toggle_tokens] = useReducer((state) => !state, true)
   const { last_selected, pressing_shift, set_last_selected } = use_multi_select()
   const [showAll, setShowAll] = useState(false)
@@ -38,6 +38,10 @@ export const ValidVotersTable = ({
       !invalidated && (!has_voted || !hide_voted) && (getStatus(esignature_review) !== 'approve' || !hide_approved),
   )
 
+  const shouldShowRegistrationColumns =
+    // eslint-disable-next-line no-prototype-builtins
+    voter_applications_allowed || shown_voters.some((voter) => voter.hasOwnProperty('is_email_verified'))
+
   // Pagination logic
   const pageSize = 200
   const totalPages = Math.ceil(shown_voters.length / pageSize)
@@ -46,7 +50,7 @@ export const ValidVotersTable = ({
 
   return (
     <>
-      <table className="pb-2.5">
+      <table className="pb-3">
         <thead>
           <tr>
             <th>
@@ -62,7 +66,14 @@ export const ValidVotersTable = ({
               />
             </th>
             <th>#</th>
+            {shouldShowRegistrationColumns && (
+              <>
+                <th>first name</th>
+                <th>last name</th>
+              </>
+            )}
             <th>email</th>
+            {shouldShowRegistrationColumns && <th>email verified?</th>}
             <th className="hoverable" onClick={toggle_tokens}>
               {mask_tokens ? 'masked' : 'full'}
               <br />
@@ -90,7 +101,21 @@ export const ValidVotersTable = ({
         </thead>
         <tbody>
           {(showAll ? shown_voters : onThisPage).map(
-            ({ auth_token, email, esignature, esignature_review, has_voted, invite_queued, mailgun_events }, index) => (
+            (
+              {
+                auth_token,
+                email,
+                esignature,
+                esignature_review,
+                first_name,
+                has_voted,
+                invite_queued,
+                is_email_verified,
+                last_name,
+                mailgun_events,
+              },
+              index,
+            ) => (
               <tr className={`${checked[index] ? 'checked' : ''}`} key={email}>
                 {/* Checkbox cell */}
 
@@ -114,6 +139,13 @@ export const ValidVotersTable = ({
                   <input readOnly checked={!!checked[index]} className="hoverable" type="checkbox" />
                 </td>
                 <td className="show-strikethrough">{index + 1}</td>
+                {shouldShowRegistrationColumns && (
+                  <>
+                    <td>{first_name}</td>
+                    <td>{last_name}</td>
+                  </>
+                )}
+
                 <td className="show-strikethrough">
                   <span style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <span>{email}</span>
@@ -146,6 +178,7 @@ export const ValidVotersTable = ({
                     </span>
                   </span>
                 </td>
+                {shouldShowRegistrationColumns && <td className="text-center">{is_email_verified ? '✓' : ''}</td>}
                 <td className="show-strikethrough" style={{ fontFamily: 'monospace' }}>
                   {mask_tokens ? mask(auth_token) : auth_token}
                 </td>

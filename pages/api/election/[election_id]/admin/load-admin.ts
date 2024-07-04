@@ -12,10 +12,13 @@ export type Voter = {
   email: string
   esignature?: string
   esignature_review: ReviewLog[]
+  first_name: string
   has_voted: boolean
   index: number
   invalidated?: boolean
   invite_queued?: QueueLog[]
+  is_email_verified?: boolean
+  last_name: string
   mailgun_events: { accepted?: MgEvent[]; delivered?: MgEvent[]; failed?: MgEvent[] }
 }
 export type Trustee = {
@@ -38,6 +41,7 @@ export type AdminData = {
   notified_unlocked?: number
   threshold_public_key?: string
   trustees?: Trustee[]
+  voter_applications_allowed?: boolean
   voters?: Voter[]
 }
 
@@ -75,6 +79,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     esignature_requested,
     notified_unlocked,
     threshold_public_key,
+    voter_applications_allowed,
   } = {
     ...electionDoc.data(),
   } as {
@@ -85,6 +90,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     esignature_requested?: boolean
     notified_unlocked?: number
     threshold_public_key?: string
+    voter_applications_allowed?: boolean
   }
 
   // Build trustees objects
@@ -132,15 +138,29 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Build voters objects
   const voters: Voter[] = (await loadVoters).docs.reduce((acc: Voter[], doc) => {
-    const { auth_token, email, esignature_review, index, invalidated_at, invite_queued, mailgun_events } = {
+    const {
+      auth_token,
+      email,
+      esignature_review,
+      first_name,
+      index,
+      invalidated_at,
+      invite_queued,
+      is_email_verified,
+      last_name,
+      mailgun_events,
+    } = {
       ...doc.data(),
     } as {
       auth_token: string
       email: string
       esignature_review: ReviewLog[]
+      first_name: string
       index: number
       invalidated_at?: Date
       invite_queued: QueueLog[]
+      is_email_verified?: boolean
+      last_name: string
       mailgun_events: { accepted: MgEvent[]; delivered: MgEvent[] }
     }
     return [
@@ -150,10 +170,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         email,
         esignature: (votesByAuth[auth_token] || [])[1],
         esignature_review,
+        first_name,
         has_voted: !!votesByAuth[auth_token] || !!invalidatedVotesByAuth[auth_token],
         index,
         invalidated: invalidated_at ? true : undefined,
         invite_queued,
+        is_email_verified,
+        last_name,
         mailgun_events,
       },
     ]
@@ -169,6 +192,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     notified_unlocked,
     threshold_public_key,
     trustees,
+    voter_applications_allowed,
     voters,
   } as AdminData)
 }

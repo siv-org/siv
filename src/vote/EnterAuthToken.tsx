@@ -1,20 +1,15 @@
 import { TextField } from '@mui/material'
 import router from 'next/router'
 import { useRef, useState } from 'react'
-
-import { OnClickButton } from '../_shared/Button'
+import { OnClickButton } from 'src/_shared/Button'
 
 export const EnterAuthToken = () => {
   const [error, setError] = useState('')
   const [text, setText] = useState('')
-
   const submitBtn = useRef<HTMLAnchorElement>(null)
-
   return (
-    <div className="enter-auth-container">
-      <h1>To cast a vote...</h1>
-      <p>Enter your Voter Authorization Token:</p>
-      <div className="row">
+    <>
+      <div className="flex items-start mt-6">
         <TextField
           autoFocus
           InputLabelProps={{ style: { fontSize: 22 } }}
@@ -30,7 +25,7 @@ export const EnterAuthToken = () => {
             try {
               testAuthToken(event.target.value)
             } catch (e) {
-              if (typeof e === 'string') setError(e)
+              if (typeof e === 'string') return setError(e)
               setError('Caught error w/o message')
             }
 
@@ -42,7 +37,7 @@ export const EnterAuthToken = () => {
           disabled={text.length !== 10 || !!error}
           ref={submitBtn}
           style={{ margin: 0, marginLeft: 10, padding: '19px 15px' }}
-          onClick={async () => {
+          onClick={() => {
             // Update auth in URL
             const url = new URL(window.location.toString())
             url.searchParams.set('auth', text.toLowerCase())
@@ -52,7 +47,7 @@ export const EnterAuthToken = () => {
           Submit
         </OnClickButton>
       </div>
-      <p className="grey">
+      <p className="opacity-60">
         <i>Example:</i> 22671df063
         <br />
         <br />
@@ -61,23 +56,7 @@ export const EnterAuthToken = () => {
         <br />
         Unique for each election.
       </p>
-      <style jsx>{`
-        .enter-auth-container {
-          max-width: 350px;
-          margin: 0 auto;
-        }
-
-        .row {
-          display: flex;
-          flex-direction: row;
-          align-items: flex-start;
-        }
-
-        .grey {
-          opacity: 0.6;
-        }
-      `}</style>
-    </div>
+    </>
   )
 }
 

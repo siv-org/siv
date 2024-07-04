@@ -4,14 +4,15 @@ import { useReducer } from 'react'
 export const CollapsibleSection = ({ children, title }: { children: JSX.Element | JSX.Element[]; title: string }) => {
   const [collapsed, toggle] = useReducer((state) => !state, false)
   return (
-    <div className="container">
+    <section>
       <h3 className={collapsed ? 'collapsed' : ''} onClick={toggle}>
         <>{title}</>
         <span>{collapsed ? <CaretRightOutlined /> : <CaretDownOutlined />}</span>
       </h3>
       {!collapsed && <div className="expanded">{children}</div>}
       <style jsx>{`
-        div {
+        div,
+        section {
           margin-bottom: 20px;
         }
 
@@ -51,6 +52,6 @@ export const CollapsibleSection = ({ children, title }: { children: JSX.Element 
           margin-bottom: 50px;
         }
       `}</style>
-    </div>
+    </section>
   )
 }

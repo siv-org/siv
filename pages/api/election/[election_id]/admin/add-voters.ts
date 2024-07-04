@@ -32,10 +32,13 @@ export async function addVotersToElection(new_voters: string[], election_id: str
   const existing_voters = new Set()
   ;(await loadVoters).docs.map((d) => existing_voters.add(d.data().email))
 
+  // De-dupe new voters
+  const deduped_new_voters = Array.from(new Set(new_voters)) as string[]
+
   // Separate uniques from already_added
   const unique_new_emails: string[] = []
   const already_added: string[] = []
-  new_voters.forEach((v: string) => {
+  deduped_new_voters.forEach((v: string) => {
     if (v) {
       existing_voters.has(v) ? already_added.push(v) : unique_new_emails.push(v)
     }

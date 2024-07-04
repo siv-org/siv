@@ -34,7 +34,7 @@ export const InvalidVotersTable = ({
   return (
     <>
       <p className="mt-12 mb-1">Invalidated voters:</p>
-      <table>
+      <table className="pb-3">
         <thead>
           <tr>
             <th>

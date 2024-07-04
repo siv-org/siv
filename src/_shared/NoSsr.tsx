@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 interface NoSSRProps {
   /** The content to render on client. */
-  children?: React.JSX.Element | React.JSX.Element[]
+  children?: React.JSX.Element | (React.JSX.Element | false)[]
   /** Optional content to show before the component renders on client. This renders during server-side rendering (SSR). */
   onSSR?: React.FC
 }

@@ -13,6 +13,7 @@ export type ElectionInfo = {
   observers?: string[]
   p?: string
   threshold_public_key?: string
+  voter_applications_allowed?: boolean
 }
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -48,6 +49,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     last_decrypted_at,
     p,
     threshold_public_key,
+    voter_applications_allowed,
   } = data
 
   const info: ElectionInfo = {
@@ -61,6 +63,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     observers,
     p,
     threshold_public_key,
+    voter_applications_allowed,
   }
 
   // Return public election fields
