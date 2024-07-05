@@ -41,8 +41,8 @@ export const ToggleRegistration = () => {
       {voter_applications_allowed && (
         <div className="mt-1 mb-5">
           <span className="text-xs opacity-90">Voter’s Registration link:</span>{' '}
-          <a href={`/election/${election_id}/vote`} rel="noreferrer" target="_blank">
-            {window.location.origin}/election/{election_id}/vote
+          <a href={`/election/${election_id}/vote?auth=link`} rel="noreferrer" target="_blank">
+            {window.location.origin}/election/{election_id}/vote?auth=link
           </a>
         </div>
       )}
