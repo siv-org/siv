@@ -38,7 +38,7 @@ export const YourAuthToken = ({ auth, election_id }: { auth?: string; election_i
           <span className="loader" /> Checking if Voter Auth Token is valid...
         </p>
       ) : status === 'fail' ? (
-        <p className="border-red-500">
+        <p className="!border-red-500">
           <span className="text-[10px] mr-2">❌</span> <b className="mr-1">Error:</b> {message}
         </p>
       ) : status === 'preview' ? (
@@ -50,20 +50,18 @@ export const YourAuthToken = ({ auth, election_id }: { auth?: string; election_i
           <UserOutlined className="text-[16px] mr-2 relative bottom-px" /> Authentication will come next
         </p>
       ) : (
-        <p className="authorized">✅ {message}</p>
+        <p className="!border-green-700">✅ {message}</p>
       )}
       <style jsx>{`
         p {
           padding: 9px 8px;
-          border: 1px solid #ccc;
+          border-width: 1px;
+          border-style: solid;
+          border-color: #ccc;
           border-radius: 3px;
           height: 45px;
           display: flex;
           align-items: center;
-        }
-
-        .authorized {
-          border-color: green;
         }
 
         .loader {
