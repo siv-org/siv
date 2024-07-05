@@ -38,8 +38,8 @@ export const YourAuthToken = ({ auth, election_id }: { auth?: string; election_i
           <span className="loader" /> Checking if Voter Auth Token is valid...
         </p>
       ) : status === 'fail' ? (
-        <p className="error">
-          <span className="text-[10px] mr-2">❌</span> <b>Error:</b> {message}
+        <p className="border-red-500">
+          <span className="text-[10px] mr-2">❌</span> <b className="mr-1">Error:</b> {message}
         </p>
       ) : status === 'preview' ? (
         <p className="italic opacity-70">
@@ -60,14 +60,6 @@ export const YourAuthToken = ({ auth, election_id }: { auth?: string; election_i
           height: 45px;
           display: flex;
           align-items: center;
-        }
-
-        .error {
-          border-color: red;
-        }
-
-        .error b {
-          margin-right: 5px;
         }
 
         .authorized {
