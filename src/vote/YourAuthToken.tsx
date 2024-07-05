@@ -3,11 +3,11 @@ import { useEffect, useState } from 'react'
 
 import { api } from '../api-helper'
 
-type Status = undefined | 'fail' | 'pass' | 'preview' | 'link'
+type Status = '' | 'fail' | 'pass' | 'preview' | 'link'
 
 export const YourAuthToken = ({ auth, election_id }: { auth?: string; election_id?: string }) => {
   const [message, setMessage] = useState('')
-  const [status, setStatus] = useState<Status>()
+  const [status, setStatus] = useState<Status>('')
 
   async function validateAuthToken() {
     if (auth === 'preview') return setStatus('preview')
@@ -18,7 +18,7 @@ export const YourAuthToken = ({ auth, election_id }: { auth?: string; election_i
 
     // Reset status
     setMessage('')
-    setStatus(undefined)
+    setStatus('')
 
     // Ask API
     const response = await api('check-auth-token', { auth, election_id })
@@ -33,37 +33,33 @@ export const YourAuthToken = ({ auth, election_id }: { auth?: string; election_i
 
   return (
     <>
-      {!status ? (
-        <p>
-          <Loader /> Checking if Voter Auth Token is valid...
-        </p>
-      ) : status === 'fail' ? (
-        <p className="!border-red-500">
-          <span className="text-[10px] mr-2">❌</span> <b className="mr-1">Error:</b> {message}
-        </p>
-      ) : status === 'preview' ? (
-        <p className="italic opacity-70">
-          <span className="mr-2">🔍</span> Preview mode, skipping auth check
-        </p>
-      ) : status === 'link' ? (
-        <p className="italic opacity-70">
-          <UserOutlined className="text-[16px] mr-2 relative bottom-px" /> Authentication will come next
-        </p>
-      ) : (
-        <p className="!border-green-700">✅ {message}</p>
-      )}
-      <style jsx>{`
-        p {
-          padding: 9px 8px;
-          border-width: 1px;
-          border-style: solid;
-          border-color: #ccc;
-          border-radius: 3px;
-          height: 45px;
-          display: flex;
-          align-items: center;
-        }
-      `}</style>
+      <p
+        className={`px-2 border border-[#ccc] border-solid rounded h-[45px] flex items-center ${
+          status === 'fail' && '!border-red-500'
+        } ${status === 'pass' && '!border-green-700'} ${['preview', 'link'].includes(status) && 'italic opacity-70'}`}
+      >
+        {!status ? (
+          <>
+            <Loader /> Checking if Voter Auth Token is valid...
+          </>
+        ) : status === 'fail' ? (
+          <>
+            <span className="text-[10px] mr-2">❌</span> <b className="mr-1">Error:</b> {message}
+          </>
+        ) : status === 'pass' ? (
+          `✅ ${message}`
+        ) : status === 'preview' ? (
+          <>
+            <span className="mr-2">🔍</span> Preview mode, skipping auth check
+          </>
+        ) : status === 'link' ? (
+          <>
+            <UserOutlined className="text-[16px] mr-2 relative bottom-px" /> Auth check will come next
+          </>
+        ) : (
+          'Unknown auth state'
+        )}
+      </p>
     </>
   )
 }
