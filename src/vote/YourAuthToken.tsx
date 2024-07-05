@@ -39,7 +39,7 @@ export const YourAuthToken = ({ auth, election_id }: { auth?: string; election_i
         </p>
       ) : status === 'fail' ? (
         <p className="error">
-          <span className="x">❌</span> <b>Error:</b> {message}
+          <span className="text-[10px] mr-2">❌</span> <b>Error:</b> {message}
         </p>
       ) : status === 'preview' ? (
         <p className="italic opacity-70">
@@ -64,11 +64,6 @@ export const YourAuthToken = ({ auth, election_id }: { auth?: string; election_i
 
         .error {
           border-color: red;
-        }
-
-        .x {
-          font-size: 10px;
-          margin-right: 8px;
         }
 
         .error b {
