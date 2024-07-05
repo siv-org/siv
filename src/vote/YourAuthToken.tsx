@@ -1,18 +1,17 @@
+import { UserOutlined } from '@ant-design/icons'
 import { useEffect, useState } from 'react'
 
 import { api } from '../api-helper'
 
-type Status = undefined | 'fail' | 'pass' | 'warn'
+type Status = undefined | 'fail' | 'pass' | 'preview' | 'link'
 
 export const YourAuthToken = ({ auth, election_id }: { auth?: string; election_id?: string }) => {
   const [message, setMessage] = useState('')
   const [status, setStatus] = useState<Status>()
 
   async function validateAuthToken() {
-    if (auth === 'preview') {
-      setStatus('warn')
-      return setMessage('Preview mode, skipping auth check')
-    }
+    if (auth === 'preview') return setStatus('preview')
+    if (auth === 'link') return setStatus('link')
 
     // Wait for election_id
     if (!election_id) return
@@ -42,9 +41,13 @@ export const YourAuthToken = ({ auth, election_id }: { auth?: string; election_i
         <p className="error">
           <span className="x">❌</span> <b>Error:</b> {message}
         </p>
-      ) : status === 'warn' ? (
+      ) : status === 'preview' ? (
         <p className="italic opacity-70">
-          <span className="mr-2">🔍</span> {message}
+          <span className="mr-2">🔍</span> Preview mode, skipping auth check
+        </p>
+      ) : status === 'link' ? (
+        <p className="italic opacity-70">
+          <UserOutlined className="text-[16px] mr-2 relative bottom-px" /> Authentication will come next
         </p>
       ) : (
         <p className="authorized">✅ {message}</p>
