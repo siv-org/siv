@@ -35,7 +35,7 @@ export const YourAuthToken = ({ auth, election_id }: { auth?: string; election_i
     <>
       {!status ? (
         <p>
-          <span className="loader" /> Checking if Voter Auth Token is valid...
+          <Loader /> Checking if Voter Auth Token is valid...
         </p>
       ) : status === 'fail' ? (
         <p className="!border-red-500">
@@ -63,28 +63,13 @@ export const YourAuthToken = ({ auth, election_id }: { auth?: string; election_i
           display: flex;
           align-items: center;
         }
-
-        .loader {
-          display: inline-block;
-          border: 4px solid #eee;
-          border-top: 4px solid #aaa;
-          border-radius: 50%;
-          width: 17px;
-          height: 17px;
-          animation: spin 1.2s linear infinite;
-
-          margin-right: 8px;
-        }
-
-        @keyframes spin {
-          0% {
-            transform: rotate(0deg);
-          }
-          100% {
-            transform: rotate(360deg);
-          }
-        }
       `}</style>
     </>
+  )
+}
+
+function Loader() {
+  return (
+    <span className="inline-block border-4 border-solid border-[#eee] border-t-[#aaa] rounded-full w-[17px] h-[17px] animate-spin mr-2" />
   )
 }
