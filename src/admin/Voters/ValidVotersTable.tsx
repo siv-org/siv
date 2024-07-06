@@ -100,7 +100,7 @@ export const ValidVotersTable = ({
             )}
           </tr>
         </thead>
-        <tbody>
+        <tbody className="[&_td]:whitespace-nowrap">
           {(showAll ? shown_voters : onThisPage).map(
             (
               {
@@ -190,10 +190,6 @@ export const ValidVotersTable = ({
             border: 1px solid #ccc;
             padding: 3px 10px;
             margin: 0;
-          }
-
-          td {
-            white-space: nowrap;
           }
         `}</style>
       </table>
