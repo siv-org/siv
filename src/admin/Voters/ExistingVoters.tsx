@@ -3,6 +3,7 @@ import { useEffect, useReducer, useState } from 'react'
 import { useStored } from '../useStored'
 import { InvalidVotersTable } from './InvalidVotersTable'
 import { NumVotedRow } from './NumVotedRow'
+import { PendingVotesTable } from './PendingVotesTable'
 import { getStatus } from './Signature'
 import { TopBarButtons } from './TopBarButtons'
 import { UnlockedStatus } from './UnlockedStatus'
@@ -41,6 +42,8 @@ export const ExistingVoters = () => {
       />
 
       <ValidVotersTable {...{ checked, hide_approved, hide_voted, num_voted, set_checked }} />
+
+      <PendingVotesTable {...{ checked, set_checked }} />
 
       <InvalidVotersTable {...{ checked, hide_approved, hide_voted, set_checked }} />
     </>
