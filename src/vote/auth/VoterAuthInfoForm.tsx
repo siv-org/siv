@@ -10,6 +10,7 @@ export const VoterAuthInfoForm = () => {
   const [first_name, setFirstName] = useState('')
   const [last_name, setLastName] = useState('')
   const [email, setEmail] = useState('')
+  const [submitting, setSubmitting] = useState(false)
   const submitBtn = useRef<HTMLAnchorElement>(null)
   const router = useRouter()
   const { election_id, link: link_auth } = router.query as { election_id?: string; link?: string }
@@ -54,12 +55,14 @@ export const VoterAuthInfoForm = () => {
 
       <OnClickButton
         className="w-full text-xl text-center"
-        disabled={!first_name || !last_name || !validateEmail(email) || !!error}
+        disabled={!first_name || !last_name || !validateEmail(email) || !!error || submitting}
         ref={submitBtn}
         style={{ margin: 0, padding: '19px 15px' }}
         onClick={async () => {
           // Validate email
           if (!validateEmail(email)) return setError('Invalid email address')
+
+          setSubmitting(true)
 
           // Submit details to server
           const response = await api(`election/${election_id}/submit-link-auth-info`, {
@@ -68,18 +71,18 @@ export const VoterAuthInfoForm = () => {
             last_name,
             link_auth,
           })
+          setSubmitting(false)
+
           if (!response.ok) return setError((await response.json()).error)
 
           // Store the email address so we can remind them later to check it
           localStorage.setItem(`registration-${link_auth}`, email)
 
-          // // Redirect back to submission screen
-          // const url = new URL(window.location.toString())
-          // url.searchParams.set('auth', auth_token.toLowerCase())
-          // router.push(url)
+          // Redirect back to submission screen
+          router.push(`${window.location.origin}/election/${election_id}/vote?auth=link&link_auth=${link_auth}`)
         }}
       >
-        Submit
+        <>Submit{submitting ? 'ting...' : ''}</>
       </OnClickButton>
     </section>
   )
