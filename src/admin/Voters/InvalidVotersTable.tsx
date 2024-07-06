@@ -26,7 +26,7 @@ export const InvalidVotersTable = ({ hide_approved, hide_voted }: { hide_approve
   return (
     <>
       <p className="mt-12 mb-1">Invalidated voters:</p>
-      <table className="block w-full pb-3 overflow-auto border-collapse">
+      <table className="block w-full pb-3 overflow-auto border-collapse [&_tr>*]:[border:1px_solid_#ccc] [&_tr>*]:px-2.5 [&_tr>*]:py-[3px]">
         <thead>
           <tr className="bg-[#f9f9f9] text-[11px]">
             <CheckboxHeaderCell {...{ checked, set_checked, set_last_selected }} />
@@ -64,13 +64,6 @@ export const InvalidVotersTable = ({ hide_approved, hide_voted }: { hide_approve
           ))}
         </tbody>
       </table>
-      <style jsx>{`
-        th,
-        td {
-          border: 1px solid #ccc;
-          padding: 3px 10px;
-        }
-      `}</style>
     </>
   )
 }

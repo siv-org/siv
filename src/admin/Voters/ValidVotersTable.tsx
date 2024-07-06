@@ -51,7 +51,7 @@ export const ValidVotersTable = ({
 
   return (
     <>
-      <table className="block w-full pb-3 overflow-auto border-collapse">
+      <table className="block w-full pb-3 overflow-auto border-collapse [&_tr>*]:[border:1px_solid_#ccc] [&_tr>*]:px-2.5 [&_tr>*]:py-[3px]">
         <thead>
           <tr className="bg-[#f9f9f9] text-[11px]">
             <CheckboxHeaderCell {...{ checked, set_checked, set_last_selected }} />
@@ -163,14 +163,6 @@ export const ValidVotersTable = ({
             ),
           )}
         </tbody>
-
-        <style jsx>{`
-          th,
-          td {
-            border: 1px solid #ccc;
-            padding: 3px 10px;
-          }
-        `}</style>
       </table>
       {totalPages > 1 && !showAll && (
         <div className="text-[13px] mt-2.5">
