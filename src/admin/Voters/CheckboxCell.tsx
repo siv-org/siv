@@ -1,4 +1,4 @@
-const hoverable = `cursor-pointer hover:bg-[#f2f2f2]`
+export const hoverable = `cursor-pointer hover:bg-[#f2f2f2]`
 
 export const CheckboxCell = ({
   checked,

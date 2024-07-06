@@ -2,7 +2,7 @@ import Image from 'next/image'
 import { useReducer, useState } from 'react'
 
 import { useStored } from '../useStored'
-import { CheckboxCell } from './CheckboxCell'
+import { CheckboxCell, hoverable } from './CheckboxCell'
 import InvalidatedVoteIcon from './invalidated.png'
 import { mask } from './mask-token'
 import { Signature, getStatus } from './Signature'
@@ -43,7 +43,7 @@ export const InvalidVotersTable = ({ hide_approved, hide_voted }: { hide_approve
             </th>
             <th>#</th>
             <th>email</th>
-            <th className="hoverable" onClick={toggle_tokens}>
+            <th className={hoverable} onClick={toggle_tokens}>
               {mask_tokens ? 'masked' : 'full'}
               <br />
               auth token
@@ -113,11 +113,6 @@ export const InvalidVotersTable = ({ hide_approved, hide_voted }: { hide_approve
           left: 0;
           border-bottom: 1px solid #aaa;
           width: 100%;
-        }
-
-        .hoverable:hover {
-          cursor: pointer;
-          background-color: #f2f2f2;
         }
       `}</style>
     </>
