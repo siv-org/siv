@@ -17,8 +17,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Check if the verification code is good
   if (!voteDoc.exists || voteDoc.data()?.verification_code !== code) {
-    pushover(
-      'Verify reg-link, bad code',
+    await pushover(
+      'Verify link-auth email, bad code',
       `Email:${email}\n\nInput code: ${code}\nDB code: ${
         voteDoc.data()?.verification_code
       }\n\nElection ID: ${election_id}`,
@@ -29,8 +29,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   if (invalid) {
-    // Update the status
-    await voteDoc.ref.update({ email_marked_invalid_at: new Date(), is_email_verified: false })
+    await Promise.all([
+      // Update the status
+      voteDoc.ref.update({ email_marked_invalid_at: new Date(), is_email_verified: false }),
+
+      // Notify admin
+      pushover('Verify link-auth email marked invalid', `Email:${email}\n\nElection ID: ${election_id}`),
+    ])
 
     // Return a success response
     return res.status(200).json({ message: 'Email successfully marked invalid.' })
