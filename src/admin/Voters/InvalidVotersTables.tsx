@@ -1,6 +1,5 @@
 import Image from 'next/image'
 import { useReducer, useState } from 'react'
-import { api } from 'src/api-helper'
 
 import { useStored } from '../useStored'
 import InvalidatedVoteIcon from './invalidated.png'
@@ -8,15 +7,7 @@ import { mask } from './mask-token'
 import { Signature, getStatus } from './Signature'
 import { use_multi_select } from './use-multi-select'
 
-export const InvalidVotersTable = ({
-  hide_approved,
-  hide_voted,
-  num_voted,
-}: {
-  hide_approved: boolean
-  hide_voted: boolean
-  num_voted: number
-}) => {
+export const InvalidVotersTable = ({ hide_approved, hide_voted }: { hide_approved: boolean; hide_voted: boolean }) => {
   const { election_id, esignature_requested, voters } = useStored()
   const [mask_tokens, toggle_tokens] = useReducer((state) => !state, true)
   const { last_selected, pressing_shift, set_last_selected } = use_multi_select()
@@ -57,21 +48,7 @@ export const InvalidVotersTable = ({
               auth token
             </th>
             <th>voted</th>
-            {esignature_requested && (
-              <th
-                className="hoverable"
-                onClick={() => {
-                  if (confirm(`Do you want to approve all ${num_voted} signatures?`)) {
-                    api(`election/${election_id}/admin/review-signature`, {
-                      emails: shown_voters.filter(({ has_voted }) => has_voted).map((v) => v.email),
-                      review: 'approve',
-                    })
-                  }
-                }}
-              >
-                signature
-              </th>
-            )}
+            {esignature_requested && <th>signature</th>}
           </tr>
         </thead>
         <tbody>

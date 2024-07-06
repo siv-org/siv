@@ -42,7 +42,7 @@ export const ExistingVoters = () => {
 
       <ValidVotersTable {...{ checked, hide_approved, hide_voted, num_voted, set_checked }} />
 
-      <InvalidVotersTable {...{ checked, hide_approved, hide_voted, num_voted, set_checked }} />
+      <InvalidVotersTable {...{ checked, hide_approved, hide_voted, set_checked }} />
     </>
   )
 }
