@@ -19,8 +19,8 @@ export const TopBarButtons = ({
   const { width } = useWindowDimensions()
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
-      <div style={{ display: 'flex', flexDirection: width < 400 ? 'column' : 'row' }}>
+    <div className="flex justify-between mb-[5px]">
+      <div className={`flex ${width < 400 ? 'flex-col' : 'flex-row'}`}>
         <SendInvitationsButton {...{ checked, num_checked, set_error }} />
         <InvalidateVotersButton {...{ checked, num_checked, set_error }} />
       </div>
