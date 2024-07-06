@@ -54,7 +54,7 @@ export const InvalidVotersTable = ({ hide_approved, hide_voted }: { hide_approve
 
               <td className="p-0 text-center">
                 {has_voted ? (
-                  <Image className="object-contain scale-25 " height={23} src={InvalidatedVoteIcon} width={23} />
+                  <Image className="object-contain scale-25" height={23} src={InvalidatedVoteIcon} width={23} />
                 ) : null}
               </td>
 
