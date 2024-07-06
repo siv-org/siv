@@ -1,11 +1,10 @@
-import Image from 'next/image'
+import { UsergroupAddOutlined } from '@ant-design/icons'
 import { useState } from 'react'
 
 import { api } from '../../api-helper'
 import { Switch } from '../BallotDesign/Switch'
 import { Spinner } from '../Spinner'
 import { revalidate, useStored } from '../useStored'
-import registrationIcon from './registration-icon.png'
 
 export const ToggleShareableLink = () => {
   const [updating, setUpdating] = useState(false)
@@ -28,9 +27,7 @@ export const ToggleShareableLink = () => {
   return (
     <section className="p-1 ml-[-5px]">
       <label className="cursor-pointer" onClick={toggleVoterApplications}>
-        <div style={{ display: 'inline-block', marginRight: 5, position: 'relative', top: 5 }}>
-          <Image height={21} layout="fixed" src={registrationIcon} width={20} />
-        </div>
+        <UsergroupAddOutlined className="text-[20px] mr-1.5" />
         Allow new voters to join via link?
       </label>
       <span className="relative bottom-[3px] ml-2">
