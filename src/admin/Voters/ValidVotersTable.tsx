@@ -53,7 +53,7 @@ export const ValidVotersTable = ({
     <>
       <table className="block w-full pb-3 overflow-auto border-collapse">
         <thead>
-          <tr>
+          <tr className="bg-[#f9f9f9] text-[11px]">
             <th>
               <input
                 className="cursor-pointer"
@@ -194,11 +194,6 @@ export const ValidVotersTable = ({
 
           td {
             white-space: nowrap;
-          }
-
-          th {
-            background: #f9f9f9;
-            font-size: 11px;
           }
         `}</style>
       </table>

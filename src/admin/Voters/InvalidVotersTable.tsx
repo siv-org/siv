@@ -28,7 +28,7 @@ export const InvalidVotersTable = ({ hide_approved, hide_voted }: { hide_approve
       <p className="mt-12 mb-1">Invalidated voters:</p>
       <table className="block w-full pb-3 overflow-auto border-collapse">
         <thead>
-          <tr>
+          <tr className="bg-[#f9f9f9] text-[11px]">
             <th>
               <input
                 className="cursor-pointer"
@@ -94,11 +94,6 @@ export const InvalidVotersTable = ({ hide_approved, hide_voted }: { hide_approve
           border: 1px solid #ccc;
           padding: 3px 10px;
           margin: 0;
-        }
-
-        th {
-          background: #f9f9f9;
-          font-size: 11px;
         }
 
         tr td.show-strikethrough {
