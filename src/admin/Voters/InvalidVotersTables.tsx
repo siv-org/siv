@@ -34,7 +34,7 @@ export const InvalidVotersTable = ({
   return (
     <>
       <p className="mt-12 mb-1">Invalidated voters:</p>
-      <table className="pb-3">
+      <table className="block w-full pb-3 overflow-auto border-collapse">
         <thead>
           <tr>
             <th>
@@ -76,7 +76,7 @@ export const InvalidVotersTable = ({
         </thead>
         <tbody>
           {shown_voters.map(({ auth_token, email, esignature, esignature_review, has_voted }, index) => (
-            <tr className={`${checked[index] ? 'checked' : ''}`} key={email}>
+            <tr className={`${checked[index] && 'bg-[#f1f1f1]'}`} key={email}>
               {/* Checkbox cell */}
 
               <td
@@ -121,13 +121,6 @@ export const InvalidVotersTable = ({
         </tbody>
       </table>
       <style jsx>{`
-        table {
-          border-collapse: collapse;
-          display: block;
-          overflow: auto;
-          width: 100%;
-        }
-
         th,
         td {
           border: 1px solid #ccc;
@@ -138,10 +131,6 @@ export const InvalidVotersTable = ({
         th {
           background: #f9f9f9;
           font-size: 11px;
-        }
-
-        tr.checked {
-          background: #f1f1f1;
         }
 
         tr td.show-strikethrough {
