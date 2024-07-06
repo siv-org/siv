@@ -138,7 +138,7 @@ export const ValidVotersTable = ({
                 >
                   <input readOnly checked={!!checked[index]} className="hoverable" type="checkbox" />
                 </td>
-                <td className="show-strikethrough">{index + 1}</td>
+                <td>{index + 1}</td>
                 {shouldShowRegistrationColumns && (
                   <>
                     <td>{first_name}</td>
@@ -146,7 +146,7 @@ export const ValidVotersTable = ({
                   </>
                 )}
 
-                <td className="show-strikethrough">
+                <td>
                   <span style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <span>{email}</span>
                     {/* Edit email btn */}
@@ -179,9 +179,7 @@ export const ValidVotersTable = ({
                   </span>
                 </td>
                 {shouldShowRegistrationColumns && <td className="text-center">{is_email_verified ? '✓' : ''}</td>}
-                <td className="show-strikethrough" style={{ fontFamily: 'monospace' }}>
-                  {mask_tokens ? mask(auth_token) : auth_token}
-                </td>
+                <td style={{ fontFamily: 'monospace' }}>{mask_tokens ? mask(auth_token) : auth_token}</td>
 
                 <QueuedCell {...{ invite_queued }} />
                 <DeliveriesAndFailures {...mailgun_events} deliveries={voterInvites[email]} />
