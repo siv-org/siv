@@ -1,12 +1,12 @@
 import { useEffect, useReducer, useState } from 'react'
 
 import { useStored } from '../useStored'
-import { InvalidVotersTable } from './InvalidVotersTables'
+import { InvalidVotersTable } from './InvalidVotersTable'
 import { NumVotedRow } from './NumVotedRow'
 import { getStatus } from './Signature'
 import { TopBarButtons } from './TopBarButtons'
 import { UnlockedStatus } from './UnlockedStatus'
-import { ValidVotersTable } from './ValidVotersTables'
+import { ValidVotersTable } from './ValidVotersTable'
 
 export const ExistingVoters = () => {
   const { esignature_requested, valid_voters, voters } = useStored()
