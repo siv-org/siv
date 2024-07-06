@@ -50,7 +50,7 @@ export const ValidVotersTable = ({
 
   return (
     <>
-      <table className="pb-3">
+      <table className="block w-full pb-3 overflow-auto border-collapse">
         <thead>
           <tr>
             <th>
@@ -196,13 +196,6 @@ export const ValidVotersTable = ({
         </tbody>
 
         <style jsx>{`
-          table {
-            border-collapse: collapse;
-            display: block;
-            overflow: auto;
-            width: 100%;
-          }
-
           th,
           td {
             border: 1px solid #ccc;
