@@ -2,25 +2,25 @@ import { firebase, pushover } from 'api/_services'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { code, election_id, email } = req.body
+  const { code, election_id, email, invalid, link_auth } = req.body
   // Validate the request has required parameters
-  if (!code || !email || !election_id) return res.status(400).json({ error: 'Missing parameters.' })
+  if (!code || !link_auth || !election_id) return res.status(400).json({ error: 'Missing parameters.' })
 
-  // Lookup the voter doc
-  const voterDoc = await firebase
+  // Lookup the pending-vote
+  const voteDoc = await firebase
     .firestore()
     .collection('elections')
     .doc(election_id)
-    .collection('voters')
-    .doc(email)
+    .collection('votes-pending')
+    .doc(link_auth)
     .get()
 
   // Check if the verification code is good
-  if (!voterDoc.exists || voterDoc.data()?.verification_code !== code) {
+  if (!voteDoc.exists || voteDoc.data()?.verification_code !== code) {
     pushover(
       'Verify reg-link, bad code',
       `Email:${email}\n\nInput code: ${code}\nDB code: ${
-        voterDoc.data()?.verification_code
+        voteDoc.data()?.verification_code
       }\n\nElection ID: ${election_id}`,
     )
 
@@ -28,8 +28,16 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(400).json({ error: 'Invalid verification code' })
   }
 
+  if (invalid) {
+    // Update the status
+    await voteDoc.ref.update({ email_marked_invalid_at: new Date(), is_email_verified: false })
+
+    // Return a success response
+    return res.status(200).json({ message: 'Email successfully marked invalid.' })
+  }
+
   // Update the status to 'verified'
-  await voterDoc.ref.update({ is_email_verified: true })
+  await voteDoc.ref.update({ is_email_verified: true, verified_email_at: new Date() })
 
   // Return a success response
   return res.status(200).json({ message: 'Email verified successfully.' })

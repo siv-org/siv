@@ -44,15 +44,27 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     sendEmail({
       from: 'SIV',
       recipient: email,
-      subject: 'SIV Verification Email',
-      text: `Please verify your email address by clicking the link below:
+      subject: `Voter Email Verification: ${email}`,
+      text: `A vote was just cast in the Election <b><em>${
+        election.election_title
+      }</em></b>, with the name and email given:
+
+      <b>First Name:</b> ${first_name}
+      <b>Last Name:</b> ${last_name}
+      <b>Email:</b> ${email}
+
+      If this WAS you, please click here to verify your email address:
 
       ${button(
-        `${req.headers.origin}/verify_registration?email=${email}&code=${verification_code}&election_id=${election_id}`,
-        'Verify Your Email',
+        `${req.headers.origin}/verify_registration?email=${email}&code=${verification_code}&election_id=${election_id}&link_auth=${link_auth}`,
+        'Confirm this was me',
       )}
 
-  <em style="font-size:10px; opacity: 0.6;">If you did not authorize this request, press reply to let us know.</em>`,
+      <em style="font-size:11px; opacity: 0.6;">
+      If this was NOT you, click here:
+      <a href="${
+        req.headers.origin
+      }/verify_registration?code=${verification_code}&election_id=${election_id}&link_auth=${link_auth}&invalid=true">This was NOT me, that vote should be marked invalid</a></em>`,
     }),
   ])
 
