@@ -31,7 +31,7 @@ export const RequestEsignatures = () => {
         <span className="mr-1.5 relative top-0.5">
           <Image height={(218 / 700) * 70} layout="fixed" src={esignatureIcon} width={70} />
         </span>
-        Request eSignatures?
+        Request Drawn Signatures?
       </label>
       <span className="relative bottom-[3px] ml-3">
         <Switch checked={!!esignature_requested} label="" onClick={toggleESignature} />
