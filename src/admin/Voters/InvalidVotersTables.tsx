@@ -128,18 +128,6 @@ export const InvalidVotersTable = ({ hide_approved, hide_voted }: { hide_approve
           cursor: pointer;
           background-color: #f2f2f2;
         }
-
-        td .visible-on-parent-hover {
-          opacity: 0;
-        }
-        td:hover .visible-on-parent-hover {
-          opacity: 0.5;
-        }
-
-        .visible-on-parent-hover:hover {
-          cursor: pointer;
-          opacity: 1 !important;
-        }
       `}</style>
     </>
   )
