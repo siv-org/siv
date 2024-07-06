@@ -5,20 +5,29 @@ import { api } from 'src/api-helper'
 export const UnverifiedEmailModal = () => {
   const [isModalOpen, setModalOpen] = useState(false)
   const [email, setEmail] = useState('')
-  const { auth, election_id } = useRouter().query as { auth?: string; election_id?: string }
+  const { auth, election_id, link_auth } = useRouter().query as {
+    auth?: string
+    election_id?: string
+    link_auth?: string
+  }
 
   useEffect(() => {
     async function getVerificationStatus() {
-      const response = await api(`election/${election_id}/get-application-status`, { auth })
+      const request = link_auth
+        ? api(`election/${election_id}/get-link-auth-verification-status`, { link_auth })
+        : api(`election/${election_id}/get-application-status`, { auth })
+
+      const response = await request
 
       // No voter found or already pre-approved
       if (response.status >= 400) return
 
       const status = await response.text()
+
       // Show warning if unverified
       if (status == 'Unverified') {
         setModalOpen(true)
-        setEmail(localStorage.getItem(`registration-${auth}`) || 'your email')
+        setEmail(localStorage.getItem(`registration-${link_auth || auth}`) || 'your email')
       }
     }
     getVerificationStatus()
