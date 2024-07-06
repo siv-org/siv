@@ -24,7 +24,7 @@ export const ValidVotersTable = ({
   num_voted: number
   set_checked: (checked: boolean[]) => void
 }) => {
-  const { election_id, esignature_requested, voter_applications_allowed, voters } = useStored()
+  const { election_id, esignature_requested, voters } = useStored()
   const [mask_tokens, toggle_tokens] = useReducer((state) => !state, true)
   const { last_selected, pressing_shift, set_last_selected } = use_multi_select()
   const [showAll, setShowAll] = useState(false)
@@ -40,7 +40,7 @@ export const ValidVotersTable = ({
 
   const shouldShowRegistrationColumns =
     // eslint-disable-next-line no-prototype-builtins
-    voter_applications_allowed || shown_voters.some((voter) => voter.hasOwnProperty('is_email_verified'))
+    shown_voters.some((voter) => voter.hasOwnProperty('is_email_verified'))
 
   // Pagination logic
   const pageSize = 200
