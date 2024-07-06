@@ -175,7 +175,7 @@ export const ValidVotersTable = ({
                 <QueuedCell {...{ invite_queued }} />
                 <DeliveriesAndFailures {...mailgun_events} deliveries={voterInvites[email]} />
 
-                <td style={{ fontWeight: 700, textAlign: 'center' }}>{has_voted ? '✓' : ''}</td>
+                <td className="font-bold text-center">{has_voted ? '✓' : ''}</td>
 
                 {esignature_requested &&
                   (has_voted ? <Signature {...{ election_id, email, esignature, esignature_review }} /> : <td />)}
@@ -203,9 +203,9 @@ export const ValidVotersTable = ({
         `}</style>
       </table>
       {totalPages > 1 && !showAll && (
-        <div style={{ fontSize: 13, marginTop: 10 }}>
+        <div className="text-[13px] mt-2.5">
           Showing only first {pageSize} of {shown_voters.length}.{' '}
-          <a style={{ cursor: 'pointer' }} onClick={() => setShowAll(true)}>
+          <a className="cursor-pointer" onClick={() => setShowAll(true)}>
             (Show All)
           </a>
         </div>
