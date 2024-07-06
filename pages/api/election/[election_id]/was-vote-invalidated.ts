@@ -14,5 +14,5 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     .where('auth_token', '==', auth)
     .get()
 
-  return res.status(200).json(!!voters.docs[0].data().invalidated_at)
+  return res.status(200).json(!!voters.docs[0]?.data().invalidated_at)
 }
