@@ -1,4 +1,5 @@
 import * as Sentry from '@sentry/browser'
+import router from 'next/router'
 import { Dispatch, useState } from 'react'
 
 import { OnClickButton } from '../_shared/Button'
@@ -60,6 +61,12 @@ export const SubmitButton = ({
               if (error.startsWith('Vote already recorded')) return setButtonText('Submitted.')
 
               return setButtonText('Error')
+            }
+
+            // If auth is `link`, redirect to /auth page
+            if (auth === 'link') {
+              const { visit_to_add_auth } = await response.json()
+              if (visit_to_add_auth) router.push(visit_to_add_auth)
             }
 
             dispatch({ submitted_at: new Date().toString() })
