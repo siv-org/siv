@@ -4,7 +4,7 @@ import { useReducer, useState } from 'react'
 import { api } from 'src/api-helper'
 
 import { revalidate, useStored } from '../useStored'
-import { CheckboxCell } from './CheckboxCell'
+import { CheckboxCell, hoverable } from './CheckboxCell'
 import { DeliveriesAndFailures } from './DeliveriesAndFailures'
 import { mask } from './mask-token'
 import { QueuedCell } from './QueuedCell'
@@ -75,7 +75,7 @@ export const ValidVotersTable = ({
             )}
             <th>email</th>
             {shouldShowRegistrationColumns && <th>email verified?</th>}
-            <th className="hoverable" onClick={toggle_tokens}>
+            <th className={hoverable} onClick={toggle_tokens}>
               {mask_tokens ? 'masked' : 'full'}
               <br />
               auth token
@@ -85,7 +85,7 @@ export const ValidVotersTable = ({
             <th>voted</th>
             {esignature_requested && (
               <th
-                className="hoverable"
+                className={hoverable}
                 onClick={() => {
                   if (confirm(`Do you want to approve all ${num_voted} signatures?`)) {
                     api(`election/${election_id}/admin/review-signature`, {
@@ -199,11 +199,6 @@ export const ValidVotersTable = ({
           th {
             background: #f9f9f9;
             font-size: 11px;
-          }
-
-          .hoverable:hover {
-            cursor: pointer;
-            background-color: #f2f2f2;
           }
         `}</style>
       </table>
