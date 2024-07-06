@@ -25,7 +25,7 @@ export const TopBarButtons = ({
         <InvalidateVotersButton {...{ checked, num_checked, set_error }} />
       </div>
       {error && (
-        <span className="self-center border border-solid border-[#800a] py-[3px] px-2.5 rounded bg-[#fff6f6] max-w-[320px]">
+        <span className="self-start border border-solid border-[#800a] py-[3px] px-2.5 rounded bg-[#fff6f6] max-w-[320px]">
           <b> ⚠️ Error:</b> {error}
           <a className="ml-2.5 cursor-pointer" onClick={() => set_error('')}>
             x
