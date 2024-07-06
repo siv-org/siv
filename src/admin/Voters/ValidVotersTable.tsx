@@ -138,11 +138,11 @@ export const ValidVotersTable = ({
                 )}
 
                 <td>
-                  <span className="flex justify-between">
+                  <span className="flex justify-between group">
                     <span>{email}</span>
                     {/* Edit email btn */}
                     <span
-                      className="visible-on-parent-hover"
+                      className="group-hover:opacity-50 opacity-0 cursor-pointer hover:!opacity-100"
                       onClick={async () => {
                         const new_email = prompt('Edit email?', email)
 
@@ -204,18 +204,6 @@ export const ValidVotersTable = ({
           .hoverable:hover {
             cursor: pointer;
             background-color: #f2f2f2;
-          }
-
-          td .visible-on-parent-hover {
-            opacity: 0;
-          }
-          td:hover .visible-on-parent-hover {
-            opacity: 0.5;
-          }
-
-          .visible-on-parent-hover:hover {
-            cursor: pointer;
-            opacity: 1 !important;
           }
         `}</style>
       </table>
