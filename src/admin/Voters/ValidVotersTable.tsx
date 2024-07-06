@@ -56,7 +56,7 @@ export const ValidVotersTable = ({
           <tr>
             <th>
               <input
-                style={{ cursor: 'pointer' }}
+                className="cursor-pointer"
                 type="checkbox"
                 onChange={(event) => {
                   const new_checked = [...checked]
@@ -80,8 +80,8 @@ export const ValidVotersTable = ({
               <br />
               auth token
             </th>
-            <th style={{ width: 50 }}>invite queued</th>
-            <th style={{ width: 50 }}>invite delivered</th>
+            <th className="w-[50px]">invite queued</th>
+            <th className="w-[50px]">invite delivered</th>
             <th>voted</th>
             {esignature_requested && (
               <th
@@ -138,7 +138,7 @@ export const ValidVotersTable = ({
                 )}
 
                 <td>
-                  <span style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <span className="flex justify-between">
                     <span>{email}</span>
                     {/* Edit email btn */}
                     <span
@@ -170,7 +170,7 @@ export const ValidVotersTable = ({
                   </span>
                 </td>
                 {shouldShowRegistrationColumns && <td className="text-center">{is_email_verified ? '✓' : ''}</td>}
-                <td style={{ fontFamily: 'monospace' }}>{mask_tokens ? mask(auth_token) : auth_token}</td>
+                <td className="font-mono text-[12px]">{mask_tokens ? mask(auth_token) : auth_token}</td>
 
                 <QueuedCell {...{ invite_queued }} />
                 <DeliveriesAndFailures {...mailgun_events} deliveries={voterInvites[email]} />

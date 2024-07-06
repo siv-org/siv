@@ -31,7 +31,7 @@ export const InvalidVotersTable = ({ hide_approved, hide_voted }: { hide_approve
           <tr>
             <th>
               <input
-                style={{ cursor: 'pointer' }}
+                className="cursor-pointer"
                 type="checkbox"
                 onChange={(event) => {
                   const new_checked = [...checked]
@@ -72,7 +72,7 @@ export const InvalidVotersTable = ({ hide_approved, hide_voted }: { hide_approve
                   <span>{email}</span>
                 </span>
               </td>
-              <td className="show-strikethrough" style={{ fontFamily: 'monospace' }}>
+              <td className="show-strikethrough font-mono text-[12px]">
                 {mask_tokens ? mask(auth_token) : auth_token}
               </td>
 
