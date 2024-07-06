@@ -39,10 +39,15 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       electionDoc.update({ num_pending_votes: firestore.FieldValue.increment(1) }),
     ])
 
+    // Link to the auth url, particularly for AirgappedVoters
+    const host = req.headers.host
+    const protocol = host?.startsWith('localhost') ? 'http://' : 'https://'
+    const visit_to_add_auth = `${protocol}${host}/election/${election_id}/auth?link=${link_auth}`
+
     return res.status(200).json({
       link_auth,
       message: 'Submission received',
-      visit_to_add_auth: `https://siv.org/election/${election_id}/auth?link=${link_auth}`,
+      visit_to_add_auth,
     })
   }
 
