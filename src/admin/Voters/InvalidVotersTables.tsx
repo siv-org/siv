@@ -2,6 +2,7 @@ import Image from 'next/image'
 import { useReducer, useState } from 'react'
 
 import { useStored } from '../useStored'
+import { CheckboxCell } from './CheckboxCell'
 import InvalidatedVoteIcon from './invalidated.png'
 import { mask } from './mask-token'
 import { Signature, getStatus } from './Signature'
@@ -54,27 +55,17 @@ export const InvalidVotersTable = ({ hide_approved, hide_voted }: { hide_approve
         <tbody>
           {shown_voters.map(({ auth_token, email, esignature, esignature_review, has_voted }, index) => (
             <tr className={`${checked[index] && 'bg-[#f1f1f1]'}`} key={email}>
-              {/* Checkbox cell */}
-
-              <td
-                className="hoverable"
-                onClick={() => {
-                  const new_checked = [...checked]
-                  if (pressing_shift && last_selected !== undefined) {
-                    // If they're holding shift, set all between last_selected and this index to !checked[index]
-                    for (let i = Math.min(index, last_selected); i <= Math.max(index, last_selected); i += 1) {
-                      new_checked[i] = !checked[index]
-                    }
-                  } else {
-                    new_checked[index] = !checked[index]
-                  }
-
-                  set_last_selected(index)
-                  set_checked(new_checked)
+              <CheckboxCell
+                {...{
+                  checked,
+                  index,
+                  last_selected,
+                  pressing_shift,
+                  set_checked,
+                  set_last_selected,
                 }}
-              >
-                <input readOnly checked={checked[index]} className="hoverable" type="checkbox" />
-              </td>
+              />
+
               <td className="show-strikethrough">{index + 1}</td>
               <td className="show-strikethrough">
                 <span style={{ display: 'flex', justifyContent: 'space-between' }}>
