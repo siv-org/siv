@@ -62,7 +62,7 @@ export const VoterAuthInfoForm = () => {
           if (!validateEmail(email)) return setError('Invalid email address')
 
           // Submit details to server
-          const response = await api(`election/${election_id}/submit-auth`, {
+          const response = await api(`election/${election_id}/submit-link-auth-info`, {
             email,
             first_name,
             last_name,
