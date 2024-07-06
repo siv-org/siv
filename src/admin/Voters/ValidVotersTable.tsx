@@ -169,7 +169,6 @@ export const ValidVotersTable = ({
           td {
             border: 1px solid #ccc;
             padding: 3px 10px;
-            margin: 0;
           }
         `}</style>
       </table>

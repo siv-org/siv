@@ -69,7 +69,6 @@ export const InvalidVotersTable = ({ hide_approved, hide_voted }: { hide_approve
         td {
           border: 1px solid #ccc;
           padding: 3px 10px;
-          margin: 0;
         }
       `}</style>
     </>
