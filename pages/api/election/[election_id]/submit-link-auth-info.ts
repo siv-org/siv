@@ -31,7 +31,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   await Promise.all([
     // store info & email verification code
-    electionDoc.collection('votes-pending').doc(link_auth).set({
+    electionDoc.collection('votes-pending').doc(link_auth).update({
       auth_added_at: new Date(),
       email,
       first_name,
