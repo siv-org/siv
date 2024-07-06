@@ -1,3 +1,4 @@
+import { UserOutlined } from '@ant-design/icons'
 import { Head } from 'src/Head'
 import { TailwindPreflight } from 'src/TailwindPreflight'
 
@@ -14,14 +15,18 @@ export const AuthPage = () => {
 
           <div className="mt-3 mb-6 text-lg">
             <p className="mb-3 italic opacity-60">Your vote is now pending.</p>
-            <p>Please provide your identifying information.</p>
+            <p>
+              <UserOutlined className="relative bottom-[5px] mr-0.5" /> Please provide your identifying information.
+            </p>
             <p className="text-sm opacity-50">Your vote selections remain private.</p>
           </div>
+
           <VoterAuthInfoForm />
         </section>
+
         <Footer />
+        <TailwindPreflight />
       </main>
-      <TailwindPreflight />
     </>
   )
 }
