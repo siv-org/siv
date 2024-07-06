@@ -66,13 +66,9 @@ export const InvalidVotersTable = ({ hide_approved, hide_voted }: { hide_approve
                 }}
               />
 
-              <td className="show-strikethrough">{index + 1}</td>
-              <td className="show-strikethrough">
-                <span style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <span>{email}</span>
-                </span>
-              </td>
-              <td className="show-strikethrough font-mono text-[12px]">
+              <td className={struckthrough}>{index + 1}</td>
+              <td className={struckthrough}>{email}</td>
+              <td className={`${struckthrough} font-mono text-[12px]`}>
                 {mask_tokens ? mask(auth_token) : auth_token}
               </td>
 
@@ -95,21 +91,10 @@ export const InvalidVotersTable = ({ hide_approved, hide_voted }: { hide_approve
           padding: 3px 10px;
           margin: 0;
         }
-
-        tr td.show-strikethrough {
-          color: #aaa;
-          position: relative !important;
-        }
-
-        tr td.show-strikethrough:before {
-          content: ' ';
-          position: absolute;
-          top: 50%;
-          left: 0;
-          border-bottom: 1px solid #aaa;
-          width: 100%;
-        }
       `}</style>
     </>
   )
 }
+
+const struckthrough =
+  "text-[#aaa] relative before:content-[''] before:absolute before:inset-x-0 before:top-1/2 before:border-b before:border-0 before:border-[#aaa] before:border-solid"
