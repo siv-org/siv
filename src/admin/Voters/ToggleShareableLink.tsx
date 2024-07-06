@@ -7,7 +7,7 @@ import { Spinner } from '../Spinner'
 import { revalidate, useStored } from '../useStored'
 import registrationIcon from './registration-icon.png'
 
-export const ToggleRegistration = () => {
+export const ToggleShareableLink = () => {
   const [updating, setUpdating] = useState(false)
   const { election_id, voter_applications_allowed } = useStored()
 

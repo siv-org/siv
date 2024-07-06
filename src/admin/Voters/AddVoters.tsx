@@ -6,7 +6,7 @@ import { revalidate, useStored } from '../useStored'
 import { AddVoterTextarea } from './AddVotersTextarea'
 import { ExistingVoters } from './ExistingVoters'
 import { RequestEsignatures } from './RequestEsignatures'
-import { ToggleRegistration } from './ToggleRegistration'
+import { ToggleShareableLink } from './ToggleShareableLink'
 
 export const AddVoters = () => {
   const [new_voters, set_new_voters] = useState('')
@@ -38,7 +38,7 @@ export const AddVoters = () => {
         />
       )}
 
-      <ToggleRegistration />
+      <ToggleShareableLink />
       <RequestEsignatures />
       <ExistingVoters />
     </div>
