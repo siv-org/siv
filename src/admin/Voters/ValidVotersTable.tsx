@@ -4,7 +4,7 @@ import { useReducer, useState } from 'react'
 import { api } from 'src/api-helper'
 
 import { revalidate, useStored } from '../useStored'
-import { CheckboxCell, hoverable } from './CheckboxCell'
+import { CheckboxCell, CheckboxHeaderCell, hoverable } from './CheckboxCell'
 import { DeliveriesAndFailures } from './DeliveriesAndFailures'
 import { mask } from './mask-token'
 import { QueuedCell } from './QueuedCell'
@@ -54,18 +54,7 @@ export const ValidVotersTable = ({
       <table className="block w-full pb-3 overflow-auto border-collapse">
         <thead>
           <tr className="bg-[#f9f9f9] text-[11px]">
-            <th>
-              <input
-                className="cursor-pointer"
-                type="checkbox"
-                onChange={(event) => {
-                  const new_checked = [...checked]
-                  new_checked.fill(event.target.checked)
-                  set_checked(new_checked)
-                  set_last_selected(undefined)
-                }}
-              />
-            </th>
+            <CheckboxHeaderCell {...{ checked, set_checked, set_last_selected }} />
             <th>#</th>
             {shouldShowRegistrationColumns && (
               <>
@@ -118,16 +107,7 @@ export const ValidVotersTable = ({
               index,
             ) => (
               <tr className={`${checked[index] && 'bg-[#f1f1f1]'}`} key={email}>
-                <CheckboxCell
-                  {...{
-                    checked,
-                    index,
-                    last_selected,
-                    pressing_shift,
-                    set_checked,
-                    set_last_selected,
-                  }}
-                />
+                <CheckboxCell {...{ checked, index, last_selected, pressing_shift, set_checked, set_last_selected }} />
 
                 <td>{index + 1}</td>
                 {shouldShowRegistrationColumns && (

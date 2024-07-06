@@ -2,7 +2,7 @@ import Image from 'next/image'
 import { useReducer, useState } from 'react'
 
 import { useStored } from '../useStored'
-import { CheckboxCell, hoverable } from './CheckboxCell'
+import { CheckboxCell, CheckboxHeaderCell, hoverable } from './CheckboxCell'
 import InvalidatedVoteIcon from './invalidated.png'
 import { mask } from './mask-token'
 import { Signature, getStatus } from './Signature'
@@ -29,18 +29,7 @@ export const InvalidVotersTable = ({ hide_approved, hide_voted }: { hide_approve
       <table className="block w-full pb-3 overflow-auto border-collapse">
         <thead>
           <tr className="bg-[#f9f9f9] text-[11px]">
-            <th>
-              <input
-                className="cursor-pointer"
-                type="checkbox"
-                onChange={(event) => {
-                  const new_checked = [...checked]
-                  new_checked.fill(event.target.checked)
-                  set_checked(new_checked)
-                  set_last_selected(undefined)
-                }}
-              />
-            </th>
+            <CheckboxHeaderCell {...{ checked, set_checked, set_last_selected }} />
             <th>#</th>
             <th>email</th>
             <th className={hoverable} onClick={toggle_tokens}>
@@ -55,16 +44,7 @@ export const InvalidVotersTable = ({ hide_approved, hide_voted }: { hide_approve
         <tbody>
           {shown_voters.map(({ auth_token, email, esignature, esignature_review, has_voted }, index) => (
             <tr className={`${checked[index] && 'bg-[#f1f1f1]'}`} key={email}>
-              <CheckboxCell
-                {...{
-                  checked,
-                  index,
-                  last_selected,
-                  pressing_shift,
-                  set_checked,
-                  set_last_selected,
-                }}
-              />
+              <CheckboxCell {...{ checked, index, last_selected, pressing_shift, set_checked, set_last_selected }} />
 
               <td className={struckthrough}>{index + 1}</td>
               <td className={struckthrough}>{email}</td>

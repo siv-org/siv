@@ -13,7 +13,7 @@ export const CheckboxCell = ({
   last_selected?: number
   pressing_shift: boolean
   set_checked: (checked: boolean[]) => void
-  set_last_selected: (index: number) => void
+  set_last_selected: (index?: number) => void
 }) => {
   return (
     <td
@@ -37,3 +37,26 @@ export const CheckboxCell = ({
     </td>
   )
 }
+
+export const CheckboxHeaderCell = ({
+  checked,
+  set_checked,
+  set_last_selected,
+}: {
+  checked: boolean[]
+  set_checked: (checked: boolean[]) => void
+  set_last_selected: (index?: number) => void
+}) => (
+  <th className="border border-solid border-[#ccc]">
+    <input
+      className="cursor-pointer"
+      type="checkbox"
+      onChange={(event) => {
+        const new_checked = [...checked]
+        new_checked.fill(event.target.checked)
+        set_checked(new_checked)
+        set_last_selected(undefined)
+      }}
+    />
+  </th>
+)
