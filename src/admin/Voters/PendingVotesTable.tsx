@@ -1,21 +1,17 @@
 import { useReducer, useState } from 'react'
+import { OnClickButton } from 'src/_shared/Button'
 
 import { useStored } from '../useStored'
 import { CheckboxCell, CheckboxHeaderCell, hoverable } from './CheckboxCell'
 import { mask } from './mask-token'
 import { use_multi_select } from './use-multi-select'
 
-export const PendingVotesTable = ({
-  checked,
-  set_checked,
-}: {
-  checked: boolean[]
-  set_checked: (checked: boolean[]) => void
-}) => {
+export const PendingVotesTable = () => {
   const { pending_votes, voter_applications_allowed } = useStored()
   const [mask_tokens, toggle_tokens] = useReducer((state) => !state, true)
   const { last_selected, pressing_shift, set_last_selected } = use_multi_select()
   const [showAll, setShowAll] = useState(false)
+  const [checked, set_checked] = useState<boolean[]>(new Array(pending_votes?.length).fill(false))
 
   if (!pending_votes || (!pending_votes.length && !voter_applications_allowed)) return null
 
@@ -25,9 +21,22 @@ export const PendingVotesTable = ({
   const page = 1
   const onThisPage = pending_votes.slice((page - 1) * pageSize, page * pageSize)
 
+  const num_checked = checked.filter((c) => c).length
+
+  function ApproveVoteButton() {
+    return (
+      <OnClickButton className="!mx-0 !mt-8" disabled={!num_checked} style={{ padding: '5px 10px' }} onClick={() => {}}>
+        <>
+          Approve {num_checked} Vote{num_checked !== 1 && 's'}
+        </>
+      </OnClickButton>
+    )
+  }
+
   return (
     <>
-      <div className="mt-8 mb-1">
+      <ApproveVoteButton />
+      <div className="mb-1">
         Pending Votes <span className="opacity-50">(via shareable link)</span>
       </div>
       <table className="block w-full pb-3 overflow-auto border-collapse [&_tr>*]:[border:1px_solid_#ccc] [&_tr>*]:px-2.5 [&_tr>*]:py-[3px]">

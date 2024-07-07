@@ -48,7 +48,7 @@ export const ExistingVoters = () => {
         <ValidVotersTable {...{ checked, hide_approved, hide_voted, num_voted, set_checked }} />
       </div>
 
-      <PendingVotesTable {...{ checked, set_checked }} />
+      <PendingVotesTable />
 
       <InvalidVotersTable {...{ checked, hide_approved, hide_voted, set_checked }} />
     </>
