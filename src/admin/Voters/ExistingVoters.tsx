@@ -10,7 +10,7 @@ import { UnlockedStatus } from './UnlockedStatus'
 import { ValidVotersTable } from './ValidVotersTable'
 
 export const ExistingVoters = () => {
-  const { esignature_requested, valid_voters, voters } = useStored()
+  const { esignature_requested, pending_votes, valid_voters, voters } = useStored()
   const [checked, set_checked] = useState<boolean[]>(new Array(valid_voters?.length).fill(false))
   const num_voted = valid_voters?.filter((v) => v.has_voted).length || 0
   const num_approved = !esignature_requested
@@ -30,7 +30,7 @@ export const ExistingVoters = () => {
   }, [valid_voters?.length])
 
   // Don't show anything if we don't have any voters yet
-  if (!voters?.length) return null
+  if (!voters?.length && !pending_votes?.length) return null
 
   return (
     <>
