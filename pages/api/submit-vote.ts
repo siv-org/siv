@@ -11,7 +11,7 @@ import { pusher } from './pusher'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const payload = req.method === 'POST' ? req.body : req.query
-  const { auth, election_id } = payload
+  const { auth, election_id, embed } = payload
   let { encrypted_vote } = payload
   if (typeof encrypted_vote === 'string') encrypted_vote = JSON.parse(encrypted_vote)
 
@@ -34,7 +34,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       electionDoc
         .collection('votes-pending')
         .doc(link_auth)
-        .set({ created_at: new Date(), encrypted_vote, headers: req.headers, link_auth }),
+        .set({ created_at: new Date(), embed, encrypted_vote, headers: req.headers, link_auth }),
       // 2b. Update election's cached tally of num_votes
       electionDoc.update({ num_pending_votes: firestore.FieldValue.increment(1) }),
     ])

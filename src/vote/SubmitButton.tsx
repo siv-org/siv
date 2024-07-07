@@ -1,5 +1,5 @@
 import * as Sentry from '@sentry/browser'
-import router from 'next/router'
+import router, { useRouter } from 'next/router'
 import { Dispatch, useState } from 'react'
 
 import { OnClickButton } from '../_shared/Button'
@@ -19,6 +19,7 @@ export const SubmitButton = ({
   state: State
 }) => {
   const [buttonText, setButtonText] = useState('Submit')
+  const { embed } = useRouter().query as { embed?: string }
 
   return (
     <>
@@ -47,7 +48,7 @@ export const SubmitButton = ({
               dispatch({ [id]: 'BLANK' })
             })
 
-            const response = await api('submit-vote', { auth, election_id, encrypted_vote: state.encrypted })
+            const response = await api('submit-vote', { auth, election_id, embed, encrypted_vote: state.encrypted })
 
             // Stop if there was there an error
             if (response.status !== 200) {
@@ -65,7 +66,13 @@ export const SubmitButton = ({
 
             // If auth is `link`, redirect to /auth page
             if (auth === 'link') {
-              const { visit_to_add_auth } = await response.json()
+              const { link_auth, visit_to_add_auth } = await response.json()
+              if (embed) {
+                // console.log('SIV submit button', link_auth, embed)
+                window.parent.postMessage({ link_auth }, embed)
+                dispatch({ submitted_at: new Date().toString() })
+              }
+
               if (visit_to_add_auth) router.push(visit_to_add_auth)
             }
 
