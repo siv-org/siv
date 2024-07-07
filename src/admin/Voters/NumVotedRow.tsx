@@ -20,37 +20,30 @@ export const NumVotedRow = ({
   if (!valid_voters) return null
 
   return (
-    <p className="num-voted-row">
+    <div className="flex justify-between mt-3 mb-1.5 mr-4">
       <span>
         <i>
           {num_voted} of {valid_voters.length} voted (
           {valid_voters.length == 0 ? 0 : Math.round((num_voted / valid_voters.length) * 100)}%)
         </i>
         {/* Toggle hide voted */}
-        <a style={{ cursor: 'pointer', fontSize: 12, marginLeft: 10 }} onClick={toggle_hide_voted}>
+        <a className="cursor-pointer text-[12px] ml-2.5" onClick={toggle_hide_voted}>
           <>{hide_voted ? 'Show' : 'Hide'} Voted</>
         </a>
       </span>
 
       {esignature_requested && !!num_voted && (
-        <span style={{ textAlign: 'right' }}>
+        <span className="text-right">
           <i>
             {num_approved} of {num_voted} signatures approved ({Math.round((num_approved / num_voted) * 100)}
             %)
           </i>
           {/* Toggle hide approved */}
-          <a style={{ cursor: 'pointer', fontSize: 12, marginLeft: 10 }} onClick={toggle_hide_approved}>
+          <a className="cursor-pointer text-[12px] ml-2.5" onClick={toggle_hide_approved}>
             <>{hide_approved ? 'Show' : 'Hide'} Approved</>
           </a>
         </span>
       )}
-
-      <style jsx>{`
-        .num-voted-row {
-          display: flex;
-          justify-content: space-between;
-        }
-      `}</style>
-    </p>
+    </div>
   )
 }
