@@ -21,6 +21,7 @@ export const InvalidateVotersButton = ({
 
   return (
     <OnClickButton
+      className="bg-white"
       disabled={!displayOnly && !num_checked}
       style={{
         alignSelf: 'flex-start',

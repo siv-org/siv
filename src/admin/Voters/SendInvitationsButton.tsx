@@ -23,6 +23,7 @@ export const SendInvitationsButton = ({
 
   return (
     <OnClickButton
+      className="bg-white"
       disabled={!num_checked}
       style={{ margin: 0, padding: '5px 10px' }}
       onClick={async () => {

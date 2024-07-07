@@ -34,14 +34,19 @@ export const ExistingVoters = () => {
 
   return (
     <>
-      <UnlockedStatus />
-      <TopBarButtons {...{ checked, num_approved, num_voted }} />
+      {/* Group around Accepted Voters table */}
+      <div className="pt-3 pb-1 pl-4 -ml-4 rounded shadow-lg bg-blue-200/40">
+        <UnlockedStatus />
+        <div className="pr-4">
+          <TopBarButtons {...{ checked, num_approved, num_voted }} />
+        </div>
 
-      <NumVotedRow
-        {...{ hide_approved, hide_voted, num_approved, num_voted, toggle_hide_approved, toggle_hide_voted }}
-      />
+        <NumVotedRow
+          {...{ hide_approved, hide_voted, num_approved, num_voted, toggle_hide_approved, toggle_hide_voted }}
+        />
 
-      <ValidVotersTable {...{ checked, hide_approved, hide_voted, num_voted, set_checked }} />
+        <ValidVotersTable {...{ checked, hide_approved, hide_voted, num_voted, set_checked }} />
+      </div>
 
       <PendingVotesTable {...{ checked, set_checked }} />
 

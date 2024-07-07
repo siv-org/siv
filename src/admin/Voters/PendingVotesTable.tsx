@@ -27,7 +27,9 @@ export const PendingVotesTable = ({
 
   return (
     <>
-      <div className="mt-4 mb-1">Votes submitted via shareable link:</div>
+      <div className="mt-8 mb-1">
+        Pending Votes <span className="opacity-50">(via shareable link)</span>
+      </div>
       <table className="block w-full pb-3 overflow-auto border-collapse [&_tr>*]:[border:1px_solid_#ccc] [&_tr>*]:px-2.5 [&_tr>*]:py-[3px]">
         <thead>
           <tr className="bg-[#f9f9f9] text-[11px]">

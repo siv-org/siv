@@ -51,6 +51,7 @@ export const ValidVotersTable = ({
 
   return (
     <>
+      <div>Approved Voters</div>
       <table className="block w-full pb-3 overflow-auto border-collapse [&_tr>*]:[border:1px_solid_#ccc] [&_tr>*]:px-2.5 [&_tr>*]:py-[3px]">
         <thead>
           <tr className="bg-[#f9f9f9] text-[11px]">
@@ -89,7 +90,7 @@ export const ValidVotersTable = ({
             )}
           </tr>
         </thead>
-        <tbody className="[&_td]:whitespace-nowrap">
+        <tbody className="[&_td]:whitespace-nowrap bg-white">
           {(showAll ? shown_voters : onThisPage).map(
             (
               {
