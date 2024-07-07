@@ -1,3 +1,4 @@
+import { CheckOutlined } from '@ant-design/icons'
 import { useReducer, useState } from 'react'
 import { OnClickButton } from 'src/_shared/Button'
 
@@ -25,8 +26,14 @@ export const PendingVotesTable = () => {
 
   function ApproveVoteButton() {
     return (
-      <OnClickButton className="!mx-0 !mt-8" disabled={!num_checked} style={{ padding: '5px 10px' }} onClick={() => {}}>
+      <OnClickButton
+        className="!m-0 bg-white"
+        disabled={!num_checked}
+        style={{ padding: '5px 10px' }}
+        onClick={() => {}}
+      >
         <>
+          <CheckOutlined className="relative mr-1 font-bold top-px" />
           Approve {num_checked} Vote{num_checked !== 1 && 's'}
         </>
       </OnClickButton>
@@ -34,9 +41,9 @@ export const PendingVotesTable = () => {
   }
 
   return (
-    <>
+    <div className="pt-3 pb-1 pl-4 mt-8 -ml-4 rounded shadow-md bg-orange-50">
       <ApproveVoteButton />
-      <div className="mb-1">
+      <div className="mt-2 mb-1">
         Pending Votes <span className="opacity-50">(via shareable link)</span>
       </div>
       <table className="block w-full pb-3 overflow-auto border-collapse [&_tr>*]:[border:1px_solid_#ccc] [&_tr>*]:px-2.5 [&_tr>*]:py-[3px]">
@@ -55,7 +62,7 @@ export const PendingVotesTable = () => {
             </th>
           </tr>
         </thead>
-        <tbody className="[&_td]:whitespace-nowrap">
+        <tbody className="[&_td]:whitespace-nowrap bg-white">
           {(showAll ? pending_votes : onThisPage).map(
             ({ email, first_name, is_email_verified, last_name, link_auth }, index) => (
               <tr className={`${checked[index] && 'bg-[#f1f1f1]'}`} key={email}>
@@ -80,6 +87,6 @@ export const PendingVotesTable = () => {
           </a>
         </div>
       )}
-    </>
+    </div>
   )
 }
