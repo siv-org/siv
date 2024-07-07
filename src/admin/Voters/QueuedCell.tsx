@@ -27,7 +27,6 @@ export const QueuedCell = ({ invite_queued }: { invite_queued?: unknown[] }) => 
       </Tooltip>
       <style jsx>{`
         td {
-          border: 1px solid #ccc;
           padding: 3px 10px;
           margin: 0;
         }

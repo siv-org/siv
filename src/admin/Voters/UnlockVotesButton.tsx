@@ -13,6 +13,7 @@ export const UnlockVotesButton = ({ num_approved, num_voted }: { num_approved: n
 
   return (
     <OnClickButton
+      className="bg-white"
       disabled={!num_approved}
       disabledExplanation={
         !num_approved &&

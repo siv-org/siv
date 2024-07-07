@@ -4,6 +4,7 @@ import { useReducer, useState } from 'react'
 import { api } from 'src/api-helper'
 
 import { revalidate, useStored } from '../useStored'
+import { CheckboxCell, CheckboxHeaderCell, hoverable } from './CheckboxCell'
 import { DeliveriesAndFailures } from './DeliveriesAndFailures'
 import { mask } from './mask-token'
 import { QueuedCell } from './QueuedCell'
@@ -24,7 +25,7 @@ export const ValidVotersTable = ({
   num_voted: number
   set_checked: (checked: boolean[]) => void
 }) => {
-  const { election_id, esignature_requested, voter_applications_allowed, voters } = useStored()
+  const { election_id, esignature_requested, voters } = useStored()
   const [mask_tokens, toggle_tokens] = useReducer((state) => !state, true)
   const { last_selected, pressing_shift, set_last_selected } = use_multi_select()
   const [showAll, setShowAll] = useState(false)
@@ -40,7 +41,7 @@ export const ValidVotersTable = ({
 
   const shouldShowRegistrationColumns =
     // eslint-disable-next-line no-prototype-builtins
-    voter_applications_allowed || shown_voters.some((voter) => voter.hasOwnProperty('is_email_verified'))
+    shown_voters.some((voter) => voter.hasOwnProperty('is_email_verified'))
 
   // Pagination logic
   const pageSize = 200
@@ -50,21 +51,11 @@ export const ValidVotersTable = ({
 
   return (
     <>
-      <table className="pb-3">
+      <div>Approved Voters</div>
+      <table className="block w-full mt-1 pb-3 overflow-auto border-collapse [&_tr>*]:[border:1px_solid_#ccc] [&_tr>*]:px-2.5 [&_tr>*]:py-[3px]">
         <thead>
-          <tr>
-            <th>
-              <input
-                style={{ cursor: 'pointer' }}
-                type="checkbox"
-                onChange={(event) => {
-                  const new_checked = [...checked]
-                  new_checked.fill(event.target.checked)
-                  set_checked(new_checked)
-                  set_last_selected(undefined)
-                }}
-              />
-            </th>
+          <tr className="bg-[#f9f9f9] text-[11px]">
+            <CheckboxHeaderCell {...{ checked, set_checked, set_last_selected }} />
             <th>#</th>
             {shouldShowRegistrationColumns && (
               <>
@@ -74,17 +65,17 @@ export const ValidVotersTable = ({
             )}
             <th>email</th>
             {shouldShowRegistrationColumns && <th>email verified?</th>}
-            <th className="hoverable" onClick={toggle_tokens}>
+            <th className={hoverable} onClick={toggle_tokens}>
               {mask_tokens ? 'masked' : 'full'}
               <br />
               auth token
             </th>
-            <th style={{ width: 50 }}>invite queued</th>
-            <th style={{ width: 50 }}>invite delivered</th>
+            <th className="w-[50px]">invite queued</th>
+            <th className="w-[50px]">invite delivered</th>
             <th>voted</th>
             {esignature_requested && (
               <th
-                className="hoverable"
+                className={hoverable}
                 onClick={() => {
                   if (confirm(`Do you want to approve all ${num_voted} signatures?`)) {
                     api(`election/${election_id}/admin/review-signature`, {
@@ -99,7 +90,7 @@ export const ValidVotersTable = ({
             )}
           </tr>
         </thead>
-        <tbody>
+        <tbody className="[&_td]:whitespace-nowrap bg-white">
           {(showAll ? shown_voters : onThisPage).map(
             (
               {
@@ -116,29 +107,10 @@ export const ValidVotersTable = ({
               },
               index,
             ) => (
-              <tr className={`${checked[index] ? 'checked' : ''}`} key={email}>
-                {/* Checkbox cell */}
+              <tr className={`${checked[index] && 'bg-[#f1f1f1]'}`} key={email}>
+                <CheckboxCell {...{ checked, index, last_selected, pressing_shift, set_checked, set_last_selected }} />
 
-                <td
-                  className="hoverable"
-                  onClick={() => {
-                    const new_checked = [...checked]
-                    if (pressing_shift && last_selected !== undefined) {
-                      // If they're holding shift, set all between last_selected and this index to !checked[index]
-                      for (let i = Math.min(index, last_selected); i <= Math.max(index, last_selected); i += 1) {
-                        new_checked[i] = !checked[index]
-                      }
-                    } else {
-                      new_checked[index] = !checked[index]
-                    }
-
-                    set_last_selected(index)
-                    set_checked(new_checked)
-                  }}
-                >
-                  <input readOnly checked={!!checked[index]} className="hoverable" type="checkbox" />
-                </td>
-                <td className="show-strikethrough">{index + 1}</td>
+                <td>{index + 1}</td>
                 {shouldShowRegistrationColumns && (
                   <>
                     <td>{first_name}</td>
@@ -146,12 +118,12 @@ export const ValidVotersTable = ({
                   </>
                 )}
 
-                <td className="show-strikethrough">
-                  <span style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <td>
+                  <span className="flex justify-between group">
                     <span>{email}</span>
                     {/* Edit email btn */}
                     <span
-                      className="visible-on-parent-hover"
+                      className="group-hover:opacity-50 opacity-0 cursor-pointer hover:!opacity-100"
                       onClick={async () => {
                         const new_email = prompt('Edit email?', email)
 
@@ -179,14 +151,12 @@ export const ValidVotersTable = ({
                   </span>
                 </td>
                 {shouldShowRegistrationColumns && <td className="text-center">{is_email_verified ? '✓' : ''}</td>}
-                <td className="show-strikethrough" style={{ fontFamily: 'monospace' }}>
-                  {mask_tokens ? mask(auth_token) : auth_token}
-                </td>
+                <td className="font-mono text-[12px]">{mask_tokens ? mask(auth_token) : auth_token}</td>
 
                 <QueuedCell {...{ invite_queued }} />
                 <DeliveriesAndFailures {...mailgun_events} deliveries={voterInvites[email]} />
 
-                <td style={{ fontWeight: 700, textAlign: 'center' }}>{has_voted ? '✓' : ''}</td>
+                <td className="font-bold text-center">{has_voted ? '✓' : ''}</td>
 
                 {esignature_requested &&
                   (has_voted ? <Signature {...{ election_id, email, esignature, esignature_review }} /> : <td />)}
@@ -194,57 +164,11 @@ export const ValidVotersTable = ({
             ),
           )}
         </tbody>
-
-        <style jsx>{`
-          table {
-            border-collapse: collapse;
-            display: block;
-            overflow: auto;
-            width: 100%;
-          }
-
-          th,
-          td {
-            border: 1px solid #ccc;
-            padding: 3px 10px;
-            margin: 0;
-          }
-
-          td {
-            white-space: nowrap;
-          }
-
-          th {
-            background: #f9f9f9;
-            font-size: 11px;
-          }
-
-          tr.checked {
-            background: #f1f1f1;
-          }
-
-          .hoverable:hover {
-            cursor: pointer;
-            background-color: #f2f2f2;
-          }
-
-          td .visible-on-parent-hover {
-            opacity: 0;
-          }
-          td:hover .visible-on-parent-hover {
-            opacity: 0.5;
-          }
-
-          .visible-on-parent-hover:hover {
-            cursor: pointer;
-            opacity: 1 !important;
-          }
-        `}</style>
       </table>
       {totalPages > 1 && !showAll && (
-        <div style={{ fontSize: 13, marginTop: 10 }}>
+        <div className="text-[13px] mt-2.5">
           Showing only first {pageSize} of {shown_voters.length}.{' '}
-          <a style={{ cursor: 'pointer' }} onClick={() => setShowAll(true)}>
+          <a className="cursor-pointer" onClick={() => setShowAll(true)}>
             (Show All)
           </a>
         </div>

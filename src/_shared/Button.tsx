@@ -6,6 +6,7 @@ export const darkBlue = '#002868'
 type ButtonProps = {
   background?: string
   children: string | JSX.Element
+  className?: string
   invertColor?: boolean
   style?: React.CSSProperties
 }
@@ -56,6 +57,7 @@ export const OnClickButton = forwardRef<HTMLAnchorElement, OnClickProps>(
     {
       background,
       children,
+      className = '',
       disabled,
       disabledExplanation,
       id,
@@ -67,7 +69,7 @@ export const OnClickButton = forwardRef<HTMLAnchorElement, OnClickProps>(
     ref,
   ): JSX.Element => (
     <a
-      className={disabled ? 'disabled' : ''}
+      className={`${disabled ? 'disabled' : ''} ${className}`}
       id={id}
       ref={ref}
       style={style}

@@ -21,6 +21,14 @@ export type Voter = {
   last_name: string
   mailgun_events: { accepted?: MgEvent[]; delivered?: MgEvent[]; failed?: MgEvent[] }
 }
+export type PendingVote = {
+  created_at: Date
+  email?: string
+  first_name?: string
+  is_email_verified: boolean
+  last_name?: string
+  link_auth: string
+}
 export type Trustee = {
   device?: string
   email: string
@@ -39,6 +47,7 @@ export type AdminData = {
   election_title?: string
   esignature_requested?: boolean
   notified_unlocked?: number
+  pending_votes?: PendingVote[]
   threshold_public_key?: string
   trustees?: Trustee[]
   voter_applications_allowed?: boolean
@@ -65,6 +74,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const loadTrustees = election.collection('trustees').orderBy('index', 'asc').get()
   const loadVoters = election.collection('voters').orderBy('index', 'asc').get()
   const loadVotes = election.collection('votes').get()
+  const loadPendingVotes = election.collection('votes-pending').get()
   const loadInvalidatedVotes = election.collection('invalidated_votes').get()
 
   // Is election_id in DB?
@@ -182,6 +192,26 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     ]
   }, [])
 
+  // Build pending votes
+  const pending_votes: PendingVote[] = (await loadPendingVotes).docs.map((doc) => {
+    const { created_at, email, first_name, is_email_verified, last_name, link_auth } = doc.data() as {
+      created_at: { _seconds: number }
+      email?: string
+      first_name?: string
+      is_email_verified: boolean
+      last_name?: string
+      link_auth: string
+    }
+    return {
+      created_at: new Date(created_at._seconds * 1000),
+      email,
+      first_name,
+      is_email_verified,
+      last_name,
+      link_auth,
+    }
+  })
+
   return res.status(200).send({
     ballot_design,
     ballot_design_finalized,
@@ -190,6 +220,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     election_title,
     esignature_requested,
     notified_unlocked,
+    pending_votes,
     threshold_public_key,
     trustees,
     voter_applications_allowed,

@@ -5,18 +5,18 @@ import { useRef, useState } from 'react'
 import { OnClickButton } from 'src/_shared/Button'
 import { api } from 'src/api-helper'
 
-export const VoterRegistrationForm = () => {
+export const VoterAuthInfoForm = () => {
   const [error, setError] = useState('')
   const [first_name, setFirstName] = useState('')
   const [last_name, setLastName] = useState('')
   const [email, setEmail] = useState('')
+  const [submitting, setSubmitting] = useState(false)
   const submitBtn = useRef<HTMLAnchorElement>(null)
   const router = useRouter()
-  const { election_id } = router.query as { auth?: string; election_id?: string }
+  const { election_id, link: link_auth } = router.query as { election_id?: string; link?: string }
 
   return (
-    <section className="text-lg">
-      <p>Please provide your identifying information, then you can cast your vote.</p>
+    <section>
       <div className="flex flex-col mb-4 space-y-4 sm:flex-row sm:space-y-0 sm:space-x-3 row">
         <TextField
           autoFocus
@@ -49,37 +49,40 @@ export const VoterRegistrationForm = () => {
             setError('')
             setEmail(event.target.value)
           }}
-          onKeyPress={(event) => event.key === 'Enter' && submitBtn.current?.click()}
+          onKeyDown={(event) => event.key === 'Enter' && submitBtn.current?.click()}
         />
       </div>
+
       <OnClickButton
-        disabled={!first_name || !last_name || !email || !!error}
+        className="w-full text-xl text-center"
+        disabled={!first_name || !last_name || !validateEmail(email) || !!error || submitting}
         ref={submitBtn}
         style={{ margin: 0, padding: '19px 15px' }}
         onClick={async () => {
           // Validate email
           if (!validateEmail(email)) return setError('Invalid email address')
 
+          setSubmitting(true)
+
           // Submit details to server
-          const response = await api(`election/${election_id}/submit-registration`, {
+          const response = await api(`election/${election_id}/submit-link-auth-info`, {
             email,
             first_name,
             last_name,
+            link_auth,
           })
-          // Server sends back auth token
+          setSubmitting(false)
+
           if (!response.ok) return setError((await response.json()).error)
-          const { auth_token } = await response.json()
 
           // Store the email address so we can remind them later to check it
-          localStorage.setItem(`registration-${auth_token}`, email)
+          localStorage.setItem(`registration-${link_auth}`, email)
 
-          // Redirect to update auth in URL
-          const url = new URL(window.location.toString())
-          url.searchParams.set('auth', auth_token.toLowerCase())
-          router.push(url)
+          // Redirect back to submission screen
+          router.push(`${window.location.origin}/election/${election_id}/vote?auth=link&link_auth=${link_auth}`)
         }}
       >
-        Continue to Vote
+        <>Submit{submitting ? 'ting...' : ''}</>
       </OnClickButton>
     </section>
   )

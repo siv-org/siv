@@ -1,6 +1,7 @@
 import { validate as validateEmail } from 'email-validator'
 import { firestore } from 'firebase-admin'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { generateAuthToken } from 'src/crypto/generate-auth-tokens'
 import { CipherStrings } from 'src/crypto/stringify-shuffle'
 
 import { EncryptedVote, stringifyEncryptedVote } from '../../src/status/AcceptedVotes'
@@ -17,6 +18,38 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // return res.status(200).json({ auth, election_id, encrypted_vote })
 
   const electionDoc = firebase.firestore().collection('elections').doc(election_id)
+
+  // Handle auth='link' submissions
+  if (auth === 'link') {
+    // Does this election reject 'link' submissions?
+    const election = { ...(await electionDoc.get()).data() }
+    if (!election.voter_applications_allowed) return res.status(400).json({ error: 'Votes via link not allowed' })
+
+    // Create a unique link_auth token for this vote
+    const link_auth = generateAuthToken()
+
+    // Store in db as 'votes-pending'
+    await Promise.all([
+      // 2a. Store the encrypted vote in db
+      electionDoc
+        .collection('votes-pending')
+        .doc(link_auth)
+        .set({ created_at: new Date(), encrypted_vote, headers: req.headers, link_auth }),
+      // 2b. Update election's cached tally of num_votes
+      electionDoc.update({ num_pending_votes: firestore.FieldValue.increment(1) }),
+    ])
+
+    // Link to the auth url, particularly for AirgappedVoters
+    const host = req.headers.host
+    const protocol = host?.startsWith('localhost') ? 'http://' : 'https://'
+    const visit_to_add_auth = `${protocol}${host}/election/${election_id}/auth?link=${link_auth}`
+
+    return res.status(200).json({
+      link_auth,
+      message: 'Submission received',
+      visit_to_add_auth,
+    })
+  }
 
   // 1. Validate auth token
   let validated = false
