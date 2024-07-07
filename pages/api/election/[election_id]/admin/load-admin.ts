@@ -21,7 +21,7 @@ export type Voter = {
   last_name: string
   mailgun_events: { accepted?: MgEvent[]; delivered?: MgEvent[]; failed?: MgEvent[] }
 }
-type PendingVote = {
+export type PendingVote = {
   created_at: Date
   email?: string
   first_name?: string

@@ -1,6 +1,7 @@
 import { CheckOutlined } from '@ant-design/icons'
 import { useReducer, useState } from 'react'
 import { OnClickButton } from 'src/_shared/Button'
+import { api } from 'src/api-helper'
 
 import { useStored } from '../useStored'
 import { CheckboxCell, CheckboxHeaderCell, hoverable } from './CheckboxCell'
@@ -8,7 +9,7 @@ import { mask } from './mask-token'
 import { use_multi_select } from './use-multi-select'
 
 export const PendingVotesTable = () => {
-  const { pending_votes, voter_applications_allowed } = useStored()
+  const { election_id, pending_votes, voter_applications_allowed } = useStored()
   const [mask_tokens, toggle_tokens] = useReducer((state) => !state, true)
   const { last_selected, pressing_shift, set_last_selected } = use_multi_select()
   const [showAll, setShowAll] = useState(false)
@@ -30,7 +31,10 @@ export const PendingVotesTable = () => {
         className="!m-0 bg-white"
         disabled={!num_checked}
         style={{ padding: '5px 10px' }}
-        onClick={() => {}}
+        onClick={async () => {
+          const response = await api(`election/${election_id}/admin/approve-pending-vote`)
+          if (!response.ok) alert((await response.json()).error)
+        }}
       >
         <>
           <CheckOutlined className="relative mr-1 font-bold top-px" />
