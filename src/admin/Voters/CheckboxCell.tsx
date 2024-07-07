@@ -17,7 +17,7 @@ export const CheckboxCell = ({
 }) => {
   return (
     <td
-      className={`${hoverable} border border-solid border-[#ccc] px-2.5`}
+      className={`${hoverable}`}
       onClick={() => {
         const new_checked = [...checked]
         if (pressing_shift && last_selected !== undefined) {
@@ -47,7 +47,7 @@ export const CheckboxHeaderCell = ({
   set_checked: (checked: boolean[]) => void
   set_last_selected: (index?: number) => void
 }) => (
-  <th className="border border-solid border-[#ccc]">
+  <th>
     <input
       className="cursor-pointer"
       type="checkbox"

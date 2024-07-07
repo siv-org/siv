@@ -52,7 +52,6 @@ export const DeliveriesAndFailures = ({
       </Tooltip>
       <style jsx>{`
         td {
-          border: 1px solid #ccc;
           padding: 3px 10px;
           margin: 0;
         }
