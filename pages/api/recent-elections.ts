@@ -29,9 +29,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         .replace(' week', 'w')
         .replace('s', ''),
       ...pick(data, ['election_manager', 'election_title']),
-      stats: `${plural(data.num_voters, 'voter')}, ${plural(data.num_votes, 'vote')}, ${
-        (data.decrypted || []).length
-      } unlocked`,
+      stats: `${plural(data.num_voters, 'voter')}. votes: ${data.num_pending_votes || 0} pending, ${
+        data.num_votes
+      } approved, ${(data.decrypted || []).length} unlocked`,
     }
   })
   const elections_by_manager = groupBy(elections, 'election_manager')
