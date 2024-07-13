@@ -34,7 +34,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           payloads: firestore.FieldValue.arrayUnion({
             created_at: new Date(),
             headers: req.headers,
-            req_body: req.body,
+            req_body: JSON.stringify(req.body),
           }),
         },
         { merge: true },
