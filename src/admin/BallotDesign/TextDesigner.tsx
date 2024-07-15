@@ -11,6 +11,22 @@ export const TextDesigner = ({ design, setDesign }: { design: string; setDesign:
         value={design}
         onChange={(value) => setDesign(value)}
       />
+
+      {/* Advanced Features */}
+      <div className="px-4">
+        <h3>
+          Advanced Features <span className="opacity-50">(not in Wizard)</span>
+        </h3>
+        <div>Per question:</div>
+        <ul>
+          <li>
+            <code className="p-1 rounded bg-orange-100/70">
+              {'"'}randomize_order{'"'}: true
+            </code>{' '}
+            - To improve fairness, randomize the displayed order of all options, unique per voter.
+          </li>
+        </ul>
+      </div>
     </div>
   )
 }
