@@ -88,7 +88,7 @@ const OneRow = forwardRef<
       <input
         readOnly
         checked={state.plaintext[`${id}_${index + 1}`] === val}
-        className="w-7 h-7 bg-white border-gray-300 border-solid rounded-full appearance-none cursor-pointer hover:bg-blue-100 checked:!bg-[#002868] border-2 checked:border-white/30"
+        className="w-7 h-7 bg-white border-gray-300 border-solid rounded-full appearance-none cursor-pointer sm:hover:bg-blue-100 checked:!bg-[#002868] border-2 checked:border-white/30"
         type="radio"
         onClick={() => {
           const update: Record<string, string> = {}
