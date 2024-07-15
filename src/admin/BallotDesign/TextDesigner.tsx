@@ -13,13 +13,19 @@ export const TextDesigner = ({ design, setDesign }: { design: string; setDesign:
       />
 
       {/* Advanced Features */}
-      <div className="px-4">
+      <div className="px-4 text-xs">
         <h3>
           Advanced Features <span className="opacity-50">(not in Wizard)</span>
         </h3>
 
         <div>Per question:</div>
-        <ul>
+        <ul className="space-y-2">
+          <li>
+            <code className="p-1 rounded bg-orange-100/70">
+              {'"'}description{'"'}: {'"'}your description here{'"'}
+            </code>{' '}
+            - More info below the question title, in smaller font.
+          </li>
           <li>
             <code className="p-1 rounded bg-orange-100/70">
               {'"'}randomize_order{'"'}: true
