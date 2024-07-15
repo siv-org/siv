@@ -26,12 +26,7 @@ export const RankedChoiceItem = ({
   // console.log(state.plaintext)
 
   const [orderedOptions, setOrderedOptions] = useState(options)
-  function updateOrder() {
-    setOrderedOptions(getSortedOrder(id, options, state.plaintext))
-  }
-  useEffect(() => {
-    updateOrder()
-  }, [JSON.stringify(state.plaintext)])
+  useEffect(() => setOrderedOptions(getSortedOrder(id, options, state.plaintext)), [JSON.stringify(state.plaintext)])
 
   return (
     <>
