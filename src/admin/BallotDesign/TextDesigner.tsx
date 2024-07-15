@@ -17,6 +17,7 @@ export const TextDesigner = ({ design, setDesign }: { design: string; setDesign:
         <h3>
           Advanced Features <span className="opacity-50">(not in Wizard)</span>
         </h3>
+
         <div>Per question:</div>
         <ul>
           <li>
@@ -24,6 +25,16 @@ export const TextDesigner = ({ design, setDesign }: { design: string; setDesign:
               {'"'}randomize_order{'"'}: true
             </code>{' '}
             - To improve fairness, randomize the displayed order of all options, unique per voter.
+          </li>
+        </ul>
+
+        <div>Per option:</div>
+        <ul>
+          <li>
+            <code className="p-1 rounded bg-orange-100/70">
+              {'"'}sub{'"'}: {'"'}your sub-text here{'"'}
+            </code>{' '}
+            - Add extra info below an option, such as their Party Affiliation or a longer description.
           </li>
         </ul>
       </div>
