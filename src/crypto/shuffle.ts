@@ -46,7 +46,7 @@ export async function shuffle(
 }
 
 /** Generates an array of all integers up to `size`, in a random order */
-function build_permutation_array(size: number) {
+export function build_permutation_array(size: number) {
   const array: number[] = []
   const options = [...new Array(size).keys()]
   while (options.length) {
