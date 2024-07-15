@@ -1,4 +1,4 @@
-import { shuffle } from 'lodash-es'
+import { memoize, shuffle } from 'lodash-es'
 import { Dispatch } from 'react'
 import { NoSsr } from 'src/_shared/NoSsr'
 import { maxLength } from 'src/crypto/curve'
@@ -15,6 +15,9 @@ import { State } from './vote-state'
 const verification_num_length = 15
 export const max_string_length = maxLength - verification_num_length
 export const defaultRankingsAllowed = 3
+
+// @ts-expect-error unclear how to tell resolver to expect BallotItem['questions']
+const memoizedShuffle = memoize(shuffle, (input) => JSON.stringify(input?.sort((a, b) => (a.name < b.name ? 1 : -1))))
 
 export const Ballot = ({
   dispatch,
@@ -37,7 +40,7 @@ export const Ballot = ({
 
           {state.ballot_design.map((item, index) => {
             const max_options = item.options.length + +!!item.write_in_allowed
-            if (item.randomize_order) item.options = shuffle(item.options)
+            if (item.randomize_order) item.options = memoizedShuffle(item.options)
 
             // Is it "Approval" ?
             if (item.type === 'approval')
