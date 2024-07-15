@@ -1,4 +1,5 @@
-import { Dispatch, useState } from 'react'
+import { Dispatch, forwardRef, useEffect, useState } from 'react'
+import FlipMove from 'react-flip-move'
 
 import { max_string_length } from './Ballot'
 import { getOrdinal } from './getOrdinal'
@@ -24,6 +25,14 @@ export const RankedChoiceItem = ({
 }): JSX.Element => {
   // console.log(state.plaintext)
 
+  const [orderedOptions, setOrderedOptions] = useState(options)
+  function updateOrder() {
+    setOrderedOptions(getSortedOrder(id, options, state.plaintext))
+  }
+  useEffect(() => {
+    updateOrder()
+  }, [JSON.stringify(state.plaintext)])
+
   return (
     <>
       <TitleDescriptionQuestion {...{ description, question, title }} />
@@ -44,10 +53,12 @@ export const RankedChoiceItem = ({
         </thead>
 
         {/* List one row for each candidate */}
-        <tbody>
-          {options.map(({ name, sub, value }) => (
-            <OneRow key={name} {...{ dispatch, id, name, rankings_allowed, state, sub, value }} />
-          ))}
+        <tbody style={{ position: 'relative' }}>
+          <FlipMove typeName={null}>
+            {orderedOptions.map(({ name, sub, value }) => (
+              <OneRow key={name} {...{ dispatch, id, name, rankings_allowed, state, sub, value }} />
+            ))}
+          </FlipMove>
 
           {write_in_allowed && <OneRow isWriteIn name={'Write-in'} {...{ dispatch, id, rankings_allowed, state }} />}
         </tbody>
@@ -58,26 +69,21 @@ export const RankedChoiceItem = ({
   )
 }
 
-function OneRow({
-  dispatch,
-  id,
-  isWriteIn,
-  name,
-  rankings_allowed,
-  state,
-  sub,
-  value,
-}: {
-  dispatch: Dispatch<Record<string, string>>
-  id: string
-  isWriteIn?: boolean
-  name: string
-  rankings_allowed: number
-  state: State
-  sub?: string
-  value?: string
-}) {
+const OneRow = forwardRef<
+  HTMLTableRowElement,
+  {
+    dispatch: Dispatch<Record<string, string>>
+    id: string
+    isWriteIn?: boolean
+    name: string
+    rankings_allowed: number
+    state: State
+    sub?: string
+    value?: string
+  }
+>(function ({ dispatch, id, isWriteIn, name, rankings_allowed, state, sub, value }, ref) {
   const [writeIn, setWriteIn] = useState<string>('')
+
   const val = value || (!isWriteIn ? name : writeIn).slice(0, max_string_length)
 
   const [error, setError] = useState(' ')
@@ -114,7 +120,7 @@ function OneRow({
   }
 
   return (
-    <tr className="flex flex-col sm:table-row" key={name}>
+    <tr className="flex flex-col sm:table-row" key={name} ref={ref}>
       {/* Display Name */}
       <td className="relative pr-4 sm:bottom-0.5 sm:top-auto top-2">
         {!isWriteIn ? (
@@ -178,4 +184,42 @@ function OneRow({
       ))}
     </tr>
   )
+})
+OneRow.displayName = 'OneRow'
+
+export function getSortedOrder(
+  keyPrefix: string,
+  options: { name: string; value?: string }[],
+  selections: Record<string, string>,
+): { name: string; value?: string }[] {
+  const currentRankings: string[] = []
+  const rankedOptions: { name: string }[] = []
+  const unrankedOptions: { name: string }[] = []
+
+  const optionToVal = ({ name, value }: { name: string; value?: string }) => (value || name).slice(0, max_string_length)
+
+  // Build an array of ranked names based on their presence and order in 'selections'
+  let index = 1
+  let key = `${keyPrefix}_${index}`
+  while (key in selections) {
+    const name = selections[key]
+    if (name !== 'BLANK') currentRankings.push(name)
+    index++
+    key = `${keyPrefix}_${index}`
+  }
+
+  // Divide options into ranked and unranked based on the currentRankings array
+  options.forEach((option) => {
+    if (currentRankings.includes(optionToVal(option))) {
+      rankedOptions.push(option)
+    } else {
+      unrankedOptions.push(option)
+    }
+  })
+
+  // Sort the rankedOptions array by the order of names in currentRankings
+  rankedOptions.sort((a, b) => currentRankings.indexOf(optionToVal(a)) - currentRankings.indexOf(optionToVal(b)))
+
+  // Return the concatenation of sorted ranked options and the remaining unranked options
+  return [...rankedOptions, ...unrankedOptions]
 }
