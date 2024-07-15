@@ -102,7 +102,7 @@ const OneRow = forwardRef<
           }
 
           const key = `${id}_${index + 1}`
-          update[key] = val
+          update[key] = val || 'BLANK'
           // console.log(key, val)
 
           // Are they deselecting their existing selection?
