@@ -1,3 +1,4 @@
+import { shuffle } from 'lodash-es'
 import { Dispatch } from 'react'
 import { NoSsr } from 'src/_shared/NoSsr'
 import { maxLength } from 'src/crypto/curve'
@@ -36,6 +37,7 @@ export const Ballot = ({
 
           {state.ballot_design.map((item, index) => {
             const max_options = item.options.length + +!!item.write_in_allowed
+            if (item.randomize_order) item.options = shuffle(item.options)
 
             // Is it "Approval" ?
             if (item.type === 'approval')

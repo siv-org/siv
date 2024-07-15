@@ -11,6 +11,7 @@ export type Item = {
   multiple_votes_allowed?: number
   options: { name: string; sub?: string; value?: string }[]
   question?: string
+  randomize_order?: boolean
   title: string
   type?: string
   write_in_allowed: boolean
