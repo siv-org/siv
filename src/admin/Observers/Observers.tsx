@@ -135,9 +135,9 @@ export const Observers = () => {
         </div>
       ) : (
         trustees.length > 1 && (
-          <table>
+          <table className="block w-full pb-3 overflow-auto border-collapse [&_tr>*]:[border:1px_solid_#ccc] [&_tr>*]:px-2.5 [&_tr>*]:py-[3px]">
             <thead>
-              <tr>
+              <tr className="bg-[#f9f9f9] text-[11px]">
                 <th>#</th>
                 <th>email</th>
                 <th>name</th>
@@ -256,30 +256,6 @@ export const Observers = () => {
           display: block;
           margin-left: 20px;
           cursor: pointer;
-        }
-
-        table {
-          border-collapse: collapse;
-          display: block;
-          overflow: auto;
-          width: 100%;
-        }
-
-        th,
-        td {
-          border: 1px solid #ccc;
-          padding: 3px 10px;
-          margin: 0;
-        }
-
-        th {
-          background: #f9f9f9;
-          font-size: 11px;
-        }
-
-        .hoverable:hover {
-          cursor: pointer;
-          background-color: #f2f2f2;
         }
 
         td .visible-on-parent-hover {
