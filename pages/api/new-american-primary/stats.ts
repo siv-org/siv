@@ -64,13 +64,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   res.status(200).json({
     // napEntries,
     nap_auth_stats: {
-      '__total auth rows (incl. malformed)': napEntries.length,
-      '_malformed link_auths (dev tests)': _malformed_link_auths,
+      'total submitted votes': num_votes,
+      'total auth rows (incl. malformed)': napEntries.length,
+      '__malformed link_auths (dev tests)': _malformed_link_auths,
 
-      '_num total votes': num_votes,
       'good link_auths': {
         count,
-        'count / num_votes': pct(count / num_votes),
+        [`count / num_votes (${num_votes})`]: pct(count / num_votes),
 
         'has passport_proof': includes_passport_proof,
         'has passport_proof / num_votes': pct(includes_passport_proof / num_votes),
@@ -78,7 +78,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         'has sms': includes_sms,
         'has sms / num_votes': pct(includes_sms / num_votes),
 
-        'multiple auth submissions [num payloads: count]': multiple_payloads,
+        'multiple auth submissions { num payloads: count }': multiple_payloads,
       },
       //   includes_sms_and_passport,
     },
