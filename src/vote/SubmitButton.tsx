@@ -35,6 +35,10 @@ export const SubmitButton = ({
           }
           style={{ marginRight: 0 }}
           onClick={async () => {
+            if (state.submission_confirmation) {
+              if (!confirm(state.submission_confirmation)) return
+            }
+
             setButtonText('Submitting...')
 
             // Add plaintext "BLANK" for questions left blank

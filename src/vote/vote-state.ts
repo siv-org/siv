@@ -20,6 +20,7 @@ export type State = {
   plaintext: Map
   public_key?: string
   randomizer: Map
+  submission_confirmation?: string
   submitted_at?: Date
   tracking?: string
 }
