@@ -7,6 +7,8 @@ import { Label, TitleDescriptionQuestion } from './Item'
 import { Item as ItemType } from './storeElectionInfo'
 import { State } from './vote-state'
 
+const WRITE_IN = '$$WRITE_IN$$'
+
 export const RankedChoiceItem = ({
   description,
   dispatch,
@@ -25,8 +27,16 @@ export const RankedChoiceItem = ({
 }): JSX.Element => {
   // console.log(state.plaintext)
 
+  const [writeIn, setWriteIn] = useState('')
   const [orderedOptions, setOrderedOptions] = useState(options)
-  useEffect(() => setOrderedOptions(getSortedOrder(id, options, state.plaintext)), [JSON.stringify(state.plaintext)])
+
+  useEffect(() => {
+    // Incorporate write-in handling within sorting if allowed
+    const currentOptions = write_in_allowed ? [...options, { name: WRITE_IN, value: writeIn }] : options
+
+    // Sort options by their current rankings
+    setOrderedOptions(getSortedOrder(id, currentOptions, state.plaintext))
+  }, [options, writeIn, state.plaintext, write_in_allowed])
 
   return (
     <>
@@ -51,14 +61,15 @@ export const RankedChoiceItem = ({
         <tbody style={{ position: 'relative' }}>
           <FlipMove typeName={null}>
             {orderedOptions.map(({ name, sub, value }) => (
-              <OneRow key={name} {...{ dispatch, id, name, rankings_allowed, state, sub, value }} />
+              <OneRow
+                isWriteIn={name === WRITE_IN}
+                key={name}
+                {...{ dispatch, id, name, rankings_allowed, setWriteIn, state, sub, value, writeIn }}
+              />
             ))}
           </FlipMove>
-
-          {write_in_allowed && <OneRow isWriteIn name={'Write-in'} {...{ dispatch, id, rankings_allowed, state }} />}
         </tbody>
       </table>
-
       <br />
     </>
   )
@@ -72,13 +83,13 @@ const OneRow = forwardRef<
     isWriteIn?: boolean
     name: string
     rankings_allowed: number
+    setWriteIn: (value: string) => void
     state: State
     sub?: string
     value?: string
+    writeIn: string
   }
->(function ({ dispatch, id, isWriteIn, name, rankings_allowed, state, sub, value }, ref) {
-  const [writeIn, setWriteIn] = useState<string>('')
-
+>(function ({ dispatch, id, isWriteIn, name, rankings_allowed, setWriteIn, state, sub, value, writeIn }, ref) {
   const val = value || (!isWriteIn ? name : writeIn).slice(0, max_string_length)
 
   const [error, setError] = useState(' ')
@@ -192,8 +203,8 @@ export function getSortedOrder(
   selections: Record<string, string>,
 ): { name: string; value?: string }[] {
   const currentRankings: string[] = []
-  const rankedOptions: { name: string }[] = []
-  const unrankedOptions: { name: string }[] = []
+  const rankedOptions: { name: string; value?: string }[] = []
+  const unrankedOptions: { name: string; value?: string }[] = []
 
   const optionToVal = ({ name, value }: { name: string; value?: string }) => (value || name).slice(0, max_string_length)
 
