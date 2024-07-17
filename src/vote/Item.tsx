@@ -35,7 +35,7 @@ export const Item = ({
           <FormControlLabel
             control={<Radio color="primary" />}
             key={name}
-            label={<Label {...{ name, sub }} />}
+            label={<Label {...{ name, sub }} nameClassName="!font-normal" />}
             value={value || name.slice(0, max_string_length)}
             onClick={() => {
               // Deselect if already selected
@@ -90,10 +90,10 @@ export const Item = ({
   )
 }
 
-export const Label = ({ name, sub }: { name: string; sub?: string }) => (
+export const Label = ({ name, nameClassName, sub }: { name: string; nameClassName?: string; sub?: string }) => (
   <div>
     <Linkify>
-      {name}
+      <span className={`font-bold opacity-95 ${nameClassName}`}>{name}</span>
       {sub && <p>{sub}</p>}
     </Linkify>
     <style jsx>{`
@@ -105,7 +105,7 @@ export const Label = ({ name, sub }: { name: string; sub?: string }) => (
       p {
         margin: 0 0 0px;
         font-size: 12px;
-        opacity: 0.85;
+        opacity: 0.75;
       }
     `}</style>
   </div>
