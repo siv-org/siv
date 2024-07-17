@@ -70,15 +70,15 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
       'good link_auths': {
         count,
-        [`count / num_votes (${num_votes})`]: pct(count / num_votes),
+        [`count / votes (${num_votes})`]: pct(count / num_votes),
 
         'has passport_proof': includes_passport_proof,
-        'has passport_proof / num_votes': pct(includes_passport_proof / num_votes),
+        'passport / votes': pct(includes_passport_proof / num_votes),
 
         'has sms': includes_sms,
-        'has sms / num_votes': pct(includes_sms / num_votes),
+        'sms / votes': pct(includes_sms / num_votes),
 
-        'multiple auth submissions { num payloads: count }': multiple_payloads,
+        // 'multiple auth submissions { num_payloads: count }': multiple_payloads,
       },
       //   includes_sms_and_passport,
     },
