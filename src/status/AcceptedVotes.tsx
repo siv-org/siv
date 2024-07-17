@@ -71,7 +71,7 @@ export const AcceptedVotes = ({
           )}
         </p>
         <table className="block pb-2.5 mt-8 overflow-auto border-collapse">
-          <thead>
+          <thead className="text-[11px]">
             <tr>
               <td rowSpan={2}></td>
               {esignature_requested && <th rowSpan={2}>signature approved</th>}
@@ -83,7 +83,7 @@ export const AcceptedVotes = ({
               ))}
             </tr>
 
-            <tr className="subheading">
+            <tr>
               {columns.map((c) => (
                 <Fragment key={c}>
                   <th>encrypted</th>
@@ -143,12 +143,6 @@ export const AcceptedVotes = ({
             padding: 3px 10px;
             margin: 0;
             max-width: 227px;
-          }
-
-          th,
-          .subheading td {
-            font-size: 11px;
-            font-weight: 700;
           }
         `}</style>
       </section>
