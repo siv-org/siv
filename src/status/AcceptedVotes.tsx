@@ -60,7 +60,7 @@ export const AcceptedVotes = ({
               These are the encrypted votes submitted by each authenticated voter.
               <br />
               For more, see{' '}
-              <a href="../protocol#3" target="_blank">
+              <a className="font-semibold" href="../protocol#3" target="_blank">
                 SIV Protocol Step 3: Submit Encrypted Vote
               </a>
               .
@@ -136,10 +136,6 @@ export const AcceptedVotes = ({
         )}
 
         <style jsx>{`
-          a {
-            font-weight: 600;
-          }
-
           th,
           td {
             border: 1px solid #ccc;
