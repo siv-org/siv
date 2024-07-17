@@ -31,7 +31,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       ...pick(data, ['election_manager', 'election_title']),
       stats: `${plural(data.num_voters, 'voter')}. votes: ${data.num_pending_votes || 0} pending, ${
         data.num_votes
-      } approved, ${(data.decrypted || []).length} unlocked`,
+      } total, ${(data.decrypted || []).length} unlocked`,
     }
   })
   const elections_by_manager = groupBy(elections, 'election_manager')
