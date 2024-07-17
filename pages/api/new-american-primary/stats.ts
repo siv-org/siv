@@ -65,7 +65,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     // napEntries,
     nap_auth_stats: {
       'total submitted votes': num_votes,
-      'total auth rows (incl. malformed)': napEntries.length,
+      //   'total auth rows (incl. malformed)': napEntries.length,
       '__malformed link_auths (dev tests)': _malformed_link_auths,
 
       'good link_auths': {
