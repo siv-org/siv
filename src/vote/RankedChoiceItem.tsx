@@ -40,7 +40,7 @@ export const RankedChoiceItem = ({
 
             {/* One label for each column of whole table, only visible on big screens */}
             {new Array(rankings_allowed).fill(0).map((_, index) => (
-              <th className="text-[11px] text-center hidden sm:table-cell" key={index}>
+              <th className="font-normal text-[11px] text-center hidden sm:table-cell" key={index}>
                 {getOrdinal(index + 1)}
               </th>
             ))}
@@ -162,7 +162,7 @@ const OneRow = forwardRef<
         <div className="flex space-x-1 sm:hidden">
           {new Array(rankings_allowed).fill(0).map((_, index) => (
             <div className="text-center" key={index}>
-              <div className="text-[11px] font-bold" key={index}>
+              <div className="text-[11px]" key={index}>
                 {getOrdinal(index + 1)}
               </div>
               <OneCircle {...{ index }} />
