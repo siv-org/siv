@@ -36,7 +36,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         .doc(link_auth)
         .set({ created_at: new Date(), embed, encrypted_vote, headers: req.headers, link_auth }),
       // 2b. Update election's cached tally of num_votes
-      electionDoc.update({ num_pending_votes: firestore.FieldValue.increment(1) }),
+      electionDoc.update({
+        num_pending_votes: firestore.FieldValue.increment(1),
+        num_votes: firestore.FieldValue.increment(1),
+      }),
     ])
 
     // Link to the auth url, particularly for AirgappedVoters
