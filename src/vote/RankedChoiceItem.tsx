@@ -153,7 +153,11 @@ const OneRow = forwardRef<
                 setWriteIn(event.target.value)
               }}
             />
-            {error && <div className="absolute left-0 text-sm text-red-500/70 bottom-[-18px]">{error}</div>}
+            {error && (
+              <div className="absolute sm:left-0 text-sm text-red-500/70 sm:top-[34px] left-[10.5rem] top-[13px]">
+                {error}
+              </div>
+            )}
           </div>
         )}
         {/* And one column for each ranking option... */}
