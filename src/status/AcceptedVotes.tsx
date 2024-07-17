@@ -1,3 +1,4 @@
+import { NumAcceptedVotes } from 'api/election/[election_id]/num-votes'
 import { useRouter } from 'next/router'
 import { Fragment, useEffect, useState } from 'react'
 import { CipherStrings } from 'src/crypto/stringify-shuffle'
@@ -26,11 +27,12 @@ export const AcceptedVotes = ({
   const [votes, setVotes] = useState<EncryptedVote[]>()
 
   // Exponentially poll for num votes (just a single read)
-  const { data: numVotes } = useSWRExponentialBackoff(
-    !election_id ? null : `/api/election/${election_id}/num-accepted-votes`,
+  const { data } = useSWRExponentialBackoff(
+    !election_id ? null : `/api/election/${election_id}/num-votes`,
     fetcher,
     1,
-  ) as { data: number }
+  ) as { data: NumAcceptedVotes }
+  const { num_pending_votes = 0, num_votes = 0 } = data || {}
 
   // Load all the encrypted votes (heavy, so only on first load)
   useEffect(() => {
@@ -42,13 +44,13 @@ export const AcceptedVotes = ({
 
   if (!votes || !ballot_design) return <div>Loading...</div>
 
-  const newVotes = numVotes - votes.length
+  const newTotalVotes = num_votes - votes.length
 
   const { columns } = generateColumnNames({ ballot_design })
 
   return (
     <>
-      <TotalVotesCast {...{ numVotes }} />
+      <TotalVotesCast numVotes={num_votes} />
       <section className="p-4 mb-8 bg-white rounded-lg shadow-[0px_2px_2px_hsl(0_0%_50%_/0.333),0px_4px_4px_hsl(0_0%_50%_/0.333),0px_6px_6px_hsl(0_0%_50%_/0.333)]">
         <h3 className="mt-0 mb-1">{title_prefix}All Submitted Votes</h3>
         <p className='mt-0 text-sm italic opacity-70"'>
@@ -114,16 +116,22 @@ export const AcceptedVotes = ({
           </tbody>
         </table>
 
-        {!!newVotes && (
+        {!!newTotalVotes && (
           <p
             className="inline-block mt-1.5 text-xs text-blue-500 cursor-pointer opacity-70 hover:underline"
-            onClick={() =>
-              fetch(`/api/election/${election_id}/accepted-votes?limitToLast=${newVotes}`)
+            onClick={() => {
+              const num_loaded_pending_votes = votes.filter(({ auth }) => auth === 'pending').length
+              const num_new_pending_votes = num_pending_votes - num_loaded_pending_votes
+              const num_new_accepted_votes = newTotalVotes - num_new_pending_votes
+
+              fetch(
+                `/api/election/${election_id}/accepted-votes?num_new_pending_votes=${num_new_pending_votes}&num_new_accepted_votes=${num_new_accepted_votes}`,
+              )
                 .then((r) => r.json())
                 .then((newVotes) => setVotes(() => [...votes, ...newVotes]))
-            }
+            }}
           >
-            + Load {newVotes} new
+            + Load {newTotalVotes} new
           </p>
         )}
 

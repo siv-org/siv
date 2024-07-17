@@ -5,9 +5,8 @@ import { firebase } from '../../_services'
 import { ReviewLog } from './admin/load-admin'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { election_id, limitToLast } = req.query
-
-  if (limitToLast && +limitToLast < 1) return res.status(200).json([])
+  const { election_id, num_new_accepted_votes, num_new_pending_votes } = req.query
+  // console.log({ election_id, num_new_accepted_votes, num_new_pending_votes })
 
   const electionDoc = firebase
     .firestore()
@@ -17,10 +16,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Begin preloading
   let votesQuery = electionDoc.collection('votes').orderBy('created_at')
   let pendingVotesQuery = electionDoc.collection('votes-pending').orderBy('created_at')
-  if (typeof limitToLast === 'string') {
-    votesQuery = votesQuery.limitToLast(+limitToLast)
-    pendingVotesQuery = votesQuery.limitToLast(+limitToLast)
-  }
+  if (num_new_accepted_votes) votesQuery = votesQuery.limitToLast(+num_new_accepted_votes)
+  if (num_new_pending_votes) pendingVotesQuery = votesQuery.limitToLast(+num_new_pending_votes)
   const loadVotes = votesQuery.get()
   const loadPendingVotes = pendingVotesQuery.get()
 
