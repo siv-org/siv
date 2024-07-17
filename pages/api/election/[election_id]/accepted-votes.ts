@@ -17,7 +17,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   let votesQuery = electionDoc.collection('votes').orderBy('created_at')
   let pendingVotesQuery = electionDoc.collection('votes-pending').orderBy('created_at')
   if (num_new_accepted_votes) votesQuery = votesQuery.limitToLast(+num_new_accepted_votes)
-  if (num_new_pending_votes) pendingVotesQuery = votesQuery.limitToLast(+num_new_pending_votes)
+  if (num_new_pending_votes) pendingVotesQuery = pendingVotesQuery.limitToLast(+num_new_pending_votes)
   const loadVotes = votesQuery.get()
   const loadPendingVotes = pendingVotesQuery.get()
 
