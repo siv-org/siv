@@ -91,23 +91,11 @@ export const Item = ({
 }
 
 export const Label = ({ name, nameClassName, sub }: { name: string; nameClassName?: string; sub?: string }) => (
-  <div>
+  <div className="my-2">
     <Linkify>
       <span className={`font-bold opacity-95 ${nameClassName}`}>{name}</span>
-      {sub && <p>{sub}</p>}
+      {sub && <p className="m-0 text-[12px] opacity-75">{sub}</p>}
     </Linkify>
-    <style jsx>{`
-      div {
-        position: relative;
-        margin: 8px 0;
-      }
-
-      p {
-        margin: 0 0 0px;
-        font-size: 12px;
-        opacity: 0.75;
-      }
-    `}</style>
   </div>
 )
 
