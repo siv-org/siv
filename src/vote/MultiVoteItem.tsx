@@ -43,7 +43,7 @@ export const MultiVoteItem = ({
     <>
       <TitleDescriptionQuestion {...{ description, question, title }} />
 
-      <p className="ml-[13px] italic ">
+      <p className="sm:ml-[13px] italic ">
         {type === 'approval' ? (
           'Vote for all the options you approve of:'
         ) : (
@@ -52,7 +52,7 @@ export const MultiVoteItem = ({
           </>
         )}
       </p>
-      <FormGroup style={{ paddingLeft: '1.5rem' }}>
+      <FormGroup className="ml-2 sm:ml-4">
         {options.map(({ name, sub, value }) => {
           const val = value || name.slice(0, max_string_length)
 

@@ -31,12 +31,12 @@ export const Ballot = ({
 
   return (
     <NoSsr>
-      <Paper noFade className="pt-4 overflow-x-scroll">
+      <Paper noFade className="!px-4 pt-4 overflow-x-scroll">
         <>
           <BallotPreview {...{ state }} />
 
           {/* Election Title */}
-          {state.election_title && <h2 className="mt-2 ml-[13px]">{state.election_title}</h2>}
+          {state.election_title && <h2 className="mt-2 sm:ml-[13px]">{state.election_title}</h2>}
 
           {state.ballot_design.map((item, index) => {
             const max_options = item.options.length + +!!item.write_in_allowed

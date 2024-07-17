@@ -27,7 +27,7 @@ export const Item = ({
     <>
       <TitleDescriptionQuestion {...{ description, question, title }} />
       <RadioGroup
-        style={{ paddingLeft: '1.5rem' }}
+        className="ml-1 sm:ml-6"
         value={state.plaintext[id] || ''}
         onChange={(event) => dispatch({ [id]: event.target.value })}
       >
@@ -129,22 +129,19 @@ export const TitleDescriptionQuestion = ({
         </a>
       )}
     >
-      <p className="title">{title}</p>
-      {description && <p className="description">{description}</p>}
-      {question && <p className="question">{question}</p>}
+      <p className="title sm:px-[13px] py-[5px] mb-2.5">{title}</p>
+      {description && <p className="description sm:m-[13px]">{description}</p>}
+      {question && <p className="question sm:m-[13px]">{question}</p>}
     </Linkify>
     <style jsx>{`
       .title {
         font-size: 16px;
         font-weight: bold;
-        margin-bottom: 10px;
-        padding: 5px 13px;
         white-space: pre-line;
       }
 
       .description,
       .question {
-        margin: 13px;
         white-space: pre-wrap;
       }
     `}</style>
