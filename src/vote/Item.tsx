@@ -130,7 +130,7 @@ export const TitleDescriptionQuestion = ({
       )}
     >
       {title && <p className="title sm:px-[13px] py-[5px] mb-2.5">{title}</p>}
-      {description && <p className="whitespace-pre-wrap sm:m-[13px]">{description}</p>}
+      {description && <p className="whitespace-pre-wrap sm:m-[13px] mb-0">{description}</p>}
       {question && <p className="whitespace-pre-wrap sm:m-[13px]">{question}</p>}
     </Linkify>
     <style jsx>{`
