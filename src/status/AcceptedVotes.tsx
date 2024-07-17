@@ -105,8 +105,8 @@ export const AcceptedVotes = ({
                   if (key !== 'auth') {
                     return (
                       <Fragment key={key}>
-                        <td className="monospaced text-[11px]">{vote[key]?.encrypted}</td>
-                        <td className="monospaced text-[11px]">{vote[key]?.lock}</td>
+                        <td className="font-mono text-[10px]">{vote[key]?.encrypted}</td>
+                        <td className="font-mono text-[10px]">{vote[key]?.lock}</td>
                       </Fragment>
                     )
                   }
@@ -116,6 +116,7 @@ export const AcceptedVotes = ({
           </tbody>
         </table>
 
+        {/* Load new votes */}
         {!!newTotalVotes && (
           <p
             className="inline-block mt-1.5 text-xs text-blue-500 cursor-pointer opacity-70 hover:underline"
@@ -141,11 +142,7 @@ export const AcceptedVotes = ({
             border: 1px solid #ccc;
             padding: 3px 10px;
             margin: 0;
-            max-width: 240px;
-          }
-
-          td.monospaced {
-            font-family: monospace;
+            max-width: 227px;
           }
 
           th,
