@@ -68,7 +68,7 @@ export const AcceptedVotes = ({
         be shuffled and then unlocked.`
           )}
         </p>
-        <table className="block pb-2 mt-8 overflow-auto border-collapse">
+        <table className="block pb-2.5 mt-8 overflow-auto border-collapse">
           <thead>
             <tr>
               <td rowSpan={2}></td>
@@ -98,7 +98,7 @@ export const AcceptedVotes = ({
                 {esignature_requested && (
                   <td className="font-bold text-center">{vote.signature_approved ? '✓' : ''}</td>
                 )}
-                <td>{vote.auth}</td>
+                <td className={`${vote.auth === 'pending' && 'italic opacity-50 text-xs'}`}>{vote.auth}</td>
                 {columns.map((key) => {
                   if (key !== 'auth') {
                     return (
