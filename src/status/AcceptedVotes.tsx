@@ -154,10 +154,3 @@ export const AcceptedVotes = ({
     </>
   )
 }
-
-export const stringifyEncryptedVote = (vote: EncryptedVote) =>
-  `{ auth: ${vote.auth}${Object.keys(vote)
-    .map((key) =>
-      key === 'auth' ? '' : `, ${key}: { encrypted: '${vote[key].encrypted}', lock: '${vote[key].lock}' }`,
-    )
-    .join('')} }`

@@ -3,8 +3,8 @@ import { firestore } from 'firebase-admin'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { generateAuthToken } from 'src/crypto/generate-auth-tokens'
 import { CipherStrings } from 'src/crypto/stringify-shuffle'
+import { EncryptedVote } from 'src/status/AcceptedVotes'
 
-import { EncryptedVote, stringifyEncryptedVote } from '../../src/status/AcceptedVotes'
 import { firebase, pushover, sendEmail } from './_services'
 import { validateAuthToken } from './check-auth-token'
 import { pusher } from './pusher'
@@ -129,3 +129,10 @@ You can confirm it matches your private Encryption Details by revisiting your vo
 
 ${stringifyEncryptedVote({ auth, ...encrypted_vote } as EncryptedVote)}
 `)
+
+const stringifyEncryptedVote = (vote: EncryptedVote) =>
+  `{ auth: ${vote.auth}${Object.keys(vote)
+    .map((key) =>
+      key === 'auth' ? '' : `, ${key}: { encrypted: '${vote[key].encrypted}', lock: '${vote[key].lock}' }`,
+    )
+    .join('')} }`
