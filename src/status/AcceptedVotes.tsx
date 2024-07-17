@@ -68,7 +68,7 @@ export const AcceptedVotes = ({
         be shuffled and then unlocked.`
           )}
         </p>
-        <table>
+        <table className="block pb-2 mt-8 overflow-auto border-collapse">
           <thead>
             <tr>
               <td rowSpan={2}></td>
@@ -116,7 +116,7 @@ export const AcceptedVotes = ({
 
         {!!newVotes && (
           <p
-            className="inline-block mt-3 text-xs text-blue-500 cursor-pointer opacity-70 hover:underline"
+            className="inline-block mt-1.5 text-xs text-blue-500 cursor-pointer opacity-70 hover:underline"
             onClick={() =>
               fetch(`/api/election/${election_id}/accepted-votes?limitToLast=${newVotes}`)
                 .then((r) => r.json())
@@ -130,13 +130,6 @@ export const AcceptedVotes = ({
         <style jsx>{`
           a {
             font-weight: 600;
-          }
-
-          table {
-            border-collapse: collapse;
-            display: block;
-            overflow: auto;
-            margin-top: 2rem;
           }
 
           th,
