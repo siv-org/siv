@@ -70,7 +70,7 @@ export const AcceptedVotes = ({
         be shuffled and then unlocked.`
           )}
         </p>
-        <table className="block pb-2.5 mt-8 overflow-auto border-collapse">
+        <table className="block pb-2.5 mt-8 overflow-auto border-collapse [&_tr>*]:[border:1px_solid_#ccc] [&_tr>*]:px-2.5 [&_tr>*]:py-[3px] [&_tr>*]:max-w-[227px]">
           <thead className="text-[11px]">
             <tr>
               <td rowSpan={2}></td>
@@ -135,16 +135,6 @@ export const AcceptedVotes = ({
             + Load {newTotalVotes} new
           </p>
         )}
-
-        <style jsx>{`
-          th,
-          td {
-            border: 1px solid #ccc;
-            padding: 3px 10px;
-            margin: 0;
-            max-width: 227px;
-          }
-        `}</style>
       </section>
     </>
   )
