@@ -2,6 +2,13 @@
 // - current 136 encrypted votes (in `votes-pending` collection)
 // - current trustees list
 
+// Other items we needed to copy over:
+// - election.threshold_public_key -> for shuffle
+// - election.ballot_design -> for shuffle
+// - other trustees, in their local storage, need to copy their private keys to the new election_id
+//    - which involves both renaming the localStorage key, AND updating the value election_id inside the json blob, 2nd item.
+// - num_votes (not strictly necessary but led to some graphical glitches)
+
 import './_env'
 
 import { firebase } from '../pages/api/_services'

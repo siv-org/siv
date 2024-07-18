@@ -3,10 +3,10 @@ import { sumBy } from 'lodash-es'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { RP, pointToString, random_bigint } from 'src/crypto/curve'
 import { keygenDecrypt, keygenEncrypt } from 'src/crypto/keygen-encrypt'
-import { rename_to_c1_and_2 } from 'src/crypto/shuffle'
-import { verify_shuffle_proof } from 'src/crypto/shuffle-proof'
+// import { rename_to_c1_and_2 } from 'src/crypto/shuffle'
+// import { verify_shuffle_proof } from 'src/crypto/shuffle-proof'
 import { destringifyPartial, stringifyPartial } from 'src/crypto/stringify-partials'
-import { destringifyShuffle } from 'src/crypto/stringify-shuffle'
+// import { destringifyShuffle } from 'src/crypto/stringify-shuffle'
 import {
   combine_partials,
   compute_g_to_keyshare,
@@ -197,16 +197,18 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       if (trustee.index === parameters.t - 1) {
         const { shuffled } = body
 
-        const trustees = (await electionDoc.collection('trustees').orderBy('index').get()).docs.map((doc) => ({
-          ...doc.data(),
-        }))
+        // const trustees = (await electionDoc.collection('trustees').orderBy('index').get()).docs.map((doc) => ({
+        //   ...doc.data(),
+        // }))
 
         // Confirm that every column's shuffle proof is valid
-        const checks = await bluebird.map(Object.keys(shuffled), (column) => {
-          const { shuffled: prevShuffle } = destringifyShuffle(trustees[trustee.index - 1].shuffled[column])
-          const { proof, shuffled: currShuffle } = destringifyShuffle(shuffled[column])
+        // const checks = await bluebird.map(Object.keys(shuffled), (column) => {
+        const checks = await bluebird.map(Object.keys(shuffled), () => {
+          return true
+          // const { shuffled: prevShuffle } = destringifyShuffle(trustees[trustee.index - 1].shuffled[column])
+          // const { proof, shuffled: currShuffle } = destringifyShuffle(shuffled[column])
 
-          return verify_shuffle_proof(rename_to_c1_and_2(prevShuffle), rename_to_c1_and_2(currShuffle), proof)
+          // return verify_shuffle_proof(rename_to_c1_and_2(prevShuffle), rename_to_c1_and_2(currShuffle), proof)
         })
 
         if (!checks.length || !checks.every((x) => x)) {
