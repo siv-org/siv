@@ -8,6 +8,7 @@
 // - other trustees, in their local storage, need to copy their private keys to the new election_id
 //    - which involves both renaming the localStorage key, AND updating the value election_id inside the json blob, 2nd item.
 // - num_votes (not strictly necessary but led to some graphical glitches)
+// election.t > needed for admin to know when to decrypt
 
 import './_env'
 
