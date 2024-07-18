@@ -60,6 +60,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     threshold_public_key: string
   }
   elapsed('election data')
+  if (!threshold_public_key) return res.status(400).json({ error: 'election missing `threshold_public_key`' })
 
   // If esignature_requested, filter for only approved
   let votes_to_unlock = (await loadVotes).docs
