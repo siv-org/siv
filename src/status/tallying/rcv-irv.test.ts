@@ -166,4 +166,5 @@ describe('IRV tallying', () => {
   test.todo('handles when there is a tie in the bottom choice')
   test.todo('handles when there is a tie in the top choice early on')
   test.todo('handles when there is a tie in the final round')
+  test.todo('handles when there are a two digit number of multiple_votes_allowed')
 })

@@ -100,7 +100,7 @@ export const VotesToDecrypt = ({
 
   async function partialDecryptFinalShuffle() {
     console.log(
-      `Last trusteee has shuffled: ${num_last_shuffled}, We decrypted: ${num_we_decrypted}. Beginning partial decryption...`,
+      `Last trustee has shuffled: ${num_last_shuffled}, We decrypted: ${num_we_decrypted}. Beginning partial decryption...`,
     )
 
     // Partially decrypt each item in every list
