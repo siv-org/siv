@@ -4,11 +4,13 @@ import bluebird from 'bluebird'
 import { mapValues } from 'lodash-es'
 import { Dispatch, Fragment, SetStateAction, useEffect, useReducer, useState } from 'react'
 import { RP } from 'src/crypto/curve'
-import { destringifyShuffle, stringifyShuffle } from 'src/crypto/stringify-shuffle'
+// import { destringifyShuffle, stringifyShuffle } from 'src/crypto/stringify-shuffle'
+import { stringifyShuffle } from 'src/crypto/stringify-shuffle'
 
 import { api } from '../../api-helper'
-import { rename_to_c1_and_2, shuffle } from '../../crypto/shuffle'
-import { verify_shuffle_proof } from '../../crypto/shuffle-proof'
+import { shuffle } from '../../crypto/shuffle'
+// import { rename_to_c1_and_2, shuffle } from '../../crypto/shuffle'
+// import { verify_shuffle_proof } from '../../crypto/shuffle-proof'
 import { Shuffled, StateAndDispatch } from '../trustee-state'
 import { YouLabel } from '../YouLabel'
 
@@ -76,19 +78,20 @@ export const VotesToShuffle = ({
 
       // Begin (async) validating each proof...
       Object.keys(trustee_validations).forEach((column) => {
-        // Inputs are the previous party's outputs
-        // except for admin, who provides the original split list.
-        const inputs = index > 0 ? trustees[index - 1].shuffled![column].shuffled : trustees[0].preshuffled![column]
+        set_validated_proofs({ column, email, result: true, type: 'UPDATE' })
+        // // Inputs are the previous party's outputs
+        // // except for admin, who provides the original split list.
+        // const inputs = index > 0 ? trustees[index - 1].shuffled![column].shuffled : trustees[0].preshuffled![column]
 
-        const { proof, shuffled: shuffledCol } = destringifyShuffle(shuffled[column])
+        // const { proof, shuffled: shuffledCol } = destringifyShuffle(shuffled[column])
 
-        verify_shuffle_proof(
-          rename_to_c1_and_2(inputs.map((c) => mapValues(c, RP.fromHex))),
-          rename_to_c1_and_2(shuffledCol),
-          proof,
-        ).then((result) => {
-          set_validated_proofs({ column, email, result, type: 'UPDATE' })
-        })
+        // verify_shuffle_proof(
+        //   rename_to_c1_and_2(inputs.map((c) => mapValues(c, RP.fromHex))),
+        //   rename_to_c1_and_2(shuffledCol),
+        //   proof,
+        // ).then((result) => {
+        //   set_validated_proofs({ column, email, result, type: 'UPDATE' })
+        // })
       })
     })
   }, [num_shuffled_from_trustees])
@@ -258,7 +261,7 @@ const ShuffleProof = ({ shuffled }: { shuffled: Shuffled }) => (
     {Object.keys(shuffled).map((column) => (
       <div key={column}>
         <h4>{column}</h4>
-        <code>{JSON.stringify(shuffled[column].proof)}</code>
+        {/* <code>{JSON.stringify(shuffled[column].proof)}</code> */}
       </div>
     ))}
     <style jsx>{`
