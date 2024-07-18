@@ -153,6 +153,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       ).toFixed(2)} ms/ciphertext)`,
     )
   } else {
+    console.log('starting admin shuffle')
     // Then admin does a SIV shuffle (permute + re-encryption) for each item's list
     const shuffled = await bluebird.props(
       mapValues(split, async (list) =>
@@ -166,7 +167,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     )
 
     // Store admins shuffled lists
+    console.log("starting to write admin's shuffle to db\n\n\n\n\n")
     await adminDoc.update({ preshuffled: split, shuffled })
+    console.log("succeeded to write admin's shuffle.")
     try {
       await pusher.trigger(`keygen-${election_id}`, 'update', {
         'admin@secureintervoting.org': { shuffled: shuffled.length },
