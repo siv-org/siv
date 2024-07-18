@@ -1,3 +1,4 @@
+import { allowCors } from 'api/_cors'
 import bluebird from 'bluebird'
 import { sumBy } from 'lodash-es'
 import { NextApiRequest, NextApiResponse } from 'next'
@@ -30,7 +31,7 @@ import { commafy, transform_email_keys } from './commafy'
 
 const { ADMIN_EMAIL } = process.env
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+export default allowCors(async (req: NextApiRequest, res: NextApiResponse) => {
   if (!ADMIN_EMAIL) return res.status(501).send('Missing process.env.ADMIN_EMAIL')
 
   const { election_id } = req.query
@@ -315,4 +316,4 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   await Promise.all(promises)
 
   res.status(201).send(`Updated ${email} object`)
-}
+})
