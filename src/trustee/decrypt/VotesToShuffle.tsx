@@ -274,14 +274,9 @@ const ShuffleProof = ({ shuffled }: { shuffled: Shuffled }) => (
     {Object.keys(shuffled).map((column) => (
       <div key={column}>
         <h4>{column}</h4>
-        {/* <code>{JSON.stringify(shuffled[column].proof)}</code> */}
+        {/* <code className="text-[13px]">{JSON.stringify(shuffled[column].proof)}</code> */}
       </div>
     ))}
-    <style jsx>{`
-      code {
-        font-size: 13px;
-      }
-    `}</style>
   </>
 )
 
@@ -299,30 +294,16 @@ const ValidationSummary = ({
   const validations = validated_proofs[email]
 
   return (
-    <i>
+    <i className="text-[11px] block sm:float-right">
       {all_proofs_passed(validations) && '✅ '}
       {num_proofs_passed(validations)} of {num_total_proofs(validations)} Shuffle Proofs verified (
-      <a className="show-proof" onClick={() => set_proofs_shown({ ...proofs_shown, [email]: !proofs_shown[email] })}>
+      <a
+        className="font-mono cursor-pointer"
+        onClick={() => set_proofs_shown({ ...proofs_shown, [email]: !proofs_shown[email] })}
+      >
         {proofs_shown[email] ? '-Hide' : '+Show'}
       </a>
       )
-      <style jsx>{`
-        i {
-          font-size: 11px;
-          display: block;
-        }
-
-        @media (min-width: 600px) {
-          i {
-            float: right;
-          }
-        }
-
-        .show-proof {
-          cursor: pointer;
-          font-family: monospace;
-        }
-      `}</style>
     </i>
   )
 }
