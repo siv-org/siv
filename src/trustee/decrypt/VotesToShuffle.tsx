@@ -116,6 +116,7 @@ export const VotesToShuffle = ({
         ),
       ),
     )
+    console.log('Shuffled complete.')
 
     // Tell admin our new shuffled list
     api(`election/${state.election_id}/trustees/update`, {
