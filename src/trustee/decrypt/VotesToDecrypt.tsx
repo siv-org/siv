@@ -15,6 +15,7 @@ import {
 } from '../../crypto/threshold-keygen'
 import { Partial, StateAndDispatch } from '../trustee-state'
 import { YouLabel } from '../YouLabel'
+import { useTruncatedTable } from './useTruncatedTable'
 
 type Partials = Record<string, Partial[]>
 type Validations_Table = Record<string, Record<string, (boolean | null)[]>>
@@ -177,36 +178,45 @@ const PartialsTable = ({
   const trustees_validations = validated_proofs[email]
   if (!trustees_validations) return <></>
   const columns = Object.keys(partials)
+  const { TruncationToggle, rows_to_show } = useTruncatedTable({
+    num_cols: columns.length,
+    num_rows: Object.values(partials)[0].length,
+  })
+
   return (
-    <table>
-      <thead>
-        <tr>
-          <th></th>
-          {columns.map((c) => (
-            <th key={c}>{c}</th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {partials[columns[0]].map((_, index) => (
-          <tr key={index}>
-            <td>{index + 1}.</td>
-            {columns.map((key) => {
-              const validated = trustees_validations[key][index]
-              return (
-                <Fragment key={key}>
-                  <td className="monospaced">
-                    <div>
-                      {partials[key][index].partial}{' '}
-                      <span>{validated === null ? <LoadingOutlined /> : validated ? '' : '❌'}</span>
-                    </div>
-                  </td>
-                </Fragment>
-              )
-            })}
+    <>
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            {columns.map((c) => (
+              <th key={c}>{c}</th>
+            ))}
           </tr>
-        ))}
-      </tbody>
+        </thead>
+        <tbody>
+          {partials[columns[0]].slice(0, rows_to_show).map((_, index) => (
+            <tr key={index}>
+              <td>{index + 1}.</td>
+              {columns.map((key) => {
+                const validated = trustees_validations[key][index]
+                return (
+                  <Fragment key={key}>
+                    <td className="monospaced">
+                      <div>
+                        {partials[key][index].partial}{' '}
+                        <span>{validated === null ? <LoadingOutlined /> : validated ? '' : '❌'}</span>
+                      </div>
+                    </td>
+                  </Fragment>
+                )
+              })}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <TruncationToggle />
+
       <style jsx>{`
         table {
           border-collapse: collapse;
@@ -245,7 +255,7 @@ const PartialsTable = ({
           font-weight: 700;
         }
       `}</style>
-    </table>
+    </>
   )
 }
 
