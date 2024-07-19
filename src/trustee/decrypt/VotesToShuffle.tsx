@@ -13,6 +13,7 @@ import { shuffle } from '../../crypto/shuffle'
 // import { verify_shuffle_proof } from '../../crypto/shuffle-proof'
 import { Shuffled, StateAndDispatch } from '../trustee-state'
 import { YouLabel } from '../YouLabel'
+import { useTruncatedTable } from './useTruncatedTable'
 
 type Validations_Table = Record<string, { columns: Record<string, boolean | null>; num_votes: number }>
 
@@ -182,47 +183,57 @@ const ShuffledVotesTable = ({
 }): JSX.Element => {
   const trustees_validations = validated_proofs && validated_proofs[email]
   const columns = Object.keys(shuffled)
+
+  const { TruncationToggle, rows_to_show } = useTruncatedTable({
+    num_cols: columns.length,
+    num_rows: Object.values(shuffled)[0].shuffled.length,
+  })
+
   return (
-    <table>
-      <thead>
-        <tr>
-          <th></th>
-          {columns.map((c) => {
-            const verified = trustees_validations ? trustees_validations.columns[c] : null
-            return (
-              <th colSpan={2} key={c}>
-                {c} <span>{verified === null ? <LoadingOutlined /> : verified ? '' : '❌'}</span>
-              </th>
-            )
-          })}
-        </tr>
-      </thead>
-      <tbody>
-        {/* Column subheadings */}
-        <tr className="subheading">
-          <td></td>
-          {columns.map((c) => (
-            <Fragment key={c}>
-              <td>encrypted</td>
-              <td>lock</td>
-            </Fragment>
-          ))}
-        </tr>
-        {shuffled[columns[0]].shuffled.map((_, index) => (
-          <tr key={index}>
-            <td>{index + 1}.</td>
-            {columns.map((key) => {
-              const cipher = shuffled[key].shuffled[index]
+    <>
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            {columns.map((c) => {
+              const verified = trustees_validations ? trustees_validations.columns[c] : null
               return (
-                <Fragment key={key}>
-                  <td className="monospaced">{cipher.encrypted}</td>
-                  <td className="monospaced">{cipher.lock}</td>
-                </Fragment>
+                <th colSpan={2} key={c}>
+                  {c} <span>{verified === null ? <LoadingOutlined /> : verified ? '' : '❌'}</span>
+                </th>
               )
             })}
           </tr>
-        ))}
-      </tbody>
+        </thead>
+        <tbody>
+          {/* Column subheadings */}
+          <tr className="subheading">
+            <td></td>
+            {columns.map((c) => (
+              <Fragment key={c}>
+                <td>encrypted</td>
+                <td>lock</td>
+              </Fragment>
+            ))}
+          </tr>
+          {shuffled[columns[0]].shuffled.slice(0, rows_to_show).map((_, index) => (
+            <tr key={index}>
+              <td>{index + 1}.</td>
+              {columns.map((key) => {
+                const cipher = shuffled[key].shuffled[index]
+                return (
+                  <Fragment key={key}>
+                    <td className="monospaced">{cipher.encrypted}</td>
+                    <td className="monospaced">{cipher.lock}</td>
+                  </Fragment>
+                )
+              })}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <TruncationToggle />
+
       <style jsx>{`
         table {
           border-collapse: collapse;
@@ -254,7 +265,7 @@ const ShuffledVotesTable = ({
           opacity: 0.6;
         }
       `}</style>
-    </table>
+    </>
   )
 }
 
