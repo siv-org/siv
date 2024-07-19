@@ -3,9 +3,9 @@ import { useState } from 'react'
 import { AcceptedVotes } from '../../status/AcceptedVotes'
 import { useElectionInfo } from '../../status/use-election-info'
 import { Trustees } from '../keygen/1-Trustees'
-import { PrivateBox } from '../PrivateBox'
 import { StateAndDispatch } from '../trustee-state'
 import { ResetButton } from './_ResetButton'
+import { PrivateKeyshare } from './PrivateKeyshare'
 import { VotesToDecrypt } from './VotesToDecrypt'
 import { VotesToShuffle } from './VotesToShuffle'
 
@@ -26,10 +26,7 @@ export const ShuffleAndDecrypt = ({ dispatch, state }: StateAndDispatch): JSX.El
       <Trustees {...{ state }} />
 
       {/* Do we have a private keyshare stored? */}
-      <br />
-      <PrivateBox>
-        <p>Your Private keyshare is: {private_keyshare}</p>
-      </PrivateBox>
+      <PrivateKeyshare {...{ private_keyshare }} />
 
       {/* All Accepted Votes */}
       <AcceptedVotes {...{ ballot_design }} allow_truncation title_prefix="II. " />
