@@ -2,7 +2,7 @@
 // - current 136 encrypted votes (in `votes-pending` collection)
 // - current trustees list
 
-// Other items we needed to copy over:
+// TODO: Other items we still needed to copy over:
 // - election.threshold_public_key -> for shuffle
 // - election.ballot_design -> for shuffle
 // - other trustees, in their local storage, need to copy their private keys to the new election_id

@@ -31,6 +31,10 @@ import { commafy, transform_email_keys } from './commafy'
 
 const { ADMIN_EMAIL } = process.env
 
+// TODO: we now have ./update-admin endpoint, that handles all the followup steps by admin.
+// - Only for unlock for now, not DKG.
+// Cleaner to remove those code paths from this one, and just have this script call that instead?
+
 export default allowCors(async (req: NextApiRequest, res: NextApiResponse) => {
   if (!ADMIN_EMAIL) return res.status(501).send('Missing process.env.ADMIN_EMAIL')
 
