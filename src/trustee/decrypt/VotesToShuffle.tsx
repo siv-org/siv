@@ -197,31 +197,33 @@ const ShuffledVotesTable = ({
 
   return (
     <>
-      <table>
-        <thead>
+      <table className="block w-full pb-3 overflow-auto border-collapse [&_tr>*]:[border:1px_solid_#ccc] [&_tr>*]:px-2.5 [&_tr>*]:py-[3px] [&_tr>*]:max-w-[227px]">
+        <thead className="text-[11px]">
           <tr>
-            <th></th>
+            <td rowSpan={2}></td>
             {columns.map((c) => {
               const verified = trustees_validations ? trustees_validations.columns[c] : null
               return (
                 <th colSpan={2} key={c}>
-                  {c} <span>{verified === null ? <LoadingOutlined /> : verified ? '' : '❌'}</span>
+                  {c}{' '}
+                  <span className="pl-[5px] opacity-50">
+                    {verified === null ? <LoadingOutlined /> : verified ? '' : '❌'}
+                  </span>
                 </th>
               )
             })}
           </tr>
-        </thead>
-        <tbody>
           {/* Column subheadings */}
-          <tr className="subheading">
-            <td></td>
+          <tr>
             {columns.map((c) => (
               <Fragment key={c}>
-                <td>encrypted</td>
-                <td>lock</td>
+                <th>encrypted</th>
+                <th>lock</th>
               </Fragment>
             ))}
           </tr>
+        </thead>
+        <tbody>
           {shuffled[columns[0]].shuffled.slice(0, rows_to_show).map((_, index) => (
             <tr key={index}>
               <td>{index + 1}.</td>
@@ -229,8 +231,8 @@ const ShuffledVotesTable = ({
                 const cipher = shuffled[key].shuffled[index]
                 return (
                   <Fragment key={key}>
-                    <td className="monospaced">{cipher.encrypted}</td>
-                    <td className="monospaced">{cipher.lock}</td>
+                    <td className="font-mono text-[10px]">{cipher.encrypted}</td>
+                    <td className="font-mono text-[10px]">{cipher.lock}</td>
                   </Fragment>
                 )
               })}
@@ -239,38 +241,6 @@ const ShuffledVotesTable = ({
         </tbody>
       </table>
       <TruncationToggle />
-
-      <style jsx>{`
-        table {
-          border-collapse: collapse;
-          display: block;
-          overflow: auto;
-          margin-bottom: 10px;
-        }
-
-        th,
-        td {
-          border: 1px solid #ccc;
-          padding: 3px 10px;
-          margin: 0;
-          max-width: 240px;
-        }
-
-        td.monospaced {
-          font-family: monospace;
-        }
-
-        th,
-        .subheading td {
-          font-size: 11px;
-          font-weight: 700;
-        }
-
-        th span {
-          padding-left: 5px;
-          opacity: 0.6;
-        }
-      `}</style>
     </>
   )
 }
