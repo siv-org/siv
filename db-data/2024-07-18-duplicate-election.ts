@@ -2,11 +2,12 @@
 // - current 136 encrypted votes (in `votes-pending` collection)
 // - current trustees list
 
+// - Other trustees, in their local storage, need to copy their private keys to the new election_id
+// See function `cloneTrusteeDetails` at bottom
+
 // TODO: Other items we still needed to copy over:
 // - election.threshold_public_key -> for shuffle
 // - election.ballot_design -> for shuffle
-// - other trustees, in their local storage, need to copy their private keys to the new election_id
-//    - which involves both renaming the localStorage key, AND updating the value election_id inside the json blob, 2nd item.
 // - num_votes (not strictly necessary but led to some graphical glitches)
 // election.t > needed for admin to know when to decrypt
 
@@ -51,3 +52,26 @@ async function copySubcollection(
   await copySubcollection(electionFromDoc, electionToDoc, 'votes-pending')
   await copySubcollection(electionFromDoc, electionToDoc, 'trustees')
 })()
+
+/** Clone localStorage trustee details from from old_election_id to new_election_id.
+    Useful for making a subset of votes to shuffle separately from main election */
+export function cloneTrusteeDetails(old_election_id, new_election_id) {
+  let matches = 0
+  Object.entries(localStorage).forEach(([key, value]) => {
+    // Only care about old_election_id 'observer' entries
+    if (!key.includes(`observer-${old_election_id}-`)) return
+
+    // Update state.election_id field
+    const state = JSON.parse(value)
+    state.election_id = new_election_id
+
+    // Update key with new_election_id
+    const new_key = key.replace(old_election_id, new_election_id)
+
+    // Save to localStorage
+    localStorage.setItem(new_key, JSON.stringify(state))
+    console.log(`${++matches}. Cloned ${key} to ${new_election_id}`)
+  })
+
+  if (!matches) return console.warn('No localStorage matches for old_election_id: ' + old_election_id)
+}
