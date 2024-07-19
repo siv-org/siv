@@ -190,8 +190,8 @@ const PartialsTable = ({
   return (
     <>
       <table className="block w-full pb-3 overflow-auto border-collapse [&_tr>*]:[border:1px_solid_#ccc] [&_tr>*]:px-2.5 [&_tr>td]:pr-5 [&_tr>*]:py-[3px]">
-        <thead>
-          <tr className="text-[11px]">
+        <thead className="text-[11px] text-center">
+          <tr>
             <th></th>
             {columns.map((c) => (
               <th key={c}>{c}</th>
