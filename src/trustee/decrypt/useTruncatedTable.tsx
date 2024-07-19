@@ -20,7 +20,7 @@ export const useTruncatedTable = ({
     if (!any_to_truncate) return null
 
     return (
-      <a className="block text-center cursor-pointer" onClick={() => setTruncated(!isTruncated)}>
+      <a className="block text-center opacity-50 cursor-pointer" onClick={() => setTruncated(!isTruncated)}>
         {isTruncated
           ? `...and ${Math.ceil(num_rows - num_truncated_rows)} more rows.`
           : `Truncate to < ${max_cells_to_show} total selections.`}

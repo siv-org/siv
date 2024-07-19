@@ -17,6 +17,8 @@ import { useTruncatedTable } from './useTruncatedTable'
 
 type Validations_Table = Record<string, { columns: Record<string, boolean | null>; num_votes: number }>
 
+const nbsp = '\u00A0'
+
 export const VotesToShuffle = ({
   set_final_shuffle_verifies,
   state,
@@ -145,15 +147,24 @@ export const VotesToShuffle = ({
   return (
     <>
       <h3>III. Votes to Shuffle</h3>
-      <ol>
+      <ol className="pl-5">
         {trustees?.map(({ email, shuffled, you }) => (
           <li className="mb-8" key={email}>
-            {email}
-            {you && <YouLabel />} shuffled {!shuffled ? '0' : Object.values(shuffled)[0].shuffled.length} votes
-            {shuffled && ` x ${Object.keys(shuffled).length} columns`}.
-            {shuffled && (
-              <ValidationSummary {...{ email, proofs_shown, set_proofs_shown, shuffled, validated_proofs }} />
-            )}
+            {/* Top row above table */}
+            <div className="flex flex-col justify-between sm:flex-row">
+              {/* Left */}
+              <span>
+                {email}
+                {you && <YouLabel />} shuffled {!shuffled ? '0' : Object.values(shuffled)[0].shuffled.length}&nbsp;votes
+                {shuffled && `${nbsp}x${nbsp}${Object.keys(shuffled).length}${nbsp}columns`}.
+              </span>
+              {/* Right */}
+              {shuffled && (
+                <ValidationSummary {...{ email, proofs_shown, set_proofs_shown, shuffled, validated_proofs }} />
+              )}
+            </div>
+
+            {/* Table */}
             {shuffled && (
               <>
                 <ShuffledVotesTable {...{ email, shuffled, validated_proofs }} />
@@ -289,7 +300,7 @@ const ValidationSummary = ({
   const validations = validated_proofs[email]
 
   return (
-    <i className="text-[11px] block sm:float-right">
+    <i className="text-[11px] block sm:text-right">
       {all_proofs_passed(validations) && '✅ '}
       {num_proofs_passed(validations)} of {num_total_proofs(validations)} Shuffle Proofs verified (
       <a
