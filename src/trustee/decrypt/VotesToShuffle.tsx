@@ -148,7 +148,8 @@ export const VotesToShuffle = ({
         {trustees?.map(({ email, shuffled, you }) => (
           <li key={email}>
             {email}
-            {you && <YouLabel />} shuffled {!shuffled ? '0' : Object.values(shuffled)[0].shuffled.length} votes.
+            {you && <YouLabel />} shuffled {!shuffled ? '0' : Object.values(shuffled)[0].shuffled.length} votes
+            {shuffled && ` x ${Object.keys(shuffled).length} columns`}.
             {shuffled && (
               <ValidationSummary {...{ email, proofs_shown, set_proofs_shown, shuffled, validated_proofs }} />
             )}
