@@ -2,7 +2,7 @@
 import { LoadingOutlined } from '@ant-design/icons'
 import bluebird from 'bluebird'
 import { mapValues } from 'lodash-es'
-import { Dispatch, Fragment, SetStateAction, useEffect, useReducer, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useReducer, useState } from 'react'
 import { RP } from 'src/crypto/curve'
 import { destringifyPartial, stringifyPartial } from 'src/crypto/stringify-partials'
 
@@ -16,6 +16,7 @@ import {
 import { Partial, StateAndDispatch } from '../trustee-state'
 import { YouLabel } from '../YouLabel'
 import { useTruncatedTable } from './useTruncatedTable'
+import { sortColumnsForTrustees } from './VotesToShuffle'
 
 type Partials = Record<string, Partial[]>
 type Validations_Table = Record<string, Record<string, (boolean | null)[]>>
@@ -180,7 +181,7 @@ const PartialsTable = ({
 }): JSX.Element => {
   const trustees_validations = validated_proofs[email]
   if (!trustees_validations) return <></>
-  const columns = Object.keys(partials)
+  const columns = sortColumnsForTrustees(Object.keys(partials))
   const { TruncationToggle, rows_to_show } = useTruncatedTable({
     num_cols: columns.length,
     num_rows: Object.values(partials)[0].length,

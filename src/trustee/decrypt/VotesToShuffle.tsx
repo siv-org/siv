@@ -188,7 +188,7 @@ const ShuffledVotesTable = ({
   validated_proofs: Validations_Table
 }): JSX.Element => {
   const trustees_validations = validated_proofs && validated_proofs[email]
-  const columns = Object.keys(shuffled)
+  const columns = sortColumnsForTrustees(Object.keys(shuffled))
 
   const { TruncationToggle, rows_to_show } = useTruncatedTable({
     num_cols: columns.length,
@@ -292,3 +292,21 @@ const num_total_proofs = (validations: Validations_Table['email']) =>
 
 const all_proofs_passed = (validations: Validations_Table['email']) =>
   !!num_proofs_passed(validations) && num_proofs_passed(validations) === num_total_proofs(validations)
+
+/** First tries to sort alphabetically, then numerically.
+Useful for sorting vote column names when you don't have ballot_schema easily accessible.
+If you do, just use generateColumns(), which will preserve ballot display order too. */
+export function sortColumnsForTrustees(data: string[]): string[] {
+  return [...data].sort((a, b) => {
+    // Extract the non-numeric and numeric parts of the strings
+    const regex = /^(.*?)(\d*)$/
+    const [, textA, numA] = a.match(regex) || []
+    const [, textB, numB] = b.match(regex) || []
+
+    // Compare the textual part
+    if (textA !== textB) return textA.localeCompare(textB)
+
+    // If textual part is the same, compare the numeric part (if present)
+    return (+numA || 0) - (+numB || 0)
+  })
+}
