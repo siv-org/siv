@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import { Fragment, useEffect, useState } from 'react'
 import { CipherStrings } from 'src/crypto/stringify-shuffle'
 import { EncryptedVote } from 'src/protocol/EncryptedVote'
+import { useTruncatedTable } from 'src/trustee/decrypt/useTruncatedTable'
 import { generateColumnNames } from 'src/vote/generateColumnNames'
 
 import { Item } from '../vote/storeElectionInfo'
@@ -13,11 +14,13 @@ export type EncryptedVote = { auth: string } & { [index: string]: CipherStrings 
 const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
 export const AcceptedVotes = ({
+  allow_truncation = false,
   ballot_design,
   esignature_requested,
   has_decrypted_votes,
   title_prefix = '',
 }: {
+  allow_truncation?: boolean
   ballot_design?: Item[]
   esignature_requested?: boolean
   has_decrypted_votes?: boolean
@@ -42,11 +45,15 @@ export const AcceptedVotes = ({
       .then(setVotes)
   }, [election_id])
 
+  const { columns } = generateColumnNames({ ballot_design })
+  const { TruncationToggle, rows_to_show } = useTruncatedTable({
+    num_cols: columns.length,
+    num_rows: num_votes,
+  })
+
   if (!votes || !ballot_design) return <div>Loading...</div>
 
   const newTotalVotes = num_votes - votes.length
-
-  const { columns } = generateColumnNames({ ballot_design })
 
   return (
     <>
@@ -94,7 +101,7 @@ export const AcceptedVotes = ({
           </thead>
 
           <tbody>
-            {votes.map((vote, index) => (
+            {votes.slice(0, allow_truncation ? rows_to_show : num_votes).map((vote, index) => (
               <tr key={index}>
                 <td>{index + 1}.</td>
                 {esignature_requested && (
@@ -115,6 +122,7 @@ export const AcceptedVotes = ({
             ))}
           </tbody>
         </table>
+        {allow_truncation && <TruncationToggle />}
 
         {/* Load new votes */}
         {!!newTotalVotes && (

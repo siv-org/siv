@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export const useTruncatedTable = ({
   max_cells_to_show = 50,
@@ -12,6 +12,8 @@ export const useTruncatedTable = ({
   const num_truncated_rows = Math.floor(max_cells_to_show / num_cols)
   const any_to_truncate = num_rows > num_truncated_rows
   const [isTruncated, setTruncated] = useState(any_to_truncate)
+  useEffect(() => setTruncated(any_to_truncate), [any_to_truncate]) // In case data loads after init render
+
   const rows_to_show = isTruncated ? num_truncated_rows : num_rows
 
   function TruncationToggle() {

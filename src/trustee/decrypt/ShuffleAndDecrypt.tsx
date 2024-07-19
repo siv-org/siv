@@ -32,7 +32,7 @@ export const ShuffleAndDecrypt = ({ dispatch, state }: StateAndDispatch): JSX.El
       </PrivateBox>
 
       {/* All Accepted Votes */}
-      <AcceptedVotes {...{ ballot_design }} title_prefix="II. " />
+      <AcceptedVotes {...{ ballot_design }} allow_truncation title_prefix="II. " />
 
       {/* Are there new votes shuffled from the trustee ahead of us that we need to shuffle? */}
       <VotesToShuffle {...{ dispatch, final_shuffle_verifies, set_final_shuffle_verifies, state }} />
