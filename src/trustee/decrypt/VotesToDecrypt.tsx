@@ -140,14 +140,22 @@ export const VotesToDecrypt = ({
   return (
     <>
       <h3>IV. Votes to Decrypt</h3>
-      <ol>
+      <ol className="pl-5">
         {trustees?.map(({ email, partials, you }) => (
-          <li key={email}>
-            {email}
-            {you && <YouLabel />} partially decrypted {!partials ? 0 : Object.values(partials)[0].length} votes.
-            {partials && (
-              <ValidationSummary {...{ email, partials, proofs_shown, set_proofs_shown, validated_proofs }} />
-            )}
+          <li className="mb-8" key={email}>
+            {/* Top row */}
+            <div className="flex flex-col justify-between sm:flex-row">
+              {/* Left */}
+              <span>
+                {email}
+                {you && <YouLabel />} partially decrypted {!partials ? 0 : Object.values(partials)[0].length}
+                &nbsp;votes.
+              </span>
+              {/* Right */}
+              {partials && (
+                <ValidationSummary {...{ email, partials, proofs_shown, set_proofs_shown, validated_proofs }} />
+              )}
+            </div>
             {partials && (
               <>
                 <PartialsTable {...{ email, partials, validated_proofs }} />
@@ -157,11 +165,6 @@ export const VotesToDecrypt = ({
           </li>
         ))}
       </ol>
-      <style jsx>{`
-        li {
-          margin-bottom: 2rem;
-        }
-      `}</style>
     </>
   )
 }
@@ -298,30 +301,16 @@ const ValidationSummary = ({
   const num_total_partials = !partials ? 0 : num_votes_decrypted * Object.keys(partials).length
 
   return (
-    <i>
+    <i className="sm:text-right text-[11px] block">
       {!!num_partials_passed && num_partials_passed === num_total_partials && '✅ '}
       {num_partials_passed} of {num_total_partials} Decryption Proofs verified (
-      <a className="show-proof" onClick={() => set_proofs_shown({ ...proofs_shown, [email]: !proofs_shown[email] })}>
+      <a
+        className="font-mono cursor-pointer"
+        onClick={() => set_proofs_shown({ ...proofs_shown, [email]: !proofs_shown[email] })}
+      >
         {proofs_shown[email] ? '-Hide' : '+Show'}
       </a>
       )
-      <style jsx>{`
-        i {
-          font-size: 11px;
-          display: block;
-        }
-
-        @media (min-width: 600px) {
-          i {
-            float: right;
-          }
-        }
-
-        .show-proof {
-          cursor: pointer;
-          font-family: monospace;
-        }
-      `}</style>
     </i>
   )
 }
