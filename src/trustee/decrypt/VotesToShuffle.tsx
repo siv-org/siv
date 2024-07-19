@@ -147,7 +147,7 @@ export const VotesToShuffle = ({
       <h3>III. Votes to Shuffle</h3>
       <ol>
         {trustees?.map(({ email, shuffled, you }) => (
-          <li key={email}>
+          <li className="mb-8" key={email}>
             {email}
             {you && <YouLabel />} shuffled {!shuffled ? '0' : Object.values(shuffled)[0].shuffled.length} votes
             {shuffled && ` x ${Object.keys(shuffled).length} columns`}.
@@ -163,11 +163,6 @@ export const VotesToShuffle = ({
           </li>
         ))}
       </ol>
-      <style jsx>{`
-        li {
-          margin-bottom: 2rem;
-        }
-      `}</style>
     </>
   )
 }
