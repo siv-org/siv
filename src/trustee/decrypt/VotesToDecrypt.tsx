@@ -188,30 +188,30 @@ const PartialsTable = ({
 
   return (
     <>
-      <table>
+      <table className="block w-full pb-3 overflow-auto border-collapse [&_tr>*]:[border:1px_solid_#ccc] [&_tr>*]:px-2.5 [&_tr>td]:pr-5 [&_tr>*]:py-[3px]">
         <thead>
-          <tr>
+          <tr className="text-[11px]">
             <th></th>
             {columns.map((c) => (
               <th key={c}>{c}</th>
             ))}
           </tr>
         </thead>
-        <tbody>
+        <tbody className="[&>tr>*]:max-w-[239px]">
           {partials[columns[0]].slice(0, rows_to_show).map((_, index) => (
             <tr key={index}>
-              <td>{index + 1}.</td>
+              <td className="!pr-2.5">{index + 1}.</td>
               {columns.map((key) => {
                 const validated = trustees_validations[key][index]
                 return (
-                  <Fragment key={key}>
-                    <td className="monospaced">
-                      <div>
-                        {partials[key][index].partial}{' '}
-                        <span>{validated === null ? <LoadingOutlined /> : validated ? '' : '❌'}</span>
-                      </div>
-                    </td>
-                  </Fragment>
+                  <td className="font-mono text-[10px]" key={key}>
+                    <div className="relative">
+                      {partials[key][index].partial}{' '}
+                      <span className="absolute top-2 -right-3.5 text-[10px] opacity-30">
+                        {validated === null ? <LoadingOutlined /> : validated ? '' : '❌'}
+                      </span>
+                    </div>
+                  </td>
                 )
               })}
             </tr>
@@ -219,45 +219,6 @@ const PartialsTable = ({
         </tbody>
       </table>
       <TruncationToggle />
-
-      <style jsx>{`
-        table {
-          border-collapse: collapse;
-          display: block;
-          overflow: auto;
-          margin-bottom: 15px;
-        }
-
-        th,
-        td {
-          border: 1px solid #ccc;
-          padding: 3px 10px;
-          padding-right: 20px;
-          margin: 0;
-          max-width: 250px;
-        }
-        td div {
-          position: relative;
-        }
-
-        td span {
-          position: absolute;
-          top: 1px;
-          right: -16px;
-          font-size: 10px;
-          opacity: 0.3;
-        }
-
-        td.monospaced {
-          font-family: monospace;
-        }
-
-        th,
-        .subheading td {
-          font-size: 11px;
-          font-weight: 700;
-        }
-      `}</style>
     </>
   )
 }
@@ -267,14 +228,9 @@ const DecryptionProof = ({ partials }: { partials: Partials }) => (
     {Object.keys(partials).map((column) => (
       <div key={column}>
         <h4>{column}</h4>
-        <code>{JSON.stringify(partials[column])}</code>
+        <code className="text-[13px]">{JSON.stringify(partials[column])}</code>
       </div>
     ))}
-    <style jsx>{`
-      code {
-        font-size: 13px;
-      }
-    `}</style>
   </>
 )
 
