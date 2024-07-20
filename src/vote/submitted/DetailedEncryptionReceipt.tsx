@@ -1,19 +1,33 @@
-import { useReducer } from 'react'
-
 import { Paper } from '../../protocol/Paper'
 import { State } from '../vote-state'
 
-export const DetailedEncryptionReceipt = ({ state }: { state: State & { submitted_at: Date } }) => {
-  const [show, toggle] = useReducer((state) => !state, false)
+export const DetailedEncryptionReceipt = ({
+  auth,
+  election_id,
+  state,
+}: {
+  auth?: string
+  election_id?: string
+  state: State & { submitted_at?: Date }
+}) => {
   return (
-    <>
-      <p className="toggle">
-        <a onClick={toggle}>{show ? '[-] Hide' : '[+] Show'} Encryption Details</a>
-      </p>
+    <Paper noFade style={{ maxWidth: 815, padding: '1.5rem' }}>
+      <code>
+        {`DETAILED ENCRYPTION RECEIPT
 
-      <Paper noFade style={{ display: show ? 'block' : 'none', maxWidth: 815, padding: '1.5rem' }}>
-        <code>
-          {`Submitted @ ${new Date(state.submitted_at)}
+Election: ${state.election_title}
+Election ID: ${election_id}
+Voter Auth Token: ${auth}
+
+---------
+
+${
+  state.submitted_at
+    ? `Submitted at: ${new Date(state.submitted_at)}`
+    : `Submitted: Not yet\nLast modified: ${new Date(state.last_modified_at || new Date())}`
+}
+
+---------
 
 Encryption Formula
   https://en.wikipedia.org/wiki/ElGamal_encryption
@@ -22,7 +36,7 @@ Encryption Formula
   Encrypted = Encoded + (Recipient * randomizer)
   Lock = (Generator * randomizer)
 
-Public Key
+Encryption Public Key (Recipient):
   ${state.public_key}
 
 ---------
@@ -30,6 +44,7 @@ Public Key
 Verification #: ${state.tracking}
 
 ${Object.keys(state.plaintext)
+  .sort()
   .map(
     (key) => `${key}
   plaintext: ${state.tracking}:${state.plaintext[key]}
@@ -40,24 +55,14 @@ ${Object.keys(state.plaintext)
 `,
   )
   .join('\n')}`}
-        </code>
-      </Paper>
+      </code>
       <style jsx>{`
-        p.toggle {
-          font-size: 12px;
-          opacity: 0.7;
-        }
-
-        p.toggle a {
-          cursor: pointer;
-        }
-
         code {
           font-size: 11px;
           max-width: 100%;
           white-space: pre-wrap;
         }
       `}</style>
-    </>
+    </Paper>
   )
 }

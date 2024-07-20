@@ -19,35 +19,21 @@ export const TopBarButtons = ({
   const { width } = useWindowDimensions()
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
-      <div style={{ display: 'flex', flexDirection: width < 400 ? 'column' : 'row' }}>
+    <div className="flex justify-between mb-[5px]">
+      <div className={`flex ${width < 400 ? 'flex-col' : 'flex-row'}`}>
         <SendInvitationsButton {...{ checked, num_checked, set_error }} />
         <InvalidateVotersButton {...{ checked, num_checked, set_error }} />
       </div>
       {error && (
-        <span className="error">
+        <span className="self-start border border-solid border-[#800a] py-[3px] px-2.5 rounded bg-[#fff6f6] max-w-[320px]">
           <b> ⚠️ Error:</b> {error}
-          <a onClick={() => set_error('')}>x</a>
+          <a className="ml-2.5 cursor-pointer" onClick={() => set_error('')}>
+            x
+          </a>
         </span>
       )}
 
       <UnlockVotesButton {...{ num_approved, num_voted }} />
-
-      <style jsx>{`
-        .error {
-          align-self: center;
-          border: 1px solid rgba(131, 1, 1, 0.776);
-          border-radius: 3px;
-          padding: 3px 10px;
-          background: rgb(255, 246, 246);
-          max-width: 320px;
-        }
-
-        .error a {
-          margin-left: 10px;
-          cursor: pointer;
-        }
-      `}</style>
     </div>
   )
 }

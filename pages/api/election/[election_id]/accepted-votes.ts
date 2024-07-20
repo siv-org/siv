@@ -5,7 +5,8 @@ import { firebase } from '../../_services'
 import { ReviewLog } from './admin/load-admin'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { election_id, limitToLast } = req.query
+  const { election_id, num_new_accepted_votes, num_new_pending_votes } = req.query
+  // console.log({ election_id, num_new_accepted_votes, num_new_pending_votes })
 
   const electionDoc = firebase
     .firestore()
@@ -14,8 +15,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Begin preloading
   let votesQuery = electionDoc.collection('votes').orderBy('created_at')
-  if (typeof limitToLast === 'string') votesQuery = votesQuery.limitToLast(+limitToLast)
+  let pendingVotesQuery = electionDoc.collection('votes-pending').orderBy('created_at')
+  if (num_new_accepted_votes) votesQuery = votesQuery.limitToLast(+num_new_accepted_votes)
+  if (num_new_pending_votes) pendingVotesQuery = pendingVotesQuery.limitToLast(+num_new_pending_votes)
   const loadVotes = votesQuery.get()
+  const loadPendingVotes = pendingVotesQuery.get()
 
   const election = await electionDoc.get()
 
@@ -25,6 +29,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   let votes = (await loadVotes).docs.map((doc) => {
     const { auth, encrypted_vote } = doc.data()
     return { auth, ...encrypted_vote }
+  })
+
+  const pendingVotes = (await loadPendingVotes).docs.map((doc) => {
+    const { encrypted_vote } = doc.data()
+    return { auth: 'pending', ...encrypted_vote }
   })
 
   // If we need esignatures, we need to load all voters as well to get their esignature status
@@ -43,5 +52,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     })
   }
 
-  return res.status(200).json(votes)
+  return res.status(200).json([...votes, ...pendingVotes])
 }

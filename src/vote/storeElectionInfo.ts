@@ -11,6 +11,7 @@ export type Item = {
   multiple_votes_allowed?: number
   options: { name: string; sub?: string; value?: string }[]
   question?: string
+  randomize_order?: boolean
   title: string
   type?: string
   write_in_allowed: boolean
@@ -29,6 +30,7 @@ export function storeElectionInfo(dispatch: Dispatch<Partial<State>>, election_i
         ballot_design_finalized,
         election_title,
         esignature_requested,
+        submission_confirmation,
         threshold_public_key,
       }: ElectionInfo = await response.json()
 
@@ -38,6 +40,7 @@ export function storeElectionInfo(dispatch: Dispatch<Partial<State>>, election_i
         election_title,
         esignature_requested,
         public_key: threshold_public_key,
+        submission_confirmation,
       })
     })()
   }, [election_id])

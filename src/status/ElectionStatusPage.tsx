@@ -14,7 +14,8 @@ import { useElectionInfo } from './use-election-info'
 
 export const ElectionStatusPage = (): JSX.Element => {
   const { election_id } = useRouter().query as { election_id: string }
-  const { ballot_design, election_title, esignature_requested, has_decrypted_votes } = useElectionInfo()
+  const { ballot_design, election_homepage, election_title, esignature_requested, has_decrypted_votes } =
+    useElectionInfo()
   const [show_encrypteds, toggle_encrypteds] = useReducer((state) => !state, false)
 
   if (debug) return <OnlyMixnet />
@@ -33,9 +34,23 @@ export const ElectionStatusPage = (): JSX.Element => {
           </div>
 
           {election_title && (
-            <div className="title-line">
+            <div>
               <h2>{election_title}</h2>
-              {/* <UniversalVerification /> */}
+
+              {/* Optional Election Homepage link */}
+              {election_homepage && (
+                <p>
+                  Election Homepage:{' '}
+                  <a
+                    className="font-semibold"
+                    href={(election_homepage.startsWith('http') ? '' : 'http://') + election_homepage}
+                    rel="noreferrer "
+                    target="_blank"
+                  >
+                    {election_homepage}
+                  </a>
+                </p>
+              )}
             </div>
           )}
           <Totals />

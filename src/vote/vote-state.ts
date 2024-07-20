@@ -16,9 +16,11 @@ export type State = {
   encoded: Map
   encrypted: Record<string, CipherStrings>
   esignature_requested?: boolean
+  last_modified_at?: Date
   plaintext: Map
   public_key?: string
   randomizer: Map
+  submission_confirmation?: string
   submitted_at?: Date
   tracking?: string
 }

@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { useEffect } from 'react'
+import { useEffect, useReducer } from 'react'
 import { NoSsr } from 'src/_shared/NoSsr'
 
 import { generateColumnNames } from '../generateColumnNames'
@@ -8,6 +8,7 @@ import { DetailedEncryptionReceipt } from './DetailedEncryptionReceipt'
 import { EncryptedVote } from './EncryptedVote'
 import { InvalidatedVoteMessage } from './InvalidatedVoteMessage'
 import { UnlockedVote } from './UnlockedVote'
+import { UnverifiedEmailModal } from './UnverifiedEmailModal'
 
 export function SubmittedScreen({
   auth,
@@ -18,6 +19,8 @@ export function SubmittedScreen({
   election_id: string
   state: State & { submitted_at: Date }
 }): JSX.Element {
+  const [showEncryptionDetails, toggleEncryptionDetails] = useReducer((state) => !state, false)
+
   // Widen the page for the tables
   useEffect(() => {
     const mainEl = document.getElementsByTagName('main')[0]
@@ -28,6 +31,7 @@ export function SubmittedScreen({
 
   return (
     <NoSsr>
+      <UnverifiedEmailModal />
       <InvalidatedVoteMessage />
       <Link as={`/election/${election_id}`} href="/election/[election_id]">
         <a id="status-page" target="_blank">
@@ -48,16 +52,15 @@ export function SubmittedScreen({
       </p>
 
       <UnlockedVote {...{ columns, state }} />
-      <p className="mt-0 small grey">
+
+      <p className="text-xs opacity-60">
         This secret <em>Verification #</em> is a random number, generated and encrypted on your own device.
         <br />
         No one else can possibly know it.
       </p>
 
-      <br />
-      <br />
-
-      <h3>How your vote was submitted:</h3>
+      {/* Encryption */}
+      <h3 className="mt-16">How your vote was submitted:</h3>
 
       <p>
         <img id="lock-icon" src="/vote/lock.png" width="12px" />
@@ -66,11 +69,24 @@ export function SubmittedScreen({
 
       <EncryptedVote {...{ auth, columns, state }} />
 
-      <p className="small grey">
+      <p className="text-xs opacity-60">
         Its contents will only be unlocked after the election closes and all votes have been shuffled for safe
         anonymization.
       </p>
-      <DetailedEncryptionReceipt {...{ state }} />
+
+      <p className="mt-3 text-xs opacity-70">
+        <a className="cursor-pointer" onClick={toggleEncryptionDetails}>
+          {showEncryptionDetails ? '[-] Hide' : '[+] Show'} Encryption Details
+        </a>
+      </p>
+
+      {showEncryptionDetails && (
+        <>
+          <h4>Encryption Receipt:</h4>
+
+          <DetailedEncryptionReceipt {...{ auth, election_id, state }} />
+        </>
+      )}
 
       <style jsx>{`
         #lock-icon {
@@ -92,14 +108,6 @@ export function SubmittedScreen({
           position: relative;
           top: 1px;
           opacity: 0.8;
-        }
-
-        .small {
-          font-size: 12px;
-        }
-
-        .grey {
-          opacity: 0.6;
         }
       `}</style>
     </NoSsr>

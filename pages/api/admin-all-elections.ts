@@ -1,3 +1,4 @@
+import { pick } from 'lodash-es'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import { firebase } from './_services'
@@ -21,7 +22,16 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Get all elections created by this admin
   const elections = (
     await firebase.firestore().collection('elections').where('creator', '==', jwt.email).get()
-  ).docs.reduce((acc: Election[], doc) => [{ id: doc.id, ...doc.data() } as Election, ...acc], [])
+  ).docs.reduce(
+    (acc: Election[], doc) => [
+      {
+        id: doc.id,
+        ...pick(doc.data(), ['created_at', 'election_title', 'num_voters', 'num_votes']),
+      } as Election,
+      ...acc,
+    ],
+    [],
+  )
 
   res.status(200).send({ elections })
 }

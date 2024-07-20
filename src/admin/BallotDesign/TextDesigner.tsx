@@ -1,5 +1,7 @@
 import dynamic from 'next/dynamic'
 
+import { AdvancedFeatures } from './AdvancedFeatures'
+
 const CodeMirror = dynamic(() => import('./CodeMirror'), { ssr: false })
 
 export const TextDesigner = ({ design, setDesign }: { design: string; setDesign: (s: string) => void }) => {
@@ -11,6 +13,8 @@ export const TextDesigner = ({ design, setDesign }: { design: string; setDesign:
         value={design}
         onChange={(value) => setDesign(value)}
       />
+
+      <AdvancedFeatures />
     </div>
   )
 }

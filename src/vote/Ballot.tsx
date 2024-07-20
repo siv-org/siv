@@ -1,6 +1,8 @@
+import { memoize } from 'lodash-es'
 import { Dispatch } from 'react'
 import { NoSsr } from 'src/_shared/NoSsr'
 import { maxLength } from 'src/crypto/curve'
+import { build_permutation_array } from 'src/crypto/shuffle'
 
 import { Paper } from '../protocol/Paper'
 import { BallotPreview } from './BallotPreview'
@@ -15,6 +17,8 @@ const verification_num_length = 15
 export const max_string_length = maxLength - verification_num_length
 export const defaultRankingsAllowed = 3
 
+const memoizedPermutationArray = memoize(build_permutation_array)
+
 export const Ballot = ({
   dispatch,
   state,
@@ -27,20 +31,28 @@ export const Ballot = ({
 
   return (
     <NoSsr>
-      <Paper noFade className="pt-4 overflow-x-scroll">
+      <Paper noFade className="!px-4 pt-4 overflow-x-scroll">
         <>
           <BallotPreview {...{ state }} />
 
           {/* Election Title */}
-          {state.election_title && <h2 className="mt-2 ml-[13px]">{state.election_title}</h2>}
+          {state.election_title && <h2 className="mt-2 sm:ml-[13px]">{state.election_title}</h2>}
 
           {state.ballot_design.map((item, index) => {
             const max_options = item.options.length + +!!item.write_in_allowed
+            let shuffled = item.options
+            if (item.randomize_order) {
+              const permutationArray = memoizedPermutationArray(item.options.length)
+              shuffled = item.options.map((_, index) => item.options[permutationArray[index]])
+            }
 
             // Is it "Approval" ?
             if (item.type === 'approval')
               return (
-                <MultiVoteItem {...{ ...item, dispatch, multiple_votes_allowed: max_options, state }} key={index} />
+                <MultiVoteItem
+                  {...{ ...item, dispatch, multiple_votes_allowed: max_options, options: shuffled, state }}
+                  key={index}
+                />
               )
 
             // Is it "Choose-up-to" ?
@@ -55,6 +67,7 @@ export const Ballot = ({
                     ...item,
                     dispatch,
                     multiple_votes_allowed: Math.min(item.multiple_votes_allowed, max_options),
+                    options: shuffled,
                     state,
                   }}
                   key={index}
@@ -68,7 +81,8 @@ export const Ballot = ({
                   {...{
                     ...item,
                     dispatch,
-                    rankings_allowed: Math.min(defaultRankingsAllowed, max_options),
+                    options: shuffled,
+                    rankings_allowed: item.multiple_votes_allowed || Math.min(defaultRankingsAllowed, max_options),
                     state,
                   }}
                   key={index}
@@ -76,10 +90,11 @@ export const Ballot = ({
               )
 
             // Is it "Score"?
-            if (item.type === 'score') return <ScoreItem {...{ ...item, dispatch, state }} key={index} />
+            if (item.type === 'score')
+              return <ScoreItem {...{ ...item, dispatch, options: shuffled, state }} key={index} />
 
             // Otherwise, load default "Choose-only-one"
-            return <Item {...{ ...item, dispatch, state }} key={index} />
+            return <Item {...{ ...item, dispatch, options: shuffled, state }} key={index} />
           })}
         </>
       </Paper>

@@ -44,7 +44,7 @@ export const ScoreItem = ({
     <>
       <TitleDescriptionQuestion {...{ description, question, title }} />
 
-      <table className="ml-3">
+      <table className="sm:ml-3">
         {/* Top row Choice labels */}
         <thead>
           <tr>

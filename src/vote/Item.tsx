@@ -27,7 +27,7 @@ export const Item = ({
     <>
       <TitleDescriptionQuestion {...{ description, question, title }} />
       <RadioGroup
-        style={{ paddingLeft: '1.5rem' }}
+        className="ml-1 sm:ml-6"
         value={state.plaintext[id] || ''}
         onChange={(event) => dispatch({ [id]: event.target.value })}
       >
@@ -35,7 +35,7 @@ export const Item = ({
           <FormControlLabel
             control={<Radio color="primary" />}
             key={name}
-            label={<Label {...{ name, sub }} />}
+            label={<Label {...{ name, sub }} nameClassName="!font-normal" />}
             value={value || name.slice(0, max_string_length)}
             onClick={() => {
               // Deselect if already selected
@@ -90,24 +90,12 @@ export const Item = ({
   )
 }
 
-export const Label = ({ name, sub }: { name: string; sub?: string }) => (
-  <div>
+export const Label = ({ name, nameClassName, sub }: { name: string; nameClassName?: string; sub?: string }) => (
+  <div className="my-2">
     <Linkify>
-      {name}
-      {sub && <p>{sub}</p>}
+      <span className={`font-bold opacity-95 ${nameClassName}`}>{name}</span>
+      {sub && <p className="m-0 text-[12px] opacity-75">{sub}</p>}
     </Linkify>
-    <style jsx>{`
-      div {
-        position: relative;
-        margin: 8px 0;
-      }
-
-      p {
-        margin: 0 0 0px;
-        font-size: 12px;
-        opacity: 0.85;
-      }
-    `}</style>
   </div>
 )
 
@@ -129,23 +117,15 @@ export const TitleDescriptionQuestion = ({
         </a>
       )}
     >
-      <p className="title">{title}</p>
-      {description && <p className="description">{description}</p>}
-      {question && <p className="question">{question}</p>}
+      {title && <p className="title sm:px-[13px] py-[5px] mb-2.5">{title}</p>}
+      {description && <p className="whitespace-pre-wrap sm:m-[13px] mb-0">{description}</p>}
+      {question && <p className="whitespace-pre-wrap sm:m-[13px]">{question}</p>}
     </Linkify>
     <style jsx>{`
       .title {
         font-size: 16px;
         font-weight: bold;
-        margin-bottom: 10px;
-        padding: 5px 13px;
         white-space: pre-line;
-      }
-
-      .description,
-      .question {
-        margin: 13px;
-        white-space: pre-wrap;
       }
     `}</style>
   </>

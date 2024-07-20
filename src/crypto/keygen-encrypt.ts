@@ -36,8 +36,11 @@ const AesAlgorithm = {
   name: 'AES-CTR',
 }
 
-const deriveKey = async (sharedSecret: string): Promise<CryptoKey> =>
-  crypto.subtle.importKey('raw', await sha256(sharedSecret), 'AES-CTR', false, ['encrypt', 'decrypt'])
+const deriveKey = async (sharedSecret: string): Promise<CryptoKey> => {
+  const secretBytes = new TextEncoder().encode(sharedSecret)
+  const hashedSecret = await sha256(String.fromCharCode(...secretBytes)) // Convert Uint8Array to String
+  return crypto.subtle.importKey('raw', hashedSecret, { length: 256, name: 'AES-CTR' }, false, ['encrypt', 'decrypt'])
+}
 
 export async function keygenEncrypt(
   recipient_address: RP,

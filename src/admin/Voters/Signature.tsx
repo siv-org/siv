@@ -26,7 +26,7 @@ export const Signature = ({
   const status = getStatus(esignature_review)
 
   return (
-    <td className="px-0.5 hover:bg-black/5 cursor-pointer" style={{ border: '1px solid #ccc' }}>
+    <td className="px-0.5 hover:bg-black/5 cursor-pointer border border-solid border-[#ccc]">
       <Tooltip
         className="w-72"
         enterDelay={200}
@@ -37,13 +37,13 @@ export const Signature = ({
             {esignature ? <img className="max-w-[280px]" src={esignature} /> : <p>Signature missing</p>}
             <div className="flex justify-between">
               <a
-                className={`cursor-pointer ${status === 'reject' ? 'font-bold' : ''}`}
+                className={`cursor-pointer ${status === 'reject' && 'font-bold'}`}
                 onClick={storeReview(status === 'reject' ? 'pending' : 'reject', setIsShown)}
               >
                 ❌ Reject{status === 'reject' ? 'ed' : ''}
               </a>
               <a
-                className={`cursor-pointer ${status === 'approve' ? 'font-bold' : ''}`}
+                className={`cursor-pointer ${status === 'approve' && 'font-bold'}`}
                 onClick={storeReview(status === 'approve' ? 'pending' : 'approve', setIsShown)}
               >
                 ✅ Approve{status === 'approve' ? 'd' : ''}
@@ -53,7 +53,7 @@ export const Signature = ({
         )}
       >
         <img
-          className="min-h-5 min-h-[20px] max-w-[100px] -mb-1.5 overflow-hidden"
+          className="min-h-5 max-w-[100px] -mb-1.5 overflow-hidden"
           src={esignature}
           style={{ border: `2px solid ${status === 'approve' ? 'green' : status === 'reject' ? 'red' : '#fff0'}` }}
         />

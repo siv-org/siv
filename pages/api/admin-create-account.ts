@@ -2,7 +2,7 @@ import { validate as validateEmail } from 'email-validator'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import { firebase, pushover, sendEmail } from './_services'
-import { generateAdminLoginCode } from './admin-login'
+import { generateEmailLoginCode } from './admin-login'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const {
@@ -21,7 +21,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if ((await adminDoc.get()).exists)
     return res.status(409).send({ error: `'${email}' already has an account.\n\nLog in above.` })
 
-  const init_login_code = generateAdminLoginCode()
+  const init_login_code = generateEmailLoginCode()
 
   // Store their application in the DB
   const doc_id = new Date().toISOString() + '-' + String(Math.random()).slice(2, 7)
