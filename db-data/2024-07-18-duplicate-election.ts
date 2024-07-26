@@ -13,7 +13,7 @@ import { pick } from 'lodash'
 import { firebase } from '../pages/api/_services'
 
 const election_id_from = '1721122924218'
-const election_id_to = '1721314324882'
+const election_id_to = '1722034716600'
 
 async function copySubcollection(
   sourceDoc: FirebaseFirestore.DocumentReference,

@@ -5,7 +5,7 @@ import './_env'
 
 import { firebase } from '../pages/api/_services'
 
-const election_id = '1722029077573' // New Democrat Primary, Subset of Votes with Valid & Unique Passport_Proof
+const election_id = '1722034716600' // NDP, Final, All 230 Votes
 
 async function renameSubcollection(
   parentDoc: FirebaseFirestore.DocumentReference,
