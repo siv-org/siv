@@ -13,7 +13,7 @@ import { pick } from 'lodash'
 import { firebase } from '../pages/api/_services'
 
 const election_id_from = '1721122924218'
-const election_id_to = '1721314324882'
+const election_id_to = '1722029077573'
 
 async function copySubcollection(
   sourceDoc: FirebaseFirestore.DocumentReference,
@@ -34,11 +34,13 @@ async function copySubcollection(
 
     const batchDocs = docs.slice(i, i + batchLimit)
     for (const doc of batchDocs) {
+      if (doc.id === '79168f4563') console.log('Found doc 79168f4563!') // where did this 1 of 26 go?
+      if (subcollectionName === 'votes-pending' && !subset_to_keep.includes(doc.id)) continue // skip votes not in has_good_passport_auth subset
       batch.set(targetSubcollection.doc(doc.id), doc.data())
+      progress++
     }
 
     await batch.commit()
-    progress += batchDocs.length
 
     console.log(`${subcollectionName}: ${progress}/${docs.length} - ${((progress / docs.length) * 100).toFixed(0)}%`)
   }
@@ -89,3 +91,33 @@ export function cloneTrusteeDetails(from_election_id, to_election_id) {
 
   if (!matches) return console.warn('No localStorage matches for from_election_id: ' + from_election_id)
 }
+
+// Just the subset of votes we verified have a good passport proof
+const subset_to_keep = [
+  '13ec850164',
+  '159b08430a',
+  '15ba012b15',
+  '1669afb3d7',
+  '18fa92d241',
+  '1b73c6418b',
+  '1be44cfdb4',
+  '1fd1cb693a',
+  '1fff356f52',
+  '20b8a9fa94',
+  '235fccb4ee',
+  '251abba6e5',
+  '27302f85e9',
+  '2a8248e0d8',
+  '2ad0de9383',
+  '2d49c20201',
+  '6758f7a2db',
+  '71313c9066',
+  '79168f4563',
+  '8de58d0228',
+  '91cba5ab38',
+  '9d8190bd08',
+  'a529c9cc2b',
+  'a28873bdc4',
+  'a5285a0ee8',
+  'b16dfae0b1',
+]

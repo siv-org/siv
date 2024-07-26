@@ -5,7 +5,7 @@ import './_env'
 
 import { firebase } from '../pages/api/_services'
 
-const election_id = '1721314324882' // NAP Day 1 Results, All Submitted Votes
+const election_id = '1722029077573' // New Democrat Primary, Subset of Votes with Valid & Unique Passport_Proof
 
 async function renameSubcollection(
   parentDoc: FirebaseFirestore.DocumentReference,
