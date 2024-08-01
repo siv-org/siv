@@ -1,4 +1,3 @@
-import { allowCors } from 'api/_cors'
 import { sumBy } from 'lodash-es'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { RP, random_bigint } from 'src/crypto/curve'
@@ -20,7 +19,7 @@ import updateAdmin from './update-admin'
 
 const { ADMIN_EMAIL } = process.env
 
-export default allowCors(async (req: NextApiRequest, res: NextApiResponse) => {
+export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (!ADMIN_EMAIL) return res.status(501).send('Missing process.env.ADMIN_EMAIL')
 
   const { election_id } = req.query
@@ -193,7 +192,7 @@ export default allowCors(async (req: NextApiRequest, res: NextApiResponse) => {
   await Promise.all(promises)
 
   return res.status(201).send(`Updated ${email} object`)
-})
+}
 
 /** Call another endpoint, printing its response to the console */
 const mockNextResponse = {
