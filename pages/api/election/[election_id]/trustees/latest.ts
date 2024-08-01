@@ -25,12 +25,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const t = { ...doc.data() }.t
 
   // Grab trustees
-  const trustees = (await loadTrustees).docs.map((doc) => {
+  const prepTrustees = (await loadTrustees).docs.map(async (doc) => {
     const data = { ...doc.data() }
     // Add you: true if requester's own document
-    if (data.auth_token === auth) {
-      data.you = true
-    }
+    if (data.auth_token === auth) data.you = true
 
     // Fields to keep
     const public_fields = [
@@ -40,7 +38,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       'index',
       'name',
       'partial_decryption',
-      'partials',
       'preshuffled',
       'recipient_key',
       'shuffled',
@@ -50,11 +47,16 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     const public_data = pick(data, public_fields)
 
+    // Get partials from separate sub-doc
+    const partials = await doc.ref.collection('post-election-data').doc('partials').get()
+    if (partials.exists) public_data.partials = { ...partials.data() }.partials
+
     // Convert commas back into dots
     const decommafied = transform_email_keys(public_data, 'decommafy')
 
     return sortObject(decommafied) as Trustee
   })
+  const trustees = await Promise.all(prepTrustees)
 
   const response: TrusteesLatest = { t, trustees }
 
