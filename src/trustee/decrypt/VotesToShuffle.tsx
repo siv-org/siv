@@ -252,10 +252,12 @@ const ShuffledVotesTable = ({
 
 const ShuffleProof = ({ shuffled }: { shuffled: Shuffled }) => (
   <>
-    {Object.keys(shuffled).map((column) => (
+    {sortColumnsForTrustees(Object.keys(shuffled)).map((column) => (
       <div key={column}>
-        <h4>{column}</h4>
-        {/* <code className="text-[13px]">{JSON.stringify(shuffled[column].proof)}</code> */}
+        <h4>{column} — shuffle proof</h4>
+        <code className="text-[13px] overflow-y-scroll max-h-96 block bg-black/5 p-2 rounded">
+          {JSON.stringify(shuffled[column].proof)}
+        </code>
       </div>
     ))}
   </>
@@ -278,14 +280,15 @@ const ValidationSummary = ({
     <i className="text-[11px] block sm:text-right">
       {SKIP_SHUFFLE_PROOFS ? '⏸️ ' : all_proofs_passed(validations) && '✅ '}
       {num_proofs_passed(validations)} of {num_total_proofs(validations)} Shuffle Proofs{' '}
-      {SKIP_SHUFFLE_PROOFS ? 'skipped' : 'verified'} (
-      <a
-        className="font-mono cursor-pointer"
-        onClick={() => set_proofs_shown({ ...proofs_shown, [email]: !proofs_shown[email] })}
-      >
-        {proofs_shown[email] ? '-Hide' : '+Show'}
-      </a>
-      )
+      {SKIP_SHUFFLE_PROOFS ? 'skipped' : 'verified'}{' '}
+      {!SKIP_SHUFFLE_PROOFS && (
+        <a
+          className="font-mono cursor-pointer"
+          onClick={() => set_proofs_shown({ ...proofs_shown, [email]: !proofs_shown[email] })}
+        >
+          {proofs_shown[email] ? '-Hide' : '+Show'}
+        </a>
+      )}
     </i>
   )
 }
