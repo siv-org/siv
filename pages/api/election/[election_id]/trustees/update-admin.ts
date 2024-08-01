@@ -88,7 +88,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       )
 
       // Store partials
-      await adminDoc.collection('post-election-data').doc('partials').set(partials, { merge: true })
+      await adminDoc.collection('post-election-data').doc('partials').set({ partials }, { merge: true })
       // console.log('Updated admin partials:', partials)
       console.log('Updated admin partials')
 
