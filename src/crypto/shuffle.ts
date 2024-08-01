@@ -59,7 +59,7 @@ async function shuffle(
   })
 
   // Can skip generating costly proof
-  if (!options?.skip_proof) return { shuffled }
+  if (options?.skip_proof) return { shuffled }
 
   // Finally we generate a ZK proof that it's a valid shuffle
   const proof = await generate_shuffle_proof(
