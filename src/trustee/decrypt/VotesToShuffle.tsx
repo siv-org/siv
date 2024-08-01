@@ -4,13 +4,11 @@ import bluebird from 'bluebird'
 import { mapValues } from 'lodash-es'
 import { Dispatch, Fragment, SetStateAction, useEffect, useReducer, useState } from 'react'
 import { RP } from 'src/crypto/curve'
-// import { destringifyShuffle, stringifyShuffle } from 'src/crypto/stringify-shuffle'
-import { stringifyShuffle } from 'src/crypto/stringify-shuffle'
+import { destringifyShuffle, stringifyShuffle, stringifyShuffleWithoutProof } from 'src/crypto/stringify-shuffle'
 
 import { api } from '../../api-helper'
-import { shuffle } from '../../crypto/shuffle'
-// import { rename_to_c1_and_2, shuffle } from '../../crypto/shuffle'
-// import { verify_shuffle_proof } from '../../crypto/shuffle-proof'
+import { SKIP_SHUFFLE_PROOFS, rename_to_c1_and_2, shuffleWithProof, shuffleWithoutProof } from '../../crypto/shuffle'
+import { verify_shuffle_proof } from '../../crypto/shuffle-proof'
 import { Shuffled, StateAndDispatch } from '../trustee-state'
 import { YouLabel } from '../YouLabel'
 import { useTruncatedTable } from './useTruncatedTable'
@@ -81,20 +79,23 @@ export const VotesToShuffle = ({
 
       // Begin (async) validating each proof...
       Object.keys(trustee_validations).forEach((column) => {
-        set_validated_proofs({ column, email, result: true, type: 'UPDATE' })
-        // // Inputs are the previous party's outputs
-        // // except for admin, who provides the original split list.
-        // const inputs = index > 0 ? trustees[index - 1].shuffled![column].shuffled : trustees[0].preshuffled![column]
+        if (SKIP_SHUFFLE_PROOFS) {
+          set_validated_proofs({ column, email, result: true, type: 'UPDATE' })
+        } else {
+          // Inputs are the previous party's outputs
+          // except for admin, who provides the original split list.
+          const inputs = index > 0 ? trustees[index - 1].shuffled![column].shuffled : trustees[0].preshuffled![column]
 
-        // const { proof, shuffled: shuffledCol } = destringifyShuffle(shuffled[column])
+          const { proof, shuffled: shuffledCol } = destringifyShuffle(shuffled[column])
 
-        // verify_shuffle_proof(
-        //   rename_to_c1_and_2(inputs.map((c) => mapValues(c, RP.fromHex))),
-        //   rename_to_c1_and_2(shuffledCol),
-        //   proof,
-        // ).then((result) => {
-        //   set_validated_proofs({ column, email, result, type: 'UPDATE' })
-        // })
+          verify_shuffle_proof(
+            rename_to_c1_and_2(inputs.map((c) => mapValues(c, RP.fromHex))),
+            rename_to_c1_and_2(shuffledCol),
+            proof,
+          ).then((result) => {
+            set_validated_proofs({ column, email, result, type: 'UPDATE' })
+          })
+        }
       })
     })
   }, [num_shuffled_from_trustees])
@@ -110,14 +111,18 @@ export const VotesToShuffle = ({
 
     // Do a SIV shuffle (permute + re-encryption) for each item's list
     const shuffled = await bluebird.props(
-      mapValues(prev_trustees_shuffled, async (list) =>
-        stringifyShuffle(
-          await shuffle(
-            RP.fromHex(threshold_public_key!),
-            list.shuffled.map((c) => mapValues(c, RP.fromHex)),
-          ),
-        ),
-      ),
+      mapValues(prev_trustees_shuffled, async (list) => {
+        const shuffleArgs: Parameters<typeof shuffleWithProof> = [
+          RP.fromHex(threshold_public_key!),
+          list.shuffled.map((c) => mapValues(c, RP.fromHex)),
+        ]
+
+        if (SKIP_SHUFFLE_PROOFS) {
+          return stringifyShuffleWithoutProof(await shuffleWithoutProof(...shuffleArgs))
+        } else {
+          return stringifyShuffle(await shuffleWithProof(...shuffleArgs))
+        }
+      }),
     )
     console.log('Shuffled complete.')
 
@@ -271,8 +276,9 @@ const ValidationSummary = ({
 
   return (
     <i className="text-[11px] block sm:text-right">
-      {all_proofs_passed(validations) && '⏸️ '}
-      {num_proofs_passed(validations)} of {num_total_proofs(validations)} Shuffle Proofs skipped (
+      {SKIP_SHUFFLE_PROOFS ? '⏸️ ' : all_proofs_passed(validations) && '✅ '}
+      {num_proofs_passed(validations)} of {num_total_proofs(validations)} Shuffle Proofs{' '}
+      {SKIP_SHUFFLE_PROOFS ? 'skipped' : 'verified'} (
       <a
         className="font-mono cursor-pointer"
         onClick={() => set_proofs_shown({ ...proofs_shown, [email]: !proofs_shown[email] })}

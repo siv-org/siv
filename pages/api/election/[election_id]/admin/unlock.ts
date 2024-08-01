@@ -3,8 +3,8 @@ import { mapValues } from 'lodash-es'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getStatus } from 'src/admin/Voters/Signature'
 import { RP } from 'src/crypto/curve'
-import { fastShuffle, shuffle } from 'src/crypto/shuffle'
-import { CipherStrings, stringifyShuffle } from 'src/crypto/stringify-shuffle'
+import { SKIP_SHUFFLE_PROOFS, fastShuffle, shuffleWithProof, shuffleWithoutProof } from 'src/crypto/shuffle'
+import { CipherStrings, stringifyShuffle, stringifyShuffleWithoutProof } from 'src/crypto/stringify-shuffle'
 
 import { firebase, pushover } from '../../../_services'
 import { pusher } from '../../../pusher'
@@ -156,14 +156,18 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     console.log('starting admin shuffle')
     // Then admin does a SIV shuffle (permute + re-encryption) for each item's list
     const shuffled = await bluebird.props(
-      mapValues(split, async (list) =>
-        stringifyShuffle(
-          await shuffle(
-            RP.fromHex(threshold_public_key),
-            list.map((row) => mapValues(row, RP.fromHex)),
-          ),
-        ),
-      ),
+      mapValues(split, async (list) => {
+        const shuffleArgs: Parameters<typeof shuffleWithProof> = [
+          RP.fromHex(threshold_public_key!),
+          list.map((row) => mapValues(row, RP.fromHex)),
+        ]
+
+        if (SKIP_SHUFFLE_PROOFS) {
+          return stringifyShuffleWithoutProof(await shuffleWithoutProof(...shuffleArgs))
+        } else {
+          return stringifyShuffle(await shuffleWithProof(...shuffleArgs))
+        }
+      }),
     )
 
     // Store admins shuffled lists

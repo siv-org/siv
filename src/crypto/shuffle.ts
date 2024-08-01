@@ -1,16 +1,40 @@
 import { RP, random_bigint } from './curve'
-// import { Shuffle_Proof, generate_shuffle_proof } from './shuffle-proof'
+import { Shuffle_Proof, generate_shuffle_proof } from './shuffle-proof'
 
 export type Cipher = { encrypted: RP; lock: RP }
 
 export type Public_Key = RP
 const G = RP.BASE
 
-export async function shuffle(
+export const SKIP_SHUFFLE_PROOFS = true
+
+export async function shuffleWithProof(
   pub_key: Public_Key,
   inputs: Cipher[],
-  // ): Promise<{ proof: Shuffle_Proof; shuffled: Cipher[] }> {
-): Promise<{ shuffled: Cipher[] }> {
+): Promise<{ proof: Shuffle_Proof; shuffled: Cipher[] }> {
+  const { proof, shuffled } = await shuffle(pub_key, inputs)
+  return { proof, shuffled }
+}
+
+export async function shuffleWithoutProof(pub_key: Public_Key, inputs: Cipher[]): Promise<{ shuffled: Cipher[] }> {
+  const { shuffled } = await shuffle(pub_key, inputs, { skip_proof: true })
+  return { shuffled }
+}
+
+/** Private function that does the shuffling, with option to skip generating the costly proof.
+ * We export non-overloaded functions `shuffleWithProof()` and `shuffleWithoutProof()`, so types can be more cleanly inferred.
+ */
+async function shuffle(pub_key: Public_Key, inputs: Cipher[]): Promise<{ proof: Shuffle_Proof; shuffled: Cipher[] }>
+async function shuffle(
+  pub_key: Public_Key,
+  inputs: Cipher[],
+  options: { skip_proof: true },
+): Promise<{ shuffled: Cipher[] }>
+async function shuffle(
+  pub_key: Public_Key,
+  inputs: Cipher[],
+  options: { skip_proof?: boolean } = {},
+): Promise<{ proof?: Shuffle_Proof; shuffled: Cipher[] }> {
   // First, we need a permutation array and reencryption values
   const permutes = build_permutation_array(inputs.length)
 
@@ -34,17 +58,19 @@ export async function shuffle(
     return { encrypted: new_encrypted, lock: new_lock }
   })
 
-  // Finally we generate a ZK proof that it's a valid shuffle
-  // const proof = await generate_shuffle_proof(
-  //   rename_to_c1_and_2(inputs),
-  //   rename_to_c1_and_2(shuffled),
-  //   reencrypts,
-  //   permutes,
-  //   pub_key,
-  // )
+  // Can skip generating costly proof
+  if (!options?.skip_proof) return { shuffled }
 
-  // return { proof, shuffled }
-  return { shuffled }
+  // Finally we generate a ZK proof that it's a valid shuffle
+  const proof = await generate_shuffle_proof(
+    rename_to_c1_and_2(inputs),
+    rename_to_c1_and_2(shuffled),
+    reencrypts,
+    permutes,
+    pub_key,
+  )
+
+  return { proof, shuffled }
 }
 
 /** Generates an array of all integers up to `size`, in a random order */
