@@ -61,7 +61,12 @@ export default allowCors(async (req: NextApiRequest, res: NextApiResponse) => {
   const commafied = transform_email_keys(body, 'commafy')
 
   // Save whatever other new data they gave us
-  await trusteeDoc.update(commafied)
+  // Except partial goes into its own sub-doc
+  if (body.partials) {
+    await trusteeDoc.collection('post-election-data').doc('partials').set(commafied)
+  } else {
+    await trusteeDoc.update(commafied)
+  }
   console.log('Saved update to', email, commafied)
 
   const promises: Promise<unknown>[] = []
@@ -187,7 +192,7 @@ export default allowCors(async (req: NextApiRequest, res: NextApiResponse) => {
   // Wait for all pending promises to finish
   await Promise.all(promises)
 
-  res.status(201).send(`Updated ${email} object`)
+  return res.status(201).send(`Updated ${email} object`)
 })
 
 /** Call another endpoint, printing its response to the console */

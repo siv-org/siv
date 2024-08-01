@@ -29,11 +29,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Begin preloading these docs
   const adminDoc = electionDoc.collection('trustees').doc(ADMIN_EMAIL)
-  const adminPartials = adminDoc.collection('partials').doc('partials').get()
+  const adminPartials = adminDoc.collection('post-election-data').doc('partials').get()
   const trusteesDocs = (await electionDoc.collection('trustees').orderBy('index').get()).docs
   const trustees = trusteesDocs.map((doc) => ({ ...doc.data() }))
   const loadTrusteePartials = trusteesDocs.map(async (doc) =>
-    (await doc.ref.collection('partials').doc('partials').get()).data(),
+    (await doc.ref.collection('post-election-data').doc('partials').get()).data(),
   )
 
   // Is election_id in DB?
@@ -88,7 +88,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       )
 
       // Store partials
-      await adminDoc.collection('partials').doc('partials').set(partials, { merge: true })
+      await adminDoc.collection('post-election-data').doc('partials').set(partials, { merge: true })
       // console.log('Updated admin partials:', partials)
       console.log('Updated admin partials')
 
