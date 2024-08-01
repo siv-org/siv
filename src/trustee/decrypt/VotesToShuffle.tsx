@@ -271,8 +271,8 @@ const ValidationSummary = ({
 
   return (
     <i className="text-[11px] block sm:text-right">
-      {all_proofs_passed(validations) && '✅ '}
-      {num_proofs_passed(validations)} of {num_total_proofs(validations)} Shuffle Proofs verified (
+      {all_proofs_passed(validations) && '⏸️ '}
+      {num_proofs_passed(validations)} of {num_total_proofs(validations)} Shuffle Proofs skipped (
       <a
         className="font-mono cursor-pointer"
         onClick={() => set_proofs_shown({ ...proofs_shown, [email]: !proofs_shown[email] })}
