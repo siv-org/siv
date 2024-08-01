@@ -29,9 +29,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Begin preloading these docs
   const adminDoc = electionDoc.collection('trustees').doc(ADMIN_EMAIL)
-  const trustees = (await electionDoc.collection('trustees').orderBy('index').get()).docs.map((doc) => ({
-    ...doc.data(),
-  }))
+  const adminPartials = adminDoc.collection('partials').doc('partials').get()
+  const trusteesDocs = (await electionDoc.collection('trustees').orderBy('index').get()).docs
+  const trustees = trusteesDocs.map((doc) => ({ ...doc.data() }))
+  const loadTrusteePartials = trusteesDocs.map(async (doc) =>
+    (await doc.ref.collection('partials').doc('partials').get()).data(),
+  )
 
   // Is election_id in DB?
   const election = await electionDoc.get()
@@ -49,7 +52,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // If all have now shuffled, admin can partially decrypt
   const have_all_shuffled = trustees.every((trustee) => 'shuffled' in trustee)
   // But only if admin didn't already upload partials
-  if (have_all_shuffled && !('partials' in admin)) {
+  const admin_already_uploaded_partials = (await adminPartials).exists
+  if (have_all_shuffled && !admin_already_uploaded_partials) {
     // Confirm that every column's shuffle proof is valid
     const { shuffled } = trustees[parameters.t - 1]
 
@@ -84,8 +88,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       )
 
       // Store partials
-      await adminDoc.update({ partials })
-      console.log('Updated admin partials:', partials)
+      await adminDoc.collection('partials').doc('partials').set(partials, { merge: true })
+      // console.log('Updated admin partials:', partials)
+      console.log('Updated admin partials')
 
       // Notify all participants there's been an update
       promises.push(pusher.trigger(`keygen-${election_id}`, 'update', { [ADMIN_EMAIL]: { partials: partials.length } }))
@@ -93,7 +98,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   // If all have provided partials, admin can now combine partials
-  const all_have_partials = trustees.every((trustee) => 'partials' in trustee)
+  const trusteePartials = await Promise.all(loadTrusteePartials)
+  // console.log({ trusteePartials })
+  const all_have_partials = trusteePartials.every((t) => !!t)
+  console.log({ all_have_partials })
+
   if (all_have_partials) {
     // Have all trustees now uploaded partials for the last shuffled list?
     const last_shuffled = trustees[trustees.length - 1].shuffled as Shuffled
@@ -159,5 +168,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Wait for all pending promises to finish
   await Promise.all(promises)
 
-  return res.status(201).send(`Updated admin object`)
+  return res
+    .status(201)
+    .json({ _message: `Ran /update-admin`, admin_already_uploaded_partials, all_have_partials, have_all_shuffled })
 }
