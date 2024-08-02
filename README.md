@@ -1,34 +1,52 @@
-# SIV
+# SIV — the Secure Internet Voting protocol
 
-## Development
+Internet voting system designed for **government-grade election security**, with mathematically provable privacy & vote verifiability.
 
-Install dependencies:
+<p align="center"><img alt="screenshot-of-siv-voter-interface" src="https://hack-siv-org.vercel.app/images-for-decon-2024/screenshot-of-siv-voter-interface.png" width="300px" /></p>
+
+## Core Security Goals
+
+- **Authenticated voters:** Only legitimately registered voters are allowed to vote, and only once per person.
+- **Private voting:** A fair election requires that voters can freely choose without anyone learning how they voted.
+- **Verifiable tallies:** For widely accepted results, vote totals must be independently auditable for accuracy.
+
+## Resources
+
+- Homepage: [siv.org](https://siv.org)
+- Documentation: [docs.siv.org](https://docs.siv.org)
+- Illustrated Guide to the SIV Protocol: [siv.org/protocol](https://siv.org/protocol)
+- SIV compared to other government elections options: [docs.siv.org/compare](https://docs.siv.org/compare)
+
+## License & Restrictions
+
+SIV is designed to [create verifiable proof of accurate election results](https://docs.siv.org/verifiability), without needing to inspect any source code — which is not feasible of remote servers anyway.
+
+Nonetheless, the SIV Source Code is made available for transparency, to enable deep security inspections.
+
+Permission is **_not granted_** for commercial or governmental usage, without first acquiring a separate Commercial or Government License. Contact team@siv.org if interested.
+
+See the [SIV Public License](/LICENSE) for further details.
+
+## Local Development Instructions
+
+### Initial set up
+
+1. Duplicate the file `.env.local.TEMPLATE` into `.env.local`
+2. Create (free) accounts with the providers listed in that file, adding your new API keys
+3. Install local dependencies:
 
 ```bash
-yarn
+npm install
 ```
 
-Start dev server:
+### Then, to start dev server
 
 ```bash
-yarn dev
-
-# ready - started server on http://localhost:3000
+npm run dev
 ```
 
-## Layout
+And you should see:
 
-- http://siv.org - Landing page
-- http://siv.org/admin - Create New Election
-- http://siv.org/protocol - Protocol Description
-- http://siv.org/faq - FAQ
+> Ready - server started on http://localhost:3000
 
-## Next steps
-
-- [ ] Extra Private Mode (Airplane + Incognito) instructions
-- [ ] Health check on voter's device:
-  - [ ] Can they establish a secure connection?
-  - [ ] Is their browser up to date?
-  - [ ] Is their OS up to date?
-  - [ ] Do they have any fishy extensions?
-  - [ ] Have any honeypots been triggered?
+🎉
