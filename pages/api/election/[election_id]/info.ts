@@ -13,6 +13,7 @@ export type ElectionInfo = {
   last_decrypted_at?: Date
   observers?: string[]
   p?: string
+  skip_shuffle_proofs?: boolean
   submission_confirmation?: string
   threshold_public_key?: string
   voter_applications_allowed?: boolean

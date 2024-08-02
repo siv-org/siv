@@ -7,7 +7,7 @@ import { RP } from 'src/crypto/curve'
 import { destringifyShuffle, stringifyShuffle, stringifyShuffleWithoutProof } from 'src/crypto/stringify-shuffle'
 
 import { api } from '../../api-helper'
-import { SKIP_SHUFFLE_PROOFS, rename_to_c1_and_2, shuffleWithProof, shuffleWithoutProof } from '../../crypto/shuffle'
+import { rename_to_c1_and_2, shuffleWithProof, shuffleWithoutProof } from '../../crypto/shuffle'
 import { verify_shuffle_proof } from '../../crypto/shuffle-proof'
 import { Shuffled, StateAndDispatch } from '../trustee-state'
 import { YouLabel } from '../YouLabel'
@@ -19,8 +19,12 @@ const nbsp = '\u00A0'
 
 export const VotesToShuffle = ({
   set_final_shuffle_verifies,
+  skip_shuffle_proofs = false,
   state,
-}: StateAndDispatch & { set_final_shuffle_verifies: Dispatch<SetStateAction<boolean>> }) => {
+}: StateAndDispatch & {
+  set_final_shuffle_verifies: Dispatch<SetStateAction<boolean>>
+  skip_shuffle_proofs?: boolean
+}) => {
   const { own_index, threshold_public_key, trustees = [] } = state
   const [proofs_shown, set_proofs_shown] = useState<Record<string, boolean>>({})
 
@@ -79,7 +83,7 @@ export const VotesToShuffle = ({
 
       // Begin (async) validating each proof...
       Object.keys(trustee_validations).forEach((column) => {
-        if (SKIP_SHUFFLE_PROOFS) {
+        if (skip_shuffle_proofs) {
           set_validated_proofs({ column, email, result: true, type: 'UPDATE' })
         } else {
           // Inputs are the previous party's outputs
@@ -117,7 +121,7 @@ export const VotesToShuffle = ({
           list.shuffled.map((c) => mapValues(c, RP.fromHex)),
         ]
 
-        if (SKIP_SHUFFLE_PROOFS) {
+        if (skip_shuffle_proofs) {
           return stringifyShuffleWithoutProof(await shuffleWithoutProof(...shuffleArgs))
         } else {
           return stringifyShuffle(await shuffleWithProof(...shuffleArgs))
@@ -165,7 +169,16 @@ export const VotesToShuffle = ({
               </span>
               {/* Right */}
               {shuffled && (
-                <ValidationSummary {...{ email, proofs_shown, set_proofs_shown, shuffled, validated_proofs }} />
+                <ValidationSummary
+                  {...{
+                    email,
+                    proofs_shown,
+                    set_proofs_shown,
+                    shuffled,
+                    skip_shuffle_proofs,
+                    validated_proofs,
+                  }}
+                />
               )}
             </div>
 
@@ -267,21 +280,23 @@ const ValidationSummary = ({
   email,
   proofs_shown,
   set_proofs_shown,
+  skip_shuffle_proofs,
   validated_proofs,
 }: {
   email: string
   proofs_shown: Record<string, boolean>
   set_proofs_shown: Dispatch<SetStateAction<Record<string, boolean>>>
+  skip_shuffle_proofs: boolean
   validated_proofs: Validations_Table
 }) => {
   const validations = validated_proofs[email]
 
   return (
     <i className="text-[11px] block sm:text-right">
-      {SKIP_SHUFFLE_PROOFS ? '⏸️ ' : all_proofs_passed(validations) && '✅ '}
+      {skip_shuffle_proofs ? '⏸️ ' : all_proofs_passed(validations) && '✅ '}
       {num_proofs_passed(validations)} of {num_total_proofs(validations)} Shuffle Proofs{' '}
-      {SKIP_SHUFFLE_PROOFS ? 'skipped' : 'verified'}{' '}
-      {!SKIP_SHUFFLE_PROOFS && (
+      {skip_shuffle_proofs ? 'skipped' : 'verified'}{' '}
+      {!skip_shuffle_proofs && (
         <a
           className="font-mono cursor-pointer"
           onClick={() => set_proofs_shown({ ...proofs_shown, [email]: !proofs_shown[email] })}

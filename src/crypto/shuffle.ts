@@ -6,8 +6,6 @@ export type Cipher = { encrypted: RP; lock: RP }
 export type Public_Key = RP
 const G = RP.BASE
 
-export const SKIP_SHUFFLE_PROOFS = true
-
 export async function shuffleWithProof(
   pub_key: Public_Key,
   inputs: Cipher[],

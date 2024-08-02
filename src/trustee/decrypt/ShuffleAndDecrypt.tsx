@@ -11,7 +11,7 @@ import { VotesToShuffle } from './VotesToShuffle'
 
 export const ShuffleAndDecrypt = ({ dispatch, state }: StateAndDispatch): JSX.Element => {
   const { private_keyshare } = state
-  const { ballot_design } = useElectionInfo()
+  const { ballot_design, skip_shuffle_proofs } = useElectionInfo()
   const [final_shuffle_verifies, set_final_shuffle_verifies] = useState(false)
 
   if (!private_keyshare) return <p>Error: No `private_keyshare` found in localStorage.</p>
@@ -32,7 +32,9 @@ export const ShuffleAndDecrypt = ({ dispatch, state }: StateAndDispatch): JSX.El
       <AcceptedVotes {...{ ballot_design }} allow_truncation title_prefix="II. " />
 
       {/* Are there new votes shuffled from the trustee ahead of us that we need to shuffle? */}
-      <VotesToShuffle {...{ dispatch, final_shuffle_verifies, set_final_shuffle_verifies, state }} />
+      <VotesToShuffle
+        {...{ dispatch, final_shuffle_verifies, set_final_shuffle_verifies, skip_shuffle_proofs, state }}
+      />
 
       {/* Are there fully shuffled votes we need to partially decrypt? */}
       <VotesToDecrypt {...{ dispatch, final_shuffle_verifies, state }} />

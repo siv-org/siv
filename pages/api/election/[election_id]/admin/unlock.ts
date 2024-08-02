@@ -3,7 +3,7 @@ import { mapValues } from 'lodash-es'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getStatus } from 'src/admin/Voters/Signature'
 import { RP } from 'src/crypto/curve'
-import { SKIP_SHUFFLE_PROOFS, fastShuffle, shuffleWithProof, shuffleWithoutProof } from 'src/crypto/shuffle'
+import { fastShuffle, shuffleWithProof, shuffleWithoutProof } from 'src/crypto/shuffle'
 import { CipherStrings, stringifyShuffle, stringifyShuffleWithoutProof } from 'src/crypto/stringify-shuffle'
 
 import { firebase, pushover } from '../../../_services'
@@ -31,6 +31,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   elapsed('init')
 
   const { election_id } = req.query as { election_id: string }
+  const { options = {} } = req.body
+  const { skip_shuffle_proofs } = options
 
   // Confirm they're a valid admin that created this election
   const jwt = await checkJwtOwnsElection(req, res, election_id)
@@ -60,7 +62,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     threshold_public_key: string
   }
   elapsed('election data')
-  if (!threshold_public_key) return res.status(400).json({ error: 'election missing `threshold_public_key`' })
+  if (!threshold_public_key) return res.status(400).json({ error: 'Election missing `threshold_public_key`' })
 
   // If esignature_requested, filter for only approved
   let votes_to_unlock = (await loadVotes).docs
@@ -162,7 +164,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           list.map((row) => mapValues(row, RP.fromHex)),
         ]
 
-        if (SKIP_SHUFFLE_PROOFS) {
+        if (skip_shuffle_proofs) {
           return stringifyShuffleWithoutProof(await shuffleWithoutProof(...shuffleArgs))
         } else {
           return stringifyShuffle(await shuffleWithProof(...shuffleArgs))
@@ -172,7 +174,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     // Store admins shuffled lists
     console.log("starting to write admin's shuffle to db\n\n\n\n\n")
-    await adminDoc.update({ preshuffled: split, shuffled })
+    await Promise.all([electionDoc.update({ skip_shuffle_proofs }), adminDoc.update({ preshuffled: split, shuffled })])
     console.log("succeeded to write admin's shuffle.")
     try {
       await pusher.trigger(`keygen-${election_id}`, 'update', {
@@ -183,7 +185,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     }
   }
 
-  res.status(201).json({ message: 'Triggered unlock' })
+  return res.status(201).json({ message: 'Triggered unlock' })
 }
 
 /** Recombine the columns back together via tracking numbers */
