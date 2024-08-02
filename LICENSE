@@ -1,0 +1,41 @@
+Secure Internet Voting Inc. (SIV) Public License
+Version 1.0 — August 2024
+
+Grant of License:
+The source code of the Software is provided to enable inspection for integrity and security.
+Permission is hereby granted, free of charge, to any person obtaining a copy of this
+software and associated documentation files (the "Software"), to use, copy, modify, and
+distribute the Software for non-commercial and non-governmental elections within clubs,
+associations, or informal gatherings, subject to the following conditions:
+
+1. Commercial Use Restrictions: The Software, including any modifications or derivative
+   works, may not be used for any commercial purposes, including but not limited to
+   resale, or distribution as a standalone product or as part of a product or service
+   that is sold, offered for sale, licensed, or sublicensed, without obtaining a separate
+   Commercial License from SIV.
+
+2. Governmental Use Restrictions: No person, governmental entity, or other organization
+   may use, sell, or distribute the Software or its source code, including any
+   modifications or derivative works, for running public elections without obtaining a
+   separate Government License from SIV.
+
+Copyright Notice:
+This entire license must be included in all copies, derivative works, or substantial
+portions of the Software.
+
+Disclaimer of Warranty:
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL SIV BE LIABLE FOR ANY CLAIM, DAMAGES OR
+OTHER LIABILITY, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE. SEPARATE WARRANTY TERMS MAY APPLY UNDER A COMMERCIAL OR
+GOVERNMENT LICENSE.
+
+Indemnification:
+If your use of the Software leads to any third-party claims, you agree to indemnify,
+defend, and hold harmless SIV.
+
+Governing Law:
+This License is governed by the laws of California, United States. Any disputes shall be
+resolved exclusively in the federal or state courts of the United States. SIV reserves
+the right to terminate this License at any time.
