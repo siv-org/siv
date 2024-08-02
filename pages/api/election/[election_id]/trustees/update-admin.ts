@@ -109,13 +109,23 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const columns = Object.keys(last_shuffled)
     const last_shuffled_length = last_shuffled[columns[0]].shuffled.length
 
-    if (trustees.every((t) => t.partials && t.partials[columns[0]].length >= last_shuffled_length)) {
+    // Do they have *enough* partials?
+    const all_have_enough_partials = trusteePartials.every(
+      (t) => t.partials && t.partials[columns[0]].length >= last_shuffled_length,
+    )
+    console.log({ all_have_enough_partials })
+    if (!all_have_enough_partials) {
+      console.log('⚠️  Not all trustees have provided enough partials')
+    } else {
       // Verify that all partials have passing ZK Proofs
       const all_broadcasts = trustees.map(({ commitments }) => commitments.map(RP.fromHex))
       const last_trustees_shuffled = trustees[trustees.length - 1].shuffled
       let any_failed = false
+
+      console.log('Verifying all partial proofs...')
+
       // For all trustees...
-      await bluebird.map(trustees, ({ partials }, index) => {
+      await bluebird.map(trusteePartials, ({ partials }, index) => {
         const g_to_trustees_keyshare = compute_g_to_keyshare(index + 1, all_broadcasts)
         // For all columns...
         return bluebird.map(
@@ -137,13 +147,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         console.log('⚠️  Not all Partial proofs passed, refusing to combine')
       } else {
         // Ok, now ready to combine partials and finish decryption...
+        console.log('All passed. Now beginning to combine partials...')
 
         // For each column
         const decrypted_and_split = mapValues(last_shuffled, (list, key) => {
           // For each row
           return (list as { shuffled: { encrypted: string }[] }).shuffled.map(({ encrypted }, index) => {
             // 1. First we combine the partials to get the ElGamal shared secret
-            const partials = trustees.map((t) => RP.fromHex(t.partials[key][index].partial))
+            const partials = trusteePartials.map((t) => RP.fromHex(t.partials[key][index].partial))
             const shared_secret = combine_partials(partials)
 
             // 2. Then we can unlock each messages
@@ -157,6 +168,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
         // Store decrypteds as an array
         const decrypted = Object.values(decrypteds_by_tracking)
+
+        console.log('Done combining partials... saving decrypteds to DB.')
+
         // 4. And save the results to election.decrypted
         await electionDoc.update({ decrypted, last_decrypted_at: new Date() })
         // And notify everyone we have new decrypted
@@ -167,6 +181,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Wait for all pending promises to finish
   await Promise.all(promises)
+
+  console.log('/update-admin Done.')
 
   return res
     .status(201)
