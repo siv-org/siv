@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { format } from 'timeago.js'
 
-import { firebase } from './_services'
+import { firebase, pushover } from './_services'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { auth, election_id } = req.body
@@ -39,7 +39,13 @@ export async function validateAuthToken(
 
   // Is there a voter w/ this Auth Token?
   const [voter] = (await voters).docs
-  if (!voter) return fail('Invalid Auth Token.')
+  if (!voter) {
+    await pushover(
+      'SIV auth token lookup miss',
+      `election: ${election_id}\nbad auth: ${auth}\nPossible brute force attack?`,
+    )
+    return fail('Invalid Auth Token.')
+  }
 
   // Has Auth Token already been used?
   const [vote] = (await votes).docs
