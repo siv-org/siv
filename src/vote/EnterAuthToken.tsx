@@ -3,6 +3,8 @@ import router from 'next/router'
 import { useRef, useState } from 'react'
 import { OnClickButton } from 'src/_shared/Button'
 
+export const exampleAuthToken = '22671df063'
+
 export const EnterAuthToken = () => {
   const [error, setError] = useState('')
   const [text, setText] = useState('')
@@ -48,7 +50,7 @@ export const EnterAuthToken = () => {
         </OnClickButton>
       </div>
       <p className="opacity-60">
-        <i>Example:</i> 22671df063
+        <i>Example:</i> {exampleAuthToken}
         <br />
         <br />
         Auth tokens are 10 characters long, made up of the numbers <i>0–9</i> and the letters <i>a–f</i>.
