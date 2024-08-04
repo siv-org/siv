@@ -45,7 +45,7 @@ Approve & skip email verification: ${req.headers.origin}/approve-admin?id=${doc_
 
   await Promise.all([
     sendEmail({
-      recipient: 'applied-admin@siv.org',
+      recipient: process.env.ADMIN_EMAIL as string,
       subject: `SIV Admin Application: ${email}`,
       text: message,
     }),
