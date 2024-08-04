@@ -52,6 +52,7 @@ See the [SIV Public License](/LICENSE) for further details.
       3. Go to the project settings and add the following values to your `.env.local`:
          * `SUPABASE_ADMIN_KEY`: Found in "API" -> "Project API keys" under "anon public"
          * `SUPABASE_DB_URL`: Found in "Database" -> "Connection parameters" under "Host"
+           * Note: Be sure to add "https://" to the start of the address
          * `SUPABASE_JWT_SECRET`: Found in "API" -> "JWT Settings" under "JWT Secret"
 
    **Mailgun**:
