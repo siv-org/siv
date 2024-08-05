@@ -45,7 +45,7 @@ export default allowCors(async (req: NextApiRequest, res: NextApiResponse) => {
     from: 'SIV',
     fromEmail: 'hack@siv.org',
     recipient: email,
-    subject: 'Welcome to HACK SIV - TEST2',
+    subject: 'Welcome to HACK SIV',
     text: `<div style="text-align:center"><h2>Welcome to HACK SIV</h2>
 Someone, hopefully you, just registered this email on <a href="https://hack.siv.org">hack.siv.org</a>.
 <p style="opacity:0.5; font-style:italic;">Press REPLY if that sounds wrong.</p>`,
