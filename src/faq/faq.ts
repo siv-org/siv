@@ -61,11 +61,14 @@ The SIV system offers even more rigorous privacy, so nobody has the ability to c
     q: 'How does SIV ensure election results are Verifiable?',
     resp: `All final election tallies can be independently recounted.
 
-There are two ways in which votes can be verified.
+There are many ways in which votes can be verified.
 
 1. Voters themselves can personally verify their vote in the final tally. When they submit their vote, voters' devices create a random secret <i><b>Verification #</b></i>. Once votes are unlocked for tallying, voters can find their <i>Verification #</i> to confirm that their vote was cast and counted exactly as intended. This provides far greater assurance than paper elections offer, where voters have little first-hand verifiability after they submit their vote.
 
-2. SIV also allows for cryptographic <i><b>Universal Verifiability</b></i>. Election administrators and approved organizations can run the SIV Universal Verifier. This provides the ability to retrace all the election steps for all votes, from encrypted submissions to final results.`,
+2. SIV also allows for cryptographic <i><b>Universal Verifiability</b></i>. Anyone can run the cryptographic verification code. This provides the ability to retrace all the election steps for all votes, from encrypted submissions to final results.  
+
+For all the other methods, check out the <a href="htthttps://docs.siv.org/verifiability">SIV Docs: Verifiability Section.</a>
+`,
   },
   {
     q: 'How can voters be confident in election results?',
