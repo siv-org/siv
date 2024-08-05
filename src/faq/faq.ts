@@ -280,7 +280,7 @@ RLAs are often currently used to double check vote tallies. SIV makes this unnec
 
 RLAs are still very useful to audit voter rolls & Voter Authorization token issuance, and to help voters check their Voter Verification #’s are in the final tally.
 
-<a href="https://docs.siv.org/verifiability/rla">Learn More</a>`,
+Learn More: <a href="https://docs.siv.org/verifiability/rla">docs.siv.org/verifiability/rla</a>`,
   },
   {
     id: 'phishing',
