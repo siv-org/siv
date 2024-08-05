@@ -32,7 +32,7 @@ export default allowCors(async (req: NextApiRequest, res: NextApiResponse) => {
         registration: firestore.FieldValue.arrayUnion({
           created_at: new Date(),
           email,
-          //   geoip: { county: 'FIXME', state: 'FIXME' },
+          geoip: { country: req.headers['x-vercel-ip-country'], region: req.headers['x-vercel-ip-country-region'] },
           user_agent: req.headers['user-agent'],
         }),
       },
