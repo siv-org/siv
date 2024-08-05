@@ -31,9 +31,10 @@ See the [SIV Public License](/LICENSE) for further details.
 
 ### Initial set up
 
-1. Duplicate the file `.env.local.TEMPLATE` into `.env.local`
-2. Create (free) accounts with the providers listed in that file, adding your new API keys
-3. Install local dependencies:
+1. Fork the repo
+2. Duplicate the file `.env.local.TEMPLATE` into `.env.local`
+3. Create (free) accounts with the providers listed in that file, adding your new API keys
+4. Install local dependencies:
 
 ```bash
 npm install
