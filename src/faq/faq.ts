@@ -67,7 +67,7 @@ There are many ways in which votes can be verified.
 
 2. SIV also allows for cryptographic <i><b>Universal Verifiability</b></i>. Anyone can run the cryptographic verification code. This provides the ability to retrace all the election steps for all votes, from encrypted submissions to final results.
 
-For all the other methods, check out the <a href="htthttps://docs.siv.org/verifiability">SIV Docs: Verifiability</a> section.
+For all the other methods, check out the <a href="https://docs.siv.org/verifiability">SIV Docs: Verifiability</a> section.
 `,
   },
   {
