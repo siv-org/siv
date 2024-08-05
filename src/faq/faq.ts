@@ -278,7 +278,9 @@ To be confident that the privacy of the vote is protected, voters need to trust 
 
 RLAs are often currently used to double check vote tallies. SIV makes this unnecessary because all vote tallies are independently verifiable and automatically recounted by every device that visits the public election status page.
 
-RLAs are still very useful to audit voter rolls & Voter Authorization token issuance, and to help voters check their Voter Verification #’s are in the final tally.`,
+RLAs are still very useful to audit voter rolls & Voter Authorization token issuance, and to help voters check their Voter Verification #’s are in the final tally.
+
+<a href="https://docs.siv.org/verifiability/rla">Learn More</a>`,
   },
   {
     id: 'phishing',
