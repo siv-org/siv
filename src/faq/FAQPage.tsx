@@ -52,8 +52,9 @@ export const FAQPage = (): JSX.Element => {
             </OnClickButton>
           </div>
 
-          {faq.map(({ id, q, resp }, index) => (
+          {faq.map(({ deprecated_ids, id, q, resp }, index) => (
             <div className="question" key={index}>
+              {deprecated_ids && deprecated_ids.map((id) => <div id={id} key={id} />)}
               <h3
                 id={id}
                 onClick={() => {

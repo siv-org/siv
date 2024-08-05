@@ -1,4 +1,4 @@
-export const faq: { id?: string; q: string; resp: string }[] = [
+export const faq: { deprecated_ids?: string[]; id?: string; q: string; resp: string }[] = [
   {
     id: 'secure',
     q: 'What is a "Secure" election?',
@@ -50,7 +50,7 @@ The entire process leaves a written audit trail, for independent verification.
 Once a voter makes their selections, all their options get encrypted on their voting device.
 Their plaintext never leaves their device.
 
-Once all votes are received, the <a href="https://siv.org/faq#observers">Verifying Observers'</a> computers each add their own cryptographic shuffle to all the votes, for thorough anonymization, before working together to unlock the votes for tallying.
+Once all votes are received, the <a href="https://siv.org/faq#observers">Privacy Protectors'</a> computers each add their own cryptographic shuffle to all the votes, for thorough anonymization, before working together to unlock the votes for tallying.
 
 This is a similar process as with paper ballots, where voters are confirmed, but the voter's identification is not on the submitted ballot.
 
@@ -252,11 +252,12 @@ This protects voters' network connection to prevent tampering and surveillance.`
 SIV automatically creates complete end-to-end verifiable elections, so that anyone who submits record requests can simply be directed to the publicly posted election data.`,
   },
   {
-    id: 'observers',
-    q: 'What are Verifying Observers?',
-    resp: `Appointing Verifying Observers is a powerful SIV feature for Election Administrators.
+    deprecated_ids: ['observers'],
+    id: 'privacy-protectors',
+    q: 'What are Privacy Protectors?',
+    resp: `Appointing Privacy Protectors is a powerful SIV feature for Election Administrators.
 
-These Verifying Observers are similar to the election observers we use in our existing paper elections. But the SIV process runs on computers and uses advanced mathematics and strong cryptography, including what are called Zero-Knowledge Proofs. It offers total privacy and verifiability, proving that none of the votes are tampered with. And it requires only a small handful of people, unlike our large paper elections which can require tens of thousands of observers, but who can ultimately provide only incomplete security.
+These Privacy Protectors are similar to the election observers we use in our existing paper elections. But the SIV process runs on computers and uses advanced mathematics and strong cryptography, including what are called Zero-Knowledge Proofs. It offers total privacy and verifiability, proving that none of the votes are tampered with. And it requires only a small handful of people, unlike our large paper elections which can require tens of thousands of observers, but who can ultimately provide only incomplete security.
 
 Protocol <a href="/protocol#4" target="_blank">Steps 4</a> & <a href="/protocol#5" target="_blank">5</a> detail more about their role.
 `,
