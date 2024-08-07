@@ -2,6 +2,8 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 import { sendEmail } from './_services'
 
+const { ACCEPTS_LOCALHOST_EMAILS = 'none set' } = process.env
+
 export default async (req: NextApiRequest, res: NextApiResponse) => res.status(401).send('Deprecated')
 
 export const buildSubject = (election_title?: string) => `Vote Invitation${election_title ? `: ${election_title}` : ''}`
@@ -19,9 +21,12 @@ export const send_invitation_email = ({
   tag: string
   voter: string
 }) => {
-  // Don't send localhost emails to non-admins
-  if (link.includes('localhost') && !voter.endsWith('@dsernst.com') && !voter.endsWith('@arianaivan.com')) {
-    throw `Blocking sending 'localhost' email link to ${voter}`
+  // Don't accidentally send localhost emails
+  if (link.includes('localhost')) {
+    // Unless the recipient is a whitelisted admin address
+    const toAdmin = voter.endsWith(ACCEPTS_LOCALHOST_EMAILS)
+    if (!toAdmin)
+      throw `Blocking sending 'localhost' email link to ${voter}. Override with env.ACCEPTS_LOCALHOST_EMAILS`
   }
 
   // Make sure auth_token is well formed
