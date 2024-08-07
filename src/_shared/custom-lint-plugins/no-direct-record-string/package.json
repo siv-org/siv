@@ -1,0 +1,15 @@
+{
+  "name": "eslint-plugin-no-direct-record-string",
+  "version": "1.0.0",
+  "description": "Custom eslint rule to warn against type Record<string, T>, which is unsafe. Use Partial<Record<string, T>",
+  "keywords": [
+    "eslint",
+    "eslintplugin",
+    "eslint-plugin",
+    "typescript",
+    "typesafety"
+  ],
+  "license": "ISC",
+  "author": "dsernst",
+  "main": "index.js"
+}
