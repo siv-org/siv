@@ -19,12 +19,16 @@ export function check_for_urgent_ballot_errors(design: string): string | null {
         throw `Question ${question.id ? `'${question.id}'` : ''} is missing an options array`
 
       // Validate options
-      question.options.forEach(({ name }: { name?: string }) => {
+      question.options.forEach(({ name, value }: { name?: string; value?: string }) => {
         // Check for name field
         if (name === undefined || typeof name !== 'string') throw 'Each option should have a { name: string } field'
 
-        // Make sure name field isn't too long.
-        if (name.length > 26) throw `Keep names under 26 characters: ${name}`
+        // If value, keep short enough
+        if (value && value.length > 26) throw `Keep "value" < 26 characters: ${value}`
+
+        // If no value, name needs to be shorter
+        if (!value && name.length > 26)
+          throw `Name is too long. Add shorter "value" field, then longer name is ok: ${name}`
 
         // 'BLANK' is a reserved option
         if (name.toLowerCase() === 'blank') throw `'BLANK' is a reserved option name`
