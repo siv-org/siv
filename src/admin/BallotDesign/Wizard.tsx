@@ -121,6 +121,7 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
                   <option value="approval">Approval — Vote for All That You Approve Of</option>
                   <option value="multiple-votes-allowed">Multiple Votes Allowed — Choose Up to X</option>
                   <option value="score">Score — Scale from Low to High</option>
+                  <option value="budget">Budget — Allocate a Fixed Amount of Money</option>
                 </select>
               </div>
             </div>
