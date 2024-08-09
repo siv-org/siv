@@ -105,7 +105,6 @@ export const OnClickButton = forwardRef<HTMLAnchorElement, OnClickProps>(
         a:not(.disabled):hover {
           background-color: ${invertColor ? '#fff' : darkBlue};
           color: ${invertColor ? '#000' : '#fff'};
-          border-color: ${invertColor ? darkBlue : '#fff'};
           cursor: pointer;
         }
       `}</style>

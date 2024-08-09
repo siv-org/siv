@@ -2,7 +2,7 @@ import { isNotUndefined, mapKeys, mapValues, omit } from 'src/utils'
 import { defaultRankingsAllowed } from 'src/vote/Ballot'
 import { Item } from 'src/vote/storeElectionInfo'
 
-import { tallyVotes } from '../tally-votes'
+import { multi_vote_regex, tallyVotes } from '../tally-votes'
 
 export type IRV_Round = {
   ordered: string[]
@@ -18,13 +18,16 @@ export const tally_IRV_Items = (
   // First we undo the multi-vote suffixes to get back to the ballot_design ids
   const items: Record<string, { rounds: IRV_Round[]; winner?: string }> = {}
   Object.keys(IRV_columns_seen).forEach((key) => {
-    const item = key.slice(0, -2)
+    const multi_suffix = key.match(multi_vote_regex)
+    if (!multi_suffix) throw new Error(`Unexpected key ${key} breaking multi-vote regex`)
+    const item = key.slice(0, -multi_suffix[0].length)
     items[item] = { rounds: [] }
   })
 
   // Then for each voting item....
   Object.keys(items).forEach((item) => {
     const eliminated: string[] = []
+
     const max_selections = ballot_items_by_id[item].multiple_votes_allowed || defaultRankingsAllowed
 
     // The IRV algorithm is to go round-by-round,

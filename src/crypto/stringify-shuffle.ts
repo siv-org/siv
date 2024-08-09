@@ -2,10 +2,10 @@ import { mapValues } from 'lodash'
 
 import { AsyncReturnType } from './async-return-type'
 import { RP } from './curve'
-import { shuffle } from './shuffle'
+import { shuffleWithProof, shuffleWithoutProof } from './shuffle'
 
 export type CipherStrings = ReturnType<typeof stringifyShuffle>['shuffled'][0]
-export function stringifyShuffle({ proof, shuffled }: AsyncReturnType<typeof shuffle>) {
+export function stringifyShuffle({ proof, shuffled }: AsyncReturnType<typeof shuffleWithProof>) {
   const p = proof
   const simple = p.simple_shuffle_proof
   return {
@@ -33,10 +33,14 @@ export function stringifyShuffle({ proof, shuffled }: AsyncReturnType<typeof shu
   }
 }
 
+export function stringifyShuffleWithoutProof({ shuffled }: AsyncReturnType<typeof shuffleWithoutProof>) {
+  return { shuffled: shuffled.map((r) => mapValues(r, String)) }
+}
+
 export function destringifyShuffle({
   proof,
   shuffled,
-}: ReturnType<typeof stringifyShuffle>): AsyncReturnType<typeof shuffle> {
+}: ReturnType<typeof stringifyShuffle>): AsyncReturnType<typeof shuffleWithProof> {
   const p = proof
   const simple = p.simple_shuffle_proof
   return {
@@ -62,4 +66,10 @@ export function destringifyShuffle({
     },
     shuffled: shuffled.map((r) => mapValues(r, RP.fromHex)),
   }
+}
+
+export function destringifyShuffleWithoutProof({
+  shuffled,
+}: ReturnType<typeof stringifyShuffleWithoutProof>): AsyncReturnType<typeof shuffleWithoutProof> {
+  return { shuffled: shuffled.map((r) => mapValues(r, RP.fromHex)) }
 }
