@@ -92,7 +92,13 @@ export const Item = ({
 
 export const Label = ({ name, nameClassName, sub }: { name: string; nameClassName?: string; sub?: string }) => (
   <div className="my-2">
-    <Linkify>
+    <Linkify
+      componentDecorator={(decoratedHref, decoratedText, key) => (
+        <a href={decoratedHref} key={key} rel="noreferrer" target="_blank">
+          {decoratedText}
+        </a>
+      )}
+    >
       <span className={`font-bold opacity-95 ${nameClassName}`}>{name}</span>
       {sub && <p className="m-0 text-[12px] opacity-75">{sub}</p>}
     </Linkify>
@@ -111,7 +117,7 @@ export const TitleDescriptionQuestion = ({
   <>
     <Linkify
       componentDecorator={(decoratedHref, decoratedText, key) => (
-        <a href={decoratedHref} key={key} target="blank">
+        <a href={decoratedHref} key={key} rel="noreferrer" target="_blank">
           {/* Shorten to domain name only if possible */}
           {(decoratedText.match(/\w*?\.(com|org)/) || [decoratedText])[0]}
         </a>
