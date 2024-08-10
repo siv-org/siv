@@ -185,18 +185,21 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
 
             {json[questionIndex].type == 'budget' && (
               <div className="mt-1">
-                <label className="text-[10px] italic">Total $ available?</label>
-                <input
-                  className="w-24 p-1 m-1 text-sm text-right"
-                  type="number"
-                  value={budget_available}
-                  onChange={({ target }) => {
-                    const update = +target.value
-                    const new_json = [...json]
-                    new_json[questionIndex].budget_available = update
-                    saveDesign(new_json)
-                  }}
-                />
+                <label className="text-[10px] italic">Total available?</label>
+                <div className="relative inline">
+                  <div className="absolute text-lg opacity-50 -top-[3px] left-3">$</div>
+                  <input
+                    className="w-24 p-1 m-1 text-sm text-right"
+                    type="number"
+                    value={budget_available}
+                    onChange={({ target }) => {
+                      const update = +target.value
+                      const new_json = [...json]
+                      new_json[questionIndex].budget_available = update
+                      saveDesign(new_json)
+                    }}
+                  />
+                </div>
               </div>
             )}
 

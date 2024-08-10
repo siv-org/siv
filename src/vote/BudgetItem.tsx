@@ -39,7 +39,11 @@ export const BudgetItem = ({
     <>
       <TitleDescriptionQuestion {...{ description, question, title }} />
 
-      <div>Total Budget Available: ${budget_available}</div>
+      <div className="text-center">
+        <div className="inline-block px-1 border-2 border-green-600 border-solid rounded ">
+          Total Budget Available: ${budget_available}
+        </div>
+      </div>
 
       <table className="sm:ml-3">
         {/* List one row for each candidate */}
@@ -56,9 +60,10 @@ export const BudgetItem = ({
                 </td>
 
                 {/* And one column for each ranking option */}
-                <td className="ml-2">
+                <td className="relative ml-2">
+                  <div className="absolute pt-1.5 text-xl left-2 opacity-50">$</div>
                   <input
-                    className="w-24 h-10 px-1 text-lg bg-white border-2 border-gray-300 border-solid rounded appearance-none cursor-pointer hover:border-blue-600"
+                    className="w-24 h-10 px-1 text-lg text-right bg-white border-2 border-gray-300 border-solid rounded appearance-none cursor-pointer hover:border-blue-600"
                     value={current === 'BLANK' ? '' : current}
                     onChange={(event) => {
                       const update: Record<string, string> = {}
