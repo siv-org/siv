@@ -5,6 +5,7 @@ import { Item as ItemType } from './storeElectionInfo'
 import { State } from './vote-state'
 
 export const BudgetItem = ({
+  budget_available,
   description,
   dispatch,
   id = 'vote',
@@ -37,6 +38,8 @@ export const BudgetItem = ({
   return (
     <>
       <TitleDescriptionQuestion {...{ description, question, title }} />
+
+      <div>Total Budget Available: ${budget_available}</div>
 
       <table className="sm:ml-3">
         {/* List one row for each candidate */}

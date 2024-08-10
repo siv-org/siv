@@ -4,6 +4,7 @@ import { ElectionInfo } from '../../pages/api/election/[election_id]/info'
 import { State } from './vote-state'
 
 export type Item = {
+  budget_available?: number
   description?: string
   id?: string
   max_score?: number
