@@ -53,9 +53,14 @@ export const BudgetItem = ({
       <TitleDescriptionQuestion {...{ description, question, title }} />
 
       <div className="text-center">
-        <div className="inline-block px-1 border-2 border-green-600 border-solid rounded ">
+        <div
+          className={`inline-block px-1 border-2 ${
+            remaining >= 0 ? 'border-green-600' : 'border-red-600'
+          } border-solid rounded`}
+        >
           Budget Available: ${remaining} of ${budget_available}
         </div>
+        {remaining < 0 && <div className="px-1 pt-1 font-semibold text-red-500">You{"'"}ve exceeded the budget.</div>}
       </div>
 
       <table className="sm:ml-3">
