@@ -5,7 +5,7 @@ import { Item as ItemType } from './storeElectionInfo'
 import { State } from './vote-state'
 
 export const BudgetItem = ({
-  budget_available,
+  budget_available = 0,
   description,
   dispatch,
   id = 'vote',
@@ -19,6 +19,19 @@ export const BudgetItem = ({
   state: State
 }): JSX.Element => {
   // console.log('state.plaintext:', state.plaintext)
+
+  const sum = options.reduce((sum, { value }) => {
+    const amount = state.plaintext[`${id}_${value}`]
+    if (amount === 'BLANK') return sum
+
+    const number = Number(amount)
+    if (isNaN(number)) return sum
+    if (number < 0) return sum
+
+    return sum + number
+  }, 0)
+
+  const remaining = budget_available - sum
 
   // On first load, set all scores to 'BLANK'
   useEffect(() => {
@@ -41,7 +54,7 @@ export const BudgetItem = ({
 
       <div className="text-center">
         <div className="inline-block px-1 border-2 border-green-600 border-solid rounded ">
-          Total Budget Available: ${budget_available}
+          Budget Available: ${remaining} of ${budget_available}
         </div>
       </div>
 
