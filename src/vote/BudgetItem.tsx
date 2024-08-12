@@ -56,7 +56,7 @@ export const BudgetItem = ({
       <TitleDescriptionQuestion {...{ description, question, title }} />
 
       {/* Budget Available */}
-      <div className="text-center">
+      <div className="my-3 text-center">
         <div
           className={`inline-block px-1 border-2 ${
             remaining >= 0 ? 'border-green-600' : 'border-red-600'
@@ -67,7 +67,7 @@ export const BudgetItem = ({
         {remaining < 0 && <div className="px-1 pt-1 font-semibold text-red-500">You{"'"}ve exceeded the budget.</div>}
       </div>
 
-      <div className="inline-block px-2 pb-3 ml-3 border border-solid rounded-lg border-black/20">
+      <div className="inline-block px-2 pb-3 border border-solid rounded-lg sm:ml-3 border-black/20">
         <Switch
           checked={showToggleables}
           label={`Show ${toggleable_label}`}
