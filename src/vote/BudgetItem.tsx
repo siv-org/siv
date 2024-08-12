@@ -14,6 +14,7 @@ export const BudgetItem = ({
   question,
   state,
   title,
+  toggleable_2_label,
   toggleable_label,
 }: ItemType & {
   dispatch: Dispatch<Record<string, string>>
@@ -22,6 +23,7 @@ export const BudgetItem = ({
 }): JSX.Element => {
   // console.log('state.plaintext:', state.plaintext)
   const [showToggleables, setShowToggleables] = useState(true)
+  const [showToggleable2, setShowToggleable2] = useState(true)
 
   const sum = options.reduce((sum, { value }) => {
     const amount = state.plaintext[`${id}_${value}`]
@@ -67,19 +69,32 @@ export const BudgetItem = ({
         {remaining < 0 && <div className="px-1 pt-1 font-semibold text-red-500">You{"'"}ve exceeded the budget.</div>}
       </div>
 
-      <div className="inline-block px-2 pb-3 border border-solid rounded-lg sm:ml-3 border-black/20">
-        <Switch
-          checked={showToggleables}
-          label={`Show ${toggleable_label}`}
-          labelClassName="!bottom-0 top-px !cursor-default ml-1.5"
-          onClick={() => setShowToggleables(!showToggleables)}
-        />
-      </div>
+      {toggleable_label && (
+        <div className="inline-block px-2 pb-3 border border-solid rounded-lg sm:ml-3 border-black/20">
+          <Switch
+            checked={showToggleables}
+            label={`Show ${toggleable_label}`}
+            labelClassName="!bottom-0 top-px !cursor-default ml-1.5"
+            onClick={() => setShowToggleables(!showToggleables)}
+          />
+        </div>
+      )}
+
+      {toggleable_2_label && (
+        <div className="inline-block px-2 pb-3 mt-1.5 border border-solid rounded-lg sm:ml-3 border-black/20">
+          <Switch
+            checked={showToggleable2}
+            label={`Show ${toggleable_2_label}`}
+            labelClassName="!bottom-0 top-px !cursor-default ml-1.5"
+            onClick={() => setShowToggleable2(!showToggleable2)}
+          />
+        </div>
+      )}
 
       <table className="sm:ml-3">
         {/* List one row for each candidate */}
         <tbody>
-          {options.map(({ name, sub, toggleable, value }) => {
+          {options.map(({ name, sub, toggleable, toggleable_2, value }) => {
             const val = value || name
 
             const current = state.plaintext[`${id}_${val}`] || ''
@@ -92,6 +107,36 @@ export const BudgetItem = ({
                     <div className="text-xs">
                       {toggleable_label ? toggleable_label + ': ' : ''}
                       {toggleable.slice(0, -3)}
+                    </div>
+                  )}
+                  {showToggleable2 && toggleable_2 && (
+                    <div className="px-1 text-xs border border-solid rounded">
+                      {toggleable_2.type && (
+                        <div>
+                          Type:{' '}
+                          <span
+                            className={`px-1 rounded ${
+                              { Docs: 'bg-purple-200', Implementation: 'bg-yellow-200', Protocol: 'bg-blue-300' }[
+                                toggleable_2.type
+                              ]
+                            }`}
+                          >
+                            {toggleable_2.type}
+                          </span>
+                        </div>
+                      )}
+                      {toggleable_2.like && (
+                        <div className="mt-1 whitespace-break-spaces">
+                          <div className="font-semibold">In favor:</div>
+                          {toggleable_2.like}
+                        </div>
+                      )}
+                      {toggleable_2.dislike && (
+                        <div className="mt-1 whitespace-break-spaces">
+                          <div className="font-semibold ">Against:</div>
+                          {toggleable_2.dislike}
+                        </div>
+                      )}
                     </div>
                   )}
                 </td>
