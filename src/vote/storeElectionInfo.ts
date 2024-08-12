@@ -10,10 +10,11 @@ export type Item = {
   max_score?: number
   min_score?: number
   multiple_votes_allowed?: number
-  options: { name: string; sub?: string; value?: string }[]
+  options: { name: string; sub?: string; toggleable?: string; value?: string }[]
   question?: string
   randomize_order?: boolean
   title: string
+  toggleable_label?: string
   type?: string
   write_in_allowed: boolean
 }

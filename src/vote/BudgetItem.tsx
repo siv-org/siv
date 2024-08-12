@@ -1,4 +1,5 @@
-import { Dispatch, useEffect } from 'react'
+import { Dispatch, useEffect, useState } from 'react'
+import { Switch } from 'src/admin/BallotDesign/Switch'
 
 import { Label, TitleDescriptionQuestion } from './Item'
 import { Item as ItemType } from './storeElectionInfo'
@@ -13,12 +14,14 @@ export const BudgetItem = ({
   question,
   state,
   title,
+  toggleable_label,
 }: ItemType & {
   dispatch: Dispatch<Record<string, string>>
   election_id?: string
   state: State
 }): JSX.Element => {
   // console.log('state.plaintext:', state.plaintext)
+  const [showToggleables, setShowToggleables] = useState(true)
 
   const sum = options.reduce((sum, { value }) => {
     const amount = state.plaintext[`${id}_${value}`]
@@ -52,6 +55,7 @@ export const BudgetItem = ({
     <>
       <TitleDescriptionQuestion {...{ description, question, title }} />
 
+      {/* Budget Available */}
       <div className="text-center">
         <div
           className={`inline-block px-1 border-2 ${
@@ -63,10 +67,19 @@ export const BudgetItem = ({
         {remaining < 0 && <div className="px-1 pt-1 font-semibold text-red-500">You{"'"}ve exceeded the budget.</div>}
       </div>
 
+      <div className="inline-block px-2 pb-3 ml-3 border border-solid rounded-lg border-black/20">
+        <Switch
+          checked={showToggleables}
+          label={`Show ${toggleable_label}`}
+          labelClassName="!bottom-0 top-px !cursor-default ml-1.5"
+          onClick={() => setShowToggleables(!showToggleables)}
+        />
+      </div>
+
       <table className="sm:ml-3">
         {/* List one row for each candidate */}
         <tbody>
-          {options.map(({ name, sub, value }) => {
+          {options.map(({ name, sub, toggleable, value }) => {
             const val = value || name
 
             const current = state.plaintext[`${id}_${val}`] || ''
@@ -75,6 +88,12 @@ export const BudgetItem = ({
               <tr key={name}>
                 <td className="relative pr-4 bottom-0.5">
                   <Label {...{ name, sub }} />
+                  {showToggleables && toggleable && (
+                    <div className="text-xs">
+                      {toggleable_label ? toggleable_label + ': ' : ''}
+                      {toggleable.slice(0, -3)}
+                    </div>
+                  )}
                 </td>
 
                 {/* And one column for each ranking option */}
