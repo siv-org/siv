@@ -22,8 +22,8 @@ export const BudgetItem = ({
   state: State
 }): JSX.Element => {
   // console.log('state.plaintext:', state.plaintext)
-  const [showToggleables, setShowToggleables] = useState(true)
-  const [showToggleable2, setShowToggleable2] = useState(true)
+  const [showToggleables, setShowToggleables] = useState(false)
+  const [showToggleable2, setShowToggleable2] = useState(false)
 
   const sum = options.reduce((sum, { value }) => {
     const amount = state.plaintext[`${id}_${value}`]
@@ -100,25 +100,53 @@ export const BudgetItem = ({
             const current = state.plaintext[`${id}_${val}`] || ''
 
             return (
-              <tr key={name}>
-                <td className="relative pr-4 bottom-0.5">
-                  <Label {...{ name, sub }} />
-                  {showToggleables && toggleable && (
-                    <div className="text-xs">
-                      {toggleable_label ? toggleable_label + ': ' : ''}
-                      {toggleable.slice(0, -3)}
-                    </div>
-                  )}
-                  {showToggleable2 && toggleable_2 && (
-                    <div className="px-1 text-xs border border-solid rounded">
+              <>
+                <tr key={name}>
+                  <td className="relative pr-4 bottom-0.5 pt-6">
+                    <Label {...{ name, sub }} />
+                    {showToggleables && toggleable && (
+                      <div className="text-xs">
+                        {toggleable_label ? toggleable_label + ': ' : ''}
+                        {toggleable.slice(0, -3)}
+                      </div>
+                    )}
+                  </td>
+
+                  {/* Column for input box */}
+                  <td className="relative ml-2">
+                    <div className="absolute pt-1.5 text-xl left-2 opacity-50">$</div>
+                    <input
+                      className="w-24 h-10 px-1 text-lg text-right bg-white border-2 border-gray-300 border-solid rounded appearance-none cursor-pointer hover:border-blue-600"
+                      value={current === 'BLANK' ? '' : current}
+                      onChange={(event) => {
+                        const update: Record<string, string> = {}
+
+                        const change = event.target.value
+                        const key = `${id}_${val}`
+                        update[key] = `${change}`
+
+                        // Are they deselecting their existing selection?
+                        if (!change) update[key] = 'BLANK'
+
+                        dispatch(update)
+                      }}
+                    />
+                  </td>
+                </tr>
+
+                {showToggleable2 && toggleable_2 && (
+                  <tr className="!pb-10">
+                    <td className="px-2 pt-2 pb-4 text-xs border border-solid rounded border-black/30" colSpan={2}>
                       {toggleable_2.type && (
                         <div>
                           Type:{' '}
                           <span
                             className={`px-1 rounded ${
-                              { Docs: 'bg-purple-200', Implementation: 'bg-yellow-200', Protocol: 'bg-blue-300' }[
-                                toggleable_2.type
-                              ]
+                              {
+                                Docs: 'bg-purple-200',
+                                Implementation: 'bg-yellow-200',
+                                Protocol: 'bg-blue-600 text-white/90',
+                              }[toggleable_2.type]
                             }`}
                           >
                             {toggleable_2.type}
@@ -137,31 +165,10 @@ export const BudgetItem = ({
                           {toggleable_2.dislike}
                         </div>
                       )}
-                    </div>
-                  )}
-                </td>
-
-                {/* And one column for each ranking option */}
-                <td className="relative ml-2">
-                  <div className="absolute pt-1.5 text-xl left-2 opacity-50">$</div>
-                  <input
-                    className="w-24 h-10 px-1 text-lg text-right bg-white border-2 border-gray-300 border-solid rounded appearance-none cursor-pointer hover:border-blue-600"
-                    value={current === 'BLANK' ? '' : current}
-                    onChange={(event) => {
-                      const update: Record<string, string> = {}
-
-                      const change = event.target.value
-                      const key = `${id}_${val}`
-                      update[key] = `${change}`
-
-                      // Are they deselecting their existing selection?
-                      if (!change) update[key] = 'BLANK'
-
-                      dispatch(update)
-                    }}
-                  />
-                </td>
-              </tr>
+                    </td>
+                  </tr>
+                )}
+              </>
             )
           })}
         </tbody>
