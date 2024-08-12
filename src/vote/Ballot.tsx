@@ -32,7 +32,7 @@ export const Ballot = ({
 
   return (
     <NoSsr>
-      <Paper noFade className="!px-4 pt-4 overflow-x-scroll">
+      <Paper noFade className="!px-4 pt-4">
         <>
           <BallotPreview {...{ state }} />
 

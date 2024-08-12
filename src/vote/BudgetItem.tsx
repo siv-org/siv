@@ -1,4 +1,4 @@
-import { Dispatch, useEffect, useState } from 'react'
+import { Dispatch, Fragment, useEffect, useState } from 'react'
 import { Switch } from 'src/admin/BallotDesign/Switch'
 
 import { Label, TitleDescriptionQuestion } from './Item'
@@ -57,39 +57,44 @@ export const BudgetItem = ({
     <>
       <TitleDescriptionQuestion {...{ description, question, title }} />
 
-      {/* Budget Available */}
-      <div className="my-3 text-center">
-        <div
-          className={`inline-block px-1 border-2 ${
-            remaining >= 0 ? 'border-green-600' : 'border-red-600'
-          } border-solid rounded`}
-        >
-          Budget Available: ${remaining} of ${budget_available}
+      <div className="sticky top-0 z-10 bg-white">
+        {/* Budget Available */}
+        <div className="py-3 text-center">
+          <div
+            className={`inline-block px-1 border-2 ${
+              remaining >= 0 ? 'border-green-600' : 'border-red-600'
+            } border-solid rounded`}
+          >
+            Budget Available: ${remaining} of ${budget_available}
+          </div>
+          {remaining < 0 && <div className="px-1 pt-1 font-semibold text-red-500">You{"'"}ve exceeded the budget.</div>}
         </div>
-        {remaining < 0 && <div className="px-1 pt-1 font-semibold text-red-500">You{"'"}ve exceeded the budget.</div>}
+
+        <div className="sm:ml-3">
+          <div className="text-xs opacity-60">Show:</div>
+          <div className="flex justify-between py-1.5">
+            {toggleable_label && (
+              <div
+                className="inline-block px-2 border border-solid rounded-lg cursor-pointer border-black/20"
+                onClick={() => setShowToggleables(!showToggleables)}
+              >
+                <Switch checked={showToggleables} label="" onClick={() => {}} />
+                <span className="text-xs">{toggleable_label}</span>
+              </div>
+            )}
+
+            {toggleable_2_label && (
+              <div
+                className="inline-block px-2 pb-3 border border-solid rounded-lg cursor-pointer sm:ml-3 border-black/20"
+                onClick={() => setShowToggleable2(!showToggleable2)}
+              >
+                <Switch checked={showToggleable2} label="" onClick={() => {}} />
+                <span className="text-xs">{toggleable_2_label}</span>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
-
-      {toggleable_label && (
-        <div className="inline-block px-2 pb-3 border border-solid rounded-lg sm:ml-3 border-black/20">
-          <Switch
-            checked={showToggleables}
-            label={`Show ${toggleable_label}`}
-            labelClassName="!bottom-0 top-px !cursor-default ml-1.5"
-            onClick={() => setShowToggleables(!showToggleables)}
-          />
-        </div>
-      )}
-
-      {toggleable_2_label && (
-        <div className="inline-block px-2 pb-3 mt-1.5 border border-solid rounded-lg sm:ml-3 border-black/20">
-          <Switch
-            checked={showToggleable2}
-            label={`Show ${toggleable_2_label}`}
-            labelClassName="!bottom-0 top-px !cursor-default ml-1.5"
-            onClick={() => setShowToggleable2(!showToggleable2)}
-          />
-        </div>
-      )}
 
       <table className="sm:ml-3">
         {/* List one row for each candidate */}
@@ -100,7 +105,7 @@ export const BudgetItem = ({
             const current = state.plaintext[`${id}_${val}`] || ''
 
             return (
-              <>
+              <Fragment key={val}>
                 <tr key={name}>
                   <td className="relative pr-4 bottom-0.5 pt-6">
                     <Label {...{ name, sub }} />
@@ -168,7 +173,7 @@ export const BudgetItem = ({
                     </td>
                   </tr>
                 )}
-              </>
+              </Fragment>
             )
           })}
         </tbody>
