@@ -6,7 +6,7 @@ export const Switch = ({
 }: {
   checked: boolean
   label: string
-  labelClassName: string
+  labelClassName?: string
   onClick: () => void
 }) => {
   return (
