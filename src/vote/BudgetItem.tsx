@@ -149,7 +149,7 @@ export const BudgetItem = ({
                   <td className="relative ml-2">
                     <div className="absolute pt-1.5 text-xl left-2 opacity-50">$</div>
                     <input
-                      className="w-24 h-10 px-1 text-lg text-right bg-white border-2 border-gray-300 border-solid rounded appearance-none cursor-pointer hover:border-blue-600"
+                      className="w-20 h-10 px-1 text-lg text-right bg-white border-2 border-gray-300 border-solid rounded appearance-none cursor-pointer hover:border-blue-600"
                       value={current === 'BLANK' ? '' : current}
                       onChange={(event) => {
                         const update: Record<string, string> = {}
