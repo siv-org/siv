@@ -38,6 +38,7 @@ export const BudgetItem = ({
   }
   function scrollToCurrentTopItemInView(currentTopItem?: HTMLTableRowElement) {
     if (!currentTopItem) return
+    if (currentTopItem === itemRefs.current[0]) return
     const headerHeight = headerRef.current?.offsetHeight ?? 0
     // Ensure the component updates before adjusting the scroll
     setTimeout(() => {
