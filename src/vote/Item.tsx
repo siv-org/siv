@@ -103,11 +103,15 @@ export const Label = ({
 }) => (
   <div className="my-2">
     <Linkify
-      componentDecorator={(decoratedHref, decoratedText, key) => (
-        <a href={decoratedHref} key={key} rel="noreferrer" target="_blank">
-          {decoratedText}
-        </a>
-      )}
+      componentDecorator={(decoratedHref, decoratedText, key) =>
+        onBlockList(decoratedHref) ? (
+          decoratedText
+        ) : (
+          <a href={decoratedHref} key={key} rel="noreferrer" target="_blank">
+            {decoratedText}
+          </a>
+        )
+      }
     >
       <span className={`font-bold opacity-95 ${nameClassName}`}>
         {number && <span className="text-xs font-light opacity-50">{number}. </span>}
@@ -129,12 +133,16 @@ export const TitleDescriptionQuestion = ({
 }) => (
   <>
     <Linkify
-      componentDecorator={(decoratedHref, decoratedText, key) => (
-        <a href={decoratedHref} key={key} rel="noreferrer" target="_blank">
-          {/* Shorten to domain name only if possible */}
-          {(decoratedText.match(/\w*?\.(com|org)/) || [decoratedText])[0]}
-        </a>
-      )}
+      componentDecorator={(decoratedHref, decoratedText, key) =>
+        onBlockList(decoratedHref) ? (
+          decoratedText
+        ) : (
+          <a href={decoratedHref} key={key} rel="noreferrer" target="_blank">
+            {/* Shorten to domain name only if possible */}
+            {(decoratedText.match(/\w*?\.(com|org)/) || [decoratedText])[0]}
+          </a>
+        )
+      }
     >
       {title && <p className="title sm:px-[13px] py-[5px] mb-2.5">{title}</p>}
       {description && <p className="whitespace-pre-wrap sm:m-[13px] mb-0">{description}</p>}
@@ -149,3 +157,8 @@ export const TitleDescriptionQuestion = ({
     `}</style>
   </>
 )
+
+/** URLs that _shouldn't_ be Linkified */
+function onBlockList(url: string) {
+  return url.endsWith('.md')
+}
