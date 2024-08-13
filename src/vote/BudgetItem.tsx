@@ -1,4 +1,4 @@
-import { Dispatch, Fragment, useEffect, useState } from 'react'
+import { Dispatch, Fragment, useEffect, useRef, useState } from 'react'
 import { Switch } from 'src/admin/BallotDesign/Switch'
 
 import { Label, TitleDescriptionQuestion } from './Item'
@@ -24,6 +24,19 @@ export const BudgetItem = ({
   // console.log('state.plaintext:', state.plaintext)
   const [showToggleables, setShowToggleables] = useState(false)
   const [showToggleable2, setShowToggleable2] = useState(false)
+  const itemRefs = useRef<HTMLTableRowElement[]>([])
+  const headerRef = useRef<HTMLDivElement>(null)
+
+  /** Find the option currently visible */
+  const findCurrentTopItemInView = () => {
+    const headerHeight = headerRef.current?.offsetHeight ?? 0
+    const viewportTop = window.scrollY + headerHeight
+    console.log(window.scrollY, headerHeight, viewportTop)
+    return itemRefs.current.find((ref) => {
+      const rect = ref.getBoundingClientRect()
+      return rect.top + viewportTop >= viewportTop
+    })
+  }
 
   const sum = options.reduce((sum, { value }) => {
     const amount = state.plaintext[`${id}_${value}`]
@@ -57,7 +70,7 @@ export const BudgetItem = ({
     <>
       <TitleDescriptionQuestion {...{ description, question, title }} />
 
-      <div className="sticky top-0 z-10 bg-white">
+      <div className="sticky top-0 z-10 bg-white" ref={headerRef}>
         {/* Budget Available */}
         <div className="py-3 text-center">
           <div
@@ -86,7 +99,17 @@ export const BudgetItem = ({
             {toggleable_2_label && (
               <div
                 className="inline-block px-2 pb-3 border border-solid rounded-lg cursor-pointer sm:ml-3 border-black/20"
-                onClick={() => setShowToggleable2(!showToggleable2)}
+                onClick={() => {
+                  const currentTopItem = findCurrentTopItemInView()
+                  setShowToggleable2(!showToggleable2)
+                  const headerHeight = headerRef.current?.offsetHeight ?? 0
+                  // Ensure the component updates before adjusting the scroll
+                  setTimeout(() => {
+                    if (!currentTopItem) return
+                    const offsetTop = currentTopItem.getBoundingClientRect().top - headerHeight
+                    window.scrollTo({ top: window.scrollY + offsetTop })
+                  }, 0)
+                }}
               >
                 <Switch checked={showToggleable2} label="" onClick={() => {}} />
                 <span className="text-xs">{toggleable_2_label}</span>
@@ -99,14 +122,14 @@ export const BudgetItem = ({
       <table className="sm:ml-3">
         {/* List one row for each candidate */}
         <tbody>
-          {options.map(({ name, sub, toggleable, toggleable_2, value }) => {
+          {options.map(({ name, sub, toggleable, toggleable_2, value }, index) => {
             const val = value || name
 
             const current = state.plaintext[`${id}_${val}`] || ''
 
             return (
               <Fragment key={val}>
-                <tr key={name}>
+                <tr key={name} ref={(el: HTMLTableRowElement) => (itemRefs.current[index] = el)}>
                   <td className="relative pr-4 bottom-0.5 pt-6">
                     <Label {...{ name, sub }} />
                     {showToggleables && toggleable && (
