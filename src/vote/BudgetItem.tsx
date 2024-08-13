@@ -131,7 +131,7 @@ export const BudgetItem = ({
               <Fragment key={val}>
                 <tr key={name} ref={(el: HTMLTableRowElement) => (itemRefs.current[index] = el)}>
                   <td className="relative pr-4 bottom-0.5 pt-6">
-                    <Label {...{ name, sub }} />
+                    <Label {...{ name, sub }} number={index + 1} />
                     {showToggleables && toggleable && (
                       <div className="text-xs">
                         {toggleable_label ? toggleable_label + ': ' : ''}
