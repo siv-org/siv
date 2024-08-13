@@ -37,6 +37,15 @@ export const BudgetItem = ({
       return rect.top + viewportTop >= viewportTop
     })
   }
+  function scrollToCurrentTopItemInView(currentTopItem?: HTMLTableRowElement) {
+    if (!currentTopItem) return
+    const headerHeight = headerRef.current?.offsetHeight ?? 0
+    // Ensure the component updates before adjusting the scroll
+    setTimeout(() => {
+      const offsetTop = currentTopItem.getBoundingClientRect().top - headerHeight
+      window.scrollTo({ top: window.scrollY + offsetTop })
+    }, 0)
+  }
 
   const sum = options.reduce((sum, { value }) => {
     const amount = state.plaintext[`${id}_${value}`]
@@ -89,7 +98,11 @@ export const BudgetItem = ({
             {toggleable_label && (
               <div
                 className="inline-block px-2 border border-solid rounded-lg cursor-pointer border-black/20"
-                onClick={() => setShowToggleables(!showToggleables)}
+                onClick={() => {
+                  const currentTopItem = findCurrentTopItemInView()
+                  setShowToggleables(!showToggleables)
+                  scrollToCurrentTopItemInView(currentTopItem)
+                }}
               >
                 <Switch checked={showToggleables} label="" onClick={() => {}} />
                 <span className="text-xs">{toggleable_label}</span>
@@ -102,13 +115,7 @@ export const BudgetItem = ({
                 onClick={() => {
                   const currentTopItem = findCurrentTopItemInView()
                   setShowToggleable2(!showToggleable2)
-                  const headerHeight = headerRef.current?.offsetHeight ?? 0
-                  // Ensure the component updates before adjusting the scroll
-                  setTimeout(() => {
-                    if (!currentTopItem) return
-                    const offsetTop = currentTopItem.getBoundingClientRect().top - headerHeight
-                    window.scrollTo({ top: window.scrollY + offsetTop })
-                  }, 0)
+                  scrollToCurrentTopItemInView(currentTopItem)
                 }}
               >
                 <Switch checked={showToggleable2} label="" onClick={() => {}} />
