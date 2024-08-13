@@ -2,6 +2,7 @@ import { Dispatch, Fragment, useEffect, useRef, useState } from 'react'
 import { Switch } from 'src/admin/BallotDesign/Switch'
 
 import { Label, TitleDescriptionQuestion } from './Item'
+import { Linkify } from './Linkify'
 import { Item as ItemType } from './storeElectionInfo'
 import { State } from './vote-state'
 
@@ -186,18 +187,20 @@ export const BudgetItem = ({
                           </span>
                         </div>
                       )}
-                      {toggleable_2.like && (
-                        <div className="mt-1 whitespace-break-spaces">
-                          <div className="font-semibold">In favor:</div>
-                          {toggleable_2.like}
-                        </div>
-                      )}
-                      {toggleable_2.dislike && (
-                        <div className="mt-1 whitespace-break-spaces">
-                          <div className="font-semibold ">Against:</div>
-                          {toggleable_2.dislike}
-                        </div>
-                      )}
+                      <Linkify>
+                        {toggleable_2.like && (
+                          <div className="mt-1 whitespace-break-spaces">
+                            <div className="font-semibold">In favor:</div>
+                            {toggleable_2.like}
+                          </div>
+                        )}
+                        {toggleable_2.dislike && (
+                          <div className="mt-1 whitespace-break-spaces">
+                            <div className="font-semibold ">Against:</div>
+                            {toggleable_2.dislike}
+                          </div>
+                        )}
+                      </Linkify>
                     </td>
                   </tr>
                 )}

@@ -1,8 +1,8 @@
 import { FormControlLabel, Radio, RadioGroup, TextField } from '@mui/material'
 import { Dispatch, useState } from 'react'
-import Linkify from 'react-linkify'
 
 import { max_string_length } from './Ballot'
+import { Linkify } from './Linkify'
 import { Item as ItemType } from './storeElectionInfo'
 import { State } from './vote-state'
 
@@ -102,17 +102,7 @@ export const Label = ({
   sub?: string
 }) => (
   <div className="my-2">
-    <Linkify
-      componentDecorator={(decoratedHref, decoratedText, key) =>
-        onBlockList(decoratedHref) ? (
-          decoratedText
-        ) : (
-          <a href={decoratedHref} key={key} rel="noreferrer" target="_blank">
-            {decoratedText}
-          </a>
-        )
-      }
-    >
+    <Linkify>
       <span className={`font-bold opacity-95 ${nameClassName}`}>
         {number && <span className="text-xs font-light opacity-50">{number}. </span>}
         {name}
@@ -132,18 +122,7 @@ export const TitleDescriptionQuestion = ({
   title?: string
 }) => (
   <>
-    <Linkify
-      componentDecorator={(decoratedHref, decoratedText, key) =>
-        onBlockList(decoratedHref) ? (
-          decoratedText
-        ) : (
-          <a href={decoratedHref} key={key} rel="noreferrer" target="_blank">
-            {/* Shorten to domain name only if possible */}
-            {(decoratedText.match(/\w*?\.(com|org)/) || [decoratedText])[0]}
-          </a>
-        )
-      }
-    >
+    <Linkify>
       {title && <p className="title sm:px-[13px] py-[5px] mb-2.5">{title}</p>}
       {description && <p className="whitespace-pre-wrap sm:m-[13px] mb-0">{description}</p>}
       {question && <p className="whitespace-pre-wrap sm:m-[13px]">{question}</p>}
@@ -157,8 +136,3 @@ export const TitleDescriptionQuestion = ({
     `}</style>
   </>
 )
-
-/** URLs that _shouldn't_ be Linkified */
-function onBlockList(url: string) {
-  return url.endsWith('.md')
-}
