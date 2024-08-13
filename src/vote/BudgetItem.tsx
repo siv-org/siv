@@ -28,13 +28,11 @@ export const BudgetItem = ({
   const headerRef = useRef<HTMLDivElement>(null)
 
   /** Find the option currently visible */
-  const findCurrentTopItemInView = () => {
+  function findCurrentTopItemInView() {
     const headerHeight = headerRef.current?.offsetHeight ?? 0
-    const viewportTop = window.scrollY + headerHeight
-    console.log(window.scrollY, headerHeight, viewportTop)
     return itemRefs.current.find((ref) => {
       const rect = ref.getBoundingClientRect()
-      return rect.top + viewportTop >= viewportTop
+      return rect.top >= headerHeight
     })
   }
   function scrollToCurrentTopItemInView(currentTopItem?: HTMLTableRowElement) {
