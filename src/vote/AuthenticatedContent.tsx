@@ -4,6 +4,7 @@ import { GlobalCSS } from '../GlobalCSS'
 import { Ballot } from './Ballot'
 import { ESignScreen } from './esign/ESignScreen'
 import { Instructions } from './Instructions'
+import { PrivacyProtectorsStatements } from './PrivacyProtectorsStatements'
 import { storeElectionInfo } from './storeElectionInfo'
 import { SubmitButton } from './SubmitButton'
 import { SubmittedScreen } from './submitted/SubmittedScreen'
@@ -36,6 +37,7 @@ export const AuthenticatedContent = ({ auth, election_id }: { auth: string; elec
           <YourAuthToken {...{ auth, election_id }} />
           <div className="fade-in">
             <Instructions />
+            <PrivacyProtectorsStatements {...{ state }} />
             <Ballot {...{ dispatch, election_id, state }} />
             <SubmitButton {...{ auth, dispatch, election_id, state }} />
           </div>
