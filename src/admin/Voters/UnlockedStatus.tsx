@@ -25,7 +25,7 @@ export const UnlockedStatus = () => {
         <p>
           ✅ Successfully{' '}
           <Link href={`/election/${election_id}`}>
-            <a className="status" target="_blank">
+            <a className="!font-medium text-black" target="_blank">
               unlocked {unlocked_votes.length}
             </a>
           </Link>{' '}
@@ -74,11 +74,6 @@ export const UnlockedStatus = () => {
         a {
           font-weight: 600;
           cursor: pointer;
-        }
-
-        a.status {
-          color: black;
-          font-weight: 500;
         }
 
         b {
