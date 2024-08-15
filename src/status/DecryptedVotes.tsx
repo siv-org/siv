@@ -1,7 +1,7 @@
 import { orderBy } from 'lodash-es'
 import { generateColumnNames } from 'src/vote/generateColumnNames'
 
-import { BudgetEntry, findBudgetQuestion, sumBudgetVotes } from './tallyBudgetLogic'
+import { BudgetEntry, BudgetsAveraged, findBudgetQuestion, sumBudgetVotes } from './tallyBudgetLogic'
 import { unTruncateSelection } from './un-truncate-selection'
 import { useDecryptedVotes } from './use-decrypted-votes'
 import { useElectionInfo } from './use-election-info'
@@ -36,6 +36,7 @@ export const DecryptedVotes = ({ proofsPage }: { proofsPage?: boolean }): JSX.El
           </tr>
         </thead>
         <tbody>
+          <BudgetsAveraged {...{ ballot_design, budgetSums, columns, sorted_votes }} />
           {sorted_votes.map((vote, voteIndex) => (
             <tr key={voteIndex}>
               <td>{voteIndex + 1}.</td>

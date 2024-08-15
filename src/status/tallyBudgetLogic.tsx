@@ -43,6 +43,28 @@ export function sumBudgetVotes(votes: Record<string, string>[], ballot_design: I
   })
 }
 
+function calculateFactor(
+  ballot_design: Item[],
+  budgetSums: number[][],
+  col: string,
+  original: string,
+  voteIndex: number,
+) {
+  // Find the right question
+  const question = findBudgetQuestion(ballot_design, col)
+  if (!question) return {}
+  const questionIndex = ballot_design.findIndex(({ id }) => id === question?.id)
+
+  // Find the precalculated total budget allocated for this row
+  const total = budgetSums[questionIndex][voteIndex]
+
+  // Calculate factor to display normalized
+  const factor = (question.budget_available || 0) / total
+  const normalized = Number(original) * factor
+
+  return { factor, normalized, question, total }
+}
+
 export function BudgetEntry({
   ballot_design,
   budgetSums,
@@ -68,20 +90,14 @@ export function BudgetEntry({
       </Tooltip>
     )
 
-  // Find the right question
-  const question = findBudgetQuestion(ballot_design, col)
-  if (!question) return null
-  const questionIndex = ballot_design.findIndex(({ id }) => id === question?.id)
-
-  // Find the precalculated total budget allocated for this row
-  const total = budgetSums[questionIndex][voteIndex]
+  // Calculate factor
+  const { factor, normalized, question, total } = calculateFactor(ballot_design, budgetSums, col, original, voteIndex)
 
   // If total === budget_allocated, return original
   if (total === Number(original)) return <span className="text-green-800">${original}</span>
 
-  // Otherwise, we'll display normalized
-  const factor = (question.budget_available || 0) / total
-  const normalized = Number(original) * factor
+  if (!factor) return null
+
   return (
     <Tooltip
       tooltip={
@@ -99,5 +115,54 @@ export function BudgetEntry({
         </span>
       </div>
     </Tooltip>
+  )
+}
+
+export function BudgetsAveraged({
+  ballot_design,
+  budgetSums,
+  columns,
+  sorted_votes,
+}: {
+  ballot_design: Item[]
+  budgetSums: number[][]
+  columns: string[]
+  sorted_votes: Record<string, string>[]
+}) {
+  // If no budget questions, show nothing
+  if (!budgetSums.some((votes) => votes.length > 0)) return null
+
+  // Calculate normalized average for each column
+  const averages = columns.map((col) => {
+    let sum = 0
+    sorted_votes.forEach((vote, voteIndex) => {
+      if (!vote[col]) return
+      if (invalidBudgetValues(vote[col])) return
+
+      const original = vote[col]
+      // Get normalized
+      const { normalized } = calculateFactor(ballot_design, budgetSums, col, original, voteIndex)
+
+      sum += normalized || 0
+    })
+
+    sum /= sorted_votes.length
+    return sum
+  })
+
+  return (
+    <tr className="border-0 border-b-2 border-solid border-blue-900/20">
+      <td className="italic opacity-70">Avg</td>
+      <td></td>
+      {columns.map((col, colIndex) => (
+        <td className="text-center" key={col}>
+          {averages[colIndex] === 0 ? (
+            <span className="opacity-30">0</span>
+          ) : (
+            <span>${Math.floor(averages[colIndex])}</span>
+          )}
+        </td>
+      ))}
+    </tr>
   )
 }
