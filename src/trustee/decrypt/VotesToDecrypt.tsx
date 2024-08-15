@@ -180,12 +180,12 @@ const PartialsTable = ({
   validated_proofs: Validations_Table
 }): JSX.Element => {
   const trustees_validations = validated_proofs[email]
-  if (!trustees_validations) return <></>
   const columns = sortColumnsForTrustees(Object.keys(partials))
   const { TruncationToggle, rows_to_show } = useTruncatedTable({
     num_cols: columns.length,
     num_rows: Object.values(partials)[0].length,
   })
+  if (!trustees_validations) return <></>
 
   return (
     <>
