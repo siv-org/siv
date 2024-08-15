@@ -16,7 +16,13 @@ export const UnlockedStatus = () => {
   const more_to_unlock = num_voted > unlocked_votes.length
 
   return (
-    <div className={more_to_unlock || isUnlockBlocked ? 'warning' : ''}>
+    <div
+      className={`border border-solid rounded-md p-2.5 mb-3.5 ${
+        more_to_unlock || isUnlockBlocked
+          ? '!border-[rgba(175,157,0,0.66)] !bg-[rgba(237,177,27,0.07)]'
+          : 'border-[rgba(26,89,0,0.66)] bg-[rgba(0,128,0,0.07)]'
+      }`}
+    >
       {isUnlockBlocked ? (
         <p>
           ⚠️ Unlocking: Waiting on Observer <i> {isUnlockBlocked}</i>
@@ -49,20 +55,6 @@ export const UnlockedStatus = () => {
         </p>
       )}
       <style jsx>{`
-        div {
-          border: 1px solid rgba(26, 89, 0, 0.66);
-          background: rgba(0, 128, 0, 0.07);
-          border-radius: 5px;
-
-          padding: 10px;
-          margin-bottom: 15px;
-        }
-
-        div.warning {
-          border-color: rgba(175, 157, 0, 0.66);
-          background: rgba(237, 177, 27, 0.07);
-        }
-
         p {
           margin: 0;
         }
