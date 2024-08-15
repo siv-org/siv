@@ -93,6 +93,8 @@ export function BudgetEntry({
   // Calculate factor
   const { factor, normalized, question, total } = calculateFactor(ballot_design, budgetSums, col, original, voteIndex)
 
+  if (normalized === 0) return <span className="opacity-30">{normalized}</span>
+
   // If total === budget_allocated, return original
   if (normalized === Number(original)) return <span className="text-green-800">${original}</span>
 
