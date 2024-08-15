@@ -46,7 +46,7 @@ export const UnlockedStatus = () => {
               Notify voters?
             </a>
           ) : (
-            <b>Voters notified.</b>
+            <b className="font-semibold">Voters notified.</b>
           )}
         </p>
       ) : (
@@ -62,10 +62,6 @@ export const UnlockedStatus = () => {
         a {
           font-weight: 600;
           cursor: pointer;
-        }
-
-        b {
-          font-weight: 600;
         }
       `}</style>
     </div>
