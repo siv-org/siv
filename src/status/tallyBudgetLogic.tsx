@@ -157,9 +157,18 @@ export function BudgetsAveraged({
       {columns.map((col, colIndex) => (
         <td className="text-center" key={col}>
           {averages[colIndex] === 0 ? (
-            <span className="opacity-30">0</span>
+            <span className="opacity-20">0</span>
           ) : (
-            <span>${Math.floor(averages[colIndex])}</span>
+            <Tooltip
+              tooltip={
+                <span>
+                  Mean of <span className="font-semibold text-green-800">normalized</span> amounts below{' '}
+                  <span className="opacity-50">(blanks = 0)</span>
+                </span>
+              }
+            >
+              <span className="font-semibold text-green-800">${Math.floor(averages[colIndex])}</span>
+            </Tooltip>
           )}
         </td>
       ))}
