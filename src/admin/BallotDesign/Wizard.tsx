@@ -29,7 +29,10 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
       }`}
     >
       {json?.map(
-        ({ id, max_score, min_score, multiple_votes_allowed, options, title, write_in_allowed }, questionIndex) => (
+        (
+          { budget_available, id, max_score, min_score, multiple_votes_allowed, options, title, write_in_allowed },
+          questionIndex,
+        ) => (
           // Each question
           <div className="p-2.5 bg-white mt-4 first:mt-0" key={questionIndex}>
             {/* Question ID Label */}
@@ -113,6 +116,14 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
                       delete new_json[questionIndex].max_score
                     }
 
+                    // Handling 'budget'
+                    if (new_json[questionIndex].type == 'budget') {
+                      new_json[questionIndex].budget_available = 50
+                    } else {
+                      // Unsupported, remove
+                      delete new_json[questionIndex].budget_available
+                    }
+
                     saveDesign(new_json)
                   }}
                 >
@@ -121,6 +132,7 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
                   <option value="approval">Approval — Vote for All That You Approve Of</option>
                   <option value="multiple-votes-allowed">Multiple Votes Allowed — Choose Up to X</option>
                   <option value="score">Score — Scale from Low to High</option>
+                  <option value="budget">Budget — Allocate a Fixed Amount of Money</option>
                 </select>
               </div>
             </div>
@@ -168,6 +180,26 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
                     saveDesign(new_json)
                   }}
                 />
+              </div>
+            )}
+
+            {json[questionIndex].type == 'budget' && (
+              <div className="mt-1">
+                <label className="text-[10px] italic">Total available?</label>
+                <div className="relative inline">
+                  <div className="absolute text-lg opacity-50 -top-[3px] left-3">$</div>
+                  <input
+                    className="w-24 p-1 m-1 text-sm text-right"
+                    type="number"
+                    value={budget_available}
+                    onChange={({ target }) => {
+                      const update = +target.value
+                      const new_json = [...json]
+                      new_json[questionIndex].budget_available = update
+                      saveDesign(new_json)
+                    }}
+                  />
+                </div>
               </div>
             )}
 

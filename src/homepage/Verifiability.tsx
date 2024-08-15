@@ -1,4 +1,4 @@
-import Image from 'next/image'
+import Image, { StaticImageData } from 'next/image'
 import verifiability1 from 'public/home3/verifiability-1.png'
 import verifiability2 from 'public/home3/verifiability-2.png'
 
@@ -12,8 +12,8 @@ export const Verifiability = () => (
       <br /> own submission is counted correctly, and recount all results themselves.
     </p>
     <div className="verifiability-container">
-      <Screenshot n={1} />
-      <Screenshot n={2} />
+      <Screenshot image={verifiability1} label="1 - After Vote Submission" />
+      <Screenshot image={verifiability2} label="2 - End of Election" />
     </div>
     <style jsx>{`
       section {
@@ -67,12 +67,10 @@ export const Verifiability = () => (
   </section>
 )
 
-const images = { 1: verifiability1, 2: verifiability2 }
-
-const Screenshot = ({ n }: { n: 1 | 2 }) => (
+const Screenshot = ({ image, label }: { image: StaticImageData; label: string }) => (
   <div>
-    <span>{n}</span>
-    <Image height={516} layout="responsive" placeholder="blur" src={images[n]} width={992} />
+    <span className="px-2">{label}</span>
+    <Image height={516} layout="responsive" placeholder="blur" src={image} width={992} />
     <style jsx>{`
       div {
         position: relative;
@@ -89,7 +87,6 @@ const Screenshot = ({ n }: { n: 1 | 2 }) => (
         border-radius: 10vw;
 
         border: 0.25vw solid ${darkBlue};
-        width: 2.8vw;
         height: 2.8vw;
         z-index: 10;
         text-align: center;
@@ -107,9 +104,8 @@ const Screenshot = ({ n }: { n: 1 | 2 }) => (
         }
 
         span {
-          font-size: 4vw;
-          width: 6vw;
-          height: 6vw;
+          font-size: 3.5vw;
+          height: 5.5vw;
           top: -3vw;
           left: -3vw;
         }

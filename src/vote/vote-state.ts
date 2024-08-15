@@ -18,6 +18,7 @@ export type State = {
   esignature_requested?: boolean
   last_modified_at?: Date
   plaintext: Map
+  privacy_protectors_statements?: string
   public_key?: string
   randomizer: Map
   submission_confirmation?: string

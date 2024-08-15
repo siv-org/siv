@@ -13,6 +13,7 @@ export type ElectionInfo = {
   last_decrypted_at?: Date
   observers?: string[]
   p?: string
+  privacy_protectors_statements?: string
   skip_shuffle_proofs?: boolean
   submission_confirmation?: string
   threshold_public_key?: string
@@ -52,6 +53,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     g,
     last_decrypted_at,
     p,
+    privacy_protectors_statements,
     submission_confirmation,
     threshold_public_key,
     voter_applications_allowed,
@@ -68,6 +70,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     last_decrypted_at: last_decrypted_at ? new Date(last_decrypted_at._seconds * 1000) : undefined,
     observers,
     p,
+    privacy_protectors_statements,
     submission_confirmation,
     threshold_public_key,
     voter_applications_allowed,

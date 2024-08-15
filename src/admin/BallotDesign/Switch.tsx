@@ -1,4 +1,14 @@
-export const Switch = ({ checked, label, onClick }: { checked: boolean; label: string; onClick: () => void }) => {
+export const Switch = ({
+  checked,
+  label,
+  labelClassName,
+  onClick,
+}: {
+  checked: boolean
+  label: string
+  labelClassName?: string
+  onClick: () => void
+}) => {
   return (
     <span {...{ onClick }}>
       <input
@@ -9,7 +19,11 @@ export const Switch = ({ checked, label, onClick }: { checked: boolean; label: s
         type="checkbox"
         {...{ checked }}
       />
-      <label className="pl-[0.15rem] relative bottom-0.5 cursor-pointer" htmlFor={`switch-${label}`} {...{ onClick }}>
+      <label
+        className={`pl-[0.15rem] relative bottom-0.5 cursor-pointer ${labelClassName}`}
+        htmlFor={`switch-${label}`}
+        {...{ onClick }}
+      >
         {label}
       </label>
     </span>
