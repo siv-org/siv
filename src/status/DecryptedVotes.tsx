@@ -16,7 +16,7 @@ export const DecryptedVotes = ({ proofsPage }: { proofsPage?: boolean }): JSX.El
   const { columns } = generateColumnNames({ ballot_design })
 
   return (
-    <div>
+    <div className="bg-white p-4 rounded-lg shadow-[0_2px_2px_hsla(0,0%,50%,0.333),0_4px_4px_hsla(0,0%,50%,0.333),0_6px_6px_hsla(0,0%,50%,0.333)]">
       {!proofsPage && (
         <>
           <h3>Decrypted Votes</h3> <p>Anonymized for vote secrecy.</p>
@@ -50,14 +50,6 @@ export const DecryptedVotes = ({ proofsPage }: { proofsPage?: boolean }): JSX.El
         </tbody>
       </table>
       <style jsx>{`
-        div {
-          background: #fff;
-          padding: 1rem;
-          border-radius: 8px;
-          box-shadow: 0px 2px 2px hsl(0 0% 50% / 0.333), 0px 4px 4px hsl(0 0% 50% / 0.333),
-            0px 6px 6px hsl(0 0% 50% / 0.333);
-        }
-
         h3 {
           margin: 0 0 5px;
         }
