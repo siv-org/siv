@@ -38,6 +38,9 @@ export async function validateAuthToken(
   // Is election_id in DB?
   if (!(await election).exists) return fail('Unknown Election ID. It may have been deleted.')
 
+  if ((await election).data()?.stop_accepting_votes)
+    return fail('The election administrator has stopped accepting new votes.')
+
   // Is there a voter w/ this Auth Token?
   const [voter] = (await voters).docs
   if (!voter) {
