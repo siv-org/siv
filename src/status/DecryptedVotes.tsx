@@ -19,7 +19,8 @@ export const DecryptedVotes = ({ proofsPage }: { proofsPage?: boolean }): JSX.El
     <div className="bg-white p-4 rounded-lg shadow-[0_2px_2px_hsla(0,0%,50%,0.333),0_4px_4px_hsla(0,0%,50%,0.333),0_6px_6px_hsla(0,0%,50%,0.333)]">
       {!proofsPage && (
         <>
-          <h3 className="mt-0 mb-1.5">Decrypted Votes</h3> <p>Anonymized for vote secrecy.</p>
+          <h3 className="mt-0 mb-1.5">Decrypted Votes</h3>
+          <p className="mt-0 text-[13px] italic opacity-70">Anonymized for vote secrecy.</p>
         </>
       )}
       <table>
@@ -50,13 +51,6 @@ export const DecryptedVotes = ({ proofsPage }: { proofsPage?: boolean }): JSX.El
         </tbody>
       </table>
       <style jsx>{`
-        p {
-          margin-top: 0px;
-          font-size: 13px;
-          font-style: italic;
-          opacity: 0.7;
-        }
-
         table {
           border-collapse: collapse;
           display: block;
