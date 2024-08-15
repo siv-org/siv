@@ -174,7 +174,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     // Store admins shuffled lists
     console.log("starting to write admin's shuffle to db\n\n\n\n\n")
-    await Promise.all([electionDoc.update({ skip_shuffle_proofs }), adminDoc.update({ preshuffled: split, shuffled })])
+    await Promise.all([
+      electionDoc.update({ skip_shuffle_proofs: !!skip_shuffle_proofs }),
+      adminDoc.update({ preshuffled: split, shuffled }),
+    ])
     console.log("succeeded to write admin's shuffle.")
     try {
       await pusher.trigger(`keygen-${election_id}`, 'update', {
