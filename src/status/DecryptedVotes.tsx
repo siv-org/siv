@@ -1,5 +1,7 @@
 import { orderBy } from 'lodash-es'
+import { Tooltip } from 'src/admin/Voters/Tooltip'
 import { generateColumnNames } from 'src/vote/generateColumnNames'
+import { Item } from 'src/vote/storeElectionInfo'
 
 import { unTruncateSelection } from './un-truncate-selection'
 import { useDecryptedVotes } from './use-decrypted-votes'
@@ -40,7 +42,7 @@ export const DecryptedVotes = ({ proofsPage }: { proofsPage?: boolean }): JSX.El
               <td>{vote.tracking?.padStart(14, '0')}</td>
               {columns.map((c) => (
                 <td className="text-center" key={c}>
-                  {unTruncateSelection(vote[c], ballot_design, c)}
+                  {isTypeBudget(ballot_design, c) ? validate(vote[c]) : unTruncateSelection(vote[c], ballot_design, c)}
 
                   {/* Fix centering for negative Scores */}
                   {vote[c]?.match(/^-\d$/) && <span className="inline-block w-1.5" />}
@@ -52,4 +54,33 @@ export const DecryptedVotes = ({ proofsPage }: { proofsPage?: boolean }): JSX.El
       </table>
     </div>
   )
+}
+
+function isTypeBudget(ballot_design: Item[], col: string) {
+  // Check for matching ballot types = 'budget'
+  const possibleItem = ballot_design.find(({ id = 'vote', type }) => type === 'budget' && col.startsWith(id))
+  if (!possibleItem) return false
+
+  // If found, check if col is in options
+  const matchingCol = possibleItem.options.find(({ name, value }) => col.endsWith(value || name))
+
+  return !!matchingCol
+}
+
+function validate(vote: string) {
+  if (!vote) return vote
+  const errorStyling = `text-red-500 border-0 border-b border-red-500 border-dashed opacity-70`
+  let error: string = ''
+  if (Number(vote) < 0) error = 'Negative amounts not allowed'
+  if (Number.isNaN(Number(vote))) error = 'Not a number'
+  if (Number(vote) === Infinity) error = "Can't normalize Infinity"
+
+  if (error)
+    return (
+      <Tooltip tooltip={error}>
+        <span className={errorStyling}>{vote}</span>
+      </Tooltip>
+    )
+
+  return '$' + vote
 }
