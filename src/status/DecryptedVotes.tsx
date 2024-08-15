@@ -70,10 +70,7 @@ function isTypeBudget(ballot_design: Item[], col: string) {
 function validate(vote: string) {
   if (!vote) return vote
   const errorStyling = `text-red-500 border-0 border-b border-red-500 border-dashed opacity-70`
-  let error: string = ''
-  if (Number(vote) < 0) error = 'Negative amounts not allowed'
-  if (Number.isNaN(Number(vote))) error = 'Not a number'
-  if (Number(vote) === Infinity) error = "Can't normalize Infinity"
+  const error = invalidBudgetValues(vote)
 
   if (error)
     return (
@@ -83,4 +80,11 @@ function validate(vote: string) {
     )
 
   return '$' + vote
+}
+
+function invalidBudgetValues(vote: string): string {
+  if (Number(vote) < 0) return 'Negative amounts not allowed'
+  if (Number.isNaN(Number(vote))) return 'Not a number'
+  if (Number(vote) === Infinity) return "Can't normalize Infinity"
+  return ''
 }
