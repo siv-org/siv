@@ -51,49 +51,59 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // If all have now shuffled, admin can partially decrypt
   const have_all_shuffled = trustees.every((trustee) => 'shuffled' in trustee)
-  // But only if admin didn't already upload partials
-  const admin_already_uploaded_partials = (await adminPartials).exists
-  if (have_all_shuffled && !admin_already_uploaded_partials) {
-    // Confirm that every column's shuffle proof is valid
-    const { shuffled } = trustees[parameters.t - 1]
+  if (have_all_shuffled) {
+    // Did admin upload enough partials?
+    const last_shuffled = trustees[trustees.length - 1].shuffled as Shuffled
+    const columns = Object.keys(last_shuffled)
+    const last_shuffled_length = last_shuffled[columns[0]].shuffled.length
+    const admin_partials_uploaded = (await adminPartials).data()?.partials?.[columns[0]].length
+    const admin_uploaded_all_partials = admin_partials_uploaded >= last_shuffled_length
+    console.log({ admin_partials_uploaded, admin_uploaded_all_partials, last_shuffled_length })
 
-    // const checks = await bluebird.map(Object.keys(shuffled), (column) => {
-    const checks = await bluebird.map(Object.keys(shuffled), () => {
-      return true
-      // const { shuffled: prevShuffle } = destringifyShuffle(trustees[trustee.index - 1].shuffled[column])
-      // const { proof, shuffled: currShuffle } = destringifyShuffle(shuffled[column])
+    if (!admin_uploaded_all_partials) {
+      // Confirm that every column's shuffle proof is valid
+      const { shuffled } = trustees[parameters.t - 1]
 
-      // return verify_shuffle_proof(rename_to_c1_and_2(prevShuffle), rename_to_c1_and_2(currShuffle), proof)
-    })
+      // const checks = await bluebird.map(Object.keys(shuffled), (column) => {
+      const checks = await bluebird.map(Object.keys(shuffled), () => {
+        return true
+        // const { shuffled: prevShuffle } = destringifyShuffle(trustees[trustee.index - 1].shuffled[column])
+        // const { proof, shuffled: currShuffle } = destringifyShuffle(shuffled[column])
 
-    if (!checks.length || !checks.every((x) => x)) {
-      console.log("Final shuffle proof didn't fully pass")
-    } else {
-      console.log('Beginning to generate partials')
+        // return verify_shuffle_proof(rename_to_c1_and_2(prevShuffle), rename_to_c1_and_2(currShuffle), proof)
+      })
 
-      // Partially decrypt each item in every list
-      const partials = await bluebird.reduce(
-        Object.keys(shuffled),
-        (acc: Record<string, Partial[]>, column) =>
-          bluebird.props({
-            ...acc,
-            [column]: bluebird.map((shuffled as Shuffled)[column].shuffled, async ({ lock }) => ({
-              partial: partial_decrypt(RP.fromHex(lock), BigInt(private_keyshare)).toHex(),
-              proof: stringifyPartial(
-                await generate_partial_decryption_proof(RP.fromHex(lock), BigInt(private_keyshare)),
-              ),
-            })),
-          }),
-        {},
-      )
+      if (!checks.length || !checks.every((x) => x)) {
+        console.log("Final shuffle proof didn't fully pass")
+      } else {
+        console.log('Beginning to generate partials')
 
-      // Store partials
-      await adminDoc.collection('post-election-data').doc('partials').set({ partials }, { merge: true })
-      // console.log('Updated admin partials:', partials)
-      console.log('Updated admin partials')
+        // Partially decrypt each item in every list
+        const partials = await bluebird.reduce(
+          Object.keys(shuffled),
+          (acc: Record<string, Partial[]>, column) =>
+            bluebird.props({
+              ...acc,
+              [column]: bluebird.map((shuffled as Shuffled)[column].shuffled, async ({ lock }) => ({
+                partial: partial_decrypt(RP.fromHex(lock), BigInt(private_keyshare)).toHex(),
+                proof: stringifyPartial(
+                  await generate_partial_decryption_proof(RP.fromHex(lock), BigInt(private_keyshare)),
+                ),
+              })),
+            }),
+          {},
+        )
 
-      // Notify all participants there's been an update
-      promises.push(pusher.trigger(`keygen-${election_id}`, 'update', { [ADMIN_EMAIL]: { partials: partials.length } }))
+        // Store partials
+        await adminDoc.collection('post-election-data').doc('partials').set({ partials }, { merge: true })
+        // console.log('Updated admin partials:', partials)
+        console.log('Updated admin partials')
+
+        // Notify all participants there's been an update
+        promises.push(
+          pusher.trigger(`keygen-${election_id}`, 'update', { [ADMIN_EMAIL]: { partials: partials.length } }),
+        )
+      }
     }
   }
 
@@ -188,7 +198,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   console.log('/update-admin Done.')
 
-  return res
-    .status(201)
-    .json({ _message: `Ran /update-admin`, admin_already_uploaded_partials, all_have_partials, have_all_shuffled })
+  return res.status(201).json({ _message: `Ran /update-admin`, all_have_partials, have_all_shuffled })
 }
