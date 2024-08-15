@@ -31,13 +31,14 @@ export const UnlockedStatus = () => {
         <p>
           ✅ Successfully{' '}
           <Link href={`/election/${election_id}`}>
-            <a className="!font-medium text-black" target="_blank">
+            <a className="font-medium text-black cursor-pointer" target="_blank">
               unlocked {unlocked_votes.length}
             </a>
           </Link>{' '}
           votes.{' '}
           {notified_unlocked !== unlocked_votes.length ? (
             <a
+              className="font-semibold cursor-pointer"
               onClick={async () => {
                 await api(`election/${election_id}/admin/notify-unlocked`)
                 revalidate(election_id)
@@ -57,11 +58,6 @@ export const UnlockedStatus = () => {
       <style jsx>{`
         p {
           margin: 0;
-        }
-
-        a {
-          font-weight: 600;
-          cursor: pointer;
         }
       `}</style>
     </div>
