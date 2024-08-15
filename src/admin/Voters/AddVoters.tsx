@@ -6,6 +6,7 @@ import { revalidate, useStored } from '../useStored'
 import { AddVoterTextarea } from './AddVotersTextarea'
 import { ExistingVoters } from './ExistingVoters'
 import { RequestEsignatures } from './RequestEsignatures'
+import { StopAcceptingVotes } from './StopAcceptingVotes'
 import { ToggleShareableLink } from './ToggleShareableLink'
 
 export const AddVoters = () => {
@@ -40,6 +41,7 @@ export const AddVoters = () => {
 
       <ToggleShareableLink />
       <RequestEsignatures />
+      <StopAcceptingVotes />
       <ExistingVoters />
     </div>
   )

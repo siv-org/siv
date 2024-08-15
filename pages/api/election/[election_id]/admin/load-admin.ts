@@ -48,6 +48,7 @@ export type AdminData = {
   esignature_requested?: boolean
   notified_unlocked?: number
   pending_votes?: PendingVote[]
+  stop_accepting_votes?: boolean
   threshold_public_key?: string
   trustees?: Trustee[]
   voter_applications_allowed?: boolean
@@ -88,6 +89,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     election_title,
     esignature_requested,
     notified_unlocked,
+    stop_accepting_votes,
     threshold_public_key,
     voter_applications_allowed,
   } = {
@@ -99,6 +101,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     election_title?: string
     esignature_requested?: boolean
     notified_unlocked?: number
+    stop_accepting_votes?: boolean
     threshold_public_key?: string
     voter_applications_allowed?: boolean
   }
@@ -221,6 +224,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     esignature_requested,
     notified_unlocked,
     pending_votes,
+    stop_accepting_votes,
     threshold_public_key,
     trustees,
     voter_applications_allowed,

@@ -26,7 +26,7 @@ export const RequestEsignatures = () => {
   }
 
   return (
-    <div className="mb-8">
+    <div>
       <label className="cursor-pointer" onClick={toggleESignature}>
         <span className="mr-1.5 relative top-0.5">
           <Image height={(218 / 700) * 70} layout="fixed" src={esignatureIcon} width={70} />
