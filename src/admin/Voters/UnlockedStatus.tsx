@@ -25,7 +25,7 @@ export const UnlockedStatus = () => {
     >
       {isUnlockBlocked ? (
         <p>
-          ⚠️ Unlocking: Waiting on Observer <i> {isUnlockBlocked}</i>
+          ⚠️ Unlocking: Waiting on Observer <i className="font-medium"> {isUnlockBlocked}</i>
         </p>
       ) : !more_to_unlock ? (
         <p>
@@ -57,10 +57,6 @@ export const UnlockedStatus = () => {
       <style jsx>{`
         p {
           margin: 0;
-        }
-
-        i {
-          font-weight: 500;
         }
 
         a {
