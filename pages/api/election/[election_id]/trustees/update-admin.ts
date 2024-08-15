@@ -100,7 +100,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // If all have provided partials, admin can now combine partials
   const trusteePartials = await Promise.all(loadTrusteePartials)
   // console.log({ trusteePartials })
-  const all_have_partials = trusteePartials.every((t) => !!t)
+  type TrusteeWithPartial = { partials: { [col: string]: Partial[] } }
+  const hasPartial = (trustee: FirebaseFirestore.DocumentData | undefined): trustee is TrusteeWithPartial =>
+    !!trustee?.partials
+
+  const all_have_partials = trusteePartials.every(hasPartial)
   console.log({ all_have_partials })
 
   if (all_have_partials) {
