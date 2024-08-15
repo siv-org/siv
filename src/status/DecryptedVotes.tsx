@@ -25,7 +25,7 @@ export const DecryptedVotes = ({ proofsPage }: { proofsPage?: boolean }): JSX.El
       )}
       <table className="block overflow-auto border-collapse [&_tr>*]:[border:1px_solid_#ccc] [&_tr>*]:px-2.5 [&_tr>*]:py-[3px]">
         <thead>
-          <tr>
+          <tr className="text-[11px]">
             <th></th>
             <th style={{ backgroundColor: 'rgba(10, 232, 10, 0.24)' }}>verification #</th>
             {columns.map((c) => (
@@ -50,11 +50,6 @@ export const DecryptedVotes = ({ proofsPage }: { proofsPage?: boolean }): JSX.El
           ))}
         </tbody>
       </table>
-      <style jsx>{`
-        th {
-          font-size: 11px;
-        }
-      `}</style>
     </div>
   )
 }
