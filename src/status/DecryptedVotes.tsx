@@ -23,7 +23,7 @@ export const DecryptedVotes = ({ proofsPage }: { proofsPage?: boolean }): JSX.El
           <p className="mt-0 text-[13px] italic opacity-70">Anonymized for vote secrecy.</p>
         </>
       )}
-      <table>
+      <table className="block overflow-auto border-collapse [&_tr>*]:[border:1px_solid_#ccc] [&_tr>*]:px-2.5 [&_tr>*]:py-[3px]">
         <thead>
           <tr>
             <th></th>
@@ -51,19 +51,6 @@ export const DecryptedVotes = ({ proofsPage }: { proofsPage?: boolean }): JSX.El
         </tbody>
       </table>
       <style jsx>{`
-        table {
-          border-collapse: collapse;
-          display: block;
-          overflow: auto;
-        }
-
-        th,
-        td {
-          border: 1px solid #ccc;
-          padding: 3px 10px;
-          margin: 0;
-        }
-
         th {
           font-size: 11px;
         }
