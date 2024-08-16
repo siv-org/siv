@@ -17,7 +17,7 @@ export const UnlockedStatus = () => {
 
   return (
     <div
-      className={`border border-solid rounded-md p-2.5 mb-3.5 ${
+      className={`border border-solid rounded-md p-2.5 mr-4 mb-3.5 ${
         more_to_unlock || isUnlockBlocked
           ? '!border-[rgba(175,157,0,0.66)] !bg-[rgba(237,177,27,0.07)]'
           : 'border-[rgba(26,89,0,0.66)] bg-[rgba(0,128,0,0.07)]'
