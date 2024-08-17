@@ -13,6 +13,7 @@ export function findBudgetQuestion(ballot_design: Item[], col: string) {
   if (matchingCol) return possibleItem
 }
 
+/** Validate a submission is a valid type=budget response */
 function invalidBudgetValues(vote: string): string {
   if (Number(vote) < 0) return 'Negative amounts not allowed'
   if (Number.isNaN(Number(vote))) return 'Not a number'
@@ -20,6 +21,7 @@ function invalidBudgetValues(vote: string): string {
   return ''
 }
 
+/** Sum up the total for a particular row (all the columns, from one person), to see if it matches the budget_available */
 export function sumBudgetVotes(votes: Record<string, string>[], ballot_design: Item[]) {
   // For all budget questions
   return ballot_design.map(({ id = 'vote', options, type }) => {
@@ -43,6 +45,7 @@ export function sumBudgetVotes(votes: Record<string, string>[], ballot_design: I
   })
 }
 
+/** If their submitted total went over or under the budget_available, calculate a normalization factor */
 function calculateFactor(
   ballot_design: Item[],
   budgetSums: number[][],
@@ -65,6 +68,7 @@ function calculateFactor(
   return { factor, normalized, question, total }
 }
 
+/** Display a single type=budget cell */
 export function BudgetEntry({
   ballot_design,
   budgetSums,
@@ -120,6 +124,7 @@ export function BudgetEntry({
   )
 }
 
+/** Calculate & render the top row for type=budget questions, averaging all the normalized values in a column */
 export function BudgetsAveraged({
   ballot_design,
   budgetSums,
