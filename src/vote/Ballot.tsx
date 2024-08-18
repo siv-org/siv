@@ -6,6 +6,7 @@ import { build_permutation_array } from 'src/crypto/shuffle'
 
 import { Paper } from '../protocol/Paper'
 import { BallotPreview } from './BallotPreview'
+import { BudgetItem } from './BudgetItem'
 import { Item } from './Item'
 import { MultiVoteItem } from './MultiVoteItem'
 import { RankedChoiceItem } from './RankedChoiceItem'
@@ -31,7 +32,7 @@ export const Ballot = ({
 
   return (
     <NoSsr>
-      <Paper noFade className="!px-4 pt-4 overflow-x-scroll">
+      <Paper noFade className="!px-4 pt-4">
         <>
           <BallotPreview {...{ state }} />
 
@@ -92,6 +93,10 @@ export const Ballot = ({
             // Is it "Score"?
             if (item.type === 'score')
               return <ScoreItem {...{ ...item, dispatch, options: shuffled, state }} key={index} />
+
+            // Is it "Budget"?
+            if (item.type === 'budget')
+              return <BudgetItem {...{ ...item, dispatch, options: shuffled, state }} key={index} />
 
             // Otherwise, load default "Choose-only-one"
             return <Item {...{ ...item, dispatch, options: shuffled, state }} key={index} />

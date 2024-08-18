@@ -2,7 +2,7 @@
 import { LoadingOutlined } from '@ant-design/icons'
 import bluebird from 'bluebird'
 import { mapValues } from 'lodash-es'
-import { Dispatch, Fragment, SetStateAction, useEffect, useReducer, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useReducer, useState } from 'react'
 import { RP } from 'src/crypto/curve'
 import { destringifyPartial, stringifyPartial } from 'src/crypto/stringify-partials'
 
@@ -15,6 +15,8 @@ import {
 } from '../../crypto/threshold-keygen'
 import { Partial, StateAndDispatch } from '../trustee-state'
 import { YouLabel } from '../YouLabel'
+import { useTruncatedTable } from './useTruncatedTable'
+import { sortColumnsForTrustees } from './VotesToShuffle'
 
 type Partials = Record<string, Partial[]>
 type Validations_Table = Record<string, Record<string, (boolean | null)[]>>
@@ -100,7 +102,7 @@ export const VotesToDecrypt = ({
 
   async function partialDecryptFinalShuffle() {
     console.log(
-      `Last trusteee has shuffled: ${num_last_shuffled}, We decrypted: ${num_we_decrypted}. Beginning partial decryption...`,
+      `Last trustee has shuffled: ${num_last_shuffled}, We decrypted: ${num_we_decrypted}. Beginning partial decryption...`,
     )
 
     // Partially decrypt each item in every list
@@ -139,14 +141,22 @@ export const VotesToDecrypt = ({
   return (
     <>
       <h3>IV. Votes to Decrypt</h3>
-      <ol>
+      <ol className="pl-5">
         {trustees?.map(({ email, partials, you }) => (
-          <li key={email}>
-            {email}
-            {you && <YouLabel />} partially decrypted {!partials ? 0 : Object.values(partials)[0].length} votes.
-            {partials && (
-              <ValidationSummary {...{ email, partials, proofs_shown, set_proofs_shown, validated_proofs }} />
-            )}
+          <li className="mb-8" key={email}>
+            {/* Top row */}
+            <div className="flex flex-col justify-between sm:flex-row">
+              {/* Left */}
+              <span>
+                {email}
+                {you && <YouLabel />} partially decrypted {!partials ? 0 : Object.values(partials)[0].length}
+                &nbsp;votes.
+              </span>
+              {/* Right */}
+              {partials && (
+                <ValidationSummary {...{ email, partials, proofs_shown, set_proofs_shown, validated_proofs }} />
+              )}
+            </div>
             {partials && (
               <>
                 <PartialsTable {...{ email, partials, validated_proofs }} />
@@ -156,11 +166,6 @@ export const VotesToDecrypt = ({
           </li>
         ))}
       </ol>
-      <style jsx>{`
-        li {
-          margin-bottom: 2rem;
-        }
-      `}</style>
     </>
   )
 }
@@ -175,77 +180,47 @@ const PartialsTable = ({
   validated_proofs: Validations_Table
 }): JSX.Element => {
   const trustees_validations = validated_proofs[email]
+  const columns = sortColumnsForTrustees(Object.keys(partials))
+  const { TruncationToggle, rows_to_show } = useTruncatedTable({
+    num_cols: columns.length,
+    num_rows: Object.values(partials)[0].length,
+  })
   if (!trustees_validations) return <></>
-  const columns = Object.keys(partials)
+
   return (
-    <table>
-      <thead>
-        <tr>
-          <th></th>
-          {columns.map((c) => (
-            <th key={c}>{c}</th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {partials[columns[0]].map((_, index) => (
-          <tr key={index}>
-            <td>{index + 1}.</td>
-            {columns.map((key) => {
-              const validated = trustees_validations[key][index]
-              return (
-                <Fragment key={key}>
-                  <td className="monospaced">
-                    <div>
+    <>
+      <table className="block w-full pb-3 overflow-auto border-collapse [&_tr>*]:[border:1px_solid_#ccc] [&_tr>*]:px-2.5 [&_tr>td]:pr-5 [&_tr>*]:py-[3px]">
+        <thead className="text-[11px] text-center">
+          <tr>
+            <th></th>
+            {columns.map((c) => (
+              <th key={c}>{c}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody className="[&>tr>*]:max-w-[239px]">
+          {partials[columns[0]].slice(0, rows_to_show).map((_, index) => (
+            <tr key={index}>
+              <td className="!pr-2.5">{index + 1}.</td>
+              {columns.map((key) => {
+                const validated = trustees_validations[key][index]
+                return (
+                  <td className="font-mono text-[10px]" key={key}>
+                    <div className="relative">
                       {partials[key][index].partial}{' '}
-                      <span>{validated === null ? <LoadingOutlined /> : validated ? '' : '❌'}</span>
+                      <span className="absolute top-2 -right-3.5 text-[10px] opacity-30">
+                        {validated === null ? <LoadingOutlined /> : validated ? '' : '❌'}
+                      </span>
                     </div>
                   </td>
-                </Fragment>
-              )
-            })}
-          </tr>
-        ))}
-      </tbody>
-      <style jsx>{`
-        table {
-          border-collapse: collapse;
-          display: block;
-          overflow: auto;
-          margin-bottom: 15px;
-        }
-
-        th,
-        td {
-          border: 1px solid #ccc;
-          padding: 3px 10px;
-          padding-right: 20px;
-          margin: 0;
-          max-width: 250px;
-        }
-        td div {
-          position: relative;
-        }
-
-        td span {
-          position: absolute;
-          top: 1px;
-          right: -16px;
-          font-size: 10px;
-          opacity: 0.3;
-        }
-
-        td.monospaced {
-          font-family: monospace;
-        }
-
-        th,
-        .subheading td {
-          font-size: 11px;
-          font-weight: 700;
-        }
-      `}</style>
-    </table>
+                )
+              })}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <TruncationToggle />
+    </>
   )
 }
 
@@ -254,14 +229,9 @@ const DecryptionProof = ({ partials }: { partials: Partials }) => (
     {Object.keys(partials).map((column) => (
       <div key={column}>
         <h4>{column}</h4>
-        <code>{JSON.stringify(partials[column])}</code>
+        <code className="text-[13px]">{JSON.stringify(partials[column])}</code>
       </div>
     ))}
-    <style jsx>{`
-      code {
-        font-size: 13px;
-      }
-    `}</style>
   </>
 )
 
@@ -288,30 +258,16 @@ const ValidationSummary = ({
   const num_total_partials = !partials ? 0 : num_votes_decrypted * Object.keys(partials).length
 
   return (
-    <i>
+    <i className="sm:text-right text-[11px] block">
       {!!num_partials_passed && num_partials_passed === num_total_partials && '✅ '}
       {num_partials_passed} of {num_total_partials} Decryption Proofs verified (
-      <a className="show-proof" onClick={() => set_proofs_shown({ ...proofs_shown, [email]: !proofs_shown[email] })}>
+      <a
+        className="font-mono cursor-pointer"
+        onClick={() => set_proofs_shown({ ...proofs_shown, [email]: !proofs_shown[email] })}
+      >
         {proofs_shown[email] ? '-Hide' : '+Show'}
       </a>
       )
-      <style jsx>{`
-        i {
-          font-size: 11px;
-          display: block;
-        }
-
-        @media (min-width: 600px) {
-          i {
-            float: right;
-          }
-        }
-
-        .show-proof {
-          cursor: pointer;
-          font-family: monospace;
-        }
-      `}</style>
     </i>
   )
 }

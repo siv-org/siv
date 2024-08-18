@@ -16,22 +16,29 @@ export const UnlockedStatus = () => {
   const more_to_unlock = num_voted > unlocked_votes.length
 
   return (
-    <div className={more_to_unlock || isUnlockBlocked ? 'warning' : ''}>
+    <div
+      className={`border border-solid rounded-md p-2.5 mr-4 mb-3.5 ${
+        more_to_unlock || isUnlockBlocked
+          ? '!border-[rgba(175,157,0,0.66)] !bg-[rgba(237,177,27,0.07)]'
+          : 'border-[rgba(26,89,0,0.66)] bg-[rgba(0,128,0,0.07)]'
+      }`}
+    >
       {isUnlockBlocked ? (
         <p>
-          ⚠️ Unlocking: Waiting on Observer <i> {isUnlockBlocked}</i>
+          ⚠️ Unlocking: Waiting on Observer <i className="font-medium"> {isUnlockBlocked}</i>
         </p>
       ) : !more_to_unlock ? (
         <p>
           ✅ Successfully{' '}
           <Link href={`/election/${election_id}`}>
-            <a className="status" target="_blank">
+            <a className="font-medium text-black cursor-pointer" target="_blank">
               unlocked {unlocked_votes.length}
             </a>
           </Link>{' '}
           votes.{' '}
           {notified_unlocked !== unlocked_votes.length ? (
             <a
+              className="font-semibold cursor-pointer"
               onClick={async () => {
                 await api(`election/${election_id}/admin/notify-unlocked`)
                 revalidate(election_id)
@@ -40,7 +47,7 @@ export const UnlockedStatus = () => {
               Notify voters?
             </a>
           ) : (
-            <b>Voters notified.</b>
+            <b className="font-semibold">Voters notified.</b>
           )}
         </p>
       ) : (
@@ -49,40 +56,8 @@ export const UnlockedStatus = () => {
         </p>
       )}
       <style jsx>{`
-        div {
-          border: 1px solid rgba(26, 89, 0, 0.66);
-          background: rgba(0, 128, 0, 0.07);
-          border-radius: 5px;
-
-          padding: 10px;
-          margin-bottom: 15px;
-        }
-
-        div.warning {
-          border-color: rgba(175, 157, 0, 0.66);
-          background: rgba(237, 177, 27, 0.07);
-        }
-
         p {
           margin: 0;
-        }
-
-        i {
-          font-weight: 500;
-        }
-
-        a {
-          font-weight: 600;
-          cursor: pointer;
-        }
-
-        a.status {
-          color: black;
-          font-weight: 500;
-        }
-
-        b {
-          font-weight: 600;
         }
       `}</style>
     </div>

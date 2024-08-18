@@ -27,8 +27,8 @@ export const generateColumnNames = ({ ballot_design }: { ballot_design?: Item[] 
       return new Array(amount).fill('').map((_, index) => `${id}_${index + 1}`)
     }
 
-    // Score expects a vote for each of the question's options
-    if (type === 'score') return options.map(({ name }) => `${id}_${name}`)
+    // 'Score' & 'budget' expect a vote for each of the question's options
+    if (type === 'score' || type === 'budget') return options.map(({ name, value }) => `${id}_${value || name}`)
 
     // Otherwise we'll just show the question ID, like Just Choose One ("Plurality")
     return id

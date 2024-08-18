@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
+import { exampleAuthToken } from 'src/vote/EnterAuthToken'
 import { format } from 'timeago.js'
 
 import { firebase, pushover } from './_services'
@@ -37,13 +38,18 @@ export async function validateAuthToken(
   // Is election_id in DB?
   if (!(await election).exists) return fail('Unknown Election ID. It may have been deleted.')
 
+  if ((await election).data()?.stop_accepting_votes)
+    return fail('The election administrator has stopped accepting new votes.')
+
   // Is there a voter w/ this Auth Token?
   const [voter] = (await voters).docs
   if (!voter) {
-    await pushover(
-      'SIV auth token lookup miss',
-      `election: ${election_id}\nbad auth: ${auth}\nPossible brute force attack?`,
-    )
+    if (auth !== exampleAuthToken)
+      await pushover(
+        'SIV auth token lookup miss',
+        `election: ${election_id}\nbad auth: ${auth}\nPossible brute force attack?`,
+      )
+
     return fail('Invalid Auth Token.')
   }
 

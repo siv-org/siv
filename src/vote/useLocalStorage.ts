@@ -8,7 +8,13 @@ export const useLocalStorageReducer = (
   defaultValue: ReducerParams[1],
 ) => {
   const stored = localStorage.getItem(storage_key)
-  const initial = stored ? JSON.parse(stored) : defaultValue
+  let initial
+  try {
+    initial = stored ? JSON.parse(stored) : defaultValue
+  } catch (error) {
+    alert(`Error parsing localStorage: ${storage_key} — ${JSON.stringify(error)}`)
+    throw error
+  }
   const [state, dispatch] = useReducer(reducer, initial)
 
   useEffect(() => {

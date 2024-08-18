@@ -35,7 +35,7 @@ export const ExistingVoters = () => {
   return (
     <>
       {/* Group around Accepted Voters table */}
-      <div className="pt-3 pb-1 pl-4 -ml-4 rounded shadow-md bg-blue-200/40">
+      <div className="pt-3 pb-1 pl-4 mt-8 -ml-4 rounded shadow-md bg-blue-200/40">
         <UnlockedStatus />
         <div className="pr-4">
           <TopBarButtons {...{ checked, num_approved, num_voted }} />

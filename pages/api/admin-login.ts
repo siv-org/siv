@@ -1,3 +1,4 @@
+import { validate } from 'email-validator'
 import { firestore } from 'firebase-admin'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { pick_random_bigint } from 'src/crypto/pick-random-bigint'
@@ -9,7 +10,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Confirm they sent a valid email address
   if (!email) return res.status(400).send('Missing email')
-  if (!email.includes('@') || !email.includes('.')) return res.status(400).send('Malformed')
+  if (!validate(email)) return res.status(400).send('Malformed email')
   email = email.toLowerCase()
 
   // Is this email an approved election manager?

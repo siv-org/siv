@@ -4,9 +4,8 @@ import { Item } from 'src/vote/storeElectionInfo'
 import { mapValues } from '../utils'
 import { tally_IRV_Items } from './tallying/rcv-irv'
 
+export const multi_vote_regex = /_(\d+)$/
 export function tallyVotes(ballot_items_by_id: Record<string, Item>, votes: Record<string, string>[]) {
-  const multi_vote_regex = /_(\d+)$/
-
   // Sum up votes
   const tallies: Record<string, Record<string, number>> = {}
   const IRV_columns_seen: Record<string, boolean> = {}

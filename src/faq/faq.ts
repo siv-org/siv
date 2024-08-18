@@ -1,4 +1,4 @@
-export const faq: { id?: string; q: string; resp: string }[] = [
+export const faq: { deprecated_ids?: string[]; id?: string; q: string; resp: string }[] = [
   {
     id: 'secure',
     q: 'What is a "Secure" election?',
@@ -50,7 +50,7 @@ The entire process leaves a written audit trail, for independent verification.
 Once a voter makes their selections, all their options get encrypted on their voting device.
 Their plaintext never leaves their device.
 
-Once all votes are received, the <a href="https://siv.org/faq#observers">Verifying Observers'</a> computers each add their own cryptographic shuffle to all the votes, for thorough anonymization, before working together to unlock the votes for tallying.
+Once all votes are received, the <a href="https://siv.org/faq#privacy-protectors">Privacy Protectors'</a> computers each add their own cryptographic shuffle to all the votes, for thorough anonymization, before working together to unlock the votes for tallying.
 
 This is a similar process as with paper ballots, where voters are confirmed, but the voter's identification is not on the submitted ballot.
 
@@ -61,11 +61,14 @@ The SIV system offers even more rigorous privacy, so nobody has the ability to c
     q: 'How does SIV ensure election results are Verifiable?',
     resp: `All final election tallies can be independently recounted.
 
-There are two ways in which votes can be verified.
+There are many ways in which votes can be verified.
 
 1. Voters themselves can personally verify their vote in the final tally. When they submit their vote, voters' devices create a random secret <i><b>Verification #</b></i>. Once votes are unlocked for tallying, voters can find their <i>Verification #</i> to confirm that their vote was cast and counted exactly as intended. This provides far greater assurance than paper elections offer, where voters have little first-hand verifiability after they submit their vote.
 
-2. SIV also allows for cryptographic <i><b>Universal Verifiability</b></i>. Election administrators and approved organizations can run the SIV Universal Verifier. This provides the ability to retrace all the election steps for all votes, from encrypted submissions to final results.`,
+2. SIV also allows for cryptographic <i><b>Universal Verifiability</b></i>. Anyone can run the cryptographic verification code. This provides the ability to retrace all the election steps for all votes, from encrypted submissions to final results.
+
+For all the other methods, check out the <a href="https://docs.siv.org/verifiability">SIV Docs: Verifiability</a> section.
+`,
   },
   {
     q: 'How can voters be confident in election results?',
@@ -189,7 +192,7 @@ Voter Authorization tokens can be invalidated as soon as a vote is recorded from
   {
     id: 'better-voting-methods',
     q: 'Does SIV support other voting methods, like Approval Voting?',
-    resp: `Currently, SIV supports Plurality Voting, Block Voting, and Approval Voting. We add new voting methods as requested. Please let us know if you need more: <a href="mailto:voting-methods@siv.org" target="_blank">voting-methods@siv.org</a>.
+    resp: `Currently, SIV supports Plurality, Block, Score, Ranked Choice, and Approval Voting. We add new voting methods as requested. Please let us know if you need more: <a href="mailto:voting-methods@siv.org" target="_blank">voting-methods@siv.org</a>.
 
 Digital voting can make it much easier for voters to adopt these more advanced voting methods, with immediate feedback and automatically preventing voters from accidentally disqualifying their ballot.`,
   },
@@ -252,21 +255,22 @@ This protects voters' network connection to prevent tampering and surveillance.`
 SIV automatically creates complete end-to-end verifiable elections, so that anyone who submits record requests can simply be directed to the publicly posted election data.`,
   },
   {
-    id: 'observers',
-    q: 'What are Verifying Observers?',
-    resp: `Appointing Verifying Observers is a powerful SIV feature for Election Administrators.
+    deprecated_ids: ['observers'],
+    id: 'privacy-protectors',
+    q: 'What are Privacy Protectors?',
+    resp: `Appointing Privacy Protectors is a powerful SIV feature for Election Administrators.
 
-These Verifying Observers are similar to the election observers we use in our existing paper elections. But the SIV process runs on computers and uses advanced mathematics and strong cryptography, including what are called Zero-Knowledge Proofs. It offers total privacy and verifiability, proving that none of the votes are tampered with. And it requires only a small handful of people, unlike our large paper elections which can require tens of thousands of observers, but who can ultimately provide only incomplete security.
+These Privacy Protectors are similar to the election observers we use in our existing paper elections. But the SIV process runs on computers and uses advanced mathematics and strong cryptography, including what are called Zero-Knowledge Proofs. It offers total privacy and verifiability, proving that none of the votes are tampered with. And it requires only a small handful of people, unlike our large paper elections which can require tens of thousands of observers, but who can ultimately provide only incomplete security.
 
 Protocol <a href="/protocol#4" target="_blank">Steps 4</a> & <a href="/protocol#5" target="_blank">5</a> detail more about their role.
 `,
   },
   {
     id: 'picking-observers',
-    q: 'How should Verifying Observers be picked?',
-    resp: `The most secure and safest approach is to assign Verifying Observers with independent interests, such as one nominated by each participating political party.
+    q: 'How should Privacy Protectors be picked?',
+    resp: `The most secure and safest approach is to assign Privacy Protectors with independent interests, such as one nominated by each participating political party.
 
-To be confident that the privacy of the vote is protected, voters need to trust just a single Verifying Observer. Verifying Observers do not need to trust each other, and cannot possibly tamper with votes.`,
+To be confident that the privacy of the vote is protected, voters need to trust just a single Privacy Protector. Privacy Protectors do not need to trust each other, and cannot possibly tamper with votes.`,
   },
   {
     q: 'How does SIV impact Risk Limiting Audits?',
@@ -274,7 +278,9 @@ To be confident that the privacy of the vote is protected, voters need to trust 
 
 RLAs are often currently used to double check vote tallies. SIV makes this unnecessary because all vote tallies are independently verifiable and automatically recounted by every device that visits the public election status page.
 
-RLAs are still very useful to audit voter rolls & Voter Authorization token issuance, and to help voters check their Voter Verification #’s are in the final tally.`,
+RLAs are still very useful to audit voter rolls & Voter Authorization token issuance, and to help voters check their Voter Verification #’s are in the final tally.
+
+Learn More: <a href="https://docs.siv.org/verifiability/rla">docs.siv.org/verifiability/rla</a>`,
   },
   {
     id: 'phishing',

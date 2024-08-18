@@ -6,10 +6,33 @@ export type Cipher = { encrypted: RP; lock: RP }
 export type Public_Key = RP
 const G = RP.BASE
 
-export async function shuffle(
+export async function shuffleWithProof(
   pub_key: Public_Key,
   inputs: Cipher[],
 ): Promise<{ proof: Shuffle_Proof; shuffled: Cipher[] }> {
+  const { proof, shuffled } = await shuffle(pub_key, inputs)
+  return { proof, shuffled }
+}
+
+export async function shuffleWithoutProof(pub_key: Public_Key, inputs: Cipher[]): Promise<{ shuffled: Cipher[] }> {
+  const { shuffled } = await shuffle(pub_key, inputs, { skip_proof: true })
+  return { shuffled }
+}
+
+/** Private function that does the shuffling, with option to skip generating the costly proof.
+ * We export non-overloaded functions `shuffleWithProof()` and `shuffleWithoutProof()`, so types can be more cleanly inferred.
+ */
+async function shuffle(pub_key: Public_Key, inputs: Cipher[]): Promise<{ proof: Shuffle_Proof; shuffled: Cipher[] }>
+async function shuffle(
+  pub_key: Public_Key,
+  inputs: Cipher[],
+  options: { skip_proof: true },
+): Promise<{ shuffled: Cipher[] }>
+async function shuffle(
+  pub_key: Public_Key,
+  inputs: Cipher[],
+  options: { skip_proof?: boolean } = {},
+): Promise<{ proof?: Shuffle_Proof; shuffled: Cipher[] }> {
   // First, we need a permutation array and reencryption values
   const permutes = build_permutation_array(inputs.length)
 
@@ -32,6 +55,9 @@ export async function shuffle(
 
     return { encrypted: new_encrypted, lock: new_lock }
   })
+
+  // Can skip generating costly proof
+  if (options?.skip_proof) return { shuffled }
 
   // Finally we generate a ZK proof that it's a valid shuffle
   const proof = await generate_shuffle_proof(

@@ -20,18 +20,20 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(400).json({ error: 'Invalid email' })
   }
 
-  // Store submission in Firestore
-  await firebase
-    .firestore()
-    .collection('endorsers')
-    .doc(new Date().toISOString() + ' ' + String(Math.random()).slice(2, 7))
-    .set({
-      ...fields,
-      created_at: new Date().toString(),
-    })
+  await Promise.all([
+    // Store submission
+    firebase
+      .firestore()
+      .collection('endorsers')
+      .doc(new Date().toISOString() + ' ' + String(Math.random()).slice(2, 7))
+      .set({
+        ...fields,
+        created_at: new Date().toString(),
+      }),
 
-  // Notify admin via Pushover
-  await pushover(`SIV Endorsement: ${fields.name} (${fields.zip})`, `${fields.email}\n\n${fields.message}`)
+    // Notify admin
+    pushover(`SIV Endorsement: ${fields.name} (${fields.zip})`, `${fields.email}\n\n${fields.message}`),
+  ])
 
   // Send back success
   return res.status(201).json({ success: true })

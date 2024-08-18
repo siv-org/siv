@@ -1,3 +1,5 @@
+import { randomBytes } from 'crypto'
+
 export function generateAuthToken() {
   let auth_token = generateOne()
   let attempts = 1
@@ -11,11 +13,7 @@ export function generateAuthToken() {
 }
 
 function generateOne() {
-  const random = Math.random()
-  const integer = String(random).slice(2)
-  const hex = Number(integer).toString(16)
-  const auth_token = hex.slice(0, 10)
-  return auth_token
+  return randomBytes(5).toString('hex') // 10 characters hex string
 }
 
 const isBadPatterns = (auth_token: string) => {

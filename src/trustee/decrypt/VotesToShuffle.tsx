@@ -4,20 +4,27 @@ import bluebird from 'bluebird'
 import { mapValues } from 'lodash-es'
 import { Dispatch, Fragment, SetStateAction, useEffect, useReducer, useState } from 'react'
 import { RP } from 'src/crypto/curve'
-import { destringifyShuffle, stringifyShuffle } from 'src/crypto/stringify-shuffle'
+import { destringifyShuffle, stringifyShuffle, stringifyShuffleWithoutProof } from 'src/crypto/stringify-shuffle'
 
 import { api } from '../../api-helper'
-import { rename_to_c1_and_2, shuffle } from '../../crypto/shuffle'
+import { rename_to_c1_and_2, shuffleWithProof, shuffleWithoutProof } from '../../crypto/shuffle'
 import { verify_shuffle_proof } from '../../crypto/shuffle-proof'
 import { Shuffled, StateAndDispatch } from '../trustee-state'
 import { YouLabel } from '../YouLabel'
+import { useTruncatedTable } from './useTruncatedTable'
 
 type Validations_Table = Record<string, { columns: Record<string, boolean | null>; num_votes: number }>
 
+const nbsp = '\u00A0'
+
 export const VotesToShuffle = ({
   set_final_shuffle_verifies,
+  skip_shuffle_proofs = false,
   state,
-}: StateAndDispatch & { set_final_shuffle_verifies: Dispatch<SetStateAction<boolean>> }) => {
+}: StateAndDispatch & {
+  set_final_shuffle_verifies: Dispatch<SetStateAction<boolean>>
+  skip_shuffle_proofs?: boolean
+}) => {
   const { own_index, threshold_public_key, trustees = [] } = state
   const [proofs_shown, set_proofs_shown] = useState<Record<string, boolean>>({})
 
@@ -76,19 +83,23 @@ export const VotesToShuffle = ({
 
       // Begin (async) validating each proof...
       Object.keys(trustee_validations).forEach((column) => {
-        // Inputs are the previous party's outputs
-        // except for admin, who provides the original split list.
-        const inputs = index > 0 ? trustees[index - 1].shuffled![column].shuffled : trustees[0].preshuffled![column]
+        if (skip_shuffle_proofs) {
+          set_validated_proofs({ column, email, result: true, type: 'UPDATE' })
+        } else {
+          // Inputs are the previous party's outputs
+          // except for admin, who provides the original split list.
+          const inputs = index > 0 ? trustees[index - 1].shuffled![column].shuffled : trustees[0].preshuffled![column]
 
-        const { proof, shuffled: shuffledCol } = destringifyShuffle(shuffled[column])
+          const { proof, shuffled: shuffledCol } = destringifyShuffle(shuffled[column])
 
-        verify_shuffle_proof(
-          rename_to_c1_and_2(inputs.map((c) => mapValues(c, RP.fromHex))),
-          rename_to_c1_and_2(shuffledCol),
-          proof,
-        ).then((result) => {
-          set_validated_proofs({ column, email, result, type: 'UPDATE' })
-        })
+          verify_shuffle_proof(
+            rename_to_c1_and_2(inputs.map((c) => mapValues(c, RP.fromHex))),
+            rename_to_c1_and_2(shuffledCol),
+            proof,
+          ).then((result) => {
+            set_validated_proofs({ column, email, result, type: 'UPDATE' })
+          })
+        }
       })
     })
   }, [num_shuffled_from_trustees])
@@ -104,15 +115,20 @@ export const VotesToShuffle = ({
 
     // Do a SIV shuffle (permute + re-encryption) for each item's list
     const shuffled = await bluebird.props(
-      mapValues(prev_trustees_shuffled, async (list) =>
-        stringifyShuffle(
-          await shuffle(
-            RP.fromHex(threshold_public_key!),
-            list.shuffled.map((c) => mapValues(c, RP.fromHex)),
-          ),
-        ),
-      ),
+      mapValues(prev_trustees_shuffled, async (list) => {
+        const shuffleArgs: Parameters<typeof shuffleWithProof> = [
+          RP.fromHex(threshold_public_key!),
+          list.shuffled.map((c) => mapValues(c, RP.fromHex)),
+        ]
+
+        if (skip_shuffle_proofs) {
+          return stringifyShuffleWithoutProof(await shuffleWithoutProof(...shuffleArgs))
+        } else {
+          return stringifyShuffle(await shuffleWithProof(...shuffleArgs))
+        }
+      }),
     )
+    console.log('Shuffled complete.')
 
     // Tell admin our new shuffled list
     api(`election/${state.election_id}/trustees/update`, {
@@ -140,14 +156,33 @@ export const VotesToShuffle = ({
   return (
     <>
       <h3>III. Votes to Shuffle</h3>
-      <ol>
+      <ol className="pl-5">
         {trustees?.map(({ email, shuffled, you }) => (
-          <li key={email}>
-            {email}
-            {you && <YouLabel />} shuffled {!shuffled ? '0' : Object.values(shuffled)[0].shuffled.length} votes.
-            {shuffled && (
-              <ValidationSummary {...{ email, proofs_shown, set_proofs_shown, shuffled, validated_proofs }} />
-            )}
+          <li className="mb-8" key={email}>
+            {/* Top row above table */}
+            <div className="flex flex-col justify-between sm:flex-row">
+              {/* Left */}
+              <span>
+                {email}
+                {you && <YouLabel />} shuffled {!shuffled ? '0' : Object.values(shuffled)[0].shuffled.length}&nbsp;votes
+                {shuffled && `${nbsp}x${nbsp}${Object.keys(shuffled).length}${nbsp}columns`}.
+              </span>
+              {/* Right */}
+              {shuffled && (
+                <ValidationSummary
+                  {...{
+                    email,
+                    proofs_shown,
+                    set_proofs_shown,
+                    shuffled,
+                    skip_shuffle_proofs,
+                    validated_proofs,
+                  }}
+                />
+              )}
+            </div>
+
+            {/* Table */}
             {shuffled && (
               <>
                 <ShuffledVotesTable {...{ email, shuffled, validated_proofs }} />
@@ -157,11 +192,6 @@ export const VotesToShuffle = ({
           </li>
         ))}
       </ol>
-      <style jsx>{`
-        li {
-          margin-bottom: 2rem;
-        }
-      `}</style>
     </>
   )
 }
@@ -176,96 +206,73 @@ const ShuffledVotesTable = ({
   validated_proofs: Validations_Table
 }): JSX.Element => {
   const trustees_validations = validated_proofs && validated_proofs[email]
-  const columns = Object.keys(shuffled)
+  const columns = sortColumnsForTrustees(Object.keys(shuffled))
+
+  const { TruncationToggle, rows_to_show } = useTruncatedTable({
+    num_cols: columns.length,
+    num_rows: Object.values(shuffled)[0].shuffled.length,
+  })
+
   return (
-    <table>
-      <thead>
-        <tr>
-          <th></th>
-          {columns.map((c) => {
-            const verified = trustees_validations ? trustees_validations.columns[c] : null
-            return (
-              <th colSpan={2} key={c}>
-                {c} <span>{verified === null ? <LoadingOutlined /> : verified ? '' : '❌'}</span>
-              </th>
-            )
-          })}
-        </tr>
-      </thead>
-      <tbody>
-        {/* Column subheadings */}
-        <tr className="subheading">
-          <td></td>
-          {columns.map((c) => (
-            <Fragment key={c}>
-              <td>encrypted</td>
-              <td>lock</td>
-            </Fragment>
-          ))}
-        </tr>
-        {shuffled[columns[0]].shuffled.map((_, index) => (
-          <tr key={index}>
-            <td>{index + 1}.</td>
-            {columns.map((key) => {
-              const cipher = shuffled[key].shuffled[index]
+    <>
+      <table className="block w-full pb-3 overflow-auto border-collapse [&_tr>*]:[border:1px_solid_#ccc] [&_tr>*]:px-2.5 [&_tr>*]:py-[3px] [&_tr>*]:max-w-[227px]">
+        <thead className="text-[11px] text-center">
+          <tr>
+            <td rowSpan={2}></td>
+            {columns.map((c) => {
+              const verified = trustees_validations ? trustees_validations.columns[c] : null
               return (
-                <Fragment key={key}>
-                  <td className="monospaced">{cipher.encrypted}</td>
-                  <td className="monospaced">{cipher.lock}</td>
-                </Fragment>
+                <th colSpan={2} key={c}>
+                  {c}{' '}
+                  <span className="pl-[5px] opacity-50">
+                    {verified === null ? <LoadingOutlined /> : verified ? '' : '❌'}
+                  </span>
+                </th>
               )
             })}
           </tr>
-        ))}
-      </tbody>
-      <style jsx>{`
-        table {
-          border-collapse: collapse;
-          display: block;
-          overflow: auto;
-          margin-bottom: 10px;
-        }
-
-        th,
-        td {
-          border: 1px solid #ccc;
-          padding: 3px 10px;
-          margin: 0;
-          max-width: 240px;
-        }
-
-        td.monospaced {
-          font-family: monospace;
-        }
-
-        th,
-        .subheading td {
-          font-size: 11px;
-          font-weight: 700;
-        }
-
-        th span {
-          padding-left: 5px;
-          opacity: 0.6;
-        }
-      `}</style>
-    </table>
+          {/* Column subheadings */}
+          <tr>
+            {columns.map((c) => (
+              <Fragment key={c}>
+                <th>encrypted</th>
+                <th>lock</th>
+              </Fragment>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {shuffled[columns[0]].shuffled.slice(0, rows_to_show).map((_, index) => (
+            <tr key={index}>
+              <td>{index + 1}.</td>
+              {columns.map((key) => {
+                const cipher = shuffled[key].shuffled[index]
+                return (
+                  <Fragment key={key}>
+                    <td className="font-mono text-[10px]">{cipher.encrypted}</td>
+                    <td className="font-mono text-[10px]">{cipher.lock}</td>
+                  </Fragment>
+                )
+              })}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <TruncationToggle />
+    </>
   )
 }
 
 const ShuffleProof = ({ shuffled }: { shuffled: Shuffled }) => (
   <>
-    {Object.keys(shuffled).map((column) => (
+    {sortColumnsForTrustees(Object.keys(shuffled)).map((column) => (
       <div key={column}>
-        <h4>{column}</h4>
-        <code>{JSON.stringify(shuffled[column].proof)}</code>
+        <h4>{column} — shuffle proof</h4>
+        <code className="text-[13px] overflow-y-scroll max-h-96 block bg-black/5 p-2 rounded">
+          {JSON.stringify(shuffled[column].proof)}
+        </code>
       </div>
     ))}
-    <style jsx>{`
-      code {
-        font-size: 13px;
-      }
-    `}</style>
   </>
 )
 
@@ -273,40 +280,30 @@ const ValidationSummary = ({
   email,
   proofs_shown,
   set_proofs_shown,
+  skip_shuffle_proofs,
   validated_proofs,
 }: {
   email: string
   proofs_shown: Record<string, boolean>
   set_proofs_shown: Dispatch<SetStateAction<Record<string, boolean>>>
+  skip_shuffle_proofs: boolean
   validated_proofs: Validations_Table
 }) => {
   const validations = validated_proofs[email]
 
   return (
-    <i>
-      {all_proofs_passed(validations) && '✅ '}
-      {num_proofs_passed(validations)} of {num_total_proofs(validations)} Shuffle Proofs verified (
-      <a className="show-proof" onClick={() => set_proofs_shown({ ...proofs_shown, [email]: !proofs_shown[email] })}>
-        {proofs_shown[email] ? '-Hide' : '+Show'}
-      </a>
-      )
-      <style jsx>{`
-        i {
-          font-size: 11px;
-          display: block;
-        }
-
-        @media (min-width: 600px) {
-          i {
-            float: right;
-          }
-        }
-
-        .show-proof {
-          cursor: pointer;
-          font-family: monospace;
-        }
-      `}</style>
+    <i className="text-[11px] block sm:text-right">
+      {skip_shuffle_proofs ? '⏸️ ' : all_proofs_passed(validations) && '✅ '}
+      {num_proofs_passed(validations)} of {num_total_proofs(validations)} Shuffle Proofs{' '}
+      {skip_shuffle_proofs ? 'skipped' : 'verified'}{' '}
+      {!skip_shuffle_proofs && (
+        <a
+          className="font-mono cursor-pointer"
+          onClick={() => set_proofs_shown({ ...proofs_shown, [email]: !proofs_shown[email] })}
+        >
+          {proofs_shown[email] ? '-Hide' : '+Show'}
+        </a>
+      )}
     </i>
   )
 }
@@ -319,3 +316,21 @@ const num_total_proofs = (validations: Validations_Table['email']) =>
 
 const all_proofs_passed = (validations: Validations_Table['email']) =>
   !!num_proofs_passed(validations) && num_proofs_passed(validations) === num_total_proofs(validations)
+
+/** First tries to sort alphabetically, then numerically.
+Useful for sorting vote column names when you don't have ballot_schema easily accessible.
+If you do, just use generateColumns(), which will preserve ballot display order too. */
+export function sortColumnsForTrustees(data: string[]): string[] {
+  return [...data].sort((a, b) => {
+    // Extract the non-numeric and numeric parts of the strings
+    const regex = /^(.*?)(\d*)$/
+    const [, textA, numA] = a.match(regex) || []
+    const [, textB, numB] = b.match(regex) || []
+
+    // Compare the textual part
+    if (textA !== textB) return textA.localeCompare(textB)
+
+    // If textual part is the same, compare the numeric part (if present)
+    return (+numA || 0) - (+numB || 0)
+  })
+}

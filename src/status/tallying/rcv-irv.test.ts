@@ -163,7 +163,10 @@ describe('IRV tallying', () => {
     expect(rounds[2].tallies).toEqual({ 'Abraham Lincoln': 4, 'Bill Clinton': 5 })
   })
 
+  test.todo('handles when there are a large number of distinct write-ins') // See https://siv.org/election/1721314324882
+
   test.todo('handles when there is a tie in the bottom choice')
   test.todo('handles when there is a tie in the top choice early on')
   test.todo('handles when there is a tie in the final round')
+  test.todo('handles when there are a two digit number of multiple_votes_allowed')
 })

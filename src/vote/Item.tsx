@@ -1,8 +1,8 @@
 import { FormControlLabel, Radio, RadioGroup, TextField } from '@mui/material'
 import { Dispatch, useState } from 'react'
-import Linkify from 'react-linkify'
 
 import { max_string_length } from './Ballot'
+import { Linkify } from './Linkify'
 import { Item as ItemType } from './storeElectionInfo'
 import { State } from './vote-state'
 
@@ -90,10 +90,23 @@ export const Item = ({
   )
 }
 
-export const Label = ({ name, nameClassName, sub }: { name: string; nameClassName?: string; sub?: string }) => (
+export const Label = ({
+  name,
+  nameClassName,
+  number,
+  sub,
+}: {
+  name: string
+  nameClassName?: string
+  number?: number
+  sub?: string
+}) => (
   <div className="my-2">
     <Linkify>
-      <span className={`font-bold opacity-95 ${nameClassName}`}>{name}</span>
+      <span className={`font-bold opacity-95 ${nameClassName}`}>
+        {number && <span className="text-xs font-light opacity-50">{number}. </span>}
+        {name}
+      </span>
       {sub && <p className="m-0 text-[12px] opacity-75">{sub}</p>}
     </Linkify>
   </div>
@@ -109,14 +122,7 @@ export const TitleDescriptionQuestion = ({
   title?: string
 }) => (
   <>
-    <Linkify
-      componentDecorator={(decoratedHref, decoratedText, key) => (
-        <a href={decoratedHref} key={key} target="blank">
-          {/* Shorten to domain name only if possible */}
-          {(decoratedText.match(/\w*?\.(com|org)/) || [decoratedText])[0]}
-        </a>
-      )}
-    >
+    <Linkify>
       {title && <p className="title sm:px-[13px] py-[5px] mb-2.5">{title}</p>}
       {description && <p className="whitespace-pre-wrap sm:m-[13px] mb-0">{description}</p>}
       {question && <p className="whitespace-pre-wrap sm:m-[13px]">{question}</p>}
