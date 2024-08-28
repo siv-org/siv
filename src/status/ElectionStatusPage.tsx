@@ -13,7 +13,7 @@ import { Totals } from './Totals'
 import { useElectionInfo } from './use-election-info'
 
 export const ElectionStatusPage = (): JSX.Element => {
-  const { election_id } = useRouter().query as { election_id: string }
+  const { election_id, hide_tallies } = useRouter().query as { election_id: string; hide_tallies?: string }
   const { ballot_design, election_homepage, election_title, esignature_requested, has_decrypted_votes } =
     useElectionInfo()
   const [show_encrypteds, toggle_encrypteds] = useReducer((state) => !state, false)
@@ -53,7 +53,8 @@ export const ElectionStatusPage = (): JSX.Element => {
               )}
             </div>
           )}
-          <Totals />
+          {/* Optionally hide vote tallies with ?hide_tallies=1 url param */}
+          {!hide_tallies && <Totals />}
           <br />
           <DecryptedVotes />
           <br />
