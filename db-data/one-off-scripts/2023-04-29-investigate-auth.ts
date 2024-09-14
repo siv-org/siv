@@ -1,12 +1,12 @@
-import './_env'
+import '../_env'
 
 import { mapValues } from 'lodash'
 import UAParser from 'ua-parser-js'
 
-import { firebase } from '../pages/api/_services'
-import { RP, pointToString } from '../src/crypto/curve'
-import decrypt from '../src/crypto/decrypt'
-import { CipherStrings } from '../src/crypto/stringify-shuffle'
+import { firebase } from '../../pages/api/_services'
+import { RP, pointToString } from '../../src/crypto/curve'
+import decrypt from '../../src/crypto/decrypt'
+import { CipherStrings } from '../../src/crypto/stringify-shuffle'
 
 // CHANGE ME 👇
 const election_id = '1680323766282'

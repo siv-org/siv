@@ -1,4 +1,4 @@
-import { RP, pointToString, stringToPoint } from '../src/crypto/curve'
+import { RP, pointToString, stringToPoint } from '../../src/crypto/curve'
 
 const encodeds = ['']
 

@@ -1,11 +1,11 @@
 // Execute this file with:
 // npx ts-node db-data/2022-07-19-copy-david-secureinternetvoting-to-siv.ts
 
-import './_env'
+import '../_env'
 
 import bluebird from 'bluebird'
 
-import { firebase } from '../pages/api/_services'
+import { firebase } from '../../pages/api/_services'
 
 ;(async () => {
   // Find all elections created by david@secureinternetvoting.org
