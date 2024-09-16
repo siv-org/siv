@@ -84,13 +84,12 @@ async function main() {
         })
 
         // Delete old collections
-        // votersSnapshot.docs.forEach((voterDoc) => {
-        //   transaction.delete(votersRef.doc(voterDoc.id))
-        // })
-
-        // votesSnapshot.docs.forEach((voteDoc) => {
-        //   transaction.delete(votesRef.doc(voteDoc.id))
-        // })
+        votersSnapshot.docs.forEach((voterDoc) => {
+          transaction.delete(votersRef.doc(voterDoc.id))
+        })
+        votesSnapshot.docs.forEach((voteDoc) => {
+          transaction.delete(votesRef.doc(voteDoc.id))
+        })
       })
 
       console.log('Migration completed for election:', election_id)
