@@ -9,7 +9,6 @@ import { CipherStrings, stringifyShuffle, stringifyShuffleWithoutProof } from 's
 import { firebase, pushover } from '../../../_services'
 import { pusher } from '../../../pusher'
 import { checkJwtOwnsElection } from '../../../validate-admin-jwt'
-import { ReviewLog } from './load-admin'
 
 const { ADMIN_EMAIL } = process.env
 
@@ -45,8 +44,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     .doc(election_id as string)
 
   // Begin preloading these requests
-  const loadVotes = electionDoc.collection('votes').get()
-  const loadVoters = electionDoc.collection('voters').get()
+  const loadVotes = electionDoc.collection('approved-voters').where('voted_at', '!=', null).get()
   const election = electionDoc.get()
   const adminDoc = electionDoc.collection('trustees').doc(ADMIN_EMAIL)
   const admin = adminDoc.get()
@@ -66,18 +64,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // If esignature_requested, filter for only approved
   let votes_to_unlock = (await loadVotes).docs
-  if (esignature_requested) {
-    type VotersByAuth = Record<string, { esignature_review: ReviewLog[] }>
-    const votersByAuth: VotersByAuth = (await loadVoters).docs.reduce((acc: VotersByAuth, doc) => {
-      const data = doc.data()
-      return { ...acc, [data.auth_token]: data }
-    }, {})
+  if (esignature_requested)
+    votes_to_unlock = votes_to_unlock.filter((doc) => getStatus(doc.data().esignature_review) === 'approve')
 
-    votes_to_unlock = votes_to_unlock.filter((doc) => {
-      const { auth } = doc.data() as { auth: string }
-      return getStatus(votersByAuth[auth].esignature_review) === 'approve'
-    })
-  }
   elapsed('load votes, filter esig')
 
   // Admin removes the auth tokens
