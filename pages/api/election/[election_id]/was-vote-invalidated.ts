@@ -5,14 +5,16 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
   const { auth, election_id } = req.query
+  if (typeof election_id !== 'string') return res.status(401).json({ error: `Missing election_id` })
+  if (typeof auth !== 'string') return res.status(401).json({ error: `Missing auth` })
 
-  const voters = await firebase
+  const voter = await firebase
     .firestore()
     .collection('elections')
-    .doc(election_id as string)
-    .collection('voters')
-    .where('auth_token', '==', auth)
+    .doc(election_id)
+    .collection('approved-voters')
+    .doc(auth)
     .get()
 
-  return res.status(200).json(!!voters.docs[0]?.data().invalidated_at)
+  return res.status(200).json(!!voter?.data()?.invalidated_at)
 }
