@@ -133,8 +133,8 @@ export const ValidVotersTable = ({
 
                         // Store new email in API
                         const response = await api(`election/${election_id}/admin/edit-voter-email`, {
+                          auth_token,
                           new_email,
-                          old_email: email,
                         })
 
                         if (response.status === 201) {
