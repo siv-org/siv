@@ -8,13 +8,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   const electionDoc = firebase.firestore().collection('elections').doc(election_id)
 
-  // Is there an encrypted vote w/ this auth token?
-  const [voteDoc] = (await electionDoc.collection('votes').where('auth', '==', auth).get()).docs
-  if (!voteDoc.exists) return res.status(404).json({ error: 'No vote w/ this auth_token' })
+  // Is there a voter w/ this auth token?
+  const voterDoc = electionDoc.collection('approved-voters').doc(auth)
+  const voter = await voterDoc.get()
+  if (!voter.exists) return res.status(404).json({ error: 'No voter w/ this auth_token' })
   // Without an existing esignature?
-  if (voteDoc.data().esignature) return res.status(400).json({ error: 'Vote already has an esignature' })
+  if (voter.data()?.esignature) return res.status(400).json({ error: 'Vote already has an esignature' })
 
-  await electionDoc.collection('votes').doc(voteDoc.id).update({ esignature, esigned_at: new Date() })
+  await voterDoc.update({ esignature, esigned_at: new Date() })
 
   await pusher.trigger(`status-${election_id}`, 'votes', auth)
 
