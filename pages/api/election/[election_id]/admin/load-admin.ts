@@ -1,8 +1,8 @@
+import { firebase } from 'api/_services'
+import { checkJwtOwnsElection } from 'api/validate-admin-jwt'
 import { NextApiRequest, NextApiResponse } from 'next'
 import UAParser from 'ua-parser-js'
 
-import { firebase } from '../../../_services'
-import { checkJwtOwnsElection } from '../../../validate-admin-jwt'
 import { QueueLog } from './invite-voters'
 
 export type ReviewLog = { review: 'approve' | 'reject' }
@@ -75,7 +75,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const loadTrustees = election.collection('trustees').orderBy('index', 'asc').get()
   const loadApprovedVoters = election.collection('approved-voters').orderBy('index', 'asc').get()
   const loadPendingVotes = election.collection('votes-pending').get()
-  const loadInvalidatedVotes = election.collection('invalidated_votes').get()
 
   // Is election_id in DB?
   const electionDoc = await loadElection
@@ -134,13 +133,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       },
     ]
   }, [])
-
-  // Gather whose votes were invalidated
-  const invalidatedVotesByAuth: Record<string, boolean> = {}
-  ;(await loadInvalidatedVotes).docs.forEach((doc) => {
-    const data = doc.data()
-    invalidatedVotesByAuth[data.auth] = true
-  })
 
   // Build voters objects
   const voters: Voter[] = (await loadApprovedVoters).docs.reduce((acc: Voter[], doc) => {
