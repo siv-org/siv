@@ -25,17 +25,22 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Is election_id in DB?
   if (!election.exists) return res.status(400).json({ error: 'Unknown Election ID.' })
 
-  const votes = (await loadVotes).docs.map((doc) => {
-    const { auth_token, encrypted_vote, esignature_review } = doc.data()
-    const vote = { auth: auth_token, ...encrypted_vote }
+  const votes = (await loadVotes).docs
+    .map((doc) => {
+      const { auth_token, encrypted_vote, esignature_review, invalidated_at } = doc.data()
+      const vote = { auth: auth_token, ...encrypted_vote }
 
-    // If esignatures enabled, include review status
-    if (election.data()?.esignature_requested) {
-      vote.signature_approved = getStatus(esignature_review) === 'approve'
-    }
+      // Filter out invalidated votes
+      if (invalidated_at) return null
 
-    return vote
-  })
+      // If esignatures enabled, include review status
+      if (election.data()?.esignature_requested) {
+        vote.signature_approved = getStatus(esignature_review) === 'approve'
+      }
+
+      return vote
+    })
+    .filter((v) => v)
 
   const pendingVotes = (await loadPendingVotes).docs.map((doc) => {
     const { encrypted_vote } = doc.data()
