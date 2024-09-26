@@ -13,7 +13,7 @@ import { useLatestMailgunEvents } from './use-latest-mailgun'
 export type Trustee = { email: string; error?: string; name?: string }
 const admin_email = 'admin@siv.org'
 
-export const Observers = () => {
+export const SetPrivacyProtectors = () => {
   const { election_id, election_manager, threshold_public_key, trustees } = useStored()
   const [new_trustees, set_new_trustees] = useState<Trustee[]>([{ email: '' }])
 
