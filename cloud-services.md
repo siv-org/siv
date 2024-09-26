@@ -20,7 +20,7 @@ Here are more detailed instructions for how to get API keys for the cloud servic
 2.  Create a new project and note down the project URL and the public API key
 3.  Go to the project settings and add the following values to your `.env.local`:
     - `SUPABASE_ADMIN_KEY`: Found in "API" -> "Project API keys" under "anon public"
-    - `SUPABASE_DB_URL`: Found in "Database" -> "Connection parameters" under "Host"
+    - `SUPABASE_DB_URL`: Found in "API" -> "Project URL"
       - Note: Be sure to add "https://" to the start of the address
     - `SUPABASE_JWT_SECRET`: Found in "API" -> "JWT Settings" under "JWT Secret"
 
