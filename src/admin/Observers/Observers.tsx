@@ -22,10 +22,10 @@ export const Observers = () => {
   return (
     <div className="container">
       <h2 className="hidden sm:block">
-        Verifying Observers <span>(Optional)</span>
+        Privacy Protectors <span>(Optional)</span>
       </h2>
       <p>
-        This lets you give independent Verifying Observers complete cryptographic proof that votes are private & tallied
+        This lets you give independent Privacy Protectors complete cryptographic proof that votes are private & tallied
         correctly.
       </p>
       <p>
@@ -37,7 +37,7 @@ export const Observers = () => {
       {!trustees?.length ? (
         <div>
           <p>
-            <i>Verifying Observers:</i>
+            <i>Privacy Protectors:</i>
           </p>
           {new_trustees.map((_, i) => (
             <div className="row" key={i}>
@@ -202,7 +202,7 @@ export const Observers = () => {
       {(trustees?.length || 0) > 1 && !threshold_public_key && (
         <p>
           <br />
-          <i>Waiting for Verifying Observers to complete the Pre-Election setup...</i>
+          <i>Waiting for Privacy Protectors to complete the Pre-Election setup...</i>
         </p>
       )}
       <EncryptionAddress />
