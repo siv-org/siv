@@ -44,7 +44,7 @@ export const AdminPage = (): JSX.Element => {
             </>
           )}
 
-          {section === 'observers' && <Observers />}
+          {section === 'privacy' && <Observers />}
           {section === 'ballot-design' && <BallotDesign />}
           {section === 'voters' && <AddVoters />}
           {section === 'marked-ballots' && <MarkedBallots />}
