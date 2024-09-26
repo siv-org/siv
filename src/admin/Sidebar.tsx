@@ -10,15 +10,15 @@ export const Sidebar = () => (
   </div>
 )
 
-export const steps = ['Ballot Design', 'Observers', 'Voters']
+export const steps = ['Ballot Design', 'Privacy', 'Voters']
 
 export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => void }) => {
   const { election_id, section } = useRouter().query
   const { ballot_design_finalized, threshold_public_key } = useStored()
 
-  const completed: Record<typeof steps[number], boolean> = {
+  const completed: Record<(typeof steps)[number], boolean> = {
     'Ballot Design': !!ballot_design_finalized,
-    Observers: !!threshold_public_key,
+    Privacy: !!threshold_public_key,
     Voters: true,
   }
   const urled = (s: string) => s.toLowerCase().replaceAll(' ', '-')

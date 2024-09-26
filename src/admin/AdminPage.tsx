@@ -10,7 +10,7 @@ import { CreateNewElection } from './CreateNewElection'
 import { HeaderBar } from './HeaderBar'
 import { MarkedBallots } from './MarkedBallots/MarkedBallots'
 import { MobileMenu } from './MobileMenu'
-import { Observers } from './Observers/Observers'
+import { SetPrivacyProtectors } from './PrivacyPage/SetPrivacyProtectors'
 import { Sidebar } from './Sidebar'
 import { usePusher } from './usePusher'
 import { AddVoters } from './Voters/AddVoters'
@@ -44,7 +44,7 @@ export const AdminPage = (): JSX.Element => {
             </>
           )}
 
-          {section === 'observers' && <Observers />}
+          {section === 'privacy' && <SetPrivacyProtectors />}
           {section === 'ballot-design' && <BallotDesign />}
           {section === 'voters' && <AddVoters />}
           {section === 'marked-ballots' && <MarkedBallots />}

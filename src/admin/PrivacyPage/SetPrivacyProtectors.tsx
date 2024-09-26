@@ -13,7 +13,7 @@ import { useLatestMailgunEvents } from './use-latest-mailgun'
 export type Trustee = { email: string; error?: string; name?: string }
 const admin_email = 'admin@siv.org'
 
-export const Observers = () => {
+export const SetPrivacyProtectors = () => {
   const { election_id, election_manager, threshold_public_key, trustees } = useStored()
   const [new_trustees, set_new_trustees] = useState<Trustee[]>([{ email: '' }])
 
@@ -22,22 +22,28 @@ export const Observers = () => {
   return (
     <div className="container">
       <h2 className="hidden sm:block">
-        Verifying Observers <span>(Optional)</span>
+        Privacy Protectors <span>(Optional)</span>
       </h2>
       <p>
-        This lets you give independent Verifying Observers complete cryptographic proof that votes are private & tallied
+        This lets you give independent Privacy Protectors complete cryptographic proof that votes are private & tallied
         correctly.
       </p>
       <p>
         If you add them, votes cannot be unlocked and tallied until their computers run the automatic verification
         checks.
       </p>
+      <p>
+        <a href="https://docs.siv.org/privacy/privacy-protectors" rel="noreferrer" target="_blank">
+          Learn more
+        </a>
+      </p>
+
       <br />
 
       {!trustees?.length ? (
         <div>
           <p>
-            <i>Verifying Observers:</i>
+            <i>Privacy Protectors:</i>
           </p>
           {new_trustees.map((_, i) => (
             <div className="row" key={i}>
@@ -202,7 +208,7 @@ export const Observers = () => {
       {(trustees?.length || 0) > 1 && !threshold_public_key && (
         <p>
           <br />
-          <i>Waiting for Verifying Observers to complete the Pre-Election setup...</i>
+          <i>Waiting for Privacy Protectors to complete the Pre-Election setup...</i>
         </p>
       )}
       <EncryptionAddress />

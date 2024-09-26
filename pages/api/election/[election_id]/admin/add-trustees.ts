@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { Trustee } from 'src/admin/Observers/Observers'
+import { Trustee } from 'src/admin/PrivacyPage/SetPrivacyProtectors'
 import { generateAuthToken } from 'src/crypto/generate-auth-tokens'
 import { generate_key_pair } from 'src/crypto/generate-key-pair'
 import {
