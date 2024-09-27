@@ -1,14 +1,12 @@
-import router from 'next/router'
 import { useEffect, useState } from 'react'
 import { NoSsr } from 'src/_shared/NoSsr'
 
-import { api } from '../../api-helper'
-import { SaveButton } from '../SaveButton'
-import { revalidate, useStored } from '../useStored'
+import { useStored } from '../useStored'
 import { AutoSaver } from './AutoSaver'
-import { check_for_less_urgent_ballot_errors, check_for_urgent_ballot_errors } from './check_for_ballot_errors'
+import { check_for_urgent_ballot_errors } from './check_for_ballot_errors'
 import { default_ballot_design } from './default-ballot-design'
 import { Errors } from './Errors'
+import { FinalizeBallotDesignButton } from './FinalizeBallotDesignButton'
 import { ModeControls } from './ModeControls'
 import { TextDesigner } from './TextDesigner'
 import { Wizard } from './Wizard'
@@ -67,20 +65,7 @@ export const BallotDesign = () => {
       </div>
 
       {!ballot_design_finalized && (
-        <SaveButton
-          disabled={!!error}
-          text={error ? 'Error!' : 'Finalize'}
-          onPress={async () => {
-            const error = check_for_less_urgent_ballot_errors(design)
-            if (error) return set_saving_errors(error)
-
-            const response = await api(`election/${election_id}/admin/finalize-ballot-design`)
-            if (response.status !== 201) return alert(JSON.stringify(await response.json()))
-
-            revalidate(election_id)
-            router.push(`${window.location.origin}/admin/${election_id}/privacy`)
-          }}
-        />
+        <FinalizeBallotDesignButton {...{ design, election_id, error, set_saving_errors }} />
       )}
     </>
   )
