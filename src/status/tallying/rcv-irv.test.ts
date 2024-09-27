@@ -185,11 +185,11 @@ const sampleTwoWinnerVotes = {
     president: {
       id: 'president',
       multiple_votes_allowed: 4,
+      number_of_winners: 2,
       options: [{ name: 'George H. W. Bush' }, { name: 'Bill Clinton' }, { name: 'Ross Perot' }, {name: 'Abraham Lincoln'}, {name: 'Andrew Yang'}],
       title: 'Who should become President?',
       type: 'ranked-choice-irv',
-      write_in_allowed: false,
-      number_of_winners: 2
+      write_in_allowed: false
     },
   },
   votes: [
