@@ -1,7 +1,6 @@
+import { firebase } from 'api/_services'
+import { checkJwtOwnsElection } from 'api/validate-admin-jwt'
 import { NextApiRequest, NextApiResponse } from 'next'
-
-import { firebase } from '../../../_services'
-import { checkJwtOwnsElection } from '../../../validate-admin-jwt'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { election_id } = req.query as { election_id: string }

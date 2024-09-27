@@ -45,7 +45,14 @@ export async function checkJwtOwnsElection(
   election_id: string,
 ): Promise<
   | { res: void; valid: false }
-  | ({ ballot_design_finalized?: boolean; election_manager: string; election_title: string; valid: true } & JWT_Payload)
+  | ({
+      ballot_design: string
+      ballot_design_finalized?: boolean
+      election_manager: string
+      election_title: string
+      num_votes: number
+      valid: true
+    } & JWT_Payload)
 > {
   const jwt_status = checkJwt(req, res)
 
@@ -62,9 +69,11 @@ export async function checkJwtOwnsElection(
 
   // Otherwise it passes
   return {
+    ballot_design: election.ballot_design,
     ballot_design_finalized: election.ballot_design_finalized,
     election_manager: election.election_manager,
     election_title: election.election_title,
+    num_votes: election.num_votes,
     ...jwt_status,
   }
 }
