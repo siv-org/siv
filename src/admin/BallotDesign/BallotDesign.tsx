@@ -58,7 +58,7 @@ export const BallotDesign = () => {
       <ModeControls {...{ selected, setSelected }} />
       <div className="mode-container">
         {selected !== 1 && <Wizard {...{ design, setDesign }} />}
-        {selected === 2 && <div className="spacer" />}
+        {selected === 2 && <div className="w-5" /> /* spacer */}
         {selected !== 0 && (
           <NoSsr>
             <TextDesigner {...{ design, setDesign }} />
@@ -89,10 +89,6 @@ export const BallotDesign = () => {
           width: 100%;
           position: relative;
           top: 3px;
-        }
-
-        .spacer {
-          width: 20px;
         }
       `}</style>
     </>
