@@ -3,6 +3,7 @@ import { NoSsr } from 'src/_shared/NoSsr'
 
 import { useStored } from '../useStored'
 import { AutoSaver } from './AutoSaver'
+import { BallotDesignFinalizedBanner } from './BallotDesignFinalizedBanner'
 import { check_for_urgent_ballot_errors } from './check_for_ballot_errors'
 import { default_ballot_design } from './default-ballot-design'
 import { Errors } from './Errors'
@@ -49,6 +50,8 @@ export const BallotDesign = () => {
           🔍 Preview
         </a>
       </h2>
+
+      {ballot_design_finalized && <BallotDesignFinalizedBanner />}
 
       <AutoSaver {...{ design }} />
       <Errors {...{ error }} />
