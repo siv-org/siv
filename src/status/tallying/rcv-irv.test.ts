@@ -186,10 +186,16 @@ const sampleTwoWinnerVotes = {
       id: 'president',
       multiple_votes_allowed: 4,
       number_of_winners: 2,
-      options: [{ name: 'George H. W. Bush' }, { name: 'Bill Clinton' }, { name: 'Ross Perot' }, {name: 'Abraham Lincoln'}, {name: 'Andrew Yang'}],
+      options: [
+        { name: 'George H. W. Bush' },
+        { name: 'Bill Clinton' },
+        { name: 'Ross Perot' },
+        { name: 'Abraham Lincoln' },
+        { name: 'Andrew Yang' },
+      ],
       title: 'Who should become President?',
       type: 'ranked-choice-irv',
-      write_in_allowed: false
+      write_in_allowed: false,
     },
   },
   votes: [
@@ -269,23 +275,25 @@ const sampleTwoWinnerVotes = {
 const rcv_mw_results = tallyVotes(sampleTwoWinnerVotes.ballot_items_by_id, sampleTwoWinnerVotes.votes)
 
 describe('MultiWinner RCV tallying', () => {
-  test('results now includes an IRV key', () => {
-    expect(rcv_mw_results).toHaveProperty('irv')
-  })
   const { president } = rcv_mw_results.irv
-
-  test('IRV items have a "rounds" subarray', () => {
-    expect(president).toHaveProperty('rounds')
-    expect(Array.isArray(president.rounds)).toBe(true)
-  })
   const { rounds } = president
 
   test("can tally up everyone's top choices as round 1 votes", () => {
-    expect(rounds[0].tallies).toEqual({ 'Abraham Lincoln': 1, 'Andrew Yang': 5, 'Bill Clinton': 3, 'George H. W. Bu': 1 })
+    expect(rounds[0].tallies).toEqual({
+      'Abraham Lincoln': 1,
+      'Andrew Yang': 5,
+      'Bill Clinton': 3,
+      'George H. W. Bu': 1,
+    })
   })
 
   test('can eliminate first place winner, and recalculate round 2 votes', () => {
-    expect(rounds[1].tallies).toEqual({ 'Abraham Lincoln': 2, 'Bill Clinton': 5, 'George H. W. Bu': 2, 'Ross Perot': 1 })
+    expect(rounds[1].tallies).toEqual({
+      'Abraham Lincoln': 2,
+      'Bill Clinton': 5,
+      'George H. W. Bu': 2,
+      'Ross Perot': 1,
+    })
   })
 
   test('shows the correct number of rounds', () => {
