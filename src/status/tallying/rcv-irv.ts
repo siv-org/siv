@@ -16,12 +16,12 @@ export const tally_IRV_Items = (
   votes: Record<string, string>[],
 ) => {
   // First we undo the multi-vote suffixes to get back to the ballot_design ids
-  const items: Record<string, { rounds: IRV_Round[]; winner?: string }> = {}
+  const items: Record<string, { rounds: IRV_Round[]; winners: string[] }> = {}
   Object.keys(IRV_columns_seen).forEach((key) => {
     const multi_suffix = key.match(multi_vote_regex)
     if (!multi_suffix) throw new Error(`Unexpected key ${key} breaking multi-vote regex`)
     const item = key.slice(0, -multi_suffix[0].length)
-    items[item] = { rounds: [] }
+    items[item] = { rounds: [], winners: [] }
   })
 
   // Then for each voting item....
@@ -62,17 +62,27 @@ export const tally_IRV_Items = (
       items[item].rounds.push(round_result)
 
       // Did anyone exceed 50%?
-      const fifty_percent = round_result.totalVotes / 2
-      const leader = round_result.ordered[0]
-      if (round_result.tallies[leader] > fifty_percent) {
-        // Yes! Found a winner
-        return (items[item].winner = leader)
+      const numberOfWinners = ballot_items_by_id[item].number_of_winners || 1
+      const fifty_percent = round_result.totalVotes / (numberOfWinners + 1)
+      let someoneEliminated = false
+      for (let currCandidateIndex = 0; currCandidateIndex < round_result.ordered.length; currCandidateIndex++) {
+        const leader = round_result.ordered[currCandidateIndex]
+        if (round_result.tallies[leader] > fifty_percent) {
+          // Yes! Found a winner
+          items[item].winners.push(leader)
+          if(items[item].winners.length === numberOfWinners) {
+            return 
+          } else {
+            eliminated.push(leader)
+            someoneEliminated = true
+          }
+        }
       }
 
       // Otherwise, eliminate the lowest choice and restart the loop
       const last = round_result.ordered.at(-1)
       if (!last) return // shouldn't happen
-      eliminated.push(last)
+      if(!someoneEliminated) eliminated.push(last)
     }
   })
 
