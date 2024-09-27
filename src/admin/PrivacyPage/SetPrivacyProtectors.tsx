@@ -1,4 +1,4 @@
-import { EditOutlined } from '@ant-design/icons'
+import { EditOutlined, ExportOutlined } from '@ant-design/icons'
 import { TextField } from '@mui/material'
 import { validate as validateEmail } from 'email-validator'
 import { useState } from 'react'
@@ -34,6 +34,7 @@ export const SetPrivacyProtectors = () => {
       </p>
       <p>
         <a href="https://docs.siv.org/privacy/privacy-protectors" rel="noreferrer" target="_blank">
+          <ExportOutlined className="mr-1" />
           Learn more
         </a>
       </p>
