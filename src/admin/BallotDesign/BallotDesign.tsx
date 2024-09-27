@@ -78,7 +78,7 @@ export const BallotDesign = () => {
             if (response.status !== 201) return alert(JSON.stringify(await response.json()))
 
             revalidate(election_id)
-            router.push(`${window.location.origin}/admin/${election_id}/observers`)
+            router.push(`${window.location.origin}/admin/${election_id}/privacy`)
           }}
         />
       )}
