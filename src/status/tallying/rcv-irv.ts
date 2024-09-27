@@ -28,7 +28,9 @@ export const tally_IRV_Items = (
   Object.keys(items).forEach((item) => {
     const eliminated: string[] = []
 
+    // Get question parameters
     const max_selections = ballot_items_by_id[item].multiple_votes_allowed || defaultRankingsAllowed
+    const { number_of_winners = 1 } = ballot_items_by_id[item]
 
     // The IRV algorithm is to go round-by-round,
     const MAX_ROUNDS = 30 // arbitrary to prevent endless loops
@@ -61,30 +63,28 @@ export const tally_IRV_Items = (
 
       items[item].rounds.push(round_result)
 
-      // Did anyone exceed the winning threshold? (50% for single-winner)
-      const { number_of_winners = 1 } = ballot_items_by_id[item]
-      const threshold_to_win = round_result.totalVotes / (number_of_winners + 1)
+      // Did anyone exceed the winning threshold?
+      let foundAWinner = false
+      const threshold_to_win = round_result.totalVotes / (number_of_winners + 1) // 50% for single-winner
 
-      let eliminatedAWinner = false
-      for (let currCandidateIndex = 0; currCandidateIndex < round_result.ordered.length; currCandidateIndex++) {
-        const leader = round_result.ordered[currCandidateIndex]
-        if (round_result.tallies[leader] > threshold_to_win) {
+      for (const candidate of round_result.ordered) {
+        if (round_result.tallies[candidate] > threshold_to_win) {
           // Yes! Found a winner
-          items[item].winners.push(leader)
+          items[item].winners.push(candidate)
 
-          // Done once found enough winners
+          // Done once enough winners are found
           if (items[item].winners.length === number_of_winners) return
 
           // Remove winner from future rounds
-          eliminated.push(leader)
-          eliminatedAWinner = true
+          eliminated.push(candidate)
+          foundAWinner = true
         }
       }
 
       // Otherwise, eliminate the lowest choice and restart the loop
       const last = round_result.ordered.at(-1)
       if (!last) return // shouldn't happen
-      if (!eliminatedAWinner) eliminated.push(last)
+      if (!foundAWinner) eliminated.push(last)
     }
   })
 

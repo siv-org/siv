@@ -13,10 +13,8 @@ export const IRVTallies = ({
   id: string
   results: ReturnType<typeof tally_IRV_Items>[string]
 }) => {
-  let winners = unTruncateSelection(results.winners[0], ballot_design, id)
-  for(let winnerIndex = 1; winnerIndex < results.winners.length; winnerIndex++) {
-    winners = winners + ', ' + unTruncateSelection(results.winners[winnerIndex], ballot_design, id)
-  }
+  const winners = results.winners.map((winner) => unTruncateSelection(winner, ballot_design, id)).join(', ')
+
   return (
     <div>
       {results.winners && (
