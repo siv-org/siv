@@ -13,12 +13,11 @@ import { TextDesigner } from './TextDesigner'
 import { Wizard } from './Wizard'
 
 export const BallotDesign = () => {
-  const { ballot_design: stored_ballot_design, ballot_design_finalized, election_id, election_title } = useStored()
+  const { ballot_design: stored_ballot_design, ballot_design_finalized, election_id } = useStored()
   const [selected, setSelected] = useState(0)
 
-  const designState = useState(stored_ballot_design || default_ballot_design)
-  const [design] = designState
-  const setDesign = !ballot_design_finalized ? designState[1] : () => {}
+  const [design, setDesign] = useState(stored_ballot_design || default_ballot_design)
+  const setDesignIfNotFinalized = !ballot_design_finalized ? setDesign : () => alert('Ballot design already finalized')
 
   const [saving_errors, set_saving_errors] = useState<null | string>(null)
 
@@ -31,10 +30,8 @@ export const BallotDesign = () => {
 
   // Restore stored ballot design on hard refresh
   useEffect(() => {
-    if (!election_title) return
-    if (!stored_ballot_design) return
-    setDesign(stored_ballot_design)
-  }, [election_title])
+    if (stored_ballot_design) setDesign(stored_ballot_design)
+  }, [stored_ballot_design])
 
   return (
     <>
@@ -51,18 +48,17 @@ export const BallotDesign = () => {
         </a>
       </h2>
 
-      {ballot_design_finalized && <BallotDesignFinalizedBanner />}
+      {ballot_design_finalized ? <BallotDesignFinalizedBanner /> : <AutoSaver {...{ design }} />}
 
-      <AutoSaver {...{ design }} />
       <Errors {...{ error }} />
 
       <ModeControls {...{ selected, setSelected }} />
       <div className="relative flex w-full top-[3px]">
-        {selected !== 1 && <Wizard {...{ design, setDesign }} />}
+        {selected !== 1 && <Wizard {...{ design, setDesign: setDesignIfNotFinalized }} />}
         {selected === 2 && <div className="w-5" /> /* spacer */}
         {selected !== 0 && (
           <NoSsr>
-            <TextDesigner {...{ design, setDesign }} />
+            <TextDesigner {...{ design, setDesign: setDesignIfNotFinalized }} />
           </NoSsr>
         )}
       </div>
