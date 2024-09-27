@@ -56,7 +56,7 @@ export const BallotDesign = () => {
       <Errors {...{ error }} />
 
       <ModeControls {...{ selected, setSelected }} />
-      <div className="mode-container">
+      <div className="relative flex w-full top-[3px]">
         {selected !== 1 && <Wizard {...{ design, setDesign }} />}
         {selected === 2 && <div className="w-5" /> /* spacer */}
         {selected !== 0 && (
@@ -82,15 +82,6 @@ export const BallotDesign = () => {
           }}
         />
       )}
-
-      <style jsx>{`
-        .mode-container {
-          display: flex;
-          width: 100%;
-          position: relative;
-          top: 3px;
-        }
-      `}</style>
     </>
   )
 }
