@@ -61,28 +61,30 @@ export const tally_IRV_Items = (
 
       items[item].rounds.push(round_result)
 
-      // Did anyone exceed 50%?
-      const numberOfWinners = ballot_items_by_id[item].number_of_winners || 1
-      const fifty_percent = round_result.totalVotes / (numberOfWinners + 1)
-      let someoneEliminated = false
+      // Did anyone exceed the winning threshold? (50% for single-winner)
+      const { number_of_winners = 1 } = ballot_items_by_id[item]
+      const threshold_to_win = round_result.totalVotes / (number_of_winners + 1)
+
+      let eliminatedAWinner = false
       for (let currCandidateIndex = 0; currCandidateIndex < round_result.ordered.length; currCandidateIndex++) {
         const leader = round_result.ordered[currCandidateIndex]
-        if (round_result.tallies[leader] > fifty_percent) {
+        if (round_result.tallies[leader] > threshold_to_win) {
           // Yes! Found a winner
           items[item].winners.push(leader)
-          if(items[item].winners.length === numberOfWinners) {
-            return 
-          } else {
-            eliminated.push(leader)
-            someoneEliminated = true
-          }
+
+          // Done once found enough winners
+          if (items[item].winners.length === number_of_winners) return
+
+          // Remove winner from future rounds
+          eliminated.push(leader)
+          eliminatedAWinner = true
         }
       }
 
       // Otherwise, eliminate the lowest choice and restart the loop
       const last = round_result.ordered.at(-1)
       if (!last) return // shouldn't happen
-      if(!someoneEliminated) eliminated.push(last)
+      if (!eliminatedAWinner) eliminated.push(last)
     }
   })
 
