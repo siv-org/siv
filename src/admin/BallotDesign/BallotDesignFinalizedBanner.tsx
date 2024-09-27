@@ -17,7 +17,7 @@ export const BallotDesignFinalizedBanner = () => {
       {!has_votes && (
         <Tooltip tooltip="Only possible before votes cast">
           <div
-            className="inline px-2 py-1 border border-solid rounded cursor-pointer text-cyan-700 bg-white/70 border-black/30 hover:bg-white hover:text-cyan-600"
+            className="inline px-2 py-1 border border-solid rounded cursor-pointer text-cyan-700 bg-white/70 border-black/30 hover:bg-black/5"
             onClick={async () => {
               const response = await api(`election/${election_id}/admin/revert-finalized-ballot-design`)
               if (response.status !== 201) return alert(JSON.stringify(await response.json()))
