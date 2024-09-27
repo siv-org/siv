@@ -9,7 +9,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const jwt = await checkJwtOwnsElection(req, res, election_id)
   if (!jwt.valid) return
 
-  // TODO: Confirm there are no votes cast already
+  // Confirm no votes cast yet
+  if (jwt.num_votes > 0)
+    return res.status(400).json({
+      message: "Can't revert finalized ballot-design once any votes have been cast",
+      num_votes: jwt.num_votes,
+    })
 
   // TODO: We probably want better accountability here to be extra sure election admins aren't maliciously flipping ballot designs in misleading ways. See https://github.com/siv-org/siv/issues/85
 
