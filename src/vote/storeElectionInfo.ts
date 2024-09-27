@@ -10,6 +10,7 @@ export type Item = {
   max_score?: number
   min_score?: number
   multiple_votes_allowed?: number
+  number_of_winners?: number
   options: {
     name: string
     sub?: string
@@ -24,7 +25,6 @@ export type Item = {
   toggleable_label?: string
   type?: string
   write_in_allowed: boolean
-  number_of_winners?: number
 }
 
 export function storeElectionInfo(dispatch: Dispatch<Partial<State>>, election_id?: string) {
