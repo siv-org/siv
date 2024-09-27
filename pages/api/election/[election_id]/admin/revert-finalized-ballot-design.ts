@@ -1,5 +1,6 @@
-import { firebase } from 'api/_services'
+import { firebase, pushover } from 'api/_services'
 import { checkJwtOwnsElection } from 'api/validate-admin-jwt'
+import { firestore } from 'firebase-admin'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -16,14 +17,29 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       num_votes: jwt.num_votes,
     })
 
-  // TODO: We probably want better accountability here to be extra sure election admins aren't maliciously flipping ballot designs in misleading ways. See https://github.com/siv-org/siv/issues/85
+  // We may want even stronger automated accountability here to be extra sure election admins aren't maliciously flipping ballot designs in misleading ways. See https://github.com/siv-org/siv/issues/85 and https://github.com/siv-org/siv/pull/251
 
-  // TODO: Notify admin this feature is being used
+  // Short-term mitigation before other checks are in place:
+  // Notify server admin this feature is being used
+  await pushover(
+    `SIV: ${jwt.election_manager} reverted finalized ballot-design`,
+    `${election_id}: ${jwt.election_title}`,
+  )
 
-  // TODO: Store the previously- finalized version, to ensure this feature isn't being used maliciously
+  // Update election in db
+  await firebase
+    .firestore()
+    .collection('elections')
+    .doc(election_id)
+    .update({
+      ballot_design_finalized: false, // Unset
 
-  // Unset `ballot_design_finalized` in db
-  await firebase.firestore().collection('elections').doc(election_id).update({ ballot_design_finalized: false })
+      // Store the previously-finalized version, to ensure this feature isn't being used maliciously
+      reverted_finalized_ballot_designs: firestore.FieldValue.arrayUnion({
+        previous_ballot_design: jwt.ballot_design,
+        reverted_at: new Date(),
+      }),
+    })
 
   return res.status(201).json({ message: 'Reverted finalized ballot design' })
 }

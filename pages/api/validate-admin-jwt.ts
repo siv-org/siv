@@ -46,6 +46,7 @@ export async function checkJwtOwnsElection(
 ): Promise<
   | { res: void; valid: false }
   | ({
+      ballot_design: string
       ballot_design_finalized?: boolean
       election_manager: string
       election_title: string
@@ -68,6 +69,7 @@ export async function checkJwtOwnsElection(
 
   // Otherwise it passes
   return {
+    ballot_design: election.ballot_design,
     ballot_design_finalized: election.ballot_design_finalized,
     election_manager: election.election_manager,
     election_title: election.election_title,
