@@ -10,6 +10,7 @@ export type Item = {
   max_score?: number
   min_score?: number
   multiple_votes_allowed?: number
+  number_of_winners?: number
   options: {
     name: string
     sub?: string

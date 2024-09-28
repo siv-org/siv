@@ -16,19 +16,21 @@ export const tally_IRV_Items = (
   votes: Record<string, string>[],
 ) => {
   // First we undo the multi-vote suffixes to get back to the ballot_design ids
-  const items: Record<string, { rounds: IRV_Round[]; winner?: string }> = {}
+  const items: Record<string, { rounds: IRV_Round[]; winners: string[] }> = {}
   Object.keys(IRV_columns_seen).forEach((key) => {
     const multi_suffix = key.match(multi_vote_regex)
     if (!multi_suffix) throw new Error(`Unexpected key ${key} breaking multi-vote regex`)
     const item = key.slice(0, -multi_suffix[0].length)
-    items[item] = { rounds: [] }
+    items[item] = { rounds: [], winners: [] }
   })
 
   // Then for each voting item....
   Object.keys(items).forEach((item) => {
     const eliminated: string[] = []
 
+    // Get question parameters
     const max_selections = ballot_items_by_id[item].multiple_votes_allowed || defaultRankingsAllowed
+    const { number_of_winners = 1 } = ballot_items_by_id[item]
 
     // The IRV algorithm is to go round-by-round,
     const MAX_ROUNDS = 30 // arbitrary to prevent endless loops
@@ -61,18 +63,28 @@ export const tally_IRV_Items = (
 
       items[item].rounds.push(round_result)
 
-      // Did anyone exceed 50%?
-      const fifty_percent = round_result.totalVotes / 2
-      const leader = round_result.ordered[0]
-      if (round_result.tallies[leader] > fifty_percent) {
-        // Yes! Found a winner
-        return (items[item].winner = leader)
+      // Did anyone exceed the winning threshold?
+      let foundAWinner = false
+      const threshold_to_win = round_result.totalVotes / (number_of_winners + 1) // 50% for single-winner
+
+      for (const candidate of round_result.ordered) {
+        if (round_result.tallies[candidate] > threshold_to_win) {
+          // Yes! Found a winner
+          items[item].winners.push(candidate)
+
+          // Done once enough winners are found
+          if (items[item].winners.length === number_of_winners) return
+
+          // Remove winner from future rounds
+          eliminated.push(candidate)
+          foundAWinner = true
+        }
       }
 
       // Otherwise, eliminate the lowest choice and restart the loop
       const last = round_result.ordered.at(-1)
       if (!last) return // shouldn't happen
-      eliminated.push(last)
+      if (!foundAWinner) eliminated.push(last)
     }
   })
 

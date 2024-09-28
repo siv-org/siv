@@ -74,7 +74,7 @@ describe('IRV tallying', () => {
   })
 
   test('can declare a single final winner', () => {
-    expect(president.winner).toEqual('Bill Clinton')
+    expect(president.winners[0]).toEqual('Bill Clinton')
   })
 
   test('can handle voters leaving blanks', () => {
@@ -138,8 +138,8 @@ describe('IRV tallying', () => {
       { president_1: 'Bill Clinton', tracking: '3333-3333-3333' },
       { president_1: 'Bill Clinton', tracking: '4444-4444-4444' },
     ])
-    const { rounds, winner } = results2.irv.president
-    expect(winner).toEqual('Bill Clinton')
+    const { rounds, winners } = results2.irv.president
+    expect(winners[0]).toEqual('Bill Clinton')
     expect(rounds.length).toEqual(1)
     expect(rounds[0].tallies).toEqual({ 'Bill Clinton': 4, 'George H. W. Bu': 2, 'Ross Perot': 1 })
   })
@@ -157,8 +157,8 @@ describe('IRV tallying', () => {
         tracking: '4444-4444-4444',
       },
     ])
-    const { rounds, winner } = results2.irv.president
-    expect(winner).toEqual('Bill Clinton')
+    const { rounds, winners } = results2.irv.president
+    expect(winners[0]).toEqual('Bill Clinton')
     expect(rounds.length).toEqual(3)
     expect(rounds[2].tallies).toEqual({ 'Abraham Lincoln': 4, 'Bill Clinton': 5 })
   })
@@ -169,4 +169,138 @@ describe('IRV tallying', () => {
   test.todo('handles when there is a tie in the top choice early on')
   test.todo('handles when there is a tie in the final round')
   test.todo('handles when there are a two digit number of multiple_votes_allowed')
+})
+
+// Multi-winner RCV Tallying tests
+// 10 votes total
+// threshold = 3.333
+// Yang - 4
+// Bill - 3
+// George - 2
+// Perot - 0
+// Lincoln - 1
+
+const sampleTwoWinnerVotes = {
+  ballot_items_by_id: {
+    president: {
+      id: 'president',
+      multiple_votes_allowed: 4,
+      number_of_winners: 2,
+      options: [
+        { name: 'George H. W. Bush' },
+        { name: 'Bill Clinton' },
+        { name: 'Ross Perot' },
+        { name: 'Abraham Lincoln' },
+        { name: 'Andrew Yang' },
+      ],
+      title: 'Who should become President?',
+      type: 'ranked-choice-irv',
+      write_in_allowed: false,
+    },
+  },
+  votes: [
+    {
+      president_1: 'Bill Clinton',
+      president_2: 'George H. W. Bu',
+      president_3: 'Ross Perot',
+      president_4: 'Abraham Lincoln',
+      tracking: '3995-6836-1505',
+    },
+    {
+      president_1: 'Bill Clinton',
+      president_2: 'Ross Perot',
+      president_3: 'George H. W. Bu',
+      president_4: 'Abraham Lincoln',
+      tracking: '5225-1927-5026',
+    },
+    {
+      president_1: 'George H. W. Bu',
+      president_2: 'Bill Clinton',
+      president_3: 'Ross Perot',
+      president_4: 'Abraham Lincoln',
+      tracking: '5242-3203-2884',
+    },
+    {
+      president_1: 'Abraham Lincoln',
+      president_2: 'Bill Clinton',
+      president_3: 'Ross Perot',
+      president_4: 'George H. W. Bu',
+      tracking: '1234-5678-9012',
+    },
+    {
+      president_1: 'Bill Clinton',
+      president_2: 'Andrew Yang',
+      president_3: 'George H. W. Bu',
+      president_4: 'Abraham Lincoln',
+      tracking: '9876-5432-1098',
+    },
+    {
+      president_1: 'Andrew Yang',
+      president_2: 'Bill Clinton',
+      president_3: 'George H. W. Bu',
+      president_4: 'Abraham Lincoln',
+      tracking: '9876-5432-1097',
+    },
+    {
+      president_1: 'Andrew Yang',
+      president_2: 'Abraham Lincoln',
+      president_3: 'George H. W. Bu',
+      president_4: 'Ross Perot',
+      tracking: '9876-5432-1096',
+    },
+    {
+      president_1: 'Andrew Yang',
+      president_2: 'Bill Clinton',
+      president_3: 'George H. W. Bu',
+      president_4: 'Abraham Lincoln',
+      tracking: '9876-5432-1095',
+    },
+    {
+      president_1: 'Andrew Yang',
+      president_2: 'Ross Perot',
+      president_3: 'George H. W. Bu',
+      president_4: 'Abraham Lincoln',
+      tracking: '9876-5432-1094',
+    },
+    {
+      president_1: 'Andrew Yang',
+      president_2: 'George H. W. Bu',
+      president_3: 'Ross Perot',
+      president_4: 'Abraham Lincoln',
+      tracking: '9876-5432-1093',
+    },
+  ],
+}
+
+const rcv_mw_results = tallyVotes(sampleTwoWinnerVotes.ballot_items_by_id, sampleTwoWinnerVotes.votes)
+
+describe('MultiWinner RCV tallying', () => {
+  const { president } = rcv_mw_results.irv
+  const { rounds } = president
+
+  test("can tally up everyone's top choices as round 1 votes", () => {
+    expect(rounds[0].tallies).toEqual({
+      'Abraham Lincoln': 1,
+      'Andrew Yang': 5,
+      'Bill Clinton': 3,
+      'George H. W. Bu': 1,
+    })
+  })
+
+  test('can eliminate first place winner, and recalculate round 2 votes', () => {
+    expect(rounds[1].tallies).toEqual({
+      'Abraham Lincoln': 2,
+      'Bill Clinton': 5,
+      'George H. W. Bu': 2,
+      'Ross Perot': 1,
+    })
+  })
+
+  test('shows the correct number of rounds', () => {
+    expect(rounds).toHaveLength(2)
+  })
+
+  test('can declare two final winners', () => {
+    expect(president.winners).toEqual(['Andrew Yang', 'Bill Clinton'])
+  })
 })
