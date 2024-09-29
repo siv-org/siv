@@ -25,7 +25,7 @@ export const DecryptedVotes = ({ proofsPage }: { proofsPage?: boolean }): JSX.El
           <p className="mt-0 text-[13px] italic opacity-70">Anonymized for vote secrecy.</p>
         </>
       )}
-      <table className="block overflow-auto border-collapse [&_tr>*]:[border:1px_solid_#ccc] [&_tr>*]:px-2.5 [&_tr>*]:py-[3px]">
+      <table className="block overflow-auto border-collapse [&_tr>*]:[border:1px_solid_#ccc] [&_tr>*]:px-2.5 [&_tr>*]:py-[3px] pb-2">
         <thead>
           <tr className="text-[11px]">
             <th></th>
