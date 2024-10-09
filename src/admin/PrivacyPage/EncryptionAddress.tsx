@@ -12,13 +12,13 @@ export const EncryptionAddress = () => {
       <div>
         {trustees.length > 1 ? (
           <>
-            <h4>✅ The Verifying Observers completed the Pre-Election setup.</h4>
+            <h4>✅ The Privacy Protectors completed the Pre-Election setup.</h4>
             They created a Multi-Party Unlocking Key for the encryption address:
           </>
         ) : (
           <>
-            <h4>No extra Verifying Observers were added.</h4>✅ SIV has created a unique Unlocking Key for the
-            encryption address:
+            <h4>No extra Privacy Protectors were added.</h4>✅ SIV has created a unique Unlocking Key for the encryption
+            address:
           </>
         )}
         <span>{threshold_public_key}</span>

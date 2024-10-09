@@ -36,7 +36,7 @@ export const RankedChoiceItem = ({
 
     // Sort options by their current rankings
     setOrderedOptions(getSortedOrder(id, currentOptions, state.plaintext))
-  }, [options, writeIn, state.plaintext, write_in_allowed])
+  }, [JSON.stringify(state.plaintext)])
 
   return (
     <>
