@@ -1,12 +1,12 @@
-import './_env'
+import '../_env'
 
 import { keyBy, mapValues } from 'lodash'
 
-import { firebase } from '../pages/api/_services'
-import { RP, pointToString } from '../src/crypto/curve'
-import decrypt from '../src/crypto/decrypt'
-import { CipherStrings } from '../src/crypto/stringify-shuffle'
-import { tallyVotes } from '../src/status/tally-votes'
+import { firebase } from '../../pages/api/_services'
+import { RP, pointToString } from '../../src/crypto/curve'
+import decrypt from '../../src/crypto/decrypt'
+import { CipherStrings } from '../../src/crypto/stringify-shuffle'
+import { tallyVotes } from '../../src/status/tally-votes'
 
 // CHANGE ME 👇
 const election_id = '1680323766282'

@@ -1,9 +1,9 @@
 // Execute this file with:
 // npx ts-node db-data/2023-04-22-get-ballot-design-columns.ts
 
-import './_env'
+import '../_env'
 
-import { firebase } from '../pages/api/_services'
+import { firebase } from '../../pages/api/_services'
 
 // CHANGE ME 👇
 const admin_email = ''
