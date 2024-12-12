@@ -135,6 +135,7 @@ export const SetPrivacyProtectors = () => {
               if (response.status === 201) {
                 revalidate(election_id)
               } else {
+                alert(JSON.stringify(await response.json()))
                 throw await response.json()
               }
             }}
