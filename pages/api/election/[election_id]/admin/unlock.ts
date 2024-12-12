@@ -108,7 +108,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     // Yes, we can begin decryption...
     const { private_keyshare: decryption_key } = { ...(await admin).data() } as { private_keyshare: string }
 
-    // Fast shuffle, without building proofs, since there are no verifying observers. We can still build a proof later
+    // Fast shuffle, without building proofs, since there are no privacy protectors. We can still build a proof later
     const shuffled = await bluebird.props(
       mapValues(split, async (list) => fastShuffle(list.map((row) => mapValues(row, RP.fromHex)))),
     )

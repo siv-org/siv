@@ -13,7 +13,9 @@ export const BallotPreview = ({ state }: { state: State }) => {
 
         {!state.ballot_design_finalized && <div>1. Ballot design not finalized</div>}
 
-        {!state.public_key && <div>{state.ballot_design_finalized ? 1 : 2}. Elections Observers not finalized</div>}
+        {!state.public_key && (
+          <div>{state.ballot_design_finalized ? 1 : 2}. Election Privacy Protectors not finalized</div>
+        )}
       </div>
     </div>
   )

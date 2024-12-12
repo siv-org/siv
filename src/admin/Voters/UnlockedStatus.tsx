@@ -25,7 +25,7 @@ export const UnlockedStatus = () => {
     >
       {isUnlockBlocked ? (
         <p>
-          ⚠️ Unlocking: Waiting on Observer <i className="font-medium"> {isUnlockBlocked}</i>
+          ⚠️ Unlocking: Waiting on Privacy Protector <i className="font-medium"> {isUnlockBlocked}</i>
         </p>
       ) : !more_to_unlock ? (
         <p>

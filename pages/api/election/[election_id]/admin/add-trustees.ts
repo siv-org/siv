@@ -179,4 +179,4 @@ Thank you for helping to make this election more secure.`,
   })
 
 export const buildSubject = (election_id: string, election_title?: string) =>
-  `Invitation to be a Verifying Observer: ${election_title || `Election ${election_id}`}`
+  `Invitation to be a Privacy Protector: ${election_title || `Election ${election_id}`}`

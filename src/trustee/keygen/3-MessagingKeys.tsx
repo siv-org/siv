@@ -20,7 +20,7 @@ export const MessagingKeys = ({ dispatch, state }: StateAndDispatch) => {
 
     // Don't run if admin already has a different pub_key for us
     if (trustees && trustees[state.own_index].recipient_key)
-      return alert('Another device has already joined this ceremony using this Observer Token. Refusing to override.')
+      return alert('Another device has already joined this ceremony using this Protector Token. Refusing to override.')
 
     // Generate your keypair
     const new_key_pair = mapValues(generate_key_pair(), String)

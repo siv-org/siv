@@ -10,7 +10,7 @@ export const Mixnet = () => {
       <h3>Anonymization Mixnet</h3>
       <p>
         This animation illustrates how the encrypted votes were anonymized{' '}
-        {observers.length > 1 ? "by the Election's Verifying Observers " : ''}
+        {observers.length > 1 ? "by the Election's Privacy Protectors " : ''}
         before being unlocked. For more, see{' '}
         <a href="../protocol#4" target="_blank">
           SIV Protocol Step 4: Verifiable Shuffle

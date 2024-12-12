@@ -89,5 +89,5 @@ function permute<T>(input: T[], permutation_array: number[]) {
 export const rename_to_c1_and_2 = (inputs: Cipher[]) =>
   inputs.map(({ encrypted, lock }) => ({ c1: lock, c2: encrypted }))
 
-/** This permutes the order, but doesn't re-encrypt nor generates ZK proofs. It's used to speed up Unlocking votes when there are no other Verifying Observers. */
+/** This permutes the order, but doesn't re-encrypt nor generates ZK proofs. It's used to speed up Unlocking votes when there are no other Privacy Protectors. */
 export const fastShuffle = (inputs: Cipher[]): Cipher[] => permute(inputs, build_permutation_array(inputs.length))
