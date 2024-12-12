@@ -163,7 +163,7 @@ export const sendTrusteeInvite = ({
     recipient: email,
     subject: buildSubject(election_id, election_title),
     text: `Dear ${name || email},
-<h3 style="margin-bottom:0">${election_manager} invited you to be a Verifying Observer${
+<h3 style="margin-bottom:0">${election_manager} invited you to be a Privacy Protector${
       election_title ? ` for the election: ${election_title}` : ''
     }.</h3>
 This gives you cryptographic proof that votes are private & tallied correctly.
