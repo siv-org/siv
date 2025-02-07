@@ -33,7 +33,7 @@ export function sumBudgetVotes(votes: Record<string, string>[], ballot_design: I
       // Add up their total budget allocated
       let total = 0
       options.forEach(({ name, value }) => {
-        const cell = vote[id + '_' + value || name]
+        const cell = vote[id + '_' + (value || name)]
 
         // Filter out invalid entries
         if (invalidBudgetValues(cell)) return
