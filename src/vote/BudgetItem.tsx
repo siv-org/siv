@@ -47,8 +47,8 @@ export const BudgetItem = ({
     }, 0)
   }
 
-  const sum = options.reduce((sum, { value }) => {
-    const amount = state.plaintext[`${id}_${value}`]
+  const sum = options.reduce((sum, { name, value }) => {
+    const amount = state.plaintext[`${id}_${value || name}`]
     if (amount === 'BLANK') return sum
 
     const number = Number(amount)
