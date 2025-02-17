@@ -1,3 +1,5 @@
+// This is no longer being used. https://github.com/siv-org/siv/pull/256
+
 import { NoSsr } from 'src/_shared/NoSsr'
 
 const GA_ID = 'UA-84279342-7'
