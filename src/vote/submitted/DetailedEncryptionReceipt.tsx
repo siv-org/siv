@@ -1,3 +1,5 @@
+import { RP } from 'src/crypto/curve'
+
 import { Paper } from '../../protocol/Paper'
 import { State } from '../vote-state'
 
@@ -36,8 +38,9 @@ Encryption Formula
   Encrypted = Encoded + (Recipient * randomizer)
   Lock = (Generator * randomizer)
 
-Encryption Public Key (Recipient):
-  ${state.public_key}
+Encryption Public Key
+  Recipient: ${state.public_key}
+  Generator: ${RP.BASE.toHex()}
 
 ---------
 
