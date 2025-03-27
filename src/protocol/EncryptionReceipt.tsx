@@ -31,7 +31,7 @@ Verification #: ${state.verification}
 
 ${map(
   state.plaintext,
-  (value: string, key) => `${key}
+  (value: string, key: string) => `${key}
   plaintext: ${state.verification}:${value}
   encoded: ${stringToPoint(value)}
   randomizer: ${state.randomizer[key]}
