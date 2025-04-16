@@ -8,7 +8,7 @@
     "dev": "next dev",
     "e2e": "cypress run --config-file cypress/cypress-config.json",
     "format": "prettier --write **/*.{js,ts,tsx}",
-    "postinstall": "patch-package",
+    "postinstall": "patch-package && ts-node db-data/migrations/_runner.ts",
     "lint": "eslint . --ext ts --ext tsx --ext js",
     "start": "next start",
     "test": "yarn lint && yarn typecheck && yarn e2e",
