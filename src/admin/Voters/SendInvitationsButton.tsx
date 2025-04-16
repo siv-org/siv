@@ -28,7 +28,7 @@ export const SendInvitationsButton = ({
       style={{ margin: 0, padding: '5px 10px' }}
       onClick={async () => {
         if (!ballot_design_finalized) return alert('You need to Finalize a Ballot Design first.')
-        if (!threshold_public_key) return alert('You need to finish setting the election Observers first.')
+        if (!threshold_public_key) return alert('You need to finish setting the election Privacy Protectors first.')
 
         toggle_sending()
         const voters_to_invite = checked.reduce((acc: string[], is_checked, index) => {

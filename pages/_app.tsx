@@ -3,7 +3,6 @@ import '../src/tailwind.css'
 
 import { AppProps } from 'next/app'
 
-import { GAnalytics } from '../src/gAnalytics'
 import { useSentry } from '../src/sentry'
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -12,7 +11,6 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <Component {...pageProps} />
-      <GAnalytics />
     </>
   )
 }

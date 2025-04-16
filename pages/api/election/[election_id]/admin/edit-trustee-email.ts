@@ -34,7 +34,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Confirm new trustee doesn't already exist
   if ((await trusteesCollection.doc(new_email).get()).exists)
-    return res.status(401).json({ error: `There's already an Observer ${new_email}` })
+    return res.status(401).json({ error: `There's already a Protector ${new_email}` })
 
   // Validate new_email is a valid email address
   if (!validateEmail(new_email)) return res.status(401).json({ error: `Invalid email: ${new_email}` })

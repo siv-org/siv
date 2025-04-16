@@ -42,7 +42,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Is election_id in DB?
   if (!data) return res.status(400).json({ error: 'Unknown Election ID.' })
 
-  const observers = (await loadObservers).docs.map((doc, index) => doc.data().name || `Verifying Observer ${index + 1}`)
+  const observers = (await loadObservers).docs.map((doc, index) => doc.data().name || `Privacy Protector ${index + 1}`)
 
   const {
     ballot_design,

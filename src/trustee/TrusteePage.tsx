@@ -25,7 +25,7 @@ export const TrusteePage = (): JSX.Element => {
 
   return (
     <>
-      <Head title={`Observer${tab === 0 ? '' : ' Unlock'}`} />
+      <Head title={`Privacy Protector${tab === 0 ? '' : ' Unlock'}`} />
 
       <HeaderBar />
       <main>

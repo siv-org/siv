@@ -99,7 +99,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (election_manager !== 'SIV End2End Tester')
     promises.push(
       pushover(
-        `${election_manager} invited ${trustees.length - 1} observer${trustees.length > 2 ? 's' : ''}`,
+        `${election_manager} invited ${trustees.length - 1} Protector${trustees.length > 2 ? 's' : ''}`,
         trustees
           .slice(1)
           .map((t) => t.email)
@@ -163,7 +163,7 @@ export const sendTrusteeInvite = ({
     recipient: email,
     subject: buildSubject(election_id, election_title),
     text: `Dear ${name || email},
-<h3 style="margin-bottom:0">${election_manager} invited you to be a Verifying Observer${
+<h3 style="margin-bottom:0">${election_manager} invited you to be a Privacy Protector${
       election_title ? ` for the election: ${election_title}` : ''
     }.</h3>
 This gives you cryptographic proof that votes are private & tallied correctly.
@@ -179,4 +179,4 @@ Thank you for helping to make this election more secure.`,
   })
 
 export const buildSubject = (election_id: string, election_title?: string) =>
-  `Invitation to be a Verifying Observer: ${election_title || `Election ${election_id}`}`
+  `Invitation to be a Privacy Protector: ${election_title || `Election ${election_id}`}`

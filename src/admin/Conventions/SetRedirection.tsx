@@ -118,17 +118,17 @@ export const SetRedirection = () => {
                       ''
                     )}
 
-                    {/* Observers not set */}
+                    {/* Privacy Protectors not set */}
                     {!e.threshold_public_key ? (
                       <div className="text-left">
                         <span className="text-[8px] relative bottom-0.5 opacity-70">❌ </span>
                         <a
                           className="text-black/60 hover:text-blue-700"
-                          href={`/admin/${e.id}/observers`}
+                          href={`/admin/${e.id}/privacy`}
                           rel="noreferrer"
                           target="_blank"
                         >
-                          Observers not set
+                          Privacy Protectors not set
                         </a>
                       </div>
                     ) : (

@@ -47,8 +47,8 @@ export const BudgetItem = ({
     }, 0)
   }
 
-  const sum = options.reduce((sum, { value }) => {
-    const amount = state.plaintext[`${id}_${value}`]
+  const sum = options.reduce((sum, { name, value }) => {
+    const amount = state.plaintext[`${id}_${value || name}`]
     if (amount === 'BLANK') return sum
 
     const number = Number(amount)
@@ -92,38 +92,40 @@ export const BudgetItem = ({
           {remaining < 0 && <div className="px-1 pt-1 font-semibold text-red-500">You{"'"}ve exceeded the budget.</div>}
         </div>
 
-        <div className="sm:ml-3">
-          <div className="text-xs opacity-60">Show:</div>
-          <div className="flex justify-between py-1.5">
-            {toggleable_label && (
-              <div
-                className="inline-block px-2 border border-solid rounded-lg cursor-pointer border-black/20"
-                onClick={() => {
-                  const currentTopItem = findCurrentTopItemInView()
-                  setShowToggleables(!showToggleables)
-                  scrollToCurrentTopItemInView(currentTopItem)
-                }}
-              >
-                <Switch checked={showToggleables} label="" onClick={() => {}} />
-                <span className="text-xs">{toggleable_label}</span>
-              </div>
-            )}
+        {(toggleable_label || toggleable_2_label) && (
+          <div className="sm:ml-3">
+            <div className="text-xs opacity-60">Show:</div>
+            <div className="flex justify-between py-1.5">
+              {toggleable_label && (
+                <div
+                  className="inline-block px-2 border border-solid rounded-lg cursor-pointer border-black/20"
+                  onClick={() => {
+                    const currentTopItem = findCurrentTopItemInView()
+                    setShowToggleables(!showToggleables)
+                    scrollToCurrentTopItemInView(currentTopItem)
+                  }}
+                >
+                  <Switch checked={showToggleables} label="" onClick={() => {}} />
+                  <span className="text-xs">{toggleable_label}</span>
+                </div>
+              )}
 
-            {toggleable_2_label && (
-              <div
-                className="inline-block px-2 pb-3 border border-solid rounded-lg cursor-pointer sm:ml-3 border-black/20"
-                onClick={() => {
-                  const currentTopItem = findCurrentTopItemInView()
-                  setShowToggleable2(!showToggleable2)
-                  scrollToCurrentTopItemInView(currentTopItem)
-                }}
-              >
-                <Switch checked={showToggleable2} label="" onClick={() => {}} />
-                <span className="text-xs">{toggleable_2_label}</span>
-              </div>
-            )}
+              {toggleable_2_label && (
+                <div
+                  className="inline-block px-2 pb-3 border border-solid rounded-lg cursor-pointer sm:ml-3 border-black/20"
+                  onClick={() => {
+                    const currentTopItem = findCurrentTopItemInView()
+                    setShowToggleable2(!showToggleable2)
+                    scrollToCurrentTopItemInView(currentTopItem)
+                  }}
+                >
+                  <Switch checked={showToggleable2} label="" onClick={() => {}} />
+                  <span className="text-xs">{toggleable_2_label}</span>
+                </div>
+              )}
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       <table className="sm:ml-3">
