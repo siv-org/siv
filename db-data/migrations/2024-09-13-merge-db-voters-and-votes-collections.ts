@@ -38,14 +38,38 @@ type Voter = {
 }
 type ApprovedVoter = Voter & Partial<Vote & { voted_at: { _seconds: number } }>
 
-async function main() {
+type MigrationResult = {
+  election_id: string
+  error?: string
+  stats?: { approved_voters: number; voters: number; votes: number }
+  success: boolean
+}
+
+export async function main() {
   const db = firebase.firestore()
+  const results: MigrationResult[] = []
 
   for (const election_id of election_ids) {
-    console.log('Running merge migration for election_id:', election_id)
-    const electionDoc = db.collection('elections').doc(election_id)
+    console.log(`\nProcessing election ${election_id}...`)
+    const result: MigrationResult = { election_id, success: false }
 
     try {
+      const electionDoc = db.collection('elections').doc(election_id)
+
+      // First check document counts to warn about potential transaction limits
+      const [votersSnapshot, votesSnapshot] = await Promise.all([
+        electionDoc.collection('voters').get(),
+        electionDoc.collection('votes').get(),
+      ])
+
+      const totalDocs = votersSnapshot.size + votesSnapshot.size
+      if (totalDocs > 400) {
+        // Warning at 80% of limit
+        console.warn(
+          `Warning: Election ${election_id} has ${totalDocs} documents, approaching Firestore transaction limit of 500`,
+        )
+      }
+
       await db.runTransaction(async (transaction) => {
         const votersRef = electionDoc.collection('voters')
         const votesRef = electionDoc.collection('votes')
@@ -79,24 +103,36 @@ async function main() {
         const approvedVotersRef = electionDoc.collection('approved-voters')
 
         // Write combined data to new collection
-        approvedVoters.forEach((av) => {
-          transaction.set(approvedVotersRef.doc(av.auth_token), av)
-        })
+        approvedVoters.forEach((av) => transaction.set(approvedVotersRef.doc(av.auth_token), av))
 
         // Delete old collections
-        votersSnapshot.docs.forEach((voterDoc) => {
-          transaction.delete(votersRef.doc(voterDoc.id))
-        })
-        votesSnapshot.docs.forEach((voteDoc) => {
-          transaction.delete(votesRef.doc(voteDoc.id))
-        })
+        votersSnapshot.docs.forEach((voterDoc) => transaction.delete(votersRef.doc(voterDoc.id)))
+        votesSnapshot.docs.forEach((voteDoc) => transaction.delete(votesRef.doc(voteDoc.id)))
       })
 
-      console.log('Migration completed for election:', election_id)
+      result.success = true
+      result.stats = {
+        approved_voters: votersSnapshot.size,
+        voters: votersSnapshot.size,
+        votes: votesSnapshot.size, // Same as voters since we're merging
+      }
+      console.log(`✅ Successfully migrated election ${election_id}`)
+      console.log(
+        `   Voters: ${result.stats.voters}, Votes: ${result.stats.votes}, Approved Voters: ${result.stats.approved_voters}`,
+      )
     } catch (error) {
-      console.error('Failed to complete migration for election:', election_id, error)
+      result.error = error instanceof Error ? error.message : String(error)
+      console.error(`❌ Failed to migrate election ${election_id}:`, result.error)
     }
+
+    results.push(result)
+  }
+
+  // Print failures if any
+  const failed = results.filter((r) => !r.success)
+  if (failed.length > 0) {
+    console.log(`❌ Failed: ${failed.length}`)
+    failed.forEach((r) => console.log(`   - ${r.election_id}: ${r.error}`))
+    throw new Error('Some elections failed to migrate')
   }
 }
-
-main()
