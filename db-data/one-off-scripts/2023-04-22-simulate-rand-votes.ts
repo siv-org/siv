@@ -5,15 +5,15 @@ Execute it w/:
     npx ts-node db-data/2023-04-22-simulate-rand-votes.ts
 */
 
-import './_env'
+import '../_env'
 
 import { mapValues } from 'lodash'
 
-import { firebase } from '../pages/api/_services'
-import { RP, random_bigint, stringToPoint } from '../src/crypto/curve'
-import encrypt from '../src/crypto/encrypt'
-import { CipherStrings } from '../src/crypto/stringify-shuffle'
-import { generateTrackingNum } from '../src/vote/tracking-num'
+import { firebase } from '../../pages/api/_services'
+import { RP, random_bigint, stringToPoint } from '../../src/crypto/curve'
+import encrypt from '../../src/crypto/encrypt'
+import { CipherStrings } from '../../src/crypto/stringify-shuffle'
+import { generateTrackingNum } from '../../src/vote/tracking-num'
 
 const election_id = '1682168554981'
 
