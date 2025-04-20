@@ -1,65 +1,54 @@
 import './_env'
 
 import fs from 'fs'
-import path from 'path'
-
-import bluebird from 'bluebird'
-import { firestore } from 'firebase-admin'
 
 import { firebase } from '../pages/api/_services'
 
-// import elections from './elections.json'
-
-// Run this to write existing Firebase collections to local JSON files
+// Run this to write existing Firebase collections to local JSON file
 
 // Execute this file with:
 // npx ts-node db-data/_dl-all.ts
 
-// Download all Firebase data to JSON files
-type DirectionStr = 'desc' | 'asc'
-type Collection = [string, Collection[]?, string?, DirectionStr?]
-const collectionsToDownload: Collection[] = [['elections', [['votes', [], 'created_at', 'desc']], 'created_at', 'desc']]
+type NestedDump = Record<string, unknown> & {
+  __subcollections__?: Record<string, NestedDump>
+}
+const db = firebase.firestore()
 
-bluebird.mapSeries(collectionsToDownload, async ([collection, subcollections, orderKey, direction]: Collection) => {
-  console.log(`  ⬇️ Downloading ${collection}...`)
+async function getNestedDataForCollection(path: string): Promise<NestedDump> {
+  const colRef = db.collection(path)
+  const snapshot = await colRef.get()
 
-  let query: firestore.Query = firebase.firestore().collection(collection)
+  const result: NestedDump = {}
 
-  // Apply optional orderBy()
-  if (orderKey) query = query.orderBy(orderKey, direction)
+  for (const doc of snapshot.docs) {
+    const docData: NestedDump = { ...doc.data() }
 
-  const data = (await query.get()).docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+    const subcollections = await doc.ref.listCollections()
+    if (subcollections.length > 0) {
+      docData.__subcollections__ = {}
+      for (const subcol of subcollections) {
+        const subData = await getNestedDataForCollection(`${path}/${doc.id}/${subcol.id}`)
+        docData.__subcollections__[subcol.id] = subData
+      }
+    }
 
-  fs.writeFileSync(path.join(__dirname, `/${collection}.json`), JSON.stringify(data))
-  console.log(`  ✅ Wrote ${data.length} rows to ${collection}.json\n`)
-
-  // const data = elections
-
-  if (subcollections?.length) {
-    await bluebird.mapSeries(subcollections, async ([sub, , suborder, subdirection]) => {
-      console.log(`  ⬇️  Downloading sub ${sub}...`)
-
-      let sublength = 0
-
-      const subData = await bluebird.reduce(
-        data,
-        async (memo, row) => {
-          let query: firestore.Query = firebase.firestore().collection(collection).doc(row.id).collection(sub)
-
-          // Apply optional orderBy()
-          if (suborder) query = query.orderBy(suborder, subdirection)
-
-          memo[row.id] = (await query.get()).docs.map((doc) => ({ id: doc.id, ...doc.data() }))
-          sublength += memo[row.id].length
-
-          return memo
-        },
-        {} as Record<string, unknown[]>,
-      )
-
-      const filename = `${collection}-${sub}.json`
-      fs.writeFileSync(path.join(__dirname, `/${filename}`), JSON.stringify(subData))
-      console.log(`  ✅ Wrote ${sublength} rows to ${filename}\n`)
-    })
+    result[doc.id] = docData
   }
-})
+
+  return result
+}
+
+async function exportNestedFirestore() {
+  const topLevelCollections = await db.listCollections()
+  const dump: NestedDump = {}
+
+  for (const col of topLevelCollections) {
+    dump[col.id] = await getNestedDataForCollection(col.id)
+    console.log(`Finished downloading: ${col.id}`)
+  }
+
+  fs.writeFileSync(`local-backup/${new Date().toISOString().slice(0, 16)}.json`, JSON.stringify(dump, null, 2))
+  console.log('Export complete.')
+}
+
+exportNestedFirestore()
