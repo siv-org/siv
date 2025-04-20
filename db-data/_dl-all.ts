@@ -7,7 +7,7 @@ import { firebase } from '../pages/api/_services'
 // Run this to write existing Firebase collections to local JSON file
 
 // Execute this file with:
-// npx ts-node db-data/_dl-all.ts
+// npx tsx db-data/_dl-all.ts
 
 type NestedDump = Record<string, unknown> & {
   __subcollections__?: Record<string, NestedDump>
