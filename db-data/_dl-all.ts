@@ -117,11 +117,7 @@ async function exportNestedFirestore() {
     .map(([id]) => id)
 
   const indexContent = `// Auto-generated index file for Firestore backup from ${timestamp}
-${completedCollections.map((id) => `export { default as ${id} } from './${id}.js'`).join('\n')}
-
-export type Collections = {
-  ${completedCollections.map((id) => `${id}: typeof ${id}`).join(',\n  ')}
-}
+${completedCollections.map((id) => `export { default as ${id.replaceAll('-', '_')} } from './${id}.js'`).join('\n')}
 `
 
   fs.writeFileSync(path.join(backupDir, 'index.ts'), indexContent)
