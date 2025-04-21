@@ -68,7 +68,7 @@ async function exportNestedFirestore() {
   // Download each top-level collection and its subcollections
   for (const col of topLevelCollections) {
     const collectionStart = Date.now()
-    console.log(`\nStarting collection: ${col.id}`)
+    console.log(`\n🟢 Starting collection: ${col.id}`)
 
     try {
       // Check if we already have this collection
@@ -92,7 +92,7 @@ async function exportNestedFirestore() {
       fs.writeFileSync(path.join(backupDir, 'manifest.json'), JSON.stringify(manifest, null, 2))
 
       const duration = (Date.now() - collectionStart) / 1000
-      console.log(`Finished ${col.id} in ${duration.toFixed(1)}s`)
+      console.log(`Finished ${col.id} in ${duration.toFixed(1)}s 🕑`)
     } catch (error) {
       console.error(`Error processing ${col.id}:`, error)
       manifest.collections[col.id].status = 'error'
