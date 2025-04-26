@@ -2,6 +2,9 @@
   "functions": {
     "pages/api/election/[election_id]/admin/unlock.ts": {
       "maxDuration": 300
+    },
+    "pages/api/election/[election_id]/trustees/update.ts": {
+      "maxDuration": 300
     }
   }
 }
