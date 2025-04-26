@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "/api/election/[election_id]/admin/unlock": {
+      "maxDuration": 300
+    }
+  }
+}
