@@ -5,6 +5,9 @@
     },
     "pages/api/election/[election_id]/trustees/update.ts": {
       "maxDuration": 300
+    },
+    "pages/api/election/[election_id]/trustees/update-admin.ts": {
+      "maxDuration": 300
     }
   }
 }
