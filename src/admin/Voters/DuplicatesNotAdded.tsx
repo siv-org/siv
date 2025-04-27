@@ -22,8 +22,8 @@ export const DuplicatesNotAdded = ({
         </div>
 
         <ol className="mt-2 ml-2 text-sm text-yellow-900 list-decimal">
-          {removedDuplicates.map((email) => (
-            <li key={email}>{email}</li>
+          {removedDuplicates.map((email, idx) => (
+            <li key={`${email}-${idx}`}>{email}</li>
           ))}
         </ol>
       </div>
