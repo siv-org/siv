@@ -38,7 +38,7 @@ export const AddVoters = () => {
 
             if (response.status === 201) {
               const data = await response.json()
-              setRemovedDuplicates(data.already_added)
+              setRemovedDuplicates(data.all_duplicates)
               revalidate(election_id)
               set_new_voters('')
             } else {

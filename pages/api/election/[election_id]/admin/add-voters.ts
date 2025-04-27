@@ -14,9 +14,16 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const jwt = await checkJwtOwnsElection(req, res, election_id)
   if (!jwt.valid) return
 
-  const { already_added, unique_new_emails: unique_new_voters } = await addVotersToElection(new_voters, election_id)
+  const {
+    already_added,
+    duplicates_in_submission,
+    unique_new_emails: unique_new_voters,
+  } = await addVotersToElection(new_voters, election_id)
 
-  return res.status(201).json({ already_added, unique_new_voters })
+  return res.status(201).json({
+    all_duplicates: [...already_added, ...duplicates_in_submission],
+    unique_new_voters,
+  })
 }
 
 /** IMPORTANT: Assumes you already checked user owns election
@@ -32,19 +39,23 @@ export async function addVotersToElection(new_voters: string[], election_id: str
   const existing_voters = new Set()
   ;(await loadVoters).docs.map((d) => existing_voters.add(d.data().email))
 
-  // De-dupe new voters
-  const deduped_new_voters = Array.from(new Set(new_voters)) as string[]
+  // Filter out duplicates within the submission
+  const unique_in_submission = new Set<string>()
+  const duplicates_in_submission: string[] = []
+  for (const v of new_voters) {
+    if (!v) continue // Skip empties
+    if (unique_in_submission.has(v)) duplicates_in_submission.push(v)
+    else unique_in_submission.add(v)
+  }
 
-  // Separate uniques from already_added
+  // Filter out duplicates already added to the election
   const unique_new_emails: string[] = []
   const already_added: string[] = []
-  deduped_new_voters.forEach((v: string) => {
-    if (v) {
-      existing_voters.has(v) ? already_added.push(v) : unique_new_emails.push(v)
-    }
+  unique_in_submission.forEach((v: string) => {
+    if (v) existing_voters.has(v) ? already_added.push(v) : unique_new_emails.push(v)
   })
 
-  console.log('Add-voters:', { already_added, election_id, unique_new_emails })
+  console.log('Add-voters:', { already_added, duplicates_in_submission, election_id, unique_new_emails })
   const email_to_auth: Record<string, string> = {}
 
   // Generate and store auths for uniques
@@ -67,5 +78,5 @@ export async function addVotersToElection(new_voters: string[], election_id: str
       .concat(electionDoc.update({ num_voters: firestore.FieldValue.increment(unique_new_emails.length) })),
   )
 
-  return { already_added, email_to_auth, unique_new_emails }
+  return { already_added, duplicates_in_submission, email_to_auth, unique_new_emails }
 }
