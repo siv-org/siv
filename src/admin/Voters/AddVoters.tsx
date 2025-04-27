@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 
 import { api } from '../../api-helper'
 import { SaveButton } from '../SaveButton'
 import { revalidate, useStored } from '../useStored'
 import { AddVoterTextarea } from './AddVotersTextarea'
+import { DuplicatesNotAdded } from './DuplicatesNotAdded'
 import { ExistingVoters } from './ExistingVoters'
 import { PrivacyProtectorsWarning } from './PrivacyProtectorsWarning'
 import { RequestEsignatures } from './RequestEsignatures'
@@ -12,6 +13,7 @@ import { ToggleShareableLink } from './ToggleShareableLink'
 
 export const AddVoters = () => {
   const [new_voters, set_new_voters] = useState('')
+  const [removedDuplicates, setRemovedDuplicates] = useState<string[]>([])
   const { election_id } = useStored()
 
   return (
@@ -20,6 +22,9 @@ export const AddVoters = () => {
       <h2 className="hidden sm:block">Voters</h2>
       <h4>Add new voters by email address:</h4>
       <AddVoterTextarea state={new_voters} update={set_new_voters} />
+
+      {/* Show message if duplicates were removed */}
+      <DuplicatesNotAdded {...{ removedDuplicates, setRemovedDuplicates }} />
 
       {/* Show save button if there are new voters to add */}
       {new_voters === '' ? (
@@ -32,6 +37,8 @@ export const AddVoters = () => {
             })
 
             if (response.status === 201) {
+              const data = await response.json()
+              setRemovedDuplicates(data.already_added)
               revalidate(election_id)
               set_new_voters('')
             } else {
