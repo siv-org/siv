@@ -25,7 +25,7 @@ export const PrivacyProtectorsWarning = () => {
           <div>🚫 If not, you can create a new election.</div>
           <div>
             <Link href={`/admin/${election_id}/privacy`}>
-              <a>Review Privacy Protectors</a>
+              <a>Review Privacy Protectors: {trustees.length - 1}</a>
             </Link>
           </div>
         </div>
