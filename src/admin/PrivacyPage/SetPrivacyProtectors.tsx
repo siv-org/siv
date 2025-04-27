@@ -29,8 +29,8 @@ export const SetPrivacyProtectors = () => {
         correctly.
       </p>
       <p>
-        If you add them, votes cannot be unlocked and tallied until their computers run the automatic verification
-        checks.
+        ⚠️ If you add them, <b>votes cannot be unlocked and tallied</b> until their same computers run the automatic
+        verification checks.
       </p>
       <p>
         <a href="https://docs.siv.org/privacy/privacy-protectors" rel="noreferrer" target="_blank">
