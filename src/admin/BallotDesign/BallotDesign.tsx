@@ -10,6 +10,7 @@ import { Errors } from './Errors'
 import { FinalizeBallotDesignButton } from './FinalizeBallotDesignButton'
 import { ModeControls } from './ModeControls'
 import { TextDesigner } from './TextDesigner'
+import { TipToRunPracticeVote } from './TipToRunPracticeVote'
 import { Wizard } from './Wizard'
 
 export const BallotDesign = () => {
@@ -35,6 +36,8 @@ export const BallotDesign = () => {
 
   return (
     <>
+      <TipToRunPracticeVote />
+
       <h2 className="hidden sm:block">
         Ballot Design
         {/* Preview button */}
