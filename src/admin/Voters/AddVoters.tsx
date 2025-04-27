@@ -5,6 +5,7 @@ import { SaveButton } from '../SaveButton'
 import { revalidate, useStored } from '../useStored'
 import { AddVoterTextarea } from './AddVotersTextarea'
 import { ExistingVoters } from './ExistingVoters'
+import { PrivacyProtectorsWarning } from './PrivacyProtectorsWarning'
 import { RequestEsignatures } from './RequestEsignatures'
 import { StopAcceptingVotes } from './StopAcceptingVotes'
 import { ToggleShareableLink } from './ToggleShareableLink'
@@ -15,6 +16,7 @@ export const AddVoters = () => {
 
   return (
     <div className="max-w-[50rem]">
+      <PrivacyProtectorsWarning />
       <h2 className="hidden sm:block">Voters</h2>
       <h4>Add new voters by email address:</h4>
       <AddVoterTextarea state={new_voters} update={set_new_voters} />
