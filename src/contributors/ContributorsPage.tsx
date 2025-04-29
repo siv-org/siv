@@ -1,3 +1,9 @@
+import Contributors from './contributors.mdx'
+
 export const ContributorsPage = () => {
-  return <div>Contributors</div>
+  return (
+    <div className="m-10">
+      <Contributors />
+    </div>
+  )
 }
