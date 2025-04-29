@@ -24,6 +24,9 @@ export const HeaderBar = () => (
       <Link href="/about">
         <a>Research</a>
       </Link>
+      <Link href="/contributors">
+        <a>Contributors</a>
+      </Link>
       <Link href="/admin">
         <a>
           Sign In
