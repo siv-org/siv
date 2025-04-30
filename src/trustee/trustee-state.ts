@@ -5,27 +5,9 @@ import { CipherStrings, stringifyShuffle } from 'src/crypto/stringify-shuffle'
 import { useLocalStorageReducer } from '../vote/useLocalStorage'
 import { diff } from './diff-objects'
 
-// Define our types
+export type Dispatch = ReturnType<typeof useLocalStorageReducer>[1]
+export type PartialWithProof = { partial: string; proof: ReturnType<typeof stringifyPartial> }
 export type Shuffled = Record<string, ReturnType<typeof stringifyShuffle>>
-export type PartialWithProof = {
-  partial: string
-  proof: ReturnType<typeof stringifyPartial>
-}
-
-export type Trustee = {
-  commitments: string[]
-  email: string
-  encrypted_pairwise_shares_for: Record<string, string>
-  index: number
-  name?: string
-  partial_decryption?: string
-  partials?: Record<string, PartialWithProof[]>
-  preshuffled?: Record<string, CipherStrings[]> // admin only
-  recipient_key?: string
-  shuffled?: Shuffled
-  verified?: Record<string, boolean>
-  you?: boolean
-}
 export type State = {
   auth: string
   commitments?: string[]
@@ -46,8 +28,6 @@ export type State = {
   verified?: Record<string, boolean>
 }
 
-export type Dispatch = ReturnType<typeof useLocalStorageReducer>[1]
-
 /**
  * Typescript helper w/ State and Dispatch
  * @property dispatch - Takes {key: value} and sticks it in local storage
@@ -58,7 +38,22 @@ export type StateAndDispatch = {
   state: State
 }
 
-// Core state logic
+export type Trustee = {
+  commitments: string[]
+  email: string
+  encrypted_pairwise_shares_for: Record<string, string>
+  index: number
+  name?: string
+  partial_decryption?: string
+  partials?: Record<string, PartialWithProof[]>
+  preshuffled?: Record<string, CipherStrings[]> // admin only
+  recipient_key?: string
+  shuffled?: Shuffled
+  verified?: Record<string, boolean>
+  you?: boolean
+}
+
+/** Core state logic */
 function reducer(prev: State, payload: Record<string, unknown>) {
   // Special handler for reset
   if (payload.reset) return payload.reset
@@ -76,7 +71,7 @@ function reducer(prev: State, payload: Record<string, unknown>) {
   return newState
 }
 
-// Export consumable hook that returns [state, dispatch]
+/** Export consumable hook that returns [state, dispatch] */
 export const useTrusteeState = ({
   attempt,
   auth,

@@ -25,7 +25,7 @@ export type State = {
 }
 type Map = Record<string, string>
 
-// Core state logic
+/** Core state logic */
 function reducer(prev: State, payload: Map) {
   // Special handler for other state updates
   // that don't require encryption
@@ -82,5 +82,5 @@ const initState = {
   randomizer: {},
 }
 
-// Export consumable hook that returns [state, dispatch]
+/** Export consumable hook that returns [state, dispatch] */
 export const useVoteState = (storage_key: string) => useLocalStorageReducer(storage_key, reducer, initState)
