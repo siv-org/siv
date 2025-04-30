@@ -27,7 +27,6 @@ const commonConfig = {
   rules: {
     ...reactPlugin.configs.flat.recommended.rules,
     'no-unreachable': 'warn',
-    'react/jsx-sort-props': ['error', { callbacksLast: true, shorthandFirst: true }],
     'react/no-unknown-property': [2, { ignore: ['jsx', 'global'] }], // inserted by next's styled-jsx
   },
   settings: { react: { version: 'detect' } },
