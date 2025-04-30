@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { Tooltip } from 'src/admin/Voters/Tooltip'
 import { Item } from 'src/vote/storeElectionInfo'
 
-import { check_for_urgent_ballot_errors } from './check_for_ballot_errors'
+import { check_for_fatal_ballot_errors } from './check_for_ballot_errors'
 import { Switch } from './Switch'
 
 export const default_multiple_votes_allowed = 3
@@ -15,7 +15,7 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
   const [json, setJson] = useState<Item[]>()
   const saveDesign = (json: Item[]) => setDesign(JSON.stringify(json, undefined, 2))
 
-  const errors = check_for_urgent_ballot_errors(design)
+  const errors = check_for_fatal_ballot_errors(design)
 
   useEffect(() => {
     if (!errors) setJson(JSON.parse(design))
