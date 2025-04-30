@@ -9,6 +9,7 @@ const globals = require('globals')
 
 // Common configuration shared between JS and TS files
 const commonConfig = {
+  files: ['**/*.js'],
   ignores: ['.next', 'node_modules', 'dist', 'build'],
   languageOptions: {
     ecmaVersion: 2018,
@@ -40,15 +41,11 @@ const commonConfig = {
 
 module.exports = [
   js.configs.recommended,
+  commonConfig,
+  // TypeScript-specific overrides
   {
-    // JavaScript-specific configuration
-    files: ['**/*.js'],
     ...commonConfig,
-  },
-  {
-    // TypeScript-specific configuration
     files: ['**/*.ts?(x)'],
-    ...commonConfig,
     languageOptions: {
       ...commonConfig.languageOptions,
       parser: tsParser,
