@@ -47,7 +47,7 @@ module.exports = [
   },
   {
     // TypeScript-specific configuration
-    files: ['**/*.ts', '**/*.tsx'],
+    files: ['**/*.ts?(x)'],
     ...commonConfig,
     languageOptions: {
       ...commonConfig.languageOptions,
