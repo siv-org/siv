@@ -4,6 +4,7 @@ const tsParser = require('@typescript-eslint/parser')
 const reactPlugin = require('eslint-plugin-react')
 const globals = require('globals')
 const perfectionist = require('eslint-plugin-perfectionist')
+const { merge } = require('lodash')
 
 // Common configuration shared between JS and TS files
 const commonConfig = {
@@ -37,11 +38,9 @@ module.exports = [
   perfectionist.configs['recommended-natural'],
   commonConfig,
   // TypeScript-specific overrides
-  {
-    ...commonConfig,
+  merge({}, commonConfig, {
     files: ['**/*.ts?(x)'],
     languageOptions: {
-      ...commonConfig.languageOptions,
       parser: tsParser,
       parserOptions: {
         ecmaFeatures: { jsx: true },
@@ -49,14 +48,10 @@ module.exports = [
         tsconfigRootDir: process.cwd(),
       },
     },
-    plugins: {
-      ...commonConfig.plugins,
-      '@typescript-eslint': tseslint,
-    },
+    plugins: { '@typescript-eslint': tseslint },
     rules: {
-      ...commonConfig.rules,
       ...tseslint.configs.recommended.rules,
       '@typescript-eslint/no-non-null-assertion': 'error',
     },
-  },
+  }),
 ]
