@@ -1,4 +1,3 @@
-/* eslint-disable no-bitwise, no-continue */
 import { randomBytes } from 'crypto'
 
 import { CURVE, RistrettoPoint as RP, utils } from '@noble/ed25519'
