@@ -62,7 +62,6 @@ module.exports = [
     },
     rules: {
       ...commonConfig.rules,
-      ...tseslint.configs.base.rules,
       ...tseslint.configs.recommended.rules,
       ...typescriptSortKeys.configs.recommended.rules,
       // TypeScript-specific rule overrides
