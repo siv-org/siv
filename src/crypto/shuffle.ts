@@ -1,3 +1,4 @@
+/* eslint-disable no-redeclare */
 import { RP, random_bigint } from './curve'
 import { Shuffle_Proof, generate_shuffle_proof } from './shuffle-proof'
 

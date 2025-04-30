@@ -2,7 +2,6 @@ import { NumAcceptedVotes } from 'api/election/[election_id]/num-votes'
 import { useRouter } from 'next/router'
 import { Fragment, useEffect, useState } from 'react'
 import { CipherStrings } from 'src/crypto/stringify-shuffle'
-import { EncryptedVote } from 'src/protocol/EncryptedVote'
 import { useTruncatedTable } from 'src/trustee/decrypt/useTruncatedTable'
 import { generateColumnNames } from 'src/vote/generateColumnNames'
 
