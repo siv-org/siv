@@ -160,7 +160,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const shuffled = await bluebird.props(
       mapValues(split, async (list) => {
         const shuffleArgs: Parameters<typeof shuffleWithProof> = [
-          RP.fromHex(threshold_public_key!),
+          RP.fromHex(threshold_public_key),
           list.map((row) => mapValues(row, RP.fromHex)),
         ]
 
