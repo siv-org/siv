@@ -12,6 +12,16 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (result.valid) return res.status(200).send(result)
 }
 
+export type Convention = {
+  active_redirect?: string
+  convention_title: string
+  created_at: { _seconds: number }
+  creator: string
+  id: string
+  num_qrs: number
+  qrs: { createdAt: { _seconds: number }; number: number }[]
+}
+
 export function checkJwt(
   req: NextApiRequest,
   res: NextApiResponse,
@@ -40,60 +50,11 @@ export function checkJwt(
   return { ...payload, valid: true }
 }
 
-export async function checkJwtOwnsElection(
-  req: NextApiRequest,
-  res: NextApiResponse,
-  election_id: string,
-): Promise<
-  | { res: void; valid: false }
-  | ({
-      ballot_design: string
-      ballot_design_finalized?: boolean
-      election_manager: string
-      election_title: string
-      num_votes: number
-      valid: true
-    } & JWT_Payload)
-> {
-  const jwt_status = checkJwt(req, res)
-
-  // Fail immediately if checkJwt failed
-  if (!jwt_status.valid) return jwt_status
-
-  // Grab this election info
-  const election = { ...(await firebase.firestore().collection('elections').doc(election_id).get()).data() }
-
-  // Check if this this admin is the creator of the given election
-  if (jwt_status.email !== election.creator) {
-    return { res: res.status(401).send({ error: `This user did not create election ${election_id}` }), valid: false }
-  }
-
-  // Otherwise it passes
-  return {
-    ballot_design: election.ballot_design,
-    ballot_design_finalized: election.ballot_design_finalized,
-    election_manager: election.election_manager,
-    election_title: election.election_title,
-    num_votes: election.num_votes,
-    ...jwt_status,
-  }
-}
-
-export type Convention = {
-  active_redirect?: string
-  convention_title: string
-  created_at: { _seconds: number }
-  creator: string
-  id: string
-  num_qrs: number
-  qrs: { createdAt: { _seconds: number }; number: number }[]
-}
-
 export async function checkJwtOwnsConvention(
   req: NextApiRequest,
   res: NextApiResponse,
   convention_id: string,
-): Promise<{ res: void; valid: false } | ({ valid: true } & Convention & JWT_Payload)> {
+): Promise<(Convention & JWT_Payload & { valid: true }) | { res: void; valid: false }> {
   const jwt_status = checkJwt(req, res)
 
   // Fail immediately if checkJwt failed
@@ -115,6 +76,45 @@ export async function checkJwtOwnsConvention(
   // Otherwise it passes
   return {
     ...convention,
+    ...jwt_status,
+  }
+}
+
+export async function checkJwtOwnsElection(
+  req: NextApiRequest,
+  res: NextApiResponse,
+  election_id: string,
+): Promise<
+  | (JWT_Payload & {
+      ballot_design: string
+      ballot_design_finalized?: boolean
+      election_manager: string
+      election_title: string
+      num_votes: number
+      valid: true
+    })
+  | { res: void; valid: false }
+> {
+  const jwt_status = checkJwt(req, res)
+
+  // Fail immediately if checkJwt failed
+  if (!jwt_status.valid) return jwt_status
+
+  // Grab this election info
+  const election = { ...(await firebase.firestore().collection('elections').doc(election_id).get()).data() }
+
+  // Check if this this admin is the creator of the given election
+  if (jwt_status.email !== election.creator) {
+    return { res: res.status(401).send({ error: `This user did not create election ${election_id}` }), valid: false }
+  }
+
+  // Otherwise it passes
+  return {
+    ballot_design: election.ballot_design,
+    ballot_design_finalized: election.ballot_design_finalized,
+    election_manager: election.election_manager,
+    election_title: election.election_title,
+    num_votes: election.num_votes,
     ...jwt_status,
   }
 }
