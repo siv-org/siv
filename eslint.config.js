@@ -9,7 +9,7 @@ const globals = require('globals')
 
 // Common configuration shared between JS and TS files
 const commonConfig = {
-  ignores: ['.next/**/*', 'node_modules/**/*', 'dist/**/*', 'build/**/*'],
+  ignores: ['.next', 'node_modules', 'dist', 'build'],
   languageOptions: {
     ecmaVersion: 2018,
     globals: {
