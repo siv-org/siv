@@ -17,6 +17,7 @@ const commonConfig = {
       ...globals.es2021,
       ...globals.node,
       JSX: 'readonly',
+      NodeJS: 'readonly',
       React: 'readonly',
     },
     sourceType: 'module',
@@ -27,6 +28,7 @@ const commonConfig = {
     'sort-keys-fix': sortKeysFix,
   },
   rules: {
+    'no-unreachable': 'warn',
     'react/jsx-sort-props': ['error', { callbacksLast: true, shorthandFirst: true }],
     'sort-destructure-keys/sort-destructure-keys': 'warn',
     'sort-keys-fix/sort-keys-fix': 'warn',
@@ -47,7 +49,6 @@ module.exports = [
     ...commonConfig,
     languageOptions: {
       ...commonConfig.languageOptions,
-      globals: { ...commonConfig.languageOptions.globals, NodeJS: 'readonly' },
       parser: tsParser,
       parserOptions: {
         ecmaFeatures: { jsx: true },
@@ -64,13 +65,11 @@ module.exports = [
       ...commonConfig.rules,
       ...tseslint.configs.recommended.rules,
       ...typescriptSortKeys.configs.recommended.rules,
-      // TypeScript-specific rule overrides
       '@typescript-eslint/no-empty-object-type': 'error',
       '@typescript-eslint/no-non-null-assertion': 'error',
       '@typescript-eslint/no-unsafe-function-type': 'error',
       '@typescript-eslint/no-unused-vars': 'warn', // hint not error
       '@typescript-eslint/no-wrapper-object-types': 'error',
-      'no-unreachable': 'warn', // Warn about unreachable code
     },
   },
 ]
