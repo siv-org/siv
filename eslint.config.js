@@ -69,7 +69,6 @@ module.exports = [
       '@typescript-eslint/no-empty-object-type': 'error',
       '@typescript-eslint/no-non-null-assertion': 'error',
       '@typescript-eslint/no-unsafe-function-type': 'error',
-      '@typescript-eslint/no-unused-expressions': 'off', // Allow short-circuit expressions
       '@typescript-eslint/no-unused-vars': 'warn', // hint not error
       '@typescript-eslint/no-wrapper-object-types': 'error',
       'no-constant-binary-expression': 'off', // Allow constant binary expressions

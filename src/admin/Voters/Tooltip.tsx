@@ -30,9 +30,8 @@ export const Tooltip = ({
   useEffect(() => {
     if (isShown) updateTooltipPosition()
   }, [isShown, placement])
-
   function onMouseEnter() {
-    closeTimeoutId.current && clearTimeout(closeTimeoutId.current)
+    if (closeTimeoutId.current) clearTimeout(closeTimeoutId.current)
     setTimeout(() => setIsShown(true), enterDelay)
   }
   function onMouseLeave() {
