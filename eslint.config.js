@@ -12,16 +12,15 @@ const commonConfig = {
   ignores: ['.next/**/*', 'node_modules/**/*', 'dist/**/*', 'build/**/*'],
   languageOptions: {
     ecmaVersion: 2022,
-    sourceType: 'module',
     globals: {
       ...globals.browser,
       ...globals.es2021,
       ...globals.node,
-      React: 'readonly',
       JSX: 'readonly',
+      React: 'readonly',
     },
+    sourceType: 'module',
   },
-  settings: { react: { version: 'detect' } },
   plugins: {
     react: reactPlugin,
     'sort-destructure-keys': sortDestructureKeys,
@@ -32,6 +31,7 @@ const commonConfig = {
     'sort-destructure-keys/sort-destructure-keys': 'warn',
     'sort-keys-fix/sort-keys-fix': 'warn',
   },
+  settings: { react: { version: 'detect' } },
 }
 
 module.exports = [
@@ -47,13 +47,13 @@ module.exports = [
     ...commonConfig,
     languageOptions: {
       ...commonConfig.languageOptions,
+      globals: { ...commonConfig.languageOptions.globals, NodeJS: 'readonly' },
       parser: tsParser,
       parserOptions: {
         ecmaFeatures: { jsx: true },
         project: './tsconfig.json',
         tsconfigRootDir: process.cwd(),
       },
-      globals: { ...commonConfig.languageOptions.globals, NodeJS: 'readonly' },
     },
     plugins: {
       ...commonConfig.plugins,
@@ -66,14 +66,14 @@ module.exports = [
       ...tseslint.configs.recommended.rules,
       ...typescriptSortKeys.configs.recommended.rules,
       // TypeScript-specific rule overrides
-      '@typescript-eslint/explicit-module-boundary-types': 'off', // verbose
-      '@typescript-eslint/no-empty-function': 'off', // unnecessary
-      '@typescript-eslint/no-unused-vars': 'warn', // hint not error
-      '@typescript-eslint/no-unused-expressions': 'off', // Allow short-circuit expressions
       '@typescript-eslint/ban-types': 'off', // Allow using object/Function types
-      '@typescript-eslint/no-non-null-assertion': 'off', // Allow non-null assertions
-      '@typescript-eslint/no-invalid-void-type': 'off', // Allow void in promises
+      '@typescript-eslint/explicit-module-boundary-types': 'off', // verbose
       '@typescript-eslint/no-dynamic-delete': 'off', // Allow dynamic property deletion
+      '@typescript-eslint/no-empty-function': 'off', // unnecessary
+      '@typescript-eslint/no-invalid-void-type': 'off', // Allow void in promises
+      '@typescript-eslint/no-non-null-assertion': 'off', // Allow non-null assertions
+      '@typescript-eslint/no-unused-expressions': 'off', // Allow short-circuit expressions
+      '@typescript-eslint/no-unused-vars': 'warn', // hint not error
       'no-constant-binary-expression': 'off', // Allow constant binary expressions
       'no-redeclare': 'off', // Allow redeclaration in TypeScript
       'no-unreachable': 'warn', // Warn about unreachable code
