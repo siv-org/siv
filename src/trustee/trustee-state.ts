@@ -7,7 +7,7 @@ import { diff } from './diff-objects'
 
 // Define our types
 export type Shuffled = Record<string, ReturnType<typeof stringifyShuffle>>
-export type Partial = {
+export type PartialWithProof = {
   partial: string
   proof: ReturnType<typeof stringifyPartial>
 }
@@ -19,7 +19,7 @@ export type Trustee = {
   index: number
   name?: string
   partial_decryption?: string
-  partials?: Record<string, Partial[]>
+  partials?: Record<string, PartialWithProof[]>
   preshuffled?: Record<string, CipherStrings[]> // admin only
   recipient_key?: string
   shuffled?: Shuffled

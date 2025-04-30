@@ -12,7 +12,7 @@ import {
   unlock_message_with_shared_secret,
   verify_partial_decryption_proof,
 } from 'src/crypto/threshold-keygen'
-import { Partial, Shuffled, State } from 'src/trustee/trustee-state'
+import { PartialWithProof, Shuffled, State } from 'src/trustee/trustee-state'
 import { mapValues } from 'src/utils'
 
 import { recombine_decrypteds } from '../admin/unlock'
@@ -81,7 +81,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         // Partially decrypt each item in every list
         const partials = await bluebird.reduce(
           Object.keys(shuffled),
-          (acc: Record<string, Partial[]>, column) =>
+          (acc: Record<string, PartialWithProof[]>, column) =>
             bluebird.props({
               ...acc,
               [column]: bluebird.map((shuffled as Shuffled)[column].shuffled, async ({ lock }) => ({
@@ -110,8 +110,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // If all have provided partials, admin can now combine partials
   const trusteePartials = await Promise.all(loadTrusteePartials)
   // console.log({ trusteePartials })
-  type TrusteeWithPartial = { partials: { [col: string]: Partial[] } }
-  const hasPartial = (trustee: FirebaseFirestore.DocumentData | undefined): trustee is TrusteeWithPartial =>
+  type TrusteeWithPartial = { partials: { [col: string]: PartialWithProof[] } }
+  const hasPartial = (trustee: Partial<TrusteeWithPartial> | undefined): trustee is TrusteeWithPartial =>
     !!trustee?.partials
 
   const all_have_partials = trusteePartials.every(hasPartial)
@@ -146,7 +146,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           Object.keys(partials),
           // For all votes
           (column) =>
-            bluebird.map(partials[column], async ({ partial, proof }: Partial, voteIndex) => {
+            bluebird.map(partials[column], async ({ partial, proof }: PartialWithProof, voteIndex) => {
               const result = await verify_partial_decryption_proof(
                 RP.fromHex(last_trustees_shuffled[column].shuffled[voteIndex].lock),
                 g_to_trustees_keyshare,

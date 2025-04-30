@@ -13,12 +13,12 @@ import {
   partial_decrypt,
   verify_partial_decryption_proof,
 } from '../../crypto/threshold-keygen'
-import { Partial, StateAndDispatch } from '../trustee-state'
+import { PartialWithProof, StateAndDispatch } from '../trustee-state'
 import { YouLabel } from '../YouLabel'
 import { useTruncatedTable } from './useTruncatedTable'
 import { sortColumnsForTrustees } from './VotesToShuffle'
 
-type Partials = Record<string, Partial[]>
+type Partials = Record<string, PartialWithProof[]>
 type Validations_Table = Record<string, Record<string, (boolean | null)[]>>
 
 export const VotesToDecrypt = ({
