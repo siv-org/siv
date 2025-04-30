@@ -75,7 +75,7 @@ export const OnClickButton = forwardRef<HTMLAnchorElement, OnClickProps>(
       style={style}
       onClick={() => {
         if (disabledExplanation) alert(disabledExplanation)
-        !disabled && onClick()
+        if (!disabled) onClick()
       }}
     >
       {children}
