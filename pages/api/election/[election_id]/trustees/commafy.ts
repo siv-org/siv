@@ -12,7 +12,6 @@ function is_commafy_field(fieldName: string) {
   return fieldName.endsWith('_for') || fieldName.endsWith('_from') || fieldName === 'verified'
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 export function transform_email_keys(data: Record<string, object>, direction: 'commafy' | 'decommafy') {
   // Which direction are we transforming?
   const transform = direction === 'decommafy' ? decommafy : commafy
