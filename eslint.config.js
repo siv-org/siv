@@ -71,7 +71,6 @@ module.exports = [
       '@typescript-eslint/no-unsafe-function-type': 'error',
       '@typescript-eslint/no-unused-vars': 'warn', // hint not error
       '@typescript-eslint/no-wrapper-object-types': 'error',
-      'no-constant-binary-expression': 'off', // Allow constant binary expressions
       'no-redeclare': 'off', // Allow redeclaration in TypeScript
       'no-unreachable': 'warn', // Warn about unreachable code
     },
