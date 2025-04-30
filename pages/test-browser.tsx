@@ -51,6 +51,7 @@ function testLocalStorage() {
     localStorage.removeItem('test')
     return true
   } catch (e) {
+    console.error('caught error testing localStorage', e)
     return false
   }
 }
