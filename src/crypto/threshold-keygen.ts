@@ -53,7 +53,6 @@ export const is_received_share_valid = (
   const passes = g_to_share.equals(product)
 
   if (!passes) {
-    // eslint-disable-next-line no-console
     console.log(`received share #${receivers_index_j} ${received_secret} invalid
     g_to_share: ${g_to_share}
     product: ${product}
