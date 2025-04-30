@@ -28,6 +28,7 @@ export function checkJwt(
   try {
     payload = jwt.verify(cookie, JWT_SECRET) as JWT_Payload
   } catch (e) {
+    console.error('caught error verifying jwt', e)
     pushover(
       'Invalid JWT signature',
       `${req.headers.origin} ${req.url}\n${JSON.stringify(jwt.decode(cookie))}\n${cookie}`,
