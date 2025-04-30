@@ -9,7 +9,7 @@
     "e2e": "cypress run --config-file cypress/cypress-config.json",
     "format": "prettier --write **/*.{js,ts,tsx}",
     "postinstall": "patch-package",
-    "lint": "eslint . --ext ts --ext tsx --ext js",
+    "lint": "eslint src/ pages/",
     "start": "next start",
     "test": "yarn lint && yarn typecheck && yarn e2e",
     "typecheck": "tsc --pretty --noEmit",
@@ -87,6 +87,7 @@
     "ua-parser-js": "^0.7.28"
   },
   "devDependencies": {
+    "@eslint/js": "^9.25.1",
     "@types/bun": "^1.0.8",
     "@types/cookies": "^0.7.6",
     "@types/jsonwebtoken": "^8.5.1",
