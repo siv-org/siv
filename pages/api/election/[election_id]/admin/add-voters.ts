@@ -51,9 +51,9 @@ export async function addVotersToElection(new_voters: string[], election_id: str
   // Filter out duplicates already added to the election
   const unique_new_emails: string[] = []
   const already_added: string[] = []
-  unique_in_submission.forEach((v: string) => {
-    if (v) existing_voters.has(v) ? already_added.push(v) : unique_new_emails.push(v)
-  })
+  unique_in_submission.forEach((v: string) =>
+    existing_voters.has(v) ? already_added.push(v) : unique_new_emails.push(v),
+  )
 
   console.log('Add-voters:', { already_added, duplicates_in_submission, election_id, unique_new_emails })
   const email_to_auth: Record<string, string> = {}
