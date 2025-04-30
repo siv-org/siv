@@ -71,7 +71,7 @@ module.exports = [
       '@typescript-eslint/no-dynamic-delete': 'off', // Allow dynamic property deletion
       '@typescript-eslint/no-empty-function': 'off', // unnecessary
       '@typescript-eslint/no-invalid-void-type': 'off', // Allow void in promises
-      '@typescript-eslint/no-non-null-assertion': 'off', // Allow non-null assertions
+      '@typescript-eslint/no-non-null-assertion': 'error',
       '@typescript-eslint/no-unused-expressions': 'off', // Allow short-circuit expressions
       '@typescript-eslint/no-unused-vars': 'warn', // hint not error
       'no-constant-binary-expression': 'off', // Allow constant binary expressions
