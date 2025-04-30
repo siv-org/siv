@@ -67,10 +67,7 @@ module.exports = [
       ...commonConfig.rules,
       ...tseslint.configs.recommended.rules,
       ...typescriptSortKeys.configs.recommended.rules,
-      '@typescript-eslint/no-empty-object-type': 'error',
       '@typescript-eslint/no-non-null-assertion': 'error',
-      '@typescript-eslint/no-unsafe-function-type': 'error',
-      '@typescript-eslint/no-wrapper-object-types': 'error',
     },
   },
 ]
