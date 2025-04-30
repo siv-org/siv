@@ -28,8 +28,10 @@ const commonConfig = {
     'sort-keys-fix': sortKeysFix,
   },
   rules: {
+    ...reactPlugin.configs.flat.recommended.rules,
     'no-unreachable': 'warn',
     'react/jsx-sort-props': ['error', { callbacksLast: true, shorthandFirst: true }],
+    'react/no-unknown-property': [2, { ignore: ['jsx', 'global'] }], // inserted by next's styled-jsx
     'sort-destructure-keys/sort-destructure-keys': 'warn',
     'sort-keys-fix/sort-keys-fix': 'warn',
   },
