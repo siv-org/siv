@@ -1,73 +1,6 @@
 import { Tooltip } from 'src/admin/Voters/Tooltip'
 import { Item } from 'src/vote/storeElectionInfo'
 
-/** Find the original ballot_design id for a given column */
-export function findBudgetQuestion(ballot_design: Item[], col: string) {
-  // Check for matching ballot types = 'budget'
-  const possibleItem = ballot_design.find(({ id = 'vote', type }) => type === 'budget' && col.startsWith(id))
-  if (!possibleItem) return false
-
-  // If found, check if col is in options
-  const matchingCol = possibleItem.options.find(({ name, value }) => col.endsWith(value || name))
-
-  if (matchingCol) return possibleItem
-}
-
-/** Validate a submission is a valid type=budget response */
-function invalidBudgetValues(vote: string): string {
-  if (Number(vote) < 0) return 'Negative amounts not allowed'
-  if (Number.isNaN(Number(vote))) return 'Not a number'
-  if (Number(vote) === Infinity) return "Can't normalize Infinity"
-  return ''
-}
-
-/** Sum up the total for a particular row (all the columns, from one person), to see if it matches the budget_available */
-export function sumBudgetVotes(votes: Record<string, string>[], ballot_design: Item[]) {
-  // For all budget questions
-  return ballot_design.map(({ id = 'vote', options, type }) => {
-    // Stop if question isn't a budget item
-    if (type !== 'budget') return []
-
-    // Otherwise, for every submission (row in table)
-    return votes.map((vote) => {
-      // Add up their total budget allocated
-      let total = 0
-      options.forEach(({ name, value }) => {
-        const cell = vote[id + '_' + (value || name)]
-
-        // Filter out invalid entries
-        if (invalidBudgetValues(cell)) return
-
-        total += Number(cell)
-      })
-      return total
-    })
-  })
-}
-
-/** If their submitted total went over or under the budget_available, calculate a normalization factor */
-function calculateFactor(
-  ballot_design: Item[],
-  budgetSums: number[][],
-  col: string,
-  original: string,
-  voteIndex: number,
-) {
-  // Find the right question
-  const question = findBudgetQuestion(ballot_design, col)
-  if (!question) return {}
-  const questionIndex = ballot_design.findIndex(({ id }) => id === question?.id)
-
-  // Find the precalculated total budget allocated for this row
-  const total = budgetSums[questionIndex][voteIndex]
-
-  // Calculate factor to display normalized
-  const factor = (question.budget_available || 0) / total
-  const normalized = Number(original) * factor
-
-  return { factor, normalized, question, total }
-}
-
 /** Display a single type=budget cell */
 export function BudgetEntry({
   ballot_design,
@@ -181,4 +114,71 @@ export function BudgetsAveraged({
       ))}
     </tr>
   )
+}
+
+/** Find the original ballot_design id for a given column */
+export function findBudgetQuestion(ballot_design: Item[], col: string) {
+  // Check for matching ballot types = 'budget'
+  const possibleItem = ballot_design.find(({ id = 'vote', type }) => type === 'budget' && col.startsWith(id))
+  if (!possibleItem) return false
+
+  // If found, check if col is in options
+  const matchingCol = possibleItem.options.find(({ name, value }) => col.endsWith(value || name))
+
+  if (matchingCol) return possibleItem
+}
+
+/** Sum up the total for a particular row (all the columns, from one person), to see if it matches the budget_available */
+export function sumBudgetVotes(votes: Record<string, string>[], ballot_design: Item[]) {
+  // For all budget questions
+  return ballot_design.map(({ id = 'vote', options, type }) => {
+    // Stop if question isn't a budget item
+    if (type !== 'budget') return []
+
+    // Otherwise, for every submission (row in table)
+    return votes.map((vote) => {
+      // Add up their total budget allocated
+      let total = 0
+      options.forEach(({ name, value }) => {
+        const cell = vote[id + '_' + (value || name)]
+
+        // Filter out invalid entries
+        if (invalidBudgetValues(cell)) return
+
+        total += Number(cell)
+      })
+      return total
+    })
+  })
+}
+
+/** If their submitted total went over or under the budget_available, calculate a normalization factor */
+function calculateFactor(
+  ballot_design: Item[],
+  budgetSums: number[][],
+  col: string,
+  original: string,
+  voteIndex: number,
+) {
+  // Find the right question
+  const question = findBudgetQuestion(ballot_design, col)
+  if (!question) return {}
+  const questionIndex = ballot_design.findIndex(({ id }) => id === question?.id)
+
+  // Find the precalculated total budget allocated for this row
+  const total = budgetSums[questionIndex][voteIndex]
+
+  // Calculate factor to display normalized
+  const factor = (question.budget_available || 0) / total
+  const normalized = Number(original) * factor
+
+  return { factor, normalized, question, total }
+}
+
+/** Validate a submission is a valid type=budget response */
+function invalidBudgetValues(vote: string): string {
+  if (Number(vote) < 0) return 'Negative amounts not allowed'
+  if (Number.isNaN(Number(vote))) return 'Not a number'
+  if (Number(vote) === Infinity) return "Can't normalize Infinity"
+  return ''
 }
