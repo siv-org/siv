@@ -2,10 +2,8 @@ const js = require('@eslint/js')
 const tseslint = require('@typescript-eslint/eslint-plugin')
 const tsParser = require('@typescript-eslint/parser')
 const reactPlugin = require('eslint-plugin-react')
-const sortDestructureKeys = require('eslint-plugin-sort-destructure-keys')
-const sortKeysFix = require('eslint-plugin-sort-keys-fix')
-const typescriptSortKeys = require('eslint-plugin-typescript-sort-keys')
 const globals = require('globals')
+const perfectionist = require('eslint-plugin-perfectionist')
 
 // Common configuration shared between JS and TS files
 const commonConfig = {
@@ -25,22 +23,19 @@ const commonConfig = {
   },
   plugins: {
     react: reactPlugin,
-    'sort-destructure-keys': sortDestructureKeys,
-    'sort-keys-fix': sortKeysFix,
   },
   rules: {
     ...reactPlugin.configs.flat.recommended.rules,
     'no-unreachable': 'warn',
     'react/jsx-sort-props': ['error', { callbacksLast: true, shorthandFirst: true }],
     'react/no-unknown-property': [2, { ignore: ['jsx', 'global'] }], // inserted by next's styled-jsx
-    'sort-destructure-keys/sort-destructure-keys': 'warn',
-    'sort-keys-fix/sort-keys-fix': 'warn',
   },
   settings: { react: { version: 'detect' } },
 }
 
 module.exports = [
   js.configs.recommended,
+  perfectionist.configs['recommended-natural'],
   commonConfig,
   // TypeScript-specific overrides
   {
@@ -58,12 +53,10 @@ module.exports = [
     plugins: {
       ...commonConfig.plugins,
       '@typescript-eslint': tseslint,
-      'typescript-sort-keys': typescriptSortKeys,
     },
     rules: {
       ...commonConfig.rules,
       ...tseslint.configs.recommended.rules,
-      ...typescriptSortKeys.configs.recommended.rules,
       '@typescript-eslint/no-non-null-assertion': 'error',
     },
   },
