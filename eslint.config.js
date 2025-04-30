@@ -66,11 +66,7 @@ module.exports = [
       ...tseslint.configs.recommended.rules,
       ...typescriptSortKeys.configs.recommended.rules,
       // TypeScript-specific rule overrides
-      '@typescript-eslint/explicit-module-boundary-types': 'off', // verbose
-      '@typescript-eslint/no-dynamic-delete': 'off', // Allow dynamic property deletion
-      '@typescript-eslint/no-empty-function': 'off', // unnecessary
       '@typescript-eslint/no-empty-object-type': 'error',
-      '@typescript-eslint/no-invalid-void-type': 'off', // Allow void in promises
       '@typescript-eslint/no-non-null-assertion': 'error',
       '@typescript-eslint/no-unsafe-function-type': 'error',
       '@typescript-eslint/no-unused-expressions': 'off', // Allow short-circuit expressions
