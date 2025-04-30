@@ -50,8 +50,7 @@ module.exports = [
     },
     plugins: { '@typescript-eslint': tseslint },
     rules: {
-      ...tseslint.configs.recommended.rules,
-      '@typescript-eslint/no-non-null-assertion': 'error',
+      ...tseslint.configs.strict.rules,
     },
   }),
 ]

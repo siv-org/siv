@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-invalid-void-type -- we are using it as return types (nested), so it's ok */
 import jwt from 'jsonwebtoken'
 import { NextApiRequest, NextApiResponse } from 'next'
 

@@ -40,6 +40,7 @@ function reducer(prev: State, payload: Map) {
   Object.keys(newState.plaintext).forEach((key) => {
     if (newState.plaintext[key] == '') {
       Object.keys(initState).forEach((group) => {
+        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete -- don't encrypt empty strings
         delete (newState as never)[group][key]
       })
     }
