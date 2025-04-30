@@ -11,7 +11,7 @@ const globals = require('globals')
 const commonConfig = {
   ignores: ['.next/**/*', 'node_modules/**/*', 'dist/**/*', 'build/**/*'],
   languageOptions: {
-    ecmaVersion: 2022,
+    ecmaVersion: 2018,
     globals: {
       ...globals.browser,
       ...globals.es2021,
