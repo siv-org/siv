@@ -13,25 +13,25 @@ export const AddYourQuestion = () => {
         <TextField
           id="question-field"
           label="Add your question"
-          size="small"
-          style={{ flex: 1, marginRight: 10 }}
-          variant="outlined"
           onChange={() => setSaved(false)}
           onKeyPress={(event) =>
             event.key === 'Enter' && (document.getElementById('submit-btn') as HTMLButtonElement)?.click()
           }
+          size="small"
+          style={{ flex: 1, marginRight: 10 }}
+          variant="outlined"
         />
       </NoSsr>
       <OnClickButton
         disabled={saved}
         id="submit-btn"
-        style={{ margin: 0, padding: '8px 17px' }}
         onClick={async () => {
           const { status } = await api('faq-submission', {
             question: (document.getElementById('question-field') as HTMLInputElement).value,
           })
           if (status === 201) setSaved(true)
         }}
+        style={{ margin: 0, padding: '8px 17px' }}
       >
         {saved ? 'Done!' : 'Submit'}
       </OnClickButton>

@@ -5,7 +5,7 @@ import { api } from 'src/api-helper'
 import { revalidate } from '../useStored'
 
 /** Auto run api/check-voter-invite-status when there are pending invites */
-export const use_latest_mailgun_events = (election_id: string | undefined, voters: Voter[] | undefined) => {
+export const use_latest_mailgun_events = (election_id: string | undefined, voters: undefined | Voter[]) => {
   const num_invited = voters?.reduce(
     (acc: { delivered: number; failed: number; queued: number }, voter) => {
       if (voter.invite_queued) acc.queued += voter.invite_queued.length

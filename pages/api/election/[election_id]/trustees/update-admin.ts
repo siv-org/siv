@@ -2,7 +2,7 @@ import { firebase } from 'api/_services'
 import { pusher } from 'api/pusher'
 import bluebird from 'bluebird'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { RP, pointToString } from 'src/crypto/curve'
+import { pointToString, RP } from 'src/crypto/curve'
 import { destringifyPartial, stringifyPartial } from 'src/crypto/stringify-partials'
 import {
   combine_partials,

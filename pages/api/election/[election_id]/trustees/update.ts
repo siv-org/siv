@@ -1,6 +1,6 @@
 import { sumBy } from 'lodash-es'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { RP, random_bigint } from 'src/crypto/curve'
+import { random_bigint, RP } from 'src/crypto/curve'
 import { keygenDecrypt, keygenEncrypt } from 'src/crypto/keygen-encrypt'
 import {
   compute_keyshare,

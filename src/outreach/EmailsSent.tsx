@@ -61,10 +61,10 @@ export const EmailsSent = () => {
       <div className="top-bar">
         <h3>Emails sent</h3>
         <input
+          onChange={({ target }) => setFilter(target.value)}
           placeholder="filter recipient@email"
           type="text"
           value={filter}
-          onChange={({ target }) => setFilter(target.value)}
         />
       </div>
 

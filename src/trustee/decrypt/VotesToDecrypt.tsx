@@ -45,8 +45,8 @@ export const VotesToDecrypt = ({
     (
       prev: Validations_Table,
       action:
-        | { email: string; payload: Record<string, null[]>; type: 'RESET' }
-        | { column: string; email: string; result: boolean; type: 'UPDATE'; voteIndex: number },
+        | { column: string; email: string; result: boolean; type: 'UPDATE'; voteIndex: number }
+        | { email: string; payload: Record<string, null[]>; type: 'RESET' },
     ): Validations_Table => {
       if (action.type === 'RESET') return { ...prev, [action.email]: action.payload }
       if (action.type === 'UPDATE') {
@@ -181,7 +181,7 @@ const PartialsTable = ({
 }): JSX.Element => {
   const trustees_validations = validated_proofs[email]
   const columns = sortColumnsForTrustees(Object.keys(partials))
-  const { TruncationToggle, rows_to_show } = useTruncatedTable({
+  const { rows_to_show, TruncationToggle } = useTruncatedTable({
     num_cols: columns.length,
     num_rows: Object.values(partials)[0].length,
   })

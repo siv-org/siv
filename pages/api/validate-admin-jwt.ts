@@ -15,7 +15,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 export function checkJwt(
   req: NextApiRequest,
   res: NextApiResponse,
-): { res: void; valid: false } | ({ valid: true } & JWT_Payload) {
+): (JWT_Payload & { valid: true }) | { res: void; valid: false } {
   if (!JWT_SECRET) return { res: res.status(401).send({ error: `Missing process.env JWT_SECRET` }), valid: false }
 
   const cookie = req.cookies[cookie_name]

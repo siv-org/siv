@@ -9,7 +9,7 @@ import { Item } from '../vote/storeElectionInfo'
 import { TotalVotesCast } from './TotalVotesCast'
 import { useSWRExponentialBackoff } from './useSWRExponentialBackoff'
 
-export type EncryptedVote = { auth: string } & { [index: string]: CipherStrings }
+export type EncryptedVote = { [index: string]: CipherStrings } & { auth: string }
 const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
 export const AcceptedVotes = ({
@@ -45,7 +45,7 @@ export const AcceptedVotes = ({
   }, [election_id])
 
   const { columns } = generateColumnNames({ ballot_design })
-  const { TruncationToggle, rows_to_show } = useTruncatedTable({
+  const { rows_to_show, TruncationToggle } = useTruncatedTable({
     num_cols: columns.length,
     num_rows: num_votes,
   })

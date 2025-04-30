@@ -23,14 +23,6 @@ export const InvalidateVotersButton = ({
     <OnClickButton
       className="bg-white"
       disabled={!displayOnly && !num_checked}
-      style={{
-        alignSelf: 'flex-start',
-        borderWidth: 1,
-        margin: 0,
-        marginLeft: width < 400 ? 0 : num_checked === 1 ? 15 : 5,
-        marginTop: width < 400 ? 3 : 0,
-        padding: '5px 10px',
-      }}
       onClick={async () => {
         if (displayOnly) return
 
@@ -93,6 +85,14 @@ export const InvalidateVotersButton = ({
           if (e instanceof Error) set_error(e.message)
           set_error('Caught error w/o message')
         }
+      }}
+      style={{
+        alignSelf: 'flex-start',
+        borderWidth: 1,
+        margin: 0,
+        marginLeft: width < 400 ? 0 : num_checked === 1 ? 15 : 5,
+        marginTop: width < 400 ? 3 : 0,
+        padding: '5px 10px',
       }}
     >
       <DeleteOutlined />

@@ -1,10 +1,9 @@
-import { randomBytes } from 'crypto'
-
 import { CURVE, RistrettoPoint as RP, utils } from '@noble/ed25519'
+import { randomBytes } from 'crypto'
 
 import { pick_random_bigint } from './pick-random-bigint'
 
-export { RistrettoPoint as RP, CURVE } from '@noble/ed25519'
+export { CURVE, RistrettoPoint as RP } from '@noble/ed25519'
 
 export const mod = (a: bigint, b = CURVE.l) => utils.mod(a, b)
 export const invert = (a: bigint, b = CURVE.l) => utils.invert(a, b)
@@ -73,7 +72,7 @@ export const sum_bigints = (bigs: bigint[], modulo = CURVE.l): bigint =>
 export const sum_points = (points: RP[]): RP => points.reduce((memo, term) => memo.add(term))
 
 /** Recursively converts deep object of RPs to hex */
-export function deep_RPs_to_strs(o: unknown | unknown[] | Record<string, unknown>): unknown {
+export function deep_RPs_to_strs(o: Record<string, unknown> | unknown | unknown[]): unknown {
   if (Array.isArray(o)) {
     return o.map((v) => {
       if (v instanceof RP) return `${v}`
@@ -95,7 +94,7 @@ export function deep_RPs_to_strs(o: unknown | unknown[] | Record<string, unknown
 }
 
 /** Recursively converts deep object of hex strings to RPs */
-export function deep_strs_to_RPs(o: unknown | unknown[] | Record<string, unknown>): unknown {
+export function deep_strs_to_RPs(o: Record<string, unknown> | unknown | unknown[]): unknown {
   if (Array.isArray(o)) {
     return o.map((v) => {
       if (typeof v === 'string') return RP.fromHex(v)

@@ -2,6 +2,10 @@ import { useRouter } from 'next/router'
 import { AdminData, Voter } from 'pages/api/election/[election_id]/admin/load-admin'
 import useSWR, { mutate } from 'swr'
 
+export function revalidate(election_id?: string) {
+  mutate(url(election_id))
+}
+
 export function useStored(): AdminData & { valid_voters?: Voter[] } {
   const election_id = useRouter().query.election_id as string | undefined
 
@@ -15,10 +19,6 @@ export function useStored(): AdminData & { valid_voters?: Voter[] } {
   const valid_voters = data?.voters?.filter(({ invalidated }) => !invalidated)
 
   return { ...data, valid_voters }
-}
-
-export function revalidate(election_id?: string) {
-  mutate(url(election_id))
 }
 
 const url = (election_id?: string) => `${window.location.origin}/api/election/${election_id}/admin/load-admin`

@@ -1,5 +1,5 @@
 // These are for urgent errors where we want to disable the PointAndClick designer
-export function check_for_urgent_ballot_errors(design: string): string | null {
+export function check_for_urgent_ballot_errors(design: string): null | string {
   try {
     const parsed = JSON.parse(design)
 

@@ -4,14 +4,6 @@ export function commafy(email: string) {
   return email.replace(/\./g, ',')
 }
 
-function decommafy(key: string) {
-  return key.replace(/,/g, '.')
-}
-
-function is_commafy_field(fieldName: string) {
-  return fieldName.endsWith('_for') || fieldName.endsWith('_from') || fieldName === 'verified'
-}
-
 export function transform_email_keys(data: Record<string, object>, direction: 'commafy' | 'decommafy') {
   // Which direction are we transforming?
   const transform = direction === 'decommafy' ? decommafy : commafy
@@ -24,4 +16,12 @@ export function transform_email_keys(data: Record<string, object>, direction: 'c
     }
     return mapKeys(field as Record<string, string>, (_, key) => transform(key))
   })
+}
+
+function decommafy(key: string) {
+  return key.replace(/,/g, '.')
+}
+
+function is_commafy_field(fieldName: string) {
+  return fieldName.endsWith('_for') || fieldName.endsWith('_from') || fieldName === 'verified'
 }

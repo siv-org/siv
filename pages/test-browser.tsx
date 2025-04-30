@@ -45,6 +45,15 @@ const TestPage = () => {
 
 export default TestPage
 
+async function fingerprintjs() {
+  const fp = await FingerprintJS.load({
+    endpoint: 'https://qa.secureinternetvoting.org',
+    token: 'PhioYVVmZ8G6MliulLBQ',
+  })
+  const results = await fp.get({ extendedResult: true })
+  return results
+}
+
 function testLocalStorage() {
   try {
     localStorage.setItem('test', 'test')
@@ -54,23 +63,6 @@ function testLocalStorage() {
     console.error('caught error testing localStorage', e)
     return false
   }
-}
-
-async function testStorageQuota() {
-  if (!navigator) return console.error('No navigator')
-  if (!navigator.storage) return console.error('No navigator.storage')
-  const { quota } = await navigator.storage.estimate()
-  if (!quota) return console.error('No Quota')
-  return quota < 120000000
-}
-
-async function fingerprintjs() {
-  const fp = await FingerprintJS.load({
-    endpoint: 'https://qa.secureinternetvoting.org',
-    token: 'PhioYVVmZ8G6MliulLBQ',
-  })
-  const results = await fp.get({ extendedResult: true })
-  return results
 }
 
 function testLocalStorageAge() {
@@ -85,4 +77,12 @@ function testLocalStorageAge() {
     console.error(e)
     return 'null'
   }
+}
+
+async function testStorageQuota() {
+  if (!navigator) return console.error('No navigator')
+  if (!navigator.storage) return console.error('No navigator.storage')
+  const { quota } = await navigator.storage.estimate()
+  if (!quota) return console.error('No Quota')
+  return quota < 120000000
 }

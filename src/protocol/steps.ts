@@ -25,12 +25,12 @@ const light = (text: string) => `<span style="font-size: 12px; opacity: 0.65;">$
 const em = (text: string) => `<em>${text}</em>`
 
 export type ImageLine = { image: string; maxWidth: number }
-export type Subsection = { subsection: { header: string; list: string[] } }
+export type Line = '' | ImageLine | ReactLine | Record<string, string> | Subsection
 export type ReactLine = { react: () => JSX.Element }
 
-export type Line = Record<string, string> | ImageLine | Subsection | ReactLine | ''
-
 export type Step = { leftFirst?: boolean; name: string; subheader: string; then: { left: Line[]; right?: Line[] }[] }
+
+export type Subsection = { subsection: { header: string; list: string[] } }
 
 type Group = { group: string; steps: Step[] }
 

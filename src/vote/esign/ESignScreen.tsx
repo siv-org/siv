@@ -3,9 +3,9 @@ import Head from 'next/head'
 import { Dispatch, useRef, useState } from 'react'
 import SignaturePad from 'react-signature-pad-wrapper'
 
+import { OnClickButton } from '../../_shared/Button'
 import { api } from '../../api-helper'
 import { GlobalCSS } from '../../GlobalCSS'
-import { OnClickButton } from '../../_shared/Button'
 
 type Pad = {
   clear: () => void
@@ -36,13 +36,12 @@ export const ESignScreen = ({
         <SignaturePad redrawOnResize ref={signaturePad} />
         <div className="buttons">
           <OnClickButton
-            style={{ marginLeft: 0 }}
             onClick={() => signaturePad.current?.clear() || setButtonText('Submit')}
+            style={{ marginLeft: 0 }}
           >
             Clear
           </OnClickButton>
           <OnClickButton
-            style={{ marginRight: 0 }}
             onClick={async () => {
               setButtonText('Submitting...')
               const esignature = signaturePad.current?.toDataURL()
@@ -62,6 +61,7 @@ export const ESignScreen = ({
                 })
               }
             }}
+            style={{ marginRight: 0 }}
           >
             {buttonText}
           </OnClickButton>

@@ -3,7 +3,7 @@ import { mapValues } from 'lodash-es'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getStatus } from 'src/admin/Voters/Signature'
 import { RP } from 'src/crypto/curve'
-import { fastShuffle, shuffleWithProof, shuffleWithoutProof } from 'src/crypto/shuffle'
+import { fastShuffle, shuffleWithoutProof, shuffleWithProof } from 'src/crypto/shuffle'
 import { CipherStrings, stringifyShuffle, stringifyShuffleWithoutProof } from 'src/crypto/stringify-shuffle'
 
 import { firebase, pushover } from '../../../_services'

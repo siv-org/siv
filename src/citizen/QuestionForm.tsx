@@ -16,9 +16,9 @@ export const QuestionForm = () => {
     (props: TextFieldProps) => (
       <NoSsr>
         <TextField
+          onChange={() => setSaved(false)}
           size="small"
           variant="outlined"
-          onChange={() => setSaved(false)}
           {...props}
           id={`${formName}-${props.id}`}
           style={{ ...props.style }}
@@ -37,13 +37,12 @@ export const QuestionForm = () => {
         <Field fullWidth id="email" label="Your Email (optional — for replies)" />
       </Row>
       <Row>
-        <Field fullWidth multiline id="question" label="Your Question" rows={4} />
+        <Field fullWidth id="question" label="Your Question" multiline rows={4} />
       </Row>
       <Row style={{ alignItems: 'center', justifyContent: 'flex-end' }}>
         {saved && <p style={{ margin: 0, opacity: 0.7, width: 60 }}>Done.</p>}
         <OnClickButton
           disabled={saved}
-          style={{ marginRight: 0 }}
           onClick={async () => {
             const fields: Record<string, string> = {}
             setError('')
@@ -58,6 +57,7 @@ export const QuestionForm = () => {
 
             setError((await response.json()).error)
           }}
+          style={{ marginRight: 0 }}
         >
           Send
         </OnClickButton>

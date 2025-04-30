@@ -1,6 +1,6 @@
 import { map, mapValues, merge } from 'lodash-es'
 import { createContext, useContext, useMemo, useReducer } from 'react'
-import { RP, random_bigint, stringToPoint } from 'src/crypto/curve'
+import { random_bigint, RP, stringToPoint } from 'src/crypto/curve'
 import { generateTrackingNum } from 'src/vote/tracking-num'
 
 import encrypt from '../crypto/encrypt'

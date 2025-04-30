@@ -14,13 +14,11 @@ export const EnterAuthToken = () => {
       <div className="flex items-start mt-6">
         <TextField
           autoFocus
-          InputLabelProps={{ style: { fontSize: 22 } }}
-          InputProps={{ style: { fontSize: 22 } }}
           error={!!error}
           helperText={error}
+          InputLabelProps={{ style: { fontSize: 22 } }}
+          InputProps={{ style: { fontSize: 22 } }}
           label="Auth token"
-          style={{ flex: 1, fontSize: 20 }}
-          variant="outlined"
           onChange={(event) => {
             setError('')
 
@@ -34,17 +32,19 @@ export const EnterAuthToken = () => {
             setText(event.target.value)
           }}
           onKeyPress={(event) => event.key === 'Enter' && submitBtn.current?.click()}
+          style={{ flex: 1, fontSize: 20 }}
+          variant="outlined"
         />
         <OnClickButton
           disabled={text.length !== 10 || !!error}
-          ref={submitBtn}
-          style={{ margin: 0, marginLeft: 10, padding: '19px 15px' }}
           onClick={() => {
             // Update auth in URL
             const url = new URL(window.location.toString())
             url.searchParams.set('auth', text.toLowerCase())
             router.push(url)
           }}
+          ref={submitBtn}
+          style={{ margin: 0, marginLeft: 10, padding: '19px 15px' }}
         >
           Submit
         </OnClickButton>

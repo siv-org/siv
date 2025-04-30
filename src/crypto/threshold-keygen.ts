@@ -8,7 +8,7 @@ import { range } from 'src/utils'
 
 import { AsyncReturnType } from './async-return-type'
 import { bigint_from_seed } from './bigint-from-seed'
-import { G, RP, mod, random_bigint, sum_bigints, sum_points } from './curve'
+import { G, mod, random_bigint, RP, sum_bigints, sum_points } from './curve'
 import { moduloLambda } from './lagrange'
 
 /**

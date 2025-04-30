@@ -1,6 +1,6 @@
 import { mapValues } from 'lodash-es'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { RP, pointToString } from 'src/crypto/curve'
+import { pointToString, RP } from 'src/crypto/curve'
 import decrypt from 'src/crypto/decrypt'
 import { CipherStrings } from 'src/crypto/stringify-shuffle'
 

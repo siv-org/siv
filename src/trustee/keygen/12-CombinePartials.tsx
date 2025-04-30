@@ -1,4 +1,4 @@
-import { CURVE, RP, pointToString, stringToPoint } from 'src/crypto/curve'
+import { CURVE, pointToString, RP, stringToPoint } from 'src/crypto/curve'
 import { range } from 'src/utils'
 
 import { moduloLambda } from '../../crypto/lagrange'
