@@ -26,7 +26,7 @@ export const ensureBallotAuthsForQrs = async (convention_id: string, known_elect
 
   // Filter out only those that need new ballot auths
   const needsNewAuth = currentQrs.filter((q) => !(q.ballot_auths || {})[ballot_id])
-  console.log('createBallotAuthsForQrs', { 'New auths needed': needsNewAuth.length, ballot_id, convention_id })
+  console.log('createBallotAuthsForQrs', { ballot_id, convention_id, 'New auths needed': needsNewAuth.length })
 
   if (!needsNewAuth.length) return
 

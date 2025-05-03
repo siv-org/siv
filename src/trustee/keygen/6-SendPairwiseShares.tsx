@@ -1,7 +1,7 @@
 import bluebird from 'bluebird'
 import { keyBy, mapValues } from 'lodash-es'
 import { useEffect } from 'react'
-import { CURVE, RP, random_bigint } from 'src/crypto/curve'
+import { CURVE, random_bigint, RP } from 'src/crypto/curve'
 
 import { api } from '../../api-helper'
 import { keygenEncrypt } from '../../crypto/keygen-encrypt'

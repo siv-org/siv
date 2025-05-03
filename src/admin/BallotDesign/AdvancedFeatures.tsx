@@ -1,8 +1,8 @@
-type Section = [Section_Title, Feature[]]
-type Feature = [Code, Description]
-type Section_Title = string
 type Code = string
 type Description = string
+type Feature = [Code, Description]
+type Section = [Section_Title, Feature[]]
+type Section_Title = string
 
 const advancedFeatures: Section[] = [
   [

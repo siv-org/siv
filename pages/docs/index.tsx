@@ -1,9 +1,8 @@
 export { DocsIndexPage as default } from 'src/docs/DocsIndexPage'
 
 import { promises as fs } from 'fs'
-import path from 'path'
-
 import { GetStaticProps } from 'next'
+import path from 'path'
 
 export type DocsIndexPageProps = { files: string[] }
 export const getStaticProps: GetStaticProps<DocsIndexPageProps> = async () => {

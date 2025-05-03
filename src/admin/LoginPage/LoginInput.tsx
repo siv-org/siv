@@ -28,23 +28,15 @@ export const LoginInput = ({ mobile }: { mobile?: boolean }) => {
       </label>
       <div>
         <Input
-          value={email}
           onChange={({ target }) => {
             setEmail(target.value)
             setError('')
           }}
           onKeyPress={(event) => event.key === 'Enter' && loginButton.current?.click()}
+          value={email}
         />
         <OnClickButton
           invertColor={!mobile}
-          ref={loginButton}
-          style={{
-            margin: 0,
-            padding: `${mobile ? 7 : 6}px 15px`,
-            textAlign: 'center',
-            whiteSpace: 'nowrap',
-            width: 110,
-          }}
           onClick={async () => {
             if (!email) return
 
@@ -63,6 +55,14 @@ export const LoginInput = ({ mobile }: { mobile?: boolean }) => {
             } else {
               router.push(`./enter-login-code?email=${email}`)
             }
+          }}
+          ref={loginButton}
+          style={{
+            margin: 0,
+            padding: `${mobile ? 7 : 6}px 15px`,
+            textAlign: 'center',
+            whiteSpace: 'nowrap',
+            width: 110,
           }}
         >
           {error ? 'Error!' : pending ? <Spinner /> : 'Send Code'}

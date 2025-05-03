@@ -1,9 +1,5 @@
 import { StateAndDispatch } from '../trustee-state'
-import { ResetButton } from './_ResetButton'
 import { Trustees } from './1-Trustees'
-import { PublicThresholdKey } from './10-PublicThresholdKey'
-import { PartialDecryptionTest } from './11-PartialDecryptionTest'
-import { CombinePartials } from './12-CombinePartials'
 import { Parameters } from './2-Parameters'
 import { MessagingKeys } from './3-MessagingKeys'
 import { PrivateCoefficients } from './4-PrivateCoefficients'
@@ -12,6 +8,10 @@ import { SendPairwiseShares } from './6-SendPairwiseShares'
 import { ReceivedPairwiseShares } from './7-ReceivedPairwiseShares'
 import { VerifyShares } from './8-VerifyShares'
 import { CalculatePrivateKeyshare } from './9-CalculatePrivateKeyshare'
+import { PublicThresholdKey } from './10-PublicThresholdKey'
+import { PartialDecryptionTest } from './11-PartialDecryptionTest'
+import { CombinePartials } from './12-CombinePartials'
+import { ResetButton } from './_ResetButton'
 
 export const Keygen = ({ dispatch, state }: StateAndDispatch): JSX.Element => {
   return (

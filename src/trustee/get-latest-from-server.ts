@@ -2,13 +2,6 @@ import { useEffect } from 'react'
 
 import { StateAndDispatch, Trustee } from './trustee-state'
 
-export function getTrusteesOnInit({ dispatch, state }: StateAndDispatch) {
-  // Download when election_id is first loaded
-  useEffect(() => {
-    getLatestFromServer({ dispatch, state })
-  }, [state.election_id])
-}
-
 export async function getLatestFromServer({ dispatch, state }: StateAndDispatch) {
   // Wait for election_id
   if (!state.election_id) return
@@ -33,4 +26,11 @@ export async function getLatestFromServer({ dispatch, state }: StateAndDispatch)
   } catch (e) {
     console.error('Error loading /api/keygen/latest:', e)
   }
+}
+
+export function getTrusteesOnInit({ dispatch, state }: StateAndDispatch) {
+  // Download when election_id is first loaded
+  useEffect(() => {
+    getLatestFromServer({ dispatch, state })
+  }, [state.election_id])
 }

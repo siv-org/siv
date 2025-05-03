@@ -39,13 +39,12 @@ export function AreYouAVoter(): JSX.Element {
           <Field fullWidth id="email" label="Your Email (optional)" {...fieldProps} />
         </Row>
         <Row>
-          <Field fullWidth multiline id="message" label="Your Message (optional)" rows={4} {...fieldProps} />
+          <Field fullWidth id="message" label="Your Message (optional)" multiline rows={4} {...fieldProps} />
         </Row>
         <Row style={{ justifyContent: 'flex-end' }}>
           {saved && <p style={{ margin: 0, opacity: 0.7, width: 60 }}>Done.</p>}
           <OnClickButton
             disabled={saved}
-            style={{ marginRight: 0 }}
             onClick={async () => {
               const fields: Record<string, string> = { idKey }
               setError('')
@@ -60,6 +59,7 @@ export function AreYouAVoter(): JSX.Element {
 
               setError((await response.json()).error)
             }}
+            style={{ marginRight: 0 }}
           >
             Send
           </OnClickButton>

@@ -1,4 +1,4 @@
-export const Errors = ({ error }: { error: string | null }) => {
+export const Errors = ({ error }: { error: null | string }) => {
   if (!error) return null
   return (
     <div>

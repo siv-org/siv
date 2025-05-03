@@ -1,6 +1,6 @@
 import { map, mapValues, merge } from 'lodash-es'
 import { createContext, useContext, useMemo, useReducer } from 'react'
-import { RP, random_bigint, stringToPoint } from 'src/crypto/curve'
+import { random_bigint, RP, stringToPoint } from 'src/crypto/curve'
 import { generateTrackingNum } from 'src/vote/tracking-num'
 
 import encrypt from '../crypto/encrypt'
@@ -20,6 +20,17 @@ const initState = {
   verification: generateTrackingNum(),
 }
 
+export type AuthedVote = VoteMap & { auth: string }
+type Payload = Partial<VoteMap>
+type State = {
+  encrypted: Partial<AuthedVote>
+  otherSubmittedVotes: AuthedVote[]
+  plaintext: Partial<VoteMap>
+  randomizer: Partial<VoteMap>
+  verification: string
+}
+type VoteMap = { [index: string]: string; mayor_vote: string }
+
 function reducer(prev: State, payload: Payload) {
   const verification = generateTrackingNum()
   const newState = merge({ ...prev }, { plaintext: payload, verification })
@@ -36,20 +47,6 @@ function reducer(prev: State, payload: Payload) {
 
   return merge(newState, { encrypted, randomizer })
 }
-
-// Boilerplate to be easier to use
-
-type VoteMap = { [index: string]: string; mayor_vote: string }
-export type AuthedVote = VoteMap & { auth: string }
-type State = {
-  encrypted: Partial<AuthedVote>
-  otherSubmittedVotes: AuthedVote[]
-  plaintext: Partial<VoteMap>
-  randomizer: Partial<VoteMap>
-  verification: string
-}
-
-type Payload = Partial<VoteMap>
 
 const Context = createContext<{ dispatch: (payload: Payload) => void; state: State }>({
   dispatch: (payload: Payload) => void payload,

@@ -33,5 +33,5 @@ export const useConventionRedirect = () => {
     })
   }, [convention_id, qr_id])
 
-  return { conventionRedirectInfo, convention_id, errorMessage, loading, qr_id }
+  return { convention_id, conventionRedirectInfo, errorMessage, loading, qr_id }
 }

@@ -19,9 +19,9 @@ export const InvestmentForm = () => {
     (props: TextFieldProps) => (
       <NoSsr>
         <TextField
+          onChange={() => setSaved(false)}
           size="small"
           variant="outlined"
-          onChange={() => setSaved(false)}
           {...props}
           id={`${formName}-${props.id}`}
           style={{ ...props.style }}
@@ -55,13 +55,13 @@ export const InvestmentForm = () => {
             <input
               checked={amount === amountSelected}
               name={`${formName}-amount-${amount}`}
-              type="radio"
-              value={amount}
               onChange={() => {
                 setSaved(false)
                 setAmountSelected(amount)
                 setCustom('')
               }}
+              type="radio"
+              value={amount}
             />
             ${label}
           </label>
@@ -69,13 +69,13 @@ export const InvestmentForm = () => {
         <Field
           id="custom-amount"
           label="Custom"
-          style={{ marginLeft: 10, width: 100 }}
-          value={custom}
           onChange={({ target }) => {
             setSaved(false)
             setAmountSelected(target.value)
             setCustom(target.value)
           }}
+          style={{ marginLeft: 10, width: 100 }}
+          value={custom}
         />
       </Row>
       <p>
@@ -85,7 +85,6 @@ export const InvestmentForm = () => {
         {saved && <p style={{ margin: 0, opacity: 0.7, width: 60 }}>Done.</p>}
         <OnClickButton
           disabled={saved}
-          style={{ marginRight: 0 }}
           onClick={async () => {
             const fields: Record<string, string> = {}
             setError('')
@@ -101,6 +100,7 @@ export const InvestmentForm = () => {
 
             setError((await response.json()).error)
           }}
+          style={{ marginRight: 0 }}
         >
           Next
         </OnClickButton>

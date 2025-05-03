@@ -9,9 +9,9 @@ export const TextDesigner = ({ design, setDesign }: { design: string; setDesign:
     <div className="relative flex-1">
       <CodeMirror
         height="auto"
+        onChange={(value) => setDesign(value)}
         style={{ border: '1px solid #ccc', borderRadius: 3, borderTopRightRadius: 0 }}
         value={design}
-        onChange={(value) => setDesign(value)}
       />
 
       <AdvancedFeatures />

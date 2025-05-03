@@ -5,7 +5,7 @@ import { useStored } from '../useStored'
 import { hoverable } from './CheckboxCell'
 import InvalidatedVoteIcon from './invalidated.png'
 import { mask } from './mask-token'
-import { Signature, getStatus } from './Signature'
+import { getStatus, Signature } from './Signature'
 
 export const InvalidVotersTable = ({ hide_approved, hide_voted }: { hide_approved: boolean; hide_voted: boolean }) => {
   const { election_id, esignature_requested, voters } = useStored()

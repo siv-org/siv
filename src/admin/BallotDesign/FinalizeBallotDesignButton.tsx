@@ -13,13 +13,12 @@ export const FinalizeBallotDesignButton = ({
 }: {
   design: string
   election_id?: string
-  error: string | null
+  error: null | string
   set_saving_errors: (error: string) => void
 }) => {
   return (
     <SaveButton
       disabled={!!error}
-      text={error ? 'Error!' : 'Finalize'}
       onPress={async () => {
         const error = check_for_less_urgent_ballot_errors(design)
         if (error) return set_saving_errors(error)
@@ -30,6 +29,7 @@ export const FinalizeBallotDesignButton = ({
         revalidate(election_id)
         router.push(`${window.location.origin}/admin/${election_id}/privacy`)
       }}
+      text={error ? 'Error!' : 'Finalize'}
     />
   )
 }

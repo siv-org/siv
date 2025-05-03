@@ -1,7 +1,7 @@
-export type Score = number | [number, { adv?: string; disadv: string }]
+export type Score = [number, { adv?: string; disadv: string }] | number
 
-type Row = { d_name: string; desc: string; scores: [Score, Score, Score] }
 type Category = { name: string; rows: Row[] }
+type Row = { d_name: string; desc: string; scores: [Score, Score, Score] }
 
 export const tableData: Category[] = [
   {

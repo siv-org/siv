@@ -19,9 +19,9 @@ export const IfYesForm = ({ id }: { id?: string }) => {
     (props: TextFieldProps) => (
       <NoSsr>
         <TextField
+          onChange={() => setSaved(false)}
           size="small"
           variant="outlined"
-          onChange={() => setSaved(false)}
           {...props}
           id={props.id}
           style={{ ...props.style }}
@@ -41,7 +41,7 @@ export const IfYesForm = ({ id }: { id?: string }) => {
       </Row>
       <Row style={{ marginTop: 10 }}>
         <label>
-          <input readOnly checked={stayUpdated} type="checkbox" onClick={() => setStayUpdated(!stayUpdated)} />
+          <input checked={stayUpdated} onClick={() => setStayUpdated(!stayUpdated)} readOnly type="checkbox" />
           Keep me updated
         </label>
       </Row>
@@ -55,14 +55,14 @@ export const IfYesForm = ({ id }: { id?: string }) => {
         <Field fullWidth id="country" label="Country" />
       </Row>
       <Row>
-        <Field fullWidth multiline id="reason" label="Reason / Note" rows={4} />
+        <Field fullWidth id="reason" label="Reason / Note" multiline rows={4} />
       </Row>
       <Row style={{ marginBottom: 0 }}>
         <Field
           fullWidth
-          multiline
           id="topics"
           label="Questions or topics you'd like more information about "
+          multiline
           rows={4}
         />
       </Row>
@@ -72,10 +72,10 @@ export const IfYesForm = ({ id }: { id?: string }) => {
           {['Video', 'Audio', 'Text'].map((label) => (
             <label key={label}>
               <input
-                readOnly
                 checked={!!contentPreferences[label]}
-                type="checkbox"
                 onClick={() => setContentPreferences({ ...contentPreferences, [label]: !contentPreferences[label] })}
+                readOnly
+                type="checkbox"
               />
               {label}
             </label>
@@ -100,11 +100,11 @@ export const IfYesForm = ({ id }: { id?: string }) => {
             <br />
             <div className="icons">
               <a
-                style={{ cursor: 'pointer', position: 'relative' }}
                 onClick={() => {
                   setCopied(true)
                   navigator.clipboard.writeText('https://siv.org/do-you-want-siv')
                 }}
+                style={{ cursor: 'pointer', position: 'relative' }}
               >
                 <LinkOutlined style={{ fontSize: 25, marginTop: 30 }} />
                 <span>Link</span>

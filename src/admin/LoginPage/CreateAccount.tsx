@@ -2,7 +2,7 @@ import { TextField, TextFieldProps } from '@mui/material'
 import { validate as validateEmail } from 'email-validator'
 import router from 'next/router'
 import { useEffect, useState } from 'react'
-import { OnClickButton, darkBlue } from 'src/_shared/Button'
+import { darkBlue, OnClickButton } from 'src/_shared/Button'
 import { NoSsr } from 'src/_shared/NoSsr'
 import { api } from 'src/api-helper'
 import { Row } from 'src/homepage/AreYouAVoter'
@@ -39,10 +39,9 @@ export const CreateAccount = () => {
       </NoSsr>
       <div style={{ textAlign: 'right' }}>
         <OnClickButton
+          background={darkBlue}
           invertColor
           noBorder
-          background={darkBlue}
-          style={{ margin: 0, padding: '10px 30px' }}
           onClick={async () => {
             const fields: Record<string, string> = { created_at: new Date().toString() }
             ;['first_name', 'last_name', 'email', 'your_organization'].forEach((id) => {
@@ -64,6 +63,7 @@ export const CreateAccount = () => {
 
             setSubmitted(email)
           }}
+          style={{ margin: 0, padding: '10px 30px' }}
         >
           Create Account
         </OnClickButton>

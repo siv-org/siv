@@ -8,8 +8,8 @@ const initState = { current: initStep }
 const reducer = (prev: State, payload: Payload) => merge({ ...prev }, payload)
 
 type Map = Record<string, string>
-type State = Map
 type Payload = Map
+type State = Map
 
 const Context = createContext<{ dispatch: (payload: Payload) => void; state: State }>({
   dispatch: (payload: Payload) => void payload,

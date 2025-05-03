@@ -15,8 +15,8 @@ export const DemoPage = (): JSX.Element => {
         <main>
           <div className="video-container">
             <iframe
-              allowFullScreen
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
               className="video"
               frameBorder="0"
               src="https://www.youtube-nocookie.com/embed/PzUU_rcLurQ?modestbranding=1"

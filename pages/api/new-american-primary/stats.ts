@@ -1,4 +1,3 @@
-/* eslint-disable sort-keys-fix/sort-keys-fix */
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import { firebase } from '../_services'
@@ -61,6 +60,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { num_votes } = { ...(await election).data() } as { num_votes: number }
   const count = napEntries.length - _malformed_link_auths
 
+  /* eslint-disable perfectionist/sort-objects */
   res.status(200).json({
     // napEntries,
     nap_auth_stats: {
@@ -83,6 +83,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       //   includes_sms_and_passport,
     },
   })
+  /* eslint-enable perfectionist/sort-objects */
 }
 
 function pct(num: number) {

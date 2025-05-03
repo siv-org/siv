@@ -8,7 +8,7 @@ import { range } from 'src/utils'
 
 import { AsyncReturnType } from './async-return-type'
 import { bigint_from_seed } from './bigint-from-seed'
-import { G, RP, mod, random_bigint, sum_bigints, sum_points } from './curve'
+import { G, mod, random_bigint, RP, sum_bigints, sum_points } from './curve'
 import { moduloLambda } from './lagrange'
 
 /**
@@ -53,7 +53,6 @@ export const is_received_share_valid = (
   const passes = g_to_share.equals(product)
 
   if (!passes) {
-    // eslint-disable-next-line no-console
     console.log(`received share #${receivers_index_j} ${received_secret} invalid
     g_to_share: ${g_to_share}
     product: ${product}

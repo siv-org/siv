@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { Tooltip } from 'src/admin/Voters/Tooltip'
 import { Item } from 'src/vote/storeElectionInfo'
 
-import { check_for_urgent_ballot_errors } from './check_for_ballot_errors'
+import { check_for_fatal_ballot_errors } from './check_for_ballot_errors'
 import { Switch } from './Switch'
 
 export const default_multiple_votes_allowed = 3
@@ -15,7 +15,7 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
   const [json, setJson] = useState<Item[]>()
   const saveDesign = (json: Item[]) => setDesign(JSON.stringify(json, undefined, 2))
 
-  const errors = check_for_urgent_ballot_errors(design)
+  const errors = check_for_fatal_ballot_errors(design)
 
   useEffect(() => {
     if (!errors) setJson(JSON.parse(design))
@@ -55,12 +55,12 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
             <div className="flex items-center justify-between">
               <input
                 className="p-1 text-sm"
-                value={id}
                 onChange={({ target }) => {
                   const new_json = [...json]
                   new_json[questionIndex].id = target.value
                   saveDesign(new_json)
                 }}
+                value={id}
               />
 
               {/* Delete Question btn */}
@@ -87,7 +87,6 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
                 <span className="absolute z-20 scale-75 right-3 top-2 opacity-60">▼</span>
                 <select
                   className="appearance-none border border-solid border-gray-200 text-[13px] rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 shadow-sm relative"
-                  value={json[questionIndex].type}
                   onChange={({ target }) => {
                     const new_json = [...json]
                     new_json[questionIndex].type = target.value as string
@@ -126,6 +125,7 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
 
                     saveDesign(new_json)
                   }}
+                  value={json[questionIndex].type}
                 >
                   <option value="choose-only-one">Choose Only One — Plurality (FPTP)</option>
                   <option value="ranked-choice-irv">Ranked Choice — Instant Runoff (IRV)</option>
@@ -142,13 +142,13 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
                 <label className="text-[10px] italic">Max Selections Allowed?</label>
                 <input
                   className="p-1 ml-1 text-sm"
-                  value={multiple_votes_allowed}
                   onChange={({ target }) => {
                     const update = +target.value
                     const new_json = [...json]
                     new_json[questionIndex].multiple_votes_allowed = update
                     saveDesign(new_json)
                   }}
+                  value={multiple_votes_allowed}
                 />
               </div>
             )}
@@ -158,27 +158,27 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
                 <label className="text-[10px] italic">Min score?</label>
                 <input
                   className="p-1 m-1 text-sm w-14"
-                  type="number"
-                  value={min_score}
                   onChange={({ target }) => {
                     const update = +target.value
                     const new_json = [...json]
                     new_json[questionIndex].min_score = update
                     saveDesign(new_json)
                   }}
+                  type="number"
+                  value={min_score}
                 />
 
                 <label className="ml-5 text-[10px] italic">Max score?</label>
                 <input
                   className="p-1 ml-1 text-sm w-14"
-                  type="number"
-                  value={max_score}
                   onChange={({ target }) => {
                     const update = +target.value
                     const new_json = [...json]
                     new_json[questionIndex].max_score = update
                     saveDesign(new_json)
                   }}
+                  type="number"
+                  value={max_score}
                 />
               </div>
             )}
@@ -190,14 +190,14 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
                   <div className="absolute text-lg opacity-50 -top-[3px] left-3">$</div>
                   <input
                     className="w-24 p-1 m-1 text-sm text-right"
-                    type="number"
-                    value={budget_available}
                     onChange={({ target }) => {
                       const update = +target.value
                       const new_json = [...json]
                       new_json[questionIndex].budget_available = update
                       saveDesign(new_json)
                     }}
+                    type="number"
+                    value={budget_available}
                   />
                 </div>
               </div>
@@ -209,12 +209,12 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
             <div className="flex items-center">
               <input
                 className="flex-1 p-1 text-sm"
-                value={title}
                 onChange={({ target }) => {
                   const new_json = [...json]
                   new_json[questionIndex].title = target.value
                   saveDesign(new_json)
                 }}
+                value={title}
               />
             </div>
 
@@ -225,12 +225,12 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
                   {/* Option input */}
                   <input
                     className="p-[5px] mb-1.5 text-[13px]"
-                    value={name}
                     onChange={({ target }) => {
                       const new_json = [...json]
                       new_json[questionIndex].options[optionIndex].name = target.value
                       saveDesign(new_json)
                     }}
+                    value={name}
                   />
                   {/* Delete Option btn */}
                   <a
@@ -288,9 +288,9 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
           new_json.push({
             id: `item${new_question_number}`,
             type: 'choose-only-one',
-            // eslint-disable-next-line sort-keys-fix/sort-keys-fix
+            // eslint-disable-next-line perfectionist/sort-objects
             title: `Question ${new_question_number}`,
-            // eslint-disable-next-line sort-keys-fix/sort-keys-fix
+            // eslint-disable-next-line perfectionist/sort-objects
             options: [{ name: 'Option 1' }, { name: 'Option 2' }],
             write_in_allowed: false,
           })

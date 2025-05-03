@@ -23,41 +23,39 @@ export const VoterAuthInfoForm = () => {
           InputLabelProps={{ style: { fontSize: 22 } }}
           InputProps={{ style: { fontSize: 22 } }}
           label="First Name"
+          onChange={(event) => setFirstName(event.target.value)}
           style={{ flex: 1, fontSize: 20 }}
           variant="outlined"
-          onChange={(event) => setFirstName(event.target.value)}
         />
         <TextField
           InputLabelProps={{ style: { fontSize: 22 } }}
           InputProps={{ style: { fontSize: 22 } }}
           label="Last Name"
+          onChange={(event) => setLastName(event.target.value)}
           style={{ flex: 1, fontSize: 20 }}
           variant="outlined"
-          onChange={(event) => setLastName(event.target.value)}
         />
       </div>
       <div className="flex mx-auto mb-4 sm:max-w-md">
         <TextField
-          InputLabelProps={{ style: { fontSize: 22 } }}
-          InputProps={{ style: { fontSize: 22 } }}
           error={!!error}
           helperText={error}
+          InputLabelProps={{ style: { fontSize: 22 } }}
+          InputProps={{ style: { fontSize: 22 } }}
           label="Email (to be verified)"
-          style={{ flex: 1, fontSize: 20 }}
-          variant="outlined"
           onChange={(event) => {
             setError('')
             setEmail(event.target.value)
           }}
           onKeyDown={(event) => event.key === 'Enter' && submitBtn.current?.click()}
+          style={{ flex: 1, fontSize: 20 }}
+          variant="outlined"
         />
       </div>
 
       <OnClickButton
         className="w-full text-xl text-center"
         disabled={!first_name || !last_name || !validateEmail(email) || !!error || submitting}
-        ref={submitBtn}
-        style={{ margin: 0, padding: '19px 15px' }}
         onClick={async () => {
           // Validate email
           if (!validateEmail(email)) return setError('Invalid email address')
@@ -81,6 +79,8 @@ export const VoterAuthInfoForm = () => {
           // Redirect back to submission screen
           router.push(`${window.location.origin}/election/${election_id}/vote?auth=link&link_auth=${link_auth}`)
         }}
+        ref={submitBtn}
+        style={{ margin: 0, padding: '19px 15px' }}
       >
         <>Submit{submitting ? 'ting...' : ''}</>
       </OnClickButton>

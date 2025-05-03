@@ -42,34 +42,8 @@ const deriveKey = async (sharedSecret: string): Promise<CryptoKey> => {
   return crypto.subtle.importKey('raw', hashedSecret, { length: 256, name: 'AES-CTR' }, false, ['encrypt', 'decrypt'])
 }
 
-export async function keygenEncrypt(
-  recipient_address: RP,
-  nonce: bigint,
-  message: string,
-): Promise<{ Unlock: string; cipherhex: string }> {
-  const sharedSecret = recipient_address.multiply(nonce).toHex()
-  const shared_key = await deriveKey(sharedSecret)
-
-  const encoded = new TextEncoder().encode(message)
-  const ciphertext = await crypto.subtle.encrypt(AesAlgorithm, shared_key, encoded)
-
-  const cipherhex = bytesToHex(ciphertext)
-
-  const Unlock = RP.BASE.multiply(nonce).toHex()
-
-  // console.log('🟣 encrypt message', message)
-  // console.log('🟣 encrypt nonce', nonce)
-  // console.log('🟣 encrypt sharedSecret', sharedSecret)
-  // console.log('🟣 encrypt encoded', encoded)
-  // console.log('🟣 encrypt ciphertext', [...new Uint8Array(ciphertext)])
-  // console.log('🟣 encrypt cipherhex', cipherhex)
-  // console.log('🟣 encrypt Unlock', Unlock)
-
-  return { Unlock, cipherhex }
-}
-
 export async function keygenDecrypt(privateKey: bigint, ciphertext: string): Promise<string> {
-  const { Unlock, cipherhex } = JSON.parse(ciphertext) as { Unlock: string; cipherhex: string }
+  const { cipherhex, Unlock } = JSON.parse(ciphertext) as { cipherhex: string; Unlock: string; }
 
   const sharedSecret = RP.fromHex(Unlock).multiply(privateKey).toHex()
   const shared_key = await deriveKey(sharedSecret)
@@ -88,4 +62,30 @@ export async function keygenDecrypt(privateKey: bigint, ciphertext: string): Pro
   // console.log('🔵 decrypt decoded', decoded)
 
   return decoded
+}
+
+export async function keygenEncrypt(
+  recipient_address: RP,
+  nonce: bigint,
+  message: string,
+): Promise<{ cipherhex: string; Unlock: string; }> {
+  const sharedSecret = recipient_address.multiply(nonce).toHex()
+  const shared_key = await deriveKey(sharedSecret)
+
+  const encoded = new TextEncoder().encode(message)
+  const ciphertext = await crypto.subtle.encrypt(AesAlgorithm, shared_key, encoded)
+
+  const cipherhex = bytesToHex(ciphertext)
+
+  const Unlock = RP.BASE.multiply(nonce).toHex()
+
+  // console.log('🟣 encrypt message', message)
+  // console.log('🟣 encrypt nonce', nonce)
+  // console.log('🟣 encrypt sharedSecret', sharedSecret)
+  // console.log('🟣 encrypt encoded', encoded)
+  // console.log('🟣 encrypt ciphertext', [...new Uint8Array(ciphertext)])
+  // console.log('🟣 encrypt cipherhex', cipherhex)
+  // console.log('🟣 encrypt Unlock', Unlock)
+
+  return { cipherhex, Unlock }
 }

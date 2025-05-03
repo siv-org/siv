@@ -19,7 +19,7 @@ export const MobileMenu = () => {
     <div className="sm:hidden">
       {/* Activation button */}
       {section && (
-        <OnClickButton style={{ marginLeft: 0, padding: '5px 11px' }} onClick={() => set_menu(true)}>
+        <OnClickButton onClick={() => set_menu(true)} style={{ marginLeft: 0, padding: '5px 11px' }}>
           {section && steps.includes(name) ? `Step ${steps.indexOf(name) + 1}: ${name}` : 'Menu'}
         </OnClickButton>
       )}
@@ -29,9 +29,9 @@ export const MobileMenu = () => {
         anchor="left"
         disableBackdropTransition={!iOS}
         disableDiscovery={iOS}
-        open={menu_open}
         onClose={() => set_menu(false)}
         onOpen={() => set_menu(true)}
+        open={menu_open}
       >
         <SidebarContent closeMenu={() => set_menu(false)} />
       </SwipeableDrawer>

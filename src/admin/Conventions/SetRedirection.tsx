@@ -35,10 +35,10 @@ export const SetRedirection = () => {
               {/* Set filter textbox */}
               <input
                 className="w-full px-3 text-[15px] py-2 text-gray-700 border rounded shadow"
+                onChange={(e) => setSearchText(e.target.value)}
                 placeholder="Filter ballot by title"
                 type="text"
                 value={searchText}
-                onChange={(e) => setSearchText(e.target.value)}
               />
 
               {!filteredData.length && <p className="italic opacity-70">No elections found</p>}
@@ -97,7 +97,7 @@ export const SetRedirection = () => {
 
                 {/* Finalized? */}
                 <td className="!px-2">
-                  <input disabled checked={e.ballot_design_finalized && !!e.threshold_public_key} type="checkbox" />
+                  <input checked={e.ballot_design_finalized && !!e.threshold_public_key} disabled type="checkbox" />
 
                   {/* Hints if active but not finalized */}
                   {is_active_redirect && (

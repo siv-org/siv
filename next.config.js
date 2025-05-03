@@ -1,5 +1,4 @@
 // @ts-check
-/* eslint-disable @typescript-eslint/no-var-requires */
 const withMDX = require('@next/mdx')()
 const withTM = require('next-transpile-modules')(['lodash-es'])
 

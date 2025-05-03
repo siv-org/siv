@@ -1,4 +1,4 @@
-import { RP, random_bigint } from 'src/crypto/curve'
+import { random_bigint, RP } from 'src/crypto/curve'
 import { generateAuthToken } from 'src/crypto/generate-auth-tokens'
 
 export const decryption_key = random_bigint()
