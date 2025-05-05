@@ -6,6 +6,15 @@ import { HeaderBar } from './HeaderBar'
 export const AboveFold = () => (
   <section>
     <HeaderBar />
+
+    <div className="w-full px-4 py-3 text-base italic font-medium text-center text-gray-900 rounded-lg shadow-xl bg-slate-200 my-11 md:text-lg">
+      DEF CON 2024 security report is now available —{' '}
+      <a href="https://hack.siv.org/reports/2024defcon" target="_blank" rel="noopener" className="!text-blue-700">
+        See the findings
+      </a>
+      .
+    </div>
+
     <h1>
       Secure Internet Voting
       <div className="underline-container">
