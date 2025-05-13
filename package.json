@@ -1,6 +1,6 @@
 {
   "name": "siv-web",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
   "scripts": {
     "build": "next build",
@@ -8,7 +8,7 @@
     "dev": "next dev",
     "e2e": "cypress run --config-file cypress/cypress-config.json",
     "format": "prettier --write **/*.{js,ts,tsx}",
-    "postinstall": "patch-package",
+    "postinstall": "patch-package && ts-node db-data/migrations/_runner.ts",
     "lint": "eslint src/ pages/",
     "start": "next start",
     "test": "yarn lint && yarn typecheck && yarn e2e",

@@ -23,8 +23,7 @@ export async function validateAuthToken(
   // Begin preloading these docs
   const electionDoc = firebase.firestore().collection('elections').doc(election_id)
   const election = electionDoc.get()
-  const voters = electionDoc.collection('voters').where('auth_token', '==', auth).get()
-  const votes = electionDoc.collection('votes').where('auth', '==', auth).get()
+  const voters = electionDoc.collection('approved-voters').where('auth_token', '==', auth).get()
 
   // Did they send us an Auth Token?
   if (!auth) return fail('Missing Auth Token. Only registered voters are allowed to vote.')
@@ -54,9 +53,8 @@ export async function validateAuthToken(
   }
 
   // Has Auth Token already been used?
-  const [vote] = (await votes).docs
-  if (vote) {
-    const previous_at = new Date(vote.data().created_at?._seconds * 1000)
+  if (voter.data().voted_at) {
+    const previous_at = new Date(voter.data().voted_at?._seconds * 1000)
     return fail(`Vote already recorded. (${format(previous_at)})`)
   }
 

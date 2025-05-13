@@ -1,8 +1,8 @@
+import { firebase } from 'api/_services'
+import { checkJwtOwnsElection } from 'api/validate-admin-jwt'
 import { NextApiRequest, NextApiResponse } from 'next'
 import UAParser from 'ua-parser-js'
 
-import { firebase } from '../../../_services'
-import { checkJwtOwnsElection } from '../../../validate-admin-jwt'
 import { QueueLog } from './invite-voters'
 
 export type AdminData = {
@@ -75,10 +75,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Begin preloading all these docs
   const loadElection = election.get()
   const loadTrustees = election.collection('trustees').orderBy('index', 'asc').get()
-  const loadVoters = election.collection('voters').orderBy('index', 'asc').get()
-  const loadVotes = election.collection('votes').get()
+  const loadApprovedVoters = election.collection('approved-voters').orderBy('index', 'asc').get()
   const loadPendingVotes = election.collection('votes-pending').get()
-  const loadInvalidatedVotes = election.collection('invalidated_votes').get()
 
   // Is election_id in DB?
   const electionDoc = await loadElection
@@ -138,24 +136,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     ]
   }, [])
 
-  // Gather who's voted already
-  const votesByAuth: Record<string, [boolean, string?]> = (await loadVotes).docs.reduce((acc, doc) => {
-    const data = doc.data()
-    return { ...acc, [data.auth]: [true, data.esignature] }
-  }, {})
-
-  // Gather whose votes were invalidated
-  const invalidatedVotesByAuth: Record<string, boolean> = {}
-  ;(await loadInvalidatedVotes).docs.forEach((doc) => {
-    const data = doc.data()
-    invalidatedVotesByAuth[data.auth] = true
-  })
-
   // Build voters objects
-  const voters: Voter[] = (await loadVoters).docs.reduce((acc: Voter[], doc) => {
+  const voters: Voter[] = (await loadApprovedVoters).docs.reduce((acc: Voter[], doc) => {
     const {
       auth_token,
       email,
+      esignature,
       esignature_review,
       first_name,
       index,
@@ -164,11 +150,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       is_email_verified,
       last_name,
       mailgun_events,
+      voted_at,
     } = {
       ...doc.data(),
     } as {
       auth_token: string
       email: string
+      esignature?: string
       esignature_review: ReviewLog[]
       first_name: string
       index: number
@@ -177,16 +165,17 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       is_email_verified?: boolean
       last_name: string
       mailgun_events: { accepted: MgEvent[]; delivered: MgEvent[] }
+      voted_at: { _seconds: number }
     }
     return [
       ...acc,
       {
         auth_token,
         email,
-        esignature: (votesByAuth[auth_token] || [])[1],
+        esignature,
         esignature_review,
         first_name,
-        has_voted: !!votesByAuth[auth_token] || !!invalidatedVotesByAuth[auth_token],
+        has_voted: !!voted_at,
         index,
         invalidated: invalidated_at ? true : undefined,
         invite_queued,

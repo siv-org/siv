@@ -31,7 +31,7 @@ export const SendInvitationsButton = ({
 
         toggle_sending()
         const voters_to_invite = checked.reduce((acc: string[], is_checked, index) => {
-          if (is_checked) acc.push(valid_voters[index].email)
+          if (is_checked) acc.push(valid_voters[index].auth_token)
           return acc
         }, [])
 
