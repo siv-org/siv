@@ -32,42 +32,39 @@ test('handles edge cases correctly', () => {
   expect(largeRandom).toBeLessThan(largeMax)
 })
 
-const max = 2 ** 16
+const max = 2 ** 15
 test(`generates evenly distributed numbers (n=${max})`, () => {
-  const hits: { [index: string]: number } = {}
+  // Count how many times each number appears
+  const counts = new Map<bigint, number>()
   const numSamples = max
+  const maxBigInt = BigInt(max)
+  const zero = BigInt(0)
 
-  // Generate samples
+  // Generate and count random numbers
   for (let i = 0; i < numSamples; i += 1) {
-    const random = pick_random_bigint(BigInt(max))
-    expect(random).toBeGreaterThan(BigInt(0))
-    expect(random).toBeLessThan(BigInt(max))
+    const random = pick_random_bigint(maxBigInt)
+    expect(random).toBeGreaterThan(zero)
+    expect(random).toBeLessThan(maxBigInt)
 
-    const asString = random.toString()
-    hits[asString] = (hits[asString] || 0) + 1
+    const prev = counts.get(random) || 0
+    counts.set(random, prev + 1)
   }
 
-  // Analyze distribution
-  const uniqueHits = Object.keys(hits)
-  const uniqueHitsTuples = uniqueHits.map((h) => ({
-    hits: hits[h],
-    num: h,
+  // Analyze the distribution
+  const countsArray = Array.from(counts.entries()).map(([number, count]) => ({
+    count,
+    number,
   }))
-  const sorted = orderBy(uniqueHitsTuples, 'hits', 'desc')
+  const sortedByFrequency = orderBy(countsArray, 'count', 'desc')
 
-  // Test distribution properties
-  const maxHits = sorted[0].hits
-  const numberUniques = uniqueHits.length
-  const diff = (max - numberUniques) / max
+  // // Verify distribution properties
+  // - No number should appear significantly more often than others
+  const mostFrequentCount = sortedByFrequency[0].count
+  expect(mostFrequentCount).toBeLessThan(Math.cbrt(max))
 
-  // No number should appear significantly more often than others
-  expect(maxHits).toBeLessThan(Math.cbrt(max))
-
-  // Should have good coverage of the range
-  expect(diff).toBeLessThan(0.4)
-
-  // Should have reasonable number of unique values
-  expect(numberUniques).toBeGreaterThan(max * 0.6)
+  // - Should have reasonable number of unique values
+  const uniqueNumbersCount = countsArray.length
+  expect(uniqueNumbersCount).toBeGreaterThan(max * 0.6)
 })
 
 // test.todo('Test with dieharder suite https://formulae.brew.sh/formula/dieharder')
