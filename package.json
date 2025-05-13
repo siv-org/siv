@@ -11,7 +11,7 @@
     "postinstall": "patch-package",
     "lint": "eslint src/ pages/",
     "start": "next start",
-    "test": "yarn lint && yarn typecheck && yarn e2e",
+    "test": "bun lint && bun typecheck && bun unit && bun e2e",
     "test:crypto": "bun test src/crypto/tests/*.test.ts",
     "typecheck": "tsc --pretty --noEmit",
     "unit": "bun test src"
