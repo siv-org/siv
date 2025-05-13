@@ -148,18 +148,22 @@ export async function generate_partial_decryption_proof(cipher_lock: RP, trustee
 
   const g_to_trustees_keyshare = G.multiply(trustees_secret)
 
-  // Calculates Verifier's deterministic random number (Fiat-Shamir technique):
-  const public_r = await bigint_from_seed(`${cipher_lock} ${g_to_trustees_keyshare}`)
-
-  // Prover creates and sends:
-  const O = mod(secret_r + public_r * trustees_secret)
-
   // Prover also shares commitment of their secret randomizer choice
   const R = G.multiply(secret_r)
   const LR = cipher_lock.multiply(secret_r)
 
+  // Calculates Verifier's deterministic random number (Fiat-Shamir technique):
+  const public_r = await prngR(cipher_lock, g_to_trustees_keyshare, R, LR)
+
+  // Prover creates and sends:
+  const O = mod(secret_r + public_r * trustees_secret)
+
   return { LR, O, R }
 }
+
+/** Fiat-Shamir deterministic PRNG challenge integers */
+const prngR = (cipher_lock: RP, g_to_trustees_keyshare: RP, R: RP, LR: RP) =>
+  bigint_from_seed(['partial_decryption_proof', cipher_lock, g_to_trustees_keyshare, R, LR, G].join(','))
 
 /** Verifies a non-interactive Zero Knowledge proof of a valid partial decryption
  *  by checking these two logs are equivalent:
@@ -182,7 +186,7 @@ export async function verify_partial_decryption_proof(
   { LR, O, R }: AsyncReturnType<typeof generate_partial_decryption_proof>,
 ): Promise<boolean> {
   // Recalculate deterministic verifier nonce
-  const public_r = await bigint_from_seed(`${cipher_lock} ${g_to_trustees_keyshare}`)
+  const public_r = await prngR(cipher_lock, g_to_trustees_keyshare, R, LR)
 
   // Verifier checks:
   // g ^ O
