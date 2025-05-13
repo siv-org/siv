@@ -2,7 +2,7 @@ import { expect, test } from 'bun:test'
 import { range } from 'lodash'
 
 import { bigint_from_seed } from '../bigint-from-seed'
-import { CURVE } from '../curve'
+import { CURVE, G } from '../curve'
 
 test('Deterministically generate a pseudorandom integer less than `max`, from a given `seed` string.', async () => {
   // Make multiple versions
@@ -16,4 +16,16 @@ test('Deterministically generate a pseudorandom integer less than `max`, from a 
   bigints.forEach((b) => {
     expect(b).toBe(bigints[0])
   })
+})
+
+test("RPs implicitly cast .toHex() when .join()'d", () => {
+  // If this breaks, Fiat-Shamir PRNGs could lose soundness, letting in invalid proofs.
+  // So we explicitly test for it, to protect against future library updates or similar.
+
+  const point = G.multiply(BigInt(12345))
+
+  const explicitHex = point.toHex()
+  const joined = [point, point].join(',')
+
+  expect(joined).toBe(`${explicitHex},${explicitHex}`)
 })
