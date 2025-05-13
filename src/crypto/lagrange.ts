@@ -4,7 +4,6 @@ import { invert, mod } from './curve'
 export const moduloLambda = (index: number, points: bigint[][], modulo: bigint, debug?: boolean): bigint => {
   const i = points[index][0]
 
-  // eslint-disable-next-line no-console
   const log = debug ? console.log : () => void 0
 
   return points.reduce((memo, point, currentIndex) => {

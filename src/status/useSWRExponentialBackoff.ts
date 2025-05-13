@@ -12,7 +12,7 @@ export function useSWRExponentialBackoff(
 
   useEffect(() => {
     let retries = 0
-    let timerId: number | null = null
+    let timerId: null | number = null
 
     function revalidate() {
       mutate(key)

@@ -16,9 +16,9 @@ export const IfNoForm = ({ id }: { id?: string }) => {
     (props: TextFieldProps) => (
       <NoSsr>
         <TextField
+          onChange={() => setSaved(false)}
           size="small"
           variant="outlined"
-          onChange={() => setSaved(false)}
           {...props}
           id={props.id}
           style={{ ...props.style }}
@@ -31,7 +31,7 @@ export const IfNoForm = ({ id }: { id?: string }) => {
   return (
     <form autoComplete="off">
       <Row>
-        <Field fullWidth multiline id="reason" label="What is the reason/concern?" rows={4} />
+        <Field fullWidth id="reason" label="What is the reason/concern?" multiline rows={4} />
       </Row>
       <Row style={{ marginBottom: 15 }} />
 
@@ -40,7 +40,7 @@ export const IfNoForm = ({ id }: { id?: string }) => {
       </Row>
       <Row style={{ marginTop: 10 }}>
         <label>
-          <input readOnly checked={stayUpdated} type="checkbox" onClick={() => setStayUpdated(!stayUpdated)} />
+          <input checked={stayUpdated} onClick={() => setStayUpdated(!stayUpdated)} readOnly type="checkbox" />
           Keep me updated
         </label>
       </Row>

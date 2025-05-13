@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 
 import { api } from '../api-helper'
 
-type Status = '' | 'fail' | 'pass' | 'preview' | 'link'
+type Status = '' | 'fail' | 'link' | 'pass' | 'preview'
 
 export const YourAuthToken = ({ auth, election_id }: { auth?: string; election_id?: string }) => {
   const [message, setMessage] = useState('')
@@ -36,7 +36,7 @@ export const YourAuthToken = ({ auth, election_id }: { auth?: string; election_i
       <p
         className={`px-2 border border-[#ccc] border-solid rounded h-[45px] flex items-center ${
           status === 'fail' && '!border-red-500'
-        } ${status === 'pass' && '!border-green-700'} ${['preview', 'link'].includes(status) && 'italic opacity-70'}`}
+        } ${status === 'pass' && '!border-green-700'} ${['link', 'preview'].includes(status) && 'italic opacity-70'}`}
       >
         {!status ? (
           <>

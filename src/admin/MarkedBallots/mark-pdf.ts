@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { PDFDocument, PDFFont, StandardFonts, rgb } from 'pdf-lib'
+import { PDFDocument, PDFFont, rgb, StandardFonts } from 'pdf-lib'
 import { Item } from 'src/vote/storeElectionInfo'
 
 /*

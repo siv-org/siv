@@ -73,10 +73,8 @@ export const ScoreItem = ({
                 {scoreOptions.map((score) => (
                   <td className="ml-2" key={score}>
                     <input
-                      readOnly
                       checked={state.plaintext[`${id}_${val}`] === `${score}`}
                       className="w-7 h-7 bg-white border-gray-300 border-solid rounded-full appearance-none cursor-pointer hover:bg-blue-100 checked:!bg-[#002868] border-2 checked:border-white/30"
-                      type="radio"
                       onClick={() => {
                         const update: Record<string, string> = {}
 
@@ -88,6 +86,8 @@ export const ScoreItem = ({
 
                         dispatch(update)
                       }}
+                      readOnly
+                      type="radio"
                     />
                   </td>
                 ))}

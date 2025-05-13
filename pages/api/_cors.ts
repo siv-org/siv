@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 
-type NextApiRoute = (req: NextApiRequest, res: NextApiResponse) => void | Promise<void>
+type NextApiRoute = (req: NextApiRequest, res: NextApiResponse) => Promise<void> | void
 
 // Wrap another route handler with CORS headers
 export const allowCors = (fn: NextApiRoute) => async (req: NextApiRequest, res: NextApiResponse) => {

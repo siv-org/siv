@@ -5,40 +5,6 @@ import UAParser from 'ua-parser-js'
 
 import { QueueLog } from './invite-voters'
 
-export type ReviewLog = { review: 'approve' | 'reject' }
-
-export type Voter = {
-  auth_token: string
-  email: string
-  esignature?: string
-  esignature_review: ReviewLog[]
-  first_name: string
-  has_voted: boolean
-  index: number
-  invalidated?: boolean
-  invite_queued?: QueueLog[]
-  is_email_verified?: boolean
-  last_name: string
-  mailgun_events: { accepted?: MgEvent[]; delivered?: MgEvent[]; failed?: MgEvent[] }
-}
-export type PendingVote = {
-  created_at: Date
-  email?: string
-  first_name?: string
-  is_email_verified: boolean
-  last_name?: string
-  link_auth: string
-}
-export type Trustee = {
-  device?: string
-  email: string
-  mailgun_events: { accepted?: MgEvent[]; delivered?: MgEvent[]; failed?: MgEvent[] }
-  name?: string
-  stage: number
-}
-
-type MgEvent = Record<string, unknown>
-
 export type AdminData = {
   ballot_design?: string
   ballot_design_finalized?: boolean
@@ -54,6 +20,42 @@ export type AdminData = {
   voter_applications_allowed?: boolean
   voters?: Voter[]
 }
+
+export type PendingVote = {
+  created_at: Date
+  email?: string
+  first_name?: string
+  is_email_verified: boolean
+  last_name?: string
+  link_auth: string
+}
+
+export type ReviewLog = { review: 'approve' | 'reject' }
+
+export type Trustee = {
+  device?: string
+  email: string
+  mailgun_events: { accepted?: MgEvent[]; delivered?: MgEvent[]; failed?: MgEvent[] }
+  name?: string
+  stage: number
+}
+
+export type Voter = {
+  auth_token: string
+  email: string
+  esignature?: string
+  esignature_review: ReviewLog[]
+  first_name: string
+  has_voted: boolean
+  index: number
+  invalidated?: boolean
+  invite_queued?: QueueLog[]
+  is_email_verified?: boolean
+  last_name: string
+  mailgun_events: { accepted?: MgEvent[]; delivered?: MgEvent[]; failed?: MgEvent[] }
+}
+
+type MgEvent = Record<string, unknown>
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { election_id } = req.query as { election_id?: string }

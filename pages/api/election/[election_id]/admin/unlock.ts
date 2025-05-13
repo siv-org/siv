@@ -6,7 +6,7 @@ import { mapValues } from 'lodash-es'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getStatus } from 'src/admin/Voters/Signature'
 import { RP } from 'src/crypto/curve'
-import { fastShuffle, shuffleWithProof, shuffleWithoutProof } from 'src/crypto/shuffle'
+import { fastShuffle, shuffleWithoutProof, shuffleWithProof } from 'src/crypto/shuffle'
 import { CipherStrings, stringifyShuffle, stringifyShuffleWithoutProof } from 'src/crypto/stringify-shuffle'
 
 const { ADMIN_EMAIL } = process.env
@@ -153,7 +153,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const shuffled = await bluebird.props(
       mapValues(split, async (list) => {
         const shuffleArgs: Parameters<typeof shuffleWithProof> = [
-          RP.fromHex(threshold_public_key!),
+          RP.fromHex(threshold_public_key),
           list.map((row) => mapValues(row, RP.fromHex)),
         ]
 

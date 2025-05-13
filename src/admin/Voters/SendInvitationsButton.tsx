@@ -25,7 +25,6 @@ export const SendInvitationsButton = ({
     <OnClickButton
       className="bg-white"
       disabled={!num_checked}
-      style={{ margin: 0, padding: '5px 10px' }}
       onClick={async () => {
         if (!ballot_design_finalized) return alert('You need to Finalize a Ballot Design first.')
         if (!threshold_public_key) return alert('You need to finish setting the election Privacy Protectors first.')
@@ -70,6 +69,7 @@ export const SendInvitationsButton = ({
         clearInterval(revalidate_interval)
         toggle_sending()
       }}
+      style={{ margin: 0, padding: '5px 10px' }}
     >
       <>
         {sending && <Spinner />}

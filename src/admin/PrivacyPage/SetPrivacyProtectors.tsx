@@ -29,8 +29,8 @@ export const SetPrivacyProtectors = () => {
         correctly.
       </p>
       <p>
-        If you add them, votes cannot be unlocked and tallied until their computers run the automatic verification
-        checks.
+        ⚠️ If you add them, <b>votes cannot be unlocked and tallied</b> until their same computers run the automatic
+        verification checks.
       </p>
       <p>
         <a href="https://docs.siv.org/privacy/privacy-protectors" rel="noreferrer" target="_blank">
@@ -53,10 +53,6 @@ export const SetPrivacyProtectors = () => {
                 error={!!new_trustees[i].error}
                 helperText={new_trustees[i].error}
                 label="Email"
-                size="small"
-                style={{ marginBottom: 5, marginRight: 15, width: 220 }}
-                value={new_trustees[i].email || ''}
-                variant="outlined"
                 onChange={(event) => {
                   const update = [...new_trustees]
                   update[i].email = event.target.value
@@ -68,15 +64,15 @@ export const SetPrivacyProtectors = () => {
                     document.getElementById(`name-input-${i}`)?.focus()
                   }
                 }}
+                size="small"
+                style={{ marginBottom: 5, marginRight: 15, width: 220 }}
+                value={new_trustees[i].email || ''}
+                variant="outlined"
               />
               <TextField
                 className="name-input"
                 id={`name-input-${i}`}
                 label="Name"
-                size="small"
-                style={{ width: 220 }}
-                value={new_trustees[i].name || ''}
-                variant="outlined"
                 onChange={(event) => {
                   const update = [...new_trustees]
                   update[i].name = event.target.value
@@ -87,6 +83,10 @@ export const SetPrivacyProtectors = () => {
                     document.getElementById('add-another')?.click()
                   }
                 }}
+                size="small"
+                style={{ width: 220 }}
+                value={new_trustees[i].name || ''}
+                variant="outlined"
               />
             </div>
           ))}
@@ -96,11 +96,6 @@ export const SetPrivacyProtectors = () => {
           </a>
 
           <SaveButton
-            text={
-              !new_trustees.some((t) => t.email || t.name)
-                ? 'Skip'
-                : `Finalize & Send Invitation${new_trustees.length > 1 ? 's' : ''}`
-            }
             onPress={async () => {
               // Remove empty rows
               const not_empty = new_trustees.filter(({ email, name }) => email || name)
@@ -139,6 +134,11 @@ export const SetPrivacyProtectors = () => {
                 throw await response.json()
               }
             }}
+            text={
+              !new_trustees.some((t) => t.email || t.name)
+                ? 'Skip'
+                : `Finalize & Send Invitation${new_trustees.length > 1 ? 's' : ''}`
+            }
           />
         </div>
       ) : (

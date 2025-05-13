@@ -8,7 +8,7 @@ import { CheckboxCell, CheckboxHeaderCell, hoverable } from './CheckboxCell'
 import { DeliveriesAndFailures } from './DeliveriesAndFailures'
 import { mask } from './mask-token'
 import { QueuedCell } from './QueuedCell'
-import { Signature, getStatus } from './Signature'
+import { getStatus, Signature } from './Signature'
 import { use_multi_select } from './use-multi-select'
 import { useVoterInvites } from './useVoterInvites'
 

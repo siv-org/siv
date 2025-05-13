@@ -33,7 +33,7 @@ export const CheckboxCell = ({
         set_checked(new_checked)
       }}
     >
-      <input readOnly checked={!!checked[index]} className="cursor-pointer" type="checkbox" />
+      <input checked={!!checked[index]} className="cursor-pointer" readOnly type="checkbox" />
     </td>
   )
 }
@@ -50,13 +50,13 @@ export const CheckboxHeaderCell = ({
   <th>
     <input
       className="cursor-pointer"
-      type="checkbox"
       onChange={(event) => {
         const new_checked = [...checked]
         new_checked.fill(event.target.checked)
         set_checked(new_checked)
         set_last_selected(undefined)
       }}
+      type="checkbox"
     />
   </th>
 )

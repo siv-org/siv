@@ -17,7 +17,7 @@ export const Signature = ({
   esignature?: string
   esignature_review?: ReviewLog[]
 }) => {
-  const storeReview = (review: 'approve' | 'reject' | 'pending', setIsShown: (setting: boolean) => void) => async () =>
+  const storeReview = (review: 'approve' | 'pending' | 'reject', setIsShown: (setting: boolean) => void) => async () =>
     (await api(`election/${election_id}/admin/review-signature`, {
       auths: [auth_token],
       review,

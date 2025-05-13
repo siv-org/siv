@@ -6,7 +6,7 @@ export const Paper = ({
   noFade,
   style,
 }: {
-  children: JSX.Element[] | JSX.Element
+  children: JSX.Element | JSX.Element[]
   className?: string
   marginBottom?: boolean
   noFade?: boolean

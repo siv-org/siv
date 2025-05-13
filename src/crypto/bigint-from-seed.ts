@@ -21,9 +21,7 @@ export async function bigint_from_seed(seed: string, max = CURVE.l): Promise<big
 
   // 1. Get enough bits
   while (bytes.byteLength < bytesNeeded + antibias_amount) {
-    // eslint-disable-next-line no-await-in-loop
     const hash = await sha256(seed)
-    // eslint-disable-next-line no-param-reassign
     seed = [...new Uint8Array(hash)].join(',')
     bytes = appendBuffer(bytes, hash)
   }

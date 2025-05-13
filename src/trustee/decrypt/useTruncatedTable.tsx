@@ -30,5 +30,5 @@ export const useTruncatedTable = ({
     )
   }
 
-  return { TruncationToggle, rows_to_show }
+  return { rows_to_show, TruncationToggle }
 }

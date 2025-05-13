@@ -1,4 +1,5 @@
 import type { ConventionSet } from 'api/conventions/[convention_id]/download-set'
+
 import { useRouter } from 'next/router'
 import { Head } from 'src/Head'
 import useSWR from 'swr'

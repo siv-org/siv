@@ -67,7 +67,7 @@ export const MultiVoteItem = ({
                     if (event.target.checked) {
                       // Allow if they still have votes remaining
                       if (selected.size < multiple_votes_allowed) {
-                        setState(new Set([...selected, val]))
+                        setState(new Set([val, ...selected]))
                       }
                     } else {
                       // Otherwise remove

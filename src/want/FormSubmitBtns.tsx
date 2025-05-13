@@ -1,4 +1,4 @@
-import { OnClickButton, darkBlue } from 'src/_shared/Button'
+import { darkBlue, OnClickButton } from 'src/_shared/Button'
 import { api } from 'src/api-helper'
 
 export const FormSubmitBtns = ({
@@ -8,7 +8,7 @@ export const FormSubmitBtns = ({
   setSaved,
   setShowBottom,
 }: {
-  fields: Record<string, string | boolean | undefined | Record<string, boolean>>
+  fields: Record<string, boolean | Record<string, boolean> | string | undefined>
   formFieldNames: string[]
   saved: boolean
   setSaved: (s: boolean) => void
@@ -16,22 +16,21 @@ export const FormSubmitBtns = ({
 }) => (
   <div>
     <OnClickButton
-      style={{ backgroundColor: '#ccc', border: 0, color: '#666', marginLeft: 0 }}
       onClick={async () => {
         setShowBottom(true)
         // setError('')
         const response = await api('citizen-forms/do-you-want-siv', { id: fields.id, skipped: true })
         if (response.ok) return setSaved(true)
       }}
+      style={{ backgroundColor: '#ccc', border: 0, color: '#666', marginLeft: 0 }}
     >
       Skip
     </OnClickButton>
 
     <OnClickButton
-      invertColor
       background={darkBlue}
       disabled={saved}
-      style={{ marginRight: 0 }}
+      invertColor
       onClick={async () => {
         setShowBottom(true)
         // setError('')
@@ -44,6 +43,7 @@ export const FormSubmitBtns = ({
         const response = await api('citizen-forms/do-you-want-siv', fields)
         if (response.ok) return setSaved(true)
       }}
+      style={{ marginRight: 0 }}
     >
       Submit
     </OnClickButton>

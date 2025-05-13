@@ -4,8 +4,6 @@ import { firebase } from './_services'
 import { Election } from './admin-all-elections'
 import { checkJwt } from './validate-admin-jwt'
 
-type Account = { grants?: { amount: number; created_at: { _seconds: number } }[] }
-type History = { amount: number; date: string; description: string; type: 'grant' | 'usage' | 'purchase' }
 export type BillingStats = {
   credits_on_hold: number
   credits_remaining: number
@@ -13,6 +11,8 @@ export type BillingStats = {
   history: History[]
   num_total_elections: number
 }
+type Account = { grants?: { amount: number; created_at: { _seconds: number } }[] }
+type History = { amount: number; date: string; description: string; type: 'grant' | 'purchase' | 'usage' }
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Confirm they're a valid admin

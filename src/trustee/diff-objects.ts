@@ -85,7 +85,6 @@ export function diff(obj1: Record<string, unknown>, obj2: Record<string, unknown
     // Else if it's a function, convert to a string and compare
     // Otherwise, just compare
     if (type1 === '[object Function]') {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-expect-error bc we do know it's a function
       if (item1.toString() !== item2.toString()) {
         diffs[key] = item2

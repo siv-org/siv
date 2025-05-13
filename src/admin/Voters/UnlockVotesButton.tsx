@@ -14,7 +14,7 @@ export const UnlockVotesButton = ({ num_approved, num_voted }: { num_approved: n
 
   async function triggerUnlock(options?: { skip_shuffle_proofs?: boolean }) {
     const startTime = Date.now()
-    const expectedTimeout = 60
+    const expectedTimeout = 300
     const expectedMilliseconds = (expectedTimeout - 1) * 1000
 
     toggle_unlocking()
@@ -29,7 +29,7 @@ export const UnlockVotesButton = ({ num_approved, num_voted }: { num_approved: n
           message: adminMsg,
           title: `Admin ${user.email} unlock timeout`,
         })
-        alert('The backend server timed out after 60 seconds. Alert team@siv.org for manual unlock')
+        alert(`The backend server timed out after ${expectedTimeout} seconds. Alert team@siv.org for manual unlock`)
         return
       }
 

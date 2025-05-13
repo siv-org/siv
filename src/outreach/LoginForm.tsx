@@ -14,7 +14,7 @@ export const LoginForm = () => {
 
   return (
     <div>
-      <input placeholder="you@email.com" type="text" value={email} onChange={({ target }) => setEmail(target.value)} />
+      <input onChange={({ target }) => setEmail(target.value)} placeholder="you@email.com" type="text" value={email} />
 
       <button
         onClick={async () => {

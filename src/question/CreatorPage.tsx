@@ -35,9 +35,9 @@ export const CreatorPage = () => {
           <h5>Strong privacy + Verifiability</h5>
           <h3>Your question:</h3>
           <textarea
+            onInput={({ currentTarget }) => setQuestion(currentTarget.value)}
             placeholder="I want to know..."
             value={question}
-            onInput={({ currentTarget }) => setQuestion(currentTarget.value)}
           />
 
           <h3>
@@ -47,23 +47,23 @@ export const CreatorPage = () => {
             <input
               max="3"
               min="0"
-              step="any"
-              type="range"
-              value={slider}
               onInput={({ currentTarget }) => {
                 const s = +currentTarget.value
                 setSlider(s)
                 setRequired(Math.round(10 ** s))
               }}
+              step="any"
+              type="range"
+              value={slider}
             />
             <input
-              type="number"
-              value={required}
               onInput={({ currentTarget }) => {
                 const r = parseInt(currentTarget.value, 10)
                 setRequired(r)
                 setSlider(Math.log((r || 0) + 1) / BASE)
               }}
+              type="number"
+              value={required}
             />
           </div>
         </div>

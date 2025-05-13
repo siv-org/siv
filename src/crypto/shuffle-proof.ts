@@ -2,19 +2,9 @@ import { CURVE } from '@noble/ed25519'
 import { modPow } from 'bigint-mod-arith'
 
 import { bigint_from_seed } from './bigint-from-seed'
-import { G, RP, invert, mod, random_bigint, sum_bigints, sum_points } from './curve'
-
-type ElGamalPair = { c1: RP; c2: RP }
+import { G, invert, mod, random_bigint, RP, sum_bigints, sum_points } from './curve'
 
 export type SequencesOfPairs = ElGamalPair[]
-
-export type Simple_Shuffle_Proof = {
-  Gamma: RP
-  Thetas: RP[]
-  Xs: RP[]
-  Ys: RP[]
-  alphas: bigint[]
-}
 
 export type Shuffle_Proof = {
   As: RP[]
@@ -24,12 +14,22 @@ export type Shuffle_Proof = {
   H: RP // Public_Threshold_Key aka Encryption_Address
   Lambda1: RP
   Lambda2: RP
-  Us: RP[]
-  Ws: RP[]
   sigmas: bigint[]
   simple_shuffle_proof: Simple_Shuffle_Proof
   tau: bigint
+  Us: RP[]
+  Ws: RP[]
 }
+
+export type Simple_Shuffle_Proof = {
+  alphas: bigint[]
+  Gamma: RP
+  Thetas: RP[]
+  Xs: RP[]
+  Ys: RP[]
+}
+
+type ElGamalPair = { c1: RP; c2: RP }
 
 export async function generate_shuffle_proof(
   inputs: SequencesOfPairs,
@@ -99,18 +99,18 @@ export async function generate_shuffle_proof(
     H,
     Lambda1,
     Lambda2,
-    Us,
-    Ws,
     sigmas,
     simple_shuffle_proof,
     tau,
+    Us,
+    Ws,
   }
 }
 
 export async function verify_shuffle_proof(
   inputs: SequencesOfPairs,
   outputs: SequencesOfPairs,
-  { As, Cs, Ds, Gamma, H, Lambda1, Lambda2, Us, Ws, sigmas, simple_shuffle_proof, tau }: Shuffle_Proof,
+  { As, Cs, Ds, Gamma, H, Lambda1, Lambda2, sigmas, simple_shuffle_proof, tau, Us, Ws }: Shuffle_Proof,
   { debug } = { debug: false },
 ): Promise<boolean> {
   const log = debug ? console.log : () => {}
@@ -264,15 +264,15 @@ async function generate_simple_shuffle_proof(xs: bigint[], ys: bigint[], gamma: 
   // }
 
   return {
+    alphas,
     Gamma: G.multiply(gamma),
     Thetas,
     Xs,
     Ys,
-    alphas,
   }
 }
 
-async function verify_simple_shuffle_proof({ Gamma, Thetas, Xs, Ys, alphas }: Simple_Shuffle_Proof) {
+async function verify_simple_shuffle_proof({ alphas, Gamma, Thetas, Xs, Ys }: Simple_Shuffle_Proof) {
   // console.log('Beginning verify_simple_shuffle_proof...')
 
   const k = Xs.length

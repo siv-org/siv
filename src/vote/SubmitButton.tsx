@@ -33,7 +33,6 @@ export const SubmitButton = ({
             Object.keys(state.plaintext).length === 0 ||
             buttonText !== 'Submit'
           }
-          style={{ marginRight: 0 }}
           onClick={async () => {
             if (state.submission_confirmation) {
               if (!confirm(state.submission_confirmation)) return
@@ -85,6 +84,7 @@ export const SubmitButton = ({
             // Scroll page to top
             window.scrollTo(0, 0)
           }}
+          style={{ marginRight: 0 }}
         >
           {buttonText}
         </OnClickButton>

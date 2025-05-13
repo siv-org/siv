@@ -42,11 +42,11 @@ export const FAQPage = (): JSX.Element => {
           <h1>Frequently Asked Questions</h1>
           <div className="button-container">
             <OnClickButton
-              style={{ margin: 0, padding: '5px 15px', textAlign: 'right' }}
               onClick={() => {
                 const update = [...expanded].fill(any_collapsed)
                 setExpanded(update)
               }}
+              style={{ margin: 0, padding: '5px 15px', textAlign: 'right' }}
             >
               <>{any_collapsed ? 'Expand' : 'Collapse'} all</>
             </OnClickButton>

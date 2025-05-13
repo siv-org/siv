@@ -9,6 +9,7 @@ import { groupedSteps, initStep } from './steps'
 export const Content = () => (
   <div
     id="protocol"
+    onScroll={saveScrollPosition(useScrollContext())}
     style={{
       bottom: 0,
       left: 268,
@@ -17,7 +18,6 @@ export const Content = () => (
       right: 0,
       top: 0,
     }}
-    onScroll={saveScrollPosition(useScrollContext())}
   >
     <Introduction />
 
