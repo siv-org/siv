@@ -85,7 +85,7 @@ export const compute_pub_key = sum_points
 /** Each party Pⱼ of Q broadcast
     dⱼ = c[1]^(sⱼ)
 similar to DKG scheme */
-export const partial_decrypt = (unlock: RP, private_key_share: bigint) => unlock.multiply(private_key_share)
+export const partial_decrypt = (lock: RP, private_key_share: bigint) => lock.multiply(private_key_share)
 
 /** then compute:
     d = d[1]^λ[1] ... d[t]^λ[t]
