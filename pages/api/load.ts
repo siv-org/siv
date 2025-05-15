@@ -31,7 +31,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // return res.status(200).send('disabled insert for testing')
 
-  const { data, error } = await supabase.from('analytics').insert({
+  const entry = {
     browser_name: ua.browser.name,
     browser_ver: ua.browser.version,
     domain,
@@ -43,10 +43,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     os_ver: ua.os.version,
     page_url,
     width,
-  })
+  }
+
+  const { data, error } = await supabase.from('analytics').insert(entry)
 
   if (error) {
-    await pushover('Error inserting analytics', JSON.stringify(error))
+    await pushover('Error inserting analytics', JSON.stringify(error) + '\n\n' + JSON.stringify(entry))
     console.log('Analytics error:', error)
     return res.status(204).send('')
   }
