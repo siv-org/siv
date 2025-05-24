@@ -7,6 +7,7 @@ import { useLoginRequired, useUser } from './auth'
 import { BallotDesign } from './BallotDesign/BallotDesign'
 import { YourConventionsLink } from './Conventions/YourConventionsLink'
 import { CreateNewElection } from './CreateNewElection'
+import { FinancialGuarantee } from './Guarantee/FinancialGuarantee'
 import { HeaderBar } from './HeaderBar'
 import { MarkedBallots } from './MarkedBallots/MarkedBallots'
 import { MobileMenu } from './MobileMenu'
@@ -48,6 +49,7 @@ export const AdminPage = (): JSX.Element => {
           {section === 'ballot-design' && <BallotDesign />}
           {section === 'voters' && <AddVoters />}
           {section === 'marked-ballots' && <MarkedBallots />}
+          {section === 'financial-guarantee' && <FinancialGuarantee />}
         </div>
       </main>
       <GlobalCSS />

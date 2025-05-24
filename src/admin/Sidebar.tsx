@@ -10,7 +10,7 @@ export const Sidebar = () => (
   </div>
 )
 
-export const steps = ['Ballot Design', 'Privacy', 'Voters']
+export const steps = ['Ballot Design', 'Privacy', 'Voters', 'Financial Guarantee']
 
 export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => void }) => {
   const { election_id, section } = useRouter().query
@@ -48,8 +48,15 @@ export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => voi
               </label>
               {steps.map((name) => (
                 <Link href={`/admin/${election_id}/${urled(name)}`} key={name}>
-                  <a className={urled(name) === section ? 'current' : ''} onClick={closeMenu}>
-                    {name !== 'Voters' && <input checked={completed[name]} readOnly type="checkbox" />}
+                  <a
+                    className={`${urled(name) === section ? 'current' : ''} ${
+                      name === 'Financial Guarantee' ? '!mt-6' : ''
+                    }`}
+                    onClick={closeMenu}
+                  >
+                    {!['Financial Guarantee', 'Voters'].includes(name) && (
+                      <input checked={completed[name]} readOnly type="checkbox" />
+                    )}
                     {name}
                   </a>
                 </Link>
