@@ -58,8 +58,12 @@ export const FinancialGuaranteeIntro = () => (
         style={{ marginLeft: 0, padding: '0.5rem 1.5rem' }}
         target="_blank"
       >
-        Show More Details
+        View full details of how the guarantee works
       </Button>
     </p>
+
+    <div className="pt-4 text-lg text-gray-800">
+      Ready to fund your guarantee? <strong>Add escrow funds below.</strong>
+    </div>
   </div>
 )
