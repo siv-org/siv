@@ -9,6 +9,7 @@ type ButtonProps = {
   className?: string
   invertColor?: boolean
   style?: React.CSSProperties
+  target?: string
 }
 
 export const Button = ({
@@ -16,11 +17,12 @@ export const Button = ({
   href,
   invertColor,
   style = {},
+  target = '_self',
 }: ButtonProps & {
   href: string
 }): JSX.Element => (
   <Link href={href}>
-    <a style={style}>
+    <a style={style} target={target}>
       {children}
       <style jsx>{`
         a {

@@ -56,6 +56,7 @@ export const FinancialGuaranteeIntro = () => (
       <Button
         href="https://docs.siv.org/research-in-progress/financially-guaranteeing-vote-integrity"
         style={{ marginLeft: 0, padding: '0.5rem 1.5rem' }}
+        target="_blank"
       >
         Show More Details
       </Button>
