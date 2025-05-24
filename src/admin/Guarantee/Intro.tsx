@@ -1,8 +1,9 @@
 import React from 'react'
+import { Button } from 'src/_shared/Button'
 
 export const FinancialGuaranteeIntro = () => (
-  <div className="max-w-3xl space-y-6">
-    <h1 className="text-3xl font-bold">Guarantee Trust in Your Election</h1>
+  <div className="max-w-3xl mt-4 space-y-6">
+    <h2 className="text-2xl font-bold">Guarantee Trust in Your Election</h2>
 
     {/* Blue Badge */}
     <div className="flex items-center gap-2 px-3 py-2 text-sm text-blue-700 border border-blue-200 border-solid rounded bg-blue-50/70">
@@ -17,7 +18,7 @@ export const FinancialGuaranteeIntro = () => (
       <p>When voters cast their ballots, they hope their votes will be counted.</p>
 
       <p>
-        The Financial Integrity Guarantee gives you a way to <strong>back that trust with real assurance</strong>.
+        A <i>Vote Integrity Guarantee</i> gives you a way to <strong>back that trust with real assurance</strong>.
       </p>
 
       <p>
@@ -28,7 +29,7 @@ export const FinancialGuaranteeIntro = () => (
 
     {/* Why offer a guarantee? */}
     <h2 className="mt-6 text-xl font-semibold">Why offer a guarantee?</h2>
-    <ul className="pl-1 space-y-2 text-gray-700 list-disc list-inside">
+    <ul className="pl-1 space-y-4 text-gray-700 list-disc list-inside">
       <li>
         <strong>Build Voter Confidence</strong>
         <br />
@@ -50,5 +51,14 @@ export const FinancialGuaranteeIntro = () => (
         You choose how much to guarantee. Start small, scale as needed.
       </li>
     </ul>
+
+    <p>
+      <Button
+        href="https://docs.siv.org/research-in-progress/financially-guaranteeing-vote-integrity"
+        style={{ marginLeft: 0, padding: '0.5rem 1.5rem' }}
+      >
+        Show More Details
+      </Button>
+    </p>
   </div>
 )
