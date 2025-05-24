@@ -22,10 +22,32 @@ export const FinancialGuaranteeIntro = () => (
       </p>
 
       <p>
-        Funding a guarantee shows voters your election takes integrity seriously: If any accepted votes are missing from
-        the final tally, voters can claim a financial reward—backed by you, the election admin.
+        By funding this guarantee, you&apos;re making a public commitment: If any accepted votes are missing from the
+        final tally, voters can claim a financial reward—paid from the funds you commit.
       </p>
     </div>
+
+    {/* How it works */}
+    <h2 className="mt-6 text-xl font-semibold">How it works</h2>
+    <ul className="pl-1 space-y-4 text-gray-700 list-disc list-inside">
+      <li>
+        <strong>Funds are committed up front</strong>
+        <br />
+        Once added, funds are locked for the duration of the election. They can’t be refunded or withdrawn.
+      </li>
+      <li>
+        <strong>SIV keeps the funds if no votes go missing</strong>
+        <br />
+        We get paid when we do our job. Like a doctor who only gets paid when patients stay healthy, we’re rewarded for
+        securing every accepted vote.
+      </li>
+      <li>
+        <strong>Public accountability, not private hope</strong>
+        <br />
+        Every claim—or lack of claims—is publicly visible. If votes go missing, more funds make it more likely the
+        bounty will be claimed, surfacing the issue. If no one does, we can all have more trust in the result.
+      </li>
+    </ul>
 
     {/* Why offer a guarantee? */}
     <h2 className="mt-6 text-xl font-semibold">Why offer a guarantee?</h2>
@@ -42,13 +64,12 @@ export const FinancialGuaranteeIntro = () => (
       <li>
         <strong>Detect Issues Early</strong>
         <br />
-        The guarantee incentivizes voters to check that their vote was included. This surfaces problems faster and
-        increases transparency.
+        The reward encourages voters to check their own vote inclusion, surfacing problems fast if they exist.
       </li>
       <li>
-        <strong>Flexible and Optional</strong>
+        <strong>Create Public Trust</strong>
         <br />
-        You choose how much to guarantee. Start small, scale as needed.
+        Everyone can see whether any funds were claimed or not. That transparency builds confidence in the final result.
       </li>
     </ul>
 
@@ -63,7 +84,7 @@ export const FinancialGuaranteeIntro = () => (
     </p>
 
     <div className="pt-4 text-lg text-gray-800">
-      Ready to fund your guarantee? <strong>Add escrow funds below.</strong>
+      Ready to fund your guarantee? <strong>Secure your guarantee by funding escrow below.</strong>
     </div>
   </div>
 )
