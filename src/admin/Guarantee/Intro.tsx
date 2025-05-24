@@ -82,9 +82,5 @@ export const FinancialGuaranteeIntro = () => (
         View full details of how the guarantee works
       </Button>
     </p>
-
-    <div className="pt-4 text-lg text-gray-800">
-      Ready to fund your guarantee? <strong>Secure your guarantee by funding escrow below.</strong>
-    </div>
   </div>
 )
