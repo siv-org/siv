@@ -1,11 +1,16 @@
 import React, { useState } from 'react'
 import { OnClickButton } from 'src/_shared/Button'
+import { api } from 'src/api-helper'
+
+import { useStored } from '../useStored'
 
 export const InputFunds = () => {
   const [amount, setAmount] = useState('')
+  const { election_id } = useStored()
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!amount || isNaN(Number(amount)) || Number(amount) <= 0) return
+    await api(`election/${election_id}/admin/fund-guarantee`, { amount })
     alert(`Thank you! You pledged $${amount} to support vote integrity.`)
   }
 
