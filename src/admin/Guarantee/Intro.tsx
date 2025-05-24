@@ -4,6 +4,15 @@ export const FinancialGuaranteeIntro = () => (
   <div className="max-w-3xl space-y-6">
     <h1 className="text-3xl font-bold">Guarantee Trust in Your Election</h1>
 
+    {/* Blue Badge */}
+    <div className="flex items-center gap-2 px-3 py-2 text-sm text-blue-700 border border-blue-200 border-solid rounded bg-blue-50/70">
+      <span className="text-xl">💡</span>
+      <span>
+        <strong>Optional but powerful:</strong> Elections with a guarantee report higher voter confidence.
+      </span>
+    </div>
+
+    {/* Intro section */}
     <div className="space-y-2 text-lg text-gray-700">
       <p>When voters cast their ballots, they hope their votes will be counted.</p>
 
@@ -17,8 +26,8 @@ export const FinancialGuaranteeIntro = () => (
       </p>
     </div>
 
+    {/* Why offer a guarantee? */}
     <h2 className="mt-6 text-xl font-semibold">Why offer a guarantee?</h2>
-
     <ul className="pl-1 space-y-2 text-gray-700 list-disc list-inside">
       <li>
         <strong>Build Voter Confidence</strong>
