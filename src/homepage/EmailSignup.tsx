@@ -10,7 +10,7 @@ export const EmailSignup = (): JSX.Element => {
   const [error, setError] = useState('')
 
   return (
-    <div className="max-w-2xl mx-auto">
+    <div className="max-w-2xl">
       <h3 className="mb-3 text-3xl font-normal">The Future of Voting</h3>
       <p className="mb-6 text-lg text-gray-600">Sign up to receive occasional updates</p>
 
