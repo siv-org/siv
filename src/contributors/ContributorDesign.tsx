@@ -13,7 +13,7 @@ const InfoBlock = ({ label, value }: { label: string; value: string }) => (
 
 export const ContributorDesign = ({ affiliation, focus, name }: ContributorProps) => {
   return (
-    <div className="flex flex-col p-4 mb-2 transition-all duration-300 bg-white group rounded-2xl hover:bg-gray-50 sm:flex-row sm:items-center sm:justify-between">
+    <div className="flex flex-col p-4 mb-2 transition-all duration-300 bg-white group rounded-2xl hover:bg-gray-50 sm:flex-row sm:items-start sm:justify-between">
       <h2 className="flex-shrink-0 mb-2 text-xl font-medium tracking-tight text-center text-gray-900 sm:text-left sm:mb-0 sm:w-1/3">
         {name}
       </h2>
