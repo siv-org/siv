@@ -12,10 +12,10 @@ export const Footer = (): JSX.Element => (
       {/* Right: Brand Info */}
       <div className="flex flex-col items-center md:items-start text-center md:text-right gap-1 min-w-[180px]">
         <h3 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">SIV</h3>
-        <p className="text-sm uppercase tracking-[0.2em] text-gray-400">"SIV", like civilization</p>
+        <p className="text-sm uppercase tracking-[0.2em] text-gray-400">&quot;SIV&quot;, like civilization</p>
         <a
-          href={`mailto:${email}`}
           className="mt-3 text-sm tracking-wide text-gray-500 transition-colors duration-200 hover:text-gray-800"
+          href={`mailto:${email}`}
         >
           {email}
         </a>

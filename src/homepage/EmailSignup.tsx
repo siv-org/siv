@@ -12,11 +12,12 @@ export const EmailSignup = (): JSX.Element => {
   return (
     <div className="w-full">
       <h3 className="mb-3 text-3xl font-normal text-center md:text-left">The Future of Voting</h3>
-      <p className="mb-6 text-lg text-gray-600 text-center md:text-left">Sign up to receive occasional updates</p>
+      <p className="mb-6 text-lg text-center text-gray-600 md:text-left">Sign up to receive occasional updates</p>
 
       <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-start">
         <NoSsr>
           <TextField
+            className="w-full sm:w-80"
             error={!!error}
             helperText={error}
             id="newsletter-signup-field"
@@ -29,11 +30,11 @@ export const EmailSignup = (): JSX.Element => {
               event.key === 'Enter' && (document.getElementById('signup-btn') as HTMLButtonElement)?.click()
             }
             size="small"
-            className="w-full sm:w-80"
             variant="outlined"
           />
         </NoSsr>
         <OnClickButton
+          className="flex items-center justify-center w-full h-10 px-6 !m-0 font-medium sm:w-auto"
           disabled={saved}
           id="signup-btn"
           onClick={async () => {
@@ -44,7 +45,6 @@ export const EmailSignup = (): JSX.Element => {
             if (response.ok) return setSaved(true)
             setError((await response.json()).error)
           }}
-          className="flex items-center justify-center w-full h-10 px-6 font-medium sm:w-auto"
         >
           {saved ? 'Done!' : 'Sign Up'}
         </OnClickButton>
