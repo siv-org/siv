@@ -2,7 +2,7 @@ import { ContributorRow } from './ContributorDesign'
 
 export function Contributors() {
   return (
-    <div className="max-w-4xl px-6 m-10 mx-auto">
+    <div className="max-w-4xl px-6 m-16 mx-auto">
       <div className="mb-16 text-center">
         {/* Page title */}
         <h1 className="mb-6 text-4xl font-medium tracking-tight text-gray-900">Contributors</h1>
