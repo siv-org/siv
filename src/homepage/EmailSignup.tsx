@@ -14,10 +14,10 @@ export const EmailSignup = (): JSX.Element => {
       <h3 className="mb-3 text-3xl font-normal text-center md:text-left">The Future of Voting</h3>
       <p className="mb-6 text-lg text-center text-gray-600 md:text-left">Sign up to receive occasional updates</p>
 
-      <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-start">
+      <div className="flex flex-col items-center justify-center gap-4 md:justify-normal md:flex-row md:items-start">
         <NoSsr>
           <TextField
-            className="w-full sm:w-80"
+            className="w-full md:w-80"
             error={!!error}
             helperText={error}
             id="newsletter-signup-field"
@@ -34,7 +34,7 @@ export const EmailSignup = (): JSX.Element => {
           />
         </NoSsr>
         <OnClickButton
-          className="flex items-center justify-center w-full h-10 !m-0 font-medium sm:w-auto whitespace-nowrap"
+          className="flex items-center justify-center w-full h-10 !m-0 font-medium md:w-auto whitespace-nowrap"
           disabled={saved}
           id="signup-btn"
           onClick={async () => {
