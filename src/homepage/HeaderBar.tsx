@@ -32,7 +32,7 @@ export const HeaderBar = () => (
           </a>
         </Link>
         <Link href="/admin">
-          <a className="px-4 py-2 text-sm font-medium text-white transition-all duration-200 rounded-lg bg-gradient-to-r from-gray-900 to-gray-800 hover:from-gray-800 hover:to-gray-700 hover:shadow-md">
+          <a className="px-4 py-2 text-sm font-medium text-indigo-900 transition-all duration-200 border rounded-lg shadow-md bg-white/60 bg-gradient-to-r from-indigo-100/60 to-white/60 backdrop-blur-md border-white/50 hover:bg-white/80 hover:from-indigo-200/80 hover:shadow-lg">
             Sign In
           </a>
         </Link>
