@@ -9,7 +9,7 @@ export function Contributors() {
 
         {/* Subtitle */}
         <p className="max-w-2xl mx-auto text-lg text-gray-600">
-          Meet the exceptional individuals who have shaped our project through their expertise and dedication.
+          Meet the people who've helped shape the Secure Internet Voting protocol:
         </p>
       </div>
 
