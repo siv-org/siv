@@ -10,11 +10,11 @@ export const EmailSignup = (): JSX.Element => {
   const [error, setError] = useState('')
 
   return (
-    <>
-      <h3>The Future of Voting</h3>
-      <p>Sign up to receive occasional updates</p>
+    <div className="max-w-2xl mx-auto">
+      <h3 className="mb-3 text-3xl font-normal">The Future of Voting</h3>
+      <p className="mb-6 text-lg text-gray-600">Sign up to receive occasional updates</p>
 
-      <div style={{ display: 'flex', marginTop: 15 }}>
+      <div className="flex flex-col items-center gap-4 sm:flex-row">
         <NoSsr>
           <TextField
             error={!!error}
@@ -29,7 +29,7 @@ export const EmailSignup = (): JSX.Element => {
               event.key === 'Enter' && (document.getElementById('signup-btn') as HTMLButtonElement)?.click()
             }
             size="small"
-            style={{ flex: 1, marginRight: 10, maxWidth: 250 }}
+            className="w-full sm:w-80"
             variant="outlined"
           />
         </NoSsr>
@@ -44,31 +44,11 @@ export const EmailSignup = (): JSX.Element => {
             if (response.ok) return setSaved(true)
             setError((await response.json()).error)
           }}
-          style={{ margin: 0, maxHeight: 40, padding: '8px 17px' }}
+          className="flex items-center justify-center w-full h-10 px-6 font-medium sm:w-auto"
         >
           {saved ? 'Done!' : 'Sign Up'}
         </OnClickButton>
       </div>
-      <style jsx>{`
-        h3 {
-          font-weight: 400;
-          font-size: 3.5vw;
-        }
-
-        p {
-          font-size: 2vw;
-        }
-
-        @media (max-width: 700px) {
-          h3 {
-            font-size: 5vw;
-          }
-
-          p {
-            font-size: 3.5vw;
-          }
-        }
-      `}</style>
-    </>
+    </div>
   )
 }
