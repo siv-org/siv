@@ -15,51 +15,51 @@ export function Contributors() {
 
       {/* Contributors Table */}
       <ContributorRow
-        name="David Ernst"
-        focus="System Architecture, Security, Cryptography & Organizational Strategy"
         affiliation="SIV.org Founder"
+        focus="System Architecture, Security, Cryptography & Organizational Strategy"
+        name="David Ernst"
       />
 
-      <ContributorRow name="Ariana Ivan" focus="Operations & Software Engineering" affiliation="SIV.org" />
+      <ContributorRow affiliation="SIV.org" focus="Operations & Software Engineering" name="Ariana Ivan" />
 
-      <ContributorRow name="Greg Little, PhD" focus="Cryptography Algorithms & Privacy" affiliation="MIT" />
+      <ContributorRow affiliation="MIT" focus="Cryptography Algorithms & Privacy" name="Greg Little, PhD" />
 
       <ContributorRow
-        name="Nathan Foss"
-        focus="Vote Selling + Coercion Resistant Algorithms & Innovative Governance Applications"
         affiliation="MIT"
+        focus="Vote Selling + Coercion Resistant Algorithms & Innovative Governance Applications"
+        name="Nathan Foss"
       />
 
       <ContributorRow
-        name="Erica Contulov"
-        focus="Statistics & Post-Election Audit"
         affiliation="Bucharest University of Economic Studies"
+        focus="Statistics & Post-Election Audit"
+        name="Erica Contulov"
       />
 
-      <ContributorRow name="John Cumbers" focus="Strategy" affiliation="Former NASA Scientist" />
+      <ContributorRow affiliation="Former NASA Scientist" focus="Strategy" name="John Cumbers" />
 
-      <ContributorRow name="Warren Ernst" focus="Legal & Government" affiliation="Former City Attorney of Dallas, TX" />
+      <ContributorRow affiliation="Former City Attorney of Dallas, TX" focus="Legal & Government" name="Warren Ernst" />
 
       <ContributorRow
-        name="Alessandro ctrlc03"
-        focus="Privacy, Vote Selling & Coercion Resistant Algorithms"
         affiliation="pse.dev & MACI"
+        focus="Privacy, Vote Selling & Coercion Resistant Algorithms"
+        name="Alessandro ctrlc03"
       />
 
-      <ContributorRow name="Gino Parisi" focus="Government & Policy" affiliation="Colorado State University" />
+      <ContributorRow affiliation="Colorado State University" focus="Government & Policy" name="Gino Parisi" />
 
       <ContributorRow
-        name="Chris Jackett, PhD"
-        focus="Cybersecurity Review & Implementation"
         affiliation="Australia's National Science Agency, CSIRO"
+        focus="Cybersecurity Review & Implementation"
+        name="Chris Jackett, PhD"
       />
 
-      <ContributorRow name="Joshua Herr" focus="Voting Methods & Engineering" affiliation="Colorado Forward Party" />
+      <ContributorRow affiliation="Colorado Forward Party" focus="Voting Methods & Engineering" name="Joshua Herr" />
 
       <ContributorRow
-        name="Jason Green, PhD Candidate"
-        focus="US Elections Cybersecurity"
         affiliation="CREO Cybersecurity Lab, North Carolina A & T State University"
+        focus="US Elections Cybersecurity"
+        name="Jason Green, PhD Candidate"
       />
     </div>
   )
