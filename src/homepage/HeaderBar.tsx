@@ -12,7 +12,7 @@ export const HeaderBar = () => {
       <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
         <h3 className="m-0">
           <Link href="/">
-            <a className="text-4xl font-bold tracking-tight text-transparent transition-all duration-200 bg-gradient-to-r from-blue-900 to-blue-700 bg-clip-text hover:opacity-80">
+            <a className="text-4xl font-bold tracking-tight text-transparent transition-all duration-200 bg-gradient-to-r from-[#002868] to-[#003a8c] bg-clip-text active:from-[#003a8c] active:to-[#0049b3]">
               SIV
             </a>
           </Link>
