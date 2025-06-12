@@ -1,6 +1,8 @@
-import Contributors from './contributors.mdx'
+import dynamic from 'next/dynamic'
 import { HeaderBar } from '../homepage/HeaderBar'
 import { GlobalCSS } from '../GlobalCSS'
+
+const Contributors = dynamic(() => import('./contributors.mdx'), { ssr: false })
 
 export const ContributorsPage = () => {
   return (
