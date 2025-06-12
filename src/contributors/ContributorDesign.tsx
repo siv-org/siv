@@ -7,7 +7,7 @@ interface ContributorProps {
 const Column = ({ topLabel, value }: { topLabel: string; value: string }) => (
   <div className={`mt-2 text-center text-gray-600 sm:text-left sm:mt-0 sm:w-48`}>
     <span className="text-xs tracking-wide text-gray-500 uppercase">{topLabel}</span>
-    <p className="mt-0.5 text-gray-900 text-sm">{value}</p>
+    <p className="mt-0.5 text-gray-900 text-base">{value}</p>
   </div>
 )
 
