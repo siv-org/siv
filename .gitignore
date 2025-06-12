@@ -6,6 +6,7 @@ yarn-error.log
 .vscode
 yarn.lock
 .vercel
+.package-lock.json
 
 # Environment Variables
 .env.local
@@ -16,3 +17,4 @@ TODO.md
 *.todo
 
 *.tsbuildinfo
+package-lock.json
