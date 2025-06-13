@@ -3,7 +3,7 @@ import { EmailSignup } from './EmailSignup'
 const email = 'team@siv.org'
 
 export const Footer = (): JSX.Element => (
-  <footer>
+  <footer className="relative z-10">
     <div className="flex flex-col w-full gap-8 px-4 py-8 mt-36 md:mt-96 sm:px-6 sm:py-12 md:flex-row md:items-start md:justify-between md:gap-0">
       {/* Left: Email Signup */}
       <div className="flex-1 min-w-[220px] md:pr-8 flex flex-col items-center md:items-start text-center md:text-left gap-4">
