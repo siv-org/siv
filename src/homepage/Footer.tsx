@@ -1,3 +1,4 @@
+import { darkBlue } from './colors'
 import { EmailSignup } from './EmailSignup'
 
 const email = 'team@siv.org'
@@ -11,10 +12,12 @@ export const Footer = (): JSX.Element => (
       </div>
       {/* Right: Brand Info */}
       <div className="flex flex-col items-center md:items-end gap-1 min-w-[180px]">
-        <h3 className="mb-4 text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">SIV</h3>
+        <h3 className="mb-3 text-[2.5vw] font-bold tracking-tight" style={{ color: darkBlue }}>
+          SIV
+        </h3>
         <p className="!m-0 text-sm tracking-[0.1em] text-gray-500">&quot;SIV&quot;, like civilization</p>
         <a
-          className="mt-12 text-sm tracking-wide text-gray-500 transition-colors duration-200 hover:text-gray-800"
+          className="mt-10 text-sm tracking-wide text-gray-500 transition-colors duration-200 hover:text-gray-800"
           href={`mailto:${email}`}
         >
           {email}
@@ -22,7 +25,7 @@ export const Footer = (): JSX.Element => (
       </div>
     </div>
     <div className="w-full py-6 text-[11px] tracking-widest text-center text-gray-400 border-t border-gray-100">
-      © {new Date().getFullYear()} SIV. All rights reserved.
+      © {new Date().getFullYear()} Secure Internet Voting Inc. All rights reserved.
     </div>
   </footer>
 )
