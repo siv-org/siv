@@ -9,10 +9,10 @@ const sharedStyles =
 
 export const HeaderBar = () => {
   return (
-    <header className="w-full px-6 py-6 mx-auto border-b border-gray-200 max-w-[1440px] sm:px-1 bg-gradient-to-r from-white via-gray-100 to-white flex flex-col items-center justify-between gap-4 sm:flex-row">
+    <header className="w-full px-6 py-6 mx-auto border-b border-gray-200 max-w-[1440px] sm:px-0.5 bg-gradient-to-r from-white via-gray-100 to-white flex flex-col items-center justify-between gap-4 sm:flex-row">
       {/* Logo */}
       <Link href="/">
-        <a className="relative leading-none top-px hover:opacity-80 active:opacity-60">
+        <a className="relative p-1.5 pt-2 pr-[5px] rounded-lg leading-none hover:bg-white hover:shadow top-px active:opacity-60 hover:border-gray-200 border border-solid border-transparent">
           <Image alt="SIV" height={(logoWidth * 219) / 482} src={logo} width={logoWidth} />
         </a>
       </Link>
