@@ -11,7 +11,7 @@ export const HeaderBar = () => {
   return (
     <header className="w-full px-6 py-6 mx-auto border-b border-gray-200 max-w-7xl sm:px-8 lg:px-10 bg-gradient-to-r from-white via-gray-100 to-white">
       <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
-        <h3 className="m-0">
+        <h3 className="m-0 hover:opacity-80 active:opacity-60">
           <Link href="/">
             <a className="leading-none">
               <Image alt="SIV" height={(logoWidth * 219) / 482} src={logo} width={logoWidth} />
