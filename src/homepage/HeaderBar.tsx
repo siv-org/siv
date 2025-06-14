@@ -5,7 +5,7 @@ import logo from './logo.png'
 
 const logoWidth = 50
 const sharedStyles =
-  'px-4 py-2 text-base font-medium transition duration-75 rounded-lg hover:no-underline text-indigo-900 active:bg-indigo-200'
+  'px-4 py-2 text-base font-medium transition duration-75 rounded-lg hover:no-underline text-indigo-900'
 
 export const HeaderBar = () => {
   return (
@@ -26,14 +26,14 @@ export const HeaderBar = () => {
           ['Research', '/about'],
         ].map(([label, href]) => (
           <Link href={href} key={label}>
-            <a className={`${sharedStyles} hover:bg-indigo-100/80`}>{label}</a>
+            <a className={`${sharedStyles} hover:bg-gray-200 active:bg-gray-300`}>{label}</a>
           </Link>
         ))}
 
         {/* Sign In Button */}
         <Link href="/admin">
           <a
-            className={`${sharedStyles} shadow bg-gradient-to-b from-indigo-100/60 to-white/60 hover:from-indigo-200/80`}
+            className={`${sharedStyles} shadow bg-gradient-to-b from-indigo-100/60 to-white/60 hover:from-indigo-200/80 hover:to-indigo-100/50 active:bg-indigo-200`}
           >
             Sign In
           </a>
