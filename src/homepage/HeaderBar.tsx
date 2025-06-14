@@ -1,7 +1,7 @@
 import Link from 'next/link'
 
 export const HeaderBar = () => {
-  const baseLink = 'px-4 py-2 text-sm font-medium transition-all duration-200 rounded-lg'
+  const baseLink = 'px-4 py-2 text-base font-medium transition-all duration-200 rounded-lg'
 
   const defaultLink = `${baseLink} text-indigo-900 hover:bg-indigo-50/80 hover:text-indigo-900 hover:shadow-sm`
 
