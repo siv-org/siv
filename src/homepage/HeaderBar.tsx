@@ -11,6 +11,7 @@ export const HeaderBar = () => {
   return (
     <header className="w-full px-6 py-6 mx-auto border-b border-gray-200 max-w-[1440px] sm:px-1 bg-gradient-to-r from-white via-gray-100 to-white">
       <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
+        {/* Logo */}
         <h3 className="flex items-center m-0 hover:opacity-80 active:opacity-60">
           <Link href="/">
             <a className="relative leading-none top-px">
@@ -18,6 +19,8 @@ export const HeaderBar = () => {
             </a>
           </Link>
         </h3>
+
+        {/* Nav Links */}
         <nav className="flex flex-wrap justify-center gap-2 sm:gap-4">
           {[
             ['Docs', 'https://docs.siv.org'],
@@ -29,6 +32,8 @@ export const HeaderBar = () => {
               <a className={`${sharedStyles} hover:bg-indigo-100/80`}>{label}</a>
             </Link>
           ))}
+
+          {/* Sign In Button */}
           <Link href="/admin">
             <a
               className={`${sharedStyles} shadow bg-gradient-to-b from-indigo-100/60 to-white/60 hover:from-indigo-200/80`}
