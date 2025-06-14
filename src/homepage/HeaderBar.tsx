@@ -3,9 +3,9 @@ import Link from 'next/link'
 export const HeaderBar = () => {
   const baseLink = 'px-4 py-2 text-base font-medium transition-all duration-200 rounded-lg hover:no-underline'
 
-  const defaultLink = `${baseLink} text-indigo-900 hover:bg-indigo-50/80 hover:text-indigo-900 hover:shadow-sm`
+  const defaultLink = `${baseLink} text-indigo-900 hover:bg-indigo-100/80 hover:text-indigo-900`
 
-  const signInLink = `${baseLink} text-indigo-900 shadow-sm bg-gradient-to-b from-indigo-100/60 to-white/60 hover:from-indigo-200/80 hover:shadow-sm`
+  const signInLink = `${baseLink} text-indigo-900 shadow bg-gradient-to-b from-indigo-100/60 to-white/60 hover:from-indigo-200/80`
 
   return (
     <header className="w-full px-6 py-6 mx-auto border-b border-gray-200 max-w-7xl sm:px-8 lg:px-10 bg-gradient-to-r from-white via-gray-100 to-white">
