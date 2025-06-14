@@ -2,7 +2,7 @@ import Link from 'next/link'
 
 export const HeaderBar = () => {
   const sharedStyles =
-    'px-4 py-2 text-base font-medium transition-all duration-75 rounded-lg hover:no-underline text-indigo-900'
+    'px-4 py-2 text-base font-medium transition-all duration-75 rounded-lg hover:no-underline text-indigo-900 active:bg-indigo-200'
 
   return (
     <header className="w-full px-6 py-6 mx-auto border-b border-gray-200 max-w-7xl sm:px-8 lg:px-10 bg-gradient-to-r from-white via-gray-100 to-white">
