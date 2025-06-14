@@ -5,8 +5,6 @@ export const HeaderBar = () => {
 
   const defaultLink = `${baseLink} text-indigo-900 hover:bg-indigo-100/80 hover:text-indigo-900`
 
-  const signInLink = `${baseLink} text-indigo-900 shadow bg-gradient-to-b from-indigo-100/60 to-white/60 hover:from-indigo-200/80`
-
   return (
     <header className="w-full px-6 py-6 mx-auto border-b border-gray-200 max-w-7xl sm:px-8 lg:px-10 bg-gradient-to-r from-white via-gray-100 to-white">
       <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
@@ -31,7 +29,11 @@ export const HeaderBar = () => {
             <a className={defaultLink}>Research</a>
           </Link>
           <Link href="/admin">
-            <a className={signInLink}>Sign In</a>
+            <a
+              className={`${baseLink} text-indigo-900 shadow bg-gradient-to-b from-indigo-100/60 to-white/60 hover:from-indigo-200/80`}
+            >
+              Sign In
+            </a>
           </Link>
         </nav>
       </div>
