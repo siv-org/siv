@@ -6,7 +6,6 @@ yarn-error.log
 .vscode
 yarn.lock
 .vercel
-.package-lock.json
 
 # Environment Variables
 .env.local
