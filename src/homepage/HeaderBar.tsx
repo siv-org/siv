@@ -9,40 +9,38 @@ const sharedStyles =
 
 export const HeaderBar = () => {
   return (
-    <header className="w-full px-6 py-6 mx-auto border-b border-gray-200 max-w-[1440px] sm:px-1 bg-gradient-to-r from-white via-gray-100 to-white">
-      <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
-        {/* Logo */}
-        <h3 className="flex items-center m-0 hover:opacity-80 active:opacity-60">
-          <Link href="/">
-            <a className="relative leading-none top-px">
-              <Image alt="SIV" height={(logoWidth * 219) / 482} src={logo} width={logoWidth} />
-            </a>
-          </Link>
-        </h3>
+    <header className="w-full px-6 py-6 mx-auto border-b border-gray-200 max-w-[1440px] sm:px-1 bg-gradient-to-r from-white via-gray-100 to-white flex flex-col items-center justify-between gap-4 sm:flex-row">
+      {/* Logo */}
+      <h3 className="flex items-center m-0 hover:opacity-80 active:opacity-60">
+        <Link href="/">
+          <a className="relative leading-none top-px">
+            <Image alt="SIV" height={(logoWidth * 219) / 482} src={logo} width={logoWidth} />
+          </a>
+        </Link>
+      </h3>
 
-        {/* Nav Links */}
-        <nav className="flex flex-wrap justify-center gap-2 sm:gap-4">
-          {[
-            ['Docs', 'https://docs.siv.org'],
-            ['Blog', 'https://blog.siv.org'],
-            ['FAQ', '/faq'],
-            ['Research', '/about'],
-          ].map(([label, href]) => (
-            <Link href={href} key={label}>
-              <a className={`${sharedStyles} hover:bg-indigo-100/80`}>{label}</a>
-            </Link>
-          ))}
-
-          {/* Sign In Button */}
-          <Link href="/admin">
-            <a
-              className={`${sharedStyles} shadow bg-gradient-to-b from-indigo-100/60 to-white/60 hover:from-indigo-200/80`}
-            >
-              Sign In
-            </a>
+      {/* Nav Links */}
+      <nav className="flex flex-wrap justify-center gap-2 sm:gap-4">
+        {[
+          ['Docs', 'https://docs.siv.org'],
+          ['Blog', 'https://blog.siv.org'],
+          ['FAQ', '/faq'],
+          ['Research', '/about'],
+        ].map(([label, href]) => (
+          <Link href={href} key={label}>
+            <a className={`${sharedStyles} hover:bg-indigo-100/80`}>{label}</a>
           </Link>
-        </nav>
-      </div>
+        ))}
+
+        {/* Sign In Button */}
+        <Link href="/admin">
+          <a
+            className={`${sharedStyles} shadow bg-gradient-to-b from-indigo-100/60 to-white/60 hover:from-indigo-200/80`}
+          >
+            Sign In
+          </a>
+        </Link>
+      </nav>
     </header>
   )
 }
