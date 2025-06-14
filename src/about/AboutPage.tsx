@@ -24,6 +24,7 @@ export const AboutPage = (): JSX.Element => {
       <style jsx>{`
         div {
           padding: 1rem 3rem;
+          padding-top: 0 !important;
 
           width: 100%;
           overflow-x: hidden;
