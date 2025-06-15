@@ -7,7 +7,6 @@ import { AnAdditionalOption } from './AnAdditionalOption'
 import { AreYouAVoter } from './AreYouAVoter'
 import { Features } from './Features'
 import { Footer } from './Footer'
-import { FooterDivider } from './FooterDivider'
 import { NowPossible } from './NowPossible'
 import { OnePersonOneVote } from './OnePersonOneVote'
 import { Privacy } from './Privacy'
@@ -28,7 +27,6 @@ export const HomePage = () => {
         <AnAdditionalOption />
         <NowPossible />
         <AreYouAVoter />
-        <FooterDivider />
         <Footer />
 
         <GlobalCSS />
