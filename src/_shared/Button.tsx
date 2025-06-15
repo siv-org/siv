@@ -85,9 +85,8 @@ export const OnClickButton = forwardRef<HTMLAnchorElement, OnClickProps>(
           border: 2px solid ${invertColor && !noBorder ? '#fff' : darkBlue};
           border-radius: 0.4rem;
           color: ${invertColor ? '#fff' : darkBlue};
-          display: flex;
-          align-items: center;
-          justify-content: center;
+          display: inline-block;
+          font-weight: bold;
           margin: 17px;
           padding: 1.2rem 2.004rem;
           text-decoration: none;

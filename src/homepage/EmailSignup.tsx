@@ -34,7 +34,7 @@ export const EmailSignup = (): JSX.Element => {
           />
         </NoSsr>
         <OnClickButton
-          className="flex items-center justify-center w-full h-10 !m-0 font-medium md:w-auto whitespace-nowrap"
+          className="!flex items-center justify-center w-full h-10 !m-0 font-medium md:w-auto whitespace-nowrap"
           disabled={saved}
           id="signup-btn"
           onClick={async () => {
