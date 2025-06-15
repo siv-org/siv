@@ -1,7 +1,11 @@
-import { darkBlue } from './colors'
+import Image from 'next/image'
+
 import { EmailSignup } from './EmailSignup'
+import logo from './logo.png'
 
 const email = 'team@siv.org'
+
+const logoWidth = 70
 
 export const Footer = (): JSX.Element => (
   <footer className="relative z-10">
@@ -11,11 +15,11 @@ export const Footer = (): JSX.Element => (
         <EmailSignup />
       </div>
       {/* Right: Brand Info */}
-      <div className="flex flex-col items-center md:items-end gap-1 min-w-[180px]">
-        <h3 className="mb-3 text-[2.5vw] font-bold tracking-tight" style={{ color: darkBlue }}>
-          SIV
-        </h3>
-        <p className="!m-0 text-sm tracking-[0.1em] text-gray-500">&quot;SIV&quot;, like civilization</p>
+      <div className="flex flex-col items-center md:items-end gap-2 min-w-[180px] mt-6">
+        <Image alt="SIV" height={(logoWidth * 219) / 482} src={logo} width={logoWidth} />
+
+        <p className="!m-0 text-sm tracking-[0.1em] text-gray-500">(like civilization)</p>
+
         <a
           className="mt-10 text-sm tracking-wide text-gray-500 transition-colors duration-200 hover:text-gray-800"
           href={`mailto:${email}`}
