@@ -12,9 +12,8 @@ export const Footer = (): JSX.Element => (
     {/* Email Signup & logo/contact row */}
     <div className="flex flex-col w-full gap-8 py-8 mt-36 md:mt-96 sm:py-12 md:flex-row md:items-start md:justify-between md:gap-0">
       {/* Left: Email Signup */}
-      <div className="flex-1 min-w-[220px] md:pr-8 flex flex-col items-center md:items-start text-center md:text-left gap-4">
-        <EmailSignup />
-      </div>
+      <EmailSignup />
+
       {/* Right: Brand Info */}
       <div className="flex flex-col items-center md:items-end gap-2 min-w-[180px] mt-6">
         {/* Logo */}
