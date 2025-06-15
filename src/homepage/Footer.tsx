@@ -28,7 +28,7 @@ export const Footer = (): JSX.Element => (
 
           {/* Contact email */}
           <a
-            className="mt-10 text-sm tracking-wide text-gray-500 transition-colors duration-200 hover:text-gray-800"
+            className="mt-10 text-sm tracking-wide text-gray-500 transition-colors duration-200 md:mt-14 hover:text-gray-800"
             href={`mailto:${email}`}
           >
             {email}
