@@ -1,108 +1,31 @@
+import { darkBlue } from './colors'
 import { EmailSignup } from './EmailSignup'
 
 const email = 'team@siv.org'
 
 export const Footer = (): JSX.Element => (
-  <footer>
-    <img src="/home3/footer-lines.png" />
-    <div>
-      <EmailSignup />
+  <footer className="relative z-10">
+    <div className="flex flex-col w-full gap-8 px-4 py-8 mt-36 md:mt-96 sm:px-6 sm:py-12 md:flex-row md:items-start md:justify-between md:gap-0">
+      {/* Left: Email Signup */}
+      <div className="flex-1 min-w-[220px] md:pr-8 flex flex-col items-center md:items-start text-center md:text-left gap-4">
+        <EmailSignup />
+      </div>
+      {/* Right: Brand Info */}
+      <div className="flex flex-col items-center md:items-end gap-1 min-w-[180px]">
+        <h3 className="mb-3 text-[2.5vw] font-bold tracking-tight" style={{ color: darkBlue }}>
+          SIV
+        </h3>
+        <p className="!m-0 text-sm tracking-[0.1em] text-gray-500">&quot;SIV&quot;, like civilization</p>
+        <a
+          className="mt-10 text-sm tracking-wide text-gray-500 transition-colors duration-200 hover:text-gray-800"
+          href={`mailto:${email}`}
+        >
+          {email}
+        </a>
+      </div>
     </div>
-    <div className="text-align-right">
-      <h3>SIV</h3>
-      <p>&ldquo;SIV&rdquo;, like civilization</p>
-      <p>
-        <a href={`mailto:${email}`}>{email}</a>
-      </p>
+    <div className="w-full py-6 text-[11px] tracking-widest text-center text-gray-400 border-t border-gray-100">
+      © {new Date().getFullYear()} Secure Internet Voting Inc. All rights reserved.
     </div>
-    <style jsx>{`
-      footer {
-        padding: 33vw 0 6vw;
-        display: flex;
-        justify-content: space-between;
-        position: relative;
-      }
-
-      img {
-        z-index: -1;
-        position: absolute;
-        top: -28vw;
-        left: -30vw;
-        right: -30vw;
-        width: 148vw;
-      }
-
-      div:first-child {
-        margin-right: 15%;
-      }
-
-      h3 {
-        font-size: 2.5vw;
-      }
-
-      p {
-        font-size: 1.625vw;
-      }
-
-      .text-align-right {
-        text-align: right;
-        padding-top: 1rem;
-      }
-
-      a {
-        color: #000;
-        font-weight: bold;
-        text-decoration: none;
-      }
-
-      a:hover {
-        text-decoration: underline;
-      }
-
-      /* Small screens: single column */
-      @media (max-width: 700px) {
-        footer {
-          flex-direction: column;
-        }
-
-        img {
-          left: -16vw;
-          right: -16vw;
-          width: 120vw;
-          top: -21vw;
-        }
-
-        div:first-child {
-          margin: 0;
-          margin-bottom: 3rem;
-        }
-
-        .text-align-right {
-          text-align: left;
-        }
-
-        h3 {
-          font-size: 6vw;
-        }
-
-        p {
-          font-size: 4.5vw;
-        }
-      }
-
-      /* fixed width for large screens */
-      @media (min-width: 1440px) {
-        footer {
-          max-width: 1440px;
-          margin: 0 auto;
-
-          padding-top: 35vw;
-        }
-
-        img {
-          top: -31vw;
-        }
-      }
-    `}</style>
   </footer>
 )

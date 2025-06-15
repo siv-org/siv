@@ -70,6 +70,7 @@ export function AreYouAVoter(): JSX.Element {
       <style jsx>{`
         .are-you-container {
           margin-top: 13vw;
+          margin-bottom: -20vw;
           display: flex;
         }
 
