@@ -1,4 +1,3 @@
-// components/FooterLines.tsx
 export const FooterDivider = () => (
   <div className="relative w-full h-[28vw] sm:h-[21vw] 2xl:h-[31vw] z-0">
     <img
@@ -9,5 +8,3 @@ export const FooterDivider = () => (
     />
   </div>
 )
-
-export default FooterDivider
