@@ -41,7 +41,8 @@ Organization: ${your_organization}
 
 Link to approve: ${req.headers.origin}/approve-admin?id=${doc_id}
 
-Approve & skip email verification: ${req.headers.origin}/approve-admin?id=${doc_id}&skip_init_email_validation=true`
+Approve & skip email verification: ${req.headers.origin}/approve-admin?id=${doc_id}&skip_init_email_validation=true
+(The device that submitted the admin application will be logged in)`
 
   await Promise.all([
     sendEmail({

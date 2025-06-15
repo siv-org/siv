@@ -1,6 +1,6 @@
 {
   "name": "siv-web",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "scripts": {
     "build": "next build",
@@ -11,7 +11,8 @@
     "postinstall": "patch-package",
     "lint": "eslint src/ pages/",
     "start": "next start",
-    "test": "yarn lint && yarn typecheck && yarn e2e",
+    "test": "bun lint && bun typecheck && bun unit && bun e2e",
+    "test:crypto": "bun test src/crypto/tests/*.test.ts",
     "typecheck": "tsc --pretty --noEmit",
     "unit": "bun test src"
   },
@@ -88,11 +89,11 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.25.1",
-    "@types/bun": "^1.0.8",
+    "@types/bun": "^1.2.13",
     "@types/cookies": "^0.7.6",
     "@types/jsonwebtoken": "^8.5.1",
     "@types/mailgun-js": "^0.22.10",
-    "@types/node": "^13.9.5",
+    "@types/node": "^22",
     "@types/react-linkify": "^1.0.4",
     "@types/react-scroll": "^1.8.2",
     "@types/smoothscroll-polyfill": "^0.3.1",
