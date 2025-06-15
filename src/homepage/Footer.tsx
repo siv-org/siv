@@ -19,7 +19,7 @@ export const Footer = (): JSX.Element => (
         <EmailSignup />
 
         {/* Right: Brand Info */}
-        <div className="flex flex-col items-center md:items-end gap-2 min-w-[180px] mt-6">
+        <div className="flex flex-col items-center md:items-end gap-2 min-w-[180px] md:mt-9 mt-6">
           {/* Logo */}
           <Image alt="SIV" height={(logoWidth * 219) / 482} src={logo} width={logoWidth} />
 
