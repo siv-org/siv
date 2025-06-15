@@ -8,7 +8,7 @@ const email = 'team@siv.org'
 const logoWidth = 70
 
 export const Footer = (): JSX.Element => (
-  <footer className="relative z-10 max-w-[1440px] mx-auto">
+  <footer className="relative max-w-[1440px] mx-auto">
     {/* Email Signup & logo/contact row */}
     <div className="flex flex-col w-full gap-8 py-8 mt-36 md:mt-96 sm:py-12 md:flex-row md:items-start md:justify-between md:gap-0">
       {/* Left: Email Signup */}
