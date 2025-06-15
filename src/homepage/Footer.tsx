@@ -25,7 +25,7 @@ export const Footer = (): JSX.Element => (
       </div>
     </div>
     <div className="w-full py-6 text-[11px] tracking-widest text-center text-gray-400 border-t border-gray-100">
-      © {new Date().getFullYear()} Secure Internet Voting Inc. All rights reserved.
+      SIV © 2020–{new Date().getFullYear()}
     </div>
   </footer>
 )
