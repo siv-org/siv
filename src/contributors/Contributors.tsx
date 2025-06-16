@@ -61,6 +61,12 @@ export function Contributors() {
       />
 
       <ContributorRow affiliation="Colorado Forward Party" focus="Voting Methods & Engineering" name="Joshua Herr" />
+
+      <ContributorRow
+        affiliation="Department of Innovation & Technology, City of Chicago"
+        focus="Strategy"
+        name="Kathryn Mattie"
+      />
     </div>
   )
 }
