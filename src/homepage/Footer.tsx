@@ -12,14 +12,14 @@ export const Footer = (): JSX.Element => (
   <>
     <FooterDivider />
 
-    <footer className="relative max-w-[1440px] mx-auto">
+    <footer className="max-w-[1440px] mx-auto">
       {/* Email Signup & logo/contact row */}
-      <div className="flex flex-col w-full gap-8 py-8 mt-36 md:mt-96 sm:py-12 md:flex-row md:items-start md:justify-between md:gap-0">
+      <div className="flex flex-col mt-48 md:mt-96 md:flex-row md:justify-between">
         {/* Left: Email Signup */}
         <EmailSignup />
 
         {/* Right: Brand Info */}
-        <div className="flex flex-col items-center md:items-end gap-2 min-w-[180px] md:mt-9 mt-6">
+        <div className="flex flex-col items-center md:items-end gap-2 min-w-[180px] md:mt-9 mt-14">
           {/* Logo */}
           <Image alt="SIV" height={(logoWidth * 219) / 482} src={logo} width={logoWidth} />
 
@@ -37,7 +37,7 @@ export const Footer = (): JSX.Element => (
       </div>
 
       {/* Copyright line */}
-      <div className="w-full py-6 text-[11px] tracking-widest text-center text-gray-400 border-t border-gray-100">
+      <div className="w-full mt-12 py-6 text-[11px] tracking-widest text-center text-gray-400 border-t border-gray-100">
         SIV © 2020–{new Date().getFullYear()}
       </div>
     </footer>
