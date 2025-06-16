@@ -37,7 +37,7 @@ export const Footer = (): JSX.Element => (
       </div>
 
       {/* Copyright line */}
-      <div className="w-full mt-12 py-6 text-[11px] tracking-widest text-center text-gray-400 border-t border-gray-100">
+      <div className="mt-20 mb-6 text-[11px] tracking-widest text-center text-gray-400">
         SIV © 2020–{new Date().getFullYear()}
       </div>
     </footer>
