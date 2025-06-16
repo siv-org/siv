@@ -9,7 +9,7 @@ export function Contributors() {
 
         {/* Subtitle */}
         <p className="max-w-2xl mx-auto text-lg text-gray-600">
-          Meet the people who have helped shape the mission of voter-verifiable elections:
+          Meet the people who have advanced the mission of zero-trust digital voting:
         </p>
       </div>
 
