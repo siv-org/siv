@@ -14,7 +14,7 @@ export const EmailSignup = (): JSX.Element => {
       <h3 className="mb-3 text-3xl font-normal">The Future of Voting</h3>
       <p className="mb-6 text-lg text-gray-600">Sign up to receive occasional updates</p>
 
-      <div className="flex flex-col items-center justify-center gap-4 md:justify-normal md:flex-row md:items-start max-w-[400px] mx-auto md:mx-0">
+      <div className="flex flex-col gap-4 md:flex-row max-w-[400px] mx-auto">
         <NoSsr>
           <TextField
             className="w-full md:w-80"
