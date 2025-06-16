@@ -1,6 +1,6 @@
-import { GlobalCSS } from '../GlobalCSS'
-import { Footer } from '../homepage/Footer'
-import { HeaderBar } from '../homepage/HeaderBar'
+import { GlobalCSS } from '../../GlobalCSS'
+import { Footer } from '../../homepage/Footer'
+import { HeaderBar } from '../../homepage/HeaderBar'
 import { Contributors } from './Contributors'
 
 export const ContributorsPage = () => {

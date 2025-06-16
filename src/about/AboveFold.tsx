@@ -1,11 +1,9 @@
 import Image from 'next/image'
 
 import { darkBlue } from '../homepage/colors'
-import { HeaderBar } from '../homepage/HeaderBar'
 
 export const AboveFold = () => (
   <section>
-    <HeaderBar />
     <h2>POWERING</h2>
     <h1>
       Secure Internet Voting

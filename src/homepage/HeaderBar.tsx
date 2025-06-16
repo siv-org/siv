@@ -23,8 +23,7 @@ export const HeaderBar = () => {
           ['Docs', 'https://docs.siv.org'],
           ['Blog', 'https://blog.siv.org'],
           ['FAQ', '/faq'],
-          ['Research', '/about'],
-          ['Contributors', '/contributors'],
+          ['Contributors', '/about'],
         ].map(([label, href]) => (
           <Link href={href} key={label}>
             <a className={`${sharedStyles} hover:bg-gray-200 active:bg-gray-300`}>{label}</a>
