@@ -36,8 +36,6 @@ export function Contributors() {
         name="Erica Contulov"
       />
 
-      <ContributorRow affiliation="Former NASA Scientist" focus="Strategy" name="John Cumbers" />
-
       <ContributorRow affiliation="Former City Attorney of Dallas, TX" focus="Legal & Government" name="Warren Ernst" />
 
       <ContributorRow
@@ -45,6 +43,14 @@ export function Contributors() {
         focus="Privacy, Vote Selling & Coercion Resistant Algorithms"
         name="Alessandro ctrlc03"
       />
+
+      <ContributorRow
+        affiliation="CREO Cybersecurity Lab, North Carolina A & T State University"
+        focus="US Elections Cybersecurity"
+        name="Jason Green"
+      />
+
+      <ContributorRow affiliation="Former NASA Scientist" focus="Strategy" name="John Cumbers" />
 
       <ContributorRow affiliation="Colorado State University" focus="Government & Policy" name="Gino Parisi" />
 
@@ -55,12 +61,6 @@ export function Contributors() {
       />
 
       <ContributorRow affiliation="Colorado Forward Party" focus="Voting Methods & Engineering" name="Joshua Herr" />
-
-      <ContributorRow
-        affiliation="CREO Cybersecurity Lab, North Carolina A & T State University"
-        focus="US Elections Cybersecurity"
-        name="Jason Green"
-      />
     </div>
   )
 }
