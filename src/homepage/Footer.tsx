@@ -19,16 +19,16 @@ export const Footer = (): JSX.Element => (
         <EmailSignup />
 
         {/* Right: Brand Info */}
-        <div className="flex flex-col items-center md:items-end md:mt-9 mt-14">
+        <div className="flex flex-col items-center text-sm md:items-end md:mt-9 mt-14">
           {/* Logo */}
           <Image alt="SIV" height={(logoWidth * 219) / 482} src={logo} width={logoWidth} />
 
           {/* Pronunciation */}
-          <p className="!m-0 !mt-2 text-sm tracking-[0.1em] text-gray-500">(like civilization)</p>
+          <p className="mt-2 tracking-widest text-gray-500">(like civilization)</p>
 
           {/* Contact email */}
           <a
-            className="mt-12 text-sm tracking-wide text-gray-500 transition-colors duration-200 md:mt-16 hover:text-gray-800"
+            className="mt-8 tracking-wide text-gray-500 transition md:mt-12 hover:text-gray-800"
             href={`mailto:${email}`}
           >
             {email}
