@@ -59,7 +59,7 @@ export function Contributors() {
       <ContributorRow
         affiliation="CREO Cybersecurity Lab, North Carolina A & T State University"
         focus="US Elections Cybersecurity"
-        name="Jason Green, PhD Candidate"
+        name="Jason Green"
       />
     </div>
   )
