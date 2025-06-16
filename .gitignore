@@ -16,3 +16,5 @@ TODO.md
 *.todo
 
 *.tsbuildinfo
+package-lock.json
+bun.lock

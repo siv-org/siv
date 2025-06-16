@@ -1,10 +1,27 @@
-import { RP, random_bigint } from './curve'
-import { Shuffle_Proof, generate_shuffle_proof } from './shuffle-proof'
+/* eslint-disable no-redeclare */
+import { random_bigint, RP } from './curve'
+import { generate_shuffle_proof, Shuffle_Proof } from './shuffle-proof'
 
 export type Cipher = { encrypted: RP; lock: RP }
 
 export type Public_Key = RP
 const G = RP.BASE
+
+/** Generates an array of all integers up to `size`, in a random order */
+export function build_permutation_array(size: number) {
+  const array: number[] = []
+  const options = [...new Array(size).keys()]
+  while (options.length) {
+    const i = Math.floor(Math.random() * options.length)
+    array.push(options.splice(i, 1)[0])
+  }
+  return array
+}
+
+export async function shuffleWithoutProof(pub_key: Public_Key, inputs: Cipher[]): Promise<{ shuffled: Cipher[] }> {
+  const { shuffled } = await shuffle(pub_key, inputs, { skip_proof: true })
+  return { shuffled }
+}
 
 export async function shuffleWithProof(
   pub_key: Public_Key,
@@ -13,21 +30,20 @@ export async function shuffleWithProof(
   const { proof, shuffled } = await shuffle(pub_key, inputs)
   return { proof, shuffled }
 }
-
-export async function shuffleWithoutProof(pub_key: Public_Key, inputs: Cipher[]): Promise<{ shuffled: Cipher[] }> {
-  const { shuffled } = await shuffle(pub_key, inputs, { skip_proof: true })
-  return { shuffled }
+function permute<T>(input: T[], permutation_array: number[]) {
+  return input.map((_, index) => input[permutation_array[index]])
 }
-
 /** Private function that does the shuffling, with option to skip generating the costly proof.
  * We export non-overloaded functions `shuffleWithProof()` and `shuffleWithoutProof()`, so types can be more cleanly inferred.
  */
 async function shuffle(pub_key: Public_Key, inputs: Cipher[]): Promise<{ proof: Shuffle_Proof; shuffled: Cipher[] }>
+
 async function shuffle(
   pub_key: Public_Key,
   inputs: Cipher[],
   options: { skip_proof: true },
 ): Promise<{ shuffled: Cipher[] }>
+
 async function shuffle(
   pub_key: Public_Key,
   inputs: Cipher[],
@@ -69,21 +85,6 @@ async function shuffle(
   )
 
   return { proof, shuffled }
-}
-
-/** Generates an array of all integers up to `size`, in a random order */
-export function build_permutation_array(size: number) {
-  const array: number[] = []
-  const options = [...new Array(size).keys()]
-  while (options.length) {
-    const i = Math.floor(Math.random() * options.length)
-    array.push(options.splice(i, 1)[0])
-  }
-  return array
-}
-
-function permute<T>(input: T[], permutation_array: number[]) {
-  return input.map((_, index) => input[permutation_array[index]])
 }
 
 export const rename_to_c1_and_2 = (inputs: Cipher[]) =>

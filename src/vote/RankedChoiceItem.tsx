@@ -97,10 +97,8 @@ const OneRow = forwardRef<
   function OneCircle({ index }: { index: number }) {
     return (
       <input
-        readOnly
         checked={state.plaintext[`${id}_${index + 1}`] === val}
         className="w-7 h-7 bg-white border-gray-300 border-solid rounded-full appearance-none cursor-pointer sm:hover:bg-blue-100 checked:!bg-[#002868] border-2 checked:border-white/30"
-        type="radio"
         onClick={() => {
           const update: Record<string, string> = {}
 
@@ -121,6 +119,8 @@ const OneRow = forwardRef<
 
           dispatch(update)
         }}
+        readOnly
+        type="radio"
       />
     )
   }
@@ -137,8 +137,6 @@ const OneRow = forwardRef<
             <input
               className="w-[10rem] sm:-ml-2.5 px-2 py-1 text-base font-medium text-black/60 border-2 border-black/40 focus:border-black/70 rounded outline-none sm:mb-0 mb-1.5 sm:mt-0 mt-1.5"
               id="write-in"
-              placeholder="Write-in"
-              value={writeIn}
               onChange={(event) => {
                 setError(' ')
 
@@ -163,6 +161,8 @@ const OneRow = forwardRef<
 
                 setWriteIn(event.target.value)
               }}
+              placeholder="Write-in"
+              value={writeIn}
             />
             {error && (
               <div className="absolute sm:left-0 text-sm text-red-500/70 sm:top-[34px] left-[10.5rem] top-[13px]">

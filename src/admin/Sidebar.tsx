@@ -49,7 +49,7 @@ export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => voi
               {steps.map((name) => (
                 <Link href={`/admin/${election_id}/${urled(name)}`} key={name}>
                   <a className={urled(name) === section ? 'current' : ''} onClick={closeMenu}>
-                    {name !== 'Voters' && <input readOnly checked={completed[name]} type="checkbox" />}
+                    {name !== 'Voters' && <input checked={completed[name]} readOnly type="checkbox" />}
                     {name}
                   </a>
                 </Link>

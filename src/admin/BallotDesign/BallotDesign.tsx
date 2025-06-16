@@ -4,7 +4,7 @@ import { NoSsr } from 'src/_shared/NoSsr'
 import { useStored } from '../useStored'
 import { AutoSaver } from './AutoSaver'
 import { BallotDesignFinalizedBanner } from './BallotDesignFinalizedBanner'
-import { check_for_urgent_ballot_errors } from './check_for_ballot_errors'
+import { check_for_fatal_ballot_errors } from './check_for_ballot_errors'
 import { default_ballot_design } from './default-ballot-design'
 import { Errors } from './Errors'
 import { FinalizeBallotDesignButton } from './FinalizeBallotDesignButton'
@@ -22,7 +22,7 @@ export const BallotDesign = () => {
 
   const [saving_errors, set_saving_errors] = useState<null | string>(null)
 
-  const error = check_for_urgent_ballot_errors(design) || saving_errors
+  const error = check_for_fatal_ballot_errors(design) || saving_errors
 
   // Reset saving errors whenever design changes
   useEffect(() => {

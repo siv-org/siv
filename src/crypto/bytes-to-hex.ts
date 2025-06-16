@@ -1,4 +1,4 @@
-export const bytesToHex = (bytes: Uint8Array | ArrayBuffer) =>
+export const bytesToHex = (bytes: ArrayBuffer | Uint8Array) =>
   [...new Uint8Array(bytes)].reduce((memo, b) => memo + b.toString(16).padStart(2, '0'), '')
 
 export const hexToBytes = (hex: string) =>

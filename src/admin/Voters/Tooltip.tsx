@@ -1,15 +1,15 @@
-import React, { Fragment, ReactElement, ReactNode, cloneElement, useEffect, useRef, useState } from 'react'
+import React, { cloneElement, Fragment, ReactElement, ReactNode, useEffect, useRef, useState } from 'react'
 import ReactDOM from 'react-dom'
 import { CSSTransition } from 'react-transition-group'
 
-type Placement = 'top' | 'bottom' | 'left' | 'right'
+type Placement = 'bottom' | 'left' | 'right' | 'top'
 interface TooltipProps {
   children: ReactElement
   className?: string
   enterDelay?: number
   leaveDelay?: number
   placement?: Placement
-  tooltip: string | ReactNode | (({ setIsShown }: { setIsShown: (setting: boolean) => void }) => ReactNode)
+  tooltip: (({ setIsShown }: { setIsShown: (setting: boolean) => void }) => ReactNode) | ReactNode | string
 }
 
 export const Tooltip = ({
@@ -24,15 +24,14 @@ export const Tooltip = ({
   const [tooltipPos, setTooltipPos] = useState({ left: 0, top: 0 })
   const tooltipRef = useRef<HTMLDivElement>(null)
   const targetRef = useRef<HTMLElement>(null)
-  const closeTimeoutId = useRef<number | null>(null)
+  const closeTimeoutId = useRef<null | number>(null)
 
   // Calc position whenever shown
   useEffect(() => {
     if (isShown) updateTooltipPosition()
   }, [isShown, placement])
-
   function onMouseEnter() {
-    closeTimeoutId.current && clearTimeout(closeTimeoutId.current)
+    if (closeTimeoutId.current) clearTimeout(closeTimeoutId.current)
     setTimeout(() => setIsShown(true), enterDelay)
   }
   function onMouseLeave() {
@@ -66,7 +65,7 @@ export const Tooltip = ({
       {/* Tooltip element */}
       {tooltip &&
         ReactDOM.createPortal(
-          <CSSTransition unmountOnExit classNames="tooltip" in={isShown} timeout={10}>
+          <CSSTransition classNames="tooltip" in={isShown} timeout={10} unmountOnExit>
             <div
               className={`bg-white/90 rounded p-1 fixed z-50 ${className}`}
               ref={tooltipRef}
@@ -114,14 +113,14 @@ function calculatePosition(
   const margin = 10
 
   switch (placement) {
-    case 'top':
-      return { left: left + (width - tooltipWidth) / 2, top: top - tooltipHeight - margin }
     case 'bottom':
       return { left: left + (width - tooltipWidth) / 2, top: top + height }
     case 'left':
       return { left: left - tooltipWidth, top: top + (height - tooltipHeight) / 2 }
     case 'right':
       return { left: left + width, top: top + (height - tooltipHeight) / 2 }
+    case 'top':
+      return { left: left + (width - tooltipWidth) / 2, top: top - tooltipHeight - margin }
     default:
       return { left: left, top: top }
   }

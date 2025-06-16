@@ -1,11 +1,14 @@
 import Image from 'next/image'
 
+import { BannerAnnouncement } from './BannerAnnouncement'
 import { darkBlue } from './colors'
 import { HeaderBar } from './HeaderBar'
-
 export const AboveFold = () => (
   <section>
     <HeaderBar />
+
+    <BannerAnnouncement />
+
     <h1>
       Secure Internet Voting
       <div className="underline-container">

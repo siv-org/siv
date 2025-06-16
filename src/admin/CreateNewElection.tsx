@@ -17,8 +17,6 @@ export const CreateNewElection = () => {
       <input
         className="w-full p-2 text-sm border border-gray-300 border-solid rounded"
         id="election-title"
-        placeholder="Give your ballot a name your voters will recognize"
-        value={election_title}
         onChange={(event) => set_title(event.target.value)}
         onKeyDown={(event) => {
           if (event.key === 'Enter') {
@@ -26,6 +24,8 @@ export const CreateNewElection = () => {
             $saveBtn.current?.click()
           }
         }}
+        placeholder="Give your ballot a name your voters will recognize"
+        value={election_title}
       />
       <SaveButton
         id="election-title-save"

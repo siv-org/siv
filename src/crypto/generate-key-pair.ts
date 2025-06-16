@@ -1,4 +1,4 @@
-import { G, RP, random_bigint } from './curve'
+import { G, random_bigint, RP } from './curve'
 
 export function generate_key_pair(): { decryption_key: bigint; public_key: RP } {
   const decryption_key = random_bigint()

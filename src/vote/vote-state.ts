@@ -1,5 +1,5 @@
 import { mapValues, merge } from 'lodash-es'
-import { RP, random_bigint, stringToPoint } from 'src/crypto/curve'
+import { random_bigint, RP, stringToPoint } from 'src/crypto/curve'
 import { CipherStrings } from 'src/crypto/stringify-shuffle'
 
 import encrypt from '../crypto/encrypt'
@@ -7,8 +7,6 @@ import { Item } from './storeElectionInfo'
 import { generateTrackingNum } from './tracking-num'
 import { useLocalStorageReducer } from './useLocalStorage'
 
-// Define our types
-type Map = Record<string, string>
 export type State = {
   ballot_design?: Item[]
   ballot_design_finalized?: boolean
@@ -25,8 +23,9 @@ export type State = {
   submitted_at?: Date
   tracking?: string
 }
+type Map = Record<string, string>
 
-// Core state logic
+/** Core state logic */
 function reducer(prev: State, payload: Map) {
   // Special handler for other state updates
   // that don't require encryption
@@ -41,6 +40,7 @@ function reducer(prev: State, payload: Map) {
   Object.keys(newState.plaintext).forEach((key) => {
     if (newState.plaintext[key] == '') {
       Object.keys(initState).forEach((group) => {
+        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete -- don't encrypt empty strings
         delete (newState as never)[group][key]
       })
     }
@@ -83,5 +83,5 @@ const initState = {
   randomizer: {},
 }
 
-// Export consumable hook that returns [state, dispatch]
+/** Export consumable hook that returns [state, dispatch] */
 export const useVoteState = (storage_key: string) => useLocalStorageReducer(storage_key, reducer, initState)

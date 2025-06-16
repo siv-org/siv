@@ -51,11 +51,6 @@ export const EnterCodePage = () => {
           <TextField
             autoFocus
             label="Code in Email"
-            placeholder="123456"
-            size="small"
-            style={{ backgroundColor: '#fff' }}
-            value={loginCode}
-            variant="outlined"
             onChange={({ target }) => {
               setError('')
               const next = target.value
@@ -64,10 +59,13 @@ export const EnterCodePage = () => {
               setError('Login codes are 6 digit numbers')
             }}
             onKeyPress={(event) => event.key === 'Enter' && submitBtn.current?.click()}
+            placeholder="123456"
+            size="small"
+            style={{ backgroundColor: '#fff' }}
+            value={loginCode}
+            variant="outlined"
           />
           <OnClickButton
-            ref={submitBtn}
-            style={{ margin: 0, marginLeft: 10, padding: '8px 20px' }}
             onClick={() => {
               if (loginCode.length < 6) return setError(`Login codes are 6 digits, not ${loginCode.length}`)
 
@@ -82,6 +80,8 @@ export const EnterCodePage = () => {
                 router,
               })
             }}
+            ref={submitBtn}
+            style={{ margin: 0, marginLeft: 10, padding: '8px 20px' }}
           >
             Submit
           </OnClickButton>

@@ -7,20 +7,6 @@ import { api } from '../api-helper'
 export const cookie_name = 'siv-jwt'
 const jwt_api_path = '/api/validate-admin-jwt'
 
-export function promptLogout() {
-  const pressed_ok = confirm('Do you wish to logout?')
-  if (pressed_ok) logout()
-}
-
-async function logout() {
-  // Delete cookie
-  await fetch('/api/admin-logout')
-  Router.push('/login')
-
-  // Invalidate jwt cache
-  mutate(jwt_api_path)
-}
-
 export async function checkLoginCode({
   code,
   email,
@@ -51,6 +37,11 @@ export async function checkLoginCode({
 
   // Else, Invalid login token: redirect back to login w/ error message
   onInvalid((await response.json()).error)
+}
+
+export function promptLogout() {
+  const pressed_ok = confirm('Do you wish to logout?')
+  if (pressed_ok) logout()
 }
 
 export function useLoginRequired(loggedOut: boolean) {
@@ -90,6 +81,15 @@ export function useUser() {
     mutate,
     user: { ...data },
   }
+}
+
+async function logout() {
+  // Delete cookie
+  await fetch('/api/admin-logout')
+  Router.push('/login')
+
+  // Invalidate jwt cache
+  mutate(jwt_api_path)
 }
 
 const fetcher = async (url: string) => {

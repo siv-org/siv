@@ -40,10 +40,10 @@ export const TrusteePage = (): JSX.Element => {
 
         <Tabs
           indicatorColor="primary"
+          onChange={(_, newValue) => router.push(`#${newValue ? 'after' : 'before'}`)}
           style={{ margin: '1rem 0' }}
           textColor="primary"
           value={tab}
-          onChange={(_, newValue) => router.push(`#${newValue ? 'after' : 'before'}`)}
         >
           <Tab label="Before Election" />
           <Tab label="After Election" />

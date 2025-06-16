@@ -11,7 +11,7 @@ import { IfYesForm } from './IfYesForm'
 import { useRedirect } from './useRedirect'
 
 export const WantPage = (): JSX.Element => {
-  const [selected, setSelected] = useState<'Yes' | 'No'>()
+  const [selected, setSelected] = useState<'No' | 'Yes'>()
   const [id, setId] = useState<string>()
   useRedirect('/do-you-want-siv')
 
@@ -33,15 +33,15 @@ export const WantPage = (): JSX.Element => {
             {['Yes', 'No'].map((label) => (
               <label key={label}>
                 <input
-                  readOnly
                   checked={selected === label}
-                  type="radio"
                   onClick={async () => {
-                    setSelected(label as 'Yes' | 'No')
+                    setSelected(label as 'No' | 'Yes')
                     const response = await api('citizen-forms/do-you-want-siv', { id, selected: label })
                     const newId = (await response.json()).id
                     setId(newId)
                   }}
+                  readOnly
+                  type="radio"
                 />
                 {label}
               </label>

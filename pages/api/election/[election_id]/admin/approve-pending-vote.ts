@@ -54,6 +54,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   //       ])
   //     }),
   //   )
-
-  return res.status(201).json({ message: 'Done' })
+  //
+  // return res.status(201).json({ message: 'Done' })
 }

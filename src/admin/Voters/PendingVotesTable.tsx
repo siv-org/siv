@@ -30,11 +30,11 @@ export const PendingVotesTable = () => {
       <OnClickButton
         className="!m-0 bg-white"
         disabled={!num_checked}
-        style={{ padding: '5px 10px' }}
         onClick={async () => {
           const response = await api(`election/${election_id}/admin/approve-pending-vote`)
           if (!response.ok) alert((await response.json()).error)
         }}
+        style={{ padding: '5px 10px' }}
       >
         <>
           <CheckOutlined className="relative mr-1 font-bold top-px" />

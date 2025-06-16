@@ -7,7 +7,7 @@ import { RP } from 'src/crypto/curve'
 import { destringifyShuffle, stringifyShuffle, stringifyShuffleWithoutProof } from 'src/crypto/stringify-shuffle'
 
 import { api } from '../../api-helper'
-import { rename_to_c1_and_2, shuffleWithProof, shuffleWithoutProof } from '../../crypto/shuffle'
+import { rename_to_c1_and_2, shuffleWithoutProof, shuffleWithProof } from '../../crypto/shuffle'
 import { verify_shuffle_proof } from '../../crypto/shuffle-proof'
 import { Shuffled, StateAndDispatch } from '../trustee-state'
 import { YouLabel } from '../YouLabel'
@@ -51,8 +51,8 @@ export const VotesToShuffle = ({
     (
       prev: Validations_Table,
       action:
-        | { columns: Record<string, null>; email: string; num_votes: number; type: 'RESET' }
-        | { column: string; email: string; result: boolean; type: 'UPDATE' },
+        | { column: string; email: string; result: boolean; type: 'UPDATE' }
+        | { columns: Record<string, null>; email: string; num_votes: number; type: 'RESET' },
     ): Validations_Table => {
       if (action.type === 'RESET')
         return { ...prev, [action.email]: { columns: action.columns, num_votes: action.num_votes } }
@@ -208,7 +208,7 @@ const ShuffledVotesTable = ({
   const trustees_validations = validated_proofs && validated_proofs[email]
   const columns = sortColumnsForTrustees(Object.keys(shuffled))
 
-  const { TruncationToggle, rows_to_show } = useTruncatedTable({
+  const { rows_to_show, TruncationToggle } = useTruncatedTable({
     num_cols: columns.length,
     num_rows: Object.values(shuffled)[0].shuffled.length,
   })

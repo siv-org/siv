@@ -3,7 +3,7 @@ import { checkJwtOwnsElection } from 'pages/api/validate-admin-jwt'
 
 import { firebase } from '../../../_services'
 
-export type IsUnlockBlocked = string | null
+export type IsUnlockBlocked = null | string
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { election_id } = req.query as { election_id?: string }

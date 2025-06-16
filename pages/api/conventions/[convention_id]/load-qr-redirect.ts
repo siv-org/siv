@@ -1,13 +1,13 @@
 import { firebase } from 'api/_services'
 import { NextApiRequest, NextApiResponse } from 'next'
 
+export type ConventionRedirectInfo = ConventionInfo & {
+  active_ballot_auth?: string
+}
+
 type ConventionInfo = {
   active_redirect?: string
   convention_title: string
-}
-
-export type ConventionRedirectInfo = ConventionInfo & {
-  active_ballot_auth?: string
 }
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {

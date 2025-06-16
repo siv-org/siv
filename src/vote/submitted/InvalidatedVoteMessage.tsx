@@ -26,9 +26,9 @@ export const InvalidatedVoteMessage = () => {
       <textarea
         className="w-full h-16 p-1"
         disabled={isSubmitSuccessful}
+        onChange={(e) => setMessage(e.target.value)}
         placeholder="Write your message here..."
         value={message}
-        onChange={(e) => setMessage(e.target.value)}
       />
       <br />
       <button

@@ -28,21 +28,21 @@ export const Item = ({
       <TitleDescriptionQuestion {...{ description, question, title }} />
       <RadioGroup
         className="ml-1 sm:ml-6"
-        value={state.plaintext[id] || ''}
         onChange={(event) => dispatch({ [id]: event.target.value })}
+        value={state.plaintext[id] || ''}
       >
         {options.map(({ name, sub, value }) => (
           <FormControlLabel
             control={<Radio color="primary" />}
             key={name}
             label={<Label {...{ name, sub }} nameClassName="!font-normal" />}
-            value={value || name.slice(0, max_string_length)}
             onClick={() => {
               // Deselect if already selected
               if (state.plaintext[id] === (value || name.slice(0, max_string_length))) {
                 dispatch({ [id]: '' })
               }
             }}
+            value={value || name.slice(0, max_string_length)}
           />
         ))}
         {write_in_allowed && (
@@ -50,8 +50,8 @@ export const Item = ({
             control={
               <Radio
                 color="primary"
-                style={{ bottom: 11, position: 'relative' }}
                 onClick={() => document.getElementById(`${id}-other`)?.focus()}
+                style={{ bottom: 11, position: 'relative' }}
               />
             }
             label={
@@ -60,8 +60,6 @@ export const Item = ({
                 helperText={error}
                 id={`${id}-other`}
                 label="Other"
-                size="small"
-                variant="outlined"
                 onChange={(event) => {
                   setError(' ')
                   // Check for too many characters
@@ -78,6 +76,8 @@ export const Item = ({
                   setOther(event.target.value)
                   dispatch({ [id]: event.target.value })
                 }}
+                size="small"
+                variant="outlined"
               />
             }
             style={{ marginTop: 5 }}

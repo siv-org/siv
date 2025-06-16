@@ -1,4 +1,5 @@
 import type { Options } from 'qr-code-styling'
+
 import { useEffect, useRef } from 'react'
 
 const qrOptions: Options = {

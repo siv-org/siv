@@ -21,9 +21,6 @@ export const EmailSignup = (): JSX.Element => {
             helperText={error}
             id="newsletter-signup-field"
             label="Email Address"
-            size="small"
-            style={{ flex: 1, marginRight: 10, maxWidth: 250 }}
-            variant="outlined"
             onChange={() => {
               setSaved(false)
               setError('')
@@ -31,12 +28,14 @@ export const EmailSignup = (): JSX.Element => {
             onKeyPress={(event) =>
               event.key === 'Enter' && (document.getElementById('signup-btn') as HTMLButtonElement)?.click()
             }
+            size="small"
+            style={{ flex: 1, marginRight: 10, maxWidth: 250 }}
+            variant="outlined"
           />
         </NoSsr>
         <OnClickButton
           disabled={saved}
           id="signup-btn"
-          style={{ margin: 0, maxHeight: 40, padding: '8px 17px' }}
           onClick={async () => {
             setError('')
             const response = await api('email-signup', {
@@ -45,6 +44,7 @@ export const EmailSignup = (): JSX.Element => {
             if (response.ok) return setSaved(true)
             setError((await response.json()).error)
           }}
+          style={{ margin: 0, maxHeight: 40, padding: '8px 17px' }}
         >
           {saved ? 'Done!' : 'Sign Up'}
         </OnClickButton>

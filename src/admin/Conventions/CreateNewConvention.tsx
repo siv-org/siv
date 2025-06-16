@@ -16,9 +16,6 @@ export const CreateNewConvention = () => {
 
       <input
         className="w-full p-2 text-sm border border-gray-300 border-solid rounded"
-        placeholder="Give your convention a name you will recognize"
-        ref={$input}
-        value={convention_title}
         onChange={(event) => set_title(event.target.value)}
         onKeyDown={(event) => {
           if (event.key === 'Enter') {
@@ -26,9 +23,11 @@ export const CreateNewConvention = () => {
             $saveBtn.current?.click()
           }
         }}
+        placeholder="Give your convention a name you will recognize"
+        ref={$input}
+        value={convention_title}
       />
       <SaveButton
-        ref={$saveBtn}
         onPress={async () => {
           const response = await api('conventions/create-convention', { convention_title })
           if (response.status !== 201) throw await response.json()
@@ -37,6 +36,7 @@ export const CreateNewConvention = () => {
           const { convention_id } = await response.json()
           router.push(`${window.location.origin}/admin/conventions/${convention_id}`)
         }}
+        ref={$saveBtn}
       />
     </>
   )

@@ -18,13 +18,13 @@ export const SaveButton = forwardRef<HTMLAnchorElement, SaveButtonProps>(
         <div className="text-right">
           <OnClickButton
             id={id}
-            ref={ref}
-            style={{ marginRight: 0, padding: '8px 17px' }}
             onClick={async () => {
               set_pending(true)
               await onPress()
               set_pending(false)
             }}
+            ref={ref}
+            style={{ marginRight: 0, padding: '8px 17px' }}
             {...{ disabled }}
           >
             {!pending ? (

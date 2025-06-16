@@ -26,7 +26,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     (acc: Election[], doc) => [
       {
         id: doc.id,
-        ...pick(doc.data(), ['created_at', 'election_title', 'num_voters', 'num_votes']),
+        ...pick(doc.data(), [
+          'ballot_design_finalized',
+          'created_at',
+          'election_title',
+          'num_voters',
+          'num_votes',
+          'threshold_public_key',
+        ]),
       } as Election,
       ...acc,
     ],

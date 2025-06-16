@@ -17,7 +17,7 @@ export const StaticPileOfVotes = ({ index = -1, original }: { index?: number; or
             }}
           />
         ))}
-        {original && <BottomLabel small name="Originally Submitted Votes" />}
+        {original && <BottomLabel name="Originally Submitted Votes" small />}
         <style jsx>{`
           .pile {
             display: flex;

@@ -1,121 +1,45 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import blueUnderline from 'public/home3/blue-underline.png'
 
-import { darkBlue } from './colors'
+import logo from './logo.png'
 
-export const HeaderBar = () => (
-  <header>
-    <h3>
+const logoWidth = 50
+const sharedStyles =
+  'px-4 py-2 text-base font-medium transition duration-75 rounded-lg hover:no-underline text-indigo-900'
+
+export const HeaderBar = () => {
+  return (
+    <header className="w-full px-6 py-6 mx-auto border-b border-gray-200 max-w-[1440px] sm:px-0.5 bg-gradient-to-r from-white via-gray-100 to-white flex flex-col items-center justify-between gap-4 sm:flex-row">
+      {/* Logo */}
       <Link href="/">
-        <a className="logo">SIV</a>
-      </Link>
-    </h3>
-    <span>
-      <Link href="https://docs.siv.org">
-        <a>Docs</a>
-      </Link>
-      <Link href="https://blog.siv.org">
-        <a>Blog</a>
-      </Link>
-      <Link href="/faq">
-        <a>FAQ</a>
-      </Link>
-      <Link href="/about">
-        <a>Research</a>
-      </Link>
-      <Link href="/contributors">
-        <a>Contributors</a>
-      </Link>
-      <Link href="/admin">
-        <a>
-          Sign In
-          <div className="blue-underline">
-            <Image layout="fill" src={blueUnderline} />
-          </div>
+        <a className="relative p-1.5 pt-2 pr-[5px] rounded-lg leading-none hover:bg-white hover:shadow top-px active:opacity-60 hover:border-gray-200 border border-solid border-transparent">
+          <Image alt="SIV" height={(logoWidth * 219) / 482} src={logo} width={logoWidth} />
         </a>
       </Link>
-    </span>
-    <style jsx>{`
-      header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding-top: 2vw;
-      }
 
-      h3 {
-        margin: 0;
-      }
+      {/* Nav Links */}
+      <nav className="flex flex-wrap justify-center gap-2 sm:gap-4">
+        {[
+          ['Docs', 'https://docs.siv.org'],
+          ['Blog', 'https://blog.siv.org'],
+          ['FAQ', '/faq'],
+          ['Research', '/about'],
+          ['Contributors', '/contributors'],
+        ].map(([label, href]) => (
+          <Link href={href} key={label}>
+            <a className={`${sharedStyles} hover:bg-gray-200 active:bg-gray-300`}>{label}</a>
+          </Link>
+        ))}
 
-      a.logo {
-        font-size: 3vw;
-      }
-
-      a {
-        color: ${darkBlue};
-        text-decoration: none;
-        padding: 1vw 1.5vw;
-        margin: 0 0.4vw;
-        font-size: 2vw;
-        border-radius: 5px;
-      }
-
-      a:not(.logo) {
-        font-weight: 500;
-      }
-
-      a:hover {
-        background: #eee;
-        text-decoration: none;
-      }
-
-      a:last-child:not(.logo) {
-        margin-left: 4vw;
-        position: relative;
-        padding-bottom: 0.5vw;
-      }
-
-      .blue-underline {
-        width: 12vw;
-        height: 6vw;
-        position: absolute;
-        right: -1vw;
-        left: -1vw;
-        top: 11px;
-        z-index: 10;
-      }
-
-      /* 1-column for small screens */
-      @media (max-width: 700px) {
-        header {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-        }
-
-        h3 {
-          margin-bottom: 3vw;
-        }
-
-        a.logo {
-          font-size: 8vw;
-        }
-
-        a {
-          font-size: 3.7vw;
-        }
-
-        a:last-child:not(.logo) {
-          margin-left: 0;
-        }
-
-        .blue-underline {
-          width: 18vw;
-          height: 10vw;
-          top: 1.3vw;
-        }
-      }
-    `}</style>
-  </header>
-)
+        {/* Sign In Button */}
+        <Link href="/admin">
+          <a
+            className={`${sharedStyles} shadow bg-gradient-to-b from-indigo-100/60 to-white/60 hover:from-indigo-200/80 hover:to-indigo-100/50 active:bg-indigo-200`}
+          >
+            Sign In
+          </a>
+        </Link>
+      </nav>
+    </header>
+  )
+}

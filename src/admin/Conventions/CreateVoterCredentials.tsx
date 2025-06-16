@@ -15,9 +15,6 @@ export const CreateVoterCredentials = ({ convention_id }: { convention_id: strin
       <input
         className="w-20 ml-3 text-lg"
         min="1"
-        placeholder="150"
-        type="number"
-        value={numQRs}
         onChange={(e) => setNumQRs(e.target.value)}
         onKeyDown={(e) => {
           if (e.key === 'Enter') {
@@ -25,17 +22,20 @@ export const CreateVoterCredentials = ({ convention_id }: { convention_id: strin
             $saveBtn.current?.click()
           }
         }}
+        placeholder="150"
+        type="number"
+        value={numQRs}
       />
 
       <SaveButton
         disabled={!numQRs}
-        ref={$saveBtn}
-        text="Create"
         onPress={async () => {
           await api(`/conventions/${convention_id}/create-qrs`, { numQRs: Number(numQRs) })
           revalidate(convention_id)
           setNumQRs('')
         }}
+        ref={$saveBtn}
+        text="Create"
       />
     </div>
   )

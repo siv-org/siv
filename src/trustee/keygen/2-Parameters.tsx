@@ -14,7 +14,7 @@ export const Parameters = ({ state }: { state: State }) => {
       <p>
         The goal is to generate a {t} of {n} threshold key (<i>t</i> = {t}, <i>n</i> = {n})
       </p>
-      <p>Our prime order group is Ristretto255, a subgroup of Curve25519.</p>
+      <p>Our prime order group is Ristretto255, derived from Curve25519.</p>
       <ul>
         <li>
           Prime Order <i>l</i> = {`${CURVE.l}`} ({CURVE.l.toString(2).length} bits)
