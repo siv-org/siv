@@ -22,7 +22,7 @@ export function Contributors() {
 
       <ContributorRow affiliation="SIV.org" focus="Operations & Software Engineering" name="Ariana Ivan" />
 
-      <ContributorRow affiliation="MIT" focus="Cryptography Algorithms & Privacy" name="Greg Little, PhD" />
+      <ContributorRow affiliation="MIT CSAIL" focus="Cryptography Algorithms & Privacy" name="Greg Little, PhD" />
 
       <ContributorRow
         affiliation="MIT"
