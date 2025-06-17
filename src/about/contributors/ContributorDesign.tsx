@@ -18,7 +18,7 @@ export const ContributorRow = ({ affiliation, focus, name }: ContributorProps) =
         {name}
       </h2>
       <Column topLabel="Focus" value={focus} />
-      <Column topLabel=" Relevant Affiliation" value={affiliation} />
+      <Column topLabel="Relevant Affiliation" value={affiliation} />
     </div>
   )
 }

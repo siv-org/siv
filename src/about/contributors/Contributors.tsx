@@ -8,7 +8,7 @@ export function Contributors() {
         <h1 className="mb-6 text-4xl font-medium tracking-tight text-gray-900">Contributors</h1>
 
         {/* Subtitle */}
-        <p className="text-lg text-gray-600 ">
+        <p className="text-lg text-gray-600">
           Meet the people who have advanced the mission of zero-trust digital voting:
         </p>
       </div>
@@ -39,13 +39,13 @@ export function Contributors() {
       <ContributorRow affiliation="Former City Attorney of Dallas, TX" focus="Legal & Government" name="Warren Ernst" />
 
       <ContributorRow
-        affiliation="pse.dev & MACI"
+        affiliation="PSE.dev & MACI"
         focus="Privacy, Vote Selling & Coercion Resistant Algorithms"
-        name="Alessandro ctrlc03"
+        name="Alessandro C"
       />
 
       <ContributorRow
-        affiliation="CREO Cybersecurity Lab, North Carolina A & T State University"
+        affiliation="CREO Cybersecurity Lab, North Carolina A&T State University"
         focus="US Elections Cybersecurity"
         name="Jason Green"
       />
@@ -56,7 +56,7 @@ export function Contributors() {
 
       <ContributorRow
         affiliation="Australia's National Science Agency, CSIRO"
-        focus="Cybersecurity Review & Implementation"
+        focus="Cybersecurity Review & Engineering"
         name="Chris Jackett, PhD"
       />
 
