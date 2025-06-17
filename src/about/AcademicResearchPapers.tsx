@@ -4,14 +4,12 @@ import { darkBlue } from 'src/homepage/colors'
 
 import { research } from './research'
 
-// import { Team } from './Team'
-
-export const Content = () => (
+export const AcademicResearchPapers = () => (
   <main>
     {/* Crypto Research */}
     {research.map(({ group, papers }) => (
       <div key={group}>
-        <h4>
+        <h4 className="text-lg">
           <div className="horiz-line" />
           {group}
         </h4>
@@ -38,18 +36,11 @@ export const Content = () => (
       </div>
     ))}
 
-    <br />
-    <br />
-    <br />
-    <br />
-
-    {/* <Team /> */}
-
     <style jsx>{`
       main {
         max-width: 1220px;
         width: 100%;
-        margin: 20vw auto 2rem;
+        margin: 0 auto 2rem;
       }
 
       .group {
@@ -57,7 +48,6 @@ export const Content = () => (
       }
 
       h4 {
-        font-size: max(1.9vw, 16px);
         margin-top: 5rem;
         display: flex;
       }

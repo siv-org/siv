@@ -3,8 +3,10 @@ import { useAnalytics } from 'src/useAnalytics'
 
 import { Head } from '../Head'
 import { Footer } from '../homepage/Footer'
-import { AboveFold } from './AboveFold'
-import { Content } from './Content'
+import { HeaderBar } from '../homepage/HeaderBar'
+import { AcademicResearchPapers } from './AcademicResearchPapers'
+import { Contributors } from './contributors/Contributors'
+import { ResearchHeader } from './ResearchHeader'
 
 export const AboutPage = (): JSX.Element => {
   useAnalytics()
@@ -13,9 +15,12 @@ export const AboutPage = (): JSX.Element => {
       <Head title="About" />
 
       <div>
-        <AboveFold />
+        <HeaderBar />
+
+        <Contributors />
         <a id="research" />
-        <Content />
+        <ResearchHeader />
+        <AcademicResearchPapers />
         <Footer />
       </div>
 
