@@ -32,7 +32,7 @@ export function Contributors() {
 
       <ContributorRow
         affiliation="Bucharest University of Economic Studies"
-        focus="Statistics & Post-Election Audit"
+        focus="Statistics & Post-Election Audits"
         name="Erica Contulov"
       />
 
