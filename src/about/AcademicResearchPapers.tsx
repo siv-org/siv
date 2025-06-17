@@ -4,9 +4,7 @@ import { darkBlue } from 'src/homepage/colors'
 
 import { research } from './research'
 
-// import { Team } from './Team'
-
-export const Content = () => (
+export const AcademicResearchPapers = () => (
   <main>
     {/* Crypto Research */}
     {research.map(({ group, papers }) => (
@@ -37,13 +35,6 @@ export const Content = () => (
         </div>
       </div>
     ))}
-
-    <br />
-    <br />
-    <br />
-    <br />
-
-    {/* <Team /> */}
 
     <style jsx>{`
       main {
