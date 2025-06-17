@@ -30,11 +30,11 @@ export function Contributors() {
         name="Nathan Foss"
       />
 
-      {/* <ContributorRow
+      <ContributorRow
         affiliation="Bucharest University of Economic Studies"
         focus="Statistics & Post-Election Audit"
         name="Erica Contulov"
-      /> */}
+      />
 
       <ContributorRow affiliation="Former City Attorney of Dallas, TX" focus="Legal & Government" name="Warren Ernst" />
 
