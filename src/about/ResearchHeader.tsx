@@ -4,7 +4,7 @@ export const ResearchHeader = () => (
 
     {/* Subtitle */}
     <p className="max-w-2xl mx-auto text-lg text-gray-600">
-      List of the main academic papers that make authenticated, private, and verifiable digital voting possible:
+      These are the key scientific discoveries that make authenticated, private, and verifiable digital voting possible:
     </p>
   </section>
 )
