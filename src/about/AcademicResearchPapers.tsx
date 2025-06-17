@@ -9,7 +9,7 @@ export const AcademicResearchPapers = () => (
     {/* Crypto Research */}
     {research.map(({ group, papers }) => (
       <div key={group}>
-        <h4>
+        <h4 className="text-lg">
           <div className="horiz-line" />
           {group}
         </h4>
@@ -48,7 +48,6 @@ export const AcademicResearchPapers = () => (
       }
 
       h4 {
-        font-size: max(1.9vw, 16px);
         margin-top: 5rem;
         display: flex;
       }
