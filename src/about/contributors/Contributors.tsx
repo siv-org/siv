@@ -1,4 +1,4 @@
-import { ContributorRow } from './ContributorDesign'
+import { ContributorRow } from './ContributorRow'
 
 export function Contributors() {
   return (
