@@ -8,7 +8,7 @@ export function Contributors() {
         <h1 className="mb-6 text-4xl font-medium tracking-tight text-gray-900">Contributors</h1>
 
         {/* Subtitle */}
-        <p className="max-w-2xl mx-auto text-lg text-gray-600">
+        <p className="text-lg text-gray-600 ">
           Meet the people who have advanced the mission of zero-trust digital voting:
         </p>
       </div>
