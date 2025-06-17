@@ -49,7 +49,7 @@ export const Content = () => (
       main {
         max-width: 1220px;
         width: 100%;
-        margin: 20vw auto 2rem;
+        margin: 0 auto 2rem;
       }
 
       .group {
