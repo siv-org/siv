@@ -50,7 +50,7 @@ export function Contributors() {
         name="Jason Green"
       />
 
-      <ContributorRow affiliation="Former NASA Scientist" focus="Strategy" name="John Cumbers" />
+      <ContributorRow affiliation="Former NASA Scientist" focus="Strategy" name="John Cumbers, PhD" />
 
       <ContributorRow affiliation="Colorado State University" focus="Government & Policy" name="Gino Parisi" />
 
