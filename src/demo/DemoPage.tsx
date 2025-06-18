@@ -31,6 +31,7 @@ export const DemoPage = (): JSX.Element => {
           width: 100%;
           overflow-x: hidden;
           padding: 1rem 2rem;
+          padding-top: 0 !important;
         }
         main {
           max-width: 1050px;

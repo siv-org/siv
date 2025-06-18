@@ -10,13 +10,14 @@ export const EmailSignup = (): JSX.Element => {
   const [error, setError] = useState('')
 
   return (
-    <>
-      <h3>The Future of Voting</h3>
-      <p>Sign up to receive occasional updates</p>
+    <div className="text-center md:text-left">
+      <h3 className="mb-3 text-3xl font-normal">The Future of Voting</h3>
+      <p className="mb-6 text-lg text-gray-600">Sign up to receive occasional updates</p>
 
-      <div style={{ display: 'flex', marginTop: 15 }}>
+      <div className="flex flex-col gap-4 md:flex-row max-w-[400px] mx-auto">
         <NoSsr>
           <TextField
+            className="w-full md:w-80"
             error={!!error}
             helperText={error}
             id="newsletter-signup-field"
@@ -29,11 +30,11 @@ export const EmailSignup = (): JSX.Element => {
               event.key === 'Enter' && (document.getElementById('signup-btn') as HTMLButtonElement)?.click()
             }
             size="small"
-            style={{ flex: 1, marginRight: 10, maxWidth: 250 }}
             variant="outlined"
           />
         </NoSsr>
         <OnClickButton
+          className="!flex items-center justify-center w-full h-10 !m-0 md:w-auto whitespace-nowrap !py-2"
           disabled={saved}
           id="signup-btn"
           onClick={async () => {
@@ -44,31 +45,10 @@ export const EmailSignup = (): JSX.Element => {
             if (response.ok) return setSaved(true)
             setError((await response.json()).error)
           }}
-          style={{ margin: 0, maxHeight: 40, padding: '8px 17px' }}
         >
           {saved ? 'Done!' : 'Sign Up'}
         </OnClickButton>
       </div>
-      <style jsx>{`
-        h3 {
-          font-weight: 400;
-          font-size: 3.5vw;
-        }
-
-        p {
-          font-size: 2vw;
-        }
-
-        @media (max-width: 700px) {
-          h3 {
-            font-size: 5vw;
-          }
-
-          p {
-            font-size: 3.5vw;
-          }
-        }
-      `}</style>
-    </>
+    </div>
   )
 }

@@ -1,108 +1,45 @@
+import Image from 'next/image'
+
 import { EmailSignup } from './EmailSignup'
+import { FooterDivider } from './FooterDivider'
+import logo from './logo.png'
 
 const email = 'team@siv.org'
 
+const logoWidth = 70
+
 export const Footer = (): JSX.Element => (
-  <footer>
-    <img src="/home3/footer-lines.png" />
-    <div>
-      <EmailSignup />
-    </div>
-    <div className="text-align-right">
-      <h3>SIV</h3>
-      <p>&ldquo;SIV&rdquo;, like civilization</p>
-      <p>
-        <a href={`mailto:${email}`}>{email}</a>
-      </p>
-    </div>
-    <style jsx>{`
-      footer {
-        padding: 33vw 0 6vw;
-        display: flex;
-        justify-content: space-between;
-        position: relative;
-      }
+  <>
+    <FooterDivider />
 
-      img {
-        z-index: -1;
-        position: absolute;
-        top: -28vw;
-        left: -30vw;
-        right: -30vw;
-        width: 148vw;
-      }
+    <footer className="max-w-[1440px] mx-auto">
+      {/* Email Signup & logo/contact row */}
+      <div className="flex flex-col mt-48 md:mt-96 md:flex-row md:justify-between">
+        {/* Left: Email Signup */}
+        <EmailSignup />
 
-      div:first-child {
-        margin-right: 15%;
-      }
+        {/* Right: Brand Info */}
+        <div className="flex flex-col items-center text-sm md:items-end md:mt-9 mt-14">
+          {/* Logo */}
+          <Image alt="SIV" height={(logoWidth * 219) / 482} src={logo} width={logoWidth} />
 
-      h3 {
-        font-size: 2.5vw;
-      }
+          {/* Pronunciation */}
+          <p className="mt-2 tracking-widest text-gray-500">(like civilization)</p>
 
-      p {
-        font-size: 1.625vw;
-      }
+          {/* Contact email */}
+          <a
+            className="mt-8 tracking-wide text-gray-500 transition md:mt-12 hover:text-gray-800"
+            href={`mailto:${email}`}
+          >
+            {email}
+          </a>
+        </div>
+      </div>
 
-      .text-align-right {
-        text-align: right;
-        padding-top: 1rem;
-      }
-
-      a {
-        color: #000;
-        font-weight: bold;
-        text-decoration: none;
-      }
-
-      a:hover {
-        text-decoration: underline;
-      }
-
-      /* Small screens: single column */
-      @media (max-width: 700px) {
-        footer {
-          flex-direction: column;
-        }
-
-        img {
-          left: -16vw;
-          right: -16vw;
-          width: 120vw;
-          top: -21vw;
-        }
-
-        div:first-child {
-          margin: 0;
-          margin-bottom: 3rem;
-        }
-
-        .text-align-right {
-          text-align: left;
-        }
-
-        h3 {
-          font-size: 6vw;
-        }
-
-        p {
-          font-size: 4.5vw;
-        }
-      }
-
-      /* fixed width for large screens */
-      @media (min-width: 1440px) {
-        footer {
-          max-width: 1440px;
-          margin: 0 auto;
-
-          padding-top: 35vw;
-        }
-
-        img {
-          top: -31vw;
-        }
-      }
-    `}</style>
-  </footer>
+      {/* Copyright line */}
+      <div className="mt-20 mb-6 text-[11px] tracking-widest text-center text-gray-400">
+        SIV © 2020–{new Date().getFullYear()}
+      </div>
+    </footer>
+  </>
 )
