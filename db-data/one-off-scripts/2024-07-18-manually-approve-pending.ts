@@ -1,9 +1,9 @@
 // We have 137 "pending" votes (from link-auth). We want admin to begin unlocking them.
 // So we need to move them from 'votes-pending' to 'votes
 
-import './_env'
+import '../_env'
 
-import { firebase } from '../pages/api/_services'
+import { firebase } from '../../pages/api/_services'
 
 const election_id = '1722034716600' // NDP, Final, All 230 Votes
 
@@ -16,12 +16,13 @@ async function renameSubcollection(
   const sourceSubcollection = parentDoc.collection(oldSubcollectionName)
   const targetSubcollection = parentDoc.collection(newSubcollectionName)
 
-  const snapshot = await sourceSubcollection.get()
-  const docs = snapshot.docs
+  const allSourceDocs = await sourceSubcollection.get()
+  const docs = allSourceDocs.docs
   const amount = docs.length
   let index = 0
   const intervalToReport = 10
 
+  // for...of loop
   for (const doc of docs) {
     const data = doc.data()
     const auth = data.link_auth

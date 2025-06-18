@@ -79,7 +79,7 @@ export const ValidVotersTable = ({
                 onClick={() => {
                   if (confirm(`Do you want to approve all ${num_voted} signatures?`)) {
                     api(`election/${election_id}/admin/review-signature`, {
-                      emails: shown_voters.filter(({ has_voted }) => has_voted).map((v) => v.email),
+                      auths: shown_voters.filter(({ has_voted }) => has_voted).map((v) => v.auth_token),
                       review: 'approve',
                     })
                   }
@@ -133,8 +133,8 @@ export const ValidVotersTable = ({
 
                         // Store new email in API
                         const response = await api(`election/${election_id}/admin/edit-voter-email`, {
+                          auth_token,
                           new_email,
-                          old_email: email,
                         })
 
                         if (response.status === 201) {
@@ -159,7 +159,7 @@ export const ValidVotersTable = ({
                 <td className="font-bold text-center">{has_voted ? '✓' : ''}</td>
 
                 {esignature_requested &&
-                  (has_voted ? <Signature {...{ election_id, email, esignature, esignature_review }} /> : <td />)}
+                  (has_voted ? <Signature {...{ auth_token, election_id, esignature, esignature_review }} /> : <td />)}
               </tr>
             ),
           )}
