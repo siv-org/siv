@@ -16,35 +16,6 @@ type MigrationRecord = {
 
 const migrationsCollection = firebase.firestore().collection('migrations')
 
-// Migration tracking functions
-async function getMigrationStatus(migrationId: string): Promise<MigrationRecord | null> {
-  const doc = await migrationsCollection.doc(migrationId).get()
-  return doc.exists ? (doc.data() as MigrationRecord) : null
-}
-
-async function markMigrationStarted(migrationId: string): Promise<void> {
-  await migrationsCollection.doc(migrationId).set({
-    id: migrationId,
-    started_at: { _seconds: Math.floor(Date.now() / 1000) },
-    status: 'started',
-  })
-}
-
-async function markMigrationCompleted(migrationId: string): Promise<void> {
-  await migrationsCollection.doc(migrationId).update({
-    completed_at: { _seconds: Math.floor(Date.now() / 1000) },
-    status: 'completed',
-  })
-}
-
-async function markMigrationFailed(migrationId: string, error: string): Promise<void> {
-  await migrationsCollection.doc(migrationId).update({
-    completed_at: { _seconds: Math.floor(Date.now() / 1000) },
-    error,
-    status: 'failed',
-  })
-}
-
 // Migration script type and loading
 type MigrationScript = {
   id: string
@@ -77,21 +48,39 @@ async function loadLocalMigrationScripts(): Promise<MigrationScript[]> {
 }
 
 async function runMigration(script: MigrationScript): Promise<void> {
-  const existingMigration = await getMigrationStatus(script.id)
+  // Get migration status
+  const doc = await migrationsCollection.doc(script.id).get()
+  const existingMigration = doc.exists ? (doc.data() as MigrationRecord) : null
+
   if (existingMigration?.status === 'completed') return console.log(`Migration ${script.id} has already been completed`)
   if (existingMigration?.status === 'started') return console.log(`Migration ${script.id} is currently running`)
 
   try {
-    await markMigrationStarted(script.id)
+    // Mark migration "started"
+    await migrationsCollection.doc(script.id).set({
+      id: script.id,
+      started_at: { _seconds: Math.floor(Date.now() / 1000) },
+      status: 'started',
+    })
     console.log(`Starting migration: ${script.id}`)
 
     await script.run()
 
-    await markMigrationCompleted(script.id)
+    // Mark migration "completed"
+    await migrationsCollection.doc(script.id).update({
+      completed_at: { _seconds: Math.floor(Date.now() / 1000) },
+      status: 'completed',
+    })
     console.log(`Completed migration: ${script.id}`)
   } catch (error) {
     console.error(`Migration ${script.id} failed:`, error)
-    await markMigrationFailed(script.id, error instanceof Error ? error.message : String(error))
+    // Mark migration "failed"
+    await migrationsCollection.doc(script.id).update({
+      completed_at: { _seconds: Math.floor(Date.now() / 1000) },
+      error: error instanceof Error ? error.message : String(error),
+      status: 'failed',
+    })
+
     throw error // Re-throw to stop further migrations
   }
 }
