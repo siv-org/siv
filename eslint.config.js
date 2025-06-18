@@ -1,9 +1,9 @@
 const js = require('@eslint/js')
 const tseslint = require('@typescript-eslint/eslint-plugin')
 const tsParser = require('@typescript-eslint/parser')
+const perfectionist = require('eslint-plugin-perfectionist')
 const reactPlugin = require('eslint-plugin-react')
 const globals = require('globals')
-const perfectionist = require('eslint-plugin-perfectionist')
 const { merge } = require('lodash')
 
 // Common configuration shared between JS and TS files
