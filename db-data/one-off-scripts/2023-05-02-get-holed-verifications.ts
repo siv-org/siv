@@ -1,11 +1,11 @@
-import './_env'
+import '../_env'
 
 import { mapValues } from 'lodash'
 
-import { firebase } from '../pages/api/_services'
-import { RP, pointToString } from '../src/crypto/curve'
-import decrypt from '../src/crypto/decrypt'
-import { CipherStrings } from '../src/crypto/stringify-shuffle'
+import { firebase } from '../../pages/api/_services'
+import { RP, pointToString } from '../../src/crypto/curve'
+import decrypt from '../../src/crypto/decrypt'
+import { CipherStrings } from '../../src/crypto/stringify-shuffle'
 import { votesWithHoles } from './votes-with-holes'
 
 const election_id = '1680323766282'

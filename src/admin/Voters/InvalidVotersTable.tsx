@@ -53,7 +53,7 @@ export const InvalidVotersTable = ({ hide_approved, hide_voted }: { hide_approve
               </td>
 
               {esignature_requested &&
-                (has_voted ? <Signature {...{ election_id, email, esignature, esignature_review }} /> : <td />)}
+                (has_voted ? <Signature {...{ auth_token, election_id, esignature, esignature_review }} /> : <td />)}
             </tr>
           ))}
         </tbody>
