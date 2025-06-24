@@ -2,7 +2,7 @@ import { ContributorRow } from './ContributorRow'
 
 export function Contributors() {
   return (
-    <div className="max-w-4xl px-6 m-16 mx-auto">
+    <div className="px-6 m-16 mx-auto max-w-4xl">
       <div className="mb-16 text-center">
         {/* Page title */}
         <h1 className="mb-6 text-4xl font-medium tracking-tight text-gray-900">Contributors</h1>
@@ -67,6 +67,8 @@ export function Contributors() {
         focus="Strategy"
         name="Kathryn Mattie"
       />
+
+      <ContributorRow affiliation="University of California, Davis School of Law" focus="Legal" name="Max Calehuff" />
     </div>
   )
 }
