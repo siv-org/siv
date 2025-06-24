@@ -70,6 +70,8 @@ export function Contributors() {
         name="Kathryn Mattie"
       />
 
+      <ContributorRow affiliation="Amazon" focus="Software Engineering" name="Henry Wong" />
+
       <ContributorRow affiliation="Technology Entrepreneur, LoopRL" focus="Funding" name="Eshan Kejriwal" />
 
       <ContributorRow affiliation="University of California, Davis School of Law" focus="Legal" name="Max Calehuff" />
