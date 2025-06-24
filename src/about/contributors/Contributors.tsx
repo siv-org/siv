@@ -60,6 +60,8 @@ export function Contributors() {
         name="Chris Jackett, PhD"
       />
 
+      <ContributorRow affiliation="Columbia University" focus="Funding" name="Eric D. Schmidt" />
+
       <ContributorRow affiliation="Colorado Forward Party" focus="Voting Methods & Engineering" name="Joshua Herr" />
 
       <ContributorRow
