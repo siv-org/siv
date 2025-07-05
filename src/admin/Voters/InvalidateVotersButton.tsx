@@ -73,16 +73,16 @@ export const InvalidateVotersButton = ({
           voters_to_invalidate: voters_selected,
         })
 
+        revalidate(election_id)
+
         try {
-          if (response.status === 201) {
-            revalidate(election_id)
-          } else {
+          if (response.status !== 201) {
             const json = await response.json()
             console.error(json)
             set_error(json?.error || 'Error w/o message ')
           }
         } catch (e) {
-          if (e instanceof Error) set_error(e.message)
+          if (e instanceof Error) return set_error(e.message)
           set_error('Caught error w/o message')
         }
       }}
