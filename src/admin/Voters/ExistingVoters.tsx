@@ -38,7 +38,14 @@ export const ExistingVoters = () => {
       <div className="pt-3 pb-1 pl-4 mt-8 -ml-4 rounded shadow-md bg-blue-200/40">
         <UnlockedStatus />
         <div className="pr-4">
-          <TopBarButtons {...{ checked, num_approved, num_voted }} />
+          <TopBarButtons
+            {...{
+              checked,
+              clear_checked: () => set_checked(new Array(valid_voters?.length).fill(false)),
+              num_approved,
+              num_voted,
+            }}
+          />
         </div>
 
         <NumVotedRow

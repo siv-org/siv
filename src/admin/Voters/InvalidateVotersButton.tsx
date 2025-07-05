@@ -7,11 +7,13 @@ import { revalidate, useStored } from '../useStored'
 
 export const InvalidateVotersButton = ({
   checked,
+  clear_checked,
   displayOnly,
   num_checked,
   set_error,
 }: {
   checked: boolean[]
+  clear_checked: () => void
   displayOnly?: boolean
   num_checked: number
   set_error: (error: string) => void
@@ -74,6 +76,7 @@ export const InvalidateVotersButton = ({
         })
 
         revalidate(election_id)
+        clear_checked()
 
         try {
           if (response.status !== 201) {

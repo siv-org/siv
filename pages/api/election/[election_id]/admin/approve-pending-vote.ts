@@ -37,7 +37,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       .set({ ...vote, auth: vote.link_auth })
 
     // Copy voter info to 'voters' collection
-    const email = `${index + 1}.${vote.first_name}.${vote.last_name}..${vote.email}...manually_approved`
+    const email = `${vote.first_name || 'no_firstname'}.${vote.last_name || 'no_lastname'}..${
+      vote.email || 'no_email'
+    }...manually_approved.${vote.link_auth}`
     electionDoc.collection('voters').doc(email).set({
       added_at: new Date(),
       auth_token: vote.link_auth,

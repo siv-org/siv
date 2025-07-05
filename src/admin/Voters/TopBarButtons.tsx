@@ -7,10 +7,12 @@ import { UnlockVotesButton } from './UnlockVotesButton'
 
 export const TopBarButtons = ({
   checked,
+  clear_checked,
   num_approved,
   num_voted,
 }: {
   checked: boolean[]
+  clear_checked: () => void
   num_approved: number
   num_voted: number
 }) => {
@@ -22,7 +24,7 @@ export const TopBarButtons = ({
     <div className="flex justify-between mb-[5px]">
       <div className={`flex ${width < 400 ? 'flex-col' : 'flex-row'}`}>
         <SendInvitationsButton {...{ checked, num_checked, set_error }} />
-        <InvalidateVotersButton {...{ checked, num_checked, set_error }} />
+        <InvalidateVotersButton {...{ checked, clear_checked, num_checked, set_error }} />
       </div>
       {error && (
         <span className="self-start border border-solid border-[#800a] py-[3px] px-2.5 rounded bg-[#fff6f6] max-w-[320px]">
