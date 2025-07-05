@@ -37,7 +37,7 @@ export const PendingVotesTable = () => {
         style={{ padding: '5px 10px' }}
       >
         <>
-          <CheckOutlined className="relative mr-1 font-bold top-px" />
+          <CheckOutlined className="relative top-px mr-1 font-bold" />
           Approve {num_checked} Vote{num_checked !== 1 && 's'}
         </>
       </OnClickButton>
@@ -45,8 +45,11 @@ export const PendingVotesTable = () => {
   }
 
   return (
-    <div className="pt-3 pb-1 pl-4 mt-8 -ml-4 rounded shadow-md bg-orange-50">
-      <ApproveVoteButton />
+    <div className="pt-3 pb-1 pl-4 mt-8 -ml-4 bg-orange-50 rounded shadow-md">
+      <div className="flex gap-4 items-center">
+        <ApproveVoteButton />
+        {pressing_shift && <span className="mt-0.5 text-xs text-purple-500">Shift Pressed</span>}
+      </div>
       <div className="mt-2 mb-1">
         Pending Votes <span className="opacity-50">(via shareable link)</span>
       </div>
