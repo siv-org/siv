@@ -27,8 +27,8 @@ export const ToggleShareableLink = () => {
   return (
     <section className={`p-1 ml-[-5px] ${voter_applications_allowed && 'bg-red-100/50 rounded px-2 mb-3'}`}>
       {voter_applications_allowed && (
-        <div className="px-2 py-1 font-bold border border-red-500 border-solid rounded">
-          ⚠️ Votes-via-link can be collected, but not possible to tally them yet.
+        <div className="px-2 py-1 font-bold rounded border border-red-500 border-solid">
+          ⚠️ Votes-via-link is a beta feature. Please report bugs.
         </div>
       )}
       <label className="cursor-pointer" onClick={toggleVoterApplications}>

@@ -3,7 +3,7 @@ import { useReducer, useState } from 'react'
 import { OnClickButton } from 'src/_shared/Button'
 import { api } from 'src/api-helper'
 
-import { useStored } from '../useStored'
+import { revalidate, useStored } from '../useStored'
 import { CheckboxCell, CheckboxHeaderCell, hoverable } from './CheckboxCell'
 import { mask } from './mask-token'
 import { use_multi_select } from './use-multi-select'
@@ -25,14 +25,20 @@ export const PendingVotesTable = () => {
 
   const num_checked = checked.filter((c) => c).length
 
+  const votes_shown = showAll ? pending_votes : onThisPage
+
   function ApproveVoteButton() {
     return (
       <OnClickButton
         className="!m-0 bg-white"
         disabled={!num_checked}
         onClick={async () => {
-          const response = await api(`election/${election_id}/admin/approve-pending-vote`)
+          const response = await api(`election/${election_id}/admin/approve-pending-vote`, {
+            votes_to_approve: votes_shown.filter((v, index) => checked[index]),
+          })
           if (!response.ok) alert((await response.json()).error)
+          set_checked(new Array(pending_votes?.length).fill(false))
+          revalidate(election_id)
         }}
         style={{ padding: '5px 10px' }}
       >
@@ -70,19 +76,17 @@ export const PendingVotesTable = () => {
           </tr>
         </thead>
         <tbody className="[&_td]:whitespace-nowrap bg-white">
-          {(showAll ? pending_votes : onThisPage).map(
-            ({ email, first_name, is_email_verified, last_name, link_auth }, index) => (
-              <tr className={`${checked[index] && 'bg-[#f1f1f1]'}`} key={email}>
-                <CheckboxCell {...{ checked, index, last_selected, pressing_shift, set_checked, set_last_selected }} />
-                <td>{index + 1}</td>
-                <td>{first_name}</td>
-                <td>{last_name}</td>
-                <td>{email}</td>
-                <td className="text-center">{is_email_verified ? '✓' : ''}</td>
-                <td className="font-mono text-[12px]">{mask_tokens ? mask(link_auth) : link_auth}</td>
-              </tr>
-            ),
-          )}
+          {votes_shown.map(({ email, first_name, is_email_verified, last_name, link_auth }, index) => (
+            <tr className={`${checked[index] && 'bg-[#f1f1f1]'}`} key={email}>
+              <CheckboxCell {...{ checked, index, last_selected, pressing_shift, set_checked, set_last_selected }} />
+              <td>{index + 1}</td>
+              <td>{first_name}</td>
+              <td>{last_name}</td>
+              <td>{email}</td>
+              <td className="text-center">{is_email_verified ? '✓' : ''}</td>
+              <td className="font-mono text-[12px]">{mask_tokens ? mask(link_auth) : link_auth}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
 
