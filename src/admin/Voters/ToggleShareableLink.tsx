@@ -5,6 +5,7 @@ import { api } from '../../api-helper'
 import { Switch } from '../BallotDesign/Switch'
 import { Spinner } from '../Spinner'
 import { revalidate, useStored } from '../useStored'
+import { ElectionQR } from './ElectionQR'
 
 export const ToggleShareableLink = () => {
   const [updating, setUpdating] = useState(false)
@@ -24,6 +25,8 @@ export const ToggleShareableLink = () => {
     }
   }
 
+  const link = `${window.location.origin}/election/${election_id}/vote?auth=link`
+
   return (
     <section className={`p-1 ml-[-5px] ${voter_applications_allowed && 'bg-red-100/50 rounded px-2 mb-3'}`}>
       {voter_applications_allowed && (
@@ -41,12 +44,15 @@ export const ToggleShareableLink = () => {
       {updating && <Spinner />}
 
       {voter_applications_allowed && (
-        <div className="mt-1 mb-2">
-          <span className="text-xs opacity-90">Shareable link:</span>{' '}
-          <a href={`/election/${election_id}/vote?auth=link`} rel="noreferrer" target="_blank">
-            {window.location.origin}/election/{election_id}/vote?auth=link
-          </a>
-        </div>
+        <>
+          <div className="mt-1 mb-2">
+            <span className="text-xs opacity-90">Shareable link:</span>{' '}
+            <a href={link} rel="noreferrer" target="_blank">
+              {link}
+            </a>
+          </div>
+          <ElectionQR url={link} />
+        </>
       )}
     </section>
   )
