@@ -30,16 +30,26 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const intervalToReport = 10
 
   for (const vote of votes_to_approve) {
+    const pendingVote = await electionDoc.collection('votes-pending').doc(vote.link_auth).get()
+    if (!pendingVote.exists) {
+      await pushover(
+        `${jwt.election_manager} tried approving missing vote`,
+        `${vote.link_auth}${jwt.election_title} (${election_id})\n\n${vote.link_auth}`,
+      )
+      console.log(`Vote ${vote.link_auth} not found in 'votes-pending' collection (${election_id})`)
+      continue
+    }
+
     // Copy vote to 'votes' collection
     await electionDoc
       .collection('votes')
       .doc(vote.link_auth)
-      .set({ ...vote, auth: vote.link_auth })
+      .set({ ...pendingVote.data(), auth: vote.link_auth })
 
     // Copy voter info to 'voters' collection
     const email = `${vote.first_name || 'no_firstname'}.${vote.last_name || 'no_lastname'}..${
       vote.email || 'no_email'
-    }...manually_approved.${vote.link_auth}`
+    }...${vote.link_auth}.approved`
     electionDoc.collection('voters').doc(email).set({
       added_at: new Date(),
       auth_token: vote.link_auth,
