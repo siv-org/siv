@@ -18,9 +18,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     created_at: new Date(),
     creator: jwt.email,
     election_manager: jwt.name,
-    election_title:
-      req.body.election_title ||
-      new Date(Date.now() - (req.body.timezone_offset || 0) * 60_000).toString().slice(0, 21),
+    election_title: req.body.election_title,
     num_invalidated_votes: 0,
     num_voters: 0,
     num_votes: 0,

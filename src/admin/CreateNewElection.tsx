@@ -31,8 +31,7 @@ export const CreateNewElection = () => {
         id="election-title-save"
         onPress={async () => {
           const response = await api('create-election', {
-            election_title,
-            timezone_offset: new Date().getTimezoneOffset(),
+            election_title: election_title || new Date().toString().slice(0, 21),
           })
           if (response.status !== 201) throw await response.json()
 
