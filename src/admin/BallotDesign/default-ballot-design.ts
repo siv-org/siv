@@ -1,18 +1,12 @@
 export const default_ballot_design = `[
   {
-    "id": "president",
+    "id": "icecream",
     "type": "choose-only-one",
-    "title": "Who should become President?",
+    "title": "What's the best flavor of ice cream?",
     "options": [
-      {
-        "name": "George H. W. Bush"
-      },
-      {
-        "name": "Bill Clinton"
-      },
-      {
-        "name": "Ross Perot"
-      }
+      { "name": "Chocolate" },
+      { "name": "Vanilla" },
+      { "name": "Strawberry" }
     ],
     "write_in_allowed": true
   }
