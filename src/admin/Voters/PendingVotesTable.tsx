@@ -54,7 +54,7 @@ export const PendingVotesTable = () => {
           ) : (
             <LoadingOutlined className="relative top-px mr-2 font-bold" />
           )}
-          {!isApproving ? `Approve ${num_checked} Vote${num_checked !== 1 && 's'}` : 'Approving...'}
+          {!isApproving ? `Approve ${num_checked} Vote${num_checked !== 1 ? 's' : ''}` : 'Approving...'}
         </>
       </OnClickButton>
     )
