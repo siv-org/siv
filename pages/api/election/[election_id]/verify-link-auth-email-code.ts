@@ -1,4 +1,5 @@
 import { firebase, pushover } from 'api/_services'
+import { pusher } from 'api/pusher'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -41,8 +42,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(200).json({ message: 'Email successfully marked invalid.' })
   }
 
-  // Update the status to 'verified'
-  await voteDoc.ref.update({ is_email_verified: true, verified_email_at: new Date() })
+  await Promise.all([
+    // Update the status to 'verified'
+    voteDoc.ref.update({ is_email_verified: true, verified_email_at: new Date() }),
+
+    // Trigger admin's dashboard update
+    pusher.trigger(`status-${election_id}`, 'votes', link_auth),
+  ])
 
   // Return a success response
   return res.status(200).json({ message: 'Email verified successfully.' })

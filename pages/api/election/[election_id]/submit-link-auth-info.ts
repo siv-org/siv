@@ -1,5 +1,6 @@
 import { firebase, sendEmail } from 'api/_services'
 import { button, generateEmailLoginCode } from 'api/admin-login'
+import { pusher } from 'api/pusher'
 import { validate as validateEmail } from 'email-validator'
 import { NextApiRequest, NextApiResponse } from 'next'
 
@@ -66,6 +67,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         req.headers.origin
       }/verify_registration?code=${verification_code}&election_id=${election_id}&link_auth=${link_auth}&invalid=true">This was NOT me, that vote should be marked invalid</a></em>`,
     }),
+
+    // Trigger admin's dashboard update
+    pusher.trigger(`status-${election_id}`, 'votes', link_auth),
   ])
 
   // Send success down to client

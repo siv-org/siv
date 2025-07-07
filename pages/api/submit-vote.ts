@@ -40,6 +40,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         num_pending_votes: firestore.FieldValue.increment(1),
         num_votes: firestore.FieldValue.increment(1),
       }),
+
+      // 2c. Trigger admin's dashboard update
+      pusher.trigger(`status-${election_id}`, 'votes', auth),
     ])
 
     // Link to the auth url, particularly for AirgappedVoters
