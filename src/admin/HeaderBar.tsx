@@ -29,7 +29,7 @@ export const HeaderBar = (): JSX.Element => {
         </Link>
       </section>
 
-      <section className="flex justify-between w-full py-4 sm:relative sm:right-8">
+      <section className="flex justify-between py-4 w-full sm:relative sm:right-8">
         <div className="flex">
           {election_id && (
             <>
