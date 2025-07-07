@@ -1,10 +1,14 @@
 import { UserOutlined } from '@ant-design/icons'
 import Head from 'next/head'
+import Image from 'next/image'
 import Link from 'next/link'
 
+import logo from '../homepage/logo.png'
 import { promptLogout, useUser } from './auth'
 import { useDynamicHeaderbarHeight } from './useDynamicHeaderbarHeight'
 import { useStored } from './useStored'
+
+const logoWidth = 45
 
 export const HeaderBar = (): JSX.Element => {
   const { user } = useUser()
@@ -15,16 +19,22 @@ export const HeaderBar = (): JSX.Element => {
   return (
     <div className="bg-gradient-to-r from-[#010b26] to-[#072054] text-white flex w-full justify-between" id={headerId}>
       {/* Logo */}
-      <section className="min-w-[75px] py-4 sm:min-w-[281px]">
+      <section className="min-w-[80px] py-4 sm:min-w-[281px]">
         <Link href={'/admin'}>
           <a
-            className="font-bold text-[#ddd] px-4 hover:text-white hover:no-underline text-[24px]"
+            className="relative flex items-center p-1.5 ml-3 top-px active:opacity-60 hover:opacity-80"
             onClick={() => {
               const el = document.getElementById('main-content')
               if (el) el.scrollTop = 0
             }}
           >
-            SIV
+            <Image
+              alt="SIV"
+              className="opacity-90 brightness-0 invert"
+              height={(logoWidth * 219) / 482}
+              src={logo}
+              width={logoWidth}
+            />
           </a>
         </Link>
       </section>
@@ -40,7 +50,7 @@ export const HeaderBar = (): JSX.Element => {
               {/* Election title */}
               <div className="relative bottom-0.5">
                 <div className="text-[14px] italic">{election_title}</div>
-                <div className="text-[10px] opacity-80 relative top-1">ID: {election_id}</div>
+                <div className="text-[10px] opacity-80 relative top-0.5">ID: {election_id}</div>
               </div>
             </>
           )}
