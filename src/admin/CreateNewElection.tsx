@@ -30,12 +30,9 @@ export const CreateNewElection = () => {
       <SaveButton
         id="election-title-save"
         onPress={async () => {
-          // Get client's timezone offset in minutes
-          const timezoneOffset = new Date().getTimezoneOffset()
-
           const response = await api('create-election', {
             election_title,
-            timezone_offset: timezoneOffset,
+            timezone_offset: new Date().getTimezoneOffset(),
           })
           if (response.status !== 201) throw await response.json()
 
