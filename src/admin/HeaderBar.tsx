@@ -3,10 +3,11 @@ import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
 
+import { api } from '../api-helper'
 import logo from '../homepage/logo.png'
 import { promptLogout, useUser } from './auth'
 import { useDynamicHeaderbarHeight } from './useDynamicHeaderbarHeight'
-import { useStored } from './useStored'
+import { revalidate, useStored } from './useStored'
 
 const logoWidth = 45
 
@@ -49,7 +50,31 @@ export const HeaderBar = (): JSX.Element => {
 
               {/* Election title */}
               <div className="relative bottom-0.5">
-                <div className="text-[14px] italic">{election_title}</div>
+                <div
+                  className="text-[14px] italic cursor-pointer hover:opacity-90"
+                  onClick={async () => {
+                    const new_title = prompt('Rename Election? Current: ' + election_title)
+                    if (!new_title) return
+
+                    try {
+                      const response = await api(`election/${election_id}/admin/rename-election`, { new_title })
+
+                      if (!response.ok) {
+                        const error = await response.json()
+                        alert('Failed to rename election: ' + (error.error || 'Unknown error'))
+                        return
+                      }
+
+                      // Revalidate the data to show the new title
+                      revalidate(election_id)
+                    } catch (error) {
+                      console.error('Error renaming election:', error)
+                      alert('Failed to rename election. Please try again.')
+                    }
+                  }}
+                >
+                  {election_title}
+                </div>
                 <div className="text-[10px] opacity-80 relative top-0.5">ID: {election_id}</div>
               </div>
             </>
