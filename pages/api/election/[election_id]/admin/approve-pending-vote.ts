@@ -14,12 +14,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const jwt = await checkJwtOwnsElection(req, res, election_id)
   if (!jwt.valid) return
 
-  // Send admin notif that they're trying to use WIP endpoint
-  await pushover(
-    `${jwt.election_manager} tried approving ${(votes_to_approve || []).length} votes`,
-    `${jwt.election_title} (${election_id})`,
-  )
-
   //
   // Move them from 'votes-pending' to 'votes
   //
