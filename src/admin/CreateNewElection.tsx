@@ -15,7 +15,7 @@ export const CreateNewElection = () => {
       <label>Ballot Title:</label>
 
       <input
-        className="w-full p-2 text-sm border border-gray-300 border-solid rounded"
+        className="p-2 w-full text-sm rounded border border-gray-300 border-solid"
         id="election-title"
         onChange={(event) => set_title(event.target.value)}
         onKeyDown={(event) => {
@@ -30,7 +30,13 @@ export const CreateNewElection = () => {
       <SaveButton
         id="election-title-save"
         onPress={async () => {
-          const response = await api('create-election', { election_title })
+          // Get client's timezone offset in minutes
+          const timezoneOffset = new Date().getTimezoneOffset()
+
+          const response = await api('create-election', {
+            election_title,
+            timezone_offset: timezoneOffset,
+          })
           if (response.status !== 201) throw await response.json()
 
           // Set election_id in URL
