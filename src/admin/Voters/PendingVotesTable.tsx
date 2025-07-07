@@ -1,4 +1,4 @@
-import { CheckOutlined } from '@ant-design/icons'
+import { CheckOutlined, LoadingOutlined } from '@ant-design/icons'
 import { useReducer, useState } from 'react'
 import { OnClickButton } from 'src/_shared/Button'
 import { api } from 'src/api-helper'
@@ -14,6 +14,7 @@ export const PendingVotesTable = () => {
   const { last_selected, pressing_shift, set_last_selected } = use_multi_select()
   const [showAll, setShowAll] = useState(false)
   const [checked, set_checked] = useState<boolean[]>(new Array(pending_votes?.length).fill(false))
+  const [isApproving, setIsApproving] = useState(false)
 
   if (!pending_votes || (!pending_votes.length && !voter_applications_allowed)) return null
 
@@ -31,20 +32,29 @@ export const PendingVotesTable = () => {
     return (
       <OnClickButton
         className="!m-0 bg-white"
-        disabled={!num_checked}
+        disabled={!num_checked || isApproving}
         onClick={async () => {
-          const response = await api(`election/${election_id}/admin/approve-pending-vote`, {
-            votes_to_approve: votes_shown.filter((v, index) => checked[index]),
-          })
-          if (!response.ok) alert((await response.json()).error)
-          set_checked(new Array(pending_votes?.length).fill(false))
-          revalidate(election_id)
+          setIsApproving(true)
+          try {
+            const response = await api(`election/${election_id}/admin/approve-pending-vote`, {
+              votes_to_approve: votes_shown.filter((v, index) => checked[index]),
+            })
+            if (!response.ok) alert((await response.json()).error)
+            set_checked(new Array(pending_votes?.length).fill(false))
+            revalidate(election_id)
+          } finally {
+            setIsApproving(false)
+          }
         }}
         style={{ padding: '5px 10px' }}
       >
         <>
-          <CheckOutlined className="relative top-px mr-1 font-bold" />
-          Approve {num_checked} Vote{num_checked !== 1 && 's'}
+          {!isApproving ? (
+            <CheckOutlined className="relative top-px mr-1 font-bold" />
+          ) : (
+            <LoadingOutlined className="relative top-px mr-2 font-bold" />
+          )}
+          {!isApproving ? `Approve ${num_checked} Vote${num_checked !== 1 && 's'}` : 'Approving...'}
         </>
       </OnClickButton>
     )
