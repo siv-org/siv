@@ -5,8 +5,8 @@ import { firebase, pushover, sendEmail } from './_services'
 import { generateEmailLoginCode } from './admin-login'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
+  let { email } = req.body
   const {
-    email,
     first_name,
     last_name,
     your_organization,
@@ -15,6 +15,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Confirm they sent a valid email address
   if (!email) return res.status(400).send({ error: 'Missing email' })
   if (!validateEmail(email)) return res.status(400).send({ error: 'Invalid email' })
+  email = email.toLowerCase()
 
   // Stop if they already have an account
   const adminDoc = firebase.firestore().collection('admins').doc(email.toLowerCase())
