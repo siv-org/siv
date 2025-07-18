@@ -29,9 +29,7 @@ export const AllYourConventions = () => {
           {data?.conventions?.map(({ convention_title, created_at, id }: Convention) => (
             <li key={id}>
               <Link href={`/admin/conventions/${id}`}>
-                <a>
-                  <TimeAgo datetime={new Date(created_at._seconds * 1000)} />: {convention_title}
-                </a>
+                <TimeAgo datetime={new Date(created_at._seconds * 1000)} />: {convention_title}
               </Link>
             </li>
           ))}
