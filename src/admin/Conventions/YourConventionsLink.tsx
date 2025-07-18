@@ -2,7 +2,7 @@ import Link from 'next/link'
 
 export const YourConventionsLink = () => {
   return (
-    <Link href="/admin/conventions">
+    <Link href="/admin/conventions" legacyBehavior>
       <div className="pb-2 pl-2 pr-4 -ml-2 transition border-2 border-transparent border-solid rounded-lg cursor-pointer sm:pl-4 sm:-ml-4 hover:border-[#002868] mt-14">
         <h2>
           Your Conventions <BetaBadge />
