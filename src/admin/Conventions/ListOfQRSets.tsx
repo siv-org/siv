@@ -14,10 +14,8 @@ export const ListOfQRSets = () => {
           <span className="inline-block w-20">Set of {number} </span>
 
           {/* Download */}
-          <Link href={`/admin/conventions/download?c=${id}&set=${i}`} target="_blank">
-            <a className="pl-1" target="_blank">
-              Download
-            </a>
+          <Link href={`/admin/conventions/download?c=${id}&set=${i}`} target="_blank" className="pl-1">
+            Download
           </Link>
 
           {/* Time */}
