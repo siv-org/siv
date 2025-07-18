@@ -32,9 +32,7 @@ export const AllYourElections = () => {
           {data?.elections?.map(({ created_at, election_title, id }: Election) => (
             <li key={id}>
               <Link href={`/admin/${id}/voters`}>
-                <a>
-                  <TimeAgo datetime={new Date(created_at._seconds * 1000)} />: {election_title}
-                </a>
+                <TimeAgo datetime={new Date(created_at._seconds * 1000)} />: {election_title}
               </Link>
             </li>
           ))}
