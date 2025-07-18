@@ -46,13 +46,13 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
                   </span>
                 }
               >
-                <span className="relative top-0 text-sm text-indigo-500 left-1">
+                <span className="relative top-0 left-1 text-sm text-indigo-500">
                   <QuestionCircleOutlined />
                 </span>
               </Tooltip>
             </label>
             {/* Question ID Input */}
-            <div className="flex items-center justify-between">
+            <div className="flex justify-between items-center">
               <input
                 className="p-1 text-sm"
                 onChange={({ target }) => {
@@ -84,7 +84,7 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
 
               {/* Type dropdown */}
               <div className="relative">
-                <span className="absolute z-20 scale-75 right-3 top-2 opacity-60">▼</span>
+                <span className="absolute top-2 right-3 z-20 opacity-60 scale-75">▼</span>
                 <select
                   className="appearance-none border border-solid border-gray-200 text-[13px] rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 shadow-sm relative"
                   onChange={({ target }) => {
@@ -157,7 +157,7 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
               <div className="mt-1">
                 <label className="text-[10px] italic">Min score?</label>
                 <input
-                  className="p-1 m-1 text-sm w-14"
+                  className="p-1 m-1 w-14 text-sm"
                   onChange={({ target }) => {
                     const update = +target.value
                     const new_json = [...json]
@@ -170,7 +170,7 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
 
                 <label className="ml-5 text-[10px] italic">Max score?</label>
                 <input
-                  className="p-1 ml-1 text-sm w-14"
+                  className="p-1 ml-1 w-14 text-sm"
                   onChange={({ target }) => {
                     const update = +target.value
                     const new_json = [...json]
@@ -186,10 +186,10 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
             {json[questionIndex].type == 'budget' && (
               <div className="mt-1">
                 <label className="text-[10px] italic">Total available?</label>
-                <div className="relative inline">
+                <div className="inline relative">
                   <div className="absolute text-lg opacity-50 -top-[3px] left-3">$</div>
                   <input
-                    className="w-24 p-1 m-1 text-sm text-right"
+                    className="p-1 m-1 w-24 text-sm text-right"
                     onChange={({ target }) => {
                       const update = +target.value
                       const new_json = [...json]
