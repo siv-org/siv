@@ -19,7 +19,7 @@ export const Button = ({
 }: ButtonProps & {
   href: string
 }): JSX.Element => (
-  <Link href={href}>
+  <Link href={href} legacyBehavior>
     <a style={style}>
       {children}
       <style jsx>{`
