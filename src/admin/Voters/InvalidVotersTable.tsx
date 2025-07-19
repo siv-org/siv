@@ -42,13 +42,19 @@ export const InvalidVotersTable = ({ hide_approved, hide_voted }: { hide_approve
             <tr key={email}>
               <td className={struckthrough}>{index + 1}</td>
               <td className={struckthrough}>{email}</td>
-              <td className={`${struckthrough} font-mono text-[12px]`}>
+              <td className={`font-mono ${struckthrough} text-[12px]`}>
                 {mask_tokens ? mask(auth_token) : auth_token}
               </td>
 
               <td className="p-0 text-center">
                 {has_voted ? (
-                  <Image className="object-contain scale-25" height={23} src={InvalidatedVoteIcon} width={23} />
+                  <Image
+                    alt="Invalidated Vote"
+                    className="object-contain scale-25"
+                    height={23}
+                    src={InvalidatedVoteIcon}
+                    width={23}
+                  />
                 ) : null}
               </td>
 
