@@ -1,4 +1,4 @@
-import Image from 'next/image'
+import Image from 'next/legacy/image'
 import Link from 'next/link'
 
 import logo from './siv-logo.png'
@@ -6,7 +6,7 @@ import logo from './siv-logo.png'
 export const Introduction = () => {
   return (
     <div style={{ padding: '10px 30px' }}>
-      <Link href="/">
+      <Link href="/" legacyBehavior>
         <a className="logo-container">
           <Image src={logo} />
         </a>
