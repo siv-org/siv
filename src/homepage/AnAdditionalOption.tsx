@@ -10,19 +10,19 @@ export const AnAdditionalOption = () => (
     <ul>
       <li>
         <div>
-          <Image height={1080} layout="responsive" priority src="/home3/methods-1.png" width={1920} />
+          <Image alt="in person" height={1080} layout="responsive" priority src="/home3/methods-1.png" width={1920} />
         </div>
         In Person
       </li>
       <li>
         <div>
-          <Image height={1080} layout="responsive" priority src="/home3/methods-2.png" width={1920} />
+          <Image alt="by mail" height={1080} layout="responsive" priority src="/home3/methods-2.png" width={1920} />
         </div>
         By Mail
       </li>
       <li>
         <div>
-          <Image height={223} layout="responsive" priority src="/home3/methods-3.png" width={256} />
+          <Image alt="online" height={223} layout="responsive" priority src="/home3/methods-3.png" width={256} />
         </div>
         Online
       </li>
