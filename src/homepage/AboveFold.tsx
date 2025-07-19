@@ -12,12 +12,12 @@ export const AboveFold = () => (
     <h1>
       Secure Internet Voting
       <div className="underline-container">
-        <Image height={810} layout="responsive" src="/home3/yellow-underline.gif" width={1440} />
+        <Image alt="yellow underline" height={810} layout="responsive" src="/home3/yellow-underline.gif" width={1440} />
       </div>
     </h1>
     <h2>Fast. Private. Verifiable.</h2>
     <div className="phone-container">
-      <Image height={912} layout="responsive" src="/home3/above-interface.gif" width={464} />
+      <Image alt="above interface" height={912} layout="responsive" src="/home3/above-interface.gif" width={464} />
     </div>
     <p>Millions of people want to be able to vote from their phones.</p>
     <div>
