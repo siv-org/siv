@@ -1,4 +1,4 @@
-import Image, { StaticImageData } from 'next/image'
+import Image, { StaticImageData } from 'next/legacy/image'
 import verifiability1 from 'public/home3/verifiability-1.png'
 import verifiability2 from 'public/home3/verifiability-2.png'
 
