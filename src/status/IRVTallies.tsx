@@ -28,7 +28,7 @@ export const IRVTallies = ({
       )}
 
       {/* Horizontal list of rounds */}
-      <div className="flex pb-3 -ml-5 overflow-x-scroll">
+      <div className="flex overflow-x-scroll pb-3 -ml-5">
         {results.rounds.map((round, index) => (
           // Vertical round results
           <div key={index}>
@@ -67,7 +67,7 @@ const CheckForTies = ({
 
   return (
     <div
-      className="px-1 ml-5 border border-yellow-400 border-solid rounded cursor-pointer text-black/70 hover:bg-yellow-50"
+      className="px-1 ml-5 rounded border border-yellow-400 border-solid cursor-pointer text-black/70 hover:bg-yellow-50"
       onClick={() =>
         alert(
           `Round ${
