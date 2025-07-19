@@ -3,10 +3,10 @@ import Link from 'next/link'
 export const HeaderBar = (): JSX.Element => (
   <div className="headerbar-container">
     <div>
-      <Link href="/">
+      <Link href="/" legacyBehavior>
         <a className="big">Secure Internet Voting</a>
       </Link>
-      <Link href="/protocol">
+      <Link href="/protocol" legacyBehavior>
         <a>Protocol</a>
       </Link>
     </div>
