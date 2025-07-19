@@ -10,7 +10,7 @@ export const NowPossible = () => (
       <a href="/faq">Frequently Asked Questions</a>
     </p>
     <div>
-      <Image layout="fill" placeholder="blur" src={backgroundPurple} />
+      <Image alt="background purple" layout="fill" placeholder="blur" src={backgroundPurple} />
     </div>
     <style jsx>{`
       section {
