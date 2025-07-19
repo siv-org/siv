@@ -27,8 +27,8 @@ export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => voi
     <div className="sidebar">
       <main>
         <Link
-          href="/admin"
           className="hover:!bg-white/0 !p-0"
+          href="/admin"
           onClick={() => {
             closeMenu()
             const el = document.getElementById('main-content')

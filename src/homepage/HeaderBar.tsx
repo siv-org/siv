@@ -12,8 +12,8 @@ export const HeaderBar = () => {
     <header className="w-full px-6 py-6 mx-auto border-b border-gray-200 max-w-[1440px] sm:px-0.5 bg-gradient-to-r from-white via-gray-100 to-white flex flex-col items-center justify-between gap-4 sm:flex-row">
       {/* Logo */}
       <Link
-        href="/"
         className="relative p-1.5 pt-2 pr-[5px] rounded-lg leading-none hover:bg-white hover:shadow top-px active:opacity-60 hover:border-gray-200 border border-solid border-transparent"
+        href="/"
       >
         <Image alt="SIV" height={(logoWidth * 219) / 482} src={logo} width={logoWidth} />
       </Link>
@@ -26,15 +26,15 @@ export const HeaderBar = () => {
           ['FAQ', '/faq'],
           ['Contributors', '/about'],
         ].map(([label, href]) => (
-          <Link href={href} key={label} className={`${sharedStyles} hover:bg-gray-200 active:bg-gray-300`}>
+          <Link className={`${sharedStyles} hover:bg-gray-200 active:bg-gray-300`} href={href} key={label}>
             {label}
           </Link>
         ))}
 
         {/* Sign In Button */}
         <Link
-          href="/admin"
           className={`bg-gradient-to-b shadow ${sharedStyles} from-indigo-100/60 to-white/60 hover:from-indigo-200/80 hover:to-indigo-100/50 active:bg-indigo-200`}
+          href="/admin"
         >
           Sign In
         </Link>

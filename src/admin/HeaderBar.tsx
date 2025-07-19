@@ -22,8 +22,8 @@ export const HeaderBar = (): JSX.Element => {
       {/* Logo */}
       <section className="min-w-[80px] py-4 sm:min-w-[281px]">
         <Link
-          href={'/admin'}
           className="relative flex items-center p-1.5 ml-3 top-px active:opacity-60 hover:opacity-80"
+          href={'/admin'}
           onClick={() => {
             const el = document.getElementById('main-content')
             if (el) el.scrollTop = 0

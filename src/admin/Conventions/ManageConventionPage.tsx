@@ -27,7 +27,7 @@ export const ManageConventionPage = () => {
       <HeaderBar />
       <main className="p-4 overflow-clip sm:px-8">
         {/* Back link */}
-        <Link href="/admin/conventions" className="block mt-2 opacity-60 transition hover:opacity-100">
+        <Link className="block mt-2 opacity-60 transition hover:opacity-100" href="/admin/conventions">
           ← Back to all Conventions
         </Link>
 
