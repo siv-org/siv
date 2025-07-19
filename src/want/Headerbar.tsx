@@ -4,7 +4,7 @@ import { darkBlue } from 'src/homepage/colors'
 export const Headerbar = () => (
   <header>
     <h3>
-      <Link href="/">
+      <Link href="/" legacyBehavior>
         <a className="logo">SIV</a>
       </Link>
     </h3>
