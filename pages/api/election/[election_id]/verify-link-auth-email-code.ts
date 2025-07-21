@@ -7,17 +7,26 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Validate the request has required parameters
   if (!code || !link_auth || !election_id) return res.status(400).json({ error: 'Missing parameters.' })
 
+  const election = firebase.firestore().collection('elections').doc(election_id)
+
   // Lookup the pending-vote
-  const voteDoc = await firebase
-    .firestore()
-    .collection('elections')
-    .doc(election_id)
-    .collection('votes-pending')
-    .doc(link_auth)
-    .get()
+  let voteDoc = await election.collection('votes-pending').doc(link_auth).get()
+
+  // Pending vote may have been approved & moved to 'votes' collection
+  if (!voteDoc.exists) {
+    voteDoc = await election.collection('votes').doc(link_auth).get()
+    if (!voteDoc.exists) {
+      await pushover(
+        "Verify link-auth email, couldn't find auth token in 'pending' nor 'approved'",
+        `Email:${email}\n\nElection ID: ${election_id}\n\nAuth token: ${link_auth}`,
+      )
+
+      return res.status(400).json({ error: 'Invalid verification code' })
+    }
+  }
 
   // Check if the verification code is good
-  if (!voteDoc.exists || voteDoc.data()?.verification_code !== code) {
+  if (voteDoc.data()?.verification_code !== code) {
     await pushover(
       'Verify link-auth email, bad code',
       `Email:${email}\n\nInput code: ${code}\nDB code: ${
