@@ -10,7 +10,7 @@ export const NowPossible = () => (
       <a href="/faq">Frequently Asked Questions</a>
     </p>
     <div>
-      <Image alt="background purple" layout="fill" placeholder="blur" src={backgroundPurple} />
+      <Image alt="background purple" placeholder="blur" src={backgroundPurple} fill style={{ objectFit: 'cover' }} />
     </div>
     <style jsx>{`
       section {
