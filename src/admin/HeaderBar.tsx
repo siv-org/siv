@@ -21,22 +21,21 @@ export const HeaderBar = (): JSX.Element => {
     <div className="bg-gradient-to-r from-[#010b26] to-[#072054] text-white flex w-full justify-between" id={headerId}>
       {/* Logo */}
       <section className="min-w-[80px] py-4 sm:min-w-[281px]">
-        <Link href={'/admin'}>
-          <a
-            className="relative flex items-center p-1.5 ml-3 top-px active:opacity-60 hover:opacity-80"
-            onClick={() => {
-              const el = document.getElementById('main-content')
-              if (el) el.scrollTop = 0
-            }}
-          >
-            <Image
-              alt="SIV"
-              className="opacity-90 brightness-0 invert"
-              height={(logoWidth * 219) / 482}
-              src={logo}
-              width={logoWidth}
-            />
-          </a>
+        <Link
+          className="relative flex items-center p-1.5 ml-3 top-px active:opacity-60 hover:opacity-80"
+          href={'/admin'}
+          onClick={() => {
+            const el = document.getElementById('main-content')
+            if (el) el.scrollTop = 0
+          }}
+        >
+          <Image
+            alt="SIV"
+            className="opacity-90 brightness-0 invert"
+            height={(logoWidth * 219) / 482}
+            src={logo}
+            width={logoWidth}
+          />
         </Link>
       </section>
 

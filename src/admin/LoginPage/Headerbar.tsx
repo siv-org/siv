@@ -8,7 +8,7 @@ export const Headerbar = ({ hideLogin }: { hideLogin?: boolean }) => {
     <header>
       <div>
         <h2>
-          <Link href="/">
+          <Link href="/" legacyBehavior>
             <a>Secure Internet Voting</a>
           </Link>
         </h2>

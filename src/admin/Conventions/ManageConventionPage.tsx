@@ -25,10 +25,10 @@ export const ManageConventionPage = () => {
       <Head title={`Manage${convention_title ? `: ${convention_title}` : '  Convention'}`} />
 
       <HeaderBar />
-      <main className="p-4 sm:px-8 overflow-clip">
+      <main className="p-4 overflow-clip sm:px-8">
         {/* Back link */}
-        <Link href="/admin/conventions">
-          <a className="block mt-2 transition opacity-60 hover:opacity-100">← Back to all Conventions</a>
+        <Link className="block mt-2 opacity-60 transition hover:opacity-100" href="/admin/conventions">
+          ← Back to all Conventions
         </Link>
 
         {/* Title */}

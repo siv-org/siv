@@ -6,7 +6,7 @@ import { breakpoint } from './LoginPage'
 export const AboutSection = () => {
   return (
     <aside>
-      <Link href="/">
+      <Link href="/" legacyBehavior>
         <a>
           <img className="logo" src="/login/circle-logo.png" />
         </a>

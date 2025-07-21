@@ -1,4 +1,4 @@
-import Image from 'next/image'
+import Image from 'next/legacy/image'
 import React, { Fragment } from 'react'
 import { darkBlue } from 'src/homepage/colors'
 

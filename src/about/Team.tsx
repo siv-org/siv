@@ -1,4 +1,4 @@
-import Image from 'next/image'
+import Image from 'next/legacy/image'
 
 import ariana from './team/ariana.png'
 import david from './team/david.png'

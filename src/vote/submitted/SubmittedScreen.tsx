@@ -33,7 +33,7 @@ export function SubmittedScreen({
     <NoSsr>
       <UnverifiedEmailModal />
       <InvalidatedVoteMessage />
-      <Link as={`/election/${election_id}`} href="/election/[election_id]">
+      <Link as={`/election/${election_id}`} href="/election/[election_id]" legacyBehavior>
         <a id="status-page" target="_blank">
           <img src="/vote/externallinkicon.jpg" width="15px" />
           Click here to visit the Election Status page.
@@ -43,7 +43,7 @@ export function SubmittedScreen({
       <h3>How to verify your vote:</h3>
       <p>
         Once the election closes and votes are unlocked, you can find yours on the{' '}
-        <Link as={`/election/${election_id}`} href="/election/[election_id]">
+        <Link as={`/election/${election_id}`} href="/election/[election_id]" legacyBehavior>
           <a style={{ color: 'black' }} target="_blank">
             Election Status page
           </a>

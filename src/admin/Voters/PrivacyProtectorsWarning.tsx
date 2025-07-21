@@ -8,7 +8,7 @@ export const PrivacyProtectorsWarning = () => {
 
   return (
     <div>
-      <details className="px-4 py-2 border-2 border-orange-200 border-solid rounded-lg group">
+      <details className="px-4 py-2 rounded-lg border-2 border-orange-200 border-solid group">
         <summary className="py-2 cursor-pointer">
           <span className="opacity-50">Reminder:</span> Unlocking will need each Privacy Protector&apos;s device.
           <span className="ml-2 text-xs opacity-50">
@@ -24,9 +24,7 @@ export const PrivacyProtectorsWarning = () => {
           <div>✅ Make sure they still have access.</div>
           <div>🚫 If not, you can create a new election.</div>
           <div>
-            <Link href={`/admin/${election_id}/privacy`}>
-              <a>Review Privacy Protectors: {trustees.length - 1}</a>
-            </Link>
+            <Link href={`/admin/${election_id}/privacy`}>Review Privacy Protectors: {trustees.length - 1}</Link>
           </div>
         </div>
       </details>

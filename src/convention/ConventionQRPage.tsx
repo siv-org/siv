@@ -9,7 +9,7 @@ export const ConventionQRPage = () => {
   if (!convention_id) return null
 
   return (
-    <div className="flex flex-col justify-between max-w-lg min-h-screen p-4 pt-6 mx-auto font-sans">
+    <div className="flex flex-col justify-between p-4 pt-6 mx-auto max-w-lg min-h-screen font-sans">
       {/* Headerbar */}
       <header className="font-semibold text-center">Secure Internet Voting</header>
 
@@ -25,17 +25,16 @@ export const ConventionQRPage = () => {
                   No active election yet.
                 </>
               ) : (
-                <div className="-ml-10 ">
+                <div className="-ml-10">
                   <Spinner />
-                  <span className="ml-2 ">Loading your ballot...</span>
+                  <span className="ml-2">Loading your ballot...</span>
                 </div>
               )}
             </div>
           ) : (
             // Error
             <>
-              <div className="text-2xl -mt-28 opacity-90">Error: {errorMessage}</div>
-
+              <div className="-mt-28 text-2xl opacity-90">Error: {errorMessage}</div>
               {/* Debug info */}
               <div className="mt-10 opacity-70">
                 <div className="text-sm opacity-70">Debug Info</div>

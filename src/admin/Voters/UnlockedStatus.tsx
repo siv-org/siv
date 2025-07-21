@@ -30,7 +30,7 @@ export const UnlockedStatus = () => {
       ) : !more_to_unlock ? (
         <p>
           ✅ Successfully{' '}
-          <Link href={`/election/${election_id}`}>
+          <Link href={`/election/${election_id}`} legacyBehavior>
             <a className="font-medium text-black cursor-pointer" target="_blank">
               unlocked {unlocked_votes.length}
             </a>

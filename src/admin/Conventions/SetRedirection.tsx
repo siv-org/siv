@@ -157,7 +157,7 @@ export const SetRedirection = () => {
                   {is_active_redirect ? (
                     'Active'
                   ) : (
-                    <span className="px-3 bg-white border border-solid rounded-lg border-black/50">Set</span>
+                    <span className="px-3 bg-white rounded-lg border border-solid border-black/50">Set</span>
                   )}
                 </td>
               </tr>

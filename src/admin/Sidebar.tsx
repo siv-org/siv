@@ -26,17 +26,16 @@ export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => voi
   return (
     <div className="sidebar">
       <main>
-        <Link href="/admin">
-          <a
-            className="hover:!bg-white/0 !p-0"
-            onClick={() => {
-              closeMenu()
-              const el = document.getElementById('main-content')
-              if (el) el.scrollTop = 0
-            }}
-          >
-            <h2 className="logo sm:hidden">SIV</h2>
-          </a>
+        <Link
+          className="hover:!bg-white/0 !p-0"
+          href="/admin"
+          onClick={() => {
+            closeMenu()
+            const el = document.getElementById('main-content')
+            if (el) el.scrollTop = 0
+          }}
+        >
+          <h2 className="logo sm:hidden">SIV</h2>
         </Link>
 
         {election_id && (
@@ -47,7 +46,7 @@ export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => voi
                 <ApartmentOutlined style={{ marginRight: 5 }} /> Election Management
               </label>
               {steps.map((name) => (
-                <Link href={`/admin/${election_id}/${urled(name)}`} key={name}>
+                <Link href={`/admin/${election_id}/${urled(name)}`} key={name} legacyBehavior>
                   <a className={urled(name) === section ? 'current' : ''} onClick={closeMenu}>
                     {name !== 'Voters' && <input checked={completed[name]} readOnly type="checkbox" />}
                     {name}
@@ -62,7 +61,7 @@ export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => voi
                 <SnippetsOutlined style={{ marginRight: 5 }} />
                 Post Election
               </label>
-              <Link href={`/admin/${election_id}/marked-ballots`}>
+              <Link href={`/admin/${election_id}/marked-ballots`} legacyBehavior>
                 <a className={'marked-ballots' === section ? 'current' : ''} onClick={closeMenu}>
                   Marked Ballots
                 </a>
@@ -75,10 +74,10 @@ export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => voi
                 <LinkOutlined style={{ marginRight: 5 }} />
                 Public Pages
               </label>
-              <Link href={`/election/${election_id}/vote`}>
+              <Link href={`/election/${election_id}/vote`} legacyBehavior>
                 <a target="_blank">Cast Vote</a>
               </Link>
-              <Link href={`/election/${election_id}`}>
+              <Link href={`/election/${election_id}`} legacyBehavior>
                 <a target="_blank">Election Status</a>
               </Link>
             </>
@@ -91,10 +90,10 @@ export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => voi
           <QuestionCircleOutlined style={{ marginRight: 5 }} />
           Support
         </label>
-        <Link href="/protocol">
+        <Link href="/protocol" legacyBehavior>
           <a target="_blank">Protocol Overview</a>
         </Link>
-        <Link href="mailto:help@siv.org">
+        <Link href="mailto:help@siv.org" legacyBehavior>
           <a>Get Help</a>
         </Link>
       </div>
