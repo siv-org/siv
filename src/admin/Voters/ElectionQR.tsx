@@ -1,9 +1,14 @@
 import { useEffect, useRef, useState } from 'react'
 
+import { useStored } from '../useStored'
+
 export const ElectionQR = ({ url }: { url: string }) => {
   const ref = useRef<HTMLDivElement>(null)
   const modalRef = useRef<HTMLDivElement>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
+
+  const { pending_votes, valid_voters } = useStored()
+  const num_votes = (valid_voters?.filter((v) => v.has_voted).length || 0) + (pending_votes?.length || 0)
 
   // Render small QR on initial load
   useEffect(() => {
@@ -70,10 +75,15 @@ export const ElectionQR = ({ url }: { url: string }) => {
             <div className="flex justify-center" ref={modalRef} />
 
             {/* Text link */}
-            <p className="mt-4 text-sm text-gray-600 break-all">
+            <p className="mt-4 break-all">
               <a href={url} rel="noreferrer" target="_blank">
                 {url}
               </a>
+            </p>
+
+            {/* Real-time vote count */}
+            <p className="mt-4 text-center opacity-80">
+              {num_votes} vote{num_votes !== 1 ? 's' : ''} cast
             </p>
           </div>
         </div>
