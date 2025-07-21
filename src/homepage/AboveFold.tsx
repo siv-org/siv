@@ -16,8 +16,8 @@ export const AboveFold = () => (
           alt="yellow underline"
           height={810}
           src="/home3/yellow-underline.gif"
+          style={{ height: 'auto', width: '100%' }}
           width={1440}
-          style={{ width: '100%', height: 'auto' }}
         />
       </div>
     </h1>
@@ -27,8 +27,8 @@ export const AboveFold = () => (
         alt="above interface"
         height={912}
         src="/home3/above-interface.gif"
+        style={{ height: 'auto', width: '100%' }}
         width={464}
-        style={{ width: '100%', height: 'auto' }}
       />
     </div>
     <p>Millions of people want to be able to vote from their phones.</p>

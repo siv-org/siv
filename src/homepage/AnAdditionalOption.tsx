@@ -15,8 +15,8 @@ export const AnAdditionalOption = () => (
             height={1080}
             priority
             src="/home3/methods-1.png"
+            style={{ height: 'auto', width: '100%' }}
             width={1920}
-            style={{ width: '100%', height: 'auto' }}
           />
         </div>
         In Person
@@ -28,8 +28,8 @@ export const AnAdditionalOption = () => (
             height={1080}
             priority
             src="/home3/methods-2.png"
+            style={{ height: 'auto', width: '100%' }}
             width={1920}
-            style={{ width: '100%', height: 'auto' }}
           />
         </div>
         By Mail
@@ -41,8 +41,8 @@ export const AnAdditionalOption = () => (
             height={223}
             priority
             src="/home3/methods-3.png"
+            style={{ height: 'auto', width: '100%' }}
             width={256}
-            style={{ width: '100%', height: 'auto' }}
           />
         </div>
         Online

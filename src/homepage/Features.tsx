@@ -12,8 +12,8 @@ export const Features = () => (
             height={160}
             priority
             src="/home3/features-1.gif"
+            style={{ height: 'auto', width: '100%' }}
             width={160}
-            style={{ width: '100%', height: 'auto' }}
           />
         </span>
         <h2>Easy To Use</h2>
@@ -26,8 +26,8 @@ export const Features = () => (
             height={110}
             priority
             src="/home3/features-2.gif"
+            style={{ height: 'auto', width: '100%' }}
             width={110}
-            style={{ width: '100%', height: 'auto' }}
           />
         </span>
         <h2>Quick Results</h2>
@@ -40,8 +40,8 @@ export const Features = () => (
             height={170}
             priority
             src="/home3/features-3.gif"
+            style={{ height: 'auto', width: '100%' }}
             width={170}
-            style={{ width: '100%', height: 'auto' }}
           />
         </span>
         <h2>Verifiable</h2>
