@@ -40,18 +40,16 @@ export const BallotDesign = () => {
 
       <h2 className="hidden sm:block">
         Ballot Design
-        {/* Preview button */}
-        <a
-          className="inline-block text-[12px] font-semibold !no-underline hover:bg-gray-100 ml-3 px-3 py-1 border border-blue-900 border-solid rounded-lg relative bottom-0.5 text-blue-900"
-          href={`/election/${election_id}/vote?auth=preview`}
-          rel="noreferrer"
-          target="_blank"
-        >
-          🔍 Preview
-        </a>
+        <span className="ml-3">
+          <PreviewButton election_id={election_id} />
+        </span>
       </h2>
 
       {ballot_design_finalized ? <BallotDesignFinalizedBanner /> : <AutoSaver {...{ design }} />}
+
+      <div className="mt-3 sm:hidden">
+        <PreviewButton election_id={election_id} />
+      </div>
 
       <Errors {...{ error }} />
 
@@ -70,5 +68,18 @@ export const BallotDesign = () => {
         <FinalizeBallotDesignButton {...{ design, election_id, error, set_saving_errors }} />
       )}
     </>
+  )
+}
+
+function PreviewButton({ election_id }: { election_id?: string }) {
+  return (
+    <a
+      className="inline-block text-[12px] font-semibold !no-underline hover:bg-gray-100 px-3 py-1 border border-blue-900 border-solid rounded-lg relative bottom-0.5 text-blue-900"
+      href={`/election/${election_id}/vote?auth=preview`}
+      rel="noreferrer"
+      target="_blank"
+    >
+      🔍 Preview
+    </a>
   )
 }
