@@ -61,7 +61,7 @@ export const PendingVotesTable = () => {
   }
 
   return (
-    <div className="pt-3 pb-1 pl-4 mt-8 -ml-4 bg-orange-50 rounded shadow-md">
+    <div className="pt-3 pb-1 pl-4 mt-8 mb-96 -ml-4 bg-orange-50 rounded shadow-md sm:mb-0">
       <div className="flex gap-4 items-center">
         <ApproveVoteButton />
         {pressing_shift && <span className="mt-0.5 text-xs text-purple-500">Shift Pressed</span>}
