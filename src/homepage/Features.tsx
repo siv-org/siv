@@ -7,21 +7,42 @@ export const Features = () => (
     <div className="row">
       <div>
         <span className="easy">
-          <Image alt="easy" height={160} layout="responsive" priority src="/home3/features-1.gif" width={160} />
+          <Image
+            alt="easy"
+            height={160}
+            priority
+            src="/home3/features-1.gif"
+            width={160}
+            style={{ width: '100%', height: 'auto' }}
+          />
         </span>
         <h2>Easy To Use</h2>
         <p>Voters can vote from their preferred device in seconds, without needing to install anything.</p>
       </div>
       <div>
         <span className="quick">
-          <Image alt="quick" height={110} layout="responsive" priority src="/home3/features-2.gif" width={110} />
+          <Image
+            alt="quick"
+            height={110}
+            priority
+            src="/home3/features-2.gif"
+            width={110}
+            style={{ width: '100%', height: 'auto' }}
+          />
         </span>
         <h2>Quick Results</h2>
         <p>Ballots can be submitted, confirmed, and tallied instantly.</p>
       </div>
       <div>
         <span className="verifiable">
-          <Image alt="verifiable" height={170} layout="responsive" priority src="/home3/features-3.gif" width={170} />
+          <Image
+            alt="verifiable"
+            height={170}
+            priority
+            src="/home3/features-3.gif"
+            width={170}
+            style={{ width: '100%', height: 'auto' }}
+          />
         </span>
         <h2>Verifiable</h2>
         <p>Voters can personally verify that their vote was counted correctly & recount all votes themselves.</p>
