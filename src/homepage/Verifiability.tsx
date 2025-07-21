@@ -70,7 +70,7 @@ export const Verifiability = () => (
 const Screenshot = ({ image, label }: { image: StaticImageData; label: string }) => (
   <div>
     <span className="px-2">{label}</span>
-    <Image height={516} placeholder="blur" src={image} width={992} style={{ width: '100%', height: 'auto' }} />
+    <Image height={516} placeholder="blur" src={image} width={992} />
     <style jsx>{`
       div {
         position: relative;
