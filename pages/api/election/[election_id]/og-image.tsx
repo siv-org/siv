@@ -2,7 +2,7 @@ import { ImageResponse } from '@vercel/og'
 
 export const runtime = 'edge'
 
-export async function GET(request: Request) {
+export default async function handler(request: Request) {
   try {
     const { searchParams } = new URL(request.url)
     const election_id = searchParams.get('election_id')
@@ -193,6 +193,12 @@ export async function GET(request: Request) {
         </div>
       ),
       {
+        // Signal-friendly settings
+        headers: {
+          'Cache-Control': 'public, max-age=3600, s-maxage=3600',
+          'Content-Type': 'image/png',
+          'X-Robots-Tag': 'index, follow, imageindex',
+        },
         height: 630,
         width: 1200,
       },
