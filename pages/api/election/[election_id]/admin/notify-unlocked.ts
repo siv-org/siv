@@ -1,9 +1,8 @@
+import { firebase, sendEmail } from 'api/_services'
+import { checkJwtOwnsElection } from 'api/validate-admin-jwt'
 import bluebird from 'bluebird'
 import { validate } from 'email-validator'
 import { NextApiRequest, NextApiResponse } from 'next'
-
-import { firebase, sendEmail } from '../../../_services'
-import { checkJwtOwnsElection } from '../../../validate-admin-jwt'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { election_id } = req.query as { election_id?: string }
@@ -18,8 +17,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Begin preloading all these docs
   const loadElection = election.get()
-  const loadVoters = election.collection('voters').orderBy('index', 'asc').get()
-  const loadVotes = election.collection('votes').get()
+  const loadVoters = election.collection('approved-voters').where('voted_at', '!=', null).get()
 
   // Confirm they're a valid admin that created this election
   const jwt = await checkJwtOwnsElection(req, res, election_id)
@@ -36,24 +34,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     election_title?: string
   }
 
-  // Gather who's voted already
-  const votesByAuth: Record<string, [boolean, string?]> = (await loadVotes).docs.reduce((acc, doc) => {
-    const data = doc.data()
-    return { ...acc, [data.auth]: [true, data.esignature] }
-  }, {})
-
   // Build voters objects
   const voters: string[] = []
   ;(await loadVoters).docs.forEach((doc) => {
-    const { auth_token, email, invalidated_at } = { ...doc.data() } as {
-      auth_token: string
-      email: string
-      invalidated_at?: Date
-    }
+    const { email, invalidated_at } = { ...doc.data() } as { email: string; invalidated_at?: Date }
 
     if (!validate(email)) return
     if (invalidated_at) return
-    if (!votesByAuth[auth_token]) return
 
     voters.push(email)
   })

@@ -7,19 +7,19 @@ export const getStatus = (esignature_review?: ReviewLog[]) =>
   esignature_review ? esignature_review[esignature_review.length - 1]?.review : undefined
 
 export const Signature = ({
+  auth_token,
   election_id,
-  email,
   esignature,
   esignature_review,
 }: {
+  auth_token: string
   election_id?: string
-  email: string
   esignature?: string
   esignature_review?: ReviewLog[]
 }) => {
   const storeReview = (review: 'approve' | 'pending' | 'reject', setIsShown: (setting: boolean) => void) => async () =>
     (await api(`election/${election_id}/admin/review-signature`, {
-      emails: [email],
+      auths: [auth_token],
       review,
     })) && setIsShown(false)
 

@@ -1,8 +1,8 @@
 import { firebase, sendEmail } from 'api/_services'
+import { checkJwtOwnsElection } from 'api/validate-admin-jwt'
 import { firestore } from 'firebase-admin'
 import { NextApiRequest, NextApiResponse } from 'next'
 
-import { checkJwtOwnsElection } from '../../../validate-admin-jwt'
 import { Voter } from './load-admin'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -17,33 +17,24 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     voters_to_invalidate.map(async (voter) => {
       const db = firebase.firestore()
       const electionDoc = db.collection('elections').doc(election_id)
-      const voterRef = electionDoc.collection('voters').doc(voter.email)
-      const votes = await electionDoc.collection('votes').where('auth', '==', voter.auth_token).get()
+      const voterRef = electionDoc.collection('approved-voters').doc(voter.auth_token)
+      const has_voted = !!(await voterRef.get()).data()?.voted_at
 
       // Do all in parallel
       return Promise.all([
         // 1. Mark the auth token as invalidated
         voterRef.update({ invalidated_at: new Date() }),
 
-        // 2. If votes were cast with this auth, move them to an 'invalidated-votes' collection
-        (async function invalidateVotes() {
-          await Promise.all(
-            votes.docs.map(async (vote) => {
-              const invalidatedVote = { ...vote.data(), invalidated_at: new Date() }
-              await electionDoc.collection('invalidated_votes').doc(vote.id).set(invalidatedVote)
-              await vote.ref.delete()
-              await electionDoc.update({ num_invalidated_votes: firestore.FieldValue.increment(1) })
-            }),
-          )
+        // 2. If voted, increment election's cached num_invalidated_votes counter
+        (function invalidateVotes() {
+          if (!has_voted) return
+
+          return electionDoc.update({ num_invalidated_votes: firestore.FieldValue.increment(1) })
         })(),
 
-        // 3. Notify the voter over email
+        // 3. If voted, notify the voter over email
         (function notifyVoter() {
-          // Skip if they have not voted
-          if (!votes.docs.length) return
-
-          // TODO: Skip if voter's email address is unverified, BLOCKED by PR #125 Registration link
-          // if (voter.status == 'pending') return
+          if (!has_voted) return
 
           return sendEmail({
             recipient: voter.email,

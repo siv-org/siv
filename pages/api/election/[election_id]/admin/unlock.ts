@@ -1,3 +1,6 @@
+import { firebase, pushover } from 'api/_services'
+import { pusher } from 'api/pusher'
+import { checkJwtOwnsElection } from 'api/validate-admin-jwt'
 import bluebird from 'bluebird'
 import { mapValues } from 'lodash-es'
 import { NextApiRequest, NextApiResponse } from 'next'
@@ -6,14 +9,11 @@ import { RP } from 'src/crypto/curve'
 import { fastShuffle, shuffleWithoutProof, shuffleWithProof } from 'src/crypto/shuffle'
 import { CipherStrings, stringifyShuffle, stringifyShuffleWithoutProof } from 'src/crypto/stringify-shuffle'
 
-import { firebase, pushover } from '../../../_services'
-import { pusher } from '../../../pusher'
-import { checkJwtOwnsElection } from '../../../validate-admin-jwt'
-import { ReviewLog } from './load-admin'
-
 const { ADMIN_EMAIL } = process.env
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
+  // Initialize profiling code
+  const start = new Date()
   const times = [Date.now()]
   const elapsed = (label: number | string) => {
     const l = String(label)
@@ -24,12 +24,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     console.log(`${l.padStart(23, ' ')} ${diff.padStart(5, ' ')}ms`)
   }
 
-  const start = new Date()
-
   if (!ADMIN_EMAIL) return res.status(501).json({ error: 'Missing process.env.ADMIN_EMAIL' })
 
   elapsed('init')
 
+  // Grab query params
   const { election_id } = req.query as { election_id: string }
   const { options = {} } = req.body
   const { skip_shuffle_proofs } = options
@@ -39,14 +38,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (!jwt.valid) return
   elapsed('check jwt')
 
+  // Grab election doc
   const electionDoc = firebase
     .firestore()
     .collection('elections')
     .doc(election_id as string)
 
   // Begin preloading these requests
-  const loadVotes = electionDoc.collection('votes').get()
-  const loadVoters = electionDoc.collection('voters').get()
+  const loadVotes = electionDoc.collection('approved-voters').where('voted_at', '!=', null).get()
   const election = electionDoc.get()
   const adminDoc = electionDoc.collection('trustees').doc(ADMIN_EMAIL)
   const admin = adminDoc.get()
@@ -56,6 +55,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (!(await election).exists) return res.status(400).json({ error: `Unknown Election ID: '${election_id}'` })
   elapsed('election exists?')
 
+  // Grab election params
   const { esignature_requested, t, threshold_public_key } = { ...(await election).data() } as {
     esignature_requested: boolean
     t: number
@@ -64,24 +64,17 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   elapsed('election data')
   if (!threshold_public_key) return res.status(400).json({ error: 'Election missing `threshold_public_key`' })
 
-  // If esignature_requested, filter for only approved
-  let votes_to_unlock = (await loadVotes).docs
-  if (esignature_requested) {
-    type VotersByAuth = Record<string, { esignature_review: ReviewLog[] }>
-    const votersByAuth: VotersByAuth = (await loadVoters).docs.reduce((acc: VotersByAuth, doc) => {
-      const data = doc.data()
-      return { ...acc, [data.auth_token]: data }
-    }, {})
+  // Filter out invalidated votes
+  let votes_to_unlock = (await loadVotes).docs.map((doc) => doc.data()).filter((v) => !v.invalidated_at)
 
-    votes_to_unlock = votes_to_unlock.filter((doc) => {
-      const { auth } = doc.data() as { auth: string }
-      return getStatus(votersByAuth[auth].esignature_review) === 'approve'
-    })
-  }
+  // If esignature_requested, filter out non-approved
+  if (esignature_requested)
+    votes_to_unlock = votes_to_unlock.filter((v) => getStatus(v.esignature_review) === 'approve')
+
   elapsed('load votes, filter esig')
 
   // Admin removes the auth tokens
-  const encrypteds_without_auth_tokens = votes_to_unlock.map((doc) => doc.data().encrypted_vote)
+  const encrypteds_without_auth_tokens = votes_to_unlock.map((v) => v.encrypted_vote)
   elapsed('remove auth tokens')
 
   // Then we split up the votes into individual lists for each item

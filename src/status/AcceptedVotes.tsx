@@ -34,7 +34,7 @@ export const AcceptedVotes = ({
     fetcher,
     1,
   ) as { data: NumAcceptedVotes }
-  const { num_pending_votes = 0, num_votes = 0 } = data || {}
+  const { num_invalidated_votes = 0, num_pending_votes = 0, num_votes = 0 } = data || {}
 
   // Load all the encrypted votes (heavy, so only on first load)
   useEffect(() => {
@@ -52,7 +52,7 @@ export const AcceptedVotes = ({
 
   if (!votes || !ballot_design) return <div>Loading...</div>
 
-  const newTotalVotes = num_votes - votes.length
+  const newTotalVotes = num_votes - votes.length - num_invalidated_votes
 
   return (
     <>
@@ -136,7 +136,10 @@ export const AcceptedVotes = ({
                 `/api/election/${election_id}/accepted-votes?num_new_pending_votes=${num_new_pending_votes}&num_new_accepted_votes=${num_new_accepted_votes}`,
               )
                 .then((r) => r.json())
-                .then((newVotes) => setVotes(() => [...votes, ...newVotes]))
+                .then((newVotes) => {
+                  if (!newVotes.length) window.location.reload()
+                  setVotes(() => [...votes, ...newVotes])
+                })
             }}
           >
             + Load {newTotalVotes} new

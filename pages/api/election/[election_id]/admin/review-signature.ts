@@ -7,7 +7,7 @@ import { checkJwtOwnsElection } from '../../../validate-admin-jwt'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { election_id } = req.query as { election_id: string }
-  const { emails, review } = req.body
+  const { auths, review } = req.body
 
   // Confirm they're a valid admin that created this election
   const jwt = await checkJwtOwnsElection(req, res, election_id)
@@ -15,13 +15,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Update voter w/ review
   await Promise.all(
-    emails.map((email: string) =>
+    auths.map((auth_token: string) =>
       firebase
         .firestore()
         .collection('elections')
         .doc(election_id)
-        .collection('voters')
-        .doc(email)
+        .collection('approved-voters')
+        .doc(auth_token)
         .update({ esignature_review: firestore.FieldValue.arrayUnion({ review, reviewed_at: new Date() }) }),
     ),
   )

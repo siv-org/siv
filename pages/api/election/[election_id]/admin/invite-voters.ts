@@ -1,9 +1,8 @@
+import { firebase } from 'api/_services'
+import { buildSubject, send_invitation_email } from 'api/invite-voters'
+import { checkJwtOwnsElection } from 'api/validate-admin-jwt'
 import { NextApiRequest, NextApiResponse } from 'next'
 import throat from 'throat'
-
-import { firebase } from '../../../_services'
-import { buildSubject, send_invitation_email } from '../../../invite-voters'
-import { checkJwtOwnsElection } from '../../../validate-admin-jwt'
 
 export type QueueLog = { result: string; time: Date }
 
@@ -25,12 +24,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Email each voter their auth token
   await Promise.all(
     voters.map(
-      throat(10, async (email: string) => {
+      throat(10, async (auth_token: string) => {
         // Lookup voter info
-        const voter_doc = electionDoc.collection('voters').doc(email)
+        const voter_doc = electionDoc.collection('approved-voters').doc(auth_token)
         const voter = await voter_doc.get()
-        if (!voter.exists) return { error: `Can't find voter ${email}` }
-        const { auth_token, invite_queued } = { ...voter.data() } as { auth_token: string; invite_queued?: QueueLog[] }
+        if (!voter.exists) return { error: `Can't find voter: ${auth_token}` }
+        const { email, invite_queued } = { ...voter.data() } as { email: string; invite_queued?: QueueLog[] }
 
         const link = `${req.headers.origin}/election/${election_id}/vote?auth=${auth_token}`
         // const link = `https://siv.org/election/${election_id}/vote?auth=${auth_token}`

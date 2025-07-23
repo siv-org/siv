@@ -35,7 +35,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 export async function addVotersToElection(new_voters: string[], election_id: string) {
   // Get existing voter from DB
   const electionDoc = firebase.firestore().collection('elections').doc(election_id)
-  const loadVoters = electionDoc.collection('voters').get()
+  const loadVoters = electionDoc.collection('approved-voters').get()
   const existing_voters = new Set()
   ;(await loadVoters).docs.map((d) => existing_voters.add(d.data().email))
 
@@ -58,15 +58,15 @@ export async function addVotersToElection(new_voters: string[], election_id: str
   console.log('Add-voters:', { already_added, duplicates_in_submission, election_id, unique_new_emails })
   const email_to_auth: Record<string, string> = {}
 
-  // Generate and store auths for uniques
+  // Generate and store auth tokens for uniques
   await Promise.all(
     unique_new_emails
       .map((email: string, index: number) => {
         const auth_token = generateAuthToken()
         email_to_auth[email] = auth_token
         return electionDoc
-          .collection('voters')
-          .doc(email)
+          .collection('approved-voters')
+          .doc(auth_token)
           .set({
             added_at: new Date(),
             auth_token,

@@ -1,10 +1,9 @@
+import { firebase, mailgun, pushover } from 'api/_services'
+import { checkJwtOwnsElection } from 'api/validate-admin-jwt'
 import bluebird from 'bluebird'
 import { firestore } from 'firebase-admin'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { buildSubject } from 'pages/api/invite-voters'
-
-import { firebase, mailgun, pushover } from '../../../_services'
-import { checkJwtOwnsElection } from '../../../validate-admin-jwt'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { election_id } = req.query as { election_id: string }
@@ -46,15 +45,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           // Skip replies to us
           if (to === 'election@siv.org') return
 
-          const voterDoc = electionDoc.collection('voters').doc(to)
+          const voterDocs = electionDoc.collection('approved-voters').where('email', '==', to)
           // Confirm voterDoc exists
-          if (!(await voterDoc.get()).exists) {
-            return console.log(`No voter doc for ${to}`)
-          }
+          const first = (await voterDocs.get()).docs[0]
+          if (!first) return console.log(`No voter doc for ${to}`)
 
           num_events++
           // Store new items on voters' docs
-          return voterDoc.update({ [`mailgun_events.${item.event}`]: firestore.FieldValue.arrayUnion(item) })
+          return first.ref.update({ [`mailgun_events.${item.event}`]: firestore.FieldValue.arrayUnion(item) })
         },
         { concurrency: 3 },
       )

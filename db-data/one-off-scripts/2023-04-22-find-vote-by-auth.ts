@@ -1,6 +1,6 @@
-import './_env'
+import '../_env'
 
-import { firebase } from '../pages/api/_services'
+import { firebase } from '../../pages/api/_services'
 
 const election_id = '1680323766282'
 const auth = ''

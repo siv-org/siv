@@ -1,6 +1,8 @@
 import { firebase } from 'api/_services'
 import { NextApiRequest, NextApiResponse } from 'next'
 
+type InvalidatedVote = { auth: string; encrypted_vote: Record<string, { encrypted: string; lock: string }> }
+
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { election_id } = req.query
 
@@ -10,19 +12,20 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     .doc(election_id as string)
 
   // Begin preloading
-  const loadInvalidatedVotes = electionDoc.collection('invalidated_votes').get()
+  const loadInvalidatedVotes = electionDoc.collection('approved-voters').where('invalidated_at', '!=', null).get()
 
   // Is election_id in DB?
   if (!(await electionDoc.get()).exists) return res.status(400).json({ error: 'Unknown Election ID.' })
 
   // Grab public votes fields including encrypted_vote
-  const votes = (await loadInvalidatedVotes).docs.map((doc) => {
-    const { auth, encrypted_vote } = doc.data()
-    return {
-      auth,
-      encrypted_vote,
-    }
-  })
+  const invalidated_votes = (await loadInvalidatedVotes).docs.reduce((memo, doc) => {
+    const { auth_token, encrypted_vote } = doc.data()
+    // Filter for only docs where they voted
+    // (would be a bit more efficient to do this at the DB query layer, but Firebase only allows one NOT_EQUAL filter per query)
+    if (encrypted_vote) memo.push({ auth: auth_token, encrypted_vote })
 
-  res.status(200).json(votes)
+    return memo
+  }, [] as InvalidatedVote[])
+
+  res.status(200).json(invalidated_votes)
 }
