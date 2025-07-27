@@ -22,7 +22,7 @@ export async function validateAuthToken(
 ) {
   // Begin preloading these docs
   const electionDoc = firebase.firestore().collection('elections').doc(election_id)
-  const election = electionDoc.get()
+  const getElection = electionDoc.get()
   const voters = electionDoc.collection('voters').where('auth_token', '==', auth).get()
   const votes = electionDoc.collection('votes').where('auth', '==', auth).get()
 
@@ -30,16 +30,23 @@ export async function validateAuthToken(
   if (!auth) return fail('Missing Auth Token. Only registered voters are allowed to vote.')
 
   // Is Auth token malformed?
-  if (!/^[0-9a-f]{10}$/.test(auth)) return fail('Malformed Auth Token.')
+  if (!/^[0-9a-f]{10}$/.test(auth) && auth !== 'link') return fail('Malformed Auth Token.')
 
   // Did they send us an Election ID?
   if (!election_id) return fail('Missing Election ID.')
 
   // Is election_id in DB?
-  if (!(await election).exists) return fail('Unknown Election ID. It may have been deleted.')
+  const election = await getElection
+  if (!election.exists) return fail('Unknown Election ID. It may have been deleted.')
 
-  if ((await election).data()?.stop_accepting_votes)
-    return fail('The election administrator has stopped accepting new votes.')
+  const electionData = election.data()
+  if (electionData?.stop_accepting_votes) return fail('The election administrator has stopped accepting new votes.')
+
+  // Is this auth=link?
+  if (auth === 'link') {
+    if (electionData?.voter_applications_allowed) return pass('link_active')
+    return fail('The election admin turned off voting via public link.')
+  }
 
   // Is there a voter w/ this Auth Token?
   const [voter] = (await voters).docs

@@ -10,9 +10,6 @@ export const YourAuthToken = ({ auth, election_id }: { auth?: string; election_i
   const [status, setStatus] = useState<Status>('')
 
   async function validateAuthToken() {
-    if (auth === 'preview') return setStatus('preview')
-    if (auth === 'link') return setStatus('link')
-
     // Wait for election_id
     if (!election_id) return
 
@@ -20,10 +17,14 @@ export const YourAuthToken = ({ auth, election_id }: { auth?: string; election_i
     setMessage('')
     setStatus('')
 
+    if (auth === 'preview') return setStatus('preview')
+
     // Ask API
     const response = await api('check-auth-token', { auth, election_id })
+    const responseText = await response.text()
+    if (responseText === 'link_active') return setStatus('link')
+    setMessage(responseText)
     setStatus(response.status >= 400 ? 'fail' : 'pass')
-    setMessage(await response.text())
   }
 
   // Check auth token w/ admin server
