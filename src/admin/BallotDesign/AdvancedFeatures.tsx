@@ -1,3 +1,5 @@
+import { Fragment } from 'react'
+
 type Code = string
 type Description = string
 type Feature = [Code, Description]
@@ -34,7 +36,7 @@ export const AdvancedFeatures = () => {
       </h3>
 
       {advancedFeatures.map(([title, items]) => (
-        <>
+        <Fragment key={title}>
           <div>{title}</div>
           <ul className="space-y-2">
             {items.map(([code, description]) => (
@@ -43,7 +45,7 @@ export const AdvancedFeatures = () => {
               </li>
             ))}
           </ul>
-        </>
+        </Fragment>
       ))}
     </div>
   )
