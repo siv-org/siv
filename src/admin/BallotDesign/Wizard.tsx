@@ -35,48 +35,52 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
         ) => (
           // Each question
           <div className="p-2.5 bg-white mt-4 first:mt-0" key={questionIndex}>
-            {/* Question ID Label */}
-            <label className="block mt-3.5 text-[10px] italic">
-              Question ID{' '}
-              <Tooltip
-                placement="top"
-                tooltip={
-                  <span style={{ fontSize: 14 }}>
-                    This unique short ID is used as the column header for the table of submitted votes.
-                  </span>
-                }
-              >
-                <span className="relative top-0 left-1 text-sm text-indigo-500">
-                  <QuestionCircleOutlined />
-                </span>
-              </Tooltip>
-            </label>
-            {/* Question ID Input */}
-            <div className="flex justify-between items-center">
-              <input
-                className="p-1 text-sm"
-                onChange={({ target }) => {
-                  const new_json = [...json]
-                  new_json[questionIndex].id = target.value
-                  saveDesign(new_json)
-                }}
-                value={id}
-              />
+            {json.length > 1 && (
+              <>
+                {/* Question ID Label */}
+                <label className="block mt-3.5 text-[10px] italic">
+                  Question ID{' '}
+                  <Tooltip
+                    placement="top"
+                    tooltip={
+                      <span style={{ fontSize: 14 }}>
+                        This unique short ID is used as the column header for the table of submitted votes.
+                      </span>
+                    }
+                  >
+                    <span className="relative top-0 left-1 text-sm text-indigo-500">
+                      <QuestionCircleOutlined />
+                    </span>
+                  </Tooltip>
+                </label>
+                {/* Question ID Input */}
+                <div className="flex justify-between items-center">
+                  <input
+                    className="p-1 text-sm"
+                    onChange={({ target }) => {
+                      const new_json = [...json]
+                      new_json[questionIndex].id = target.value
+                      saveDesign(new_json)
+                    }}
+                    value={id}
+                  />
 
-              {/* Delete Question btn */}
-              <Tooltip placement="top" tooltip="Delete Question">
-                <a
-                  className="relative ml-1 text-xl text-center text-gray-700 rounded-full cursor-pointer w-7 bottom-[30px] hover:bg-gray-500 hover:text-white"
-                  onClick={() => {
-                    const new_json = [...json]
-                    new_json.splice(questionIndex, 1)
-                    saveDesign(new_json)
-                  }}
-                >
-                  <DeleteOutlined />
-                </a>
-              </Tooltip>
-            </div>
+                  {/* Delete Question btn */}
+                  <Tooltip placement="top" tooltip="Delete Question">
+                    <a
+                      className="relative ml-1 text-xl text-center text-gray-700 rounded-full cursor-pointer w-7 bottom-[30px] hover:bg-gray-500 hover:text-white"
+                      onClick={() => {
+                        const new_json = [...json]
+                        new_json.splice(questionIndex, 1)
+                        saveDesign(new_json)
+                      }}
+                    >
+                      <DeleteOutlined />
+                    </a>
+                  </Tooltip>
+                </div>
+              </>
+            )}
 
             {/* Type selector */}
             <div className="mt-4">
@@ -258,11 +262,10 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
               </a>
 
               {/* Write-in Allowed toggle */}
-              <li className={`${write_in_allowed ? '' : 'list-none'}`}>
+              <li className={`${write_in_allowed ? '':'list-none'}`}>
                 <span
                   className={`inline-block w-32 pl-2 text-[13px] italic text-gray-800 ${
-                    !write_in_allowed ? 'opacity-60' : ''
-                  }`}
+                    !write_in_allowed ? 'opacity-60' : ''}`}
                 >{`Write-in ${write_in_allowed ? 'Allowed' : 'Disabled'}`}</span>
                 <Switch
                   checked={write_in_allowed}
