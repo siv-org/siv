@@ -78,7 +78,7 @@ export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => voi
                 <a target="_blank">Cast Vote</a>
               </Link>
               <Link href={`/election/${election_id}`} legacyBehavior>
-                <a target="_blank">Election Status</a>
+                <a target="_blank">Election Results</a>
               </Link>
             </>
           </>
