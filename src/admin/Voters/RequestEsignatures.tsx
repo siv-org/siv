@@ -29,7 +29,7 @@ export const RequestEsignatures = () => {
     <div>
       <label className="cursor-pointer" onClick={toggleESignature}>
         <span className="mr-1.5 relative top-0.5">
-          <Image alt="esignature" height={(218 / 700) * 70} src={esignatureIcon} width={70} />
+          <Image alt="esignature" src={esignatureIcon} style={{ height: (218 / 700) * 70, width: 70 }} />
         </span>
         Request Drawn Signatures?
       </label>
