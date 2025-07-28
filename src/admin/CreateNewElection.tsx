@@ -25,6 +25,7 @@ export const CreateNewElection = () => {
           }
         }}
         placeholder="Give your ballot a name your voters will recognize"
+        ref={$input}
         value={election_title}
       />
       <SaveButton
@@ -39,6 +40,7 @@ export const CreateNewElection = () => {
           const { election_id } = await response.json()
           router.push(`${window.location.origin}/admin/${election_id}/ballot-design`)
         }}
+        ref={$saveBtn}
       />
     </>
   )
