@@ -4,6 +4,7 @@ export const runtime = 'edge'
 
 export default async function handler(request: Request) {
   try {
+    // Extracting election_id from URL & Validate it
     const { searchParams } = new URL(request.url)
     const election_id = searchParams.get('election_id')
 
@@ -12,9 +13,8 @@ export default async function handler(request: Request) {
     }
 
     // Fetch election data from our existing API endpoint
-    const baseUrl = request.headers.get('host')?.includes('localhost')
-      ? 'http://localhost:3000'
-      : `https://${request.headers.get('host')}`
+    const host = request.headers.get('host')
+    const baseUrl = host?.startsWith('localhost') ? `http://${host}` : `https://${host}`
 
     const electionResponse = await fetch(`${baseUrl}/api/election/${election_id}/info`)
 
