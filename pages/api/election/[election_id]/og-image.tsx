@@ -108,6 +108,27 @@ export default async function handler(request: Request) {
               >
                 {questionTitle}
               </div>
+
+              {/* Left: Displaying # of additional questions */}
+              {additionalQuestions > 0 && (
+                <div
+                  style={{
+                    backgroundColor: 'rgba(6, 0, 103, 0.05)',
+                    borderRadius: '12px',
+                    color: '#888888',
+                    display: 'flex',
+                    fontSize: '18px',
+                    fontStyle: 'italic',
+                    fontWeight: '400',
+                    justifyContent: 'center',
+                    letterSpacing: '0.3px',
+                    marginTop: '8px',
+                    padding: '8px 16px',
+                  }}
+                >
+                  + {additionalQuestions} more question{additionalQuestions > 1 ? 's' : ''}
+                </div>
+              )}
             </div>
           </div>
 
@@ -165,20 +186,6 @@ export default async function handler(request: Request) {
                     }}
                   >
                     + {additionalOptions} more option{additionalOptions > 1 ? 's' : ''}
-                  </div>
-                )}
-
-                {additionalQuestions > 0 && (
-                  <div
-                    style={{
-                      display: 'flex',
-                      fontSize: '20px',
-                      justifyContent: 'center',
-                      marginTop: '2px',
-                      opacity: '0.6',
-                    }}
-                  >
-                    + {additionalQuestions} more question{additionalQuestions > 1 ? 's' : ''}
                   </div>
                 )}
               </div>
