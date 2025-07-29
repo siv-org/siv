@@ -210,7 +210,7 @@ export default async function handler(request: Request) {
                   textAlign: 'center',
                 }}
               >
-                Click to cast your vote securely
+                Authenticated, Private, Verifiable, Voting Within Seconds
               </div>
             )}
           </div>
