@@ -11,6 +11,8 @@ export const default_min_score = -2
 export const default_max_score = 2
 const supports_max_selections_allowed = (type = '') => ['multiple-votes-allowed', 'ranked-choice-irv'].includes(type)
 
+const MAX_OPTION_LENGTH = 15
+
 export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: string) => void }) => {
   const [json, setJson] = useState<Item[]>()
   const saveDesign = (json: Item[]) => setDesign(JSON.stringify(json, undefined, 2))
@@ -35,48 +37,52 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
         ) => (
           // Each question
           <div className="p-2.5 bg-white mt-4 first:mt-0" key={questionIndex}>
-            {/* Question ID Label */}
-            <label className="block mt-3.5 text-[10px] italic">
-              Question ID{' '}
-              <Tooltip
-                placement="top"
-                tooltip={
-                  <span style={{ fontSize: 14 }}>
-                    This unique short ID is used as the column header for the table of submitted votes.
-                  </span>
-                }
-              >
-                <span className="relative top-0 left-1 text-sm text-indigo-500">
-                  <QuestionCircleOutlined />
-                </span>
-              </Tooltip>
-            </label>
-            {/* Question ID Input */}
-            <div className="flex justify-between items-center">
-              <input
-                className="p-1 text-sm"
-                onChange={({ target }) => {
-                  const new_json = [...json]
-                  new_json[questionIndex].id = target.value
-                  saveDesign(new_json)
-                }}
-                value={id}
-              />
+            {json.length > 1 && (
+              <>
+                {/* Question ID Label */}
+                <label className="block mt-3.5 text-[10px] italic">
+                  Question ID{' '}
+                  <Tooltip
+                    placement="top"
+                    tooltip={
+                      <span style={{ fontSize: 14 }}>
+                        This unique short ID is used as the column header for the table of submitted votes.
+                      </span>
+                    }
+                  >
+                    <span className="relative top-0 left-1 text-sm text-indigo-500">
+                      <QuestionCircleOutlined />
+                    </span>
+                  </Tooltip>
+                </label>
+                {/* Question ID Input */}
+                <div className="flex justify-between items-center">
+                  <input
+                    className="p-1 text-sm"
+                    onChange={({ target }) => {
+                      const new_json = [...json]
+                      new_json[questionIndex].id = target.value
+                      saveDesign(new_json)
+                    }}
+                    value={id}
+                  />
 
-              {/* Delete Question btn */}
-              <Tooltip placement="top" tooltip="Delete Question">
-                <a
-                  className="relative ml-1 text-xl text-center text-gray-700 rounded-full cursor-pointer w-7 bottom-[30px] hover:bg-gray-500 hover:text-white"
-                  onClick={() => {
-                    const new_json = [...json]
-                    new_json.splice(questionIndex, 1)
-                    saveDesign(new_json)
-                  }}
-                >
-                  <DeleteOutlined />
-                </a>
-              </Tooltip>
-            </div>
+                  {/* Delete Question btn */}
+                  <Tooltip placement="top" tooltip="Delete Question">
+                    <a
+                      className="relative ml-1 text-xl text-center text-gray-700 rounded-full cursor-pointer w-7 bottom-[30px] hover:bg-gray-500 hover:text-white"
+                      onClick={() => {
+                        const new_json = [...json]
+                        new_json.splice(questionIndex, 1)
+                        saveDesign(new_json)
+                      }}
+                    >
+                      <DeleteOutlined />
+                    </a>
+                  </Tooltip>
+                </div>
+              </>
+            )}
 
             {/* Type selector */}
             <div className="mt-4">
@@ -220,29 +226,78 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
 
             {/* Options list */}
             <ul>
-              {options?.map(({ name }, optionIndex) => (
+              {options?.map(({ name, value }, optionIndex) => (
                 <li key={optionIndex}>
-                  {/* Option input */}
-                  <input
-                    className="p-[5px] mb-1.5 text-[13px]"
-                    onChange={({ target }) => {
-                      const new_json = [...json]
-                      new_json[questionIndex].options[optionIndex].name = target.value
-                      saveDesign(new_json)
-                    }}
-                    value={name}
-                  />
-                  {/* Delete Option btn */}
-                  <a
-                    className="inline-block pl-px w-5 h-5 ml-[5px] leading-4 text-center text-gray-600 border border-gray-300 border-solid rounded-full cursor-pointer hover:no-underline hover:bg-gray-500 hover:border-transparent hover:text-white"
-                    onClick={() => {
-                      const new_json = [...json]
-                      new_json[questionIndex].options.splice(optionIndex, 1)
-                      saveDesign(new_json)
-                    }}
-                  >
-                    ✕
-                  </a>
+                  <div>
+                    {/* Option input */}
+                    <input
+                      className="p-[5px] mb-1.5 text-[13px] flex-1"
+                      onChange={({ target }) => {
+                        const new_json = [...json]
+
+                        // Check for long option names
+                        if (target.value.length > MAX_OPTION_LENGTH) {
+                          // Check if we *just* triggered this char limit
+                          if (name.length === MAX_OPTION_LENGTH) {
+                            // If so, copy truncated name to `value`
+                            new_json[questionIndex].options[optionIndex].value = target.value.slice(
+                              0,
+                              MAX_OPTION_LENGTH,
+                            )
+                          }
+                        }
+
+                        new_json[questionIndex].options[optionIndex].name = target.value
+
+                        saveDesign(new_json)
+                      }}
+                      value={name}
+                    />
+                    {/* Delete Option btn */}
+                    <a
+                      className="inline-block pl-px w-5 h-5 ml-[5px] leading-4 text-center text-gray-600 border border-gray-300 border-solid rounded-full cursor-pointer hover:no-underline hover:bg-gray-500 hover:border-transparent hover:text-white"
+                      onClick={() => {
+                        const new_json = [...json]
+                        new_json[questionIndex].options.splice(optionIndex, 1)
+                        saveDesign(new_json)
+                      }}
+                    >
+                      ✕
+                    </a>
+                  </div>
+
+                  {/* Value field (if name is too long) */}
+                  {name.length > MAX_OPTION_LENGTH && (
+                    <div className="mb-3">
+                      <label className="text-[10px] italic">
+                        Internal value:{' '}
+                        <Tooltip
+                          placement="top"
+                          tooltip={
+                            <span style={{ fontSize: 14 }}>
+                              Encrypted votes are restricted to 15 characters:
+                              <br />
+                              The Vote UI will show the full name above, but this `value` field will be used for the
+                              internally encrypted vote.
+                            </span>
+                          }
+                        >
+                          <span className="mr-2 ml-1 text-sm text-indigo-500">
+                            <QuestionCircleOutlined />
+                          </span>
+                        </Tooltip>
+                      </label>
+                      <input
+                        className="p-[5px] mb-1.5 text-[13px]"
+                        onChange={({ target }) => {
+                          const new_json = [...json]
+                          new_json[questionIndex].options[optionIndex].value = target.value
+                          saveDesign(new_json)
+                        }}
+                        value={value}
+                      />
+                    </div>
+                  )}
                 </li>
               ))}
               {/* Add another option btn */}
@@ -258,11 +313,10 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
               </a>
 
               {/* Write-in Allowed toggle */}
-              <li className={`${write_in_allowed ? '' : 'list-none'}`}>
+              <li className={`${write_in_allowed ? '':'list-none'}`}>
                 <span
                   className={`inline-block w-32 pl-2 text-[13px] italic text-gray-800 ${
-                    !write_in_allowed ? 'opacity-60' : ''
-                  }`}
+                    !write_in_allowed ? 'opacity-60' : ''}`}
                 >{`Write-in ${write_in_allowed ? 'Allowed' : 'Disabled'}`}</span>
                 <Switch
                   checked={write_in_allowed}

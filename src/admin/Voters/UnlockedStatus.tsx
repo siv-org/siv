@@ -31,7 +31,7 @@ export const UnlockedStatus = () => {
         <p>
           ✅ Successfully{' '}
           <Link href={`/election/${election_id}`} legacyBehavior>
-            <a className="font-medium text-black cursor-pointer" target="_blank">
+            <a className="font-medium text-blue-800 cursor-pointer" target="_blank">
               unlocked {unlocked_votes.length}
             </a>
           </Link>{' '}

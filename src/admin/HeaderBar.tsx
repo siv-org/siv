@@ -32,9 +32,8 @@ export const HeaderBar = (): JSX.Element => {
           <Image
             alt="SIV"
             className="opacity-90 brightness-0 invert"
-            height={(logoWidth * 219) / 482}
             src={logo}
-            width={logoWidth}
+            style={{ height: (logoWidth * 219) / 482, width: logoWidth }}
           />
         </Link>
       </section>
