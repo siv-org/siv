@@ -165,21 +165,16 @@ export default async function handler(request: Request) {
                       padding: '18px 28px',
                     }}
                   >
-                    <span
-                      // Option 'letter' label
+                    <div
+                      // Round checkbox
                       style={{
-                        borderRadius: '8px',
-                        color: '#060067',
-                        fontSize: '14px',
-                        fontWeight: '600',
-                        letterSpacing: '0.5px',
+                        border: '2px solid #060067',
+                        borderRadius: '50%',
+                        height: '20px',
                         marginRight: '16px',
-                        minWidth: '28px',
-                        padding: '6px 0',
+                        width: '20px',
                       }}
-                    >
-                      {String.fromCharCode(65 + i)}
-                    </span>
+                    />
                     {truncateText(option.name, 25)}
                   </div>
                 ))}
