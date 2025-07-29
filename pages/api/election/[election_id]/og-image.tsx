@@ -46,7 +46,7 @@ export default async function handler(request: Request) {
             width: '100%',
           }}
         >
-          {/* Set the styling for the left column */}
+          {/* Left Column: Set general styling  */}
           <div
             style={{
               display: 'flex',
@@ -57,7 +57,7 @@ export default async function handler(request: Request) {
               position: 'relative',
             }}
           >
-            {/* Background for the left column */}
+            {/* Left: Background color */}
             <div
               style={{
                 background: 'linear-gradient(135deg, rgba(6, 0, 103, 0.12), rgba(6, 0, 103, 0.08))',
@@ -70,7 +70,7 @@ export default async function handler(request: Request) {
                 top: '-30px',
               }}
             />
-            {/* Styling for the content inside the left column */}
+            {/* Left: Styling the content inside the column */}
             <div
               style={{
                 alignItems: 'flex-start',
@@ -80,7 +80,7 @@ export default async function handler(request: Request) {
                 position: 'relative',
               }}
             >
-              {/* Left: Styling for the static title */}
+              {/* Left: Styling the static title */}
               <h1
                 style={{
                   color: '#666666',
@@ -95,7 +95,8 @@ export default async function handler(request: Request) {
               >
                 Vote On
               </h1>
-              {/* Left: Styling for the question */}
+
+              {/* Left: Styling the question */}
               <div
                 style={{
                   color: '#060067',
