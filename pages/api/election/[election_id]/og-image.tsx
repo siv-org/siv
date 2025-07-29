@@ -70,32 +70,38 @@ export default async function handler(request: Request) {
                 top: '-30px',
               }}
             />
+            {/* Styling for the content inside the left column */}
             <div
               style={{
                 alignItems: 'flex-start',
                 display: 'flex',
                 flexDirection: 'column',
-                gap: '16px',
+                gap: '20px',
                 position: 'relative',
               }}
             >
+              {/* Left: Styling for the static title */}
               <h1
                 style={{
-                  color: '#1a1a1a',
-                  fontSize: '32px',
-                  fontWeight: 'bold',
+                  color: '#666666',
+                  fontSize: '26px',
+                  fontWeight: '500',
+                  letterSpacing: '0.5px',
                   lineHeight: '1.1',
                   margin: '8px 0',
                   padding: 0,
+                  textTransform: 'uppercase',
                 }}
               >
-                Vote On:
+                Vote On
               </h1>
+              {/* Left: Styling for the question */}
               <div
                 style={{
-                  color: '#374151',
+                  color: '#060067',
                   fontSize: '32px',
-                  fontWeight: '600',
+                  fontWeight: '500',
+                  letterSpacing: '0.5px',
                   margin: 0,
                   padding: 0,
                 }}
