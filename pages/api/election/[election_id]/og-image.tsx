@@ -150,7 +150,7 @@ export default async function handler(request: Request) {
               <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
                 {options.slice(0, 4).map((option: { name: string }, i: number) => (
                   <div
-                    // Container for one individual option row
+                    // Container for individual option row
                     key={i}
                     style={{
                       alignItems: 'center',
@@ -175,7 +175,7 @@ export default async function handler(request: Request) {
                         width: '20px',
                       }}
                     />
-                    {truncateText(option.name, 25)}
+                    {truncateText(option.name, 32)}
                   </div>
                 ))}
 
