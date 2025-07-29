@@ -219,12 +219,6 @@ export default async function handler(request: Request) {
         </div>
       ),
       {
-        // Signal-friendly settings
-        headers: {
-          'Cache-Control': 'public, max-age=3600, s-maxage=3600',
-          'Content-Type': 'image/png',
-          'X-Robots-Tag': 'index, follow, imageindex',
-        },
         height: 630,
         width: 1200,
       },
