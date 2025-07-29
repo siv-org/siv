@@ -35,18 +35,18 @@ export default async function handler(request: Request) {
 
     return new ImageResponse(
       (
+        // Set the general styling for the whole image
         <div
           style={{
             backgroundColor: '#ffffff',
             color: '#1a1a1a',
             display: 'flex',
-            fontFamily: 'system-ui, -apple-system, sans-serif',
             height: '100%',
             padding: '60px',
             width: '100%',
           }}
         >
-          {/* Left column - Election Info */}
+          {/* Set the styling for the left column */}
           <div
             style={{
               display: 'flex',
@@ -59,8 +59,7 @@ export default async function handler(request: Request) {
           >
             <div
               style={{
-                background:
-                  'linear-gradient(45deg, rgba(59, 130, 246, 0.1), rgba(168, 85, 247, 0.1), rgba(236, 72, 153, 0.1))',
+                background: 'linear-gradient(135deg, rgba(6, 0, 103, 0.12), rgba(6, 0, 103, 0.08))',
                 borderRadius: '24px',
                 bottom: '-30px',
                 filter: 'blur(60px)',
