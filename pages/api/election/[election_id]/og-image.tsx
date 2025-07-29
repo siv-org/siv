@@ -179,6 +179,7 @@ export default async function handler(request: Request) {
                   </div>
                 ))}
 
+                {/* Additional Options */}
                 {additionalOptions > 0 && (
                   <div
                     style={{
@@ -200,6 +201,7 @@ export default async function handler(request: Request) {
                 )}
               </div>
             ) : (
+              // Fallback message if there are no options to display
               <div
                 style={{
                   display: 'flex',
@@ -210,7 +212,7 @@ export default async function handler(request: Request) {
                   textAlign: 'center',
                 }}
               >
-                Authenticated, Private, Verifiable, Voting Within Seconds
+                Vote Privately, In Seconds
               </div>
             )}
           </div>
