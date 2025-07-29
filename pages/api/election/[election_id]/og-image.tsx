@@ -77,17 +77,6 @@ export default async function handler(request: Request) {
                 position: 'relative',
               }}
             >
-              <div
-                style={{
-                  color: '#3b82f6',
-                  fontSize: '24px',
-                  fontWeight: '600',
-                  margin: 0,
-                  padding: 0,
-                }}
-              >
-                SECURE INTERNET VOTING
-              </div>
               <h1
                 style={{
                   color: '#1a1a1a',
