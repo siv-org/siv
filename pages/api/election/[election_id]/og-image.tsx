@@ -57,6 +57,7 @@ export default async function handler(request: Request) {
               position: 'relative',
             }}
           >
+            {/* Background for the left column */}
             <div
               style={{
                 background: 'linear-gradient(135deg, rgba(6, 0, 103, 0.12), rgba(6, 0, 103, 0.08))',
