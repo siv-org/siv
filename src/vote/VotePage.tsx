@@ -15,10 +15,9 @@ interface ElectionData {
 
 interface VotePageProps {
   electionData?: ElectionData
-  host?: string
 }
 
-export const VotePage = ({ electionData: serverElectionData, host }: VotePageProps): JSX.Element => {
+export const VotePage = ({ electionData: serverElectionData }: VotePageProps): JSX.Element => {
   // Grab election parameters from URL
   const { auth, election_id } = useRouter().query as { auth?: string; election_id?: string }
   const [electionData, setElectionData] = useState<ElectionData>(serverElectionData || {})
@@ -50,7 +49,6 @@ export const VotePage = ({ electionData: serverElectionData, host }: VotePagePro
         ballot_design={electionData.ballot_design}
         election_id={election_id}
         election_title={electionData.election_title}
-        host={host}
       />
 
       <main>
