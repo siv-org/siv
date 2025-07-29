@@ -150,6 +150,7 @@ export default async function handler(request: Request) {
               <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
                 {options.slice(0, 4).map((option: { name: string }, i: number) => (
                   <div
+                    // Container for one individual option row
                     key={i}
                     style={{
                       alignItems: 'center',
@@ -162,10 +163,10 @@ export default async function handler(request: Request) {
                       fontWeight: '500',
                       letterSpacing: '0.3px',
                       padding: '18px 28px',
-                      transition: 'all 0.2s ease',
                     }}
                   >
                     <span
+                      // Option 'letter' label
                       style={{
                         borderRadius: '8px',
                         color: '#060067',
@@ -175,7 +176,6 @@ export default async function handler(request: Request) {
                         marginRight: '16px',
                         minWidth: '28px',
                         padding: '6px 0',
-                        textAlign: 'center',
                       }}
                     >
                       {String.fromCharCode(65 + i)}
