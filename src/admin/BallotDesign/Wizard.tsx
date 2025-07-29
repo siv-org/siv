@@ -275,10 +275,8 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
                           placement="top"
                           tooltip={
                             <span style={{ fontSize: 14 }}>
-                              Encrypted votes are restricted to 15 characters:
-                              <br />
-                              The Vote UI will show the full name above, but this `value` field will be used for the
-                              internally encrypted vote.
+                              <strong>Encrypted votes are limited to 15 characters:</strong> The full Name will still be
+                              shown in the Vote Interface, but only this shorter Value is encrypted.
                             </span>
                           }
                         >

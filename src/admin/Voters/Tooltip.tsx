@@ -67,14 +67,17 @@ export const Tooltip = ({
         ReactDOM.createPortal(
           <CSSTransition classNames="tooltip" in={isShown} timeout={10} unmountOnExit>
             <div
-              className={`bg-white/90 rounded p-1 fixed z-50 ${className}`}
+              className={`fixed z-50 p-1 max-w-xs rounded bg-white/95 ${className}`}
               ref={tooltipRef}
               {...{ onMouseEnter, onMouseLeave }}
               style={{
                 border: '1px solid #ccc',
                 boxShadow: '0px 1px 3px rgba(0, 0, 0, 0.4)',
+                hyphens: 'auto',
                 left: tooltipPos.left,
+                overflowWrap: 'break-word',
                 top: tooltipPos.top,
+                wordWrap: 'break-word',
               }}
             >
               {typeof tooltip === 'function' ? tooltip({ setIsShown }) : tooltip}
@@ -111,17 +114,39 @@ function calculatePosition(
   placement: Placement,
 ) {
   const margin = 10
+  const viewportWidth = window.innerWidth
+  const viewportHeight = window.innerHeight
+
+  // Ensure tooltip doesn't go off-screen horizontally
+  const maxLeft = viewportWidth - tooltipWidth - margin
+  const minLeft = margin
+
+  // Ensure tooltip doesn't go off-screen vertically
+  const maxTop = viewportHeight - tooltipHeight - margin
+  const minTop = margin
+
+  let calculatedPosition: { left: number; top: number }
 
   switch (placement) {
     case 'bottom':
-      return { left: left + (width - tooltipWidth) / 2, top: top + height }
+      calculatedPosition = { left: left + (width - tooltipWidth) / 2, top: top + height }
+      break
     case 'left':
-      return { left: left - tooltipWidth, top: top + (height - tooltipHeight) / 2 }
+      calculatedPosition = { left: left - tooltipWidth, top: top + (height - tooltipHeight) / 2 }
+      break
     case 'right':
-      return { left: left + width, top: top + (height - tooltipHeight) / 2 }
+      calculatedPosition = { left: left + width, top: top + (height - tooltipHeight) / 2 }
+      break
     case 'top':
-      return { left: left + (width - tooltipWidth) / 2, top: top - tooltipHeight - margin }
+      calculatedPosition = { left: left + (width - tooltipWidth) / 2, top: top - tooltipHeight - margin }
+      break
     default:
-      return { left: left, top: top }
+      calculatedPosition = { left: left, top: top }
+  }
+
+  // Clamp position to viewport bounds
+  return {
+    left: Math.max(minLeft, Math.min(maxLeft, calculatedPosition.left)),
+    top: Math.max(minTop, Math.min(maxTop, calculatedPosition.top)),
   }
 }
