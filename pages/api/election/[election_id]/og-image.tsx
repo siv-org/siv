@@ -153,21 +153,29 @@ export default async function handler(request: Request) {
                     key={i}
                     style={{
                       alignItems: 'center',
-                      backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                      border: '1px solid rgba(59, 130, 246, 0.2)',
-                      borderRadius: '8px',
+                      background: 'linear-gradient(135deg, rgba(6, 0, 103, 0.08), rgba(6, 0, 103, 0.03))',
+                      border: '1px solid rgba(6, 0, 103, 0.15)',
+                      borderRadius: '16px',
+                      boxShadow: '0 4px 12px rgba(6, 0, 103, 0.1)',
                       display: 'flex',
-                      fontSize: '24px',
-                      padding: '12px 24px',
+                      fontSize: '22px',
+                      fontWeight: '500',
+                      letterSpacing: '0.3px',
+                      padding: '18px 28px',
+                      transition: 'all 0.2s ease',
                     }}
                   >
                     <span
                       style={{
-                        color: '#3b82f6',
-                        fontSize: '16px',
-                        fontWeight: 'bold',
-                        marginRight: '12px',
-                        minWidth: '20px',
+                        borderRadius: '8px',
+                        color: '#060067',
+                        fontSize: '14px',
+                        fontWeight: '600',
+                        letterSpacing: '0.5px',
+                        marginRight: '16px',
+                        minWidth: '28px',
+                        padding: '6px 0',
+                        textAlign: 'center',
                       }}
                     >
                       {String.fromCharCode(65 + i)}
