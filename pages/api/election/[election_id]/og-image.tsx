@@ -187,11 +187,17 @@ export default async function handler(request: Request) {
                 {additionalOptions > 0 && (
                   <div
                     style={{
+                      background: 'linear-gradient(135deg, rgba(6, 0, 103, 0.05), rgba(6, 0, 103, 0.02))',
+                      borderRadius: '12px',
+                      color: '#666666',
                       display: 'flex',
-                      fontSize: '20px',
+                      fontSize: '18px',
+                      fontStyle: 'italic',
+                      fontWeight: '400',
                       justifyContent: 'center',
-                      marginTop: '4px',
-                      opacity: '0.7',
+                      letterSpacing: '0.3px',
+                      marginTop: '8px',
+                      padding: '10px 20px',
                     }}
                   >
                     + {additionalOptions} more option{additionalOptions > 1 ? 's' : ''}
