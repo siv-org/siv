@@ -67,7 +67,7 @@ export const Tooltip = ({
         ReactDOM.createPortal(
           <CSSTransition classNames="tooltip" in={isShown} timeout={10} unmountOnExit>
             <div
-              className={`bg-white/90 rounded p-1 fixed z-50 max-w-xs ${className}`}
+              className={`fixed z-50 p-1 max-w-xs rounded bg-white/95 ${className}`}
               ref={tooltipRef}
               {...{ onMouseEnter, onMouseLeave }}
               style={{
