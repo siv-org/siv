@@ -12,7 +12,7 @@ export default async function handler(request: Request) {
       return new Response('Missing election_id parameter', { status: 400 })
     }
 
-    // Fetch election data from our existing API endpoint
+    // Fetch election data from API endpoint
     const host = request.headers.get('host')
     const baseUrl = host?.startsWith('localhost') ? `http://${host}` : `https://${host}`
 
@@ -22,14 +22,16 @@ export default async function handler(request: Request) {
       return new Response('Election not found', { status: 404 })
     }
 
+    // Get first question, up to 4 options, and only add the count of extra questions or options
     const electionData = await electionResponse.json()
-    const election_title = truncateText(electionData?.election_title || 'Untitled Election', 40)
-    const ballot_design = electionData?.ballot_design
+    const ballot_design = electionData?.ballot_design || []
 
-    // Get the first question and its options
-    const firstQuestion = ballot_design?.[0]
+    const firstQuestion = ballot_design[0]
     const questionTitle = truncateText(firstQuestion?.title || 'Vote Now', 50)
     const options = firstQuestion?.options || []
+
+    const additionalQuestions = ballot_design.length - 1
+    const additionalOptions = options.length - 4
 
     return new ImageResponse(
       (
@@ -80,14 +82,14 @@ export default async function handler(request: Request) {
               <h1
                 style={{
                   color: '#1a1a1a',
-                  fontSize: '48px',
+                  fontSize: '32px',
                   fontWeight: 'bold',
                   lineHeight: '1.1',
                   margin: '8px 0',
                   padding: 0,
                 }}
               >
-                {election_title}
+                Vote On:
               </h1>
               <div
                 style={{
@@ -115,14 +117,9 @@ export default async function handler(request: Request) {
               paddingRight: '20px',
             }}
           >
+            {/* Display up to 4 options, plus indicators for extra options & questions */}
             {options.length > 0 ? (
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '12px',
-                }}
-              >
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                 {options.slice(0, 4).map((option: { name: string }, i: number) => (
                   <div
                     key={i}
@@ -150,17 +147,32 @@ export default async function handler(request: Request) {
                     {truncateText(option.name, 25)}
                   </div>
                 ))}
-                {options.length > 4 && (
+
+                {additionalOptions > 0 && (
                   <div
                     style={{
                       display: 'flex',
                       fontSize: '20px',
                       justifyContent: 'center',
-                      marginTop: '8px',
+                      marginTop: '4px',
                       opacity: '0.7',
                     }}
                   >
-                    + {options.length - 4} more options...
+                    + {additionalOptions} more option{additionalOptions > 1 ? 's' : ''}
+                  </div>
+                )}
+
+                {additionalQuestions > 0 && (
+                  <div
+                    style={{
+                      display: 'flex',
+                      fontSize: '20px',
+                      justifyContent: 'center',
+                      marginTop: '2px',
+                      opacity: '0.6',
+                    }}
+                  >
+                    + {additionalQuestions} more question{additionalQuestions > 1 ? 's' : ''}
                   </div>
                 )}
               </div>
