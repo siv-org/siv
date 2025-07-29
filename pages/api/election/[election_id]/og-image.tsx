@@ -133,7 +133,7 @@ export default async function handler(request: Request) {
             </div>
           </div>
 
-          {/* Right column - Options */}
+          {/* Right column - General Styling */}
           <div
             style={{
               borderLeft: '2px solid rgba(0, 0, 0, 0.1)',
@@ -147,7 +147,7 @@ export default async function handler(request: Request) {
           >
             {/* Display up to 4 options, plus indicators for extra options & questions */}
             {options.length > 0 ? (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
                 {options.slice(0, 4).map((option: { name: string }, i: number) => (
                   <div
                     key={i}
