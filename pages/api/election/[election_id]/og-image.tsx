@@ -182,7 +182,7 @@ export default async function handler(request: Request) {
                 {additionalOptions > 0 && (
                   <div
                     style={{
-                      background: 'linear-gradient(135deg, rgba(6, 0, 103, 0.05), rgba(6, 0, 103, 0.02))',
+                      backgroundColor: 'rgba(6, 0, 103, 0.05)',
                       borderRadius: '12px',
                       color: '#666666',
                       display: 'flex',
