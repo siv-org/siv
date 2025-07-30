@@ -7,20 +7,14 @@ export default async function handler(request: Request) {
     // Extracting election_id from URL & Validate it
     const { searchParams } = new URL(request.url)
     const election_id = searchParams.get('election_id')
-
-    if (!election_id) {
-      return new Response('Missing election_id parameter', { status: 400 })
-    }
+    if (!election_id) return new Response('Missing election_id parameter', { status: 400 })
 
     // Fetch election data from API endpoint
     const host = request.headers.get('host')
     const baseUrl = host?.startsWith('localhost') ? `http://${host}` : `https://${host}`
 
     const electionResponse = await fetch(`${baseUrl}/api/election/${election_id}/info`)
-
-    if (!electionResponse.ok) {
-      return new Response('Election not found', { status: 404 })
-    }
+    if (!electionResponse.ok) return new Response('Election not found', { status: 404 })
 
     // Get first question, up to 4 options, and only add the count of extra questions or options
     const electionData = await electionResponse.json()
@@ -218,10 +212,7 @@ export default async function handler(request: Request) {
           </div>
         </div>
       ),
-      {
-        height: 630,
-        width: 1200,
-      },
+      { height: 630, width: 1200 },
     )
   } catch (e) {
     console.error('OG Image generation error:', e)
