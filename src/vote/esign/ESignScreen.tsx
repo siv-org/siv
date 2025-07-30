@@ -1,5 +1,6 @@
 import * as Sentry from '@sentry/browser'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 import { Dispatch, useRef, useState } from 'react'
 import SignaturePad from 'react-signature-pad-wrapper'
 
@@ -23,6 +24,7 @@ export const ESignScreen = ({
 }): JSX.Element => {
   const signaturePad = useRef<Pad>(null)
   const [buttonText, setButtonText] = useState('Submit')
+  const router = useRouter()
 
   return (
     <>
@@ -47,6 +49,7 @@ export const ESignScreen = ({
               const esignature = signaturePad.current?.toDataURL()
               // console.log('esignature:', esignature)
 
+              if (auth === 'link') auth = router.query.link_auth as string | undefined
               const response = await api('submit-esignature', { auth, election_id, esignature })
               if (response.status === 200) {
                 dispatch({ esigned_at: new Date().toString() })
