@@ -1,18 +1,16 @@
 import { useMemo } from 'react'
 
-export interface ElectionMetadata {
-  description: string
-  ogImage: string
-  ogUrl: string
-  title: string
-}
-
 export function useElectionMetadata(
   election_id?: string,
   election_title?: string,
   ballot_design?: Array<{ options: Array<{ name: string }>; title: string }>,
   host?: string,
-): ElectionMetadata {
+): {
+  description: string
+  ogImage: string
+  ogUrl: string
+  title: string
+} {
   return useMemo(() => {
     // Use the provided host or current domain dynamically, fallback to localhost for SSR
     const baseUrl = host

@@ -2,14 +2,17 @@ import Head from 'next/head'
 
 import { useElectionMetadata } from './useElectionMetadata'
 
-interface ElectionMetaTagsProps {
+export function ElectionMetaTags({
+  ballot_design,
+  election_id,
+  election_title,
+  host,
+}: {
   ballot_design?: Array<{ options: Array<{ name: string }>; title: string }>
   election_id?: string
   election_title?: string
   host?: string
-}
-
-export function ElectionMetaTags({ ballot_design, election_id, election_title, host }: ElectionMetaTagsProps) {
+}) {
   const metadata = useElectionMetadata(election_id, election_title, ballot_design, host)
 
   return (
