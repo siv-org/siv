@@ -13,18 +13,14 @@ interface ElectionData {
   election_title?: string
 }
 
-interface VotePageProps {
-  electionData?: ElectionData
-}
-
-export const VotePage = ({ electionData: serverElectionData }: VotePageProps): JSX.Element => {
+export const VotePage = (): JSX.Element => {
   // Grab election parameters from URL
   const { auth, election_id } = useRouter().query as { auth?: string; election_id?: string }
-  const [electionData, setElectionData] = useState<ElectionData>(serverElectionData || {})
+  const [electionData, setElectionData] = useState<ElectionData>({})
 
-  // Fetch election data for meta tags (fallback if server-side data is missing)
+  // Fetch election data for meta tags
   useEffect(() => {
-    if (!election_id || serverElectionData?.election_title) return
+    if (!election_id) return
 
     // Use the current domain for the API call
     const baseUrl = typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000'
@@ -32,15 +28,15 @@ export const VotePage = ({ electionData: serverElectionData }: VotePageProps): J
     fetch(`${baseUrl}/api/election/${election_id}/info`)
       .then((res) => res.json())
       .then((data) => {
-        if (!data.error) {
-          setElectionData({
-            ballot_design: data.ballot_design,
-            election_title: data.election_title,
-          })
-        }
+        if (data.error) return data.error
+
+        setElectionData({
+          ballot_design: data.ballot_design,
+          election_title: data.election_title,
+        })
       })
       .catch((err) => console.error('Failed to fetch election data for meta tags:', err))
-  }, [election_id, serverElectionData])
+  }, [election_id])
 
   return (
     <>
