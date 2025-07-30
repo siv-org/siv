@@ -8,15 +8,13 @@ import { ElectionMetaTags } from './ElectionMetaTags'
 import { Footer } from './Footer'
 import { NoAuthTokenScreen } from './NoAuthTokenScreen'
 
-interface ElectionData {
-  ballot_design?: Array<{ options: Array<{ name: string }>; title: string }>
-  election_title?: string
-}
-
 export const VotePage = (): JSX.Element => {
   // Grab election parameters from URL
   const { auth, election_id } = useRouter().query as { auth?: string; election_id?: string }
-  const [electionData, setElectionData] = useState<ElectionData>({})
+  const [electionData, setElectionData] = useState<{
+    ballot_design?: Array<{ options: Array<{ name: string }>; title: string }>
+    election_title?: string
+  }>({})
 
   // Fetch election data for meta tags
   useEffect(() => {
