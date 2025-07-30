@@ -5,8 +5,7 @@ export const runtime = 'edge'
 export default async function handler(request: Request) {
   try {
     // Extracting election_id from URL & Validate it
-    const { searchParams } = new URL(request.url)
-    const election_id = searchParams.get('election_id')
+    const election_id = request.url.split('election/')[1].split('/og-image')[0]
     if (!election_id) return new Response('Missing election_id parameter', { status: 400 })
 
     // Fetch election data from API endpoint
