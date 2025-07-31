@@ -1,48 +1,25 @@
-import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
 import { NoSsr } from 'src/_shared/NoSsr'
+import { Head } from 'src/Head'
 
 import { GlobalCSS } from '../GlobalCSS'
 import { AuthenticatedContent } from './AuthenticatedContent'
-import { ElectionMetaTags } from './ElectionMetaTags'
 import { Footer } from './Footer'
 import { NoAuthTokenScreen } from './NoAuthTokenScreen'
 
-export const VotePage = (): JSX.Element => {
-  // Grab election parameters from URL
-  const { auth, election_id } = useRouter().query as { auth?: string; election_id?: string }
-  const [electionData, setElectionData] = useState<{
-    ballot_design?: Array<{ options: Array<{ name: string }>; title: string }>
-    election_title?: string
-  }>({})
+const baseUrl = 'https://siv.org'
 
-  // Fetch election data for meta tags
-  useEffect(() => {
-    if (!election_id) return
-
-    // Use the current domain for the API call
-    const baseUrl = typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000'
-
-    fetch(`${baseUrl}/api/election/${election_id}/info`)
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.error) return data.error
-
-        setElectionData({
-          ballot_design: data.ballot_design,
-          election_title: data.election_title,
-        })
-      })
-      .catch((err) => console.error('Failed to fetch election data for meta tags:', err))
-  }, [election_id])
-
+export const VotePage = ({
+  query: { auth, election_id },
+}: {
+  query: { auth?: string; election_id: string }
+}): JSX.Element => {
   return (
     <>
-      {/* Election-specific meta tags for OG image */}
-      <ElectionMetaTags
-        ballot_design={electionData.ballot_design}
-        election_id={election_id}
-        election_title={electionData.election_title}
+      {/* Ballot-specific meta tags for link previews */}
+      <Head
+        description="Private verifiable voting"
+        image_preview_url={`${baseUrl}/api/election/${election_id}/og-image`}
+        title="Cast Your Vote"
       />
 
       <main>

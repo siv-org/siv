@@ -10,7 +10,7 @@ export default async function handler(request: Request) {
 
     // Fetch election data from API endpoint
     const host = request.headers.get('host')
-    const baseUrl = host?.startsWith('localhost') ? `http://${host}` : `https://${host}`
+    const baseUrl = `http${host?.startsWith('localhost') ? '' : 's'}://${host}`
 
     const electionResponse = await fetch(`${baseUrl}/api/election/${election_id}/info`)
     if (!electionResponse.ok) return new Response('Election not found', { status: 404 })
