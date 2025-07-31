@@ -77,7 +77,7 @@ export default async function handler(request: Request) {
               <h1
                 style={{
                   color: '#666666',
-                  fontSize: '26px',
+                  fontSize: '34px',
                   fontWeight: '500',
                   letterSpacing: '0.5px',
                   lineHeight: '1.1',
@@ -93,7 +93,7 @@ export default async function handler(request: Request) {
               <div
                 style={{
                   color: '#060067',
-                  fontSize: '32px',
+                  fontSize: '48px',
                   fontWeight: '500',
                   letterSpacing: '0.5px',
                   margin: 0,
@@ -111,7 +111,7 @@ export default async function handler(request: Request) {
                     borderRadius: '12px',
                     color: '#888888',
                     display: 'flex',
-                    fontSize: '18px',
+                    fontSize: '28px',
                     fontStyle: 'italic',
                     fontWeight: '400',
                     justifyContent: 'center',
@@ -152,7 +152,7 @@ export default async function handler(request: Request) {
                       borderRadius: '16px',
                       boxShadow: '0 4px 12px rgba(6, 0, 103, 0.1)',
                       display: 'flex',
-                      fontSize: '22px',
+                      fontSize: '36px',
                       fontWeight: '500',
                       letterSpacing: '0.3px',
                       padding: '18px 28px',
@@ -168,7 +168,7 @@ export default async function handler(request: Request) {
                         width: '20px',
                       }}
                     />
-                    {truncateText(option.name, 32)}
+                    {truncateText(option.name, 22)}
                   </div>
                 ))}
 
@@ -180,7 +180,7 @@ export default async function handler(request: Request) {
                       borderRadius: '12px',
                       color: '#666666',
                       display: 'flex',
-                      fontSize: '18px',
+                      fontSize: '24px',
                       fontStyle: 'italic',
                       fontWeight: '400',
                       justifyContent: 'center',
