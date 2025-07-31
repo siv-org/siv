@@ -1,19 +1,26 @@
-import { useRouter } from 'next/router'
 import { NoSsr } from 'src/_shared/NoSsr'
+import { Head } from 'src/Head'
 
 import { GlobalCSS } from '../GlobalCSS'
-import { Head } from '../Head'
 import { AuthenticatedContent } from './AuthenticatedContent'
 import { Footer } from './Footer'
 import { NoAuthTokenScreen } from './NoAuthTokenScreen'
 
-export const VotePage = (): JSX.Element => {
-  // Grab election parameters from URL
-  const { auth, election_id } = useRouter().query as { auth?: string; election_id?: string }
+const baseUrl = 'https://siv.org'
 
+export const VotePage = ({
+  query: { auth, election_id },
+}: {
+  query: { auth?: string; election_id: string }
+}): JSX.Element => {
   return (
     <>
-      <Head title="Cast Your Vote" />
+      {/* Ballot-specific meta tags for link previews */}
+      <Head
+        description="Private verifiable voting"
+        image_preview_url={`${baseUrl}/api/election/${election_id}/og-image`}
+        title="Cast Your Vote"
+      />
 
       <main>
         <div>

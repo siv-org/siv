@@ -1,8 +1,16 @@
 import _Head from 'next/head'
 
-const card_image = `https://siv.org/preview.png`
-
-export const Head = ({ children = <></>, title }: { children?: JSX.Element; title: string }) => {
+export const Head = ({
+  children = <></>,
+  description,
+  image_preview_url = `https://siv.org/preview.png`,
+  title,
+}: {
+  children?: JSX.Element
+  description?: string
+  image_preview_url?: string
+  title: string
+}) => {
   const full_title = `SIV: ` + title
 
   return (
@@ -24,14 +32,23 @@ export const Head = ({ children = <></>, title }: { children?: JSX.Element; titl
       <meta content="minimum-scale=1, initial-scale=1, width=device-width, user-scalable=no" name="viewport" />
 
       {/* For Facebook & iMessage */}
-      <meta content={card_image} property="og:image" />
+      <meta content={image_preview_url} property="og:image" />
       <meta content={full_title} property="og:title" />
 
       {/* For twitter */}
       <meta content="summary_large_image" name="twitter:card" />
       <meta content="@dsernst" name="twitter:creator" />
       <meta content={full_title} name="twitter:title" />
-      <meta content={card_image} name="twitter:image" />
+      <meta content={image_preview_url} name="twitter:image" />
+
+      {/* Optional description for link previews */}
+      {description && (
+        <>
+          <meta content={description} name="description" />
+          <meta content={description} property="og:description" />
+          <meta content={description} name="twitter:description" />
+        </>
+      )}
 
       {children}
     </_Head>
