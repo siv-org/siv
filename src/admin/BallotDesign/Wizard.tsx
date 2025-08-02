@@ -1,5 +1,5 @@
 import { DeleteOutlined, QuestionCircleOutlined } from '@ant-design/icons'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Tooltip } from 'src/admin/Voters/Tooltip'
 import { Item } from 'src/vote/storeElectionInfo'
 
@@ -18,6 +18,7 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
   const saveDesign = (json: Item[]) => setDesign(JSON.stringify(json, undefined, 2))
 
   const errors = check_for_fatal_ballot_errors(design)
+  const $wizard = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (!errors) setJson(JSON.parse(design))
@@ -29,6 +30,7 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
       className={`flex-1 border border-solid border-gray-300 text-gray-700 p-2.5 bg-[#eee] pb-0 ${
         errors ? 'bg-gray-100 opacity-30 cursor-not-allowed' : ''
       }`}
+      ref={$wizard}
     >
       {json?.map(
         (
@@ -228,10 +230,10 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
             <ul>
               {options?.map(({ name, value }, optionIndex) => (
                 <li key={optionIndex}>
-                  <div>
+                  <div className="mb-1.5">
                     {/* Option input */}
                     <input
-                      className="p-[5px] mb-1.5 text-[13px] flex-1"
+                      className="p-[5px] text-[13px]"
                       onChange={({ target }) => {
                         const new_json = [...json]
 
@@ -250,6 +252,11 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
                         new_json[questionIndex].options[optionIndex].name = target.value
 
                         saveDesign(new_json)
+                      }}
+                      style={{
+                        maxWidth: ($wizard.current?.clientWidth || 200) - 120,
+                        minWidth: '160px',
+                        width: name.length * 6.5,
                       }}
                       value={name}
                     />
