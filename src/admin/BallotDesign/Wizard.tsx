@@ -90,7 +90,7 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
 
               {/* Type dropdown */}
               <div className="relative">
-                <span className="absolute top-2 right-3 z-20 opacity-60 scale-75">▼</span>
+                <span className="absolute top-1.5 right-2 z-20 p-1 bg-white scale-75 text-black/60">▼</span>
                 <select
                   className="appearance-none border border-solid border-gray-200 text-[13px] rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 shadow-sm relative"
                   onChange={({ target }) => {
@@ -311,10 +311,11 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
               </a>
 
               {/* Write-in Allowed toggle */}
-              <li className={`${write_in_allowed ? '':'list-none'}`}>
+              <li className={`${write_in_allowed ? '' : 'list-none'}`}>
                 <span
                   className={`inline-block w-32 pl-2 text-[13px] italic text-gray-800 ${
-                    !write_in_allowed ? 'opacity-60' : ''}`}
+                    !write_in_allowed ? 'opacity-60' : ''
+                  }`}
                 >{`Write-in ${write_in_allowed ? 'Allowed' : 'Disabled'}`}</span>
                 <Switch
                   checked={write_in_allowed}
