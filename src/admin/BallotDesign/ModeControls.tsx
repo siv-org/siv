@@ -1,7 +1,7 @@
 export const ModeControls = ({ selected, setSelected }: { selected: number; setSelected: (s: number) => void }) => {
   return (
     <div className="mode-controls">
-      {['Wizard', 'Text', 'Split'].map((label, index) => (
+      {['Wizard', 'JSON', 'Split'].map((label, index) => (
         <span className={selected === index ? 'selected' : ''} key={index} onClick={() => setSelected(index)}>
           {label}
         </span>
