@@ -1,4 +1,5 @@
 import { json } from '@codemirror/lang-json'
+import { EditorView } from '@codemirror/view'
 import { tags as t } from '@lezer/highlight'
 import { githubLightInit } from '@uiw/codemirror-theme-github'
 import CodeMirror, { ReactCodeMirrorProps } from '@uiw/react-codemirror'
@@ -8,7 +9,7 @@ const CodeMirrorComponent = (props: ReactCodeMirrorProps) => (
     <CodeMirror
       {...props}
       basicSetup={{ foldGutter: false }}
-      extensions={[json()]}
+      extensions={[json(), EditorView.lineWrapping]}
       theme={githubLightInit({
         settings: { foreground: 'hsl(0, 0%, 60%)', gutterBackground: '#f8f8f8', gutterForeground: '#999' },
         styles: [
