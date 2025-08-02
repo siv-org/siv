@@ -1,36 +1,17 @@
 export const ModeControls = ({ selected, setSelected }: { selected: number; setSelected: (s: number) => void }) => {
   return (
-    <div className="mode-controls">
+    <div className="float-right">
       {['Wizard', 'JSON', 'Split'].map((label, index) => (
-        <span className={selected === index ? 'selected' : ''} key={index} onClick={() => setSelected(index)}>
+        <span
+          className={`select-none cursor-pointer border border-solid border-gray-400/70 [&:not(:first-child)]:border-l-0 hover:bg-gray-50 active:bg-gray-200 px-[15px] py-[5px] ${
+            selected === index ? '!bg-gray-100' : ''
+          }`}
+          key={index}
+          onClick={() => setSelected(index)}
+        >
           {label}
         </span>
       ))}
-
-      <style jsx>{`
-        .mode-controls {
-          float: right;
-        }
-        span {
-          border: 1px solid hsl(0, 0%, 76%);
-          padding: 5px 15px;
-          cursor: pointer;
-          user-select: none;
-        }
-        span:hover {
-          background-color: hsl(0, 0%, 97%);
-        }
-        span:active {
-          background-color: hsl(0, 0%, 84%) !important;
-          border-top-color: hsl(0, 0%, 70%);
-        }
-        span:not(:first-child) {
-          border-left-width: 0px;
-        }
-        span.selected {
-          background-color: hsl(0, 0%, 95%);
-        }
-      `}</style>
     </div>
   )
 }
