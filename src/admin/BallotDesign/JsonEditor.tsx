@@ -4,7 +4,7 @@ import { AdvancedFeatures } from './AdvancedFeatures'
 
 const CodeMirror = dynamic(() => import('./CodeMirror'), { ssr: false })
 
-export const TextDesigner = ({ design, setDesign }: { design: string; setDesign: (s: string) => void }) => {
+export const JsonEditor = ({ design, setDesign }: { design: string; setDesign: (s: string) => void }) => {
   return (
     <div className="relative flex-1">
       <CodeMirror

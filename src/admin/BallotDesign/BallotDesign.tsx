@@ -8,8 +8,8 @@ import { check_for_fatal_ballot_errors } from './check_for_ballot_errors'
 import { default_ballot_design } from './default-ballot-design'
 import { Errors } from './Errors'
 import { FinalizeBallotDesignButton } from './FinalizeBallotDesignButton'
+import { JsonEditor } from './JsonEditor'
 import { ModeControls } from './ModeControls'
-import { TextDesigner } from './TextDesigner'
 import { TipToRunPracticeVote } from './TipToRunPracticeVote'
 import { Wizard } from './Wizard'
 
@@ -59,7 +59,7 @@ export const BallotDesign = () => {
         {selected === 2 && <div className="w-5" /> /* spacer */}
         {selected !== 0 && (
           <NoSsr>
-            <TextDesigner {...{ design, setDesign: setDesignIfNotFinalized }} />
+            <JsonEditor {...{ design, setDesign: setDesignIfNotFinalized }} />
           </NoSsr>
         )}
       </div>
