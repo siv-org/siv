@@ -18,7 +18,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   email = email.toLowerCase()
 
   // Stop if they already have an account
-  const adminDoc = firebase.firestore().collection('admins').doc(email.toLowerCase())
+  const adminDoc = firebase.firestore().collection('admins').doc(email)
   if ((await adminDoc.get()).exists)
     return res.status(409).send({ error: `'${email}' already has an account.\n\nLog in above.` })
 
@@ -30,7 +30,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     .firestore()
     .collection('applied-admins')
     .doc(doc_id)
-    .create({ created_at: new Date(), ...req.body, init_login_code })
+    .create({ created_at: new Date(), ...req.body, email, init_login_code })
 
   // Send message w/ Approval Link
   const message = `New SIV Admin Application
