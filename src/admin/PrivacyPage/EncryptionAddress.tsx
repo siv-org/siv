@@ -17,12 +17,11 @@ export const EncryptionAddress = () => {
           </>
         ) : (
           <>
-            <h4>No extra Privacy Protectors were added.</h4>✅ SIV has created a unique Unlocking Key for the encryption
-            address:
+            <h4>No extra Privacy Protectors were added.</h4>✅ Election Unlocking Key created, for encryption address:
           </>
         )}
         <span>{threshold_public_key}</span>
-        <p>The election can now begin.</p>
+        <p>Votes can now be accepted.</p>
       </div>
       <Button href={`/admin/${election_id}/voters`} style={{ marginLeft: 0, marginTop: 30 }}>
         Step 3: Add Voters
