@@ -67,7 +67,7 @@ export const PendingVotesTable = () => {
         {pressing_shift && <span className="mt-0.5 text-xs text-purple-500">Shift Pressed</span>}
       </div>
       <div className="mt-2 mb-1">
-        Pending Votes <span className="opacity-50">(via shareable link)</span>
+        Votes Awaiting Approval <span className="opacity-50">(from shareable link)</span>
       </div>
       <table className="block w-full pb-3 overflow-auto border-collapse [&_tr>*]:[border:1px_solid_#ccc] [&_tr>*]:px-2.5 [&_tr>*]:py-[3px]">
         <thead>
