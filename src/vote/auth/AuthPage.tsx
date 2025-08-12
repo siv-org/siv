@@ -17,7 +17,7 @@ export const AuthPage = () => {
           <div className="mt-6 mb-6 text-lg">
             <p className="mb-3 italic opacity-60">Your vote is now pending.</p>
             <p>
-              <UserOutlined className="relative bottom-[5px] mr-0.5" /> Please provide your identifying information.
+              <UserOutlined className="mr-0.5" /> Please provide your identifying information.
             </p>
             <p className="text-sm opacity-50">Your vote selections remain private.</p>
           </div>
