@@ -24,10 +24,7 @@ export const SetPrivacyProtectors = () => {
       <h2 className="hidden sm:block">
         Privacy Protectors <span>(Optional)</span>
       </h2>
-      <p>
-        This lets you give independent Privacy Protectors complete cryptographic proof that votes are private &
-        anonymous.
-      </p>
+      <p>This gives independent Privacy Protectors cryptographic proof that votes are private & anonymous.</p>
       <p>
         ⚠️ If you add them, <b>votes cannot be unlocked and tallied</b> until their same computers run the automatic
         decryption steps.
