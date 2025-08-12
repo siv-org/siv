@@ -25,12 +25,12 @@ export const SetPrivacyProtectors = () => {
         Privacy Protectors <span>(Optional)</span>
       </h2>
       <p>
-        This lets you give independent Privacy Protectors complete cryptographic proof that votes are private & tallied
-        correctly.
+        This lets you give independent Privacy Protectors complete cryptographic proof that votes are private &
+        anonymous.
       </p>
       <p>
         ⚠️ If you add them, <b>votes cannot be unlocked and tallied</b> until their same computers run the automatic
-        verification checks.
+        decryption steps.
       </p>
       <p>
         <a href="https://docs.siv.org/privacy/privacy-protectors" rel="noreferrer" target="_blank">
