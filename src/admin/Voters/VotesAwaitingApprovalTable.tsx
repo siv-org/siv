@@ -8,7 +8,7 @@ import { CheckboxCell, CheckboxHeaderCell, hoverable } from './CheckboxCell'
 import { mask } from './mask-token'
 import { use_multi_select } from './use-multi-select'
 
-export const PendingVotesTable = () => {
+export const VotesAwaitingApprovalTable = () => {
   const { election_id, pending_votes, voter_applications_allowed } = useStored()
   const [mask_tokens, toggle_tokens] = useReducer((state) => !state, true)
   const { last_selected, pressing_shift, set_last_selected } = use_multi_select()
