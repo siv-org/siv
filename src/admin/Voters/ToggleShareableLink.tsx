@@ -29,7 +29,7 @@ export const ToggleShareableLink = () => {
 
   return (
     <section
-      className={`p-1 ml-[-5px] ${
+      className={`mb-16 p-1 ml-[-5px] ${
         voter_applications_allowed && 'border-4 border-solid border-orange-100/90 rounded px-2 mb-3'
       }`}
     >
