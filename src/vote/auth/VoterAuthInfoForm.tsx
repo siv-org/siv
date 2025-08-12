@@ -6,7 +6,8 @@ import { OnClickButton } from 'src/_shared/Button'
 import { api } from 'src/api-helper'
 
 export const VoterAuthInfoForm = () => {
-  const [error, setError] = useState('')
+  const [emailError, setEmailError] = useState('')
+  const [submissionError, setSubmissionError] = useState('')
   const [first_name, setFirstName] = useState('')
   const [last_name, setLastName] = useState('')
   const [email, setEmail] = useState('')
@@ -38,13 +39,13 @@ export const VoterAuthInfoForm = () => {
       </div>
       <div className="flex mx-auto mb-4 sm:max-w-md">
         <TextField
-          error={!!error}
-          helperText={error}
+          error={!!emailError}
+          helperText={emailError}
           InputLabelProps={{ style: { fontSize: 22 } }}
           InputProps={{ style: { fontSize: 22 } }}
           label="Email (to be verified)"
           onChange={(event) => {
-            setError('')
+            setEmailError('')
             setEmail(event.target.value)
           }}
           onKeyDown={(event) => event.key === 'Enter' && submitBtn.current?.click()}
@@ -55,13 +56,16 @@ export const VoterAuthInfoForm = () => {
 
       <OnClickButton
         className="w-full text-xl text-center"
-        disabled={!first_name || !last_name || !validateEmail(email) || !!error || submitting}
+        disabled={(!first_name && !last_name && !validateEmail(email)) || !!emailError || submitting}
+        error={!!submissionError}
+        helperText={submissionError}
         onClick={async () => {
-          // Validate email
-          if (!validateEmail(email)) return setError('Invalid email address')
+          setSubmissionError('')
+
+          // Validate email if present
+          if (email && !validateEmail(email)) return setEmailError('Invalid email address')
 
           setSubmitting(true)
-
           // Submit details to server
           const response = await api(`election/${election_id}/submit-link-auth-info`, {
             email,
@@ -71,10 +75,19 @@ export const VoterAuthInfoForm = () => {
           })
           setSubmitting(false)
 
-          if (!response.ok) return setError((await response.json()).error)
+          // Handle errors from server
+          if (!response.ok) {
+            const responseJson = await response.json()
+            if (!responseJson?.error) {
+              console.error('submission responseJson', responseJson)
+              return setSubmissionError('Unknown error')
+            }
+            console.error('submission responseJson.error', responseJson?.error)
+            return setSubmissionError(responseJson?.error)
+          }
 
-          // Store the email address so we can remind them later to check it
-          localStorage.setItem(`registration-${link_auth}`, email)
+          // Store the email address locally so we can remind them later to check it
+          if (email) localStorage.setItem(`registration-${link_auth}`, email)
 
           // Redirect back to submission screen
           router.push(`${window.location.origin}/election/${election_id}/vote?auth=link&link_auth=${link_auth}`)

@@ -55,7 +55,7 @@ export const UnlockVotesButton = ({ num_approved, num_voted }: { num_approved: n
       <OnClickButton
         className={`bg-white !m-0 !ml-[5px] self-baseline !py-[5px] !px-2.5 ${show_dropdown && '!rounded-r-none'}`}
         disabled={!num_approved}
-        disabledExplanation={
+        disabledOnClickMessage={
           !num_approved &&
           esignature_requested &&
           !!num_voted &&

@@ -16,7 +16,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const pendingVote = pendingVoteDoc.get()
 
   // Validate email
-  if (!validateEmail(email)) return res.status(400).json({ error: 'Invalid email address' })
+  if (email && !validateEmail(email)) return res.status(400).json({ error: 'Invalid email address' })
 
   // Does this election allow registrations?
   const election = (await loadElection).data() || {}
@@ -42,13 +42,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     }),
 
     // Send verification email
-    sendEmail({
-      from: 'SIV',
-      recipient: email,
-      subject: `Voter Email Verification: ${email}`,
-      text: `A vote was just cast in the Election <b><em>${
-        election.election_title
-      }</em></b>, with the name and email given:
+    email &&
+      sendEmail({
+        from: 'SIV',
+        recipient: email,
+        subject: `Voter Email Verification: ${email}`,
+        text: `A vote was just cast in the Election <b><em>${
+          election.election_title
+        }</em></b>, with the name and email given:
 
       <b>First Name:</b> ${first_name}
       <b>Last Name:</b> ${last_name}
@@ -66,7 +67,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       <a href="${
         req.headers.origin
       }/verify_registration?code=${verification_code}&election_id=${election_id}&link_auth=${link_auth}&invalid=true">This was NOT me, that vote should be marked invalid</a></em>`,
-    }),
+      }),
 
     // Trigger admin's dashboard update
     pusher.trigger(`status-${election_id}`, 'votes', link_auth),

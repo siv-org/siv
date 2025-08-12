@@ -47,7 +47,9 @@ export const Button = ({
 
 type OnClickProps = ButtonProps & {
   disabled?: boolean
-  disabledExplanation?: false | string
+  disabledOnClickMessage?: false | string
+  error?: boolean
+  helperText?: string
   id?: string
   noBorder?: boolean
   onClick: () => void
@@ -59,7 +61,9 @@ export const OnClickButton = forwardRef<HTMLAnchorElement, OnClickProps>(
       children,
       className = '',
       disabled,
-      disabledExplanation,
+      disabledOnClickMessage,
+      error,
+      helperText,
       id,
       invertColor,
       noBorder,
@@ -68,47 +72,50 @@ export const OnClickButton = forwardRef<HTMLAnchorElement, OnClickProps>(
     }: OnClickProps,
     ref,
   ): JSX.Element => (
-    <a
-      className={`${disabled ? 'disabled' : ''} ${className}`}
-      id={id}
-      onClick={() => {
-        if (disabledExplanation) alert(disabledExplanation)
-        if (!disabled) onClick()
-      }}
-      ref={ref}
-      style={style}
-    >
-      {children}
-      <style jsx>{`
-        a {
-          ${background && `background: ${background}`};
-          border: 2px solid ${invertColor && !noBorder ? '#fff' : darkBlue};
-          border-radius: 0.4rem;
-          color: ${invertColor ? '#fff' : darkBlue};
-          display: inline-block;
-          font-weight: bold;
-          margin: 17px;
-          padding: 1.2rem 2.004rem;
-          text-decoration: none;
-          transition: 0.1s background-color linear, 0.1s color linear;
-        }
+    <>
+      <a
+        className={`${disabled ? 'disabled' : ''} ${className}`}
+        id={id}
+        onClick={() => {
+          if (!disabled) return onClick()
+          if (disabledOnClickMessage) alert(disabledOnClickMessage)
+        }}
+        ref={ref}
+        style={style}
+      >
+        {children}
+        <style jsx>{`
+          a {
+            ${background && `background: ${background}`};
+            border: 2px solid ${invertColor && !noBorder ? '#fff' : darkBlue};
+            border-radius: 0.4rem;
+            color: ${invertColor ? '#fff' : darkBlue};
+            display: inline-block;
+            font-weight: bold;
+            margin: 17px;
+            padding: 1.2rem 2.004rem;
+            text-decoration: none;
+            transition: 0.1s background-color linear, 0.1s color linear;
+          }
 
-        a:hover {
-          text-decoration: none;
-        }
+          a:hover {
+            text-decoration: none;
+          }
 
-        .disabled {
-          opacity: 0.4;
-          cursor: default;
-        }
+          .disabled {
+            opacity: 0.4;
+            cursor: default;
+          }
 
-        a:not(.disabled):hover {
-          background-color: ${invertColor ? '#fff' : darkBlue};
-          color: ${invertColor ? '#000' : '#fff'};
-          cursor: pointer;
-        }
-      `}</style>
-    </a>
+          a:not(.disabled):hover {
+            background-color: ${invertColor ? '#fff' : darkBlue};
+            color: ${invertColor ? '#000' : '#fff'};
+            cursor: pointer;
+          }
+        `}</style>
+      </a>
+      {helperText && <div className={`${error ? 'text-red-500' : 'text-gray-500'}`}>{helperText}</div>}
+    </>
   ),
 )
 OnClickButton.displayName = 'OnClickButton'
