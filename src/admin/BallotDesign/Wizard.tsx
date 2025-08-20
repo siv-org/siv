@@ -318,11 +318,10 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
               </a>
 
               {/* Write-in Allowed toggle */}
-              <li className={`${write_in_allowed ? '' : 'list-none'}`}>
+              <li className={`${write_in_allowed ? '':'list-none'}`}>
                 <span
                   className={`inline-block w-32 pl-2 text-[13px] italic text-gray-800 ${
-                    !write_in_allowed ? 'opacity-60' : ''
-                  }`}
+                    !write_in_allowed ? 'opacity-60' : ''}`}
                 >{`Write-in ${write_in_allowed ? 'Allowed' : 'Disabled'}`}</span>
                 <Switch
                   checked={write_in_allowed}
