@@ -278,33 +278,41 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
 
                   {/* Value field (if name is too long) */}
                   {name.length > MAX_OPTION_LENGTH && (
-                    <div className="mb-3">
-                      <label className="text-[10px] italic">
-                        Internal value:{' '}
-                        <Tooltip
-                          placement="top"
-                          tooltip={
-                            <span style={{ fontSize: 14 }}>
-                              <strong>Encrypted votes are limited to 15 characters:</strong> The full Name will still be
-                              shown in the Vote Interface, but only this shorter Value is encrypted.
+                    <details className="inline-block mb-3.5 rounded border border-gray-200 border-solid group">
+                      <summary className="text-[10px] italic text-black/60 cursor-pointer hover:bg-gray-50 p-1.5 list-none">
+                        <span className="mr-1.5 text-[12px] relative top-[0.5px] transition-transform group-open:rotate-90 inline-block opacity-70">
+                          ▶
+                        </span>
+                        Customize encrypted value
+                      </summary>
+                      <div className="p-1.5 pt-0">
+                        <label className="text-[10px] italic">
+                          Internal value:{' '}
+                          <Tooltip
+                            placement="top"
+                            tooltip={
+                              <span style={{ fontSize: 14 }}>
+                                <strong>Encrypted votes are limited to 15 characters:</strong> The full Name will still
+                                be shown in the Vote Interface, but only this shorter Value gets encrypted.
+                              </span>
+                            }
+                          >
+                            <span className="mr-2 ml-1 text-sm text-indigo-500">
+                              <QuestionCircleOutlined />
                             </span>
-                          }
-                        >
-                          <span className="mr-2 ml-1 text-sm text-indigo-500">
-                            <QuestionCircleOutlined />
-                          </span>
-                        </Tooltip>
-                      </label>
-                      <input
-                        className="p-[5px] mb-1.5 text-[13px]"
-                        onChange={({ target }) => {
-                          const new_json = [...json]
-                          new_json[questionIndex].options[optionIndex].value = target.value
-                          saveDesign(new_json)
-                        }}
-                        value={value}
-                      />
-                    </div>
+                          </Tooltip>
+                        </label>
+                        <input
+                          className="p-[5px] text-[13px]"
+                          onChange={({ target }) => {
+                            const new_json = [...json]
+                            new_json[questionIndex].options[optionIndex].value = target.value
+                            saveDesign(new_json)
+                          }}
+                          value={value}
+                        />
+                      </div>
+                    </details>
                   )}
                 </li>
               ))}
