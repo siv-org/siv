@@ -45,6 +45,12 @@ export function Contributors() {
       />
 
       <ContributorRow
+        affiliation="Columbia University & zkFuzz Developer"
+        focus="Security Review of 'Verifiable Private Overrides', Anti–Vote-Selling & Coercion Solution"
+        name="Hideaki Takahashi, PhD (@Koukyosyumei)"
+      />
+
+      <ContributorRow
         affiliation="CREO Cybersecurity Lab, North Carolina A&T State University"
         focus="US Elections Cybersecurity"
         name="Jason Green"
