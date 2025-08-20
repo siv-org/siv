@@ -247,6 +247,9 @@ export const Wizard = ({ design, setDesign }: { design: string; setDesign: (s: s
                               MAX_OPTION_LENGTH,
                             )
                           }
+                        } else if (name.length > MAX_OPTION_LENGTH) {
+                          // If no longer too long, remove the value
+                          delete new_json[questionIndex].options[optionIndex].value
                         }
 
                         new_json[questionIndex].options[optionIndex].name = target.value
