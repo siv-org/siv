@@ -2,6 +2,7 @@ import { ApartmentOutlined, LinkOutlined, QuestionCircleOutlined, SnippetsOutlin
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
+import { promptLogout } from './auth'
 import { useStored } from './useStored'
 
 export const Sidebar = () => (
@@ -96,6 +97,10 @@ export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => voi
         <Link href="mailto:help@siv.org" legacyBehavior>
           <a>Get Help</a>
         </Link>
+
+        <a className="opacity-70" onClick={promptLogout}>
+          Logout
+        </a>
       </div>
 
       <style jsx>{`
