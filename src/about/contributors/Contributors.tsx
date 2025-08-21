@@ -75,6 +75,12 @@ export function Contributors() {
       <ContributorRow affiliation="Technology Entrepreneur, LoopRL" focus="Funding" name="Eshan Kejriwal" />
 
       <ContributorRow affiliation="University of California, Davis School of Law" focus="Legal" name="Max Calehuff" />
+
+      <ContributorRow
+        affiliation="Columbia University, zkFuzz"
+        focus="Security for Verifiable Private Overrides"
+        name="Hideaki Takahashi, PhD Candidate"
+      />
     </div>
   )
 }
