@@ -12,15 +12,20 @@ const nextConfig = withMDX({
         permanent: true,
         source: '/ukraine',
       },
+      {
+        destination: 'https://docs.siv.org/compare',
+        permanent: true,
+        source: '/compare',
+      },
     ]
   },
+  transpilePackages: ['lodash-es'],
   typescript: {
     // !! WARN !!
     // Dangerously allow production builds to successfully complete even if
     // your project has type errors.
     // ignoreBuildErrors: true,
   },
-  transpilePackages: ['lodash-es'],
 })
 
 module.exports = nextConfig
