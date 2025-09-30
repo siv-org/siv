@@ -17,6 +17,11 @@ const nextConfig = withMDX({
         permanent: true,
         source: '/compare',
       },
+      {
+        destination: 'https://siv.org/election/1759241141808/vote?auth=link',
+        permanent: true,
+        source: '/evoteid',
+      },
     ]
   },
   transpilePackages: ['lodash-es'],
