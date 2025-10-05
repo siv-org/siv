@@ -22,6 +22,11 @@ const nextConfig = withMDX({
         permanent: true,
         source: '/evoteid',
       },
+      {
+        destination: 'https://blog.siv.org/2025/08/overrides',
+        permanent: true,
+        source: '/overrides',
+      },
     ]
   },
   transpilePackages: ['lodash-es'],
