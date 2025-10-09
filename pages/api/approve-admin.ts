@@ -42,7 +42,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     text: `<h2 style="margin-bottom: 0;">SIV Account Approved</h2>
 Congratulations, you now have the ability to create SIV elections.
 
-You can login anytime at <b><a href="http://login.siv.org">login.siv.org</a></b>`,
+You can login anytime at <b><a href="http://siv.org/login">siv.org/login</a></b>`,
   })
 
   // If they still have the Waiting Page open, show that they've been approved
