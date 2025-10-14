@@ -110,7 +110,7 @@ export const CustomInvitationEditor = () => {
       {isExpanded && (
         <div className="rounded border border-gray-300 border-solid shadow-sm">
           {/* Toolbar */}
-          <div className="flex gap-1 p-2 bg-gray-50">
+          <div className="flex gap-1 justify-end p-2 bg-gray-50">
             <ToolbarButton
               className="font-semibold"
               onClick={() => insertMarkdown('## ', '', 'Heading')}
@@ -153,15 +153,19 @@ export const CustomInvitationEditor = () => {
 
           {/* Footer */}
           <div className="flex justify-between items-center px-4 py-2.5 text-sm border-t border-gray-200 bg-gray-50">
-            <div className="flex gap-2 items-center">
+            <div>
               {isSaving && <span className="italic text-gray-400">saving...</span>}
-              {saved && <span className="italic text-gray-500">saved.</span>}
+              {saved && <span className="italic text-green-700">saved.</span>}
+            </div>
 
-              <span className="text-gray-600">preview:</span>
+            <div>
+              <span className="text-gray-600">
+                <span className="text-xs">🔍</span> preview:{' '}
+              </span>
               <a className="text-blue-600 cursor-pointer hover:underline" href={`/election/${election_id}`}>
                 ballot
               </a>
-              <span className="text-gray-500">,</span>
+              <span className="text-gray-500">, </span>
               <a className="text-blue-600 cursor-pointer hover:underline">email</a>
             </div>
           </div>
