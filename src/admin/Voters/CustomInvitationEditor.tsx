@@ -2,7 +2,7 @@ import { LinkOutlined, OrderedListOutlined, UnorderedListOutlined } from '@ant-d
 import { useEffect, useRef, useState } from 'react'
 import { api } from 'src/api-helper'
 
-import { revalidate, useStored } from '../useStored'
+import { useStored } from '../useStored'
 
 const ToolbarButton = ({
   children,
@@ -33,66 +33,70 @@ const ToolbarButton = ({
 }
 
 export const CustomInvitationEditor = () => {
-  const [isExpanded, setIsExpanded] = useState(false)
   const { custom_invitation_text, election_id } = useStored()
-  const [content, setContent] = useState(custom_invitation_text || '')
+  const [isExpanded, setIsExpanded] = useState(false)
+  const [content, setContent] = useState('')
   const [saved, setSaved] = useState(false)
-  const editorRef = useRef<HTMLDivElement>(null)
   const [isSaving, setIsSaving] = useState(false)
-  const [isInitialized, setIsInitialized] = useState(false)
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
 
   // Update content when custom_invitation_text is loaded from API
   useEffect(() => {
-    if (custom_invitation_text !== undefined && custom_invitation_text !== content) {
-      setContent(custom_invitation_text)
-      if (editorRef.current) {
-        editorRef.current.innerHTML = custom_invitation_text
-      }
-    }
-  }, [custom_invitation_text])
+    if (!custom_invitation_text) return
+    if (custom_invitation_text === content) return
 
-  // Initialize editor content once
-  useEffect(() => {
-    if (editorRef.current && !isInitialized) {
-      editorRef.current.innerHTML = content
-      setIsInitialized(true)
-    }
-  }, [content, isInitialized])
+    setContent(custom_invitation_text)
+  }, [custom_invitation_text])
 
   // Auto-save functionality
   useEffect(() => {
-    if (!isInitialized) return
+    setSaved(false)
+    if (!election_id) return
+    if (content === custom_invitation_text) return
 
     const timer = setTimeout(async () => {
-      const currentContent = editorRef.current?.innerHTML || ''
-      if (currentContent !== custom_invitation_text && election_id) {
-        setIsSaving(true)
-        try {
-          await api(`election/${election_id}/admin/update-invitation-text`, {
-            custom_invitation_text: currentContent,
-          })
-          setSaved(true)
-          revalidate(election_id)
-          setTimeout(() => setSaved(false), 2000)
-        } catch (error) {
-          console.error('Failed to save invitation text:', error)
-        } finally {
-          setIsSaving(false)
-        }
-      }
+      setIsSaving(true)
+
+      await api(`election/${election_id}/admin/update-invitation-text`, {
+        custom_invitation_text: content,
+      }).catch((error) => {
+        console.error('Failed to save invitation text:', error)
+      })
+
+      setIsSaving(false)
+      setSaved(true)
+
+      // Hide "Saved" after a few seconds
+      setTimeout(() => setSaved(false), 5000)
     }, 1000)
 
     return () => clearTimeout(timer)
-  }, [content, custom_invitation_text, election_id, isInitialized])
+  }, [content, election_id, custom_invitation_text])
 
-  const applyFormat = (command: string, value?: string) => {
-    document.execCommand(command, false, value)
-    editorRef.current?.focus()
+  const insertMarkdown = (before: string, after: string = '', placeholder: string = '') => {
+    const textarea = textareaRef.current
+    if (!textarea) return
+
+    const start = textarea.selectionStart
+    const end = textarea.selectionEnd
+    const selectedText = content.substring(start, end)
+    const textToInsert = selectedText || placeholder
+
+    const newContent = content.substring(0, start) + before + textToInsert + after + content.substring(end)
+
+    setContent(newContent)
+
+    // Focus back to textarea and set cursor position
+    setTimeout(() => {
+      textarea.focus()
+      const newCursorPos = start + before.length + textToInsert.length
+      textarea.setSelectionRange(newCursorPos, newCursorPos)
+    }, 0)
   }
 
   const insertLink = () => {
     const url = prompt('Enter URL:')
-    if (url) applyFormat('createLink', url)
+    if (url) insertMarkdown('[', `](${url})`, 'link text')
   }
 
   return (
@@ -114,52 +118,51 @@ export const CustomInvitationEditor = () => {
           <div className="flex gap-1 p-2 bg-gray-50 border-b border-gray-200">
             <ToolbarButton
               className="font-semibold"
-              onClick={() => applyFormat('formatBlock', '<h2>')}
+              onClick={() => insertMarkdown('## ', '', 'Heading')}
               tooltip="Heading"
             >
               H
             </ToolbarButton>
-            <ToolbarButton className="font-bold" onClick={() => applyFormat('bold')} tooltip="Bold">
+            <ToolbarButton className="font-bold" onClick={() => insertMarkdown('**', '**', 'bold text')} tooltip="Bold">
               B
             </ToolbarButton>
-            <ToolbarButton className="italic" onClick={() => applyFormat('italic')} tooltip="Italic">
+            <ToolbarButton className="italic" onClick={() => insertMarkdown('*', '*', 'italic text')} tooltip="Italic">
               I
             </ToolbarButton>
-            <ToolbarButton onClick={() => applyFormat('insertUnorderedList')} tooltip="Bullet List">
+            <ToolbarButton onClick={() => insertMarkdown('- ', '', 'list item')} tooltip="Bullet List">
               <UnorderedListOutlined />
             </ToolbarButton>
             <ToolbarButton onClick={insertLink} tooltip="Link">
               <LinkOutlined />
             </ToolbarButton>
-            <ToolbarButton onClick={() => applyFormat('insertOrderedList')} tooltip="Numbered List">
+            <ToolbarButton onClick={() => insertMarkdown('1. ', '', 'list item')} tooltip="Numbered List">
               <OrderedListOutlined />
             </ToolbarButton>
           </div>
 
           {/* Editor Area */}
-          <div
-            className="p-4 min-h-[250px] max-h-[400px] overflow-y-auto outline-none bg-white text-gray-800"
-            contentEditable
-            onInput={() => {
-              // Trigger save by updating content state
-              if (editorRef.current) {
-                setContent(editorRef.current.innerHTML)
-              }
-            }}
-            ref={editorRef}
+          <textarea
+            className="w-full p-4 min-h-[250px] max-h-[400px] resize-y outline-none bg-white text-gray-800 border-0"
+            onChange={(e) => setContent(e.target.value)}
+            placeholder="Enter your custom invitation text using markdown formatting..."
+            ref={textareaRef}
             style={{ fontSize: '14px', lineHeight: '1.6' }}
+            value={content}
           />
 
           {/* Footer */}
-          <div className="flex justify-end items-center gap-2 px-4 py-2.5 text-sm border-t border-gray-200 bg-gray-50">
-            {saved && <span className="italic text-gray-500">saved.</span>}
-            {isSaving && <span className="italic text-gray-400">saving...</span>}
-            <span className="text-gray-600">preview:</span>
-            <a className="text-blue-600 cursor-pointer hover:underline" href={`/election/${election_id}`}>
-              ballot
-            </a>
-            <span className="text-gray-500">,</span>
-            <a className="text-blue-600 cursor-pointer hover:underline">email</a>
+          <div className="flex justify-between items-center px-4 py-2.5 text-sm border-t border-gray-200 bg-gray-50">
+            <div className="flex gap-2 items-center">
+              {isSaving && <span className="italic text-gray-400">saving...</span>}
+              {saved && <span className="italic text-gray-500">saved.</span>}
+
+              <span className="text-gray-600">preview:</span>
+              <a className="text-blue-600 cursor-pointer hover:underline" href={`/election/${election_id}`}>
+                ballot
+              </a>
+              <span className="text-gray-500">,</span>
+              <a className="text-blue-600 cursor-pointer hover:underline">email</a>
+            </div>
           </div>
         </div>
       )}
