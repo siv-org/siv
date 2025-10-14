@@ -108,9 +108,9 @@ export const CustomInvitationEditor = () => {
 
       {/* Editor Content */}
       {isExpanded && (
-        <div className="bg-white rounded-md border border-gray-300 shadow-sm">
+        <div className="rounded border border-gray-300 border-solid shadow-sm">
           {/* Toolbar */}
-          <div className="flex gap-1 p-2 bg-gray-50 border-b border-gray-200">
+          <div className="flex gap-1 p-2 bg-gray-50">
             <ToolbarButton
               className="font-semibold"
               onClick={() => insertMarkdown('## ', '', 'Heading')}
