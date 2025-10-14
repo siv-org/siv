@@ -1,7 +1,7 @@
 import { LinkOutlined, OrderedListOutlined, UnorderedListOutlined } from '@ant-design/icons'
 import { useEffect, useRef, useState } from 'react'
+import { api } from 'src/api-helper'
 
-import { api } from '../../api-helper'
 import { revalidate, useStored } from '../useStored'
 
 interface ToolbarButtonProps {
