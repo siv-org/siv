@@ -5,22 +5,25 @@ import { State } from './vote-state'
 export const Instructions = ({ state }: { state: State }) => (
   <>
     {state.custom_invitation_text && (
-      <div className="p-4 mb-6 bg-blue-50 rounded-r-lg border-0 border-l-4 border-blue-200 border-solid shadow-sm">
-        <h3 className="font-semibold">From {state.election_manager}:</h3>
-        <div className="font-medium leading-relaxed text-gray-700">
-          <ReactMarkdown
-            components={{
-              a: ({ children, href, ...props }) => (
-                <a href={href} rel="noreferrer" target="_blank" {...props}>
-                  {children}
-                </a>
-              ),
-            }}
-          >
-            {state.custom_invitation_text}
-          </ReactMarkdown>
+      <>
+        <h3 className="font-semibold">Election created by {state.election_manager}:</h3>
+
+        <div className="p-4 mb-6 rounded-r-lg border-0 border-l-4 border-blue-100 border-solid shadow-sm bg-blue-50/20">
+          <div className="font-medium leading-relaxed text-gray-700">
+            <ReactMarkdown
+              components={{
+                a: ({ children, href, ...props }) => (
+                  <a href={href} rel="noreferrer" target="_blank" {...props}>
+                    {children}
+                  </a>
+                ),
+              }}
+            >
+              {state.custom_invitation_text}
+            </ReactMarkdown>
+          </div>
         </div>
-      </div>
+      </>
     )}
 
     <p>
