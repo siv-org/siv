@@ -1,6 +1,4 @@
-import { LinkOutlined } from '@ant-design/icons'
-import { UnorderedListOutlined } from '@ant-design/icons'
-import { OrderedListOutlined } from '@ant-design/icons'
+import { LinkOutlined, OrderedListOutlined, UnorderedListOutlined } from '@ant-design/icons'
 import { useEffect, useRef, useState } from 'react'
 
 import { api } from '../../api-helper'
