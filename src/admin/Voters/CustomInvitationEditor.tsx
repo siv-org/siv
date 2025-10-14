@@ -161,7 +161,12 @@ export const CustomInvitationEditor = () => {
               <span className="text-gray-600">
                 <span className="text-xs">🔍</span> preview:{' '}
               </span>
-              <a className="text-blue-600 cursor-pointer hover:underline" href={`/election/${election_id}`}>
+              <a
+                className="text-blue-600 cursor-pointer hover:underline"
+                href={`/election/${election_id}/vote?auth=preview`}
+                rel="noreferrer"
+                target="_blank"
+              >
                 ballot
               </a>
               <span className="text-gray-500">, </span>
