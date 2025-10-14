@@ -8,7 +8,17 @@ export const Instructions = ({ state }: { state: State }) => (
       <div className="p-4 mb-6 bg-blue-50 rounded-r-lg border-0 border-l-4 border-blue-200 border-solid shadow-sm">
         <h3 className="font-semibold">From {state.election_manager}:</h3>
         <div className="font-medium leading-relaxed text-gray-700">
-          <ReactMarkdown>{state.custom_invitation_text}</ReactMarkdown>
+          <ReactMarkdown
+            components={{
+              a: ({ children, href, ...props }) => (
+                <a href={href} rel="noreferrer" target="_blank" {...props}>
+                  {children}
+                </a>
+              ),
+            }}
+          >
+            {state.custom_invitation_text}
+          </ReactMarkdown>
         </div>
       </div>
     )}
