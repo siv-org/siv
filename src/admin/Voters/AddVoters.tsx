@@ -4,6 +4,7 @@ import { api } from '../../api-helper'
 import { SaveButton } from '../SaveButton'
 import { revalidate, useStored } from '../useStored'
 import { AddVoterTextarea } from './AddVotersTextarea'
+import { CustomInvitationEditor } from './CustomInvitationEditor'
 import { DuplicatesNotAdded } from './DuplicatesNotAdded'
 import { ExistingVoters } from './ExistingVoters'
 import { PrivacyProtectorsWarning } from './PrivacyProtectorsWarning'
@@ -14,6 +15,7 @@ import { ToggleShareableLink } from './ToggleShareableLink'
 export const AddVoters = () => {
   const [new_voters, set_new_voters] = useState('')
   const [removedDuplicates, setRemovedDuplicates] = useState<string[]>([])
+  const [invitationCollapsed, setInvitationCollapsed] = useState(false)
   const { election_id } = useStored()
 
   return (
@@ -47,6 +49,11 @@ export const AddVoters = () => {
           }}
         />
       )}
+
+      <CustomInvitationEditor
+        isCollapsed={invitationCollapsed}
+        onToggle={() => setInvitationCollapsed(!invitationCollapsed)}
+      />
 
       <ToggleShareableLink />
       <RequestEsignatures />

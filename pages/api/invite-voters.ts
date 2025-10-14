@@ -9,12 +9,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => res.status(4
 export const buildSubject = (election_title?: string) => `Vote Invitation${election_title ? `: ${election_title}` : ''}`
 
 export const send_invitation_email = ({
+  custom_text,
   from,
   link,
   subject_line,
   tag,
   voter,
 }: {
+  custom_text?: string
   from?: string
   link: string
   subject_line: string
@@ -32,16 +34,21 @@ export const send_invitation_email = ({
   // Make sure auth_token is well formed
   if (!/auth=(\d|[a-f]){10}$/.test(link)) throw `Blocking sending malformed auth invite ${link} to ${voter}`
 
+  // Use custom text if provided, otherwise use default
+  const emailBody = custom_text
+    ? `${custom_text}<br/><br/><a href="${link}" style="font-weight: bold;">${link}</a><br/><br/><em style="font-size:13px; opacity: 0.6;">This link is unique for you. Don't share it with anyone.</em>`
+    : `<h2 style="margin: 0">${subject_line}</h2>
+Click here to securely cast your vote: 
+<a href="${link}" style="font-weight: bold;">${link}</a> 
+
+<em style="font-size:13px; opacity: 0.6;">This link is unique for you. Don't share it with anyone.</em>`
+
   return sendEmail({
     from,
     preheader: `Click here to securely cast your vote: ${link}`,
     recipient: voter,
     subject: subject_line,
     tag,
-    text: `<h2 style="margin: 0">${subject_line}</h2>
-Click here to securely cast your vote: 
-<a href="${link}" style="font-weight: bold;">${link}</a> 
-
-<em style="font-size:13px; opacity: 0.6;">This link is unique for you. Don't share it with anyone.</em>`,
+    text: emailBody,
   })
 }
