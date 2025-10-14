@@ -1,5 +1,14 @@
-export const Instructions = () => (
+import { State } from './vote-state'
+
+export const Instructions = ({ state }: { state: State }) => (
   <>
+    {state.custom_invitation_text && (
+      <div className="p-4 mb-6 bg-blue-50 rounded-r-lg border-0 border-l-4 border-blue-200 border-solid shadow-sm">
+        <h3 className="font-semibold">From {state.election_manager}:</h3>
+        <p className="font-medium leading-relaxed text-gray-700">{state.custom_invitation_text}</p>
+      </div>
+    )}
+
     <p>
       <b>Instructions:</b> Mark your selections then press <em>Submit</em> at the bottom.
     </p>
