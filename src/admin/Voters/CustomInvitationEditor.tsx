@@ -33,7 +33,7 @@ const ToolbarButton = ({
 }
 
 export const CustomInvitationEditor = () => {
-  const [isExpanded, setIsExpanded] = useState(true)
+  const [isExpanded, setIsExpanded] = useState(false)
   const { custom_invitation_text, election_id } = useStored()
   const [content, setContent] = useState(custom_invitation_text || '')
   const [saved, setSaved] = useState(false)
