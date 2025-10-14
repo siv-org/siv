@@ -4,21 +4,27 @@ import { api } from 'src/api-helper'
 
 import { revalidate, useStored } from '../useStored'
 
-interface ToolbarButtonProps {
+const ToolbarButton = ({
+  children,
+  className = '',
+  onClick,
+  tooltip,
+}: {
   children: React.ReactNode
   className?: string
   onClick: () => void
   tooltip: string
-}
-
-const ToolbarButton = ({ children, className = '', onClick, tooltip }: ToolbarButtonProps) => {
+}) => {
   return (
     <button
       className={`relative px-2.5 py-1 text-sm border-0 bg-transparent hover:bg-gray-200 rounded text-gray-700 group ${className}`}
       onClick={onClick}
       type="button"
     >
+      {/* Icon */}
       {children}
+
+      {/* Tooltip */}
       <span className="absolute bottom-full left-1/2 px-2 py-1 mb-2 text-xs text-white whitespace-nowrap bg-gray-800 rounded opacity-0 transition-opacity -translate-x-1/2 pointer-events-none group-hover:opacity-100">
         {tooltip}
       </span>
