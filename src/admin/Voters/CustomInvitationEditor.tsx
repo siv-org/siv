@@ -124,9 +124,6 @@ export const CustomInvitationEditor = () => {
             <ToolbarButton className="italic" onClick={() => insertMarkdown('*', '*', 'italic text')} tooltip="Italic">
               I
             </ToolbarButton>
-            <ToolbarButton onClick={() => insertMarkdown('- ', '', 'list item')} tooltip="Bullet List">
-              <UnorderedListOutlined />
-            </ToolbarButton>
             <ToolbarButton
               onClick={() => {
                 const url = prompt('Enter URL:')
@@ -135,6 +132,9 @@ export const CustomInvitationEditor = () => {
               tooltip="Link"
             >
               <LinkOutlined />
+            </ToolbarButton>
+            <ToolbarButton onClick={() => insertMarkdown('- ', '', 'list item')} tooltip="Bullet List">
+              <UnorderedListOutlined />
             </ToolbarButton>
             <ToolbarButton onClick={() => insertMarkdown('1. ', '', 'list item')} tooltip="Numbered List">
               <OrderedListOutlined />
