@@ -143,11 +143,10 @@ export const CustomInvitationEditor = () => {
 
           {/* Editor Area */}
           <textarea
-            className="w-full p-4 min-h-[250px] max-h-[400px] resize-y outline-none bg-white text-gray-800 border-0"
+            className="w-full p-4 min-h-[250px] resize-y outline-none bg-white text-gray-800 border-0 text-sm"
             onChange={(e) => setContent(e.target.value)}
-            placeholder="Enter your custom invitation text using markdown formatting..."
+            placeholder="Enter your custom invitation text..."
             ref={textareaRef}
-            style={{ fontSize: '14px', lineHeight: '1.6' }}
             value={content}
           />
 
