@@ -15,7 +15,6 @@ import { ToggleShareableLink } from './ToggleShareableLink'
 export const AddVoters = () => {
   const [new_voters, set_new_voters] = useState('')
   const [removedDuplicates, setRemovedDuplicates] = useState<string[]>([])
-  const [invitationCollapsed, setInvitationCollapsed] = useState(false)
   const { election_id } = useStored()
 
   return (
@@ -50,10 +49,7 @@ export const AddVoters = () => {
         />
       )}
 
-      <CustomInvitationEditor
-        isCollapsed={invitationCollapsed}
-        onToggle={() => setInvitationCollapsed(!invitationCollapsed)}
-      />
+      <CustomInvitationEditor />
 
       <ToggleShareableLink />
       <RequestEsignatures />

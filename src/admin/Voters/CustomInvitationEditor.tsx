@@ -6,11 +6,6 @@ import { useEffect, useRef, useState } from 'react'
 import { api } from '../../api-helper'
 import { revalidate, useStored } from '../useStored'
 
-interface CustomInvitationEditorProps {
-  isCollapsed: boolean
-  onToggle: () => void
-}
-
 interface ToolbarButtonProps {
   children: React.ReactNode
   className?: string
@@ -33,7 +28,8 @@ const ToolbarButton = ({ children, className = '', onClick, tooltip }: ToolbarBu
   )
 }
 
-export const CustomInvitationEditor = ({ isCollapsed, onToggle }: CustomInvitationEditorProps) => {
+export const CustomInvitationEditor = () => {
+  const [isCollapsed, setIsCollapsed] = useState(false)
   const { custom_invitation_text, election_id } = useStored()
   const [content, setContent] = useState(custom_invitation_text || '')
   const [saved, setSaved] = useState(false)
@@ -92,9 +88,7 @@ export const CustomInvitationEditor = ({ isCollapsed, onToggle }: CustomInvitati
 
   const insertLink = () => {
     const url = prompt('Enter URL:')
-    if (url) {
-      applyFormat('createLink', url)
-    }
+    if (url) applyFormat('createLink', url)
   }
 
   return (
@@ -102,7 +96,7 @@ export const CustomInvitationEditor = ({ isCollapsed, onToggle }: CustomInvitati
       {/* Collapsible Header */}
       <button
         className="flex gap-2 items-center px-0 py-2 text-base font-normal bg-transparent border-0 cursor-pointer hover:opacity-70"
-        onClick={onToggle}
+        onClick={() => setIsCollapsed(!isCollapsed)}
         type="button"
       >
         <span className="text-lg">{isCollapsed ? '▶' : '▼'}</span>
