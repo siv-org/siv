@@ -33,7 +33,7 @@ const ToolbarButton = ({
 }
 
 export const CustomInvitationEditor = () => {
-  const [isCollapsed, setIsCollapsed] = useState(false)
+  const [isExpanded, setIsExpanded] = useState(true)
   const { custom_invitation_text, election_id } = useStored()
   const [content, setContent] = useState(custom_invitation_text || '')
   const [saved, setSaved] = useState(false)
@@ -100,15 +100,15 @@ export const CustomInvitationEditor = () => {
       {/* Collapsible Header */}
       <button
         className="flex gap-2 items-center px-0 py-2 text-base font-normal bg-transparent border-0 cursor-pointer hover:opacity-70"
-        onClick={() => setIsCollapsed(!isCollapsed)}
+        onClick={() => setIsExpanded(!isExpanded)}
         type="button"
       >
-        <span className="text-lg">{isCollapsed ? '▶' : '▼'}</span>
+        <span className="text-lg">{isExpanded ? '▼' : '▶'}</span>
         <span className="font-semibold">Customize invitation</span>
       </button>
 
       {/* Editor Content */}
-      {!isCollapsed && (
+      {isExpanded && (
         <div className="bg-white rounded-md border border-gray-300 shadow-sm">
           {/* Toolbar */}
           <div className="flex gap-1 p-2 bg-gray-50 border-b border-gray-200">
