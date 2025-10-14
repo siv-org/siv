@@ -94,21 +94,16 @@ export const CustomInvitationEditor = () => {
     }, 0)
   }
 
-  const insertLink = () => {
-    const url = prompt('Enter URL:')
-    if (url) insertMarkdown('[', `](${url})`, 'link text')
-  }
-
   return (
-    <div className="my-6">
+    <div className="-mt-6 mb-6">
       {/* Collapsible Header */}
       <button
-        className="flex gap-2 items-center px-0 py-2 text-base font-normal bg-transparent border-0 cursor-pointer hover:opacity-70"
+        className="flex gap-2 items-center px-0 py-2 text-sm bg-transparent border-0 cursor-pointer hover:opacity-80"
         onClick={() => setIsExpanded(!isExpanded)}
         type="button"
       >
-        <span className="text-lg">{isExpanded ? '▼' : '▶'}</span>
-        <span className="font-semibold">Customize invitation</span>
+        <span>{isExpanded ? '▼' : '▶'}</span>
+        <span>Customize invitation</span>
       </button>
 
       {/* Editor Content */}
@@ -132,7 +127,13 @@ export const CustomInvitationEditor = () => {
             <ToolbarButton onClick={() => insertMarkdown('- ', '', 'list item')} tooltip="Bullet List">
               <UnorderedListOutlined />
             </ToolbarButton>
-            <ToolbarButton onClick={insertLink} tooltip="Link">
+            <ToolbarButton
+              onClick={() => {
+                const url = prompt('Enter URL:')
+                if (url) insertMarkdown('[', `](${url})`, 'link text')
+              }}
+              tooltip="Link"
+            >
               <LinkOutlined />
             </ToolbarButton>
             <ToolbarButton onClick={() => insertMarkdown('1. ', '', 'list item')} tooltip="Numbered List">
