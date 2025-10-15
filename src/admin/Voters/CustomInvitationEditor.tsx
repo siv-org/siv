@@ -2,6 +2,7 @@ import { LinkOutlined, OrderedListOutlined, UnorderedListOutlined } from '@ant-d
 import { useEffect, useRef, useState } from 'react'
 import { api } from 'src/api-helper'
 
+import { useUser } from '../auth'
 import { useStored } from '../useStored'
 
 const ToolbarButton = ({
@@ -34,6 +35,7 @@ const ToolbarButton = ({
 
 export const CustomInvitationEditor = () => {
   const { custom_invitation_text, election_id } = useStored()
+  const { user } = useUser()
   const [isExpanded, setIsExpanded] = useState(false)
   const [content, setContent] = useState('')
   const [saved, setSaved] = useState(false)
@@ -170,7 +172,19 @@ export const CustomInvitationEditor = () => {
                 ballot
               </a>
               <span className="text-gray-500">, </span>
-              <a className="text-blue-600 cursor-pointer hover:underline">email</a>
+              <a
+                className="text-blue-600 cursor-pointer hover:underline"
+                onClick={(e) => {
+                  e.preventDefault()
+                  const confirmed = confirm(`Would you like to receive a mock email invitation at ${user?.email}?`)
+                  if (confirmed) {
+                    // TODO: Implement sending mock email invitation
+                    alert('Mock email invitation would be sent to ' + user?.email)
+                  }
+                }}
+              >
+                email
+              </a>
             </div>
           </div>
         </div>
