@@ -46,8 +46,7 @@ export const send_invitation_email = async ({
     `<h2 style="margin: 0">${subject_line}</h2>` +
     (custom_text ? `${(await marked(custom_text)).replaceAll(/\n/g, '')}<br /><br /><hr /><br />` : '') +
     `<div style="text-align: center; margin: 32px 0 28px 0;">
-      <div style="font-size: 15px; margin-bottom: 18px; letter-spacing: 0.3px;">Click here to securely cast your vote:</div>
-      <a href="${link}" style="font-weight: 500; color: #0066cc; text-decoration: underline; font-size: 16px; letter-spacing: 0.2px; word-break: break-all; line-height: 1.6;">${link}</a>
+      <div style="font-weight: 600; font-size: 15px; margin-bottom: 5px; letter-spacing: 0.4px;">Click here to securely cast your vote:</div><a href="${link}" style="font-weight: 500; color: #0066cc; text-decoration: underline; font-size: 16px; letter-spacing: 0.2px; word-break: break-all; line-height: 1.6;">${link}</a>
     </div>
     <div style="text-align: center; margin-top: 12px;">
       <em style="font-size: 13px; opacity: 0.6; color: #666; font-style: italic;">This link is unique for you. Don't share it with anyone.</em>
