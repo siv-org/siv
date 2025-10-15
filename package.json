@@ -65,6 +65,7 @@
     "jsonwebtoken": "^8.5.1",
     "lodash-es": "^4.17.15",
     "mailgun-js": "^0.22.0",
+    "marked": "^16.4.0",
     "moment": "^2.29.1",
     "next": "^13.5.11",
     "patch-package": "^6.4.7",

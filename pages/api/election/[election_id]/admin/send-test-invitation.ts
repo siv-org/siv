@@ -33,7 +33,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       custom_text: custom_invitation_text,
       from: election_manager,
       link: testLink,
-      subject_line: `[TEST] ${buildSubject(election_title)}`,
+      subject_line: `[TEST ${new Date().toTimeString().slice(0, 5)}] ${buildSubject(election_title)}`,
       tag: `test-invite-${election_id}`,
       voter: jwt.email, // Send to the admin who requested the test
     })
