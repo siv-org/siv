@@ -174,12 +174,24 @@ export const CustomInvitationEditor = () => {
               <span className="text-gray-500">, </span>
               <a
                 className="text-blue-600 cursor-pointer hover:underline"
-                onClick={(e) => {
+                onClick={async (e) => {
                   e.preventDefault()
                   const confirmed = confirm(`Would you like to receive a mock email invitation at ${user?.email}?`)
                   if (confirmed) {
-                    // TODO: Implement sending mock email invitation
-                    alert('Mock email invitation would be sent to ' + user?.email)
+                    try {
+                      const response = await api(`election/${election_id}/admin/send-test-invitation`)
+
+                      if (response.ok) {
+                        const result = await response.json()
+                        alert(`Test invitation email sent successfully to ${result.recipient}`)
+                      } else {
+                        const error = await response.json()
+                        alert(`Failed to send test email: ${error.error || 'Unknown error'}`)
+                      }
+                    } catch (error) {
+                      console.error('Error sending test invitation:', error)
+                      alert('Failed to send test email. Please try again.')
+                    }
                   }
                 }}
               >
