@@ -37,7 +37,7 @@ export const send_invitation_email = async ({
 
   // Use custom text if provided, otherwise use default
   const emailBody =
-    `<h2 style="margin: 0;">${subject_line}</h2>` +
+    `<h2 style="margin: 0;">${subject_line.replace(/^\[TEST \d\d:\d\d\] /, '')}</h2>` +
     (custom_text?.trim()
       ? `${(await marked(custom_text)).replaceAll(
           /\n/g,
