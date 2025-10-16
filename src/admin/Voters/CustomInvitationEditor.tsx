@@ -65,6 +65,7 @@ export const CustomInvitationEditor = () => {
         custom_invitation_text: content,
       }).catch((error) => {
         console.error('Failed to save invitation text:', error)
+        alert('Failed to save invitation text: ' + error.message)
       })
 
       setIsSaving(false)
