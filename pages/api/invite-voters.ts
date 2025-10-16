@@ -35,12 +35,6 @@ export const send_invitation_email = async ({
   // Make sure auth_token is well formed
   if (!/auth=(\d|[a-f]){10}$/.test(link)) throw `Blocking sending malformed auth invite ${link} to ${voter}`
 
-  // const emailBody = custom_text
-  // ? `${marked(
-  //     custom_text,
-  //   )}<br/><br/><a href="${link}" style="font-weight: bold;">${link}</a><br/><br/><em style="font-size:13px; opacity: 0.6;">This link is unique for you. Don't share it with anyone.</em>`
-  // :
-
   // Use custom text if provided, otherwise use default
   const emailBody =
     `<h2 style="margin: 0">${subject_line}</h2>` +
