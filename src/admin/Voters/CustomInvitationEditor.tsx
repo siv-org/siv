@@ -1,6 +1,8 @@
 import { LinkOutlined, OrderedListOutlined, UnorderedListOutlined } from '@ant-design/icons'
 import { useEffect, useRef, useState } from 'react'
 import { api } from 'src/api-helper'
+import { bytesToHex } from 'src/crypto/bytes-to-hex'
+import { sha256 } from 'src/crypto/sha256'
 
 import { useUser } from '../auth'
 import { useStored } from '../useStored'
@@ -95,6 +97,9 @@ export const CustomInvitationEditor = () => {
       textarea.setSelectionRange(newCursorPos, newCursorPos)
     }, 0)
   }
+
+  const hasFeatureAccess = useFeatureAccess(user?.email)
+  if (!hasFeatureAccess) return null
 
   return (
     <div className="-mt-6 mb-6">
@@ -203,4 +208,25 @@ export const CustomInvitationEditor = () => {
       )}
     </div>
   )
+}
+
+function useFeatureAccess(email: string) {
+  const [hasAccess, setHasAccess] = useState(false)
+
+  useEffect(() => {
+    async function checkAccess() {
+      if (!email) return
+      const hash = bytesToHex(new Uint8Array(await sha256(email + 'saltedsdjfksj'))).slice(0, 15)
+      // alert('hash: ' + hash)
+      if (hash in allowedUsers) return setHasAccess(true)
+    }
+    checkAccess()
+  }, [email])
+
+  return hasAccess
+}
+
+const allowedUsers = {
+  '8044b24d7e96606': 'EHZ',
+  d12bc8d54668685: 'A',
 }
