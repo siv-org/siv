@@ -8,6 +8,7 @@ import { QueueLog } from './invite-voters'
 export type AdminData = {
   ballot_design?: string
   ballot_design_finalized?: boolean
+  custom_invitation_text?: string
   election_id?: string
   election_manager?: string
   election_title?: string
@@ -87,6 +88,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const {
     ballot_design,
     ballot_design_finalized,
+    custom_invitation_text,
     election_manager,
     election_title,
     esignature_requested,
@@ -99,6 +101,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   } as {
     ballot_design?: string
     ballot_design_finalized?: boolean
+    custom_invitation_text?: string
     election_manager?: string
     election_title?: string
     esignature_requested?: boolean
@@ -220,6 +223,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   return res.status(200).send({
     ballot_design,
     ballot_design_finalized,
+    custom_invitation_text,
     election_id,
     election_manager,
     election_title,

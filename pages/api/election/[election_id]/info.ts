@@ -5,7 +5,9 @@ import { Item } from 'src/vote/storeElectionInfo'
 export type ElectionInfo = {
   ballot_design?: Item[]
   ballot_design_finalized?: boolean
+  custom_invitation_text?: string
   election_homepage?: string
+  election_manager?: string
   election_title?: string
   esignature_requested?: boolean
   g?: string
@@ -47,7 +49,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const {
     ballot_design,
     ballot_design_finalized,
+    custom_invitation_text,
     election_homepage,
+    election_manager,
     election_title,
     esignature_requested,
     g,
@@ -63,7 +67,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const info: ElectionInfo = {
     ballot_design: ballot_design ? JSON.parse(ballot_design) : undefined,
     ballot_design_finalized,
+    custom_invitation_text,
     election_homepage,
+    election_manager,
     election_title,
     esignature_requested,
     g,
