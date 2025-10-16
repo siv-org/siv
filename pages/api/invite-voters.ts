@@ -1,3 +1,4 @@
+import DOMPurify from 'isomorphic-dompurify'
 import { marked } from 'marked'
 import { NextApiRequest, NextApiResponse } from 'next'
 
@@ -39,9 +40,8 @@ export const send_invitation_email = async ({
   const emailBody =
     `<h2 style="margin: 0;">${subject_line.replace(/^\[TEST \d\d:\d\d\] /, '')}</h2>` +
     (custom_text?.trim()
-      ? `${(await marked(custom_text)).replaceAll(
-          /\n/g,
-          '',
+      ? `${DOMPurify.sanitize(
+          (await marked(custom_text)).replaceAll(/\n/g, ''),
         )}<br /><br /><hr style="border: none; border-top: 2px solid #e0e0e0; width: 50%; margin: 15px auto;" /><br />`
       : '') +
     `<div style="font-weight: 500; font-size: 16px; margin-top: 15px; margin-bottom: 5px; letter-spacing: 0.4px;">Click here to securely cast your vote:</div><a href="${link}" style="font-weight: 600; color: #0066cc; text-decoration: underline; font-size: 16px; letter-spacing: 0.2px; word-break: break-all; line-height: 1.6;">${link}</a>
