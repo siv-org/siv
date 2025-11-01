@@ -10,6 +10,8 @@ import { useLocalStorageReducer } from './useLocalStorage'
 export type State = {
   ballot_design?: Item[]
   ballot_design_finalized?: boolean
+  custom_invitation_text?: string
+  election_manager?: string
   election_title?: string
   encoded: Map
   encrypted: Record<string, CipherStrings>

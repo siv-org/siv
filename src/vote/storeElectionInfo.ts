@@ -38,6 +38,8 @@ export function storeElectionInfo(dispatch: Dispatch<Partial<State>>, election_i
       const {
         ballot_design,
         ballot_design_finalized,
+        custom_invitation_text,
+        election_manager,
         election_title,
         esignature_requested,
         privacy_protectors_statements,
@@ -48,6 +50,8 @@ export function storeElectionInfo(dispatch: Dispatch<Partial<State>>, election_i
       dispatch({
         ballot_design,
         ballot_design_finalized,
+        custom_invitation_text,
+        election_manager,
         election_title,
         esignature_requested,
         privacy_protectors_statements,

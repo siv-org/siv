@@ -4,6 +4,7 @@ import { api } from '../../api-helper'
 import { SaveButton } from '../SaveButton'
 import { revalidate, useStored } from '../useStored'
 import { AddVoterTextarea } from './AddVotersTextarea'
+import { CustomInvitationEditor } from './CustomInvitationEditor'
 import { DuplicatesNotAdded } from './DuplicatesNotAdded'
 import { ExistingVoters } from './ExistingVoters'
 import { PrivacyProtectorsWarning } from './PrivacyProtectorsWarning'
@@ -47,6 +48,8 @@ export const AddVoters = () => {
           }}
         />
       )}
+
+      <CustomInvitationEditor />
 
       <ToggleShareableLink />
       <RequestEsignatures />
