@@ -28,7 +28,7 @@ export const HeaderBar = () => {
           <WhiteButton className="!px-4 !py-2 text-sm !rounded-md" href="https://hack.siv.org" icon={Code}>
             Hack SIV
           </WhiteButton>
-          <BlackButton className="!px-4 !py-2 text-sm !rounded-md" href="https://siv.org/compare" icon={LogIn}>
+          <BlackButton className="!px-4 !py-2 text-sm !rounded-md" href="https://siv.org/login" icon={LogIn}>
             Log In
           </BlackButton>
         </div>
