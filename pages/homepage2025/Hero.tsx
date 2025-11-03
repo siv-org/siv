@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
-import { BadgeCheck, BookOpen, Lock, QrCode, Shield } from 'lucide-react'
+import { BookOpen, CircleUserRound, QrCode } from 'lucide-react'
+import Image from 'next/image'
 import React from 'react'
 
 // Simple container
@@ -18,13 +19,21 @@ const Card = ({ children, className = '' }: { children: React.ReactNode; classNa
 )
 
 const features = [
-  { desc: 'Designed to withstand nation‑state attacks', icon: Shield, title: 'Zero‑trust digital voting' },
   {
-    desc: 'Anyone can verify whether an election was conducted fairly',
-    icon: BadgeCheck,
-    title: 'Voter‑verifiable results',
+    desc: 'Only eligible registered voters can vote, and only once.',
+    icon: CircleUserRound,
+    title: 'One Person, One Vote',
   },
-  { desc: 'Strong encryption with private selections', icon: Lock, title: 'Cryptographic privacy' },
+  {
+    desc: 'Vote from own device, without needing to install anything.',
+    image: '/homepage2025/devices.png',
+    title: 'Vote in Seconds',
+  },
+  {
+    desc: 'No one can see how you vote, incl. servers & election admins.',
+    image: '/homepage2025/privacy.png',
+    title: 'Cryptographic Privacy',
+  },
 ]
 
 export const Hero = () => {
@@ -62,7 +71,13 @@ export const Hero = () => {
           <div className="grid gap-4 sm:grid-cols-3">
             {features.map((f, i) => (
               <Card className="text-center" key={i}>
-                <f.icon className="mx-auto w-8 h-8" />
+                <div className="flex justify-center items-center mx-auto w-12 h-12">
+                  {f.icon ? (
+                    <f.icon className="w-8 h-8" />
+                  ) : (
+                    <Image alt="" className="object-contain w-12 h-12" height={48} src={f.image} width={48} />
+                  )}
+                </div>
                 <h3 className="mt-3 font-semibold">{f.title}</h3>
                 <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-300">{f.desc}</p>
               </Card>
