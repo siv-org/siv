@@ -26,15 +26,19 @@ export const BlackButton = ({
 
 export const WhiteButton = ({
   children,
+  className,
   href,
   icon: Icon,
 }: {
   children: React.ReactNode
+  className?: string
   href: string
   icon: React.ComponentType<{ className?: string }>
 }) => (
   <a
-    className="inline-flex gap-2 items-center px-6 py-4 text-base font-medium text-black no-underline bg-white rounded-xl border border-solid border-zinc-300 hover:bg-zinc-50"
+    className={`inline-flex gap-2 items-center px-6 py-4 text-base font-medium text-black no-underline bg-white rounded-xl border border-solid border-zinc-300 hover:bg-zinc-50 ${
+      className || ''
+    }`}
     href={href}
   >
     <Icon className="w-5 h-5 text-black" /> {children}

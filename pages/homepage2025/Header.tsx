@@ -1,7 +1,7 @@
-import { LogIn } from 'lucide-react'
+import { Code, LogIn } from 'lucide-react'
 import React from 'react'
 
-import { BlackButton } from './Buttons'
+import { BlackButton, WhiteButton } from './Buttons'
 
 export const HeaderBar = () => {
   return (
@@ -25,12 +25,9 @@ export const HeaderBar = () => {
           </a>
         </nav>
         <div className="flex gap-3 items-center">
-          <a
-            className="px-4 py-2 text-sm font-medium no-underline bg-white rounded-xl border text-zinc-900 dark:text-zinc-100 border-zinc-300 dark:border-zinc-700 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800"
-            href="https://hack.siv.org"
-          >
+          <WhiteButton className="!px-4 !py-2 text-sm !rounded-md" href="https://hack.siv.org" icon={Code}>
             Hack SIV
-          </a>
+          </WhiteButton>
           <BlackButton className="!px-4 !py-2 text-sm !rounded-md" href="https://siv.org/compare" icon={LogIn}>
             Log In
           </BlackButton>
