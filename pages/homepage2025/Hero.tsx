@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { BookOpen, CircleUserRound, QrCode } from 'lucide-react'
+import { CircleUserRound, ListTodo, QrCode } from 'lucide-react'
 import Image from 'next/image'
 import React from 'react'
 
@@ -50,11 +50,11 @@ export const Hero = () => {
             no advanced tech skills needed. Built to withstand nation‑state attacks.
           </p>
           <div className="flex flex-wrap gap-3 mt-8">
-            <BlackButton href="https://siv.org" icon={QrCode} id="demo">
-              Live Demo
+            <BlackButton href="https://siv.org/login" icon={ListTodo} id="demo">
+              Create Election
             </BlackButton>
-            <WhiteButton href="https://siv.org/whitepaper" icon={BookOpen}>
-              Learn more
+            <WhiteButton href="https://siv.org/login" icon={QrCode}>
+              Live Demo
             </WhiteButton>
           </div>
           <div className="flex gap-6 items-center mt-6">
