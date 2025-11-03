@@ -1,4 +1,4 @@
-import { ArrowUpRight } from 'lucide-react'
+import { LogIn } from 'lucide-react'
 import React from 'react'
 
 import { BlackButton } from './Buttons'
@@ -31,7 +31,7 @@ export const HeaderBar = () => {
           >
             Hack SIV
           </a>
-          <BlackButton className="!px-4 !py-2 text-sm" href="https://siv.org/compare" icon={ArrowUpRight}>
+          <BlackButton className="!px-4 !py-2 text-sm !rounded-md" href="https://siv.org/compare" icon={LogIn}>
             Log In
           </BlackButton>
         </div>
