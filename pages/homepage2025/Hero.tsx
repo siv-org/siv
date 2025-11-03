@@ -3,6 +3,8 @@ import { BookOpen, CircleUserRound, QrCode } from 'lucide-react'
 import Image from 'next/image'
 import React from 'react'
 
+import { BlackButton, WhiteButton } from './Buttons'
+
 // Simple container
 const Section = ({ children, className = '', id }: { children: React.ReactNode; className?: string; id?: string }) => (
   <section className={`relative py-16 md:py-24 ${className}`} id={id}>
@@ -48,19 +50,12 @@ export const Hero = () => {
             no advanced tech skills needed. Built to withstand nation‑state attacks.
           </p>
           <div className="flex flex-wrap gap-3 mt-8">
-            <a
-              className="inline-flex gap-2 items-center px-5 py-3 text-sm font-medium text-white rounded-xl bg-zinc-900 dark:bg-white dark:text-zinc-900 hover:opacity-90"
-              href="https://siv.org"
-              id="demo"
-            >
-              <QrCode className="w-4 h-4" /> Live Demo
-            </a>
-            <a
-              className="inline-flex gap-2 items-center px-5 py-3 text-sm font-medium rounded-xl border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800"
-              href="https://siv.org/whitepaper"
-            >
-              <BookOpen className="w-4 h-4" /> Learn more
-            </a>
+            <BlackButton href="https://siv.org" icon={QrCode} id="demo">
+              Live Demo
+            </BlackButton>
+            <WhiteButton href="https://siv.org/whitepaper" icon={BookOpen}>
+              Learn more
+            </WhiteButton>
           </div>
           <div className="flex gap-6 items-center mt-6">
             <div className="text-3xl font-extrabold md:text-4xl">30,000+</div>
