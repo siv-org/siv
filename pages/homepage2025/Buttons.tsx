@@ -12,7 +12,7 @@ export const BlackButton = ({
   id?: string
 }) => (
   <a
-    className="inline-flex gap-2 items-center px-6 py-4 font-medium text-white no-underline rounded-xl bg-zinc-900 dark:bg-white dark:text-zinc-900 hover:opacity-90"
+    className="inline-flex gap-2 items-center px-6 py-4 font-medium text-white no-underline rounded-xl bg-[#060067] dark:bg-white dark:text-zinc-900 hover:opacity-90"
     href={href}
     id={id}
   >
