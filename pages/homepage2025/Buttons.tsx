@@ -2,17 +2,21 @@ import React from 'react'
 
 export const BlackButton = ({
   children,
+  className,
   href,
   icon: Icon,
   id,
 }: {
   children: React.ReactNode
+  className?: string
   href: string
   icon: React.ComponentType<{ className?: string }>
   id?: string
 }) => (
   <a
-    className="inline-flex gap-2 items-center px-6 py-4 font-medium text-white no-underline rounded-xl bg-[#060067] dark:bg-white dark:text-zinc-900 hover:opacity-90"
+    className={`inline-flex gap-2 items-center px-6 py-4 font-medium text-white no-underline rounded-xl bg-[#060067] dark:bg-white dark:text-zinc-900 hover:opacity-90 ${
+      className || ''
+    }`}
     href={href}
     id={id}
   >
