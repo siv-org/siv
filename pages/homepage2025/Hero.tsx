@@ -51,7 +51,7 @@ export const Hero = () => {
 
       <div className="grid relative gap-10 items-center lg:grid-cols-2">
         <motion.div animate={{ opacity: 1, y: 0 }} initial={{ opacity: 0, y: 10 }} transition={{ duration: 0.5 }}>
-          <h1 className="text-4xl bg-gradient-to-r from-[#060067] via-[#1a0a8c] to-[#060067] bg-clip-text text-transparent tracking-tight md:text-6xl dark:from-indigo-400 dark:via-violet-300 dark:to-indigo-400">
+          <h1 className="text-4xl bg-gradient-to-r from-[#060067] via-[#1a0a8c] to-[#060067] bg-clip-text text-transparent tracking-tight leading-[1.15] pb-0.5 md:text-6xl md:leading-[1.15] dark:from-indigo-400 dark:via-violet-300 dark:to-indigo-400">
             Zero‑trust digital voting
           </h1>
           <p className="mt-4 max-w-2xl text-lg leading-relaxed md:text-xl text-zinc-700 dark:text-zinc-300">
