@@ -67,14 +67,14 @@ export const Hero = () => {
               Live Demo
             </WhiteButton>
           </div>
-          <div className="flex gap-6 items-center mt-10">
+          {/* <div className="flex gap-6 items-center mt-10">
             <div className="text-3xl font-extrabold bg-gradient-to-r from-[#060067] to-indigo-700 bg-clip-text text-transparent md:text-4xl dark:from-indigo-400 dark:to-violet-300">
               30,000+
             </div>
             <div className="text-zinc-700 dark:text-zinc-300">
               votes cast in binding elections, including for a US Member of Congress
             </div>
-          </div>
+          </div> */}
         </motion.div>
         <motion.div
           animate={{ opacity: 1, y: 0 }}
