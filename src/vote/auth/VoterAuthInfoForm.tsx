@@ -1,7 +1,7 @@
 import { TextField } from '@mui/material'
 import { validate as validateEmail } from 'email-validator'
 import { useRouter } from 'next/router'
-import { useRef, useState } from 'react'
+import { RefObject, useRef, useState } from 'react'
 import { OnClickButton } from 'src/_shared/Button'
 import { api } from 'src/api-helper'
 
@@ -19,38 +19,16 @@ export const VoterAuthInfoForm = () => {
   return (
     <section>
       <div className="flex flex-col mb-4 space-y-4 sm:flex-row sm:space-y-0 sm:space-x-3 row">
-        <TextField
-          autoFocus
-          InputLabelProps={{ style: { fontSize: 22 } }}
-          InputProps={{ style: { fontSize: 22 } }}
-          label="First Name"
-          onChange={(event) => setFirstName(event.target.value)}
-          style={{ flex: 1, fontSize: 20 }}
-          variant="outlined"
-        />
-        <TextField
-          InputLabelProps={{ style: { fontSize: 22 } }}
-          InputProps={{ style: { fontSize: 22 } }}
-          label="Last Name"
-          onChange={(event) => setLastName(event.target.value)}
-          style={{ flex: 1, fontSize: 20 }}
-          variant="outlined"
-        />
+        <Item autoFocus label="First Name" setter={setFirstName} />
+        <Item label="Last Name" setter={setLastName} />
       </div>
       <div className="flex mx-auto mb-4 sm:max-w-md">
-        <TextField
-          error={!!emailError}
-          helperText={emailError}
-          InputLabelProps={{ style: { fontSize: 22 } }}
-          InputProps={{ style: { fontSize: 22 } }}
+        <Item
+          errorSetter={setEmailError}
+          errorString={emailError}
           label="Email (to be verified)"
-          onChange={(event) => {
-            setEmailError('')
-            setEmail(event.target.value)
-          }}
-          onKeyDown={(event) => event.key === 'Enter' && submitBtn.current?.click()}
-          style={{ flex: 1, fontSize: 20 }}
-          variant="outlined"
+          onEnter={submitBtn}
+          setter={setEmail}
         />
       </div>
 
@@ -98,5 +76,39 @@ export const VoterAuthInfoForm = () => {
         <>Submit{submitting ? 'ting...' : ''}</>
       </OnClickButton>
     </section>
+  )
+}
+
+function Item({
+  autoFocus,
+  errorSetter,
+  errorString,
+  label,
+  onEnter,
+  setter,
+}: {
+  autoFocus?: boolean
+  errorSetter?: (v: string) => void
+  errorString?: string
+  label: string
+  onEnter?: RefObject<HTMLAnchorElement>
+  setter: (v: string) => void
+}) {
+  return (
+    <TextField
+      autoFocus={autoFocus}
+      InputLabelProps={{ style: { fontSize: 22 } }}
+      InputProps={{ style: { fontSize: 22 } }}
+      {...{ label }}
+      error={!!errorString}
+      helperText={errorString}
+      onChange={(event) => {
+        errorSetter?.('')
+        setter(event.target.value)
+      }}
+      onKeyDown={(event) => event.key === 'Enter' && onEnter?.current?.click()}
+      style={{ flex: 1, fontSize: 20 }}
+      variant="outlined"
+    />
   )
 }
