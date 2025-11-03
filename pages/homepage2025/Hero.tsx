@@ -43,7 +43,7 @@ export const Hero = () => {
     <Section>
       <div className="grid gap-10 items-center lg:grid-cols-2">
         <motion.div animate={{ opacity: 1, y: 0 }} initial={{ opacity: 0, y: 10 }} transition={{ duration: 0.5 }}>
-          <h1 className="text-4xl font-black tracking-tight md:text-6xl">Zero‑trust digital voting</h1>
+          <h1 className="text-4xl text-[#060067] tracking-tight md:text-6xl">Zero‑trust digital voting</h1>
           <p className="mt-4 max-w-2xl text-lg md:text-xl text-zinc-600 dark:text-zinc-300">
             Everyone can verify whether an election was free & fair—
             <br />
