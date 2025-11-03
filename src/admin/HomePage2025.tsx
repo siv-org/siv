@@ -117,7 +117,7 @@ const ScorePill = ({ v }: { v: number }) => (
 
 export const HomePage2025 = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-b via-white from-zinc-50 to-zinc-50 dark:from-zinc-950 dark:via-zinc-950 dark:to-zinc-900 text-zinc-900 dark:text-zinc-100">
+    <div className="min-h-screen font-sans bg-gradient-to-b via-white from-zinc-50 to-zinc-50 dark:from-zinc-950 dark:via-zinc-950 dark:to-zinc-900 text-zinc-900 dark:text-zinc-100">
       {/* Header */}
       <header className="sticky top-0 z-40 border-b backdrop-blur bg-white/70 dark:bg-zinc-900/60 border-zinc-200/60 dark:border-zinc-800">
         <div className="container flex justify-between items-center px-4 mx-auto max-w-7xl h-16">
