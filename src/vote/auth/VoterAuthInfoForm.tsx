@@ -18,11 +18,12 @@ export const VoterAuthInfoForm = () => {
 
   return (
     <section>
-      <div className="flex flex-col mb-4 space-y-4 sm:flex-row sm:space-y-0 sm:space-x-3 row">
+      <Row>
         <Item autoFocus label="First Name" setter={setFirstName} />
         <Item label="Last Name" setter={setLastName} />
-      </div>
-      <div className="flex mx-auto mb-4 sm:max-w-md">
+      </Row>
+
+      <Row>
         <Item
           errorSetter={setEmailError}
           errorString={emailError}
@@ -30,7 +31,7 @@ export const VoterAuthInfoForm = () => {
           onEnter={submitBtn}
           setter={setEmail}
         />
-      </div>
+      </Row>
 
       <OnClickButton
         className="w-full text-xl text-center"
@@ -110,5 +111,19 @@ function Item({
       style={{ flex: 1, fontSize: 20 }}
       variant="outlined"
     />
+  )
+}
+
+function Row({ children }: { children: React.ReactNode }) {
+  const childrenLength = Array.isArray(children) ? children.length : 0
+
+  return (
+    <div
+      className={`flex flex-col mb-4 space-y-4 sm:flex-row sm:space-y-0 sm:space-x-3 mx-auto ${
+        childrenLength > 1 ? '' : 'sm:max-w-md'
+      }`}
+    >
+      {children}
+    </div>
   )
 }
