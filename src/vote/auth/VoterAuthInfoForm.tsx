@@ -5,12 +5,18 @@ import { RefObject, useRef, useState } from 'react'
 import { OnClickButton } from 'src/_shared/Button'
 import { api } from 'src/api-helper'
 
+// FIXME: Hardcoding these in for now for testing, will want to move to customizable per election
+const enableBirthday = true
+const enableStatusNumber = true
+
 export const VoterAuthInfoForm = () => {
   const [emailError, setEmailError] = useState('')
   const [submissionError, setSubmissionError] = useState('')
   const [first_name, setFirstName] = useState('')
   const [last_name, setLastName] = useState('')
   const [email, setEmail] = useState('')
+  const [birthday, setBirthday] = useState('')
+  const [statusNumber, setStatusNumber] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const submitBtn = useRef<HTMLAnchorElement>(null)
   const router = useRouter()
@@ -33,6 +39,13 @@ export const VoterAuthInfoForm = () => {
         />
       </Row>
 
+      {(enableBirthday || enableStatusNumber) && (
+        <Row>
+          {enableBirthday && <Item label="Birthday (MM/DD/YYYY)" setter={setBirthday} />}
+          {enableStatusNumber && <Item label="Voter status number" setter={setStatusNumber} />}
+        </Row>
+      )}
+
       <OnClickButton
         className="w-full text-xl text-center"
         disabled={(!first_name && !last_name && !validateEmail(email)) || !!emailError || submitting}
@@ -47,10 +60,12 @@ export const VoterAuthInfoForm = () => {
           setSubmitting(true)
           // Submit details to server
           const response = await api(`election/${election_id}/submit-link-auth-info`, {
+            birthday,
             email,
             first_name,
             last_name,
             link_auth,
+            statusNumber,
           })
           setSubmitting(false)
 
