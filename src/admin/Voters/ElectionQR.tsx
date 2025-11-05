@@ -46,14 +46,9 @@ export const ElectionQR = ({ url }: { url: string }) => {
     <>
       {/* Small QR Code */}
       <div className="flex flex-col items-center">
-        <div
-          {...{ ref }}
-          className="cursor-pointer"
-          onClick={() => setIsModalOpen(true)}
-          title="Click to view larger QR code"
-        />
+        <div {...{ ref }} className="cursor-pointer" onClick={() => setIsModalOpen(true)} />
         <button
-          className="mt-2 flex items-center gap-1.5 text-xs text-gray-500 hover:text-gray-700 transition-colors cursor-pointer bg-transparent border-none p-0"
+          className="flex items-center gap-1.5 text-xs text-gray-500 hover:text-gray-700 transition-colors cursor-pointer bg-transparent border-none p-0"
           onClick={() => setIsModalOpen(true)}
         >
           <FullscreenOutlined className="text-[14px]" />
