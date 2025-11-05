@@ -30,7 +30,7 @@ export const ToggleShareableLink = () => {
   return (
     <section
       className={`mb-16 p-1 ml-[-5px] ${
-        voter_applications_allowed && 'border-4 border-solid border-orange-100/90 rounded px-2 mb-3'
+        voter_applications_allowed && 'border-3 border-solid border-orange-100/90 rounded-xl px-3 mb-4 shadow-sm'
       }`}
     >
       <label className="cursor-pointer" onClick={toggleVoterApplications}>
