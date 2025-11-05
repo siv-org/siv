@@ -52,7 +52,7 @@ export const ElectionQR = ({ url }: { url: string }) => {
           onClick={() => setIsModalOpen(true)}
         >
           <FullscreenOutlined className="text-[14px]" />
-          <span>Click to show fullscreen</span>
+          <span>Tap for fullscreen</span>
         </button>
       </div>
 
