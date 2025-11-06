@@ -91,13 +91,13 @@ export const groupedSteps: Group[] = [
 
       // Pre-req
       {
-        name: 'Privacy Levels',
-        subheader: `To give voters additional confidence that the election is run fairly, administrators have the option to add SIV “Privacy Protectors”.`,
+        name: 'Privacy',
+        subheader: `<span class="font-medium">Depending on election requirements, different privacy levels can be achieved</span>`,
         then: [
           {
             left: [
               {
-                details: `These are like the observers in our existing paper elections, but SIV Privacy Protectors are vastly more powerful, because they use strong cryptography to ensure every vote is private and tamper-free.
+                details: `By default, the election administrator cannot see how any voter votes.
 
                 After anonymization (Step 4), the Privacy Protectors work together to unlock the votes for tallying (Step 5).`,
               },
