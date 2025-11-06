@@ -1,6 +1,6 @@
 import { AllSubmittedBallots } from './AllSubmittedBallots'
 import { Ballot } from './Ballot'
-import { BallotDesigner } from './BallotDesigner'
+import { BallotImage } from './BallotImage'
 import { District11Image } from './District11Image'
 import { EncryptedVote } from './EncryptedVote'
 import { EncryptionReceipt } from './EncryptionReceipt'
@@ -67,20 +67,23 @@ export const groupedSteps: Group[] = [
         then: [
           {
             left: [
+              '',
               {
                 details:
-                  'This ballot displays information about the election and the participating candidates. To ensure fairness, the order of the candidates is randomized for each viewer and reshuffles every time the page is refreshed.',
+                  'This ballot will displays information about the election and the participating candidates. To ensure fairness, the order of the candidates is randomized for each viewer and reshuffles every time the page is refreshed.',
               },
+              '',
+              '',
               {
                 details:
-                  'We are using Approval Voting because it is simple: vote for everyone you support—not just against someone by picking only one. It avoids spoilers and shows who has the broadest real support.',
+                  'After looking at several options, Approval Voting stands out as the simplest upgrade that makes elections fairer and leaves more people satisfied with the results. It is easy to understand and use: vote for all the candidates you approve of—no spoilers, no “lesser of two evils.”',
               },
               {
                 html: light('The candidate list is being finalized and will be updated soon.'),
               },
               '',
             ],
-            right: [{ react: BallotDesigner }],
+            right: [{ react: BallotImage }],
           },
           { left: ['', '', '', ''] },
         ],
