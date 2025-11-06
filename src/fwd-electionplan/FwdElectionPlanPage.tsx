@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { useAnalytics } from 'src/useAnalytics'
 
 import { GlobalCSS } from '../GlobalCSS'
@@ -8,8 +9,23 @@ import { Sidebar } from './Sidebar'
 import { Topbar } from './Topbar'
 import { VoteContextProvider } from './VoteContext'
 
-export const FwdElectionplanPage = (): JSX.Element => {
+export const FwdElectionPlanPage = (): JSX.Element => {
+  const [mounted, setMounted] = useState(false)
   useAnalytics()
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) {
+    return (
+      <>
+        <Head title="Protocol" />
+        <GlobalCSS />
+      </>
+    )
+  }
+
   return (
     <>
       <Head title="Protocol" />
