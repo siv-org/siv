@@ -1,6 +1,7 @@
 import { AllSubmittedBallots } from './AllSubmittedBallots'
 import { Ballot } from './Ballot'
 import { BallotDesigner } from './BallotDesigner'
+import { District11Image } from './District11Image'
 import { EncryptedVote } from './EncryptedVote'
 import { EncryptionReceipt } from './EncryptionReceipt'
 import { Invitation, InvitationExplanation } from './Invitation'
@@ -12,7 +13,6 @@ import { ShuffleVotes } from './ShuffleVotes'
 import { SubmissionConfirmation } from './SubmissionConfirmation'
 import { Unlocked } from './Unlocked'
 import { VerificationSecret } from './VerificationSecret'
-import { VoterList } from './VoterList'
 import { YourSubmittedBallot } from './YourSubmittedBallot'
 
 const colorize = (color: string) => (text: string) => `<span style="color: ${color};">${text}</span>`
@@ -40,22 +40,22 @@ export const groupedSteps: Group[] = [
     steps: [
       // Pre-req
       {
-        name: 'Voter Registration',
-        subheader: `Election administrator collects list of all valid voters, via the same methods as currently used.`,
+        name: 'The Voter Roll',
+        subheader: `The Forward Party provides the list of all eligible voters (~53,000) via the State Voter File.`,
         then: [
           {
             left: [
               '',
               '',
               {
-                html: 'Individual voters should <a href="/#let-your-govt-know" target="_blank">opt-in to SIV</a> by registering an email address with their election administrator.',
+                html: '',
               },
               '',
               {
-                html: 'Using email is fast, easy, and highly affordable, but election administrator can also use other methods to contact voters, including traditional postal mail.',
+                html: '',
               },
             ],
-            right: [{ react: VoterList }],
+            right: [{ react: District11Image }],
           },
         ],
       },
