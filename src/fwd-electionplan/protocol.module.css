@@ -1,0 +1,14 @@
+/* Now we define individual line types */
+.p {
+  margin-top: 0;
+  font-size: 15px;
+}
+
+.example {
+  font-size: 14px;
+}
+
+.details {
+  margin-top: 0;
+  font-size: 14px;
+}
