@@ -12,12 +12,37 @@ export const Introduction = () => {
         </a>
       </Link>
 
-      <h1 style={{ fontSize: 21, fontWeight: 700, marginBottom: 0, opacity: 0.9 }}>Secure Internet Voting Protocol</h1>
-      <h2 style={{ fontSize: 16, fontWeight: 600, marginTop: 3 }}>
-        Voting Option with Mathematically Provable Privacy &amp; Vote Verifiability
-      </h2>
+      <h1 style={{ fontSize: 21, fontWeight: 700, marginBottom: 0, opacity: 0.9 }}>Digital Voting Process</h1>
+      <h2 style={{ fontSize: 16, fontWeight: 600, marginTop: 3 }}>Utah Forward Party Senate Election</h2>
+      <p className="mt-0 text-[15px]">
+        In December 2025, the Utah Forward Party invites all 60,000 eligible voters in Senate District 11 to to fill the
+        Utah Senate District 11 vacancy. Although Forward was allowed to make the decision through a closed internal
+        party vote, the group chose instead an open democratic process.{' '}
+        <a className="italic text-blue-500/50" href="https://11chooses.com" rel="noopener noreferrer" target="_blank">
+          11chooses.com
+        </a>
+        ,{' '}
+        <a
+          className="italic text-blue-500/50"
+          href="https://utahforwardparty.org/open_process_20251022"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          utahforwardparty.org/open_process_20251022
+        </a>{' '}
+      </p>
 
-      <h3 style={{ fontWeight: 400, marginBottom: 0, marginTop: 30 }}>A secure election has three requirements:</h3>
+      <p>
+        To run the vote, the Utah Forward Party partnered with the SIV.org team to use the{' '}
+        <a className="text-blue-500/80" href="https://siv.org" rel="noopener noreferrer" target="_blank">
+          SIV
+        </a>{' '}
+        digital voting platform.
+      </p>
+
+      <h3 className="mt-8 mb-0 font-bold shadow-sm">
+        This election aims to meet the following key criteria for a secure election:
+      </h3>
       <div className="pillars">
         <div className="pillar">
           <h4>Authenticated voters</h4>
@@ -30,7 +55,7 @@ export const Introduction = () => {
         </div>
 
         <div className="pillar">
-          <h4>Verifiable tallies</h4>
+          <h4>Verifiable results</h4>
           <p>For widely accepted results, vote totals must be independently auditable for accuracy.</p>
         </div>
       </div>
@@ -41,7 +66,7 @@ export const Introduction = () => {
         accomplishing all three at the same time has been unusually challenging.
       </p>
 
-      <h3 style={{ fontWeight: 400, marginBottom: 0, marginTop: 35 }}>Here is how SIV meets all three requirements:</h3>
+      <h3 className="mt-8 mb-0 font-bold shadow-sm">Here is our Voting Process Plan:</h3>
 
       <style jsx>{`
         .logo-container {
