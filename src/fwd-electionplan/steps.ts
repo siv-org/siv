@@ -85,13 +85,13 @@ export const groupedSteps: Group[] = [
             ],
             right: [{ react: BallotImage }],
           },
-          { left: ['', '', '', ''] },
+          { left: [''] },
         ],
       },
 
       // Pre-req
       {
-        name: 'Privacy Protectors Registration',
+        name: 'Privacy Levels',
         subheader: `To give voters additional confidence that the election is run fairly, administrators have the option to add SIV “Privacy Protectors”.`,
         then: [
           {
