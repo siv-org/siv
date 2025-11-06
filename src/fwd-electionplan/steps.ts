@@ -41,14 +41,14 @@ export const groupedSteps: Group[] = [
       // Pre-req
       {
         name: 'The Voter Roll',
-        subheader: `The Forward Party provides the list of all eligible voters (~53,000) via the State Voter File.`,
+        subheader: `<span class="font-medium">53,000 eligible voters</span>`,
         then: [
           {
             left: [
               '',
-              '',
+
               {
-                html: '',
+                html: 'The Utah Forward Party provides the list of all eligible voters via the State Voter File.',
               },
               '',
               {

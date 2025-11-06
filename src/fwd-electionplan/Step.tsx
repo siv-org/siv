@@ -18,7 +18,7 @@ export const Step = ({ leftFirst = false, name, subheader, then }: StepType) => 
     <div id={name} key={name} style={{ background: 'white', padding: '3rem 30px' }}>
       <a className="step-anchor" id={stepHash[name]} />
       <p className="step-name">{name}</p>
-      {subheader && <p className="subheader">{subheader}</p>}
+      {subheader && <p className="subheader" dangerouslySetInnerHTML={{ __html: subheader }} />}
       {then.map(({ left, right }, index) => (
         <div className={`columns ${leftFirst ? 'leftFirst' : ''}`} key={index}>
           <div className="left">{left.map(Line)}</div>
