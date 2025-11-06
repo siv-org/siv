@@ -15,9 +15,9 @@ export const Introduction = () => {
       <h1 style={{ fontSize: 21, fontWeight: 700, marginBottom: 0, opacity: 0.9 }}>Digital Voting Process</h1>
       <h2 style={{ fontSize: 16, fontWeight: 600, marginTop: 3 }}>Utah Forward Party Senate Election</h2>
       <p className="mt-0 text-[15px]">
-        In December 2025, the Utah Forward Party invites all 53,000 eligible voters in Senate District 11 to to fill the
-        Utah Senate District 11 vacancy. Although Forward was allowed to make the decision through a closed internal
-        party vote, the group chose instead an open democratic process.{' '}
+        In December 2025, the Utah Forward Party invites all 53,000 eligible voters to cast their vote on who should
+        fill the Utah Senate District 11 vacancy. Although Forward was allowed to make the decision through a closed
+        internal party vote, the group chose instead an open democratic process.{' '}
         <a className="italic text-blue-500/50" href="https://11chooses.com" rel="noopener noreferrer" target="_blank">
           11chooses.com
         </a>
