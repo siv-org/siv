@@ -62,16 +62,21 @@ export const groupedSteps: Group[] = [
 
       // Pre-req
       {
-        name: 'Ballot Finalized',
-        subheader: 'The official ballot is finalized, as with traditional paper elections.',
+        name: 'The Ballot',
+        subheader: `<span class="font-medium">Approval Voting Schema</span>`,
         then: [
           {
             left: [
-              { details: 'There can be multiple questions, as many as the election requires.' },
               {
-                html: light(
-                  'SIV is 100% compatible with — and makes it easier to adopt — voting methods meant to improve upon the Choose-Only-One system, such as Ranked Choice Voting, Approval Voting, and Score Voting.',
-                ),
+                details:
+                  'This ballot displays information about the election and the participating candidates. To ensure fairness, the order of the candidates is randomized for each viewer and reshuffles every time the page is refreshed.',
+              },
+              {
+                details:
+                  'We are using Approval Voting because it is simple: vote for everyone you support—not just against someone by picking only one. It avoids spoilers and shows who has the broadest real support.',
+              },
+              {
+                html: light('The candidate list is being finalized and will be updated soon.'),
               },
               '',
             ],
