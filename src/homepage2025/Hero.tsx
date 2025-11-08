@@ -37,7 +37,7 @@ const features = [
     title: 'Cryptographic Privacy',
   },
   {
-    desc: '',
+    desc: 'Even if the election is run by the worst possible actor or all software is compromised, voters can still verify that their own vote was recorded correctly and that the final results are accurate. In a SIV election, auditors can gather active proofs that an election gives correct results—something that isn’t possible under the current system.',
     image: '/homepage2025/checkmark.png',
     title: 'Voter Verifiable Results',
   },
@@ -103,7 +103,15 @@ export const Hero = () => {
                   )}
                 </div>
                 <h3 className="mt-3 font-semibold text-zinc-900 dark:text-zinc-100">{f.title}</h3>
-                {f.desc && <p className="mt-1 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">{f.desc}</p>}
+                {f.desc && (
+                  <p
+                    className={`mt-1 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400 ${
+                      i === 3 ? 'mx-auto max-w-3xl' : ''
+                    }`}
+                  >
+                    {f.desc}
+                  </p>
+                )}
               </Card>
             ))}
           </div>
