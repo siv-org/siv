@@ -37,7 +37,7 @@ const features = [
     title: 'Cryptographic Privacy',
   },
   {
-    desc: 'Even if the election is run by the worst possible actor or all software is compromised, voters can still verify that their own vote was recorded correctly and that the final results are accurate. \n \n In a SIV election, auditors can gather active proofs that an election gives correct results—something that isn’t possible under the current system.',
+    desc: 'Even if the system is compromised, voters can easily verify their own votes and auditors can gather active proofs that the election gives correct results.',
     image: '/homepage2025/checkmark.png',
     title: 'Voter Verifiable Results',
   },
