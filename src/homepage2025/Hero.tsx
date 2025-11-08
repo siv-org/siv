@@ -99,6 +99,18 @@ export const Hero = () => {
                 <p className="mt-1 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">{f.desc}</p>
               </Card>
             ))}
+            <Card className="col-span-full text-center">
+              <div className="flex justify-center items-center mx-auto w-12 h-12">
+                <Image
+                  alt=""
+                  className="object-contain w-12 h-12"
+                  height={48}
+                  src="/homepage2025/checkmark.png"
+                  width={48}
+                />
+              </div>
+              <h3 className="mt-3 font-semibold text-zinc-900 dark:text-zinc-100">Voter Verifiable Results</h3>
+            </Card>
           </div>
         </motion.div>
       </div>
