@@ -83,7 +83,7 @@ export const Hero = () => {
         </motion.div>
         <motion.div
           animate={{ opacity: 1, y: 0 }}
-          className="mt-16"
+          className="mt-20 md:mt-28"
           initial={{ opacity: 0, y: 10 }}
           transition={{ duration: 0.6 }}
         >
