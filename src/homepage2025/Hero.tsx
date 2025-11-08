@@ -36,6 +36,11 @@ const features = [
     image: '/homepage2025/privacy.png',
     title: 'Cryptographic Privacy',
   },
+  {
+    desc: '',
+    image: '/homepage2025/checkmark.png',
+    title: 'Voter Verifiable Results',
+  },
 ]
 
 export const Hero = () => {
@@ -84,10 +89,12 @@ export const Hero = () => {
         >
           <div className="grid gap-4 sm:grid-cols-3">
             {features.map((f, i) => (
-              <Card className="relative text-center" key={i}>
-                <div className="flex absolute -top-3 -left-3 z-10 justify-center items-center w-8 h-8 text-sm font-semibold text-white bg-[#060067] rounded-full shadow-lg dark:bg-zinc-100 dark:text-[#060067]">
-                  {i + 1}
-                </div>
+              <Card className={`relative text-center ${i === 3 ? 'col-span-full' : ''}`} key={i}>
+                {i < 3 && (
+                  <div className="flex absolute -top-3 -left-3 z-10 justify-center items-center w-8 h-8 text-sm font-semibold text-white bg-[#060067] rounded-full shadow-lg dark:bg-zinc-100 dark:text-[#060067]">
+                    {i + 1}
+                  </div>
+                )}
                 <div className="flex justify-center items-center mx-auto w-12 h-12">
                   {f.icon ? (
                     <f.icon className="w-8 h-8" />
@@ -96,21 +103,9 @@ export const Hero = () => {
                   )}
                 </div>
                 <h3 className="mt-3 font-semibold text-zinc-900 dark:text-zinc-100">{f.title}</h3>
-                <p className="mt-1 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">{f.desc}</p>
+                {f.desc && <p className="mt-1 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">{f.desc}</p>}
               </Card>
             ))}
-            <Card className="col-span-full text-center">
-              <div className="flex justify-center items-center mx-auto w-12 h-12">
-                <Image
-                  alt=""
-                  className="object-contain w-12 h-12"
-                  height={48}
-                  src="/homepage2025/checkmark.png"
-                  width={48}
-                />
-              </div>
-              <h3 className="mt-3 font-semibold text-zinc-900 dark:text-zinc-100">Voter Verifiable Results</h3>
-            </Card>
           </div>
         </motion.div>
       </div>
