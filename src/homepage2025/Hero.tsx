@@ -84,7 +84,10 @@ export const Hero = () => {
         >
           <div className="grid gap-4 sm:grid-cols-3">
             {features.map((f, i) => (
-              <Card className="text-center" key={i}>
+              <Card className="relative text-center" key={i}>
+                <div className="flex absolute -top-3 -left-3 z-10 justify-center items-center w-8 h-8 text-sm font-semibold text-white bg-[#060067] rounded-full shadow-lg dark:bg-zinc-100 dark:text-[#060067]">
+                  {i + 1}
+                </div>
                 <div className="flex justify-center items-center mx-auto w-12 h-12">
                   {f.icon ? (
                     <f.icon className="w-8 h-8" />
