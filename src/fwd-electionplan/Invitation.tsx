@@ -1,5 +1,3 @@
-import Link from 'next/link'
-
 import { voters } from './election-parameters'
 import { Paper } from './Paper'
 
@@ -20,23 +18,26 @@ export const Invitation = () => {
         style={{ maxWidth: 35, opacity: 0.5, position: 'absolute', right: 'calc(1vw + 5px)', width: '7vw' }}
       />
       <p>
-        From: <b>elections@local.gov</b> <br />
-        To: <b>you@email.com</b> <br />
-        Subject: <b>Your Vote Invitation</b>
+        <b>Senate Election,</b>
+        <b>Your Vote Invitation</b>
+        <br />
+        <br />
+        From: <b>Utah Forward Party</b> <br />
+        To: <b>123 Example Way, Salt Lake City, UT</b> <br />
       </p>
-      <p>Voting for our next Mayor is now open.</p>
-      <p>Votes are accepted for the next 14 days.</p>
+      <p>Voting for our next Senator is now open.</p>
+      <p>Votes are accepted for the next 7 days.</p>
       <p>
-        Click here to securely cast your vote: <br />
+        Scan QR code or go to the following URL to securely cast your vote: <br />
         <a style={{ cursor: 'pointer' }}>
-          www.local.gov/vote?auth=
+          www.fwd.siv.org/vote?auth=
           <Highlight>{voters[0].auth}</Highlight>
         </a>
       </p>
       <p>
         <i style={{ fontSize: 12 }}>
-          This link is unique for you. Don&apos;t share it with anyone, or they&apos;ll be able to take your vote. (
-          <a style={{ cursor: 'pointer' }}>Help</a>)
+          This link is unique for you. Don&apos;t share it with anyone, or they&apos;ll be able to take your vote.{' '}
+          <br />(<a style={{ cursor: 'pointer' }}>Go to help.siv.org for questions or support</a>)
         </i>
       </p>
     </Paper>
