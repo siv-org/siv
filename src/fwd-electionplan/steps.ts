@@ -73,7 +73,7 @@ export const groupedSteps: Group[] = [
                   'This ballot will displays information about the election and the participating candidates. To ensure fairness, the order of the candidates is randomized for each viewer.',
               },
               '',
-              '',
+
               {
                 details:
                   'After looking at several options, Approval Voting stands out as the simplest upgrade that makes elections fairer and leaves more people satisfied with the results. It is easy to understand and use: vote for all the candidates you approve of—no spoilers, no “lesser of two evils.”',
@@ -97,7 +97,10 @@ export const groupedSteps: Group[] = [
           {
             left: [
               {
-                details: `By default, the election administrator cannot see how any voter votes.
+                details: `By default, independent observers, other voters, and the election administrator cannot see how anyone votes.
+
+                For this election, we'll also work to achieve an even higher level of privacy, where not even the server can see how people vote. To do so, 3 (or more) Privacy Protectors with competing interests will be invited to generate and split the election's decryption key. To read more about the Privacy Protectors design, visit the <a href="https://docs.siv.org/privacy" target="_blank">SIV Privacy Docs</a>.
+
 
                 After anonymization (Step 4), the Privacy Protectors work together to unlock the votes for tallying (Step 5).`,
               },
