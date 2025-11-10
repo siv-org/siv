@@ -21,7 +21,7 @@ export const Ballot = (): JSX.Element => {
           padding: '5px 13px',
         }}
       >
-        Who should be the next Mayor?
+        Who should be our next Senator representing Utah Senate District 11?
       </p>
       <NoSsr>
         <RadioGroup
