@@ -7,7 +7,7 @@ export const Introduction = () => {
   return (
     <div style={{ padding: '10px 30px' }}>
       <Link href="/" legacyBehavior>
-        <a className="logo-container">
+        <a className="hidden float-right md:block logo-container">
           <Image src={logo} />
         </a>
       </Link>
@@ -72,8 +72,14 @@ export const Introduction = () => {
         .logo-container {
           width: 40px;
           margin: 20px 0;
-          display: block;
+          display: none;
           transition: 0.05s opacity linear;
+        }
+
+        @media (min-width: 768px) {
+          .logo-container {
+            display: block;
+          }
         }
 
         .logo-container:hover {
