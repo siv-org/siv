@@ -1,3 +1,5 @@
+import { candidates } from './election-parameters'
+
 export const BallotDesigner = () => (
   <>
     <textarea
@@ -5,10 +7,7 @@ export const BallotDesigner = () => (
       value={`[{
   title: 'Who should be the next mayor?',
   options: [
-    'Angela Alioto',
-    'London Breed',
-    'Mark Leno',
-    'Jane Kim',
+    '${candidates.join("',\n    '")}',
 ]}]`}
     />
     <label>An example ballot schema</label>
