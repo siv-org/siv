@@ -68,22 +68,10 @@ export const InvitationExplanation = () => (
     </div>
     <br />
     <p>
-      Here we use an easy distribution channel — a simple email. But election administrators can offer other options,
-      including 2-factor methods with drawn signatures, SMS, TOTP, or IP address geolocation.
+      For this election, we’ll send the Invitation to Vote, which includes each voter’s Auth Token, by traditional mail.
+      This approach maintains the existing voter authentication standards while making the ballot return process faster,
+      more accessible, and end-to-end verifiable verifiable.
     </p>
-    <p>
-      Admins can even send Voter Auth Tokens via traditional postal mail. In other words, SIV can match the Voter
-      Authentication requirements of existing processes, while upgrading the return ballot process to be faster, more
-      accessible, and fully verifiable.
-    </p>
-    <p>
-      <em>
-        See{' '}
-        <Link href="/faq#1p1v" target="_blank">
-          How does SIV ensure One Vote per Person?
-        </Link>{' '}
-        for more.
-      </em>
-    </p>
+    <p>As an additional backup method, we are considering offering options like 2-factor methods with SMS, TOTP.</p>
   </>
 )
