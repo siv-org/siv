@@ -17,18 +17,19 @@ export const Introduction = () => {
       <p className="mt-0 text-[15px]">
         In December 2025, the Utah Forward Party invites all 53,000 eligible voters to cast their vote on who should
         fill the Utah Senate District 11 vacancy. Although Forward was allowed to make the decision through a closed
-        internal party vote, the group chose instead an open democratic process.{' '}
+        internal party vote, the group chose instead an open democratic process. For more information on this event
+        visit:{' '}
         <a className="italic text-blue-500/50" href="https://11chooses.com" rel="noopener noreferrer" target="_blank">
           11chooses.com
-        </a>
-        ,{' '}
+        </a>{' '}
+        or{' '}
         <a
           className="italic text-blue-500/50"
           href="https://utahforwardparty.org/open_process_20251022"
           rel="noopener noreferrer"
           target="_blank"
         >
-          utahforwardparty.org/open_process_20251022
+          utahforwardparty.org/open_process_20251022.
         </a>{' '}
       </p>
 
