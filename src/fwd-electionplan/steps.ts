@@ -97,17 +97,14 @@ export const groupedSteps: Group[] = [
           {
             left: [
               {
-                details: `By default, independent observers, other voters, and the election administrator cannot see how anyone votes.
-
-                For this election, we'll also work to achieve an even higher level of privacy, where not even the server can see how people vote. To do so, 3 (or more) Privacy Protectors with competing interests will be invited to generate and split the election's decryption key. To read more about the Privacy Protectors design, visit the <a href="https://docs.siv.org/privacy" target="_blank">SIV Privacy Docs</a>.
-
-
-                After anonymization (Step 4), the Privacy Protectors work together to unlock the votes for tallying (Step 5).`,
+                html: `By default, independent observers, participating voters, and the election administrator cannot see how anyone votes.
+                
+                <br /><br />For this election, we'll also work to achieve an even higher level of privacy, where not even the server can see how people vote. To do so, at least 3 Privacy Protectors will be invited to take part in a SIV Threshold Key Generation ceremony to generate private key shares and create the election's public key. 
+                
+                <br /><br />To read more about the Privacy Protectors design, visit the <a href="https://docs.siv.org/privacy" target="_blank">SIV Privacy Docs</a>.`,
               },
               {
-                html: light(
-                  `Before the election begins, Privacy Protectors take part in a SIV Threshold Key Generation ceremony to generate private key shares and create the election's public key.`,
-                ),
+                html: light(`<br /> More in-depth details will be given by December 1st. `),
               },
             ],
             right: [
