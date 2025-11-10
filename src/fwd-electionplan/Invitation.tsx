@@ -69,9 +69,9 @@ export const InvitationExplanation = () => (
     </div>
     <br />
     <p>
-      For this election, we’ll send the Invitation to Vote, which includes each voter’s Auth Token, by traditional mail.
-      This approach maintains the existing voter authentication standards while making the ballot return process faster,
-      more accessible, and end-to-end verifiable verifiable.
+      For this election, we will mail the Invitation to Vote (which includes each voter’s Auth Token) via traditional
+      postal service. This approach maintains the existing voter authentication standards while making the ballot return
+      process faster, more accessible, and end-to-end verifiable verifiable.
     </p>
     <p>As an additional backup method, we are considering offering options like 2-factor methods with SMS, TOTP.</p>
   </>

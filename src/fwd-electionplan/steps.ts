@@ -138,7 +138,7 @@ export const groupedSteps: Group[] = [
       // Step 1
       {
         name: 'Step 1: Invitation to Vote',
-        subheader: 'Election administrator sends individualized invitations to all enrolled voters.',
+        subheader: 'Election administrator sends individualized invitations to all eligible voters.',
         then: [
           {
             left: [{ react: InvitationExplanation }],
