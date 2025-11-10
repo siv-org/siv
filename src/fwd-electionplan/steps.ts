@@ -63,14 +63,14 @@ export const groupedSteps: Group[] = [
       // Pre-req
       {
         name: 'The Ballot',
-        subheader: `<span class="font-medium">Approval Voting Schema</span>`,
+        subheader: `<span class="font-medium">Approval Voting</span>`,
         then: [
           {
             left: [
               '',
               {
                 details:
-                  'This ballot will displays information about the election and the participating candidates. To ensure fairness, the order of the candidates is randomized for each viewer and reshuffles every time the page is refreshed.',
+                  'This ballot will displays information about the election and the participating candidates. To ensure fairness, the order of the candidates is randomized for each viewer.',
               },
               '',
               '',
@@ -79,7 +79,7 @@ export const groupedSteps: Group[] = [
                   'After looking at several options, Approval Voting stands out as the simplest upgrade that makes elections fairer and leaves more people satisfied with the results. It is easy to understand and use: vote for all the candidates you approve of—no spoilers, no “lesser of two evils.”',
               },
               {
-                html: light('The candidate list is being finalized and will be updated soon.'),
+                html: light('The candidate list is being finalized and will be updated by November 18th.'),
               },
               '',
             ],
