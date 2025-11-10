@@ -13,11 +13,11 @@ export const Introduction = () => {
       </Link>
 
       <h1 style={{ fontSize: 21, fontWeight: 700, marginBottom: 0, opacity: 0.9 }}>Digital Voting Process</h1>
-      <h2 style={{ fontSize: 16, fontWeight: 600, marginTop: 3 }}>Utah Forward Party Senate Election</h2>
+      <h2 style={{ fontSize: 16, fontWeight: 600, marginTop: 3 }}>Senate Election</h2>
       <p className="mt-0 text-[15px]">
         In December 2025, the Utah Forward Party invites all 53,000 eligible voters to cast their vote on who should
         fill the Utah Senate District 11 vacancy. Although Forward was allowed to make the decision through a closed
-        internal party vote, the group chose instead an open democratic process. For more information on this event
+        internal party vote, the group instead chose an open democratic process. For more information on this event
         visit:{' '}
         <a className="italic text-blue-500/50" href="https://11chooses.com" rel="noopener noreferrer" target="_blank">
           11chooses.com
@@ -34,16 +34,14 @@ export const Introduction = () => {
       </p>
 
       <p>
-        To run the vote, the Utah Forward Party partnered with the SIV.org team to use the{' '}
+        To conduct the vote, the Utah Forward Party is partnering with the SIV.org team to use the{' '}
         <a className="text-blue-500/80" href="https://siv.org" rel="noopener noreferrer" target="_blank">
           SIV
         </a>{' '}
         digital voting platform.
       </p>
 
-      <h3 className="mt-8 mb-0 font-bold shadow-sm">
-        This election aims to meet the following key criteria for a secure election:
-      </h3>
+      <h3 className="mt-8 mb-0 font-bold shadow-sm">For this election, we aim to meet the following key criteria:</h3>
       <div className="pillars">
         <div className="pillar">
           <h4>Authenticated voters</h4>
@@ -62,12 +60,8 @@ export const Introduction = () => {
       </div>
 
       <br />
-      <p>
-        There have already been digital systems in widespread use that offer each of these properties individually. Yet
-        accomplishing all three at the same time has been unusually challenging.
-      </p>
 
-      <h3 className="mt-8 mb-0 font-bold shadow-sm">Here is our Voting Process Plan:</h3>
+      <h3 className="mt-5 mb-0 font-bold shadow-sm">The voting process:</h3>
 
       <style jsx>{`
         .logo-container {
