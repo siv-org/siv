@@ -10,7 +10,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const DISABLED = true
   if (DISABLED) return res.status(401).json({ message: 'Disabled' })
 
-  const lookupNum = '+15551234567'
+  const lookupNum = '+15551234567'.replace(/[ ()-]/g, '')
 
   // First check if DB already has the result for this lookup:
   const dbInfo = await firebase.firestore().collection('sms-lookup').doc(lookupNum).get()
