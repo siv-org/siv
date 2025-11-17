@@ -1,9 +1,13 @@
 import { TextField } from '@mui/material'
 import { validate as validateEmail } from 'email-validator'
 import { useRouter } from 'next/router'
-import { useRef, useState } from 'react'
+import { RefObject, useRef, useState } from 'react'
 import { OnClickButton } from 'src/_shared/Button'
 import { api } from 'src/api-helper'
+
+// FIXME: Hardcoding these in for now for testing, will want to move to customizable per election
+const enableBirthday = true
+const enableStatusNumber = true
 
 export const VoterAuthInfoForm = () => {
   const [emailError, setEmailError] = useState('')
@@ -11,6 +15,8 @@ export const VoterAuthInfoForm = () => {
   const [first_name, setFirstName] = useState('')
   const [last_name, setLastName] = useState('')
   const [email, setEmail] = useState('')
+  const [birthday, setBirthday] = useState('')
+  const [statusNumber, setStatusNumber] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const submitBtn = useRef<HTMLAnchorElement>(null)
   const router = useRouter()
@@ -18,41 +24,27 @@ export const VoterAuthInfoForm = () => {
 
   return (
     <section>
-      <div className="flex flex-col mb-4 space-y-4 sm:flex-row sm:space-y-0 sm:space-x-3 row">
-        <TextField
-          autoFocus
-          InputLabelProps={{ style: { fontSize: 22 } }}
-          InputProps={{ style: { fontSize: 22 } }}
-          label="First Name"
-          onChange={(event) => setFirstName(event.target.value)}
-          style={{ flex: 1, fontSize: 20 }}
-          variant="outlined"
-        />
-        <TextField
-          InputLabelProps={{ style: { fontSize: 22 } }}
-          InputProps={{ style: { fontSize: 22 } }}
-          label="Last Name"
-          onChange={(event) => setLastName(event.target.value)}
-          style={{ flex: 1, fontSize: 20 }}
-          variant="outlined"
-        />
-      </div>
-      <div className="flex mx-auto mb-4 sm:max-w-md">
-        <TextField
-          error={!!emailError}
-          helperText={emailError}
-          InputLabelProps={{ style: { fontSize: 22 } }}
-          InputProps={{ style: { fontSize: 22 } }}
+      <Row>
+        <Item autoFocus label="First Name" setter={setFirstName} />
+        <Item label="Last Name" setter={setLastName} />
+      </Row>
+
+      <Row>
+        <Item
+          errorSetter={setEmailError}
+          errorString={emailError}
           label="Email (to be verified)"
-          onChange={(event) => {
-            setEmailError('')
-            setEmail(event.target.value)
-          }}
-          onKeyDown={(event) => event.key === 'Enter' && submitBtn.current?.click()}
-          style={{ flex: 1, fontSize: 20 }}
-          variant="outlined"
+          onEnter={submitBtn}
+          setter={setEmail}
         />
-      </div>
+      </Row>
+
+      {(enableBirthday || enableStatusNumber) && (
+        <Row>
+          {enableBirthday && <Item label="Birthday (MM/DD/YYYY)" setter={setBirthday} />}
+          {enableStatusNumber && <Item label="Voter status number" setter={setStatusNumber} />}
+        </Row>
+      )}
 
       <OnClickButton
         className="w-full text-xl text-center"
@@ -68,10 +60,12 @@ export const VoterAuthInfoForm = () => {
           setSubmitting(true)
           // Submit details to server
           const response = await api(`election/${election_id}/submit-link-auth-info`, {
+            birthday,
             email,
             first_name,
             last_name,
             link_auth,
+            statusNumber,
           })
           setSubmitting(false)
 
@@ -98,5 +92,53 @@ export const VoterAuthInfoForm = () => {
         <>Submit{submitting ? 'ting...' : ''}</>
       </OnClickButton>
     </section>
+  )
+}
+
+function Item({
+  autoFocus,
+  errorSetter,
+  errorString,
+  label,
+  onEnter,
+  setter,
+}: {
+  autoFocus?: boolean
+  errorSetter?: (v: string) => void
+  errorString?: string
+  label: string
+  onEnter?: RefObject<HTMLAnchorElement>
+  setter: (v: string) => void
+}) {
+  return (
+    <TextField
+      autoFocus={autoFocus}
+      InputLabelProps={{ style: { fontSize: 22 } }}
+      InputProps={{ style: { fontSize: 22 } }}
+      {...{ label }}
+      error={!!errorString}
+      helperText={errorString}
+      onChange={(event) => {
+        errorSetter?.('')
+        setter(event.target.value)
+      }}
+      onKeyDown={(event) => event.key === 'Enter' && onEnter?.current?.click()}
+      style={{ flex: 1, fontSize: 20 }}
+      variant="outlined"
+    />
+  )
+}
+
+function Row({ children }: { children: React.ReactNode }) {
+  const childrenLength = Array.isArray(children) ? children.length : 0
+
+  return (
+    <div
+      className={`flex flex-col mb-4 space-y-4 sm:flex-row sm:space-y-0 sm:space-x-3 mx-auto ${
+        childrenLength > 1 ? '' : 'sm:max-w-md'
+      }`}
+    >
+      {children}
+    </div>
   )
 }
