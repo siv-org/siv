@@ -70,7 +70,7 @@ export function Contributors() {
         name="Kathryn Mattie"
       />
 
-      <ContributorRow affiliation="Amazon" focus="Software Engineering" name="Henry Wong" />
+      <ContributorRow affiliation="Amazon Web Services" focus="Software Engineering" name="Henry Wong" />
 
       <ContributorRow affiliation="Technology Entrepreneur, LoopRL" focus="Funding" name="Eshan Kejriwal" />
 
