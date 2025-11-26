@@ -1,7 +1,7 @@
 export const ElectionCompleted = () => (
   <div>
     <h2>Election Completed</h2>
-    <p>We&apos;ve now succeeded to run an election that&apos;s authenticated, private, and completely verifiable.</p>
+    <p>We&apos;ve now succeeded to run an election that&apos;s authenticated, private, & end-to-end verifiable.</p>
 
     <p>
       For more information, see the{' '}

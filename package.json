@@ -88,7 +88,7 @@
     "throat": "^6.0.1",
     "timeago-react": "^3.0.4",
     "timeago.js": "^4.0.2",
-    "twilio": "^5.10.5",
+    "twilio": "^5.10.6",
     "ua-parser-js": "^0.7.28"
   },
   "devDependencies": {

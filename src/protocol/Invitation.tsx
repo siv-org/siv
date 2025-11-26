@@ -74,7 +74,7 @@ export const InvitationExplanation = () => (
     <p>
       Admins can even send Voter Auth Tokens via traditional postal mail. In other words, SIV can match the Voter
       Authentication requirements of existing processes, while upgrading the return ballot process to be faster, more
-      accessible, and fully verifiable.
+      accessible, and end-to-end verifiable.
     </p>
     <p>
       <em>
