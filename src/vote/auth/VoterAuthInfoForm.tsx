@@ -8,6 +8,7 @@ import { api } from 'src/api-helper'
 // FIXME: Hardcoding these in for now for testing, will want to move to customizable per election
 const enableBirthday = true
 const enableStatusNumber = true
+const enableAdditionalAuthInfo = enableBirthday || enableStatusNumber
 
 export const VoterAuthInfoForm = () => {
   const [emailError, setEmailError] = useState('')
@@ -39,7 +40,7 @@ export const VoterAuthInfoForm = () => {
         />
       </Row>
 
-      {(enableBirthday || enableStatusNumber) && (
+      {enableAdditionalAuthInfo && (
         <Row>
           {enableBirthday && <Item label="Birthday (MM/DD/YYYY)" setter={setBirthday} />}
           {enableStatusNumber && <Item label="Voter status number" setter={setStatusNumber} />}
@@ -57,16 +58,24 @@ export const VoterAuthInfoForm = () => {
           // Validate email if present
           if (email && !validateEmail(email)) return setEmailError('Invalid email address')
 
-          setSubmitting(true)
           // Submit details to server
-          const response = await api(`election/${election_id}/submit-link-auth-info`, {
-            birthday,
+          setSubmitting(true)
+
+          // We may customize the payload if additionalAuthInfo is enabled
+          const payload: Record<string, Record<string, string> | string | undefined> = {
             email,
             first_name,
             last_name,
             link_auth,
-            statusNumber,
-          })
+          }
+          if (enableAdditionalAuthInfo) {
+            const additionalAuthInfo: Record<string, string> = {}
+            if (enableBirthday) additionalAuthInfo.birthday = birthday
+            if (enableStatusNumber) additionalAuthInfo.statusNumber = statusNumber
+            payload.additionalAuthInfo = additionalAuthInfo
+          }
+
+          const response = await api(`election/${election_id}/submit-link-auth-info`, payload)
           setSubmitting(false)
 
           // Handle errors from server

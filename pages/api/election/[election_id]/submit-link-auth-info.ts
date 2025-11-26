@@ -7,7 +7,8 @@ import { NextApiRequest, NextApiResponse } from 'next'
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Voter submits their registration information
   const { election_id } = req.query as { election_id: string }
-  const { email, first_name, last_name, link_auth } = req.body
+  const { additionalAuthInfo, email, first_name, last_name, link_auth } = req.body
+  const hasAdditionalAuthInfo = additionalAuthInfo && Object.keys(additionalAuthInfo).length > 0
 
   // Begin preloading db data
   const electionDoc = firebase.firestore().collection('elections').doc(election_id)
@@ -32,14 +33,18 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   await Promise.all([
     // store info & email verification code
-    electionDoc.collection('votes-pending').doc(link_auth).update({
-      auth_added_at: new Date(),
-      email,
-      first_name,
-      is_email_verified: false,
-      last_name,
-      verification_code,
-    }),
+    electionDoc
+      .collection('votes-pending')
+      .doc(link_auth)
+      .update({
+        ...(hasAdditionalAuthInfo ? { additionalAuthInfo } : {}), // Only add additionalAuthInfo if non-empty
+        auth_added_at: new Date(),
+        email,
+        first_name,
+        is_email_verified: false,
+        last_name,
+        verification_code,
+      }),
 
     // Send verification email
     email &&
