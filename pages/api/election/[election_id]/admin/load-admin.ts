@@ -23,6 +23,7 @@ export type AdminData = {
 }
 
 export type PendingVote = {
+  additionalAuthInfo?: Record<string, string>
   created_at: Date
   email?: string
   first_name?: string
@@ -157,6 +158,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Build voters objects
   const voters: Voter[] = (await loadVoters).docs.reduce((acc: Voter[], doc) => {
     const {
+      additionalAuthInfo,
       auth_token,
       email,
       esignature_review,
@@ -170,6 +172,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     } = {
       ...doc.data(),
     } as {
+      additionalAuthInfo?: Record<string, string>
       auth_token: string
       email: string
       esignature_review: ReviewLog[]
@@ -184,6 +187,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     return [
       ...acc,
       {
+        additionalAuthInfo,
         auth_token,
         email,
         esignature: (votesByAuth[auth_token] || [])[1],
@@ -202,15 +206,18 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Build pending votes
   const pending_votes: PendingVote[] = (await loadPendingVotes).docs.map((doc) => {
-    const { created_at, email, first_name, is_email_verified, last_name, link_auth } = doc.data() as {
-      created_at: { _seconds: number }
-      email?: string
-      first_name?: string
-      is_email_verified: boolean
-      last_name?: string
-      link_auth: string
-    }
+    const { additionalAuthInfo, created_at, email, first_name, is_email_verified, last_name, link_auth } =
+      doc.data() as {
+        additionalAuthInfo?: Record<string, string>
+        created_at: { _seconds: number }
+        email?: string
+        first_name?: string
+        is_email_verified: boolean
+        last_name?: string
+        link_auth: string
+      }
     return {
+      additionalAuthInfo,
       created_at: new Date(created_at._seconds * 1000),
       email,
       first_name,

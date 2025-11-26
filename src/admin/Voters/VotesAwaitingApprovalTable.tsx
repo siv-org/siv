@@ -27,6 +27,7 @@ export const VotesAwaitingApprovalTable = () => {
   const num_checked = checked.filter((c) => c).length
 
   const votes_shown = showAll ? pending_votes : onThisPage
+  const additionalAuthInfoFields = new Set(votes_shown.flatMap((v) => Object.keys(v.additionalAuthInfo || {})))
 
   function ApproveVoteButton() {
     return (
@@ -78,6 +79,9 @@ export const VotesAwaitingApprovalTable = () => {
             <th>last name</th>
             <th>email</th>
             <th>email verified?</th>
+            {[...additionalAuthInfoFields].map((field) => (
+              <th key={field}>{field}</th>
+            ))}
             <th className={hoverable} onClick={toggle_tokens}>
               {mask_tokens ? 'masked' : 'full'}
               <br />
@@ -86,17 +90,24 @@ export const VotesAwaitingApprovalTable = () => {
           </tr>
         </thead>
         <tbody className="[&_td]:whitespace-nowrap bg-white">
-          {votes_shown.map(({ email, first_name, is_email_verified, last_name, link_auth }, index) => (
-            <tr className={`${checked[index] && 'bg-[#f1f1f1]'}`} key={link_auth}>
-              <CheckboxCell {...{ checked, index, last_selected, pressing_shift, set_checked, set_last_selected }} />
-              <td>{index + 1}</td>
-              <td>{first_name}</td>
-              <td>{last_name}</td>
-              <td>{email}</td>
-              <td className="text-center">{is_email_verified ? '✓' : ''}</td>
-              <td className="font-mono text-[12px]">{mask_tokens ? mask(link_auth) : link_auth}</td>
-            </tr>
-          ))}
+          {votes_shown.map(
+            ({ additionalAuthInfo, email, first_name, is_email_verified, last_name, link_auth }, index) => (
+              <tr className={`${checked[index] && 'bg-[#f1f1f1]'}`} key={link_auth}>
+                <CheckboxCell {...{ checked, index, last_selected, pressing_shift, set_checked, set_last_selected }} />
+                <td>{index + 1}</td>
+                <td>{first_name}</td>
+                <td>{last_name}</td>
+                <td>{email}</td>
+                <td className="text-center">{is_email_verified ? '✓' : ''}</td>
+                {[...additionalAuthInfoFields].map((field) => (
+                  <td className="text-center" key={field}>
+                    {additionalAuthInfo?.[field]}
+                  </td>
+                ))}
+                <td className="font-mono text-[12px]">{mask_tokens ? mask(link_auth) : link_auth}</td>
+              </tr>
+            ),
+          )}
         </tbody>
       </table>
 
