@@ -47,7 +47,7 @@ export function Contributors() {
       <ContributorRow
         affiliation="CREO Cybersecurity Lab, North Carolina A&T State University"
         focus="US Elections Cybersecurity"
-        name="Jason Green"
+        name="Jason Green, PhD"
       />
 
       <ContributorRow affiliation="Former NASA Scientist" focus="Strategy" name="John Cumbers, PhD" />
@@ -70,7 +70,7 @@ export function Contributors() {
         name="Kathryn Mattie"
       />
 
-      <ContributorRow affiliation="Amazon" focus="Software Engineering" name="Henry Wong" />
+      <ContributorRow affiliation="Amazon Web Services" focus="Software Engineering" name="Henry Wong" />
 
       <ContributorRow affiliation="Technology Entrepreneur, LoopRL" focus="Funding" name="Eshan Kejriwal" />
 

@@ -444,7 +444,7 @@ export const groupedSteps: Group[] = [
               '',
               '',
               {
-                details: `Only submissions from authenticated voters were accepted, which can be verified with standard Risk-Limiting Audits after the election.`,
+                details: `Only submissions from authenticated voters were accepted, which can be verified with Risk-Limiting Audits after the election.`,
               },
             ],
             right: [{ react: Unlocked }, ''],

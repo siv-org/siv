@@ -1,3 +1,4 @@
+import { FullscreenOutlined } from '@ant-design/icons'
 import { useEffect, useRef, useState } from 'react'
 
 import { useStored } from '../useStored'
@@ -44,13 +45,15 @@ export const ElectionQR = ({ url }: { url: string }) => {
   return (
     <>
       {/* Small QR Code */}
-      <div className="flex justify-center">
-        <div
-          {...{ ref }}
-          className="cursor-pointer"
+      <div className="flex flex-col items-center">
+        <div {...{ ref }} className="cursor-pointer" onClick={() => setIsModalOpen(true)} />
+        <button
+          className="flex items-center gap-1.5 text-xs text-gray-500 hover:text-gray-700 transition-colors cursor-pointer bg-transparent border-none p-0"
           onClick={() => setIsModalOpen(true)}
-          title="Click to view larger QR code"
-        />
+        >
+          <FullscreenOutlined className="text-[14px]" />
+          <span>Tap for fullscreen</span>
+        </button>
       </div>
 
       {/* Modal */}
