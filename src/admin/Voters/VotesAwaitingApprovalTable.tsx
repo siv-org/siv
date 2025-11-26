@@ -87,7 +87,7 @@ export const VotesAwaitingApprovalTable = () => {
         </thead>
         <tbody className="[&_td]:whitespace-nowrap bg-white">
           {votes_shown.map(({ email, first_name, is_email_verified, last_name, link_auth }, index) => (
-            <tr className={`${checked[index] && 'bg-[#f1f1f1]'}`} key={email}>
+            <tr className={`${checked[index] && 'bg-[#f1f1f1]'}`} key={link_auth}>
               <CheckboxCell {...{ checked, index, last_selected, pressing_shift, set_checked, set_last_selected }} />
               <td>{index + 1}</td>
               <td>{first_name}</td>
