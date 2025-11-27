@@ -10,6 +10,8 @@ import { InvalidatedVoteMessage } from './InvalidatedVoteMessage'
 import { UnlockedVote } from './UnlockedVote'
 import { UnverifiedEmailModal } from './UnverifiedEmailModal'
 
+const disabledLinkToStatusPage = ['1764273267967']
+
 export function SubmittedScreen({
   auth,
   election_id,
@@ -33,12 +35,15 @@ export function SubmittedScreen({
     <NoSsr>
       <UnverifiedEmailModal />
       <InvalidatedVoteMessage />
-      <Link as={`/election/${election_id}`} href="/election/[election_id]" legacyBehavior>
-        <a id="status-page" target="_blank">
-          <img src="/vote/externallinkicon.jpg" width="15px" />
-          Click here to visit the Election Status page.
-        </a>
-      </Link>
+
+      {!disabledLinkToStatusPage.includes(election_id) && (
+        <Link as={`/election/${election_id}`} href="/election/[election_id]" legacyBehavior>
+          <a id="status-page" target="_blank">
+            <img src="/vote/externallinkicon.jpg" width="15px" />
+            Click here to visit the Election Status page.
+          </a>
+        </Link>
+      )}
 
       <h3>How to verify your vote:</h3>
       <p>
