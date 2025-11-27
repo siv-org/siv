@@ -5,10 +5,7 @@ import { RefObject, useRef, useState } from 'react'
 import { OnClickButton } from 'src/_shared/Button'
 import { api } from 'src/api-helper'
 
-// FIXME: Hardcoding these in for now for testing, will want to move to customizable per election
-const enableBirthday = true
-const enableStatusNumber = true
-const enableAdditionalAuthInfo = enableBirthday || enableStatusNumber
+const extraAuthInfo = ['1764273267967']
 
 export const VoterAuthInfoForm = () => {
   const [emailError, setEmailError] = useState('')
@@ -22,6 +19,11 @@ export const VoterAuthInfoForm = () => {
   const submitBtn = useRef<HTMLAnchorElement>(null)
   const router = useRouter()
   const { election_id, link: link_auth } = router.query as { election_id?: string; link?: string }
+
+  // Turn on additional auth info
+  const enableBirthday = extraAuthInfo.includes(election_id || '')
+  const enableStatusNumber = extraAuthInfo.includes(election_id || '')
+  const enableAdditionalAuthInfo = enableBirthday || enableStatusNumber
 
   return (
     <section>
@@ -42,7 +44,7 @@ export const VoterAuthInfoForm = () => {
 
       {enableAdditionalAuthInfo && (
         <Row>
-          {enableBirthday && <Item label="Birthday (MM/DD/YYYY)" setter={setBirthday} />}
+          {enableBirthday && <Item label="Date of Birth (MM/DD/YYYY)" setter={setBirthday} />}
           {enableStatusNumber && <Item label="Voter status number" setter={setStatusNumber} />}
         </Row>
       )}
