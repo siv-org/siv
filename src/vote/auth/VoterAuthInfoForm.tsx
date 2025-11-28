@@ -78,6 +78,7 @@ export const VoterAuthInfoForm = () => {
             }
             if (enableStatusNumber) {
               if (!statusNumber) return setSubmissionError('Status Number is required')
+              if (!/^\d{10}$/.test(statusNumber)) return setSubmissionError('Status Number must be 10 digits')
               additionalAuthInfo.statusNumber = statusNumber
             }
             payload.additionalAuthInfo = additionalAuthInfo
