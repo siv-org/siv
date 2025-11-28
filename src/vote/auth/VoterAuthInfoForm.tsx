@@ -44,8 +44,8 @@ export const VoterAuthInfoForm = () => {
 
       {enableAdditionalAuthInfo && (
         <Row>
-          {enableBirthday && <Item label="Date of Birth (MM/DD/YYYY)" setter={setBirthday} />}
-          {enableStatusNumber && <Item label="Voter status number" setter={setStatusNumber} />}
+          {enableBirthday && <Item label="Date of Birth (YYYYMMDD)" setter={setBirthday} />}
+          {enableStatusNumber && <Item label="10-digit Status Number" setter={setStatusNumber} />}
         </Row>
       )}
 
@@ -72,8 +72,14 @@ export const VoterAuthInfoForm = () => {
           }
           if (enableAdditionalAuthInfo) {
             const additionalAuthInfo: Record<string, string> = {}
-            if (enableBirthday) additionalAuthInfo.birthday = birthday
-            if (enableStatusNumber) additionalAuthInfo.statusNumber = statusNumber
+            if (enableBirthday) {
+              if (!birthday) return setSubmissionError('Date of Birth is required')
+              additionalAuthInfo.birthday = birthday
+            }
+            if (enableStatusNumber) {
+              if (!statusNumber) return setSubmissionError('Status Number is required')
+              additionalAuthInfo.statusNumber = statusNumber
+            }
             payload.additionalAuthInfo = additionalAuthInfo
           }
 
