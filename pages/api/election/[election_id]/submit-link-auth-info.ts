@@ -3,6 +3,7 @@ import { button, generateEmailLoginCode } from 'api/admin-login'
 import { pusher } from 'api/pusher'
 import { validate as validateEmail } from 'email-validator'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { optionalEmail } from 'src/vote/auth/VoterAuthInfoForm'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Voter submits their registration information
@@ -17,7 +18,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const pendingVote = pendingVoteDoc.get()
 
   // Validate email
-  if (email && !validateEmail(email)) return res.status(400).json({ error: 'Invalid email address' })
+  if (email && !validateEmail(email) && !optionalEmail.includes(election_id))
+    return res.status(400).json({ error: 'Invalid email address' })
 
   // Does this election allow registrations?
   const election = (await loadElection).data() || {}

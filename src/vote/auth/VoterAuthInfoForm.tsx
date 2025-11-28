@@ -1,11 +1,12 @@
 import { TextField } from '@mui/material'
 import { validate as validateEmail } from 'email-validator'
 import { useRouter } from 'next/router'
-import { RefObject, useRef, useState } from 'react'
+import { RefObject, useEffect, useRef, useState } from 'react'
 import { OnClickButton } from 'src/_shared/Button'
 import { api } from 'src/api-helper'
 
 const extraAuthInfo = ['1764273267967', '1764288582801']
+export const optionalEmail = ['1764273267967', '1764288582801']
 
 export const VoterAuthInfoForm = () => {
   const [emailError, setEmailError] = useState('')
@@ -25,6 +26,10 @@ export const VoterAuthInfoForm = () => {
   const enableStatusNumber = extraAuthInfo.includes(election_id || '')
   const enableAdditionalAuthInfo = enableBirthday || enableStatusNumber
 
+  useEffect(() => {
+    if (submissionError) setSubmitting(false)
+  }, [submissionError])
+
   return (
     <section>
       <Row>
@@ -36,7 +41,7 @@ export const VoterAuthInfoForm = () => {
         <Item
           errorSetter={setEmailError}
           errorString={emailError}
-          label="Email (to be verified)"
+          label={`Email (${optionalEmail.includes(election_id || '') ? 'optional' : 'to be verified'})`}
           onEnter={submitBtn}
           setter={setEmail}
         />
@@ -51,14 +56,15 @@ export const VoterAuthInfoForm = () => {
 
       <OnClickButton
         className="w-full text-xl text-center"
-        disabled={(!first_name && !last_name && !validateEmail(email)) || !!emailError || submitting}
+        disabled={(!validateEmail(email) && !optionalEmail.includes(election_id || '')) || !!emailError || submitting}
         error={!!submissionError}
         helperText={submissionError}
         onClick={async () => {
           setSubmissionError('')
 
           // Validate email if present
-          if (email && !validateEmail(email)) return setEmailError('Invalid email address')
+          if (email && !validateEmail(email) && !optionalEmail.includes(election_id || ''))
+            return setEmailError('Invalid email address')
 
           // Submit details to server
           setSubmitting(true)

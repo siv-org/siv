@@ -2,6 +2,8 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { api } from 'src/api-helper'
 
+import { optionalEmail } from '../auth/VoterAuthInfoForm'
+
 export const UnverifiedEmailModal = () => {
   const [isModalOpen, setModalOpen] = useState(false)
   const [email, setEmail] = useState('')
@@ -16,8 +18,9 @@ export const UnverifiedEmailModal = () => {
     // Show warning if unverified
     const status = await response.text()
     if (status == 'Unverified') {
-      setModalOpen(true)
-      setEmail(localStorage.getItem(`registration-${link_auth}`) || 'your email')
+      if (!optionalEmail.includes(election_id || '')) setModalOpen(true)
+      const storedEmail = localStorage.getItem(`registration-${link_auth}`)
+      if (storedEmail) setEmail(storedEmail)
     }
   }
 
@@ -28,7 +31,7 @@ export const UnverifiedEmailModal = () => {
   return (
     <div>
       {email && (
-        <p className="inline-block w-auto p-2 font-medium border-2 border-yellow-400 border-dashed">
+        <p className="inline-block p-2 w-auto font-medium border-2 border-yellow-400 border-dashed">
           ⚠️ A verification email was sent to {email}
         </p>
       )}
@@ -36,10 +39,10 @@ export const UnverifiedEmailModal = () => {
       {/* Modal */}
       <div
         className={`absolute inset-0  transition-opacity duration-500 ease-in-out bg-gray-900/60 ${
-          isModalOpen ? 'opacity-100 z-20' : 'opacity-0 -z-10'
+          isModalOpen ? 'z-20 opacity-100' : 'opacity-0 -z-10'
         }`}
       >
-        <div className="flex flex-col items-center justify-center h-full">
+        <div className="flex flex-col justify-center items-center h-full">
           <div
             className={`p-3 transition-transform duration-500 ease-in-out transform  bg-white rounded-lg ${
               isModalOpen ? 'scale-100' : 'scale-0'
