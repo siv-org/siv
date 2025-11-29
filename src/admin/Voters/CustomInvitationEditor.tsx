@@ -6,6 +6,7 @@ import { sha256 } from 'src/crypto/sha256'
 
 import { useUser } from '../auth'
 import { useStored } from '../useStored'
+import { CustomInvitationSubject } from './CustomInvitationSubject'
 
 const ToolbarButton = ({
   children,
@@ -116,96 +117,107 @@ export const CustomInvitationEditor = () => {
 
       {/* Editor Content */}
       {isExpanded && (
-        <div className="rounded border border-gray-300 border-solid shadow-sm">
-          {/* Toolbar */}
-          <div className="flex gap-1 justify-end p-2 bg-gray-50">
-            <ToolbarButton
-              className="font-semibold"
-              onClick={() => insertMarkdown('## ', '', 'Heading')}
-              tooltip="Heading"
-            >
-              H
-            </ToolbarButton>
-            <ToolbarButton className="font-bold" onClick={() => insertMarkdown('**', '**', 'bold text')} tooltip="Bold">
-              B
-            </ToolbarButton>
-            <ToolbarButton className="italic" onClick={() => insertMarkdown('*', '*', 'italic text')} tooltip="Italic">
-              I
-            </ToolbarButton>
-            <ToolbarButton
-              onClick={() => {
-                const url = prompt('Enter URL:')
-                if (url) insertMarkdown('[', `](${url})`, 'link text')
-              }}
-              tooltip="Link"
-            >
-              <LinkOutlined />
-            </ToolbarButton>
-            <ToolbarButton onClick={() => insertMarkdown('- ', '', 'list item')} tooltip="Bullet List">
-              <UnorderedListOutlined />
-            </ToolbarButton>
-            <ToolbarButton onClick={() => insertMarkdown('1. ', '', 'list item')} tooltip="Numbered List">
-              <OrderedListOutlined />
-            </ToolbarButton>
-          </div>
-
-          {/* Editor Area */}
-          <textarea
-            className="w-full p-4 min-h-[250px] resize-y outline-none bg-white text-gray-800 border-0 text-sm"
-            onChange={(e) => setContent(e.target.value)}
-            placeholder="Enter your custom invitation text..."
-            ref={textareaRef}
-            value={content}
-          />
-
-          {/* Footer */}
-          <div className="flex justify-between items-center px-4 py-2.5 text-sm border-t border-gray-200 bg-gray-50">
-            <div>
-              {isSaving && <span className="italic text-gray-400">saving...</span>}
-              {saved && <span className="italic text-green-700">saved.</span>}
-            </div>
-
-            <div>
-              <span className="text-gray-600">
-                <span className="text-xs">🔍</span> preview:{' '}
-              </span>
-              <a
-                className="text-blue-600 cursor-pointer hover:underline"
-                href={`/election/${election_id}/vote?auth=preview`}
-                rel="noreferrer"
-                target="_blank"
+        <>
+          <CustomInvitationSubject />
+          <div className="rounded border border-gray-300 border-solid shadow-sm">
+            {/* Toolbar */}
+            <div className="flex gap-1 justify-end p-2 bg-gray-50">
+              <ToolbarButton
+                className="font-semibold"
+                onClick={() => insertMarkdown('## ', '', 'Heading')}
+                tooltip="Heading"
               >
-                ballot
-              </a>
-              <span className="text-gray-500">, </span>
-              <a
-                className="text-blue-600 cursor-pointer hover:underline"
-                onClick={async (e) => {
-                  e.preventDefault()
-                  const confirmed = confirm(`Would you like to receive a mock email invitation at ${user?.email}?`)
-                  if (confirmed) {
-                    try {
-                      const response = await api(`election/${election_id}/admin/send-test-invitation`)
-
-                      if (response.ok) {
-                        const result = await response.json()
-                        alert(`Test invitation email sent successfully to ${result.recipient}`)
-                      } else {
-                        const error = await response.json()
-                        alert(`Failed to send test email: ${error.error || 'Unknown error'}`)
-                      }
-                    } catch (error) {
-                      console.error('Error sending test invitation:', error)
-                      alert('Failed to send test email. Please try again.')
-                    }
-                  }
+                H
+              </ToolbarButton>
+              <ToolbarButton
+                className="font-bold"
+                onClick={() => insertMarkdown('**', '**', 'bold text')}
+                tooltip="Bold"
+              >
+                B
+              </ToolbarButton>
+              <ToolbarButton
+                className="italic"
+                onClick={() => insertMarkdown('*', '*', 'italic text')}
+                tooltip="Italic"
+              >
+                I
+              </ToolbarButton>
+              <ToolbarButton
+                onClick={() => {
+                  const url = prompt('Enter URL:')
+                  if (url) insertMarkdown('[', `](${url})`, 'link text')
                 }}
+                tooltip="Link"
               >
-                email
-              </a>
+                <LinkOutlined />
+              </ToolbarButton>
+              <ToolbarButton onClick={() => insertMarkdown('- ', '', 'list item')} tooltip="Bullet List">
+                <UnorderedListOutlined />
+              </ToolbarButton>
+              <ToolbarButton onClick={() => insertMarkdown('1. ', '', 'list item')} tooltip="Numbered List">
+                <OrderedListOutlined />
+              </ToolbarButton>
+            </div>
+
+            {/* Editor Area */}
+            <textarea
+              className="w-full p-4 min-h-[250px] resize-y outline-none bg-white text-gray-800 border-0 text-sm"
+              onChange={(e) => setContent(e.target.value)}
+              placeholder="Enter your custom invitation text..."
+              ref={textareaRef}
+              value={content}
+            />
+
+            {/* Footer */}
+            <div className="flex justify-between items-center px-4 py-2.5 text-sm border-t border-gray-200 bg-gray-50">
+              <div>
+                {isSaving && <span className="italic text-gray-400">saving...</span>}
+                {saved && <span className="italic text-green-700">saved.</span>}
+              </div>
+
+              <div>
+                <span className="text-gray-600">
+                  <span className="text-xs">🔍</span> preview:{' '}
+                </span>
+                <a
+                  className="text-blue-600 cursor-pointer hover:underline"
+                  href={`/election/${election_id}/vote?auth=preview`}
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  ballot
+                </a>
+                <span className="text-gray-500">, </span>
+                <a
+                  className="text-blue-600 cursor-pointer hover:underline"
+                  onClick={async (e) => {
+                    e.preventDefault()
+                    const confirmed = confirm(`Would you like to receive a mock email invitation at ${user?.email}?`)
+                    if (confirmed) {
+                      try {
+                        const response = await api(`election/${election_id}/admin/send-test-invitation`)
+
+                        if (response.ok) {
+                          const result = await response.json()
+                          alert(`Test invitation email sent successfully to ${result.recipient}`)
+                        } else {
+                          const error = await response.json()
+                          alert(`Failed to send test email: ${error.error || 'Unknown error'}`)
+                        }
+                      } catch (error) {
+                        console.error('Error sending test invitation:', error)
+                        alert('Failed to send test email. Please try again.')
+                      }
+                    }
+                  }}
+                >
+                  email
+                </a>
+              </div>
             </div>
           </div>
-        </div>
+        </>
       )}
     </div>
   )
@@ -230,5 +242,6 @@ function useFeatureAccess(email: string) {
 const allowedUsers = {
   '1471fccb124bbf4': 's@A',
   '8044b24d7e96606': 'EHZ',
+  cb547b8468a4642: 'd@s',
   d12bc8d54668685: 'A@s',
 }
