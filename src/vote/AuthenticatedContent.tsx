@@ -1,6 +1,7 @@
 import Head from 'next/head'
 
 import { GlobalCSS } from '../GlobalCSS'
+import { CustomAuthFlow, hasCustomAuthFlow } from './auth/11choosesAuth/CustomAuthFlow'
 import { Ballot } from './Ballot'
 import { ESignScreen } from './esign/ESignScreen'
 import { Instructions } from './Instructions'
@@ -20,7 +21,9 @@ export const AuthenticatedContent = ({ auth, election_id }: { auth: string; elec
   return (
     <>
       {state.submitted_at ? (
-        state.esignature_requested && !state.esigned_at ? (
+        hasCustomAuthFlow(election_id) ? (
+          <CustomAuthFlow {...{ auth, election_id }} />
+        ) : state.esignature_requested && !state.esigned_at ? (
           <ESignScreen {...{ auth, dispatch, election_id }} />
         ) : (
           <>
