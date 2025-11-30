@@ -1,7 +1,7 @@
 import { firebase } from 'api/_services'
 import { firestore } from 'firebase-admin'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { test_election_id_11chooses } from 'src/vote/auth/11choosesAuth/CustomAuthFlow'
+import { test_election_id_11chooses as election_id } from 'src/vote/auth/11choosesAuth/CustomAuthFlow'
 
 /* For each record (~62k): {
     auth_token ("voter code"): string
@@ -47,8 +47,6 @@ const voterFileToUploadFormat = (v: (typeof sample_voters)[number], index: numbe
   },
 })
 // console.log(sample_voters.map(voterFileToUploadFormat))
-
-const election_id = test_election_id_11chooses
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.headers.host !== 'localhost:3000') return res.status(405).json({ error: 'For localhost only' })
