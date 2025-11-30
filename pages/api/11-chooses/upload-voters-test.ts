@@ -1,7 +1,7 @@
 import { firebase } from 'api/_services'
 import { firestore } from 'firebase-admin'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { test_election_id_11chooses } from 'src/vote/auth/11choosesAuth/hasCustomAuthFlow'
+import { test_election_id_11chooses } from 'src/vote/auth/11choosesAuth/CustomAuthFlow'
 
 /* For each record (~62k): {
     auth_token ("voter code"): string
