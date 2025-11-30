@@ -1,5 +1,6 @@
 import { TextField } from '@mui/material'
 import { validate as validateEmail } from 'email-validator'
+import { useRouter } from 'next/router'
 import { useRef, useState } from 'react'
 import { OnClickButton } from 'src/_shared/Button'
 import { api } from 'src/api-helper'
@@ -9,6 +10,7 @@ export const AddEmailPage = ({ auth }: { auth: string }) => {
   const [errorString, setErrorString] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const submitBtn = useRef<HTMLAnchorElement>(null)
+  const router = useRouter()
 
   return (
     <div className="mx-auto max-w-96">
@@ -64,8 +66,8 @@ export const AddEmailPage = ({ auth }: { auth: string }) => {
               return setErrorString(responseJson?.error)
             }
 
-            // Redirect to next screen by adding query param `passed_yob`
-            // router.replace(`${router.asPath}&passed_yob=true&email=true`)
+            // Redirect to next screen by adding query param
+            router.replace(`${router.asPath}&passed_email=true`)
           }}
           ref={submitBtn}
           style={{ margin: 0, padding: '19px 15px' }}
