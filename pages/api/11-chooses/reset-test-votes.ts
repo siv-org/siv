@@ -1,7 +1,7 @@
 import { firebase } from 'api/_services'
 import { NextApiRequest, NextApiResponse } from 'next'
 
-const election_id = '1764391039716' // 11_chooses Test Auth
+import { test_election_id_11chooses as election_id } from './upload-voters-test'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.headers.host !== 'localhost:3001') return res.status(405).json({ error: 'For localhost only' })

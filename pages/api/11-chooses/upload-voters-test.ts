@@ -47,7 +47,8 @@ const voterFileToUploadFormat = (v: (typeof sample_voters)[number], index: numbe
 })
 // console.log(sample_voters.map(voterFileToUploadFormat))
 
-const election_id = '1764391039716' // 11_chooses Test Auth
+export const test_election_id_11chooses = '1764391039716' // 11_chooses Test Auth
+const election_id = test_election_id_11chooses
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.headers.host !== 'localhost:3000') return res.status(405).json({ error: 'For localhost only' })
