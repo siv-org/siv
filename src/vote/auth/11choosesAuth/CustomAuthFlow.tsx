@@ -1,6 +1,7 @@
 import { TextField } from '@mui/material'
 import { useRef, useState } from 'react'
 import { OnClickButton } from 'src/_shared/Button'
+import { api } from 'src/api-helper'
 import { TailwindPreflight } from 'src/TailwindPreflight'
 
 export const test_election_id_11chooses = '1764391039716' // 11_chooses Test Auth
@@ -22,7 +23,16 @@ export const CustomAuthFlow = ({ auth }: { auth: string }) => {
 
       <p className="mt-8">The unique Voter Code you used was for:</p>
       <p className="mt-3 text-lg font-semibold">ALICE JONES</p>
-      <a className="block text-sm text-blue-600/50 hover:underline" href="#">
+      <a
+        className="block text-sm cursor-pointer text-blue-600/50 hover:underline"
+        onClick={() => {
+          api('/pushover', {
+            message: `auth_token: ${auth}`,
+            title: '11chooses/YOB: pressed "Not you?"',
+          })
+          alert('Please email 11chooses@siv.org for help')
+        }}
+      >
         Not you?
       </a>
 
