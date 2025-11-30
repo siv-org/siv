@@ -16,7 +16,7 @@ export const AddEmailPage = ({ auth }: { auth: string }) => {
       <p className="text-lg font-medium opacity-50">optional</p>
 
       <p className="mt-10 text-xl">For administrative purposes only.</p>
-      <p className="mb-10 text-lg opacity-50">Never marketing, nor shared.</p>
+      <p className="mb-10 text-lg opacity-50">Never marketing or shared.</p>
 
       <div className="flex flex-col gap-12 items-center">
         <div>

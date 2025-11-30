@@ -1,6 +1,7 @@
 import { firebase, pushover } from 'api/_services'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { test_election_id_11chooses as election_id, VoterInfo } from 'src/vote/auth/11choosesAuth/CustomAuthFlow'
+import { test_election_id_11chooses as election_id } from 'src/vote/auth/11choosesAuth/CustomAuthFlow'
+import { VoterInfo } from 'src/vote/auth/11choosesAuth/YOBPage'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Validate auth_token
