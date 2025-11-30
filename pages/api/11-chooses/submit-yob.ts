@@ -1,0 +1,44 @@
+import { firebase, pushover } from 'api/_services'
+import { firestore } from 'firebase-admin'
+import { NextApiRequest, NextApiResponse } from 'next'
+import { test_election_id_11chooses as election_id } from 'src/vote/auth/11choosesAuth/CustomAuthFlow'
+
+export default async (req: NextApiRequest, res: NextApiResponse) => {
+  // Validate request body
+  const { auth_token, yearOfBirth } = req.body
+  if (typeof auth_token !== 'string') return res.status(400).json({ error: 'auth_token is required' })
+  if (typeof yearOfBirth !== 'string') return res.status(400).json({ error: 'yearOfBirth is required' })
+
+  // Lookup voter by auth_token
+  const electionDoc = firebase.firestore().collection('elections').doc(election_id)
+  const [voterDoc] = (await electionDoc.collection('voters').where('auth_token', '==', auth_token).get()).docs
+
+  // If voter not found, error and ping admin
+  if (!voterDoc?.exists) {
+    await pushover('11chooses/submit-yob: auth not found', JSON.stringify({ auth_token }))
+    return res.status(400).json({ error: 'voter not found' })
+  }
+
+  const { voter_file } = voterDoc.data()
+  const expected = voter_file['DOB/YOB/Age Range']
+
+  // If wrong:
+  if (expected !== yearOfBirth) {
+    await Promise.all([
+      // Ping admin
+      pushover(
+        '11chooses/submit-yob: mismatch',
+        `expected: ${expected}   got: ${yearOfBirth}\n[${auth_token}] ${voter_file.first_name} ${voter_file.last_name}`,
+      ),
+      // Store mismatch in db
+      voterDoc.ref.update({
+        'YOB mismatch': firestore.FieldValue.arrayUnion({ expected, submitted: yearOfBirth, timestamp: new Date() }),
+      }),
+    ])
+    // Return error to client
+    return res.status(400).json({ error: "Doesn't match State Voter File" })
+  }
+
+  // If correct:
+  return res.status(200).json({ success: true })
+}

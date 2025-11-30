@@ -88,19 +88,19 @@ export const CustomAuthFlow = ({ auth }: { auth: string }) => {
                 setSubmitting(true)
 
                 // Submit to server
-                // const response = await api(`election/${election_id}/submit-link-auth-info`, payload)
-                // setSubmitting(false)
+                const response = await api(`11-chooses/submit-yob`, { auth_token: auth, yearOfBirth })
+                setSubmitting(false)
                 //
                 // Handle errors from server
-                // if (!response.ok) {
-                //   const responseJson = await response.json()
-                //   if (!responseJson?.error) {
-                //     console.error('submission responseJson', responseJson)
-                //     return setSubmissionError('Unknown error')
-                //   }
-                //   console.error('submission responseJson.error', responseJson?.error)
-                //   return setSubmissionError(responseJson?.error)
-                // }
+                if (!response.ok) {
+                  const responseJson = await response.json()
+                  if (!responseJson?.error) {
+                    console.error('submission responseJson', responseJson)
+                    return setErrorString('Unknown error')
+                  }
+                  console.error('submission responseJson.error', responseJson?.error)
+                  return setErrorString(responseJson?.error)
+                }
                 //
                 // Redirect to next screen
                 //
