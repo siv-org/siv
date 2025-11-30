@@ -24,7 +24,7 @@ export const CustomAuthFlow = ({ auth }: { auth: string }) => {
       <p className="mt-8">The unique Voter Code you used was for:</p>
       <p className="mt-3 text-lg font-semibold">ALICE JONES</p>
       <a
-        className="block text-sm cursor-pointer text-blue-600/50 hover:underline"
+        className="inline-block p-1 -mt-1 text-sm cursor-pointer text-blue-600/50 hover:underline"
         onClick={() => {
           api('/pushover', {
             message: `auth_token: ${auth}`,
