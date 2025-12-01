@@ -4,7 +4,15 @@ import { useRef, useState } from 'react'
 import { OnClickButton } from 'src/_shared/Button'
 import { api } from 'src/api-helper'
 
-export const YOBPage = ({ auth, voterName }: { auth: string; voterName: string }) => {
+export const YOBPage = ({
+  auth,
+  is_withheld,
+  voterName,
+}: {
+  auth: string
+  is_withheld: boolean
+  voterName: string
+}) => {
   const [errorString, setErrorString] = useState('')
   const [yearOfBirth, setYearOfBirth] = useState('')
   const submitBtn = useRef<HTMLAnchorElement>(null)
@@ -17,12 +25,15 @@ export const YOBPage = ({ auth, voterName }: { auth: string; voterName: string }
 
       {/* Voter name */}
       <p className="mt-8">The unique Voter Code you used was for:</p>
-      <p className="mt-3 text-lg font-semibold">{voterName}</p>
+      <p className="mt-3 text-lg font-semibold">{is_withheld ? 'WITHHELD VOTER' : voterName}</p>
 
-      {/* Not you? */}
+      {/* "Not you?" / "Why Withheld?" link */}
       <a
         className="inline-block p-1 -mt-1 text-sm cursor-pointer text-blue-600/50 hover:underline"
         onClick={() => {
+          if (is_withheld) return alert('Voters can opt to withhold their name from the state voter file.')
+
+          // For "Not you?"
           api('/pushover', {
             message: `auth_token: ${auth}`,
             title: '11chooses/YOB: pressed "Not you?"',
@@ -30,7 +41,7 @@ export const YOBPage = ({ auth, voterName }: { auth: string; voterName: string }
           alert('Please email 11chooses@siv.org for help')
         }}
       >
-        Not you?
+        {is_withheld ? 'Why Withheld?' : 'Not you?'}
       </a>
 
       {/* Confirm: Year of Birth */}

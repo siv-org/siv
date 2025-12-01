@@ -4,7 +4,6 @@ import { api } from 'src/api-helper'
 import { TailwindPreflight } from 'src/TailwindPreflight'
 
 import { AddEmailPage } from './AddEmailPage'
-import { QueryStateVoterPortalPage } from './QueryStateVoterPortalPage'
 import { YOBPage } from './YOBPage'
 
 export const test_election_id_11chooses = '1764391039716'
@@ -19,8 +18,6 @@ export const CustomAuthFlow = ({ auth }: { auth: string }) => {
   const { is_withheld, loaded, voterName } = useVoterInfo(auth)
   const passedYOB = query.passed_yob === 'true'
 
-  const FirstAuthPage = !is_withheld ? YOBPage : QueryStateVoterPortalPage
-
   return (
     <div className="text-center">
       {!loaded ? (
@@ -28,7 +25,7 @@ export const CustomAuthFlow = ({ auth }: { auth: string }) => {
         <p className="mt-8 text-lg italic animate-pulse text-black/50">Loading voter info...</p>
       ) : !passedYOB ? (
         // First auth page
-        <FirstAuthPage {...{ auth, voterName }} />
+        <YOBPage {...{ auth, is_withheld, voterName }} />
       ) : (
         // Add email Page
         <AddEmailPage {...{ auth }} />
