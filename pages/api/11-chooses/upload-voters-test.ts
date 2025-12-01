@@ -27,7 +27,7 @@ const sample_voters = [
     'Voter ID': '1234567890',
   },
   {
-    'DOB/YOB/Age Range': '60-70',
+    'DOB/YOB/Age Range': '46 through 55',
     'First Name': '',
     'Last Name': '',
     'Privacy Status': 'Withheld',
