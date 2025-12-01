@@ -1,7 +1,6 @@
 import { firebase, pushover } from 'api/_services'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { test_election_id_11chooses as election_id } from 'src/vote/auth/11choosesAuth/CustomAuthFlow'
-import { VoterInfo } from 'src/vote/auth/11choosesAuth/YOBPage'
+import { test_election_id_11chooses as election_id, VoterInfo } from 'src/vote/auth/11choosesAuth/CustomAuthFlow'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Validate auth_token
@@ -20,8 +19,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Send name to client
   const { voter_file } = voter.data()
-  const { first_name, last_name } = voter_file
-  const voterInfo: VoterInfo = { voterName: first_name + ' ' + last_name }
+  const { first_name, is_withheld, last_name } = voter_file
+  const voterInfo: VoterInfo = { is_withheld, voterName: first_name + ' ' + last_name }
 
   return res.status(200).json(voterInfo)
 }

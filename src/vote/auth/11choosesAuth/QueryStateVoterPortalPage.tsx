@@ -4,7 +4,7 @@ import { useRef, useState } from 'react'
 import { OnClickButton } from 'src/_shared/Button'
 import { api } from 'src/api-helper'
 
-export const YOBPage = ({ auth, voterName }: { auth: string; voterName: string }) => {
+export const QueryStateVoterPortalPage = ({ auth }: { auth: string }) => {
   const [errorString, setErrorString] = useState('')
   const [yearOfBirth, setYearOfBirth] = useState('')
   const submitBtn = useRef<HTMLAnchorElement>(null)
@@ -17,7 +17,7 @@ export const YOBPage = ({ auth, voterName }: { auth: string; voterName: string }
 
       {/* Voter name */}
       <p className="mt-8">The unique Voter Code you used was for:</p>
-      <p className="mt-3 text-lg font-semibold">{voterName}</p>
+      <p className="mt-3 text-lg font-semibold">WITHHELD</p>
 
       {/* Not you? */}
       <a

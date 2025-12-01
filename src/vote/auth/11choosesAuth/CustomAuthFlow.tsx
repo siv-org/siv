@@ -1,26 +1,67 @@
 import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
+import { api } from 'src/api-helper'
 import { TailwindPreflight } from 'src/TailwindPreflight'
 
 import { AddEmailPage } from './AddEmailPage'
+import { QueryStateVoterPortalPage } from './QueryStateVoterPortalPage'
 import { YOBPage } from './YOBPage'
 
 export const test_election_id_11chooses = '1764391039716'
 
 export const hasCustomAuthFlow = (election_id: string) => {
   if (useRouter().query.passed_email === 'true') return false
-
   return election_id === test_election_id_11chooses
 }
 
 export const CustomAuthFlow = ({ auth }: { auth: string }) => {
   const { query } = useRouter()
+  const { is_withheld, loaded, voterName } = useVoterInfo(auth)
   const passedYOB = query.passed_yob === 'true'
+
+  const FirstAuthPage = !is_withheld ? YOBPage : QueryStateVoterPortalPage
 
   return (
     <div className="text-center">
-      {!passedYOB ? <YOBPage {...{ auth }} /> : <AddEmailPage {...{ auth }} />}
+      {!loaded ? (
+        // Loading voter info
+        <p className="mt-8 text-lg italic animate-pulse text-black/50">Loading voter info...</p>
+      ) : !passedYOB ? (
+        // First auth page
+        <FirstAuthPage {...{ auth, voterName }} />
+      ) : (
+        // Add email Page
+        <AddEmailPage {...{ auth }} />
+      )}
 
       <TailwindPreflight />
     </div>
   )
+}
+
+export type VoterInfo = { is_withheld: boolean; voterName: string }
+/** Query server for voter info, via `auth_token` */
+function useVoterInfo(auth: string) {
+  const [voterInfo, setVoterInfo] = useState<VoterInfo & { loaded: boolean }>({
+    is_withheld: false,
+    loaded: false,
+    voterName: '',
+  })
+
+  useEffect(() => {
+    async function getVoterInfo() {
+      const response = await api(`11-chooses/get-voter-auth`, { auth_token: auth })
+      if (!response.ok) {
+        console.error('Failed to get voter info:', JSON.stringify(response))
+        return alert('Failed to get voter info:' + JSON.stringify(response))
+      }
+
+      const voterInfo = await response.json()
+      // console.log({ voterInfo })
+      setVoterInfo({ loaded: true, ...voterInfo })
+    }
+    getVoterInfo()
+  }, [auth])
+
+  return voterInfo
 }
