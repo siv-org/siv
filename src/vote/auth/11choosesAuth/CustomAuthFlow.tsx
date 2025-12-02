@@ -25,7 +25,7 @@ export const CustomAuthFlow = ({ auth, election_id }: { auth: string; election_i
         <p className="mt-8 text-lg italic animate-pulse text-black/50">Loading voter info...</p>
       ) : !passedYOB ? (
         // First auth page
-        <YOBPage {...{ auth, is_withheld, voterName }} />
+        <YOBPage {...{ auth, election_id, is_withheld, voterName }} />
       ) : (
         // Add email Page
         <AddEmailPage {...{ auth }} />

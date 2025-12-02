@@ -6,10 +6,12 @@ import { api } from 'src/api-helper'
 
 export const YOBPage = ({
   auth,
+  election_id,
   is_withheld,
   voterName,
 }: {
   auth: string
+  election_id: string
   is_withheld: boolean
   voterName: string
 }) => {
@@ -91,7 +93,7 @@ export const YOBPage = ({
             setSubmitting(true)
 
             // Submit to server
-            const response = await api(`11-chooses/submit-yob`, { auth_token: auth, yearOfBirth })
+            const response = await api(`11-chooses/submit-yob`, { auth_token: auth, election_id, yearOfBirth })
             setSubmitting(false)
 
             // Handle errors from server
