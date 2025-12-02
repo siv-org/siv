@@ -6,12 +6,14 @@ import { election_ids_for_11chooses } from 'src/vote/auth/11choosesAuth/CustomAu
 /* For each record (~62k): {
     auth_token ("voter code"): string
     voter_file: {
-      voter_file_index: integer
-      state_voter_id: string
-      is_withheld: boolean
+      distinct_age_ranges_index: integer | null
       'DOB/YOB/Age Range': string
       first_name: string
+      is_withheld: boolean
       last_name: string
+      multi_withheld_address_index: integer | null
+      state_voter_id: string
+      voter_file_index: integer
     }
 } */
 
