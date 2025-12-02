@@ -96,7 +96,7 @@ export const YOBPage = ({
             {/* Submit button */}
             <OnClickButton
               className="w-full max-w-xs text-base font-semibold text-center"
-              disabled={!yearOfBirth || !!errorString || submitting}
+              disabled={yearOfBirth.length !== 4 || !!errorString || submitting}
               onClick={async () => {
                 setSubmitting(true)
 
