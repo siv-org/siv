@@ -4,8 +4,7 @@ import { election_ids_for_11chooses, VoterInfo } from 'src/vote/auth/11choosesAu
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Validate auth_token
-  const { auth_token } = req.body
-  const { election_id } = req.query
+  const { auth_token, election_id } = req.body
   if (typeof election_id !== 'string') return res.status(400).json({ error: 'election_id is required' })
   if (typeof auth_token !== 'string') return res.status(400).json({ error: 'auth_token is required' })
 

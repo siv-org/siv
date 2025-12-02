@@ -13,9 +13,9 @@ export const hasCustomAuthFlow = (election_id: string) => {
   return election_ids_for_11chooses.includes(election_id)
 }
 
-export const CustomAuthFlow = ({ auth }: { auth: string }) => {
+export const CustomAuthFlow = ({ auth, election_id }: { auth: string; election_id: string }) => {
   const { query } = useRouter()
-  const { is_withheld, loaded, voterName } = useVoterInfo(auth)
+  const { is_withheld, loaded, voterName } = useVoterInfo(auth, election_id)
   const passedYOB = query.passed_yob === 'true'
 
   return (
@@ -38,7 +38,7 @@ export const CustomAuthFlow = ({ auth }: { auth: string }) => {
 
 export type VoterInfo = { is_withheld: boolean; voterName: string }
 /** Query server for voter info, via `auth_token` */
-function useVoterInfo(auth: string) {
+function useVoterInfo(auth: string, election_id: string) {
   const [voterInfo, setVoterInfo] = useState<VoterInfo & { loaded: boolean }>({
     is_withheld: false,
     loaded: false,
@@ -47,7 +47,7 @@ function useVoterInfo(auth: string) {
 
   useEffect(() => {
     async function getVoterInfo() {
-      const response = await api(`11-chooses/get-voter-auth`, { auth_token: auth })
+      const response = await api(`11-chooses/get-voter-auth`, { auth_token: auth, election_id })
       if (!response.ok) {
         console.error('Failed to get voter info:', JSON.stringify(response))
         return alert('Failed to get voter info:' + JSON.stringify(response))

@@ -22,7 +22,7 @@ export const AuthenticatedContent = ({ auth, election_id }: { auth: string; elec
     <>
       {state.submitted_at ? (
         hasCustomAuthFlow(election_id) ? (
-          <CustomAuthFlow {...{ auth }} />
+          <CustomAuthFlow {...{ auth, election_id }} />
         ) : state.esignature_requested && !state.esigned_at ? (
           <ESignScreen {...{ auth, dispatch, election_id }} />
         ) : (
