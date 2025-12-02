@@ -18,6 +18,7 @@ export const YOBPage = ({
   const submitBtn = useRef<HTMLAnchorElement>(null)
   const [submitting, setSubmitting] = useState(false)
   const router = useRouter()
+  const [showHelpInstructions, setShowHelpInstructions] = useState(false)
 
   return (
     <>
@@ -60,6 +61,8 @@ export const YOBPage = ({
             label="Year of Birth (YYYY)"
             onChange={(event) => {
               setErrorString('')
+              setShowHelpInstructions(false)
+
               const newValue = event.target.value
               setYearOfBirth(newValue)
 
@@ -93,6 +96,8 @@ export const YOBPage = ({
 
             // Handle errors from server
             if (!response.ok) {
+              setShowHelpInstructions(true)
+
               const responseJson = await response.json()
               if (!responseJson?.error) {
                 console.error('submission responseJson', responseJson)
@@ -111,6 +116,18 @@ export const YOBPage = ({
           <>Submit{submitting ? 'ting...' : ''}</>
         </OnClickButton>
       </div>
+
+      {/* Show help instructions on submission errors */}
+      <p
+        className={`mt-5 border-2 max-w-80 mx-auto border-pink-300 p-1 rounded-md font-bold text-base transition-opacity duration-1000 ${
+          showHelpInstructions ? 'opacity-75' : 'opacity-0'
+        }`}
+      >
+        For help, email:{' '}
+        <a className="text-blue-600 hover:underline" href="mailto:11chooses@siv.org">
+          11chooses@siv.org
+        </a>
+      </p>
     </>
   )
 }
