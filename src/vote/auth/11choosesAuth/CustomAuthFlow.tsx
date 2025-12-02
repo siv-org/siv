@@ -6,7 +6,11 @@ import { TailwindPreflight } from 'src/TailwindPreflight'
 import { AddEmailPage } from './AddEmailPage'
 import { YOBPage } from './YOBPage'
 
-export const election_ids_for_11chooses = ['1764391039716', '1764646354556']
+export const election_ids_for_11chooses = [
+  '1764391039716', // D test
+  '1764646354556', // A test
+  '1764187291234', // prod
+]
 
 export const hasCustomAuthFlow = (election_id: string) => {
   if (useRouter().query.passed_email === 'true') return false
