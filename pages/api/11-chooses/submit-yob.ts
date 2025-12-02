@@ -1,13 +1,15 @@
 import { firebase, pushover } from 'api/_services'
 import { firestore } from 'firebase-admin'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { test_election_id_11chooses as election_id } from 'src/vote/auth/11choosesAuth/CustomAuthFlow'
+import { election_ids_for_11chooses } from 'src/vote/auth/11choosesAuth/CustomAuthFlow'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Validate request body
-  const { auth_token, yearOfBirth } = req.body
+  const { auth_token, election_id, yearOfBirth } = req.body
   if (typeof auth_token !== 'string') return res.status(400).json({ error: 'auth_token is required' })
   if (typeof yearOfBirth !== 'string') return res.status(400).json({ error: 'yearOfBirth is required' })
+  if (typeof election_id !== 'string') return res.status(400).json({ error: 'election_id is required' })
+  if (!election_ids_for_11chooses.includes(election_id)) return res.status(400).json({ error: 'Invalid election_id' })
 
   // Lookup voter by auth_token
   const electionDoc = firebase.firestore().collection('elections').doc(election_id)
