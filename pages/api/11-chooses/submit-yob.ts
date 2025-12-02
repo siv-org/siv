@@ -22,23 +22,60 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { voter_file } = voterDoc.data()
   const expected = voter_file['DOB/YOB/Age Range']
 
-  // If wrong:
-  if (expected !== yearOfBirth) {
-    await Promise.all([
-      // Ping admin
-      pushover(
-        '11chooses/submit-yob: mismatch',
-        `expected: ${expected}   got: ${yearOfBirth}\n[${auth_token}] ${voter_file.first_name} ${voter_file.last_name}`,
-      ),
-      // Store mismatch in db
-      voterDoc.ref.update({
-        'YOB mismatch': firestore.FieldValue.arrayUnion({ expected, submitted: yearOfBirth, timestamp: new Date() }),
-      }),
-    ])
-    // Return error to client
-    return res.status(400).json({ error: "Doesn't match State Voter File" })
+  // Withhelds have an approx age range, rather than exact
+  if (voter_file.is_withheld) {
+    const [minYear, maxYear] = birthYearRangeFromAgeRange(expected)
+
+    // If given year is outside of expected range:
+    if (Number(yearOfBirth) < minYear || Number(yearOfBirth) > maxYear) {
+      const expectedRange = `[${minYear}, ${maxYear}]`
+      await Promise.all([
+        // Ping admin
+        pushover(
+          '11c/YoB: WITHHELD range mismatch',
+          `expected: ${expectedRange}   got: ${yearOfBirth}\n[${auth_token}] WITHHELD VOTER`,
+        ),
+        // Store mismatch in db
+        voterDoc.ref.update({
+          'YOB mismatch': firestore.FieldValue.arrayUnion({
+            expected: expectedRange,
+            submitted: yearOfBirth,
+            timestamp: new Date(),
+          }),
+        }),
+      ])
+      return res.status(400).json({ error: "Doesn't match State Voter File" })
+    }
+  } else {
+    // If wrong:
+    if (expected !== yearOfBirth) {
+      await Promise.all([
+        // Ping admin
+        pushover(
+          '11c/submit-yob: mismatch',
+          `expected: ${expected}   got: ${yearOfBirth}\n[${auth_token}] ${voter_file.first_name} ${voter_file.last_name}`,
+        ),
+        // Store mismatch in db
+        voterDoc.ref.update({
+          'YOB mismatch': firestore.FieldValue.arrayUnion({ expected, submitted: yearOfBirth, timestamp: new Date() }),
+        }),
+      ])
+      // Return error to client
+      return res.status(400).json({ error: "Doesn't match State Voter File" })
+    }
   }
 
   // If correct:
   return res.status(200).json({ success: true })
+}
+
+/** `birthYearRangeFromAgeRange('46 through 55')` → `[1969, 1979]` if called in 2025 */
+const birthYearRangeFromAgeRange = (range: string) => {
+  const currentYear = new Date().getFullYear()
+  const [minAge, maxAge] = range.split(' through ').map((a) => parseInt(a))
+
+  const earliest = currentYear - maxAge - 1 // oldest person: birthday may still be upcoming
+  const latest = currentYear - minAge // youngest person: birthday already happened
+
+  return [earliest, latest]
 }
