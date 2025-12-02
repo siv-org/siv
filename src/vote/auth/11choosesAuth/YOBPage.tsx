@@ -35,7 +35,7 @@ export const YOBPage = ({
 
             {/* "Not you?" / "Why Withheld?" link */}
             <a
-              className="inline-block text-sm font-medium text-blue-600 cursor-pointer hover:text-blue-700 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/70 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+              className="inline-block text-sm font-medium text-blue-600 cursor-pointer hover:text-blue-700 hover:underline"
               onClick={() => {
                 if (is_withheld) return alert('Voters can opt to withhold their name from the state voter file.')
 
