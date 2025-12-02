@@ -67,7 +67,7 @@ export const YOBPage = ({
                 error={!!errorString}
                 helperText={errorString}
                 InputLabelProps={{ style: { fontSize: 22 } }}
-                InputProps={{ style: { fontSize: 22 } }}
+                InputProps={{ style: { backgroundColor: 'white', fontSize: 22 } }}
                 label="Year of Birth (YYYY)"
                 onChange={(event) => {
                   setErrorString('')
