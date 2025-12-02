@@ -46,7 +46,7 @@ const sample_voters = [
   },
 ]
 
-const voterFileToUploadFormat = (v: (typeof sample_voters)[number], index: number) => ({
+export const voterFileToUploadFormat = (v: (typeof sample_voters)[number], index: number) => ({
   auth_token: sample_auth_tokens[v['Voter ID']],
   voter_file: {
     distinct_age_ranges_index: sample_distinct_age_ranges_index[v['Voter ID']] || null,
