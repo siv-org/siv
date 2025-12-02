@@ -28,7 +28,7 @@ export const CustomAuthFlow = ({ auth, election_id }: { auth: string; election_i
         <YOBPage {...{ auth, election_id, is_withheld, voterName }} />
       ) : (
         // Add email Page
-        <AddEmailPage {...{ auth }} />
+        <AddEmailPage {...{ auth, election_id }} />
       )}
 
       <TailwindPreflight />
