@@ -83,7 +83,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   await Promise.all(
     new_voter_uploads
       .map((v: ReturnType<typeof voterFileToUploadFormat>, index: number) => {
-        const email = `${index + 1}${v.voter_file.is_withheld ? 'withheld' : ''}@upload1`
+        const email = `${index}${v.voter_file.is_withheld ? 'withheld' : ''}@upload1`
         return electionDoc
           .collection('voters')
           .doc(email)

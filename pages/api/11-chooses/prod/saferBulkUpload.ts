@@ -25,7 +25,7 @@ export async function saferBulkUpload(
 
   const voterWrites = new_voter_uploads.map((v: ReturnType<typeof voterFileToUploadFormat>, index: number) =>
     limit(async () => {
-      const email = `${index + prev_num_uploaded + 1}${v.voter_file.is_withheld ? 'withheld' : ''}@${importBatchId}`
+      const email = `${index + prev_num_uploaded}${v.voter_file.is_withheld ? 'withheld' : ''}@${importBatchId}`
       const docRef = electionDoc.collection('voters').doc(email)
 
       const payload = {
