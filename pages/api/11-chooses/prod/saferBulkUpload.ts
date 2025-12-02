@@ -25,7 +25,8 @@ export async function saferBulkUpload(
 
   const voterWrites = new_voter_uploads.map((v: ReturnType<typeof voterFileToUploadFormat>, index: number) =>
     limit(async () => {
-      const email = `${index + prev_num_uploaded}${v.voter_file.is_withheld ? 'withheld' : ''}@${importBatchId}`
+      const voterIndex = index + prev_num_uploaded
+      const email = `${voterIndex}${v.voter_file.is_withheld ? 'withheld' : ''}@${importBatchId}`
       const docRef = electionDoc.collection('voters').doc(email)
 
       const payload = {
@@ -33,11 +34,12 @@ export async function saferBulkUpload(
         added_at: new Date(),
         email,
         importBatchId,
-        index: index + prev_num_uploaded,
+        index: voterIndex,
       }
 
       try {
         await writeWithRetry(docRef, payload)
+        if (!(voterIndex % 50)) console.log('Uploaded', voterIndex)
       } catch (error) {
         failures.push({ email, error })
         // optionally log immediately
