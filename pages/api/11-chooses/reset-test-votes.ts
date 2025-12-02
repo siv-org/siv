@@ -2,7 +2,14 @@ import { firebase } from 'api/_services'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { test_election_id_11chooses as election_id } from 'src/vote/auth/11choosesAuth/CustomAuthFlow'
 
+const { RECENT_ELECTIONS_PASSWORD } = process.env
+
 export default async (req: NextApiRequest, res: NextApiResponse) => {
+  // Confirm they have password
+  if (!RECENT_ELECTIONS_PASSWORD) return res.status(401).send('Server missing process.env.RECENT_ELECTIONS_PASSWORD')
+  const { pass } = req.query
+  if (pass !== RECENT_ELECTIONS_PASSWORD) return res.status(401).send('Unauthorized')
+
   if (!req.headers.host?.startsWith('localhost:300')) return res.status(405).json({ error: 'For localhost only' })
 
   const electionDoc = firebase.firestore().collection('elections').doc(election_id)
