@@ -23,7 +23,7 @@ export const YOBPage = ({
   const [showHelpInstructions, setShowHelpInstructions] = useState(false)
 
   return (
-    <div className="px-6 py-8 mx-auto mt-10 max-w-xl rounded-3xl ring-1 shadow-sm backdrop-blur-sm bg-white/80 text-slate-900 ring-black/5">
+    <div className="px-6 py-8 mx-auto mt-10 max-w-xl text-slate-900">
       <div className="space-y-8">
         {/* Heading + voter context */}
         <div className="space-y-4 text-center">
@@ -52,80 +52,80 @@ export const YOBPage = ({
           </div>
         </div>
 
-        {/* Confirm: Year of Birth */}
-        <div className="space-y-1 text-center">
-          <p className="text-lg font-semibold">Confirm your Year of Birth</p>
-          <p className="text-sm text-slate-500">as listed in the State Voter Roll</p>
-        </div>
-
-        <div className="flex flex-col gap-6 items-center">
-          <div className="w-full max-w-xs text-center">
-            <TextField
-              autoFocus
-              className="w-full min-h-24"
-              error={!!errorString}
-              helperText={errorString}
-              InputLabelProps={{ style: { fontSize: 22 } }}
-              InputProps={{ style: { fontSize: 22 } }}
-              label="Year of Birth (YYYY)"
-              onChange={(event) => {
-                setErrorString('')
-                setShowHelpInstructions(false)
-
-                const newValue = event.target.value
-                setYearOfBirth(newValue)
-
-                if (newValue && !/\d$/.test(newValue)) return setErrorString('Numbers only')
-                if (newValue.length > 4) return setErrorString('4 digits only')
-
-                // Edge cases once 4 digits entered
-                if (newValue.length < 4) return
-                if (Number(newValue) < 1880) return setErrorString(`You're ${2025 - Number(newValue)} years old?`)
-                if (Number(newValue) > 2025) return setErrorString("You haven't been born yet?")
-                if (Number(newValue) > 2025 - 18) return setErrorString('You must be at least 18 years old')
-              }}
-              onKeyDown={(event) => event.key === 'Enter' && submitBtn?.current?.click()}
-              type="tel"
-              variant="outlined"
-            />
-
-            <p className="mt-2 text-sm whitespace-nowrap text-slate-700">
-              Protects against strangers trying to use your code
-            </p>
+        {/* Confirm: Year of Birth + input block */}
+        <div className="px-5 py-10 space-y-6 rounded-2xl border shadow-sm border-slate-100 bg-slate-50">
+          <div className="space-y-1 text-center">
+            <p className="text-xl font-semibold md:text-lg">Confirm your Year of Birth</p>
+            <p className="text-base md:text-sm text-slate-500">as listed in the State Voter Roll</p>
           </div>
 
-          {/* Submit button */}
-          <OnClickButton
-            className="w-full max-w-xs text-base font-semibold text-center"
-            disabled={!yearOfBirth || !!errorString || submitting}
-            onClick={async () => {
-              setSubmitting(true)
+          <div className="flex flex-col gap-6 items-center">
+            <div className="w-full max-w-xs text-center">
+              <TextField
+                autoFocus
+                className="w-full min-h-24"
+                error={!!errorString}
+                helperText={errorString}
+                InputLabelProps={{ style: { fontSize: 22 } }}
+                InputProps={{ style: { fontSize: 22 } }}
+                label="Year of Birth (YYYY)"
+                onChange={(event) => {
+                  setErrorString('')
+                  setShowHelpInstructions(false)
 
-              // Submit to server
-              const response = await api(`11-chooses/submit-yob`, { auth_token: auth, election_id, yearOfBirth })
-              setSubmitting(false)
+                  const newValue = event.target.value
+                  setYearOfBirth(newValue)
 
-              // Handle errors from server
-              if (!response.ok) {
-                setShowHelpInstructions(true)
+                  if (newValue && !/\d$/.test(newValue)) return setErrorString('Numbers only')
+                  if (newValue.length > 4) return setErrorString('4 digits only')
 
-                const responseJson = await response.json()
-                if (!responseJson?.error) {
-                  console.error('submission responseJson', responseJson)
-                  return setErrorString('Unknown error')
+                  // Edge cases once 4 digits entered
+                  if (newValue.length < 4) return
+                  if (Number(newValue) < 1880) return setErrorString(`You're ${2025 - Number(newValue)} years old?`)
+                  if (Number(newValue) > 2025) return setErrorString("You haven't been born yet?")
+                  if (Number(newValue) > 2025 - 18) return setErrorString('You must be at least 18 years old')
+                }}
+                onKeyDown={(event) => event.key === 'Enter' && submitBtn?.current?.click()}
+                type="tel"
+                variant="outlined"
+              />
+
+              <p className="mt-2 text-sm text-slate-700">Protects against strangers using your code</p>
+            </div>
+
+            {/* Submit button */}
+            <OnClickButton
+              className="w-full max-w-xs text-base font-semibold text-center"
+              disabled={!yearOfBirth || !!errorString || submitting}
+              onClick={async () => {
+                setSubmitting(true)
+
+                // Submit to server
+                const response = await api(`11-chooses/submit-yob`, { auth_token: auth, election_id, yearOfBirth })
+                setSubmitting(false)
+
+                // Handle errors from server
+                if (!response.ok) {
+                  setShowHelpInstructions(true)
+
+                  const responseJson = await response.json()
+                  if (!responseJson?.error) {
+                    console.error('submission responseJson', responseJson)
+                    return setErrorString('Unknown error')
+                  }
+                  console.error('submission responseJson.error', responseJson?.error)
+                  return setErrorString(responseJson?.error)
                 }
-                console.error('submission responseJson.error', responseJson?.error)
-                return setErrorString(responseJson?.error)
-              }
 
-              // Redirect to next screen by adding query param `passed_yob`
-              router.replace(`${router.asPath}&passed_yob=true`)
-            }}
-            ref={submitBtn}
-            style={{ margin: 0, padding: '19px 15px' }}
-          >
-            <>Submit{submitting ? 'ting...' : ''}</>
-          </OnClickButton>
+                // Redirect to next screen by adding query param `passed_yob`
+                router.replace(`${router.asPath}&passed_yob=true`)
+              }}
+              ref={submitBtn}
+              style={{ margin: 0, padding: '19px 15px' }}
+            >
+              <>Submit{submitting ? 'ting...' : ''}</>
+            </OnClickButton>
+          </div>
         </div>
 
         {/* Show help instructions on submission errors */}
