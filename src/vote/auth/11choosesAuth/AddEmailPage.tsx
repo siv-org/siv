@@ -34,6 +34,7 @@ export const AddEmailPage = ({ auth, election_id }: { auth: string; election_id:
               setEmail(event.target.value.trim())
               setErrorString('')
             }}
+            onKeyDown={(event) => event.key === 'Enter' && submitBtn.current?.click()}
             placeholder="you@email.com"
             type="email"
           />
