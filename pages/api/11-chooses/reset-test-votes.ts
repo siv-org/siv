@@ -3,7 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { test_election_id_11chooses as election_id } from 'src/vote/auth/11choosesAuth/CustomAuthFlow'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  if (req.headers.host !== 'localhost:3001') return res.status(405).json({ error: 'For localhost only' })
+  if (!req.headers.host?.startsWith('localhost:300')) return res.status(405).json({ error: 'For localhost only' })
 
   const electionDoc = firebase.firestore().collection('elections').doc(election_id)
 
