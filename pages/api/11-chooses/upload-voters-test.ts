@@ -51,9 +51,9 @@ export const voterFileToUploadFormat = (v: (typeof sample_voters)[number], index
   voter_file: {
     distinct_age_ranges_index: sample_distinct_age_ranges_index[v['Voter ID']] || null,
     'DOB/YOB/Age Range': v['DOB/YOB/Age Range'],
-    first_name: v['First Name'],
+    first_name: v['First Name'] || '',
     is_withheld: v['Privacy Status'] === 'Withheld',
-    last_name: v['Last Name'],
+    last_name: v['Last Name'] || '',
     multi_withheld_address_index: sample_multi_withheld_address_index[v['Voter ID']] || null,
     state_voter_id: v['Voter ID'],
     voter_file_index: index,
