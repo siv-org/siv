@@ -1,7 +1,7 @@
 import throat from 'throat'
 
 import { writeWithRetry } from './writeWithRetry'
-const limit = throat(50)
+const limit = throat(100)
 
 import { firestore } from 'firebase-admin'
 
