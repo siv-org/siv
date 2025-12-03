@@ -57,6 +57,8 @@ export async function validateAuthToken(
         `election: ${election_id}\nbad auth: ${auth}\nPossible brute force attack?`,
       )
 
+    if (customFailureMessages[election_id]) return fail(customFailureMessages[election_id])
+
     return fail('Invalid Auth Token.')
   }
 
@@ -72,4 +74,9 @@ export async function validateAuthToken(
 
   // Passed all checks
   pass('Your Voter Authorization Token is valid.')
+}
+
+/** election_id: text */
+const customFailureMessages: Record<string, string> = {
+  '1764187291234': 'Invalid Voter Code — press Back button to try again.',
 }
