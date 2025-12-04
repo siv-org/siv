@@ -30,7 +30,7 @@ export const SubmitButton = ({
           disabled={
             !state.ballot_design_finalized ||
             !state.public_key ||
-            Object.keys(state.plaintext).length === 0 ||
+            Object.values(state.plaintext).filter((v) => v !== 'BLANK').length === 0 ||
             buttonText !== 'Submit'
           }
           onClick={async () => {
