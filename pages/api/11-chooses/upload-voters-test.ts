@@ -18,7 +18,7 @@ import { election_ids_for_11chooses } from 'src/vote/auth/11choosesAuth/CustomAu
 } */
 
 const sample_auth_tokens: Record<string, string> = { '1234567890': 'aabbccddee', w1: 'bbccddeeff', w2: 'ccddeeffaa' }
-const sample_distinct_age_ranges_index: Record<string, number> = { w1: 0, w2: 0 }
+const sample_distinct_age_ranges_index: Record<string, number> = { w1: 1, w2: 1 }
 const sample_multi_withheld_address_index: Record<string, number> = { w1: 3, w2: 3 }
 
 // 1 Public, 2 Withheld
