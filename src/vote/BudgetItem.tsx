@@ -131,7 +131,7 @@ export const BudgetItem = ({
       <table className="sm:ml-3">
         {/* List one row for each candidate */}
         <tbody>
-          {options.map(({ name, sub, toggleable, toggleable_2, value }, index) => {
+          {options.map(({ name, photo_url, sub, toggleable, toggleable_2, value }, index) => {
             const val = value || name
 
             const current = state.plaintext[`${id}_${val}`] || ''
@@ -140,7 +140,7 @@ export const BudgetItem = ({
               <Fragment key={val}>
                 <tr key={name} ref={(el: HTMLTableRowElement) => (itemRefs.current[index] = el)}>
                   <td className="relative pr-4 bottom-0.5 pt-6">
-                    <Label {...{ name, sub }} number={index + 1} />
+                    <Label {...{ name, photo_url, sub }} number={index + 1} />
                     {showToggleables && toggleable && (
                       <div className="text-xs">
                         {toggleable_label ? toggleable_label + ': ' : ''}

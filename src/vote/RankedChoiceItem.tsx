@@ -60,11 +60,11 @@ export const RankedChoiceItem = ({
         {/* List one row for each candidate */}
         <tbody style={{ position: 'relative' }}>
           <FlipMove typeName={null}>
-            {orderedOptions.map(({ name, sub, value }) => (
+            {orderedOptions.map(({ name, photo_url, sub, value }) => (
               <OneRow
                 isWriteIn={name === WRITE_IN}
                 key={name}
-                {...{ dispatch, id, name, rankings_allowed, setWriteIn, state, sub, value, writeIn }}
+                {...{ dispatch, id, name, photo_url, rankings_allowed, setWriteIn, state, sub, value, writeIn }}
               />
             ))}
           </FlipMove>
@@ -82,6 +82,7 @@ const OneRow = forwardRef<
     id: string
     isWriteIn?: boolean
     name: string
+    photo_url?: string
     rankings_allowed: number
     setWriteIn: (value: string) => void
     state: State
@@ -89,7 +90,10 @@ const OneRow = forwardRef<
     value?: string
     writeIn: string
   }
->(function ({ dispatch, id, isWriteIn, name, rankings_allowed, setWriteIn, state, sub, value, writeIn }, ref) {
+>(function (
+  { dispatch, id, isWriteIn, name, photo_url, rankings_allowed, setWriteIn, state, sub, value, writeIn },
+  ref,
+) {
   const val = value || (!isWriteIn ? name : writeIn).slice(0, max_string_length)
 
   const [error, setError] = useState(' ')
@@ -162,7 +166,7 @@ const OneRow = forwardRef<
       {/* Display Name */}
       <td className="relative pr-4 sm:bottom-0.5 sm:top-auto top-2">
         {!isWriteIn ? (
-          <Label {...{ name: `${name}:`, sub }} />
+          <Label {...{ name: `${name}:`, photo_url, sub }} />
         ) : (
           // Write-in input field
           <div className="relative">

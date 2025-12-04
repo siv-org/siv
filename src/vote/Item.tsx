@@ -31,11 +31,11 @@ export const Item = ({
         onChange={(event) => dispatch({ [id]: event.target.value })}
         value={state.plaintext[id] || ''}
       >
-        {options.map(({ name, sub, value }) => (
+        {options.map(({ name, photo_url, sub, value }) => (
           <FormControlLabel
             control={<Radio color="primary" />}
             key={name}
-            label={<Label {...{ name, sub }} nameClassName="!font-normal" />}
+            label={<Label {...{ name, photo_url, sub }} nameClassName="!font-normal" />}
             onClick={() => {
               // Deselect if already selected
               if (state.plaintext[id] === (value || name.slice(0, max_string_length))) {
@@ -94,15 +94,18 @@ export const Label = ({
   name,
   nameClassName,
   number,
+  photo_url,
   sub,
 }: {
   name: string
   nameClassName?: string
   number?: number
+  photo_url?: string
   sub?: string
 }) => (
   <div className="my-2">
     <Linkify>
+      {photo_url && <img alt={name} className="block mb-2 w-40 h-40 rounded-lg" src={photo_url} />}
       <span className={`font-bold opacity-95 ${nameClassName}`}>
         {number && <span className="text-xs font-light opacity-50">{number}. </span>}
         {name}

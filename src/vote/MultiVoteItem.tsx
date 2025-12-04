@@ -53,7 +53,7 @@ export const MultiVoteItem = ({
         )}
       </p>
       <FormGroup className="ml-2 sm:ml-4">
-        {options.map(({ name, sub, value }) => {
+        {options.map(({ name, photo_url, sub, value }) => {
           const val = value || name.slice(0, max_string_length)
 
           return (
@@ -79,7 +79,7 @@ export const MultiVoteItem = ({
                 />
               }
               key={name}
-              label={<Label {...{ name, sub }} />}
+              label={<Label {...{ name, photo_url, sub }} />}
               name={val}
             />
           )
