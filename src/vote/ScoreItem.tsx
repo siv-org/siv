@@ -60,13 +60,13 @@ export const ScoreItem = ({
 
         {/* List one row for each candidate */}
         <tbody>
-          {options.map(({ name, sub, value }) => {
+          {options.map(({ name, photo_url, sub, value }) => {
             const val = value || name
 
             return (
               <tr key={name}>
                 <td className="relative pr-4 bottom-0.5">
-                  <Label {...{ name, sub }} />
+                  <Label {...{ name, photo_url, sub }} />
                 </td>
 
                 {/* And one column for each ranking option */}

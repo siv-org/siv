@@ -13,6 +13,7 @@ export type Item = {
   number_of_winners?: number
   options: {
     name: string
+    photo_url?: string
     sub?: string
     toggleable?: string
     toggleable_2?: Partial<Record<string, string>>

@@ -24,6 +24,10 @@ const advancedFeatures: Section[] = [
         '"sub": "your sub-text here"',
         'Add extra info below an option, such as their Party Affiliation or a longer description.',
       ],
+      [
+        '"photo_url": "https://example.com/images/candidate.jpg"',
+        'Show a small photo next to each option. Useful for candidate headshots or icons.',
+      ],
     ],
   ],
 ]
