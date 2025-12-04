@@ -5,19 +5,23 @@ import { useRef, useState } from 'react'
 import { OnClickButton } from 'src/_shared/Button'
 import { api } from 'src/api-helper'
 
-export const AddEmailPage = ({ auth, election_id }: { auth: string; election_id: string }) => {
+export const AddEmailPage = ({ auth, election_id }: { auth: string; election_id: string; required?: boolean }) => {
   const [email, setEmail] = useState('')
   const [errorString, setErrorString] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const submitBtn = useRef<HTMLAnchorElement>(null)
   const router = useRouter()
 
+  const isProvisional = auth === 'provisional'
+
   return (
     <div className="mx-auto max-w-96">
       <h1 className="mt-8 text-3xl font-bold">Add Your Email</h1>
-      <p className="text-lg font-medium opacity-50">optional</p>
+      <p className="text-lg font-medium opacity-50">
+        {isProvisional ? 'Required for Provisional Ballots' : 'optional'}
+      </p>
 
-      <p className="mt-10 text-xl">For administrative purposes only.</p>
+      <p className="mt-10 text-xl">For {isProvisional ? 'vote ' : ''}administrative purposes only.</p>
       <p className="mb-10 text-lg opacity-50">Never marketing or shared.</p>
 
       <div className="flex flex-col gap-12 items-center">
@@ -38,12 +42,12 @@ export const AddEmailPage = ({ auth, election_id }: { auth: string; election_id:
             placeholder="you@email.com"
             type="email"
           />
-          <p>Helps with any issues processing your vote</p>
+          <p>Helps with {!isProvisional ? 'any ' : ''}issues processing your vote</p>
         </div>
 
         <OnClickButton
           className="w-full text-xl text-center max-w-80"
-          disabled={!!errorString || submitting}
+          disabled={!!errorString || submitting || (!email && isProvisional)}
           onClick={async () => {
             if (!email)
               if (!confirm("Are you sure?\n\nWe won't be able to contact you if there are unforeseen issues.")) return
@@ -73,7 +77,7 @@ export const AddEmailPage = ({ auth, election_id }: { auth: string; election_id:
           ref={submitBtn}
           style={{ margin: 0, padding: '19px 15px' }}
         >
-          <>{!email ? 'Skip' : `Submit${submitting ? 'ting...' : ''}`}</>
+          <>{!email && !isProvisional ? 'Skip' : `Submit${submitting ? 'ting...' : ''}`}</>
         </OnClickButton>
       </div>
     </div>
