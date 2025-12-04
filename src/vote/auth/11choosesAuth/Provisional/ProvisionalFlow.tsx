@@ -4,7 +4,7 @@ import { TailwindPreflight } from 'src/TailwindPreflight'
 import { Footer } from 'src/vote/Footer'
 
 import { AddEmailPage } from '../AddEmailPage'
-import { StatePortalScreen } from './StatePortalScreen'
+import { VoterRegistrationLookupScreen } from './VoterRegistrationLookupScreen'
 
 export const ProvisionalFlow = () => {
   const {
@@ -22,7 +22,7 @@ export const ProvisionalFlow = () => {
       {passed_email !== 'true' ? (
         <AddEmailPage auth="provisional" {...{ election_id, link_auth }} />
       ) : (
-        <StatePortalScreen />
+        <VoterRegistrationLookupScreen />
       )}
 
       <Footer />

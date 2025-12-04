@@ -4,7 +4,7 @@ import { OnClickButton } from 'src/_shared/Button'
 
 const fields = ['First Name', 'Last Name', 'Date of Birth (MM-DD-YYYY)', 'Street Address', 'City', 'Zip']
 
-export const StatePortalScreen = () => {
+export const VoterRegistrationLookupScreen = () => {
   const [fieldValues, setFieldValues] = useState<Record<string, string>>({})
 
   function setFieldValue(label: string, value: string) {
