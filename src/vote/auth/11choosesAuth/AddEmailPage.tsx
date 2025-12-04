@@ -5,7 +5,15 @@ import { useRef, useState } from 'react'
 import { OnClickButton } from 'src/_shared/Button'
 import { api } from 'src/api-helper'
 
-export const AddEmailPage = ({ auth, election_id }: { auth: string; election_id: string; required?: boolean }) => {
+export const AddEmailPage = ({
+  auth,
+  election_id,
+  link_auth,
+}: {
+  auth: string
+  election_id: string
+  link_auth?: string
+}) => {
   const [email, setEmail] = useState('')
   const [errorString, setErrorString] = useState('')
   const [submitting, setSubmitting] = useState(false)
@@ -57,7 +65,7 @@ export const AddEmailPage = ({ auth, election_id }: { auth: string; election_id:
             setSubmitting(true)
 
             // Submit to server
-            const response = await api(`11-chooses/submit-email`, { auth_token: auth, election_id, email })
+            const response = await api(`11-chooses/submit-email`, { auth_token: auth, election_id, email, link_auth })
             setSubmitting(false)
 
             // Handle errors from server
