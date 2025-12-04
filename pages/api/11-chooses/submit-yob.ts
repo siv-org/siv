@@ -50,12 +50,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     }
   } else {
     // If wrong:
-    if (expected !== yearOfBirth) {
+    if (String(expected) !== yearOfBirth) {
       await Promise.all([
         // Ping admin
         pushover(
           '11c/submit-yob: mismatch',
-          `expected: ${expected}   got: ${yearOfBirth}\n[${auth_token}] ${voter_file.first_name} ${voter_file.last_name}`,
+          `expected: ${String(expected)}   got: ${yearOfBirth}\n[${auth_token}] ${voter_file.first_name} ${
+            voter_file.last_name
+          }`,
         ),
         // Store mismatch in db
         voterDoc.ref.update({
