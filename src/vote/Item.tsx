@@ -105,7 +105,7 @@ export const Label = ({
 }) => (
   <div className="my-2">
     <Linkify>
-      {photo_url && <img alt={name} className="block mb-2 w-40 h-40 rounded-lg" src={photo_url} />}
+      {photo_url && <img alt={name} className="block mt-8 mb-2 w-40 h-40 rounded-lg" src={photo_url} />}
       <span className={`font-bold opacity-95 ${nameClassName}`}>
         {number && <span className="text-xs font-light opacity-50">{number}. </span>}
         {name}
