@@ -45,7 +45,10 @@ export const YourAuthToken = ({ auth, election_id }: { auth?: string; election_i
           </>
         ) : status === 'fail' ? (
           <>
-            <span className="text-[10px] mr-2">❌</span> <b className="mr-1">Error:</b> {message}
+            <span className="text-[10px] mr-2">❌</span>{' '}
+            <span>
+              <b className="mr-1">Error:</b> {message}
+            </span>
           </>
         ) : status === 'pass' ? (
           `✅ ${message}`
