@@ -114,25 +114,25 @@ export const Label = ({
         {name}
       </span>
       {sub && <p className="m-0 text-[12px] opacity-75">{sub}</p>}
-      {markdown_sub && (
-        <ReactMarkdown
-          components={{
-            a: ({ children, href, ...props }) => (
-              <a href={href} rel="noreferrer noopener" target="_blank" {...props}>
-                {children}
-              </a>
-            ),
-            p: ({ children, ...props }) => (
-              <p className="m-0 text-[12px] opacity-75" {...props}>
-                {children}
-              </p>
-            ),
-          }}
-        >
-          {markdown_sub}
-        </ReactMarkdown>
-      )}
     </Linkify>
+    {markdown_sub && (
+      <ReactMarkdown
+        components={{
+          a: ({ children, href, ...props }) => (
+            <a href={href} rel="noreferrer noopener" target="_blank" {...props}>
+              {children}
+            </a>
+          ),
+          p: ({ children, ...props }) => (
+            <p className="m-0 text-[12px] opacity-75" {...props}>
+              {children}
+            </p>
+          ),
+        }}
+      >
+        {markdown_sub}
+      </ReactMarkdown>
+    )}
   </div>
 )
 
