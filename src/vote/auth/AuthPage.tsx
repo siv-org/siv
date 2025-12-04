@@ -1,5 +1,5 @@
 import { UserOutlined } from '@ant-design/icons'
-import router from 'next/router'
+import { useRouter } from 'next/router'
 import { Head } from 'src/Head'
 import { TailwindPreflight } from 'src/TailwindPreflight'
 
@@ -9,7 +9,7 @@ import { ProvisionalFlow } from './11choosesAuth/Provisional/ProvisionalFlow'
 import { VoterAuthInfoForm } from './VoterAuthInfoForm'
 
 export const AuthPage = () => {
-  const { election_id } = router.query as { election_id?: string }
+  const { election_id } = useRouter().query as { election_id?: string }
   if (hasCustomAuthFlow(election_id || '')) return <ProvisionalFlow />
 
   return (
