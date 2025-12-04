@@ -50,5 +50,6 @@ export const Instructions = ({ election_id, state }: { election_id: string; stat
 )
 
 const a11cTest = '1764804420871'
+const a11cTest2 = '1764868041998'
 const live11c = '1764187291234'
-const hideElectionCreatedByLine = [a11cTest, live11c]
+const hideElectionCreatedByLine = [a11cTest, a11cTest2, live11c]
