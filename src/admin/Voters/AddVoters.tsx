@@ -4,6 +4,7 @@ import { api } from '../../api-helper'
 import { SaveButton } from '../SaveButton'
 import { revalidate, useStored } from '../useStored'
 import { AddVoterTextarea } from './AddVotersTextarea'
+import { CustomEmailHeaderbar } from './CustomEmailHeaderbar'
 import { CustomInvitationEditor } from './CustomInvitationEditor'
 import { DuplicatesNotAdded } from './DuplicatesNotAdded'
 import { ExistingVoters } from './ExistingVoters'
@@ -49,6 +50,7 @@ export const AddVoters = () => {
         />
       )}
 
+      <CustomEmailHeaderbar />
       <CustomInvitationEditor />
 
       <ToggleShareableLink />
