@@ -70,6 +70,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   // If correct:
+  await voterDoc.ref.update({
+    YOB_passed: firestore.FieldValue.arrayUnion({ submitted: yearOfBirth, timestamp: new Date() }),
+  })
+
   return res.status(200).json({ success: true })
 }
 
