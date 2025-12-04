@@ -2,11 +2,13 @@ import ReactMarkdown from 'react-markdown'
 
 import { State } from './vote-state'
 
-export const Instructions = ({ state }: { state: State }) => (
+export const Instructions = ({ election_id, state }: { election_id: string; state: State }) => (
   <>
     {state.custom_invitation_text && (
       <>
-        <h3 className="font-semibold">Election created by {state.election_manager?.trim()}:</h3>
+        {!hideElectionCreatedByLine.includes(election_id) && (
+          <h3 className="font-semibold">Election created by {state.election_manager?.trim()}:</h3>
+        )}
 
         <div className="p-4 mb-6 rounded-r-lg border-0 border-l-4 border-blue-100 border-solid shadow-sm bg-blue-50/20">
           <div className="font-medium leading-relaxed text-gray-700">
@@ -46,3 +48,6 @@ export const Instructions = ({ state }: { state: State }) => (
     </p>
   </>
 )
+
+const a11cTest = '1764804420871'
+const hideElectionCreatedByLine = [a11cTest]

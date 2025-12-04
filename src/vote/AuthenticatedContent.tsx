@@ -39,7 +39,7 @@ export const AuthenticatedContent = ({ auth, election_id }: { auth: string; elec
           <h1>Cast Your Vote</h1>
           <YourAuthToken {...{ auth, election_id }} />
           <div className="fade-in">
-            <Instructions state={state} />
+            <Instructions {...{ election_id, state }} />
             <PrivacyProtectorsStatements {...{ state }} />
             <Ballot {...{ dispatch, election_id, state }} />
             <SubmitButton {...{ auth, dispatch, election_id, state }} />
