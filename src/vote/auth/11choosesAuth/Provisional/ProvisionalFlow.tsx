@@ -4,9 +4,14 @@ import { TailwindPreflight } from 'src/TailwindPreflight'
 import { Footer } from 'src/vote/Footer'
 
 import { AddEmailPage } from '../AddEmailPage'
+import { StatePortalScreen } from './StatePortalScreen'
 
 export const ProvisionalFlow = () => {
-  const { election_id, link: link_auth } = useRouter().query as { election_id?: string; link?: string }
+  const {
+    election_id,
+    link: link_auth,
+    passed_email,
+  } = useRouter().query as { election_id?: string; link?: string; passed_email?: string }
 
   if (!election_id) return <div className="animate-pulse">Loading Election ID...</div>
 
@@ -14,7 +19,11 @@ export const ProvisionalFlow = () => {
     <main className="max-w-[750px] w-full mx-auto p-4 flex flex-col min-h-screen justify-between text-center">
       <Head title="Provisional Ballot Auth" />
 
-      <AddEmailPage auth="provisional" {...{ election_id, link_auth }} />
+      {passed_email !== 'true' ? (
+        <AddEmailPage auth="provisional" {...{ election_id, link_auth }} />
+      ) : (
+        <StatePortalScreen />
+      )}
 
       <Footer />
       <TailwindPreflight />
