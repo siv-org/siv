@@ -230,5 +230,6 @@ function useFeatureAccess(email: string) {
 const allowedUsers = {
   '1471fccb124bbf4': 's@A',
   '8044b24d7e96606': 'EHZ',
+  // cb547b8468a4642: 'D@s',
   d12bc8d54668685: 'A@s',
 }
