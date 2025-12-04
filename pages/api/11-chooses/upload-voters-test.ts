@@ -31,14 +31,14 @@ const sample_voters = [
     'Voter ID': '1234567890',
   },
   {
-    'DOB/YOB/Age Range': '46 through 55',
+    'DOB/YOB/Age Range': '46 through 55', // 1969-1979
     'First Name': '',
     'Last Name': '',
     'Privacy Status': 'Withheld',
     'Voter ID': 'w1',
   },
   {
-    'DOB/YOB/Age Range': '36 through 45',
+    'DOB/YOB/Age Range': '36 through 45', // 1979-1989
     'First Name': '',
     'Last Name': '',
     'Privacy Status': 'Withheld',

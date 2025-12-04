@@ -30,6 +30,53 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     // If given year is outside of expected range:
     if (Number(yearOfBirth) < minYear || Number(yearOfBirth) > maxYear) {
+      // Are they are Multi-Withheld Household, with distinct age ranges?
+      const { distinct_age_ranges_index } = voter_file
+      if (distinct_age_ranges_index) {
+        const ageRangePartnerDocs = (
+          await electionDoc
+            .collection('voters')
+            .where('voter_file.distinct_age_ranges_index', '==', distinct_age_ranges_index)
+            .get()
+        ).docs
+        const [matchedAgeRangeInHouse] = ageRangePartnerDocs
+          .map((v) => v.data())
+          .filter((v) => {
+            const { voter_file } = v
+            const [partnerMinYear, partnerMaxYear] = birthYearRangeFromAgeRange(voter_file['DOB/YOB/Age Range'])
+
+            const matchingRange = Number(yearOfBirth) >= partnerMinYear && Number(yearOfBirth) <= partnerMaxYear
+            return matchingRange
+          })
+
+        if (matchedAgeRangeInHouse) {
+          await Promise.all([
+            pushover(
+              '11c/submit-yob: distinct_age_range PASS',
+              JSON.stringify({
+                auth_token,
+                distinct_age_ranges_index,
+                matched_to_instead: matchedAgeRangeInHouse.auth_token,
+                submitted: yearOfBirth,
+              }),
+            ),
+            voterDoc.ref.update({
+              YOB_passed: firestore.FieldValue.arrayUnion({
+                matched_to_instead: matchedAgeRangeInHouse.auth_token,
+                submitted: yearOfBirth,
+                timestamp: new Date(),
+              }),
+            }),
+          ])
+          return res.status(200).json({ success: true })
+        } else {
+          await pushover(
+            '11c/submit-yob: distinct_age_range fail — no matching age range in house',
+            JSON.stringify({ auth_token, distinct_age_ranges_index, submitted: yearOfBirth, yearOfBirth }),
+          )
+        }
+      }
+
       const expectedRange = `[${minYear}, ${maxYear}]`
       await Promise.all([
         // Ping admin
