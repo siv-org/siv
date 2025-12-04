@@ -38,6 +38,8 @@ export const SubmitButton = ({
               if (!confirm(state.submission_confirmation)) return
             }
 
+            if (auth === 'preview') return alert('You are in preview mode.\n\nNot submitting.')
+
             setButtonText('Submitting...')
 
             // Add plaintext "BLANK" for questions left blank
