@@ -105,19 +105,12 @@ export const Label = ({
 }) => (
   <div className="my-2">
     <Linkify>
-      <div className="flex flex-col gap-2 items-start">
-        {photo_url && (
-          // External URLs are provided by admins;
-          <img alt={name} className="w-40 h-40 rounded-lg" src={photo_url} />
-        )}
-        <div>
-          <span className={`font-bold opacity-95 ${nameClassName}`}>
-            {number && <span className="text-xs font-light opacity-50">{number}. </span>}
-            {name}
-          </span>
-          {sub && <p className="m-0 text-[12px] opacity-75">{sub}</p>}
-        </div>
-      </div>
+      {photo_url && <img alt={name} className="block mb-2 w-40 h-40 rounded-lg" src={photo_url} />}
+      <span className={`font-bold opacity-95 ${nameClassName}`}>
+        {number && <span className="text-xs font-light opacity-50">{number}. </span>}
+        {name}
+      </span>
+      {sub && <p className="m-0 text-[12px] opacity-75">{sub}</p>}
     </Linkify>
   </div>
 )
