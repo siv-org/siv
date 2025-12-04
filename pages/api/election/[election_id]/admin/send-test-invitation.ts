@@ -18,11 +18,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (!electionData.exists) return res.status(404).json({ error: 'Election not found' })
 
-    const { custom_invitation_text, election_manager, election_title } = electionData.data() as {
-      custom_invitation_text?: string
-      election_manager?: string
-      election_title?: string
-    }
+    const { custom_email_headerbar, custom_invitation_text, election_manager, election_title } =
+      electionData.data() as {
+        custom_email_headerbar?: string
+        custom_invitation_text?: string
+        election_manager?: string
+        election_title?: string
+      }
 
     // Create a test auth token (10 characters, hex)
     const testAuthToken = '1a2b3c4d5e'
@@ -30,6 +32,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     // Send test invitation email to the admin
     const result = await send_invitation_email({
+      custom_email_headerbar,
       custom_text: custom_invitation_text,
       from: election_manager,
       link: testLink,

@@ -11,6 +11,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => res.status(4
 export const buildSubject = (election_title?: string) => `Vote Invitation${election_title ? `: ${election_title}` : ''}`
 
 export const send_invitation_email = async ({
+  custom_email_headerbar,
   custom_text,
   from,
   link,
@@ -18,6 +19,7 @@ export const send_invitation_email = async ({
   tag,
   voter,
 }: {
+  custom_email_headerbar?: string
   custom_text?: string
   from?: string
   link: string
@@ -49,6 +51,7 @@ export const send_invitation_email = async ({
     <em style="font-size: 13px; opacity: 0.6; font-style: italic;">This link is unique for you. Don't share it with anyone.</em>`
 
   return sendEmail({
+    custom_email_headerbar,
     from,
     preheader: `Click here to securely cast your vote: ${link}`,
     recipient: voter,

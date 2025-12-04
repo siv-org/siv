@@ -37,6 +37,7 @@ export const mailgun = Mailgun({
 export const sendEmail = ({
   attachment,
   bcc,
+  custom_email_headerbar,
   from,
   fromEmail,
   preheader,
@@ -47,6 +48,7 @@ export const sendEmail = ({
 }: {
   attachment?: AttachmentParams
   bcc?: string
+  custom_email_headerbar?: string
   from?: string
   fromEmail?: string
   preheader?: string
@@ -65,7 +67,7 @@ export const sendEmail = ({
           <td align="center" style="text-align:center; background: linear-gradient(90deg, #010b26 0%, #072054 100%);">
           ${preheader ? buildPreheader(preheader) : ''}
             <span style="font-size: 17px; font-weight: 700; color: white; line-height: 50px; text-decoration: none;">
-              SIV.org
+              ${custom_email_headerbar || 'SIV.org'}
             </span>
           </td>
         </tr>

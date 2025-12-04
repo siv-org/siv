@@ -17,7 +17,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Lookup election title and custom invitation text
   const electionDoc = firebase.firestore().collection('elections').doc(election_id)
-  const { custom_invitation_text, election_manager, election_title } = (await electionDoc.get()).data() as {
+  const { custom_email_headerbar, custom_invitation_text, election_manager, election_title } = (
+    await electionDoc.get()
+  ).data() as {
+    custom_email_headerbar?: string
     custom_invitation_text?: string
     election_manager?: string
     election_title?: string
@@ -37,6 +40,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         // const link = `https://siv.org/election/${election_id}/vote?auth=${auth_token}`
 
         return send_invitation_email({
+          custom_email_headerbar,
           custom_text: custom_invitation_text,
           from: election_manager,
           link,
