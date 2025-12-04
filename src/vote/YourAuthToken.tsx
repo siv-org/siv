@@ -55,7 +55,8 @@ export const YourAuthToken = ({ auth, election_id }: { auth?: string; election_i
           </>
         ) : status === 'link' ? (
           <>
-            <UserOutlined className="text-[16px] mr-2 relative bottom-px" /> Auth check will come next
+            <UserOutlined className="text-[16px] mr-2 relative bottom-px" />{' '}
+            {customLinkMessages[election_id || ''] || 'Auth check will come next.'}
           </>
         ) : (
           'Unknown auth state'
@@ -69,4 +70,12 @@ function Loader() {
   return (
     <span className="inline-block border-4 border-solid border-[#eee] border-t-[#aaa] rounded-full w-[17px] h-[17px] animate-spin mr-2" />
   )
+}
+
+const provisionalBallotMessage = 'Provisional Ballot: Voter eligibility check will come next.'
+const testAuth11chooses = '1764391039716'
+const live11chooses = '1764187291234'
+const customLinkMessages: Record<string, string> = {
+  [live11chooses]: provisionalBallotMessage,
+  [testAuth11chooses]: provisionalBallotMessage,
 }
