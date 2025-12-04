@@ -1,5 +1,6 @@
 import { FormControlLabel, Radio, RadioGroup, TextField } from '@mui/material'
 import { Dispatch, useState } from 'react'
+import ReactMarkdown from 'react-markdown'
 
 import { max_string_length } from './Ballot'
 import { Linkify } from './Linkify'
@@ -91,12 +92,14 @@ export const Item = ({
 }
 
 export const Label = ({
+  markdown_sub,
   name,
   nameClassName,
   number,
   photo_url,
   sub,
 }: {
+  markdown_sub?: string
   name: string
   nameClassName?: string
   number?: number
@@ -111,6 +114,24 @@ export const Label = ({
         {name}
       </span>
       {sub && <p className="m-0 text-[12px] opacity-75">{sub}</p>}
+      {markdown_sub && (
+        <ReactMarkdown
+          components={{
+            a: ({ children, href, ...props }) => (
+              <a href={href} rel="noreferrer noopener" target="_blank" {...props}>
+                {children}
+              </a>
+            ),
+            p: ({ children, ...props }) => (
+              <p className="m-0 text-[12px] opacity-75" {...props}>
+                {children}
+              </p>
+            ),
+          }}
+        >
+          {markdown_sub}
+        </ReactMarkdown>
+      )}
     </Linkify>
   </div>
 )

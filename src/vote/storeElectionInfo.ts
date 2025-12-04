@@ -12,7 +12,7 @@ export type Item = {
   multiple_votes_allowed?: number
   number_of_winners?: number
   options: {
-    'markdown-sub'?: string
+    markdown_sub?: string
     name: string
     photo_url?: string
     sub?: string

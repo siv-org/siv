@@ -1,6 +1,5 @@
 import { Checkbox, FormControlLabel, FormGroup } from '@mui/material'
 import { Dispatch, useEffect, useState } from 'react'
-import ReactMarkdown from 'react-markdown'
 
 import { max_string_length } from './Ballot'
 import { Label, TitleDescriptionQuestion } from './Item'
@@ -54,7 +53,7 @@ export const MultiVoteItem = ({
         )}
       </p>
       <FormGroup className="ml-2 sm:ml-4">
-        {options.map(({ 'markdown-sub': markdownSub, name, photo_url, sub, value }) => {
+        {options.map(({ markdown_sub, name, photo_url, sub, value }) => {
           const val = value || name.slice(0, max_string_length)
 
           return (
@@ -80,29 +79,7 @@ export const MultiVoteItem = ({
                 />
               }
               key={name}
-              label={
-                <div>
-                  <Label {...{ name, photo_url, sub }} />
-                  {type === 'approval' && markdownSub && (
-                    <ReactMarkdown
-                      components={{
-                        a: ({ children, href, ...props }) => (
-                          <a href={href} rel="noreferrer" target="_blank" {...props}>
-                            {children}
-                          </a>
-                        ),
-                        p: ({ children, ...props }) => (
-                          <p className="m-0 text-[12px] opacity-75" {...props}>
-                            {children}
-                          </p>
-                        ),
-                      }}
-                    >
-                      {markdownSub}
-                    </ReactMarkdown>
-                  )}
-                </div>
-              }
+              label={<Label {...{ markdown_sub, name, photo_url, sub }} />}
               name={val}
             />
           )
