@@ -26,7 +26,7 @@ export default async function createPassportUrl(req: NextApiRequest, res: NextAp
 
   // Store session in db
   await voterDoc.ref.update({
-    passport_session: firestore.FieldValue.arrayUnion({ id, timestamp: new Date(), token }),
+    passport_sessions: firestore.FieldValue.arrayUnion({ id, timestamp: new Date(), token }),
   })
 
   return res.status(200).json({ id, token })
