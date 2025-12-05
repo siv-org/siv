@@ -1,6 +1,6 @@
 import { getPassportResults } from 'api/_passportreaderapp'
 import { firebase, pushover } from 'api/_services'
-import { firestore } from 'firebase-admin'
+// import { firestore } from 'firebase-admin'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { election_ids_for_11chooses } from 'src/vote/auth/11choosesAuth/CustomAuthFlow'
 
@@ -38,6 +38,18 @@ export default async function createPassportUrl(req: NextApiRequest, res: NextAp
   console.log(resultsWithoutPortrait)
 
   // console.log({ results })
+
+  // Validation logic
+  // state == 'APPROVED'
+  // issuing_country == 'USA'
+  // document_type == 'PASSPORT'
+  // expiry_date > Date.now()
+  // match given_names to first_name
+  // match surname to last_name
+  // match date_of_birth to date_of_birth
+  // store user_agent
+  // store nationality
+  // store sex
 
   // Store session in db
   //   await voterDoc.ref.update({
