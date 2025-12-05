@@ -1,3 +1,5 @@
+import { SMSFlow } from './SMSFlow'
+
 export const BackupAuthOptions = () => {
   return (
     <div className="mx-auto max-w-96">
@@ -11,6 +13,7 @@ export const BackupAuthOptions = () => {
 
         <Details title="SMS + Caller ID Check">
           <div>works for ~1/3 of people</div>
+          <SMSFlow />
         </Details>
 
         <Details title="Passport Scan">
