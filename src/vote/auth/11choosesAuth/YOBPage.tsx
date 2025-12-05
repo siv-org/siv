@@ -20,6 +20,11 @@ export const YOBPage = ({
 }) => {
   const [errorString, setErrorString] = useState('')
   const [yearOfBirth, setYearOfBirth] = useState('')
+  const [contactInfoForHelp, setContactInfoForHelp] = useState('')
+  const [submittingHelp, setSubmittingHelp] = useState(false)
+  const helpSubmitBtn = useRef<HTMLAnchorElement>(null)
+  const [submittedHelp, setSubmittedHelp] = useState(false)
+
   const submitBtn = useRef<HTMLAnchorElement>(null)
   const [submitting, setSubmitting] = useState(false)
   const router = useRouter()
@@ -78,7 +83,7 @@ export const YOBPage = ({
                 label="Year of Birth (YYYY)"
                 onChange={(event) => {
                   setErrorString('')
-                  setShowHelpInstructions(false)
+                  // setShowHelpInstructions(false) // Leave help instructions once shown
 
                   const newValue = event.target.value
                   setYearOfBirth(newValue)
@@ -144,16 +149,51 @@ export const YOBPage = ({
         </div>
 
         {/* Show help instructions on submission errors */}
-        <p
-          className={`mx-auto max-w-md rounded-2xl border border-pink-200 bg-pink-50/80 px-3 py-2 text-center text-sm font-medium text-pink-900 shadow-sm transition-opacity duration-700 ${
-            showHelpInstructions ? 'opacity-100' : 'opacity-0'
-          }`}
-        >
-          For help, email{' '}
-          <a className="font-semibold text-blue-700 hover:underline" href="mailto:11chooses@siv.org">
-            11chooses@siv.org
-          </a>
-        </p>
+        <div className={`${showHelpInstructions ? 'opacity-100' : 'opacity-0'} transition-opacity duration-700`}>
+          <div
+            className={`px-4 py-4 mx-auto max-w-md text-sm text-center text-pink-900 rounded-2xl border border-pink-200 shadow-sm bg-pink-50/80`}
+          >
+            <p className="mt-3 text-xl font-semibold">
+              Sorry you are having trouble. <br />
+            </p>
+            <p className="mt-3 text-2xl">
+              Enter your <br />
+              <b className="font-semibold">email</b> or <b className="font-semibold">phone number</b>,<br /> & we can
+              contact you to help:
+            </p>
+            <input
+              className="px-3 py-6 my-2 w-full text-2xl text-black rounded-lg border"
+              onChange={(event) => {
+                setContactInfoForHelp(event.target.value)
+                setSubmittedHelp(false)
+              }}
+              onKeyDown={(event) => event.key === 'Enter' && helpSubmitBtn?.current?.click()}
+              placeholder="email or phone number"
+              type="email"
+              value={contactInfoForHelp}
+            />
+            <OnClickButton
+              className="!m-0 !mt-2 w-full text-xl"
+              disabled={!contactInfoForHelp || submittingHelp || submittedHelp}
+              onClick={() => {
+                setSubmittingHelp(true)
+                api(`11-chooses/get-yob-help`, { auth_token: auth, contactInfoForHelp, election_id })
+                setSubmittingHelp(false)
+                setSubmittedHelp(true)
+              }}
+              ref={helpSubmitBtn}
+            >
+              <>Submit{submittingHelp ? 'ting...' : submittedHelp ? 'ted.' : ''}</>
+            </OnClickButton>
+            <p className="mt-6 text-lg">
+              Or email{' '}
+              <a className="font-semibold text-blue-700 hover:underline" href="mailto:11chooses@siv.org">
+                11chooses@siv.org
+              </a>
+            </p>
+          </div>
+          <p className="mt-3 text-base">Your information is only to help voting, never marketing.</p>
+        </div>
       </div>
     </div>
   )
