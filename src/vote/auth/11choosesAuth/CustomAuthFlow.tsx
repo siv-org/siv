@@ -57,6 +57,7 @@ function useVoterInfo(auth: string, election_id: string) {
 
   useEffect(() => {
     async function getVoterInfo() {
+      if (auth === 'link') return
       const response = await api(`11-chooses/get-voter-auth`, { auth_token: auth, election_id })
       if (!response.ok) {
         console.error('Failed to get voter info:', JSON.stringify(response))
