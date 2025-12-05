@@ -17,7 +17,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // If voter not found, error and ping admin
   if (!voterDoc?.exists) {
-    await pushover('11chooses/submit-yob: auth not found', JSON.stringify({ auth_token }))
+    await pushover('11c/submit-yob: auth not found', JSON.stringify({ auth_token }))
     return res.status(400).json({ error: 'voter not found' })
   }
 
