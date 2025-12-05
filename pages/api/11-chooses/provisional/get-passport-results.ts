@@ -46,6 +46,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
   const failWithResults = async (message: string) => {
     await voterDoc.ref.update({
       passport_verif_fail: firestore.FieldValue.arrayUnion({
+        message,
         passport_results: keep,
         passport_session_id,
         timestamp: new Date(),
