@@ -14,6 +14,7 @@ export const ProvisionalFlow = () => {
   } = useRouter().query as { election_id?: string; link?: string; passed_email?: string }
 
   if (!election_id) return <div className="animate-pulse">Loading Election ID...</div>
+  if (!link_auth) return <div className="animate-pulse">Loading Link Auth...</div>
 
   return (
     <main className="max-w-[750px] w-full mx-auto p-4 flex flex-col min-h-screen justify-between text-center">
@@ -22,7 +23,7 @@ export const ProvisionalFlow = () => {
       {passed_email !== 'true' ? (
         <AddEmailPage auth="provisional" {...{ election_id, link_auth }} />
       ) : (
-        <VoterRegistrationLookupScreen />
+        <VoterRegistrationLookupScreen {...{ election_id, link_auth }} />
       )}
 
       <Footer />
