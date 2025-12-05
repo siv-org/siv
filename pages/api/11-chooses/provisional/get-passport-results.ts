@@ -26,6 +26,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
   const { passport_session_id, voterRegInfo } = voterDoc.data()
   if (!passport_session_id) return fail('No passport session to get')
   const results = await getPassportResults(passport_session_id)
+  if (results.error) return fail("Can't get passport results: " + results.error)
 
   const lastVoterRegSubmission = voterRegInfo?.at(-1)?.submission
   if (!lastVoterRegSubmission) return fail('No voter registration info found to match against')

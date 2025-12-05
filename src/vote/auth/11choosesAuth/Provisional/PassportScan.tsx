@@ -59,6 +59,12 @@ function usePassportResults(setError: (error: string) => void) {
 
       if (!response.ok) {
         console.error('get-passport-results response', json)
+        if (json.error.includes('Session has expired')) {
+          // Remove the passport=complete from the URL, but keep other search params
+          const url = new URL(window.location.href)
+          url.searchParams.delete('passport')
+          router.replace(url.toString())
+        }
         return setError('Failed: ' + json.error)
       }
 
