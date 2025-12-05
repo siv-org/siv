@@ -51,15 +51,15 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
         if (matchedAgeRangeInHouse) {
           await Promise.all([
-            pushover(
-              '11c/submit-yob: distinct_age_range PASS',
-              JSON.stringify({
-                auth_token,
-                distinct_age_ranges_index,
-                matched_to_instead: matchedAgeRangeInHouse.auth_token,
-                submitted: yearOfBirth,
-              }),
-            ),
+            // pushover(
+            //   '11c/submit-yob: distinct_age_range PASS',
+            //   JSON.stringify({
+            //     auth_token,
+            //     distinct_age_ranges_index,
+            //     matched_to_instead: matchedAgeRangeInHouse.auth_token,
+            //     submitted: yearOfBirth,
+            //   }),
+            // ),
             voterDoc.ref.update({
               YOB_passed: firestore.FieldValue.arrayUnion({
                 matched_to_instead: matchedAgeRangeInHouse.auth_token,
