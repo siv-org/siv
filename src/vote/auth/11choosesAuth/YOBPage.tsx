@@ -4,6 +4,8 @@ import { useRef, useState } from 'react'
 import { OnClickButton } from 'src/_shared/Button'
 import { api } from 'src/api-helper'
 
+import { useWarnOnClose } from './useWarnOnClose'
+
 export const YOBPage = ({
   auth,
   election_id,
@@ -21,6 +23,7 @@ export const YOBPage = ({
   const [submitting, setSubmitting] = useState(false)
   const router = useRouter()
   const [showHelpInstructions, setShowHelpInstructions] = useState(false)
+  useWarnOnClose()
 
   return (
     <div className="px-6 py-8 mx-auto mt-10 max-w-xl text-slate-900">
