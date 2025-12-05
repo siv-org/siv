@@ -27,7 +27,8 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
   if (!passport_session_id) return fail('No passport session to get')
   const results = await getPassportResults(passport_session_id)
 
-  const lastVoterRegSubmission = voterRegInfo?.at(-1)
+  const lastVoterRegSubmission = voterRegInfo?.at(-1)?.submission
+  if (!lastVoterRegSubmission) return fail('No voter registration info found to match against')
 
   // These are the fields we care about for verification
   const keep = pick(results, [

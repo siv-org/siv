@@ -53,18 +53,17 @@ function usePassportResults(setError: (error: string) => void) {
     if (!returnedFromPassport || !link_auth || !election_id) return
     ;(async function () {
       setLoadingResults(true)
-      console.log('getSessionResults', { election_id, link_auth })
       const response = await api('11-chooses/provisional/get-passport-results', { election_id, link_auth })
       setLoadingResults(false)
       const json = await response.json()
 
       if (!response.ok) {
         console.error('get-passport-results response', json)
-        return setError('Failed to get passport results: ' + json.error)
+        return setError('Failed: ' + json.error)
       }
 
       // Redirect to Submitted when passed
-      if (json.passed) router.replace('/success')
+      if (json.success) router.replace('/success')
     })()
   }, [returnedFromPassport, link_auth, election_id])
 
