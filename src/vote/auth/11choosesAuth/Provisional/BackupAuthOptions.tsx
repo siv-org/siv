@@ -1,3 +1,4 @@
+import { PassportScan } from './PassportScan'
 import { SMSFlow } from './SMSFlow'
 
 export const BackupAuthOptions = () => {
@@ -19,9 +20,11 @@ export const BackupAuthOptions = () => {
         <Details title="Passport Scan">
           <div>
             Use your smartphone{"'"}s NFC reader{' '}
-            <div className="mb-2 text-sm opacity-50">(what powers Apple/Google Pay) </div>
+            <div className="mb-1 text-sm opacity-50">(what powers Apple/Google Pay) </div>
             to validate the e-chip in your passport.
           </div>
+
+          <PassportScan />
         </Details>
 
         <Details title="In-Person">
