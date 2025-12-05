@@ -26,8 +26,11 @@ export const YOBPage = ({
     <div className="px-6 py-8 mx-auto mt-10 max-w-xl text-slate-900">
       <div className="space-y-8">
         {/* Heading + voter context */}
-        <div className="space-y-4 text-center">
-          <h1 className="text-3xl font-semibold tracking-tight">Your vote is now pending</h1>
+        <div className="space-y-8 text-center">
+          <h1 className="text-3xl font-semibold tracking-tight">
+            Last step to
+            <br /> finish your vote submission
+          </h1>
 
           <div className="space-y-2">
             <p className="text-base text-slate-600">The unique Voter Code you used was for:</p>
