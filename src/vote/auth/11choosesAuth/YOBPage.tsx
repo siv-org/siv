@@ -29,6 +29,7 @@ export const YOBPage = ({
   const [submitting, setSubmitting] = useState(false)
   const router = useRouter()
   const [showHelpInstructions, setShowHelpInstructions] = useState(false)
+  const $helpElement = useRef<HTMLDivElement>(null)
   useWarnOnClose()
 
   return (
@@ -124,21 +125,24 @@ export const YOBPage = ({
                 const response = await api(`11-chooses/submit-yob`, { auth_token: auth, election_id, yearOfBirth })
                 setSubmitting(false)
 
-                // Handle errors from server
-                if (!response.ok) {
-                  setShowHelpInstructions(true)
+                // If passed, redirect to next screen by adding query param `passed_yob`
+                if (response.ok) return router.replace(`${router.asPath}&passed_yob=true`)
 
-                  const responseJson = await response.json()
-                  if (!responseJson?.error) {
-                    console.error('submission responseJson', responseJson)
-                    return setErrorString('Unknown error')
-                  }
+                // Otherwise Handle errors from server
+                const responseJson = await response.json()
+                if (!responseJson?.error) {
+                  console.error('submission responseJson', responseJson)
+                  setErrorString('Unknown error')
+                } else {
                   console.error('submission responseJson.error', responseJson?.error)
-                  return setErrorString(responseJson?.error)
+                  setErrorString(responseJson?.error)
                 }
 
-                // Redirect to next screen by adding query param `passed_yob`
-                router.replace(`${router.asPath}&passed_yob=true`)
+                // After delay to let user see error, scroll a bit & show help instructions
+                setTimeout(() => {
+                  setShowHelpInstructions(true)
+                  requestAnimationFrame(() => scrollToHelpMessageIfNeeded($helpElement.current))
+                }, 1000)
               }}
               ref={submitBtn}
               style={{ margin: 0, padding: '19px 15px' }}
@@ -149,7 +153,10 @@ export const YOBPage = ({
         </div>
 
         {/* Show help instructions on submission errors */}
-        <div className={`${showHelpInstructions ? 'opacity-100' : 'opacity-0'} transition-opacity duration-700`}>
+        <div
+          className={`${showHelpInstructions ? 'opacity-100' : 'opacity-0'} transition-opacity duration-700`}
+          ref={$helpElement}
+        >
           <div
             className={`px-4 py-4 mx-auto max-w-md text-sm text-center text-pink-900 rounded-2xl border border-pink-200 shadow-sm bg-pink-50/80`}
           >
@@ -197,4 +204,29 @@ export const YOBPage = ({
       </div>
     </div>
   )
+}
+
+const scrollToHelpMessageIfNeeded = (helpElement: HTMLDivElement | null) => {
+  if (!helpElement) return
+
+  const rect = helpElement.getBoundingClientRect()
+  const viewportHeight = window.innerHeight
+  const isFullyVisible = rect.top >= 0 && rect.bottom <= viewportHeight
+  if (!isFullyVisible || rect.bottom > viewportHeight - 50) {
+    const currentScroll = window.scrollY || document.documentElement.scrollTop
+    const elementTop = rect.top + currentScroll
+    const targetScroll = elementTop - viewportHeight / 4
+    const scrollDistance = targetScroll - currentScroll
+    const quarterScroll = currentScroll + scrollDistance / 4
+    const startTime = performance.now()
+    const duration = 600
+    const animateScroll = (currentTime: number) => {
+      const elapsed = currentTime - startTime
+      const progress = Math.min(elapsed / duration, 1)
+      const ease = 1 - Math.pow(1 - progress, 3)
+      window.scrollTo(0, currentScroll + (quarterScroll - currentScroll) * ease)
+      if (progress < 1) requestAnimationFrame(animateScroll)
+    }
+    requestAnimationFrame(animateScroll)
+  }
 }
