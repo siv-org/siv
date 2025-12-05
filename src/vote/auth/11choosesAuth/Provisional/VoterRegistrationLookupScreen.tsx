@@ -27,7 +27,7 @@ export const VoterRegistrationLookupScreen = ({
       <h1 className="mt-1 text-3xl font-bold">Voter Registration Lookup</h1>
 
       <p className="mt-8 text-xl">
-        We need to confirm you are a voter on the official{' '}
+        We need to confirm you are on the official{' '}
         <a
           className="font-semibold text-blue-500 hover:underline"
           href="https://votesearch.utah.gov/voter-search/search/search-by-voter/voter-info"
