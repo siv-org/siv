@@ -4,6 +4,7 @@ import { TailwindPreflight } from 'src/TailwindPreflight'
 import { Footer } from 'src/vote/Footer'
 
 import { AddEmailPage } from '../AddEmailPage'
+import { BackupAuthOptions } from './BackupAuthOptions'
 import { VoterRegistrationLookupScreen } from './VoterRegistrationLookupScreen'
 
 export const ProvisionalFlow = () => {
@@ -11,7 +12,8 @@ export const ProvisionalFlow = () => {
     election_id,
     link: link_auth,
     passed_email,
-  } = useRouter().query as { election_id?: string; link?: string; passed_email?: string }
+    submitted_reg_info,
+  } = useRouter().query as { election_id?: string; link?: string; passed_email?: string; submitted_reg_info?: string }
 
   if (!election_id) return <div className="animate-pulse">Loading Election ID...</div>
   if (!link_auth) return <div className="animate-pulse">Loading Link Auth...</div>
@@ -22,8 +24,10 @@ export const ProvisionalFlow = () => {
 
       {passed_email !== 'true' ? (
         <AddEmailPage auth="provisional" {...{ election_id, link_auth }} />
-      ) : (
+      ) : submitted_reg_info !== 'true' ? (
         <VoterRegistrationLookupScreen {...{ election_id, link_auth }} />
+      ) : (
+        <BackupAuthOptions />
       )}
 
       <Footer />
