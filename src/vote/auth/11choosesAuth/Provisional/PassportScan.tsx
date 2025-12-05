@@ -5,7 +5,7 @@ import { api } from 'src/api-helper'
 export const PassportScan = ({ election_id, link_auth }: { election_id: string; link_auth: string }) => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  usePassportResults()
+  usePassportResults(setError)
 
   return (
     <div className="mt-6 text-center">
@@ -23,7 +23,7 @@ export const PassportScan = ({ election_id, link_auth }: { election_id: string; 
             return setError('Failed to create passport session')
           }
 
-          const redirect_url = `${window.location.href}&passport=complete`
+          const redirect_url = encodeURIComponent(`${window.location.href}&passport=complete`)
 
           await router.push(`https://passportreader.app/open?token=${data.token}&redirect_url=${redirect_url}`)
 
@@ -42,27 +42,31 @@ export const PassportScan = ({ election_id, link_auth }: { election_id: string; 
   )
 }
 
-function usePassportResults() {
+function usePassportResults(setError: (error: string) => void) {
   const router = useRouter()
-  const { election_id, link_auth, passport } = router.query
+  const { election_id, link: link_auth, passport } = router.query
   const returnedFromPassport = passport === 'complete'
 
   const [loadingResults, setLoadingResults] = useState(false)
 
-  async function getSessionResults() {
-    setLoadingResults(true)
-    const response = await api('11-chooses/provisional/get-passport-results', { election_id, link_auth })
-    const json = await response.json()
-    setLoadingResults(false)
-
-    // Redirect to Submitted when passed
-    if (json.passed) router.replace('/success')
-  }
-
   useEffect(() => {
-    if (!returnedFromPassport) return
-    getSessionResults()
-  }, [returnedFromPassport])
+    if (!returnedFromPassport || !link_auth || !election_id) return
+    ;(async function () {
+      setLoadingResults(true)
+      console.log('getSessionResults', { election_id, link_auth })
+      const response = await api('11-chooses/provisional/get-passport-results', { election_id, link_auth })
+      setLoadingResults(false)
+      const json = await response.json()
+
+      if (!response.ok) {
+        console.error('get-passport-results response', json)
+        return setError('Failed to get passport results: ' + json.error)
+      }
+
+      // Redirect to Submitted when passed
+      if (json.passed) router.replace('/success')
+    })()
+  }, [returnedFromPassport, link_auth, election_id])
 
   return { loadingResults }
 }

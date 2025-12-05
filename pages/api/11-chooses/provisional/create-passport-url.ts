@@ -4,7 +4,7 @@ import { firestore } from 'firebase-admin'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { election_ids_for_11chooses } from 'src/vote/auth/11choosesAuth/CustomAuthFlow'
 
-export default async function createPassportUrl(req: NextApiRequest, res: NextApiResponse) {
+export default async function (req: NextApiRequest, res: NextApiResponse) {
   const { election_id, link_auth } = req.body
   if (typeof election_id !== 'string') return res.status(400).json({ error: 'election_id is required' })
   if (!election_ids_for_11chooses.includes(election_id)) return res.status(400).json({ error: 'Invalid election_id' })
@@ -26,6 +26,7 @@ export default async function createPassportUrl(req: NextApiRequest, res: NextAp
 
   // Store session in db
   await voterDoc.ref.update({
+    passport_session_id: id,
     passport_sessions: firestore.FieldValue.arrayUnion({ id, timestamp: new Date(), token }),
   })
 

@@ -1,10 +1,11 @@
 import { getPassportResults } from 'api/_passportreaderapp'
 import { firebase, pushover } from 'api/_services'
-// import { firestore } from 'firebase-admin'
+import { firestore } from 'firebase-admin'
+import { pick } from 'lodash-es'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { election_ids_for_11chooses } from 'src/vote/auth/11choosesAuth/CustomAuthFlow'
 
-export default async function createPassportUrl(req: NextApiRequest, res: NextApiResponse) {
+export default async function (req: NextApiRequest, res: NextApiResponse) {
   const { election_id, link_auth } = req.body
   if (typeof election_id !== 'string') return res.status(400).json({ error: 'election_id is required' })
   if (!election_ids_for_11chooses.includes(election_id)) return res.status(400).json({ error: 'Invalid election_id' })
@@ -12,9 +13,9 @@ export default async function createPassportUrl(req: NextApiRequest, res: NextAp
 
   const electionDoc = firebase.firestore().collection('elections').doc(election_id)
 
-  async function fail(message: string) {
-    await pushover('11c/get-passport-results:' + message, JSON.stringify({ election_id, link_auth }))
-    return res.status(400).json({ error: message })
+  async function fail(message: string, results?: unknown) {
+    await pushover('11c/get-passport-results: ' + message, JSON.stringify({ election_id, link_auth, results }))
+    return res.status(400).json({ error: message, results })
   }
 
   // Lookup provisional vote by link_auth
@@ -22,40 +23,69 @@ export default async function createPassportUrl(req: NextApiRequest, res: NextAp
   if (!voterDoc?.exists) return fail('Provisional ballot not found')
 
   // Lookup the most recent sessionId from the voterDoc
-  const data = voterDoc.data()
-  const { passport_sessions } = data
-  if (!passport_sessions) return fail('No passport sessions to get')
-  if (!Array.isArray(passport_sessions)) return fail('Passport sessions not an array')
+  const { passport_session_id, voterRegInfo } = voterDoc.data()
+  if (!passport_session_id) return fail('No passport session to get')
+  const results = await getPassportResults(passport_session_id)
 
-  const mostRecentSession = passport_sessions[-1]
-  if (!mostRecentSession) fail('Empty passport sessions')
-  const sessionId = mostRecentSession.id
+  const lastVoterRegSubmission = voterRegInfo?.at(-1)
 
-  const results = await getPassportResults(sessionId)
+  // These are the fields we care about for verification
+  const keep = pick(results, [
+    'date_of_birth',
+    'document_type',
+    'expiry_date',
+    'given_names',
+    'issuing_country',
+    'nationality', // store for edge-cases
+    'sex', // store for stats
+    'state',
+    'surname',
+    'user_agent', // store for debugging passport reader app
+  ])
+  const failWithResults = async (message: string) => {
+    await voterDoc.ref.update({
+      passport_verif_fail: firestore.FieldValue.arrayUnion({
+        passport_results: keep,
+        passport_session_id,
+        timestamp: new Date(),
+      }),
+    })
+    return fail(message, keep)
+  }
 
-  const { portrait, ...resultsWithoutPortrait } = results
-  void portrait
-  console.log(resultsWithoutPortrait)
+  // // Validation logic
+  // Does the reader app say the passport passed?
+  if (keep.state !== 'APPROVED') return failWithResults('Passport state: ' + keep.state + ' is not Approved')
+  // American issued?
+  if (keep.issuing_country !== 'USA')
+    return failWithResults('Issuing country must be USA, got: ' + keep.issuing_country)
+  // Is a passport?
+  if (keep.document_type !== 'PASSPORT') return failWithResults('Document must be Passport, got: ' + keep.document_type)
+  // Not expired?
+  if (keep.expiry_date < new Date().toISOString()) return failWithResults('Expiry date past, got: ' + keep.expiry_date)
+  // Match given_names to first_name
+  const submittedFirst = lastVoterRegSubmission?.['First Name']
+  if (!submittedFirst?.includes(keep.given_names)) {
+    if (submittedFirst && !keep.given_names.includes(submittedFirst))
+      return failWithResults('First name mismatch— passport: ' + keep.given_names + ' | voter-reg: ' + submittedFirst)
+  }
+  // Match surname to last_name
+  const submittedLast = lastVoterRegSubmission?.['Last Name']
+  if (!submittedLast?.includes(keep.surname)) {
+    if (submittedLast && !keep.surname.includes(submittedLast))
+      return failWithResults('Last name mismatch— passport: ' + keep.surname + ' | voter-reg: ' + submittedLast)
+  }
+  // Match date_of_birth to date_of_birth
+  const submittedDoB = lastVoterRegSubmission?.['Date of Birth (MM-DD-YYYY)']
+  const [YYYY, MM, DD] = keep.date_of_birth.split('-') // YYYY-MM-DD
+  const passportAmericanFormat = `${MM}-${DD}-${YYYY}`
+  if (submittedDoB !== passportAmericanFormat)
+    return failWithResults('Date of birth mismatch— passport: ' + keep.date_of_birth + ' | voter-reg: ' + submittedDoB)
 
-  // console.log({ results })
+  // Store successful verification in db
+  await voterDoc.ref.update({
+    passport_success: firestore.FieldValue.arrayUnion({ passport: keep, passport_session_id, timestamp: new Date() }),
+  })
 
-  // Validation logic
-  // state == 'APPROVED'
-  // issuing_country == 'USA'
-  // document_type == 'PASSPORT'
-  // expiry_date > Date.now()
-  // match given_names to first_name
-  // match surname to last_name
-  // match date_of_birth to date_of_birth
-  // store user_agent
-  // store nationality
-  // store sex
-
-  // Store session in db
-  //   await voterDoc.ref.update({
-  //     passport_session: firestore.FieldValue.arrayUnion({ id, timestamp: new Date(), token }),
-  //   })
-
-  //   return res.status(200).json({ id, token })
-  return res.status(200).json({ resultsWithoutPortrait })
+  return res.status(200).json({ success: true })
 }
