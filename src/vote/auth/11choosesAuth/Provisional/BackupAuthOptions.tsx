@@ -1,7 +1,7 @@
 import { PassportScan } from './PassportScan'
 import { SMSFlow } from './SMSFlow'
 
-export const BackupAuthOptions = () => {
+export const BackupAuthOptions = ({ election_id, link_auth }: { election_id: string; link_auth: string }) => {
   return (
     <div className="mx-auto max-w-96">
       <p className="mt-8 text-lg font-medium opacity-50">Step 2 of 2</p>
@@ -27,7 +27,7 @@ export const BackupAuthOptions = () => {
             to validate the e-chip in your passport.
           </div>
 
-          <PassportScan />
+          <PassportScan {...{ election_id, link_auth }} />
         </Details>
 
         <Details title="In-Person">

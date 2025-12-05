@@ -27,7 +27,7 @@ export const ProvisionalFlow = () => {
       ) : submitted_reg_info !== 'true' ? (
         <VoterRegistrationLookupScreen {...{ election_id, link_auth }} />
       ) : (
-        <BackupAuthOptions />
+        <BackupAuthOptions {...{ election_id, link_auth }} />
       )}
 
       <Footer />
