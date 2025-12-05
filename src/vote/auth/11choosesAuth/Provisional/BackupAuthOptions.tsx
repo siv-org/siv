@@ -13,14 +13,17 @@ export const BackupAuthOptions = () => {
         <div className="mb-2 text-lg opacity-50">Any of these are acceptable:</div>
 
         <Details title="SMS + Caller ID Check">
-          <div>works for ~1/3 of people</div>
-          <SMSFlow />
+          <div className="text-center">
+            <div>Depends on your phone carrier&apos;s CallerID.</div>
+            <div className="mt-1 text-sm opacity-50">Works for approx. 1/3 of people</div>
+            <SMSFlow />
+          </div>
         </Details>
 
         <Details title="Passport Scan">
-          <div>
-            Use your smartphone{"'"}s NFC reader{' '}
-            <div className="mb-1 text-sm opacity-50">(what powers Apple/Google Pay) </div>
+          <div className="text-center">
+            Use your smartphone{"'"}s NFC reader
+            <div className="mb-1 text-sm opacity-50">(what powers Apple/Google Pay)</div>
             to validate the e-chip in your passport.
           </div>
 
