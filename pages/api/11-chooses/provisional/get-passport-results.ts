@@ -57,8 +57,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
   // Does the reader app say the passport passed?
   if (keep.state !== 'APPROVED') return failWithResults('Passport state: ' + keep.state + ' is not Approved')
   // American issued?
-  if (keep.issuing_country !== 'USA')
-    return failWithResults('Issuing country must be USA, got: ' + keep.issuing_country)
+  if (keep.issuing_country !== 'US') return failWithResults('Issuing country must be US, got: ' + keep.issuing_country)
   // Is a passport?
   if (keep.document_type !== 'PASSPORT') return failWithResults('Document must be Passport, got: ' + keep.document_type)
   // Not expired?
