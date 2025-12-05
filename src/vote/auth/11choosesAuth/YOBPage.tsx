@@ -1,3 +1,4 @@
+import { SafetyOutlined } from '@ant-design/icons'
 import { TextField } from '@mui/material'
 import { useRouter } from 'next/router'
 import { useRef, useState } from 'react'
@@ -96,7 +97,15 @@ export const YOBPage = ({
                 variant="outlined"
               />
 
-              <p className="mt-2 text-sm text-slate-700">Protects against strangers using your code</p>
+              <p className="text-sm italic font-medium">
+                Only votes with a correctly matched
+                <br /> Year of Birth will be counted.
+              </p>
+
+              <p className="mt-4 text-sm text-slate-700">
+                <SafetyOutlined className="mr-1.5 text-lg text-green-800 relative top-px" />
+                Protects against strangers using your code
+              </p>
             </div>
 
             {/* Submit button */}
