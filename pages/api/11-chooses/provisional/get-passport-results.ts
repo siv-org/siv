@@ -65,14 +65,14 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
   if (keep.expiry_date < new Date().toISOString()) return failWithResults('Expiry date past, got: ' + keep.expiry_date)
   // Match given_names to first_name
   const submittedFirst = lastVoterRegSubmission?.['First Name']
-  if (!submittedFirst?.includes(keep.given_names)) {
-    if (submittedFirst && !keep.given_names.includes(submittedFirst))
+  if (!submittedFirst.toUpperCase()?.includes(keep.given_names)) {
+    if (submittedFirst && !keep.given_names.includes(submittedFirst.toUpperCase()))
       return failWithResults('First name mismatch— passport: ' + keep.given_names + ' | voter-reg: ' + submittedFirst)
   }
   // Match surname to last_name
   const submittedLast = lastVoterRegSubmission?.['Last Name']
-  if (!submittedLast?.includes(keep.surname)) {
-    if (submittedLast && !keep.surname.includes(submittedLast))
+  if (!submittedLast.toUpperCase()?.includes(keep.surname)) {
+    if (submittedLast && !keep.surname.includes(submittedLast.toUpperCase()))
       return failWithResults('Last name mismatch— passport: ' + keep.surname + ' | voter-reg: ' + submittedLast)
   }
   // Match date_of_birth to date_of_birth
