@@ -127,7 +127,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 /** `birthYearRangeFromAgeRange('46 through 55')` → `[1969, 1979]` if called in 2025 */
 const birthYearRangeFromAgeRange = (range: string) => {
   const currentYear = new Date().getFullYear()
-  const [minAge, maxAge] = range.split(' through ').map((a) => parseInt(a))
+  let [minAge, maxAge] = [Infinity, 0] // Init variables
+
+  if (range.includes('or Younger')) {
+    maxAge = parseInt(range.split(' or Younger')[0])
+    minAge = 16
+  } else {
+    ;[minAge, maxAge] = range.split(' through ').map((a) => parseInt(a))
+  }
 
   const earliest = currentYear - maxAge - 1 // oldest person: birthday may still be upcoming
   const latest = currentYear - minAge // youngest person: birthday already happened
