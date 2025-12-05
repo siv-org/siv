@@ -103,7 +103,7 @@ export const CustomInvitationEditor = () => {
   if (!hasFeatureAccess) return null
 
   return (
-    <div className="-mt-6 mb-6">
+    <div className="mb-6">
       {/* Collapsible Header */}
       <button
         className="flex gap-2 items-center px-0 py-2 text-sm bg-transparent border-0 cursor-pointer hover:opacity-80"
