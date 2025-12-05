@@ -20,7 +20,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (auth_token === 'provisional') {
     // Error if missing link_auth
     if (!link_auth) {
-      await pushover('11c/submit-email: link_auth missing', JSON.stringify({ link_auth }))
+      await pushover('11c/submit-email: link_auth missing', JSON.stringify({ email, link_auth }))
       return res.status(400).json({ error: 'link_auth is required for provisional ballots' })
     }
 
@@ -29,7 +29,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     // If not found, error and ping admin
     if (!voterDoc?.exists) {
-      await pushover('11c/submit-email: link_auth not found', JSON.stringify({ link_auth }))
+      await pushover('11c/submit-email: link_auth not found', JSON.stringify({ email, link_auth }))
       return res.status(400).json({ error: 'provisional ballot not found' })
     }
   } else {
@@ -37,7 +37,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     // If voter not found, error and ping admin
     if (!voterDoc?.exists) {
-      await pushover('11c/submit-email: auth not found', JSON.stringify({ auth_token }))
+      await pushover('11c/submit-email: auth not found', JSON.stringify({ auth_token, email }))
       return res.status(400).json({ error: 'voter not found' })
     }
   }
