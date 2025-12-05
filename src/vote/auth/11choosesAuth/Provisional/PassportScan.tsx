@@ -69,7 +69,7 @@ function usePassportResults(setError: (error: string) => void) {
       }
 
       // Redirect to Submitted when passed
-      if (json.success) router.replace('/success')
+      if (json.success) alert('Your passport passed, and matched the voter registration info you submitted! ✅')
     })()
   }, [returnedFromPassport, link_auth, election_id])
 
