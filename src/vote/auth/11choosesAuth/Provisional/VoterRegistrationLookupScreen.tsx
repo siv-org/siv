@@ -40,7 +40,8 @@ export const VoterRegistrationLookupScreen = ({
         >
           State Voter Roll
         </a>
-        .
+        .<br />
+        Your details must match exactly.
       </p>
 
       <div className="flex flex-col gap-8 mt-8 text-left">
