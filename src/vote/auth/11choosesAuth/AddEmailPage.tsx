@@ -5,6 +5,8 @@ import { useRef, useState } from 'react'
 import { OnClickButton } from 'src/_shared/Button'
 import { api } from 'src/api-helper'
 
+import { useWarnOnClose } from './useWarnOnClose'
+
 export const AddEmailPage = ({
   auth,
   election_id,
@@ -19,6 +21,7 @@ export const AddEmailPage = ({
   const [submitting, setSubmitting] = useState(false)
   const submitBtn = useRef<HTMLAnchorElement>(null)
   const router = useRouter()
+  useWarnOnClose()
 
   const isProvisional = auth === 'provisional'
 
