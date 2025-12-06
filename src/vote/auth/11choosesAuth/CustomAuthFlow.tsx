@@ -4,6 +4,7 @@ import { api } from 'src/api-helper'
 import { TailwindPreflight } from 'src/TailwindPreflight'
 
 import { AddEmailPage } from './AddEmailPage'
+import { ReturnToProvisional } from './Provisional/ReturnToProvisional'
 import { YOBPage } from './YOBPage'
 
 export const election_ids_for_11chooses = [
@@ -27,6 +28,7 @@ export const CustomAuthFlow = ({ auth, election_id }: { auth: string; election_i
   const { query } = useRouter()
   const { is_withheld, loaded, voterName } = useVoterInfo(auth, election_id)
   const passedYOB = query.passed_yob === 'true'
+  if (auth === 'link') return <ReturnToProvisional />
 
   return (
     <div className="text-center">
