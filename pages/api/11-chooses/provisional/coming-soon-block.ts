@@ -8,7 +8,7 @@ export default allowCors(async (req: NextApiRequest, res: NextApiResponse) => {
 
   await pushover(
     '11c/provisional-coming-soon',
-    'request received from: ' + location + '\n\n' + req.headers['x-real-ip'],
+    'request received from: ' + location + ' (' + req.headers['x-real-ip'] + ')',
   )
   return res.status(200).json({ success: true })
 })
