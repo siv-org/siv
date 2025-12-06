@@ -28,21 +28,24 @@ export const VoterRegistrationLookupScreen = ({
       {/* Show step 1 of 2, when Auth is not disabled */}
       {!provisionalAuthDisabled && <p className="mb-1 text-lg font-medium opacity-50">Step 1 of 2</p>}
 
-      <h1 className="text-3xl font-bold">Voter Registration Lookup</h1>
+      <h1 className="text-3xl font-semibold tracking-wide text-slate-900">Voter Registration Lookup</h1>
 
-      <p className="mt-8 text-xl">
-        We need to confirm you are on the official{' '}
-        <a
-          className="font-semibold text-blue-500 hover:underline"
-          href="https://votesearch.utah.gov/voter-search/search/search-by-voter/voter-info"
-          rel="noreferrer noopener"
-          target="_blank"
-        >
-          State Voter Roll
-        </a>
-        .<br />
-        Your details must match exactly.
-      </p>
+      <div className="mt-6 text-lg leading-relaxed text-slate-600">
+        <p>
+          We need to confirm you are on the official
+          <br />
+          <a
+            className="font-semibold text-blue-500 hover:text-blue-600 hover:underline"
+            href="https://votesearch.utah.gov/voter-search/search/search-by-voter/voter-info"
+            rel="noreferrer noopener"
+            target="_blank"
+          >
+            State Voter Roll
+          </a>
+          .
+        </p>
+        <p className="mt-2 text-sm font-medium tracking-wider text-slate-800">Your details must match exactly.</p>
+      </div>
 
       <div className="flex flex-col gap-8 mt-8 text-left">
         {fields.map((label) => (
