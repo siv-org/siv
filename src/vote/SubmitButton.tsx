@@ -4,6 +4,7 @@ import { Dispatch, useState } from 'react'
 
 import { OnClickButton } from '../_shared/Button'
 import { api } from '../api-helper'
+import { storeProvisionalLinkAuth } from './auth/11choosesAuth/Provisional/provisionalStorage'
 import { AirGappedSubmission } from './AirGappedSubmission'
 import { State } from './vote-state'
 
@@ -69,9 +70,12 @@ export const SubmitButton = ({
               return setButtonText('Error')
             }
 
-            // If auth is `link`, redirect to /auth page
+            // If auth is `link`, handle provisional ballot redirect & local tracking
             if (auth === 'link') {
               const { link_auth, visit_to_add_auth } = await response.json()
+              if (election_id && link_auth) {
+                storeProvisionalLinkAuth(election_id, link_auth)
+              }
               if (embed) {
                 // console.log('SIV submit button', link_auth, embed)
                 window.parent.postMessage({ link_auth }, embed)

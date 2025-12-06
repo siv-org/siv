@@ -4,6 +4,7 @@ import { api } from 'src/api-helper'
 import { TailwindPreflight } from 'src/TailwindPreflight'
 
 import { AddEmailPage } from './AddEmailPage'
+import { ProvisionalReturnScreen } from './Provisional/ProvisionalReturnScreen'
 import { YOBPage } from './YOBPage'
 
 export const election_ids_for_11chooses = [
@@ -25,6 +26,20 @@ export const hasCustomAuthFlow = (election_id: string) => {
 
 export const CustomAuthFlow = ({ auth, election_id }: { auth: string; election_id: string }) => {
   const { query } = useRouter()
+
+  // When auth==='link', this is a provisional ballot that has already been submitted.
+  // Instead of trying to look up voter info (which is not supported for auth='link'),
+  // show a special flow that lets the voter continue their existing provisional ballot
+  // or start a new one.
+  if (auth === 'link') {
+    return (
+      <div className="text-center">
+        <ProvisionalReturnScreen election_id={election_id} />
+        <TailwindPreflight />
+      </div>
+    )
+  }
+
   const { is_withheld, loaded, voterName } = useVoterInfo(auth, election_id)
   const passedYOB = query.passed_yob === 'true'
 
