@@ -44,7 +44,7 @@ export const VoterRegistrationLookupScreen = ({
           </a>
           .
         </p>
-        <p className="mt-2 text-xs font-semibold uppercase tracking-[0.18em] text-slate-600">
+        <p className="mt-2 text-xs font-semibold uppercase tracking-[0.18em] text-purple-800">
           Your details must match exactly
         </p>
       </div>
