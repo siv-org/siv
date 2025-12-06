@@ -28,7 +28,7 @@ export const VoterRegistrationLookupScreen = ({
       {/* Show step 1 of 2, when Auth is not disabled */}
       {!provisionalAuthDisabled && <p className="mb-1 text-lg font-medium opacity-50">Step 1 of 2</p>}
 
-      <h1 className="text-3xl font-bold">Voter Registration Lookup</h1>
+      <h1 className="text-3xl font-semibold tracking-wide text-slate-900">Voter Registration Lookup</h1>
 
       <div className="mt-6 text-lg leading-relaxed text-slate-600">
         <p>
