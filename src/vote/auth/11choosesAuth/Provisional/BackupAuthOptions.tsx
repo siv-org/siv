@@ -1,7 +1,12 @@
 import { PassportScan } from './PassportScan'
+import { ProvisionalSubmitted } from './ProvisionalSubmitted'
 import { SMSFlow } from './SMSFlow'
 
+export const provisionalAuthDisabled = true
+
 export const BackupAuthOptions = ({ election_id, link_auth }: { election_id: string; link_auth: string }) => {
+  if (provisionalAuthDisabled) return <ProvisionalSubmitted />
+
   return (
     <div className="mx-auto max-w-96">
       <p className="mt-8 text-lg font-medium opacity-50">Step 2 of 2</p>
