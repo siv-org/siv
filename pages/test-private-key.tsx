@@ -47,11 +47,13 @@ function TestPrivateKeyPage() {
 
         <p className="mt-8 font-bold">Definitions</p>
         <p>
-          G = the {'"'}base point{'"'} of Ristretto255
+          G = the {'"'}base point{'"'} of Curve25519
         </p>
         <p>
-          <Link href="https://ristretto.group">Ristretto255</Link> = the specific elliptic curve SIV uses (same as
-          Signal)
+          <Link href="https://en.wikipedia.org/wiki/Curve25519">Curve25519</Link> = the specific elliptic curve SIV uses{' '}
+          <span className="text-sm opacity-50">
+            (<Link href="https://ristretto.group">Ristretto255</Link> subgroup)
+          </span>
         </p>
         <p>
           multiply() ={' '}
