@@ -21,11 +21,9 @@ export function PublicKeysharesPage() {
 
       <div className="flex flex-col justify-center items-center">
         {!data ? (
-          isLoading ? (
-            'Loading public keygen transcript...'
-          ) : (
-            'No public key shares found.'
-          )
+          <div className="mt-4">
+            {isLoading ? 'Loading public keygen transcript...' : 'No public key shares found.'}
+          </div>
         ) : (
           <>
             <PublicKeyshares {...{ data }} />
