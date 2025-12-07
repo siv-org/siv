@@ -14,7 +14,12 @@ function Link({ children, href }: { children: React.ReactNode; href: string }) {
 function TestPrivateKeyPage() {
   const [privateKey, setPrivateKey] = useState('')
 
-  const publicKey = privateKey ? G.multiply(BigInt(`${privateKey}`)).toHex() : ''
+  let publicKey = ''
+  try {
+    if (privateKey.trim()) publicKey = G.multiply(BigInt(privateKey.trim())).toHex()
+  } catch {
+    publicKey = 'Invalid decimal key'
+  }
 
   return (
     <main className="max-w-[750px] w-full mx-auto p-4 py-12 flex flex-col min-h-screen text-center">
