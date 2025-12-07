@@ -4,6 +4,7 @@ import { TailwindPreflight } from 'src/TailwindPreflight'
 import useSWR from 'swr'
 
 import { PublicCommitments } from './5-PublicCommitments'
+import { ComputeGToBroadcasts } from './ComputeGToBroadcasts'
 import { PublicKeyshares } from './PublicKeyshares'
 
 export function PublicKeysharesPage() {
@@ -40,6 +41,7 @@ export function PublicKeysharesPage() {
 
               <div className="text-left">
                 <PublicCommitments state={data} />
+                <ComputeGToBroadcasts />
               </div>
             </details>
           </>
