@@ -22,19 +22,19 @@ function TestPrivateKeyPage() {
   }
 
   return (
-    <main className="max-w-[750px] w-full mx-auto p-4 py-12 flex flex-col min-h-screen text-center">
+    <main className="flex flex-col p-4 py-12 mx-auto w-full max-w-xl min-h-screen text-center">
       <Head title="Test Private Key" />
       <h1 className="text-3xl font-bold">Test a Private Key</h1>
 
       <div className="flex flex-col justify-center items-center mt-8">
         <p>Elliptic Curve Public Key = G.multiply(private_key)</p>
 
-        <div className="mt-4 text-left">
+        <div className="mt-4 w-full text-left">
           <label className="block text-sm" htmlFor="privateKey">
             Private Key
           </label>
           <textarea
-            className="p-2 w-full h-24 rounded-md border border-gray-300"
+            className="p-2 w-full h-24 rounded-md border border-gray-300 resize-none"
             onChange={(event) => setPrivateKey(event.target.value)}
             placeholder="96244...471"
             value={privateKey}
