@@ -35,8 +35,9 @@ export function PublicKeysharesPage() {
               </a>
               .
             </p>
-            <details className="marker:text-lg">
+            <details className="w-full marker:text-lg">
               <summary className="text-sm text-gray-500 cursor-pointer">How these are derived</summary>
+
               <div className="text-left">
                 <PublicCommitments state={data} />
               </div>

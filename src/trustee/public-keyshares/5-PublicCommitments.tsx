@@ -4,9 +4,11 @@ export const PublicCommitments = ({ state }: { state: State }) => {
   const { trustees } = state
 
   return (
-    <>
-      <p className="text-sm text-gray-500">From DKG Transcript:</p>
-      <h3 className="text-xl font-bold">V. Public Commitments:</h3>
+    <details className="w-full">
+      <summary className="p-2 -ml-2 w-full rounded-lg cursor-pointer hover:bg-gray-100">
+        <p className="text-sm text-gray-500">From DKG Transcript:</p>
+        <h3 className="text-xl font-bold">V. Public Commitments</h3>
+      </summary>
       <p className="mt-2 mb-4 text-sm text-gray-500">
         Each party broadcasts public commitments A<sub>0</sub>, ..., A<sub>t-1</sub> based on their private
         coefficients, A<sub>c</sub> = G * a<sub>c</sub>.
@@ -36,6 +38,6 @@ export const PublicCommitments = ({ state }: { state: State }) => {
           ))}
         </ol>
       )}
-    </>
+    </details>
   )
 }
