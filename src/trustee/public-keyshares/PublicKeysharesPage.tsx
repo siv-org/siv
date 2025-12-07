@@ -28,12 +28,21 @@ export function PublicKeysharesPage() {
             'No public key shares found.'
           )
         ) : (
-          <details className="marker:text-lg">
-            <summary className="text-sm text-gray-500 cursor-pointer">How these are derived</summary>
-            <div className="text-left">
-              <PublicCommitments state={data} />
-            </div>
-          </details>
+          <>
+            <p className="mb-4">
+              If you have a private keyshare, you can test it with{' '}
+              <a className="text-blue-500 hover:underline" href="/test-private-key" target="_blank">
+                this tool
+              </a>
+              .
+            </p>
+            <details className="marker:text-lg">
+              <summary className="text-sm text-gray-500 cursor-pointer">How these are derived</summary>
+              <div className="text-left">
+                <PublicCommitments state={data} />
+              </div>
+            </details>
+          </>
         )}
       </div>
 
