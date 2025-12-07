@@ -4,7 +4,7 @@ export const HeaderBar = (): JSX.Element => (
   <div className="headerbar-container">
     <div>
       <Link href="/" legacyBehavior>
-        <a className="big">Secure Internet Voting</a>
+        <a className="big">SIV</a>
       </Link>
       <Link href="/protocol" legacyBehavior>
         <a>Protocol</a>
