@@ -28,16 +28,15 @@ function TestPrivateKeyPage() {
           <label className="block text-sm" htmlFor="privateKey">
             Private Key
           </label>
-          <input
-            className="p-2 w-full rounded-md border border-gray-300"
+          <textarea
+            className="p-2 w-full h-24 rounded-md border border-gray-300"
             onChange={(event) => setPrivateKey(event.target.value)}
             placeholder="96244...471"
-            type="text"
             value={privateKey}
           />
 
           <label className="block mt-4 text-sm">Resulting Public Key</label>
-          <div className="p-2 h-8 rounded-md border border-gray-300">{publicKey}</div>
+          <div className="p-2 min-h-[4rem] break-all rounded-md border border-gray-300">{publicKey}</div>
           <div>{}</div>
         </div>
 
