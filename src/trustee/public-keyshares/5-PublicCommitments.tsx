@@ -21,7 +21,7 @@ export const PublicCommitments = ({ state }: { state: State }) => {
               {commitments ? (
                 <>
                   <b className="font-semibold">{email}</b> broadcast commitments
-                  <ul className="pl-5 space-y-2 text-sm list-decimal">
+                  <ul className="pl-5 space-y-2 text-sm list-decimal marker:text-sm">
                     {commitments.map((commitment) => (
                       <li key={commitment}>{commitment}</li>
                     ))}

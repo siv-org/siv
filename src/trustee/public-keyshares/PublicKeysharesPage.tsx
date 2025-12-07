@@ -28,9 +28,12 @@ export function PublicKeysharesPage() {
             'No public key shares found.'
           )
         ) : (
-          <div className="text-left">
-            <PublicCommitments state={data} />
-          </div>
+          <details className="marker:text-lg">
+            <summary className="text-sm text-gray-500 cursor-pointer">How these are derived</summary>
+            <div className="text-left">
+              <PublicCommitments state={data} />
+            </div>
+          </details>
         )}
       </div>
 
