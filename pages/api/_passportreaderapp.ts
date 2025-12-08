@@ -15,7 +15,11 @@ Response: {
     ...
 } */
 export async function createSession() {
-  const res = await fetch(`${apiUrl}/session.create`, { body: JSON.stringify({}), headers, method: 'POST' })
+  const res = await fetch(`${apiUrl}/session.create`, {
+    body: JSON.stringify({ passport_only: true }),
+    headers,
+    method: 'POST',
+  })
 
   if (!res.ok) throw new Error(`Failed to create session: ${res.statusText}`)
 
