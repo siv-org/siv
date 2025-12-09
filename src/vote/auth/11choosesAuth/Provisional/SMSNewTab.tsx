@@ -3,9 +3,9 @@ import { useEffect, useState } from 'react'
 const devUrl = 'http://127.0.0.1:3002'
 const prodUrl = 'https://sms.siv.org'
 const domain = process.env.NODE_ENV === 'production' ? prodUrl : devUrl
-const url = domain + '/embed'
+const url = domain + '/verify'
 
-export const SMSFlow = () => {
+export const SMSNewTab = () => {
   const [result, setResult] = useState<null | { confirmed_sms: string; firebase_uid: string; session_id: string }>(null)
 
   // Listen for messages from the iframe
@@ -22,8 +22,19 @@ export const SMSFlow = () => {
   }, [])
 
   return (
-    <div className="w-full h-[550px]">
-      {!result ? <iframe className="w-full h-full" src={url}></iframe> : <div>Result: {JSON.stringify(result)}</div>}
+    <div className="mt-8 w-full">
+      {!result ? (
+        <a
+          className="p-3 bg-blue-50 rounded-md border-2 border-blue-200 hover:bg-blue-100"
+          href={url}
+          rel="noreferrer"
+          target="_blank"
+        >
+          Get Started
+        </a>
+      ) : (
+        <div>Result: {JSON.stringify(result)}</div>
+      )}
     </div>
   )
 }

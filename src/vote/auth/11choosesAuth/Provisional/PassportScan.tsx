@@ -11,7 +11,7 @@ export const PassportScan = ({ election_id, link_auth }: { election_id: string; 
     <div className="mt-6 text-center">
       {/* Get Started btn */}
       <div
-        className="inline-block p-4 bg-purple-50 rounded-lg border-2 border-purple-600 cursor-pointer hover:bg-purple-100"
+        className="inline-block p-3 bg-purple-50 rounded-md border-2 border-purple-300 cursor-pointer hover:bg-purple-100"
         onClick={async () => {
           setError('')
           setLoading(true)
