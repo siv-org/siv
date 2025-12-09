@@ -1,4 +1,4 @@
-import { firebase } from 'api/_services'
+import { firebase, pushover } from 'api/_services'
 import { getCallerIdResults } from 'api/sms/lookup-test'
 import { NextApiRequest, NextApiResponse } from 'next'
 
@@ -18,5 +18,8 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     return res.status(400).json({ error: 'link_auth does not match otp' })
 
   const results = await getCallerIdResults(lookupNum)
+
+  await pushover('11c/get-callerid', JSON.stringify({ link_auth, lookupNum, results }))
+
   return res.status(200).json({ results })
 }
