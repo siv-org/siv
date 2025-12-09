@@ -77,7 +77,7 @@ function Loader() {
 
 const provisionalBallotMessage = 'Provisional Ballot: Voter eligibility check will come next.'
 const testAuth11chooses = '1764391039716'
-const live11chooses = '1764187291234'
+export const live11chooses = '1764187291234'
 const customLinkMessages: Record<string, string> = {
   [live11chooses]: provisionalBallotMessage,
   [testAuth11chooses]: provisionalBallotMessage,

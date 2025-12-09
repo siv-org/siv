@@ -1,3 +1,5 @@
+import { api } from 'src/api-helper'
+
 import { PassportScan } from './PassportScan'
 import { SMSNewTab } from './SMS/SMSNewTab'
 
@@ -53,6 +55,33 @@ export const ProvisionalAuthOptions = ({ election_id, link_auth }: { election_id
               <p>You don{"'"}t have to vote again.</p>
               <p>A poll worker will check your valid photo ID, and mark your email address as verified.</p>
             </div>
+          </div>
+        </Details>
+
+        <Details title="Zoom Call + Photo ID verification">
+          <div className="text-center">
+            <p>Join a Zoom call with a poll worker, and they{"'"}ll verify your photo ID.</p>
+
+            <div
+              className="p-2 mx-auto mt-6 text-sm rounded-md border border-gray-600 opacity-50 cursor-pointer w-fit hover:bg-gray-100"
+              onClick={() => {
+                api('11-chooses/provisional/zoom-interest', { election_id, link_auth })
+                  .then(() => {
+                    alert("Thanks! We're working on it")
+                  })
+                  .catch((error) => {
+                    console.error(error)
+                    alert('Error registering interest')
+                  })
+              }}
+            >
+              Link Coming Soon
+            </div>
+            <div className="mt-1 text-sm">Click to register interest</div>
+
+            <div className="mt-4 text-sm font-bold">Intended Hours:</div>
+            <div>Tues 12/9 — Thurs 12/11</div>
+            <div>10am - 7pm</div>
           </div>
         </Details>
       </div>
