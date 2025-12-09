@@ -13,7 +13,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
   // Only the voter should be able to lookup their own caller ID
   const otp = (await firebase.firestore().collection('sms-otp').doc(lookupNum).get()).data()
   if (!otp) return res.status(400).json({ error: 'otp not found' })
-  console.log('otp', otp)
+  //   console.log('otp', otp)
   if (!otp.passed.some((p: { link_auth: string }) => p.link_auth === link_auth))
     return res.status(400).json({ error: 'link_auth does not match otp' })
 
