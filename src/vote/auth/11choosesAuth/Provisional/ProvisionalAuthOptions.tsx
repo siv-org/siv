@@ -1,16 +1,11 @@
 import { PassportScan } from './PassportScan'
-import { ProvisionalSubmitted } from './ProvisionalSubmitted'
 import { SMSNewTab } from './SMS/SMSNewTab'
 
-export const provisionalAuthDisabled = true
-
-export const BackupAuthOptions = ({ election_id, link_auth }: { election_id: string; link_auth: string }) => {
-  if (provisionalAuthDisabled) return <ProvisionalSubmitted />
-
+export const ProvisionalAuthOptions = ({ election_id, link_auth }: { election_id: string; link_auth: string }) => {
   return (
-    <div className="mx-auto max-w-96">
-      <p className="mt-8 text-lg font-medium opacity-50">Step 2 of 2</p>
-      <h1 className="mt-1 text-3xl font-bold">Provisional Auth Options</h1>
+    <div className="pt-8 mx-auto max-w-96">
+      {/* <p className="mb-1 text-lg font-medium opacity-50">Step 2 of 2</p> */}
+      <h1 className="text-3xl font-bold">Provisional Auth Options</h1>
 
       <p className="mt-8 text-xl">Lastly, we need to verify you are the person whose name you just submitted.</p>
 

@@ -4,8 +4,6 @@ import { useState } from 'react'
 import { OnClickButton } from 'src/_shared/Button'
 import { api } from 'src/api-helper'
 
-import { provisionalAuthDisabled } from './BackupAuthOptions'
-
 const fields = ['First Name', 'Last Name', 'Date of Birth (MM-DD-YYYY)', 'Street Address', 'City', 'Zip']
 
 export const VoterRegistrationLookupScreen = ({
@@ -26,7 +24,7 @@ export const VoterRegistrationLookupScreen = ({
   return (
     <div className="pt-8 mx-auto max-w-96">
       {/* Show step 1 of 2, when Auth is not disabled */}
-      {!provisionalAuthDisabled && <p className="mb-1 text-lg font-medium opacity-50">Step 1 of 2</p>}
+      {/* {!provisionalAuthDisabled && <p className="mb-1 text-lg font-medium opacity-50">Step 1 of 2</p>} */}
 
       <h1 className="text-3xl font-semibold tracking-wide text-slate-900">Voter Registration Lookup</h1>
 
