@@ -12,9 +12,12 @@ export default setCORSForAllowedDomains(async (req: NextApiRequest, res: NextApi
     .firestore()
     .collection('sms-otp')
     .doc(confirmed_sms)
-    .update({
-      passed: firestore.FieldValue.arrayUnion({ confirmed_sms, firebase_uid, session_id, timestamp: new Date() }),
-    })
+    .set(
+      {
+        passed: firestore.FieldValue.arrayUnion({ confirmed_sms, firebase_uid, session_id, timestamp: new Date() }),
+      },
+      { merge: true },
+    )
 
   return res.status(200).json({ message: 'Success' })
 })
