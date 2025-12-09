@@ -1,3 +1,12 @@
+const devUrl = 'http://127.0.0.1:3002'
+const prodUrl = 'https://sms.siv.org'
+const domain = process.env.NODE_ENV === 'production' ? prodUrl : devUrl
+const url = domain + '/embed'
+
 export const SMSFlow = () => {
-  return <div className="inline-block p-4 mt-2 rounded-md border border-gray-300">SMS: Coming soon</div>
+  return (
+    <div className="w-full h-[550px]">
+      <iframe className="w-full h-full" src={url}></iframe>
+    </div>
+  )
 }
