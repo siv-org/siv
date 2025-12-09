@@ -27,6 +27,10 @@ export const BackupAuthOptions = ({ election_id, link_auth }: { election_id: str
 
         <Details title="Passport Scan">
           <div className="text-center">
+            {/* New Tech warning */}
+            <div className="block p-1 px-3 mx-auto mb-6 text-xs rounded-sm border border-orange-200 text-orange-700/70 bg-yellow-50/50 w-fit">
+              New Tech: Expect rough edges
+            </div>
             Use your smartphone{"'"}s NFC reader
             <div className="mb-1 text-sm opacity-50">(what powers Apple/Google Pay)</div>
             to validate the e-chip in your passport.
