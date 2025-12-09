@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 
+import { CallerIDCheck } from './SMS/CallerIDCheck'
+
 const devUrl = 'http://127.0.0.1:3002'
 const prodUrl = 'https://sms.siv.org'
 const domain = process.env.NODE_ENV === 'production' ? prodUrl : devUrl
@@ -32,7 +34,10 @@ export const SMSNewTab = ({ election_id, link_auth }: { election_id: string; lin
           Get Started
         </button>
       ) : (
-        <div>✅ Successfully verified your phone number</div>
+        <>
+          <div>✅ Successfully verified ownership of your phone number</div>
+          <CallerIDCheck />
+        </>
       )}
     </div>
   )
