@@ -63,19 +63,14 @@ export const ProvisionalAuthOptions = ({ election_id, link_auth }: { election_id
             <p>Join a Zoom call with a poll worker, and they{"'"}ll verify your photo ID.</p>
 
             <div
-              className="p-2 mx-auto mt-6 text-sm rounded-md border border-gray-600 opacity-50 cursor-pointer w-fit hover:bg-gray-100"
+              className="p-2 mx-auto mt-6 bg-red-50 rounded-md border-2 border-red-200 cursor-pointer w-fit hover:bg-red-100"
               onClick={() => {
+                window.open('https://11.siv.org/zoom', '_blank')
+
                 api('11-chooses/provisional/zoom-interest', { election_id, link_auth })
-                  .then(() => {
-                    alert("Thanks! We're working on it")
-                  })
-                  .catch((error) => {
-                    console.error(error)
-                    alert('Error registering interest')
-                  })
               }}
             >
-              Link Coming Soon
+              Link to Zoom
             </div>
             <div className="mt-1 text-sm">Click to register interest</div>
 
