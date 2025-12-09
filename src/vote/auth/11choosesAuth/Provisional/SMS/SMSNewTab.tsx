@@ -36,7 +36,7 @@ export const SMSNewTab = ({ election_id, link_auth }: { election_id: string; lin
       ) : (
         <>
           <div>✅ Successfully verified ownership of your phone number</div>
-          <CallerIDCheck />
+          <CallerIDCheck {...{ link_auth, number: result.confirmed_sms }} />
         </>
       )}
     </div>

@@ -12,6 +12,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   const lookupNum = '+15551234567'.replace(/[ ()-]/g, '')
 
+  const results = await getCallerIdResults(lookupNum)
+  return res.status(200).json({ results })
+}
+
+export async function getCallerIdResults(lookupNum: string) {
   // First check if DB already has the result for this lookup:
   const dbInfo = await firebase.firestore().collection('sms-lookup').doc(lookupNum).get()
 
@@ -24,7 +29,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     delete twilioResults._version
 
     results = { ...twilioResults, lookupTime: new Date().toISOString() }
-    console.log(results)
+    // console.log(results)
 
     // Cache the results in DB.
     await firebase.firestore().collection('sms-lookup').doc(lookupNum).set(results)
@@ -37,12 +42,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Add current timestamp to output
   results = { ...results, current_time: new Date().toISOString() }
 
-  console.log(JSON.stringify(results, null, 2))
-  res.status(201).json({ results })
-}
-
-function callerIdLookup(lookupNum: string) {
-  return client.lookups.v2.phoneNumbers(lookupNum).fetch({ fields: 'caller_name' })
+  // console.log(JSON.stringify(results, null, 2))
+  return results
 }
 // function carrierLookup(lookupNum: string) {
 //   return client.lookups.v2.phoneNumbers(lookupNum).fetch({ fields: 'line_type_intelligence' })
@@ -50,3 +51,7 @@ function callerIdLookup(lookupNum: string) {
 // function callerIdAndCarrierLookup(lookupNum: string) {
 //   return client.lookups.v2.phoneNumbers(lookupNum).fetch({ fields: 'caller_name,line_type_intelligence' })
 // }
+
+function callerIdLookup(lookupNum: string) {
+  return client.lookups.v2.phoneNumbers(lookupNum).fetch({ fields: 'caller_name' })
+}

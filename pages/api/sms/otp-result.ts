@@ -3,10 +3,11 @@ import { firestore } from 'firebase-admin'
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next'
 
 export default setCORSForAllowedDomains(async (req: NextApiRequest, res: NextApiResponse) => {
-  const { confirmed_sms, firebase_uid, session_id } = req.body
+  const { confirmed_sms, election_id, firebase_uid, link_auth } = req.body
   if (typeof confirmed_sms !== 'string') return res.status(400).json({ error: 'Missing required field: confirmed_sms' })
   if (typeof firebase_uid !== 'string') return res.status(400).json({ error: 'Missing required field: firebase_uid' })
-  if (typeof session_id !== 'string') return res.status(400).json({ error: 'Missing required field: session_id' })
+  if (typeof election_id !== 'string') return res.status(400).json({ error: 'Missing required field: election_id' })
+  if (typeof link_auth !== 'string') return res.status(400).json({ error: 'Missing required field: link_auth' })
 
   await firebase
     .firestore()
@@ -14,7 +15,13 @@ export default setCORSForAllowedDomains(async (req: NextApiRequest, res: NextApi
     .doc(confirmed_sms)
     .set(
       {
-        passed: firestore.FieldValue.arrayUnion({ confirmed_sms, firebase_uid, session_id, timestamp: new Date() }),
+        passed: firestore.FieldValue.arrayUnion({
+          confirmed_sms,
+          election_id,
+          firebase_uid,
+          link_auth,
+          timestamp: new Date(),
+        }),
       },
       { merge: true },
     )
