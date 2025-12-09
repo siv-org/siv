@@ -1,3 +1,5 @@
+import { firebase } from 'api/_services'
+import { firestore } from 'firebase-admin'
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next'
 
 export default setCORSForAllowedDomains(async (req: NextApiRequest, res: NextApiResponse) => {
@@ -5,6 +7,14 @@ export default setCORSForAllowedDomains(async (req: NextApiRequest, res: NextApi
   if (typeof confirmed_sms !== 'string') return res.status(400).json({ error: 'Missing required field: confirmed_sms' })
   if (typeof firebase_uid !== 'string') return res.status(400).json({ error: 'Missing required field: firebase_uid' })
   if (typeof session_id !== 'string') return res.status(400).json({ error: 'Missing required field: session_id' })
+
+  await firebase
+    .firestore()
+    .collection('sms-otp')
+    .doc(confirmed_sms)
+    .update({
+      passed: firestore.FieldValue.arrayUnion({ confirmed_sms, firebase_uid, session_id, timestamp: new Date() }),
+    })
 
   return res.status(200).json({ message: 'Success' })
 })
