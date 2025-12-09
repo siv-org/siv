@@ -21,7 +21,7 @@ export const BackupAuthOptions = ({ election_id, link_auth }: { election_id: str
           <div className="text-center">
             <div>Depends on your phone carrier&apos;s CallerID.</div>
             <div className="mt-1 mb-4 text-sm opacity-50">Works for approx. 1/3 of people</div>
-            <SMSNewTab />
+            <SMSNewTab {...{ election_id, link_auth }} />
           </div>
         </Details>
 

@@ -3,10 +3,10 @@ import { useEffect, useState } from 'react'
 const devUrl = 'http://127.0.0.1:3002'
 const prodUrl = 'https://sms.siv.org'
 const domain = process.env.NODE_ENV === 'production' ? prodUrl : devUrl
-const url = domain + '/verify'
 
-export const SMSNewTab = () => {
+export const SMSNewTab = ({ election_id, link_auth }: { election_id: string; link_auth: string }) => {
   const [result, setResult] = useState<null | { confirmed_sms: string; firebase_uid: string; session_id: string }>(null)
+  const url = domain + '/verify' + '?e=' + election_id + '&l=' + link_auth
 
   // Listen for messages from the iframe
   useEffect(() => {
