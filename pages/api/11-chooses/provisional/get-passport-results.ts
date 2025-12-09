@@ -44,6 +44,9 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     'surname',
     'user_agent', // store for debugging passport reader app
   ])
+
+  await pushover('11c/get-passport-results', JSON.stringify({ election_id, keep, link_auth }))
+
   const failWithResults = async (message: string) => {
     await voterDoc.ref.update({
       passport_verif_fail: firestore.FieldValue.arrayUnion({
