@@ -11,8 +11,8 @@ export const SMSNewTab = ({ election_id, link_auth }: { election_id: string; lin
   // Listen for messages from the iframe
   useEffect(() => {
     const handler = (event: MessageEvent) => {
-      if (event.data?.type === 'IFRAME_MESSAGE') {
-        console.log('FROM IFRAME:', event.data.payload)
+      if (event.data?.type === 'WINDOW_OPENER_MESSAGE') {
+        console.log('FROM CHILD:', event.data.payload)
         setResult(event.data.payload)
       }
     }
@@ -24,16 +24,15 @@ export const SMSNewTab = ({ election_id, link_auth }: { election_id: string; lin
   return (
     <div className="mt-8 w-full">
       {!result ? (
-        <a
-          className="p-3 bg-blue-50 rounded-md border-2 border-blue-200 hover:bg-blue-100"
-          href={url}
+        <button
+          className="p-3 py-2 bg-blue-50 rounded-md border-2 border-blue-200 hover:bg-blue-100"
+          onClick={() => window.open(url, '_blank')}
           rel="noreferrer"
-          target="_blank"
         >
           Get Started
-        </a>
+        </button>
       ) : (
-        <div>Result: {JSON.stringify(result)}</div>
+        <div>✅ Successfully verified your phone number</div>
       )}
     </div>
   )
