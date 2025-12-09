@@ -72,11 +72,16 @@ export const ProvisionalAuthOptions = ({ election_id, link_auth }: { election_id
             >
               Link to Zoom
             </div>
-            <div className="mt-1 text-sm">Click to register interest</div>
+            <div className="mt-1 text-sm opacity-50">
+              There may be a small wait,
+              <br />
+              only 1 voter will be let in at a time.
+            </div>
 
-            <div className="mt-4 text-sm font-bold">Intended Hours:</div>
-            <div>Tues 12/9 — Thurs 12/11</div>
-            <div>10am - 7pm</div>
+            <div className="mt-4 text-sm font-bold">Hours:</div>
+            <div>Tues 12/9: 2pm - 8pm</div>
+            <div>Wed 12/10: 2pm - 8pm</div>
+            <div>Thurs 12/11: 9am - 9pm</div>
           </div>
         </Details>
       </div>
