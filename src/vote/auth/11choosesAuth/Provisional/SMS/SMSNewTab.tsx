@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { CallerIDCheck } from './SMS/CallerIDCheck'
+import { CallerIDCheck } from './CallerIDCheck'
 
 const devUrl = 'http://127.0.0.1:3002'
 const prodUrl = 'https://sms.siv.org'

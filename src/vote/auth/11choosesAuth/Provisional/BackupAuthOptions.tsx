@@ -1,6 +1,6 @@
 import { PassportScan } from './PassportScan'
 import { ProvisionalSubmitted } from './ProvisionalSubmitted'
-import { SMSNewTab } from './SMSNewTab'
+import { SMSNewTab } from './SMS/SMSNewTab'
 
 export const provisionalAuthDisabled = true
 
