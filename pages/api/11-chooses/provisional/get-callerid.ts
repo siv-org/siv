@@ -19,7 +19,10 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
 
   const results = await getCallerIdResults(lookupNum)
 
-  await pushover('11c/get-callerid', JSON.stringify({ link_auth, lookupNum, results }))
+  // @ts-expect-error weird typing
+  const callerID = results.callerName?.caller_name
+
+  await pushover('11c/get-callerid', `[${link_auth}] ${lookupNum}: ${callerID}`)
 
   return res.status(200).json({ results })
 }

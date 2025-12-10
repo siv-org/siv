@@ -22,7 +22,11 @@ export async function getCallerIdResults(lookupNum: string) {
 
   let results = null
   if (dbInfo.exists) {
-    results = { cachedFromDb: true, ...dbInfo.data() }
+    results = { cachedFromDb: true, ...dbInfo.data() } as {
+      cachedFromDb: true
+      callerName: { caller_name: string }
+      lookupTime: string
+    }
   } else {
     const twilioResults = await callerIdLookup(lookupNum)
     // @ts-expect-error intentionally removing this circular reference
