@@ -5,13 +5,13 @@ import { Footer } from 'src/vote/Footer'
 
 import { AddEmailPage } from '../AddEmailPage'
 import { ProvisionalAuthOptions } from './ProvisionalAuthOptions'
-import { ProvisionalSubmitted } from './ProvisionalSubmitted'
+// import { ProvisionalSubmitted } from './ProvisionalSubmitted'
 import { VoterRegistrationLookupScreen } from './VoterRegistrationLookupScreen'
 
 export const ProvisionalFlow = () => {
   const {
     election_id,
-    finish,
+    // finish,
     link: link_auth,
     passed_email,
     submitted_reg_info,
@@ -34,9 +34,10 @@ export const ProvisionalFlow = () => {
         <AddEmailPage auth="provisional" {...{ election_id, link_auth }} />
       ) : submitted_reg_info !== 'true' ? (
         <VoterRegistrationLookupScreen {...{ election_id, link_auth }} />
-      ) : finish !== 'auth' ? (
-        <ProvisionalSubmitted />
       ) : (
+        // )
+        //   : finish !== 'auth' ? (
+        // <ProvisionalSubmitted />
         <ProvisionalAuthOptions {...{ election_id, link_auth }} />
       )}
 
