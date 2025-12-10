@@ -30,7 +30,11 @@ export const CallerIDCheck = ({ link_auth, number }: { link_auth: string; number
           Checking caller ID...
         </div>
       ) : !callerName ? (
-        '❌ No caller ID found. Sorry'
+        <>
+          ❌ No caller ID found.
+          <br />
+          Sorry, please try another method.
+        </>
       ) : (
         <>Caller ID: {callerName}</>
       )}
