@@ -22,6 +22,33 @@ export const ProvisionalAuthOptions = ({ election_id, link_auth }: { election_id
           </div>
         </Details>
 
+        <Details title="Zoom Call + Photo ID verification">
+          <div className="text-center">
+            <p>Join a Zoom call with a poll worker, and they{"'"}ll verify your photo ID.</p>
+
+            <div
+              className="p-2 mx-auto mt-6 bg-red-50 rounded-md border-2 border-red-200 cursor-pointer w-fit hover:bg-red-100"
+              onClick={() => {
+                window.open('https://11.siv.org/zoom', '_blank')
+
+                api('11-chooses/provisional/zoom-interest', { election_id, link_auth })
+              }}
+            >
+              Link to Zoom
+            </div>
+            <div className="mt-1 text-sm opacity-50">
+              There may be a small wait,
+              <br />
+              only 1 voter will be let in at a time.
+            </div>
+
+            <div className="mt-4 text-sm font-bold">Hours:</div>
+            <div>Tues 12/9: 2pm - 8pm</div>
+            <div>Wed 12/10: 2pm - 8pm</div>
+            <div>Thurs 12/11: 9am - 9pm</div>
+          </div>
+        </Details>
+
         <Details title="Passport Scan">
           <div className="text-center">
             {/* New Tech warning */}
@@ -55,33 +82,6 @@ export const ProvisionalAuthOptions = ({ election_id, link_auth }: { election_id
               <p>You don{"'"}t have to vote again.</p>
               <p>A poll worker will check your valid photo ID, and mark your email address as verified.</p>
             </div>
-          </div>
-        </Details>
-
-        <Details title="Zoom Call + Photo ID verification">
-          <div className="text-center">
-            <p>Join a Zoom call with a poll worker, and they{"'"}ll verify your photo ID.</p>
-
-            <div
-              className="p-2 mx-auto mt-6 bg-red-50 rounded-md border-2 border-red-200 cursor-pointer w-fit hover:bg-red-100"
-              onClick={() => {
-                window.open('https://11.siv.org/zoom', '_blank')
-
-                api('11-chooses/provisional/zoom-interest', { election_id, link_auth })
-              }}
-            >
-              Link to Zoom
-            </div>
-            <div className="mt-1 text-sm opacity-50">
-              There may be a small wait,
-              <br />
-              only 1 voter will be let in at a time.
-            </div>
-
-            <div className="mt-4 text-sm font-bold">Hours:</div>
-            <div>Tues 12/9: 2pm - 8pm</div>
-            <div>Wed 12/10: 2pm - 8pm</div>
-            <div>Thurs 12/11: 9am - 9pm</div>
           </div>
         </Details>
       </div>
