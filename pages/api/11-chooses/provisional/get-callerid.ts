@@ -26,18 +26,29 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
   // @ts-expect-error weird typing
   const callerID = results.callerName?.caller_name
 
-  await pushover('11c/get-callerid', `[${link_auth}] ${lookupNum}: ${callerID}`)
+  // await pushover('11c/get-callerid', `[${link_auth}] ${lookupNum}: ${callerID}`)
 
-  // Update the voterDoc with the callerID
-  await firebase
+  // Get the provisional voter doc
+  const provisionalVoterDoc = firebase
     .firestore()
     .collection('elections')
     .doc(election_id)
     .collection('votes-pending')
     .doc(link_auth)
-    .update({
-      caller_id: firestore.FieldValue.arrayUnion({ callerID, phone: lookupNum, timestamp: new Date() }),
-    })
+
+  const data = (await provisionalVoterDoc.get()).data()
+  if (!data) {
+    await pushover(
+      '11c/get-callerid: provisional ballot not found',
+      `${election_id}, ${link_auth}, ${lookupNum}, ${callerID}`,
+    )
+    return res.status(400).json({ error: 'provisional ballot not found' })
+  }
+
+  // Update the voterDoc with the callerID
+  await provisionalVoterDoc.update({
+    caller_id: firestore.FieldValue.arrayUnion({ callerID, phone: lookupNum, timestamp: new Date() }),
+  })
 
   return res.status(200).json({ results })
 }
