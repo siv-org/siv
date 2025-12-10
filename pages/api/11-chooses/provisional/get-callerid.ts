@@ -45,10 +45,51 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     return res.status(400).json({ error: 'provisional ballot not found' })
   }
 
-  // Update the voterDoc with the callerID
-  await provisionalVoterDoc.update({
-    caller_id: firestore.FieldValue.arrayUnion({ callerID, phone: lookupNum, timestamp: new Date() }),
-  })
+  const { 'First Name': first_name, 'Last Name': last_name } = data.voterRegInfo?.at(-1)?.submission || {}
+  const { match, reason } = isMatchingCallerID(first_name, last_name, callerID)
 
-  return res.status(200).json({ results })
+  const voterDocUpdate: Record<string, unknown> = {
+    caller_id: firestore.FieldValue.arrayUnion({
+      callerID,
+      callerIdMatch: { match, reason },
+      phone: lookupNum,
+      timestamp: new Date(),
+    }),
+  }
+  if (match) voterDocUpdate.is_auth_complete = { timestamp: new Date(), type: 'callerid' }
+
+  // Update the voterDoc with the callerID
+  await provisionalVoterDoc.update(voterDocUpdate)
+
+  return res.status(200).json({ callerID, match, results })
+}
+
+function isMatchingCallerID(submittedFirst?: string, submittedLast?: string, callerID?: null | string) {
+  if (!submittedFirst) return { match: false, reason: 'Missing submitted first name' }
+  if (!submittedLast) return { match: false, reason: 'Missing submitted last name' }
+
+  const last = normalizeAscii(submittedLast.trim())
+  const first = normalizeAscii(submittedFirst.trim())
+
+  if (!callerID) return { match: false, reason: 'No caller ID' }
+
+  if (`${first} ${last}`.toUpperCase() === callerID) return { match: true, reason: 'First Last' }
+
+  if (`${last},${first}`.toUpperCase() === callerID) return { match: true, reason: 'Last,First' }
+
+  if (callerID.startsWith(`${last},${first.slice(0, 3)}`.toUpperCase())) return { match: true, reason: 'Last,First3' }
+
+  if (callerID.startsWith(`${last},`.toUpperCase())) return { match: true, reason: 'Last,' }
+
+  if (`${last} ${first}`.toUpperCase() === callerID) return { match: true, reason: 'Last First' }
+
+  if (callerID.endsWith(`${last}`.toUpperCase())) return { match: true, reason: 'match Last' }
+
+  return { match: false, reason: 'No match' }
+}
+
+function normalizeAscii(s: string) {
+  return s
+    .normalize('NFD') // split accents from base chars
+    .replace(/[\u0300-\u036f]/g, '') // drop diacritics
 }

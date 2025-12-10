@@ -11,8 +11,8 @@ export const CallerIDCheck = ({
   link_auth: string
   number: string
 }) => {
-  const [results, setResults] = useState<null | { callerName: { caller_name: string } }>(null)
-  const callerName = results?.callerName?.caller_name
+  const [results, setResults] = useState<null | { callerID: string; match: boolean }>(null)
+  const { callerID, match } = results ?? {}
 
   useEffect(() => {
     const checkCallerID = async () => {
@@ -22,8 +22,8 @@ export const CallerIDCheck = ({
         return
       }
       const json = await results.json()
-      console.log('lookup results', json.results)
-      setResults(json.results)
+      // console.log('lookup results', json)
+      setResults(json)
     }
     checkCallerID()
   }, [number])
@@ -37,14 +37,14 @@ export const CallerIDCheck = ({
           </span>{' '}
           Checking caller ID...
         </div>
-      ) : !callerName ? (
+      ) : !match ? (
         <>
-          ❌ No caller ID found.
+          {!callerID ? '❌ No caller ID found.' : '❌ CallerID not a match.'}
           <br />
           Sorry, please try another method.
         </>
       ) : (
-        <>Caller ID: {callerName}</>
+        <>Caller ID: {callerID}</>
       )}
     </div>
   )
