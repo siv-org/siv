@@ -132,6 +132,9 @@ const birthYearRangeFromAgeRange = (range: string) => {
   if (range.includes('or Younger')) {
     maxAge = parseInt(range.split(' or Younger')[0])
     minAge = 16
+  } else if (range.includes('or Older')) {
+    minAge = parseInt(range.split(' or Older')[0])
+    maxAge = 110
   } else {
     ;[minAge, maxAge] = range.split(' through ').map((a) => parseInt(a))
   }
