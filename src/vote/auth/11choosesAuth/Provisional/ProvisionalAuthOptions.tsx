@@ -11,6 +11,9 @@ export const ProvisionalAuthOptions = ({ election_id, link_auth }: { election_id
       {/* <p className="mb-1 text-lg font-medium opacity-50">Step 2 of 2</p> */}
       <h1 className="text-3xl font-bold">Provisional Auth Options</h1>
       <p className="mt-8 text-xl">Lastly, we need to verify you are the person whose name you submitted.</p>
+      <p className="mt-2 text-sm opacity-50">
+        We will also send you an email with these instructions. If you do not receive it, please check your spam folder.
+      </p>
       <div className="mt-10 text-left">
         <div className="mb-2 text-lg opacity-50">Any of these are acceptable:</div>
 
