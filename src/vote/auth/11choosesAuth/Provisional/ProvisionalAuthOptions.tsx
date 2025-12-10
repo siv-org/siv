@@ -6,16 +6,20 @@ import { SMSNewTab } from './SMS/SMSNewTab'
 
 export const ProvisionalAuthOptions = ({ election_id, link_auth }: { election_id: string; link_auth: string }) => {
   return (
-    <div className="pt-8 mx-auto max-w-96">
+    <div className="px-4 pt-10 mx-auto max-w-2xl text-center sm:px-6">
       <ProvisionalAuthComplete {...{ election_id, link_auth }} />
       {/* <p className="mb-1 text-lg font-medium opacity-50">Step 2 of 2</p> */}
-      <h1 className="text-3xl font-bold">Provisional Auth Options</h1>
-      <p className="mt-8 text-xl">Lastly, we need to verify you are the person whose name you submitted.</p>
-      <p className="mt-2 text-sm opacity-50">
+      <h1 className="text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl">Provisional Auth Options</h1>
+      <p className="mt-4 text-lg text-gray-700">
+        Lastly, we need to verify you are the person whose name you submitted.
+      </p>
+      <p className="mx-auto mt-3 max-w-prose text-sm text-gray-500">
         We will also send you an email with these instructions. If you do not receive it, please check your spam folder.
       </p>
       <div className="mt-10 text-left">
-        <div className="mb-2 text-lg opacity-50">Any of these are acceptable:</div>
+        <div className="mb-6 text-xs font-semibold tracking-wide text-gray-600 uppercase">
+          Any of these are acceptable:
+        </div>
 
         <Details title="SMS + Caller ID Check">
           <div className="text-center">
