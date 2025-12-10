@@ -1,16 +1,16 @@
 import { api } from 'src/api-helper'
 
 import { PassportScan } from './PassportScan'
+import { ProvisionalAuthComplete } from './ProvisionalAuthComplete'
 import { SMSNewTab } from './SMS/SMSNewTab'
 
 export const ProvisionalAuthOptions = ({ election_id, link_auth }: { election_id: string; link_auth: string }) => {
   return (
     <div className="pt-8 mx-auto max-w-96">
+      <ProvisionalAuthComplete {...{ election_id, link_auth }} />
       {/* <p className="mb-1 text-lg font-medium opacity-50">Step 2 of 2</p> */}
       <h1 className="text-3xl font-bold">Provisional Auth Options</h1>
-
       <p className="mt-8 text-xl">Lastly, we need to verify you are the person whose name you submitted.</p>
-
       <div className="mt-10 text-left">
         <div className="mb-2 text-lg opacity-50">Any of these are acceptable:</div>
 
