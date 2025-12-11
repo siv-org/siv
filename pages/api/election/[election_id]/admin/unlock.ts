@@ -46,7 +46,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Begin preloading these requests
   const loadVotes = electionDoc.collection('votes').get()
-  const loadVoters = electionDoc.collection('voters').get()
   const election = electionDoc.get()
   const adminDoc = electionDoc.collection('trustees').doc(ADMIN_EMAIL)
   const admin = adminDoc.get()
@@ -68,10 +67,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   let votes_to_unlock = (await loadVotes).docs
   if (esignature_requested) {
     type VotersByAuth = Record<string, { esignature_review: ReviewLog[] }>
-    const votersByAuth: VotersByAuth = (await loadVoters).docs.reduce((acc: VotersByAuth, doc) => {
-      const data = doc.data()
-      return { ...acc, [data.auth_token]: data }
-    }, {})
+    const votersByAuth: VotersByAuth = (await electionDoc.collection('voters').get()).docs.reduce(
+      (acc: VotersByAuth, doc) => {
+        const data = doc.data()
+        return { ...acc, [data.auth_token]: data }
+      },
+      {},
+    )
 
     votes_to_unlock = votes_to_unlock.filter((doc) => {
       const { auth } = doc.data() as { auth: string }
