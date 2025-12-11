@@ -11,8 +11,8 @@ export const ElectionNotice = ({ election_id }: { election_id: string }) => {
       <div className="flex items-start px-4 py-3 text-sm text-yellow-900 bg-yellow-50 rounded-lg border border-yellow-200 shadow-sm">
         <p className="leading-relaxed">
           <span className="font-semibold">⚠️ Important:</span> Due to a printing & mailing error, households with 4 or
-          more voters didn&apos;t receive all their Voter Code invitations. If yours was affected, those voters can
-          still cast a Provisional Ballot at{' '}
+          more voters didn&apos;t receive all their Voter Code invitations. All registered voters can still cast a
+          Provisional Ballot at{' '}
           <a
             className="font-medium underline text-blue-500/80"
             href="https://11.siv.org/vote"
