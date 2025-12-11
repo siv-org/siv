@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { Spinner } from 'src/admin/Spinner'
 import { api } from 'src/api-helper'
 
+import { revalidateAuthComplete } from '../ProvisionalAuthComplete'
+
 export const CallerIDCheck = ({
   election_id,
   link_auth,
@@ -24,6 +26,8 @@ export const CallerIDCheck = ({
       const json = await results.json()
       // console.log('lookup results', json)
       setResults(json)
+
+      if (json?.match) revalidateAuthComplete(election_id, link_auth)
     }
     checkCallerID()
   }, [number])

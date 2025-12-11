@@ -1,4 +1,4 @@
-import useSWR from 'swr'
+import useSWR, { mutate } from 'swr'
 
 export const ProvisionalAuthComplete = ({ election_id, link_auth }: { election_id: string; link_auth: string }) => {
   const { isAuthComplete } = useAuthComplete(election_id, link_auth)
@@ -36,3 +36,7 @@ const fetcher = (url: string) =>
     if (!r.ok) throw await r.json()
     return await r.json()
   })
+
+export function revalidateAuthComplete(election_id: string, link_auth: string) {
+  mutate(`/api/11-chooses/provisional/is-auth-complete?election_id=${election_id}&link_auth=${link_auth}`)
+}
