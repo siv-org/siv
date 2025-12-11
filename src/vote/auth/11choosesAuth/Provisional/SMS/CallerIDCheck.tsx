@@ -41,14 +41,21 @@ export const CallerIDCheck = ({
           </span>{' '}
           Checking caller ID...
         </div>
-      ) : !match ? (
-        <>
-          {!callerID ? '❌ No caller ID found.' : '❌ CallerID not a match.'}
-          <br />
-          Sorry, please try another method.
-        </>
       ) : (
-        <>Caller ID: {callerID}</>
+        <>
+          {!match && (
+            <>
+              {!callerID ? '❌ No caller ID found.' : '❌ CallerID not a match.'}
+              <br />
+              Sorry, please try another method.
+            </>
+          )}
+          {callerID && (
+            <div className="mt-4">
+              <div>Caller ID: {callerID}</div>
+            </div>
+          )}
+        </>
       )}
     </div>
   )
