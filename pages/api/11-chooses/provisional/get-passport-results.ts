@@ -89,6 +89,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
 
   // Store successful verification in db
   await voterDoc.ref.update({
+    is_auth_complete: { timestamp: new Date(), type: 'passport_scan' },
     passport_success: firestore.FieldValue.arrayUnion({ passport: keep, passport_session_id, timestamp: new Date() }),
   })
 
