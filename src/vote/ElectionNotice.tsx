@@ -25,7 +25,7 @@ export const ElectionNotice = ({ election_id }: { election_id: string }) => {
         </p>
         <button
           aria-label="Dismiss important notice"
-          className="ml-3 text-lg leading-none text-yellow-700 hover:text-yellow-900"
+          className="ml-3 text-lg leading-none text-yellow-700 cursor-pointer hover:text-yellow-900 hover:shadow-lg"
           onClick={() => setShowNoticeMessage(false)}
           type="button"
         >
