@@ -10,8 +10,7 @@ export const ElectionNotice = ({ election_id }: { election_id: string }) => {
     <div className="mt-3 mb-3">
       <div className="flex items-start px-4 py-3 text-sm text-yellow-900 bg-yellow-50 rounded-lg border border-yellow-200 shadow-sm">
         <p className="leading-relaxed">
-          <span className="font-semibold">⚠️ Important:</span> Due to a printing & mailing error, households with 4 or
-          more voters didn&apos;t receive all their Voter Code invitations.
+          <span className="font-semibold">⚠️ Important:</span> Don{"'"}t have your Voter Code?
           <br />
           All registered voters can still cast a Provisional Ballot at{' '}
           <a
