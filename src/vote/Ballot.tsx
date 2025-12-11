@@ -1,5 +1,5 @@
 import { memoize } from 'lodash-es'
-import { Dispatch } from 'react'
+import { Dispatch, useState } from 'react'
 import { NoSsr } from 'src/_shared/NoSsr'
 import { maxLength } from 'src/crypto/curve'
 import { build_permutation_array } from 'src/crypto/shuffle'
@@ -28,7 +28,12 @@ export const Ballot = ({
   election_id?: string
   state: State
 }): JSX.Element => {
+  const [hasDismissedTemporaryAlert, setHasDismissedTemporaryAlert] = useState(false)
+
   if (!state.ballot_design) return <p>Loading ballot...</p>
+
+  const itemWithTemporaryAlert = state.ballot_design.find((item) => item.temporary_alert)
+  const temporaryAlert = itemWithTemporaryAlert?.temporary_alert
 
   return (
     <NoSsr>
@@ -38,6 +43,24 @@ export const Ballot = ({
 
           {/* Election Title */}
           {state.election_title && <h2 className="mt-2 sm:ml-[13px]">{state.election_title}</h2>}
+
+          {/* Temporary alert banner (configured via JSON advanced feature) */}
+          {temporaryAlert && !hasDismissedTemporaryAlert && (
+            <div className="mt-3 mb-3 sm:ml-[13px]">
+              <div className="flex items-start px-3 py-2 text-sm text-yellow-900 bg-yellow-50 rounded-md border border-yellow-300 shadow-sm">
+                <div className="mr-2 mt-[2px]">⚠️</div>
+                <div className="flex-1 whitespace-pre-wrap">{temporaryAlert}</div>
+                <button
+                  aria-label="Dismiss important notice"
+                  className="ml-3 text-lg leading-none text-yellow-700 hover:text-yellow-900"
+                  onClick={() => setHasDismissedTemporaryAlert(true)}
+                  type="button"
+                >
+                  ×
+                </button>
+              </div>
+            </div>
+          )}
 
           {state.ballot_design.map((item, index) => {
             const max_options = item.options.length + +!!item.write_in_allowed

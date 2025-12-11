@@ -22,6 +22,7 @@ export type Item = {
   }[]
   question?: string
   randomize_order?: boolean
+  temporary_alert?: string
   title: string
   toggleable_2_label?: string
   toggleable_label?: string

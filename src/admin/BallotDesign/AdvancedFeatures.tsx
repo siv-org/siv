@@ -15,6 +15,10 @@ const advancedFeatures: Section[] = [
         '"randomize_order": true',
         'To improve fairness, randomize the displayed order of all options, unique per voter.',
       ],
+      [
+        '"temporary_alert": "IMPORTANT NOTE: your message here"',
+        'Show a dismissible yellow alert banner at the top of the ballot.',
+      ],
     ],
   ],
   [
