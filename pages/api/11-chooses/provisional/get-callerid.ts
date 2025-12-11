@@ -68,8 +68,8 @@ function isMatchingCallerID(submittedFirst?: string, submittedLast?: string, cal
   if (!submittedFirst) return { match: false, reason: 'Missing submitted first name' }
   if (!submittedLast) return { match: false, reason: 'Missing submitted last name' }
 
-  const last = normalizeAscii(submittedLast.trim())
-  const first = normalizeAscii(submittedFirst.trim())
+  const last = removeAccentMarks(submittedLast.trim())
+  const first = removeAccentMarks(submittedFirst.trim())
 
   if (!callerID) return { match: false, reason: 'No caller ID' }
 
@@ -88,7 +88,7 @@ function isMatchingCallerID(submittedFirst?: string, submittedLast?: string, cal
   return { match: false, reason: 'No match' }
 }
 
-function normalizeAscii(s: string) {
+function removeAccentMarks(s: string) {
   return s
     .normalize('NFD') // split accents from base chars
     .replace(/[\u0300-\u036f]/g, '') // drop diacritics
