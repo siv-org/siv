@@ -1,5 +1,3 @@
-import { api } from 'src/api-helper'
-
 import { PassportScan } from './PassportScan'
 import { ProvisionalAuthComplete } from './ProvisionalAuthComplete'
 import { SMSNewTab } from './SMS/SMSNewTab'
@@ -44,7 +42,7 @@ export const ProvisionalAuthOptions = ({ election_id, link_auth }: { election_id
               onClick={() => {
                 window.open('https://11.siv.org/zoom', '_blank')
 
-                api('11-chooses/provisional/zoom-interest', { election_id, link_auth })
+                // api('11-chooses/provisional/zoom-interest', { election_id, link_auth })
               }}
             >
               Link to Zoom
