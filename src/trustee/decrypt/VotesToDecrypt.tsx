@@ -15,6 +15,8 @@ import {
 } from '../../crypto/threshold-keygen'
 import { PartialWithProof, StateAndDispatch } from '../trustee-state'
 import { YouLabel } from '../YouLabel'
+import { useLatestPartials } from './useLatestPartials'
+import { useLatestShuffles } from './useLatestShuffles'
 import { useTruncatedTable } from './useTruncatedTable'
 import { sortColumnsForTrustees } from './VotesToShuffle'
 
@@ -26,6 +28,8 @@ export const VotesToDecrypt = ({
   state,
 }: StateAndDispatch & { final_shuffle_verifies: boolean }) => {
   const { own_index, private_keyshare, trustees = [] } = state
+  const { partialsByEmail } = useLatestPartials(state.election_id)
+  const { shufflesByEmail } = useLatestShuffles(state.election_id)
   const [proofs_shown, set_proofs_shown] = useState<Record<string, boolean>>({})
 
   /* Object to track which proofs have been validated
@@ -59,10 +63,13 @@ export const VotesToDecrypt = ({
     },
     {},
   )
-  const num_partials_from_trustees = trustees.map(({ partials = {} }) => (Object.values(partials)[0] || []).length)
+  const num_partials_from_trustees = trustees.map(
+    ({ email }) => Object.values(partialsByEmail[email] ?? {})[0]?.length || 0,
+  )
   const all_Broadcasts = trustees.map(({ commitments }) => commitments.map(RP.fromHex))
   useEffect(() => {
-    trustees.forEach(({ email, partials = {} }, index) => {
+    trustees.forEach(({ email }, index) => {
+      const partials = partialsByEmail[email] ?? {}
       const num_partials = num_partials_from_trustees[index]
 
       // Stop if we already checked this trustee
@@ -96,9 +103,11 @@ export const VotesToDecrypt = ({
     })
   }, [num_partials_from_trustees])
 
-  const last_trustees_shuffled = trustees[trustees.length - 1]?.shuffled || {}
+  const last_trustee_email = trustees.at(-1)?.email ?? ''
+  const last_trustees_shuffled = shufflesByEmail[last_trustee_email] || {}
   const num_last_shuffled = Object.values(last_trustees_shuffled)[0]?.shuffled.length
-  const num_we_decrypted = Object.values(trustees[own_index]?.partials || {})[0]?.length || 0
+  const own_email = trustees[own_index]?.email ?? ''
+  const num_we_decrypted = Object.values(partialsByEmail[own_email] ?? {})[0]?.length || 0
 
   async function partialDecryptFinalShuffle() {
     console.log(
@@ -142,29 +151,33 @@ export const VotesToDecrypt = ({
     <>
       <h3>IV. Votes to Decrypt</h3>
       <ol className="pl-5">
-        {trustees?.map(({ email, partials, you }) => (
-          <li className="mb-8" key={email}>
-            {/* Top row */}
-            <div className="flex flex-col justify-between sm:flex-row">
-              {/* Left */}
-              <span>
-                {email}
-                {you && <YouLabel />} partially decrypted {!partials ? 0 : Object.values(partials)[0].length}
-                &nbsp;votes.
-              </span>
-              {/* Right */}
+        {trustees?.map(({ email, you }) => {
+          const partials = partialsByEmail[email] || {}
+
+          return (
+            <li className="mb-8" key={email}>
+              {/* Top row */}
+              <div className="flex flex-col justify-between sm:flex-row">
+                {/* Left */}
+                <span>
+                  {email}
+                  {you && <YouLabel />} partially decrypted {!partials ? 0 : Object.values(partials)[0]?.length || 0}
+                  &nbsp;votes.
+                </span>
+                {/* Right */}
+                {partials && (
+                  <ValidationSummary {...{ email, partials, proofs_shown, set_proofs_shown, validated_proofs }} />
+                )}
+              </div>
               {partials && (
-                <ValidationSummary {...{ email, partials, proofs_shown, set_proofs_shown, validated_proofs }} />
+                <>
+                  <PartialsTable {...{ email, partials, validated_proofs }} />
+                  {proofs_shown[email] && <DecryptionProof {...{ partials }} />}
+                </>
               )}
-            </div>
-            {partials && (
-              <>
-                <PartialsTable {...{ email, partials, validated_proofs }} />
-                {proofs_shown[email] && <DecryptionProof {...{ partials }} />}
-              </>
-            )}
-          </li>
-        ))}
+            </li>
+          )
+        })}
       </ol>
     </>
   )
@@ -183,7 +196,7 @@ const PartialsTable = ({
   const columns = sortColumnsForTrustees(Object.keys(partials))
   const { rows_to_show, TruncationToggle } = useTruncatedTable({
     num_cols: columns.length,
-    num_rows: Object.values(partials)[0].length,
+    num_rows: Object.values(partials)[0]?.length || 0,
   })
   if (!trustees_validations) return <></>
 
@@ -248,7 +261,7 @@ const ValidationSummary = ({
   set_proofs_shown: Dispatch<SetStateAction<Record<string, boolean>>>
   validated_proofs: Validations_Table
 }) => {
-  const num_votes_decrypted = !partials ? 0 : Object.values(partials)[0].length
+  const num_votes_decrypted = !partials ? 0 : Object.values(partials)[0]?.length || 0
   const num_partials_passed = !validated_proofs[email]
     ? 0
     : Object.values(validated_proofs[email]).reduce(

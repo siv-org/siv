@@ -11,6 +11,8 @@ import { rename_to_c1_and_2, shuffleWithoutProof, shuffleWithProof } from '../..
 import { verify_shuffle_proof } from '../../crypto/shuffle-proof'
 import { Shuffled, StateAndDispatch } from '../trustee-state'
 import { YouLabel } from '../YouLabel'
+import { useLatestPreshuffled } from './useLatestPreshuffled'
+import { useLatestShuffles } from './useLatestShuffles'
 import { useTruncatedTable } from './useTruncatedTable'
 
 type Validations_Table = Record<string, { columns: Record<string, boolean | null>; num_votes: number }>
@@ -26,6 +28,8 @@ export const VotesToShuffle = ({
   skip_shuffle_proofs?: boolean
 }) => {
   const { own_index, threshold_public_key, trustees = [] } = state
+  const { preshuffled } = useLatestPreshuffled(state.election_id)
+  const { shufflesByEmail } = useLatestShuffles(state.election_id)
   const [proofs_shown, set_proofs_shown] = useState<Record<string, boolean>>({})
 
   /* Object to track which proofs have been validated
@@ -67,10 +71,12 @@ export const VotesToShuffle = ({
     {},
   )
   const num_shuffled_from_trustees = trustees.map(
-    ({ shuffled = {} }) => Object.values(shuffled)[0]?.shuffled.length || 0,
+    ({ email }) => Object.values(shufflesByEmail[email] ?? {})[0]?.shuffled.length || 0,
   )
+
   useEffect(() => {
-    trustees.forEach(({ email, shuffled = {} }, index) => {
+    trustees.forEach(({ email }, index) => {
+      const shuffled = shufflesByEmail[email] ?? {}
       const num_shuffled = num_shuffled_from_trustees[index]
 
       // Stop if we already checked this trustee
@@ -88,7 +94,8 @@ export const VotesToShuffle = ({
         } else {
           // Inputs are the previous party's outputs
           // except for admin, who provides the original split list.
-          const inputs = index > 0 ? trustees[index - 1].shuffled![column].shuffled : trustees[0].preshuffled![column]
+          const inputs =
+            index > 0 ? shufflesByEmail[trustees[index - 1]?.email ?? '']![column].shuffled : preshuffled[column]
 
           const { proof, shuffled: shuffledCol } = destringifyShuffle(shuffled[column])
 
@@ -105,7 +112,7 @@ export const VotesToShuffle = ({
   }, [num_shuffled_from_trustees])
 
   const prev_email = trustees[own_index - 1]?.email || ''
-  const prev_trustees_shuffled = trustees[own_index - 1]?.shuffled || {}
+  const prev_trustees_shuffled = shufflesByEmail[prev_email] || {}
   const prev_proofs_all_passed = all_proofs_passed(validated_proofs[prev_email])
   const num_prev_shuffled = num_shuffled_from_trustees[own_index - 1]
   const num_we_shuffled = num_shuffled_from_trustees[own_index]
@@ -157,24 +164,27 @@ export const VotesToShuffle = ({
     <>
       <h3>III. Votes to Shuffle</h3>
       <ol className="pl-5">
-        {trustees?.map(({ email, shuffled, you }) => (
+        {trustees?.map(({ email, you }) => (
           <li className="mb-8" key={email}>
             {/* Top row above table */}
             <div className="flex flex-col justify-between sm:flex-row">
               {/* Left */}
               <span>
                 {email}
-                {you && <YouLabel />} shuffled {!shuffled ? '0' : Object.values(shuffled)[0].shuffled.length}&nbsp;votes
-                {shuffled && `${nbsp}x${nbsp}${Object.keys(shuffled).length}${nbsp}columns`}.
+                {you && <YouLabel />} shuffled{' '}
+                {!shufflesByEmail[email] ? '0' : Object.values(shufflesByEmail[email])[0]?.shuffled.length}
+                &nbsp;votes
+                {shufflesByEmail[email] && `${nbsp}x${nbsp}${Object.keys(shufflesByEmail[email]).length}${nbsp}columns`}
+                .
               </span>
               {/* Right */}
-              {shuffled && (
+              {shufflesByEmail[email] && (
                 <ValidationSummary
                   {...{
                     email,
                     proofs_shown,
                     set_proofs_shown,
-                    shuffled,
+                    shuffled: shufflesByEmail[email],
                     skip_shuffle_proofs,
                     validated_proofs,
                   }}
@@ -183,10 +193,10 @@ export const VotesToShuffle = ({
             </div>
 
             {/* Table */}
-            {shuffled && (
+            {shufflesByEmail[email] && (
               <>
-                <ShuffledVotesTable {...{ email, shuffled, validated_proofs }} />
-                {proofs_shown[email] && <ShuffleProof {...{ shuffled }} />}
+                <ShuffledVotesTable {...{ email, shuffled: shufflesByEmail[email], validated_proofs }} />
+                {proofs_shown[email] && <ShuffleProof {...{ shuffled: shufflesByEmail[email] }} />}
               </>
             )}
           </li>
@@ -210,7 +220,7 @@ const ShuffledVotesTable = ({
 
   const { rows_to_show, TruncationToggle } = useTruncatedTable({
     num_cols: columns.length,
-    num_rows: Object.values(shuffled)[0].shuffled.length,
+    num_rows: Object.values(shuffled)[0]?.shuffled.length || 0,
   })
 
   return (
@@ -242,7 +252,7 @@ const ShuffledVotesTable = ({
           </tr>
         </thead>
         <tbody>
-          {shuffled[columns[0]].shuffled.slice(0, rows_to_show).map((_, index) => (
+          {shuffled[columns[0]]?.shuffled?.slice(0, rows_to_show).map((_, index) => (
             <tr key={index}>
               <td>{index + 1}.</td>
               {columns.map((key) => {
