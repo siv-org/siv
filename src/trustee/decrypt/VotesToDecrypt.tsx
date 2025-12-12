@@ -149,7 +149,7 @@ export const VotesToDecrypt = ({
               {/* Left */}
               <span>
                 {email}
-                {you && <YouLabel />} partially decrypted {!partials ? 0 : Object.values(partials)[0].length}
+                {you && <YouLabel />} partially decrypted {!partials ? 0 : Object.values(partials)[0]?.length}
                 &nbsp;votes.
               </span>
               {/* Right */}
@@ -183,7 +183,7 @@ const PartialsTable = ({
   const columns = sortColumnsForTrustees(Object.keys(partials))
   const { rows_to_show, TruncationToggle } = useTruncatedTable({
     num_cols: columns.length,
-    num_rows: Object.values(partials)[0].length,
+    num_rows: Object.values(partials)[0]?.length || 0,
   })
   if (!trustees_validations) return <></>
 
@@ -248,7 +248,7 @@ const ValidationSummary = ({
   set_proofs_shown: Dispatch<SetStateAction<Record<string, boolean>>>
   validated_proofs: Validations_Table
 }) => {
-  const num_votes_decrypted = !partials ? 0 : Object.values(partials)[0].length
+  const num_votes_decrypted = !partials ? 0 : Object.values(partials)[0]?.length || 0
   const num_partials_passed = !validated_proofs[email]
     ? 0
     : Object.values(validated_proofs[email]).reduce(

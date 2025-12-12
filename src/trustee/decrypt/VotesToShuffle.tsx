@@ -164,7 +164,8 @@ export const VotesToShuffle = ({
               {/* Left */}
               <span>
                 {email}
-                {you && <YouLabel />} shuffled {!shuffled ? '0' : Object.values(shuffled)[0].shuffled.length}&nbsp;votes
+                {you && <YouLabel />} shuffled {!shuffled ? '0' : Object.values(shuffled)[0]?.shuffled.length}
+                &nbsp;votes
                 {shuffled && `${nbsp}x${nbsp}${Object.keys(shuffled).length}${nbsp}columns`}.
               </span>
               {/* Right */}
@@ -210,7 +211,7 @@ const ShuffledVotesTable = ({
 
   const { rows_to_show, TruncationToggle } = useTruncatedTable({
     num_cols: columns.length,
-    num_rows: Object.values(shuffled)[0].shuffled.length,
+    num_rows: Object.values(shuffled)[0]?.shuffled.length || 0,
   })
 
   return (
@@ -242,7 +243,7 @@ const ShuffledVotesTable = ({
           </tr>
         </thead>
         <tbody>
-          {shuffled[columns[0]].shuffled.slice(0, rows_to_show).map((_, index) => (
+          {shuffled[columns[0]]?.shuffled.slice(0, rows_to_show).map((_, index) => (
             <tr key={index}>
               <td>{index + 1}.</td>
               {columns.map((key) => {
