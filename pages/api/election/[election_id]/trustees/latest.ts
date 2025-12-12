@@ -53,12 +53,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     preshuffledDocs.docs.forEach((doc) => (preshuffled[doc.id] = (doc.data() as { value: CipherStrings[] }).value))
     if (index === 0) public_data.preshuffled = preshuffled
 
-    // Get shuffled from separate sub-docs
-    const shuffled = {} as Record<string, CipherStrings[]>
-    const shuffledDocs = await doc.ref.collection('shuffled').get()
-    shuffledDocs.docs.forEach((doc) => (shuffled[doc.id] = doc.data() as CipherStrings[]))
-    public_data.shuffled = shuffled
-
     // Get partials from separate sub-docs
     const partialDocs = await doc.ref.collection('partials').get()
     // Stitch partials back together from separate docs per column

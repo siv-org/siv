@@ -48,7 +48,6 @@ export type Trustee = {
   partials?: Record<string, PartialWithProof[]>
   preshuffled?: Record<string, CipherStrings[]> // admin only
   recipient_key?: string
-  shuffled?: Shuffled
   verified?: Record<string, boolean>
   you?: boolean
 }

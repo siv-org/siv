@@ -15,6 +15,7 @@ import {
 } from '../../crypto/threshold-keygen'
 import { PartialWithProof, StateAndDispatch } from '../trustee-state'
 import { YouLabel } from '../YouLabel'
+import { useLatestShuffles } from './useLatestShuffles'
 import { useTruncatedTable } from './useTruncatedTable'
 import { sortColumnsForTrustees } from './VotesToShuffle'
 
@@ -26,6 +27,7 @@ export const VotesToDecrypt = ({
   state,
 }: StateAndDispatch & { final_shuffle_verifies: boolean }) => {
   const { own_index, private_keyshare, trustees = [] } = state
+  const { shufflesByEmail } = useLatestShuffles(state.election_id)
   const [proofs_shown, set_proofs_shown] = useState<Record<string, boolean>>({})
 
   /* Object to track which proofs have been validated
@@ -96,7 +98,8 @@ export const VotesToDecrypt = ({
     })
   }, [num_partials_from_trustees])
 
-  const last_trustees_shuffled = trustees[trustees.length - 1]?.shuffled || {}
+  const last_trustee_email = trustees.at(-1)?.email ?? ''
+  const last_trustees_shuffled = shufflesByEmail[last_trustee_email] || {}
   const num_last_shuffled = Object.values(last_trustees_shuffled)[0]?.shuffled.length
   const num_we_decrypted = Object.values(trustees[own_index]?.partials || {})[0]?.length || 0
 

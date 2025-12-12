@@ -20,7 +20,7 @@ import updateAdmin from './update-admin'
 
 const { ADMIN_EMAIL } = process.env
 
-export const config = { api: { bodyParser: { sizeLimit: '2mb' } } }
+export const config = { api: { bodyParser: { sizeLimit: '4mb' } } }
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (!ADMIN_EMAIL) return res.status(501).send('Missing process.env.ADMIN_EMAIL')
