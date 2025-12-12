@@ -2,6 +2,7 @@ import { sumBy } from 'lodash-es'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { random_bigint, RP } from 'src/crypto/curve'
 import { keygenDecrypt, keygenEncrypt } from 'src/crypto/keygen-encrypt'
+import { CipherStrings } from 'src/crypto/stringify-shuffle'
 import {
   compute_keyshare,
   compute_pub_key,
@@ -62,11 +63,17 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const commafied = transform_email_keys(body, 'commafy')
 
   // Save whatever other new data they gave us
-  // Except partial goes into their own sub-docs
+  // Except partials & shuffles go into their own sub-docs
   if (body.partials) {
     await Promise.all(
       Object.entries(commafied.partials as Record<string, PartialWithProof[]>).map(([column, partials]) =>
         trusteeDoc.collection('partials').doc(column).set({ partials }),
+      ),
+    )
+  } else if (body.shuffled) {
+    await Promise.all(
+      Object.entries(commafied.shuffled as Record<string, CipherStrings[]>).map(([column, shuffled]) =>
+        trusteeDoc.collection('shuffled').doc(column).set({ shuffled }),
       ),
     )
   } else {
