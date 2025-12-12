@@ -1,7 +1,7 @@
 import { pick } from 'lodash-es'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { firebase } from 'pages/api/_services'
-import { Trustee } from 'src/trustee/trustee-state'
+import { PartialWithProof, Trustee } from 'src/trustee/trustee-state'
 
 import { transform_email_keys } from './commafy'
 
@@ -38,7 +38,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       'index',
       'name',
       'partial_decryption',
-      'preshuffled',
+      // 'preshuffled',
       'recipient_key',
       'shuffled',
       'verified',
@@ -47,9 +47,15 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     const public_data = pick(data, public_fields)
 
+    // Get preshuffled from separate sub-doc
+    const preshuffled = await doc.ref.collection('post-election-data').doc('preshuffled').get()
+    if (preshuffled.exists) public_data.preshuffled = { ...preshuffled.data() }.preshuffled
+
     // Get partials from separate sub-doc
-    const partials = await doc.ref.collection('post-election-data').doc('partials').get()
-    if (partials.exists) public_data.partials = { ...partials.data() }.partials
+    const partialDocs = await doc.ref.collection('partials').get()
+    // Stitch partials back together from separate docs per column
+    public_data.partials = {} as Record<string, PartialWithProof[]>
+    partialDocs.docs.forEach((doc) => (public_data.partials[doc.id] = doc.data() as PartialWithProof[]))
 
     // Convert commas back into dots
     const decommafied = transform_email_keys(public_data, 'decommafy')

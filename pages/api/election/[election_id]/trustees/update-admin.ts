@@ -29,12 +29,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Begin preloading these docs
   const adminDoc = electionDoc.collection('trustees').doc(ADMIN_EMAIL)
-  const adminPartials = adminDoc.collection('post-election-data').doc('partials').get()
+  const adminPartials = adminDoc.collection('partials').get()
   const trusteesDocs = (await electionDoc.collection('trustees').orderBy('index').get()).docs
   const trustees = trusteesDocs.map((doc) => ({ ...doc.data() }))
-  const loadTrusteePartials = trusteesDocs.map(async (doc) =>
-    (await doc.ref.collection('post-election-data').doc('partials').get()).data(),
-  )
+  const loadTrusteePartials = trusteesDocs.map(async (doc) => doc.ref.collection('partials').get())
 
   // Is election_id in DB?
   const election = await electionDoc.get()
@@ -56,7 +54,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const last_shuffled = trustees[trustees.length - 1].shuffled as Shuffled
     const columns = Object.keys(last_shuffled)
     const last_shuffled_length = last_shuffled[columns[0]].shuffled.length
-    const admin_partials_uploaded = (await adminPartials).data()?.partials?.[columns[0]].length
+
+    // TODO: Fix hardcoded reference to index 1
+    const admin_partials_uploaded = (await adminPartials).docs[1]?.data()?.partials?.length || 0
     const admin_uploaded_all_partials = admin_partials_uploaded >= last_shuffled_length
     console.log({ admin_partials_uploaded, admin_uploaded_all_partials, last_shuffled_length })
 
@@ -94,8 +94,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           {},
         )
 
-        // Store partials
-        await adminDoc.collection('post-election-data').doc('partials').set({ partials }, { merge: true })
+        // Store partials, one doc for each column
+        await Promise.all(
+          Object.entries(partials).map(([column, partials]) =>
+            adminDoc.collection('partials').doc(column).set({ partials }),
+          ),
+        )
+
         // console.log('Updated admin partials:', partials)
         console.log('Updated admin partials')
 
@@ -108,13 +113,20 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   // If all have provided partials, admin can now combine partials
-  const trusteePartials = await Promise.all(loadTrusteePartials)
-  // console.log({ trusteePartials })
-  type TrusteeWithPartial = { partials: { [col: string]: PartialWithProof[] } }
-  const hasPartial = (trustee: Partial<TrusteeWithPartial> | undefined): trustee is TrusteeWithPartial =>
-    !!trustee?.partials
+  const trusteePartialDocs = await Promise.all(loadTrusteePartials)
 
-  const all_have_partials = trusteePartials.every(hasPartial)
+  // For each trustee, recombine their partials from separate docs into a single object
+  const trusteePartials = trusteePartialDocs.map((doc) => {
+    const partials = {} as Record<string, { partials: PartialWithProof[] }>
+    doc.docs.forEach((doc) => {
+      partials[doc.id] = doc.data() as { partials: PartialWithProof[] }
+    })
+    return partials
+  })
+
+  // console.log({ trusteePartials })
+
+  const all_have_partials = trusteePartials.every((trustee) => Object.keys(trustee).length > 0)
   console.log({ all_have_partials })
 
   if (all_have_partials) {
@@ -124,9 +136,16 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const last_shuffled_length = last_shuffled[columns[0]].shuffled.length
 
     // Do they have *enough* partials?
-    const all_have_enough_partials = trusteePartials.every(
-      (t) => t.partials && t.partials[columns[0]].length >= last_shuffled_length,
-    )
+    const all_have_enough_partials = trusteePartials.every((t) => {
+      // console.log({ t })
+      const col = columns[0]
+      // console.log({ col })
+      const trusteeNumPartials = t[col]?.partials.length || 0
+      // console.log({ trusteeNumPartials })
+
+      return trusteeNumPartials >= last_shuffled_length
+    })
+
     console.log({ all_have_enough_partials })
     if (!all_have_enough_partials) {
       console.log('⚠️  Not all trustees have provided enough partials')
@@ -139,14 +158,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       console.log('Verifying all partial proofs...')
 
       // For all trustees...
-      await bluebird.map(trusteePartials, ({ partials }, index) => {
+      await bluebird.map(trusteePartials, (partials, index) => {
         const g_to_trustees_keyshare = compute_g_to_keyshare(index + 1, all_broadcasts)
         // For all columns...
         return bluebird.map(
           Object.keys(partials),
           // For all votes
           (column) =>
-            bluebird.map(partials[column], async ({ partial, proof }: PartialWithProof, voteIndex) => {
+            bluebird.map(partials[column].partials, async ({ partial, proof }: PartialWithProof, voteIndex) => {
               const result = await verify_partial_decryption_proof(
                 RP.fromHex(last_trustees_shuffled[column].shuffled[voteIndex].lock),
                 g_to_trustees_keyshare,
@@ -168,7 +187,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           // For each row
           return (list as { shuffled: { encrypted: string }[] }).shuffled.map(({ encrypted }, index) => {
             // 1. First we combine the partials to get the ElGamal shared secret
-            const partials = trusteePartials.map((t) => RP.fromHex(t.partials[key][index].partial))
+            const partials = trusteePartials.map((t) => RP.fromHex(t[key]?.partials[index]?.partial || ''))
             const shared_secret = combine_partials(partials)
 
             // 2. Then we can unlock each messages

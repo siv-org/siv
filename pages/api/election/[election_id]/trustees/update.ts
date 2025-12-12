@@ -10,7 +10,7 @@ import {
   partial_decrypt,
 } from 'src/crypto/threshold-keygen'
 import { randomizer } from 'src/trustee/keygen/11-PartialDecryptionTest'
-import { State, Trustee } from 'src/trustee/trustee-state'
+import { PartialWithProof, State, Trustee } from 'src/trustee/trustee-state'
 
 import { firebase } from '../../../_services'
 import { pusher } from '../../../pusher'
@@ -18,6 +18,8 @@ import { commafy, transform_email_keys } from './commafy'
 import updateAdmin from './update-admin'
 
 const { ADMIN_EMAIL } = process.env
+
+export const config = { api: { bodyParser: { sizeLimit: '2mb' } } }
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (!ADMIN_EMAIL) return res.status(501).send('Missing process.env.ADMIN_EMAIL')
@@ -60,9 +62,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const commafied = transform_email_keys(body, 'commafy')
 
   // Save whatever other new data they gave us
-  // Except partial goes into its own sub-doc
+  // Except partial goes into their own sub-docs
   if (body.partials) {
-    await trusteeDoc.collection('post-election-data').doc('partials').set(commafied)
+    await Promise.all(
+      Object.entries(commafied.partials as Record<string, PartialWithProof[]>).map(([column, partials]) =>
+        trusteeDoc.collection('partials').doc(column).set({ partials }),
+      ),
+    )
   } else {
     await trusteeDoc.update(commafied)
   }
