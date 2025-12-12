@@ -8,7 +8,7 @@ export const HowDoIVerify = (): JSX.Element | null => {
         <span>How do I verify my vote is here?</span>
       </summary>
 
-      <div className="mt-1.5 rounded-md bg-emerald-50 px-3 py-2 text-[11px] text-slate-900 shadow-sm space-y-1">
+      <div className="mt-1.5 rounded-md bg-emerald-50 w-fit px-3 pr-10 py-2 text-[11px] text-slate-900 shadow-sm space-y-1">
         <div>1. Re-open the same link you used to cast your vote, from the same device.</div>
         <div>
           2. Match your green <span className="font-semibold">verification #</span> to find your vote in this table.
