@@ -117,19 +117,16 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // For each trustee, recombine their partials from separate docs into a single object
   const trusteePartials = trusteePartialDocs.map((doc) => {
-    const partials = {} as Record<string, PartialWithProof[]>
+    const partials = {} as Record<string, { partials: PartialWithProof[] }>
     doc.docs.forEach((doc) => {
-      partials[doc.id] = doc.data() as PartialWithProof[]
+      partials[doc.id] = doc.data() as { partials: PartialWithProof[] }
     })
     return partials
   })
 
   // console.log({ trusteePartials })
-  type TrusteeWithPartial = { partials: { [col: string]: PartialWithProof[] } }
-  const hasPartial = (trustee: Partial<TrusteeWithPartial> | undefined): trustee is TrusteeWithPartial =>
-    !!trustee?.partials
 
-  const all_have_partials = trusteePartials.every(hasPartial)
+  const all_have_partials = trusteePartials.every((trustee) => Object.keys(trustee).length > 0)
   console.log({ all_have_partials })
 
   if (all_have_partials) {
@@ -139,7 +136,16 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const last_shuffled_length = last_shuffled[columns[0]].shuffled.length
 
     // Do they have *enough* partials?
-    const all_have_enough_partials = trusteePartials.every((t) => t[columns[0]]?.length >= last_shuffled_length)
+    const all_have_enough_partials = trusteePartials.every((t) => {
+      // console.log({ t })
+      const col = columns[0]
+      // console.log({ col })
+      const trusteeNumPartials = t[col]?.partials.length || 0
+      // console.log({ trusteeNumPartials })
+
+      return trusteeNumPartials >= last_shuffled_length
+    })
+
     console.log({ all_have_enough_partials })
     if (!all_have_enough_partials) {
       console.log('⚠️  Not all trustees have provided enough partials')
@@ -159,7 +165,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           Object.keys(partials),
           // For all votes
           (column) =>
-            bluebird.map(partials[column], async ({ partial, proof }: PartialWithProof, voteIndex) => {
+            bluebird.map(partials[column].partials, async ({ partial, proof }: PartialWithProof, voteIndex) => {
               const result = await verify_partial_decryption_proof(
                 RP.fromHex(last_trustees_shuffled[column].shuffled[voteIndex].lock),
                 g_to_trustees_keyshare,
@@ -181,7 +187,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           // For each row
           return (list as { shuffled: { encrypted: string }[] }).shuffled.map(({ encrypted }, index) => {
             // 1. First we combine the partials to get the ElGamal shared secret
-            const partials = trusteePartials.map((t) => RP.fromHex(t[key]?.[index]?.partial || ''))
+            const partials = trusteePartials.map((t) => RP.fromHex(t[key]?.partials[index]?.partial || ''))
             const shared_secret = combine_partials(partials)
 
             // 2. Then we can unlock each messages
