@@ -22,6 +22,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 }
 
 // To begin decrypting in batches, without leaking results early
-import { live11chooses } from 'src/vote/YourAuthToken'
-
-const keepDecryptedPrivate = [live11chooses]
+// const example_election_id = '123456'
+const keepDecryptedPrivate: string[] = [
+  // example_election_id
+]
