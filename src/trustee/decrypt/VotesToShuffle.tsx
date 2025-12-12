@@ -11,6 +11,7 @@ import { rename_to_c1_and_2, shuffleWithoutProof, shuffleWithProof } from '../..
 import { verify_shuffle_proof } from '../../crypto/shuffle-proof'
 import { Shuffled, StateAndDispatch } from '../trustee-state'
 import { YouLabel } from '../YouLabel'
+import { useLatestPreshuffled } from './useLatestPreshuffled'
 import { useLatestShuffles } from './useLatestShuffles'
 import { useTruncatedTable } from './useTruncatedTable'
 
@@ -27,6 +28,7 @@ export const VotesToShuffle = ({
   skip_shuffle_proofs?: boolean
 }) => {
   const { own_index, threshold_public_key, trustees = [] } = state
+  const { preshuffled } = useLatestPreshuffled(state.election_id)
   const { shufflesByEmail } = useLatestShuffles(state.election_id)
   const [proofs_shown, set_proofs_shown] = useState<Record<string, boolean>>({})
 
@@ -93,9 +95,7 @@ export const VotesToShuffle = ({
           // Inputs are the previous party's outputs
           // except for admin, who provides the original split list.
           const inputs =
-            index > 0
-              ? shufflesByEmail[trustees[index - 1]?.email ?? '']![column].shuffled
-              : trustees[0].preshuffled![column]
+            index > 0 ? shufflesByEmail[trustees[index - 1]?.email ?? '']![column].shuffled : preshuffled[column]
 
           const { proof, shuffled: shuffledCol } = destringifyShuffle(shuffled[column])
 

@@ -1,7 +1,6 @@
 import { pick } from 'lodash-es'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { firebase } from 'pages/api/_services'
-import { CipherStrings } from 'src/crypto/stringify-shuffle'
 import { Trustee } from 'src/trustee/trustee-state'
 
 import { transform_email_keys } from './commafy'
@@ -26,7 +25,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const t = { ...doc.data() }.t
 
   // Grab trustees
-  const prepTrustees = (await loadTrustees).docs.map(async (doc, index) => {
+  const prepTrustees = (await loadTrustees).docs.map(async (doc) => {
     const data = { ...doc.data() }
     // Add you: true if requester's own document
     if (data.auth_token === auth) data.you = true
@@ -40,18 +39,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       'name',
       'partial_decryption',
       'recipient_key',
-      'shuffled',
       'verified',
       'you',
     ]
 
     const public_data = pick(data, public_fields)
-
-    // Get preshuffled from separate sub-docs
-    const preshuffled = {} as Record<string, CipherStrings[]>
-    const preshuffledDocs = await doc.ref.collection('preshuffled').get()
-    preshuffledDocs.docs.forEach((doc) => (preshuffled[doc.id] = (doc.data() as { value: CipherStrings[] }).value))
-    if (index === 0) public_data.preshuffled = preshuffled
 
     // Convert commas back into dots
     const decommafied = transform_email_keys(public_data, 'decommafy')
