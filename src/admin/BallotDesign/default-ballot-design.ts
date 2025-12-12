@@ -1,6 +1,6 @@
 export const default_ballot_design = `[
   {
-    "id": "item",
+    "id": "vote",
     "type": "choose-only-one",
     "title": "What's the best flavor of ice cream?",
     "options": [
