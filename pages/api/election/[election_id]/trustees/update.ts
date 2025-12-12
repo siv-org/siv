@@ -10,7 +10,7 @@ import {
   partial_decrypt,
 } from 'src/crypto/threshold-keygen'
 import { randomizer } from 'src/trustee/keygen/11-PartialDecryptionTest'
-import { State, Trustee } from 'src/trustee/trustee-state'
+import { PartialWithProof, State, Trustee } from 'src/trustee/trustee-state'
 
 import { firebase } from '../../../_services'
 import { pusher } from '../../../pusher'
@@ -65,7 +65,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Except partial goes into their own sub-docs
   if (body.partials) {
     await Promise.all(
-      Object.entries(commafied).map(([column, partials]) =>
+      Object.entries(commafied.partials as Record<string, PartialWithProof[]>).map(([column, partials]) =>
         trusteeDoc.collection('partials').doc(column).set({ partials }),
       ),
     )
