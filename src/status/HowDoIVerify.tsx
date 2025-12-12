@@ -1,7 +1,7 @@
 export const HowDoIVerify = (): JSX.Element | null => {
   return (
     <details className="group mt-1.5 mb-4 text-slate-800">
-      <summary className="flex cursor-pointer items-center gap-1 [&::-webkit-details-marker]:hidden text-[12px] hover:text-emerald-800">
+      <summary className="flex cursor-pointer items-center gap-1 text-[12px] hover:text-emerald-800">
         <span className="inline-flex h-4 w-4 items-center justify-center rounded-full border border-emerald-500 bg-emerald-50 text-[10px] font-semibold text-emerald-700 shadow-sm group-open:bg-emerald-600 group-open:text-white">
           i
         </span>
