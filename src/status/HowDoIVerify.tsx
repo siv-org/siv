@@ -1,10 +1,4 @@
-import { useElectionId } from './use-election-id'
-
 export const HowDoIVerify = (): JSX.Element | null => {
-  const electionId = useElectionId()
-
-  if (electionId !== '1764864466435') return null
-
   return (
     <details className="group mt-1.5 mb-4 text-slate-800">
       <summary className="flex cursor-pointer items-center gap-1 [&::-webkit-details-marker]:hidden text-[12px] hover:text-emerald-800">

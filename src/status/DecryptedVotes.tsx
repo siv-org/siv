@@ -24,7 +24,7 @@ export const DecryptedVotes = ({ proofsPage }: { proofsPage?: boolean }): JSX.El
         <>
           <h3 className="mt-0 mb-1.5">Decrypted Votes</h3>
           <p className="mt-0 text-[13px] italic opacity-70">Anonymized for vote secrecy.</p>
-          {!proofsPage && <HowDoIVerify />}
+          <HowDoIVerify />
         </>
       )}
       <table className="block overflow-auto border-collapse [&_tr>*]:[border:1px_solid_#ccc] [&_tr>*]:px-2.5 [&_tr>*]:py-[3px] pb-2">
