@@ -243,7 +243,7 @@ const ShuffledVotesTable = ({
           </tr>
         </thead>
         <tbody>
-          {shuffled[columns[0]]?.shuffled.slice(0, rows_to_show).map((_, index) => (
+          {shuffled[columns[0]]?.shuffled?.slice(0, rows_to_show).map((_, index) => (
             <tr key={index}>
               <td>{index + 1}.</td>
               {columns.map((key) => {

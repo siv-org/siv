@@ -73,7 +73,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   } else if (body.shuffled) {
     await Promise.all(
       Object.entries(commafied.shuffled as Record<string, CipherStrings[]>).map(([column, shuffled]) =>
-        trusteeDoc.collection('shuffled').doc(column).set({ shuffled }),
+        trusteeDoc.collection('shuffled').doc(column).set(shuffled),
       ),
     )
   } else {
