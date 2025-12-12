@@ -53,6 +53,7 @@ export const ElectionStatusPage = (): JSX.Element => {
               )}
             </div>
           )}
+
           {/* Optionally hide vote tallies with ?hide_tallies=1 url param */}
           {!hide_tallies && <Totals />}
           <br />
