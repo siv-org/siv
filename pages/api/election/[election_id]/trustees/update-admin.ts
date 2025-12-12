@@ -4,6 +4,7 @@ import bluebird from 'bluebird'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { pointToString, RP } from 'src/crypto/curve'
 import { destringifyPartial, stringifyPartial } from 'src/crypto/stringify-partials'
+import { CipherStrings } from 'src/crypto/stringify-shuffle'
 import {
   combine_partials,
   compute_g_to_keyshare,
@@ -32,6 +33,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const adminPartials = adminDoc.collection('partials').get()
   const trusteesDocs = (await electionDoc.collection('trustees').orderBy('index').get()).docs
   const trustees = trusteesDocs.map((doc) => ({ ...doc.data() }))
+  const loadTrusteeShuffled = trusteesDocs.map(async (doc) => doc.ref.collection('shuffled').get())
   const loadTrusteePartials = trusteesDocs.map(async (doc) => doc.ref.collection('partials').get())
 
   // Is election_id in DB?
@@ -47,22 +49,34 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Get election parameters
   const parameters = { ...election.data() }
 
+  // Load shuffled data from sub-collections
+  const trusteeShuffledDocs = await Promise.all(loadTrusteeShuffled)
+  const trusteeShuffled = trusteeShuffledDocs.map((doc) => {
+    const shuffled = {} as Shuffled
+    doc.docs.forEach((doc) => {
+      // Data saved is just the array, but we need { shuffled: array } structure
+      // Proof is not used in this file, so we can safely cast
+      const data = doc.data() as CipherStrings[] | Shuffled[string]
+      shuffled[doc.id] = Array.isArray(data) ? ({ shuffled: data } as unknown as Shuffled[string]) : data
+    })
+    return shuffled
+  })
+
   // If all have now shuffled, admin can partially decrypt
-  const have_all_shuffled = trustees.every((trustee) => 'shuffled' in trustee)
+  const have_all_shuffled = trusteeShuffled.every((shuffled) => Object.keys(shuffled).length > 0)
   if (have_all_shuffled) {
     // Did admin upload enough partials?
-    const last_shuffled = trustees[trustees.length - 1].shuffled as Shuffled
+    const last_shuffled = trusteeShuffled[trusteeShuffled.length - 1]
     const columns = Object.keys(last_shuffled)
     const last_shuffled_length = last_shuffled[columns[0]].shuffled.length
 
-    // TODO: Fix hardcoded reference to index 1
-    const admin_partials_uploaded = (await adminPartials).docs[1]?.data()?.partials?.length || 0
+    const admin_partials_uploaded = (await adminPartials).docs[0]?.data()?.partials?.length || 0
     const admin_uploaded_all_partials = admin_partials_uploaded >= last_shuffled_length
     console.log({ admin_partials_uploaded, admin_uploaded_all_partials, last_shuffled_length })
 
     if (!admin_uploaded_all_partials) {
       // Confirm that every column's shuffle proof is valid
-      const { shuffled } = trustees[parameters.t - 1]
+      const shuffled = trusteeShuffled[parameters.t - 1]
 
       // const checks = await bluebird.map(Object.keys(shuffled), (column) => {
       const checks = await bluebird.map(Object.keys(shuffled), () => {
@@ -131,7 +145,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   if (all_have_partials) {
     // Have all trustees now uploaded partials for the last shuffled list?
-    const last_shuffled = trustees[trustees.length - 1].shuffled as Shuffled
+    const last_shuffled = trusteeShuffled[trusteeShuffled.length - 1]
     const columns = Object.keys(last_shuffled)
     const last_shuffled_length = last_shuffled[columns[0]].shuffled.length
 
@@ -152,7 +166,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     } else {
       // Verify that all partials have passing ZK Proofs
       const all_broadcasts = trustees.map(({ commitments }) => commitments.map(RP.fromHex))
-      const last_trustees_shuffled = trustees[trustees.length - 1].shuffled
+      const last_trustees_shuffled = trusteeShuffled[trusteeShuffled.length - 1]
       let any_failed = false
 
       console.log('Verifying all partial proofs...')
