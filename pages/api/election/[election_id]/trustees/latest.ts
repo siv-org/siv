@@ -2,7 +2,7 @@ import { pick } from 'lodash-es'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { firebase } from 'pages/api/_services'
 import { CipherStrings } from 'src/crypto/stringify-shuffle'
-import { PartialWithProof, Trustee } from 'src/trustee/trustee-state'
+import { Trustee } from 'src/trustee/trustee-state'
 
 import { transform_email_keys } from './commafy'
 
@@ -52,12 +52,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const preshuffledDocs = await doc.ref.collection('preshuffled').get()
     preshuffledDocs.docs.forEach((doc) => (preshuffled[doc.id] = (doc.data() as { value: CipherStrings[] }).value))
     if (index === 0) public_data.preshuffled = preshuffled
-
-    // Get partials from separate sub-docs
-    const partialDocs = await doc.ref.collection('partials').get()
-    // Stitch partials back together from separate docs per column
-    public_data.partials = {} as Record<string, PartialWithProof[]>
-    partialDocs.docs.forEach((doc) => (public_data.partials[doc.id] = doc.data() as PartialWithProof[]))
 
     // Convert commas back into dots
     const decommafied = transform_email_keys(public_data, 'decommafy')

@@ -19,7 +19,7 @@ export const Partials = (): JSX.Element => {
 
   return (
     <div>
-      {trustees.map(({ index, name, partials }) => (
+      {trustees.map(({ index, name }) => (
         <>
           <p>
             Trustee #{index + 1}: {name}
@@ -34,15 +34,12 @@ export const Partials = (): JSX.Element => {
               </tr>
             </thead>
             <tbody>
-              {partials &&
-                partials[columns[0]].map((partial, index) => (
-                  <tr key={index}>
-                    <td>{index + 1}.</td>
-                    {columns.map((c) => (
-                      <td key={c}>{partial.partial}</td>
-                    ))}
-                  </tr>
+              <tr>
+                <td>1.</td>
+                {columns.map((c) => (
+                  <td key={c}>{c}</td>
                 ))}
+              </tr>
             </tbody>
           </table>
         </>

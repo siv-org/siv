@@ -45,7 +45,6 @@ export type Trustee = {
   index: number
   name?: string
   partial_decryption?: string
-  partials?: Record<string, PartialWithProof[]>
   preshuffled?: Record<string, CipherStrings[]> // admin only
   recipient_key?: string
   verified?: Record<string, boolean>
