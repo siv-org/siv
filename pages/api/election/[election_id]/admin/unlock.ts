@@ -1,3 +1,4 @@
+import { readyForTallyingAuthTokens11Chooses } from 'api/11-chooses/tallying/get-auth-tokens-for-tally'
 import bluebird from 'bluebird'
 import { mapValues } from 'lodash-es'
 import { NextApiRequest, NextApiResponse } from 'next'
@@ -31,8 +32,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   elapsed('init')
 
   const { election_id } = req.query as { election_id: string }
-  const { options = {} } = req.body
-  const { skip_shuffle_proofs } = options
+  // const { options = {} } = req.body
+  // const { skip_shuffle_proofs } = options
+  const skip_shuffle_proofs = true
 
   // Confirm they're a valid admin that created this election
   const jwt = await checkJwtOwnsElection(req, res, election_id)
@@ -81,6 +83,15 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     })
   }
   elapsed('load votes, filter esig')
+
+  // Filter for only the auth tokens ready for tallying
+  const selectedAuthTokens = new Set(readyForTallyingAuthTokens11Chooses)
+  votes_to_unlock = votes_to_unlock.filter((doc) => {
+    const { auth } = doc.data() as { auth: string }
+    return selectedAuthTokens.has(auth)
+  })
+  elapsed('filter 11c approved only')
+  // return res.status(200).json({ remaining: votes_to_unlock.length })
 
   // Admin removes the auth tokens
   const encrypteds_without_auth_tokens = votes_to_unlock.map((doc) => doc.data().encrypted_vote)
