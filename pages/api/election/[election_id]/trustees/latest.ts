@@ -1,6 +1,7 @@
 import { pick } from 'lodash-es'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { firebase } from 'pages/api/_services'
+import { CipherStrings } from 'src/crypto/stringify-shuffle'
 import { PartialWithProof, Trustee } from 'src/trustee/trustee-state'
 
 import { transform_email_keys } from './commafy'
@@ -25,7 +26,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const t = { ...doc.data() }.t
 
   // Grab trustees
-  const prepTrustees = (await loadTrustees).docs.map(async (doc) => {
+  const prepTrustees = (await loadTrustees).docs.map(async (doc, index) => {
     const data = { ...doc.data() }
     // Add you: true if requester's own document
     if (data.auth_token === auth) data.you = true
@@ -38,7 +39,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       'index',
       'name',
       'partial_decryption',
-      // 'preshuffled',
       'recipient_key',
       'shuffled',
       'verified',
@@ -47,11 +47,19 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     const public_data = pick(data, public_fields)
 
-    // Get preshuffled from separate sub-doc
-    const preshuffled = await doc.ref.collection('post-election-data').doc('preshuffled').get()
-    if (preshuffled.exists) public_data.preshuffled = { ...preshuffled.data() }.preshuffled
+    // Get preshuffled from separate sub-docs
+    const preshuffled = {} as Record<string, CipherStrings[]>
+    const preshuffledDocs = await doc.ref.collection('preshuffled').get()
+    preshuffledDocs.docs.forEach((doc) => (preshuffled[doc.id] = (doc.data() as { value: CipherStrings[] }).value))
+    if (index === 0) public_data.preshuffled = preshuffled
 
-    // Get partials from separate sub-doc
+    // Get shuffled from separate sub-docs
+    const shuffled = {} as Record<string, CipherStrings[]>
+    const shuffledDocs = await doc.ref.collection('shuffled').get()
+    shuffledDocs.docs.forEach((doc) => (shuffled[doc.id] = doc.data() as CipherStrings[]))
+    public_data.shuffled = shuffled
+
+    // Get partials from separate sub-docs
     const partialDocs = await doc.ref.collection('partials').get()
     // Stitch partials back together from separate docs per column
     public_data.partials = {} as Record<string, PartialWithProof[]>
