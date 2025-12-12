@@ -25,6 +25,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     console.log(`${l.padStart(23, ' ')} ${diff.padStart(5, ' ')}ms`)
   }
 
+  // return res.status(200).json({ readyForTallyingAuthTokens11Chooses: readyForTallyingAuthTokens11Chooses.length })
+
   const start = new Date()
 
   if (!ADMIN_EMAIL) return res.status(501).json({ error: 'Missing process.env.ADMIN_EMAIL' })
