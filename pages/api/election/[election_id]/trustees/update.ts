@@ -60,9 +60,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const commafied = transform_email_keys(body, 'commafy')
 
   // Save whatever other new data they gave us
-  // Except partial goes into its own sub-doc
+  // Except partial goes into their own sub-docs
   if (body.partials) {
-    await trusteeDoc.collection('post-election-data').doc('partials').set(commafied)
+    await Promise.all(
+      Object.entries(commafied).map(([column, partials]) =>
+        trusteeDoc.collection('partials').doc(column).set({ partials }),
+      ),
+    )
   } else {
     await trusteeDoc.update(commafied)
   }
