@@ -54,6 +54,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     // Get partials from separate sub-doc
     const partialDocs = await doc.ref.collection('partials').get()
     // Stitch partials back together from separate docs per column
+    public_data.partials = {} as Record<string, PartialWithProof[]>
     partialDocs.docs.forEach((doc) => (public_data.partials[doc.id] = doc.data() as PartialWithProof[]))
 
     // Convert commas back into dots
