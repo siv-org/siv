@@ -38,7 +38,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       'index',
       'name',
       'partial_decryption',
-      'preshuffled',
+      // 'preshuffled',
       'recipient_key',
       'shuffled',
       'verified',
@@ -46,6 +46,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     ]
 
     const public_data = pick(data, public_fields)
+
+    // Get preshuffled from separate sub-doc
+    const preshuffled = await doc.ref.collection('post-election-data').doc('preshuffled').get()
+    if (preshuffled.exists) public_data.preshuffled = { ...preshuffled.data() }.preshuffled
 
     // Get partials from separate sub-doc
     const partials = await doc.ref.collection('post-election-data').doc('partials').get()
