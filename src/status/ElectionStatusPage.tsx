@@ -59,20 +59,24 @@ export const ElectionStatusPage = (): JSX.Element => {
           <DecryptedVotes />
           <br />
 
-          {/* Display simple list of Encrypted Votes if we haven't unlocked any yet */}
-          {/* If we have unlocked, display Collapsible */}
-          {has_decrypted_votes && (
-            <p className="toggle">
-              <a onClick={toggle_encrypteds}>{show_encrypteds ? '[-] Hide' : '[+] Show'} Encrypted Submissions</a>
-            </p>
-          )}
+          {!hideEncryptedVotes.includes(election_id) && (
+            <>
+              {/* Display simple list of Encrypted Votes if we haven't unlocked any yet */}
+              {/* If we have unlocked, display Collapsible */}
+              {has_decrypted_votes && (
+                <p className="toggle">
+                  <a onClick={toggle_encrypteds}>{show_encrypteds ? '[-] Hide' : '[+] Show'} Encrypted Submissions</a>
+                </p>
+              )}
 
-          {(show_encrypteds || has_decrypted_votes === false) && (
-            <div>
-              {show_encrypteds && has_decrypted_votes && <Mixnet />}
-              <AcceptedVotes {...{ ballot_design, esignature_requested, has_decrypted_votes }} />
-              <InvalidatedVotes />
-            </div>
+              {(show_encrypteds || has_decrypted_votes === false) && (
+                <div>
+                  {show_encrypteds && has_decrypted_votes && <Mixnet />}
+                  <AcceptedVotes {...{ ballot_design, esignature_requested, has_decrypted_votes }} />
+                  <InvalidatedVotes />
+                </div>
+              )}
+            </>
           )}
         </div>
         <Footer />
@@ -128,3 +132,6 @@ export const ElectionStatusPage = (): JSX.Element => {
     </>
   )
 }
+
+import { live11chooses } from 'src/vote/YourAuthToken'
+const hideEncryptedVotes = [live11chooses]
