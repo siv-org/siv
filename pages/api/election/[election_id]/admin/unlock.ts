@@ -178,8 +178,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     console.log("starting to write admin's shuffle to db\n\n\n\n\n")
     await Promise.all([
       electionDoc.update({ skip_shuffle_proofs: !!skip_shuffle_proofs }),
-      adminDoc.update({ shuffled }),
-      adminDoc.collection('post-election-data').doc('preshuffled').set({ preshuffled: split }),
+      Object.entries(shuffled).map(([key, value]) => adminDoc.collection('shuffled').doc(key).set(value)),
+      Object.entries(split).map(([key, value]) => adminDoc.collection('preshuffled').doc(key).set({ value })),
     ])
     console.log("succeeded to write admin's shuffle.")
     try {
