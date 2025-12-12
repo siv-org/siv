@@ -41,10 +41,19 @@ export function useLatestPartials(election_id?: string) {
   }, [election_id, mutate])
 
   const partialsByEmail =
-    data?.trustees?.reduce<Record<string, Record<string, PartialWithProof[]> | undefined>>(
-      (memo, trustee) => ({ ...memo, [trustee.email]: trustee.partials }),
-      {},
-    ) || {}
+    data?.trustees?.reduce<Record<string, Record<string, PartialWithProof[]> | undefined>>((memo, trustee) => {
+      if (!trustee.partials) return memo
+
+      // Transform from Record<string, { partials: PartialWithProof[] }> to Record<string, PartialWithProof[]>
+      // by unwrapping the { partials: [...] } structure
+      const unwrappedPartials: Record<string, PartialWithProof[]> = {}
+      Object.entries(trustee.partials).forEach(([column, wrapped]) => {
+        if (wrapped && typeof wrapped === 'object' && 'partials' in wrapped) {
+          unwrappedPartials[column] = (wrapped as { partials: PartialWithProof[] }).partials
+        }
+      })
+      return { ...memo, [trustee.email]: unwrappedPartials }
+    }, {}) || {}
 
   return { partialsByEmail }
 }

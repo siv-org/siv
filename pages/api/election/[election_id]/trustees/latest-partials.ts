@@ -5,7 +5,7 @@ import { PartialWithProof } from 'src/trustee/trustee-state'
 import { transform_email_keys } from './commafy'
 
 export type TrusteesLatestPartials = {
-  trustees: Array<{ email: string; index: number; partials?: Record<string, PartialWithProof[]> }>
+  trustees: Array<{ email: string; index: number; partials?: Record<string, { partials: PartialWithProof[] }> }>
 }
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -25,8 +25,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     // Get partials from separate sub-docs
     const partialDocs = await doc.ref.collection('partials').get()
-    const partials = {} as Record<string, PartialWithProof[]>
-    partialDocs.docs.forEach((doc) => (partials[doc.id] = doc.data() as PartialWithProof[]))
+    const partials = {} as Record<string, { partials: PartialWithProof[] }>
+    partialDocs.docs.forEach((doc) => (partials[doc.id] = doc.data() as { partials: PartialWithProof[] }))
 
     const public_data: Record<string, unknown> = {
       email: trusteeData.email,

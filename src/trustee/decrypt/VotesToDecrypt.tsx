@@ -152,7 +152,8 @@ export const VotesToDecrypt = ({
       <h3>IV. Votes to Decrypt</h3>
       <ol className="pl-5">
         {trustees?.map(({ email, you }) => {
-          const partials = partialsByEmail[email]
+          const partials = partialsByEmail[email] || {}
+
           return (
             <li className="mb-8" key={email}>
               {/* Top row */}
@@ -160,7 +161,7 @@ export const VotesToDecrypt = ({
                 {/* Left */}
                 <span>
                   {email}
-                  {you && <YouLabel />} partially decrypted {!partials ? 0 : Object.values(partials)[0]?.length}
+                  {you && <YouLabel />} partially decrypted {!partials ? 0 : Object.values(partials)[0]?.length || 0}
                   &nbsp;votes.
                 </span>
                 {/* Right */}
