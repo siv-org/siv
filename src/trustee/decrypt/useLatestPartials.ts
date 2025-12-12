@@ -21,7 +21,7 @@ export function useLatestPartials(election_id?: string) {
     const channel = pusher?.subscribe(`keygen-${election_id}`)
     if (!channel) return
 
-    const handleUpdate = (data: Record<string, string[] | Record<string, unknown>>) => {
+    const handleUpdate = (data: Record<string, Record<string, unknown> | string[]>) => {
       // Check if any trustee updated their partials data
       const hasPartialsUpdate = Object.values(data).some((fields) => {
         if (Array.isArray(fields)) return fields.includes('partials')
