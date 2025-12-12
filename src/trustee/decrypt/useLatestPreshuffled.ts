@@ -21,11 +21,14 @@ export function useLatestPreshuffled(election_id?: string) {
     const channel = pusher?.subscribe(`keygen-${election_id}`)
     if (!channel) return
 
-    const handleUpdate = (updateData: Record<string, string[]>) => {
+    const handleUpdate = (updateData: Record<string, string[] | Record<string, unknown>>) => {
       // Check if admin updated shuffled data (which means preshuffled was also created)
-      const hasAdminShuffleUpdate = Object.entries(updateData).some(
-        ([email, fields]) => email.includes('admin') && fields.includes('shuffled'),
-      )
+      const hasAdminShuffleUpdate = Object.entries(updateData).some(([email, fields]) => {
+        if (!email.includes('admin')) return false
+        // Handle both array and object formats
+        if (Array.isArray(fields)) return fields.includes('shuffled')
+        return 'shuffled' in fields
+      })
       if (hasAdminShuffleUpdate) {
         console.log('🔄 Pusher preshuffled update detected, revalidating...')
         mutate()

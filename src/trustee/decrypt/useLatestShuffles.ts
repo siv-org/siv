@@ -21,9 +21,12 @@ export function useLatestShuffles(election_id?: string) {
     const channel = pusher?.subscribe(`keygen-${election_id}`)
     if (!channel) return
 
-    const handleUpdate = (data: Record<string, string[]>) => {
+    const handleUpdate = (data: Record<string, string[] | Record<string, unknown>>) => {
       // Check if any trustee updated their shuffled data
-      const hasShuffleUpdate = Object.values(data).some((fields) => fields.includes('shuffled'))
+      const hasShuffleUpdate = Object.values(data).some((fields) => {
+        if (Array.isArray(fields)) return fields.includes('shuffled')
+        return 'shuffled' in fields
+      })
       if (hasShuffleUpdate) {
         console.log('🔄 Pusher shuffle update detected, revalidating...')
         mutate()
