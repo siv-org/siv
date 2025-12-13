@@ -69,7 +69,7 @@ function ShowBrowserStoragePage() {
           </ul>
         </>
       ) : (
-        <p className="text-sm opacity-50">No votes found</p>
+        <p className="mt-10 text-xl font-bold opacity-50">No votes found</p>
       )}
 
       <details className="mt-8">
