@@ -24,12 +24,13 @@ function ShowBrowserStoragePage() {
   const voterKeys = Object.keys(storage).filter((key) => key.startsWith('voter-'))
 
   return (
-    <main className="flex flex-col p-4 py-12 mx-auto w-full max-w-xl min-h-screen xtext-center">
+    <main className="flex flex-col p-4 py-12 mx-auto w-full max-w-xl min-h-screen">
       <Head title="Test Private Key" />
       <h1 className="text-3xl font-bold">Show Browser Storage</h1>
 
       <div className="mt-8">
         <p>This tool helps you see all the vote data stored in this device{"'"}s browser.</p>
+        <p className="text-sm opacity-50">This information is local only, and not shared with anyone.</p>
       </div>
 
       {error && <p className="text-red-500">{error}</p>}
