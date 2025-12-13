@@ -44,7 +44,8 @@ function ShowBrowserStoragePage() {
 
       <details className="p-2 pt-0 mt-4 -ml-2 rounded-lg open:bg-gray-100 group">
         <summary className="p-2 -ml-2 font-medium rounded-lg cursor-pointer hover:bg-gray-200 w-fit group-open:w-full">
-          Reminder: Your vote is your private choice <SafetyOutlined className="mr-1.5 text-lg text-green-800" />
+          Reminder: Your vote is your private choice{' '}
+          <SafetyOutlined className="mr-1.5 text-lg text-green-800 relative top-px" />
         </summary>
         <div className="space-y-1 text-sm opacity-50">
           <p>For elections to be truly Free and Fair, every voter must be able to make their own honest choices.</p>
