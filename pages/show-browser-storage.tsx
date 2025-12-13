@@ -25,7 +25,7 @@ function ShowBrowserStoragePage() {
 
   return (
     <main className="flex flex-col p-4 py-12 mx-auto w-full max-w-xl min-h-screen">
-      <Head title="Test Private Key" />
+      <Head title="Show Browser Storage" />
       <h1 className="text-3xl font-bold">Show Browser Storage</h1>
 
       <div className="mt-8">
