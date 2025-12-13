@@ -19,10 +19,24 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(400).json({ error: 'voter not found' })
   }
 
-  // Send name to client
-  const { voter_file } = voter.data()
+  const voterData = voter.data() || {}
+
+  // Send name + auth progress flags to client
+  const { voter_file } = voterData
   const { first_name = 'FirstNameMissing', is_withheld, last_name = 'LastNameMissing' } = voter_file || {}
-  const voterInfo: VoterInfo = { is_withheld, voterName: first_name + ' ' + last_name }
+
+  // YoB step considered "passed" if we've ever stored a successful YOB_passed entry
+  const passed_yob = Array.isArray(voterData.YOB_passed) && voterData.YOB_passed.length > 0
+
+  // Email step considered "submitted" if we've ever stored an email_submitted entry
+  const passed_email = Array.isArray(voterData.email_submitted) && voterData.email_submitted.length > 0
+
+  const voterInfo: VoterInfo = {
+    is_withheld,
+    passed_email,
+    passed_yob,
+    voterName: first_name + ' ' + last_name,
+  }
 
   return res.status(200).json(voterInfo)
 }

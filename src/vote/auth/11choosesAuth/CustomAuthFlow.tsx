@@ -48,30 +48,54 @@ export const CustomAuthFlow = ({ auth, election_id }: { auth: string; election_i
   )
 }
 
-export type VoterInfo = { is_withheld: boolean; voterName: string }
+export type VoterInfo = {
+  is_withheld: boolean
+  passed_email: boolean
+  passed_yob: boolean
+  voterName: string
+}
+
 /** Query server for voter info, via `auth_token` */
 function useVoterInfo(auth: string, election_id: string) {
+  const router = useRouter()
+
   const [voterInfo, setVoterInfo] = useState<VoterInfo & { loaded: boolean }>({
     is_withheld: false,
     loaded: false,
+    passed_email: false,
+    passed_yob: false,
     voterName: '',
   })
 
   useEffect(() => {
     async function getVoterInfo() {
       if (auth === 'link') return
+      if (!router) return
       const response = await api(`11-chooses/get-voter-auth`, { auth_token: auth, election_id })
       if (!response.ok) {
         console.error('Failed to get voter info:', JSON.stringify(response))
         return alert('Failed to get voter info:' + JSON.stringify(response))
       }
 
-      const voterInfo = await response.json()
-      // console.log({ voterInfo })
-      setVoterInfo({ loaded: true, ...voterInfo })
+      const voterInfoFromServer: VoterInfo = await response.json()
+      const { passed_email, passed_yob } = voterInfoFromServer
+
+      // If server says they've already passed YoB or submitted email, reflect that in URL params
+      // so the rest of the flow behaves as if they just completed those steps.
+      const updates: string[] = []
+      if (passed_yob && !router.asPath.includes('passed_yob=true')) updates.push('passed_yob=true')
+      if (passed_email && !router.asPath.includes('passed_email=true')) updates.push('passed_email=true')
+
+      if (updates.length) {
+        const separator = router.asPath.includes('?') ? '&' : '?'
+        const extraParams = updates.join('&')
+        router.replace(`${router.asPath}${separator}${extraParams}`)
+      }
+
+      setVoterInfo({ loaded: true, ...voterInfoFromServer })
     }
     getVoterInfo()
-  }, [auth])
+  }, [auth, election_id, router])
 
   return voterInfo
 }
