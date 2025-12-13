@@ -35,7 +35,7 @@ function ShowBrowserStoragePage() {
 
       {error && <p className="text-red-500">{error}</p>}
 
-      {voterKeys.length > 0 && (
+      {voterKeys.length > 0 ? (
         <>
           <h2 className="mt-8 text-2xl font-bold">Voter:</h2>
           <ul>
@@ -68,6 +68,8 @@ function ShowBrowserStoragePage() {
             })}
           </ul>
         </>
+      ) : (
+        <p className="text-sm opacity-50">No votes found</p>
       )}
 
       <details className="mt-8">
