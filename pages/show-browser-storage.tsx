@@ -56,11 +56,13 @@ function ShowBrowserStoragePage() {
                     <b className="font-semibold">Auth Token:</b> {auth_token}
                   </div>
                   <div>
-                    <b>Vote Submitted at:</b> {rowData.submitted_at}
+                    <b>Vote Submitted at:</b> {rowData.submitted_at || 'Not submitted'}
                   </div>
-                  <div>
-                    <b>Verification #:</b> {rowData.tracking}
-                  </div>
+                  {rowData.submitted_at && (
+                    <div>
+                      <b>Verification #:</b> {rowData.tracking}
+                    </div>
+                  )}
                 </li>
               )
             })}
