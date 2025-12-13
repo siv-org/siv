@@ -3,6 +3,14 @@ import { useState } from 'react'
 import { Head } from 'src/Head'
 import { TailwindPreflight } from 'src/TailwindPreflight'
 
+function Link({ children, href }: { children: React.ReactNode; href: string }) {
+  return (
+    <a className="text-blue-500 hover:underline" href={href} rel="noreferrer" target="_blank">
+      {children}
+    </a>
+  )
+}
+
 function ShowBrowserStoragePage() {
   const [storage, setStorage] = useState<Record<string, string>>({})
   const [error, setError] = useState<string>('')
@@ -32,6 +40,22 @@ function ShowBrowserStoragePage() {
         <p>This tool helps you see all the vote data stored in this device{"'"}s browser.</p>
         <p className="text-sm opacity-50">This information is local only, and not shared with anyone.</p>
       </div>
+
+      <details className="p-2 pt-0 mt-4 -ml-2 rounded-lg open:bg-gray-100 group">
+        <summary className="p-2 -ml-2 font-medium rounded-lg cursor-pointer hover:bg-gray-200 w-fit group-open:w-full">
+          Reminder: Your vote is your private choice 🛡️
+        </summary>
+        <div className="space-y-1 text-sm opacity-50">
+          <p>For elections to be truly Free and Fair, every voter must be able to make their own honest choices.</p>
+          <p>
+            If anyone is pressuring you to vote or prove you voted a certain way, SIV has{' '}
+            <Link href="/overrides">advanced tools</Link> available to help.
+          </p>
+          <p>
+            Please contact your election administrator or <Link href="mailto:help@siv.org">help@siv.org</Link>.
+          </p>
+        </div>
+      </details>
 
       {error && <p className="text-red-500">{error}</p>}
 
