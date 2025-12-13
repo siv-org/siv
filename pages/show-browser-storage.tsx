@@ -73,7 +73,7 @@ function ShowBrowserStoragePage() {
       )}
 
       <details className="mt-8">
-        <summary className="p-2 -ml-2 text-2xl font-bold rounded-lg cursor-pointer hover:bg-gray-200 w-fit">
+        <summary className="p-2 -ml-2 text-lg font-medium rounded-lg cursor-pointer hover:bg-gray-200 w-fit">
           Show Raw data:
         </summary>
         <pre className="p-4 whitespace-pre-wrap break-all rounded-md bg-gray-00">
