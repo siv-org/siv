@@ -58,11 +58,11 @@ function ShowBrowserStoragePage() {
                   <div>
                     <b>Vote Submitted at:</b> {rowData.submitted_at || 'Not submitted'}
                   </div>
-                  {rowData.submitted_at && (
+                  {
                     <div>
                       <b>Verification #:</b> {rowData.tracking}
                     </div>
-                  )}
+                  }
                 </li>
               )
             })}
