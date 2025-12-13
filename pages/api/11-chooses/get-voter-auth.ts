@@ -21,7 +21,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Send name to client
   const { voter_file } = voter.data()
-  const { first_name, is_withheld, last_name } = voter_file
+  const { first_name = 'FirstNameMissing', is_withheld, last_name = 'LastNameMissing' } = voter_file || {}
   const voterInfo: VoterInfo = { is_withheld, voterName: first_name + ' ' + last_name }
 
   return res.status(200).json(voterInfo)
