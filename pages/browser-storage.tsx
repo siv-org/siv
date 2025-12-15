@@ -68,7 +68,7 @@ function BrowserStoragePage() {
         </>
       ) : (
         <>
-          <h2 className="mt-8 text-2xl font-bold">Voter:</h2>
+          <h2 className="mt-8 text-2xl font-bold">Vote Data:</h2>
           <ul>
             {voterKeys.map((key, index) => {
               const rowData = JSON.parse(storage[key])
