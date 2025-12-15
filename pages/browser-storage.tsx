@@ -36,8 +36,7 @@ function ShowBrowserStoragePage() {
 
   return (
     <main className="flex flex-col p-4 py-12 mx-auto w-full max-w-xl min-h-screen">
-      <Head title="Show Browser Storage" />
-      <h1 className="text-3xl font-bold">Show Browser Storage</h1>
+      <Head title="View Browser Storage" />
 
       {/* Page title */}
       <h1 className="text-3xl font-bold">View Browser Storage</h1>

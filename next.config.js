@@ -27,6 +27,16 @@ const nextConfig = withMDX({
         permanent: true,
         source: '/overrides',
       },
+      {
+        destination: '/browser-storage',
+        permanent: true,
+        source: '/show-browser-storage',
+      },
+      {
+        destination: '/browser-storage',
+        permanent: true,
+        source: '/view-browser-storage',
+      },
     ]
   },
   transpilePackages: ['lodash-es'],
