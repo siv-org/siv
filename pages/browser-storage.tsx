@@ -41,9 +41,9 @@ function BrowserStoragePage() {
 
       {/* Anti-Coercion Reminder */}
       <details className="mt-4 -ml-2 rounded-lg open:bg-gray-100 group">
-        <summary className="p-2 font-medium rounded-lg cursor-pointer hover:bg-gray-200 w-fit group-open:w-full">
-          Reminder: Your vote is your private choice{' '}
+        <summary className="p-2 font-medium rounded-lg cursor-pointer sm:pr-4 hover:bg-gray-200 w-fit group-open:w-full">
           <SafetyOutlined className="mr-1.5 text-lg text-green-800 relative top-px" />
+          Reminder: Your vote is your private choice
         </summary>
         <div className="p-2 space-y-1 text-sm text-black/50">
           <p>For elections to be truly Free and Fair, every voter must be able to make their own honest choices.</p>
