@@ -16,6 +16,7 @@ function ShowBrowserStoragePage() {
   const [storage, setStorage] = useState<Record<string, string>>({})
   const [error, setError] = useState<string>('')
 
+  // Load localStorage
   useEffect(() => {
     let storageResults
     try {
@@ -30,6 +31,7 @@ function ShowBrowserStoragePage() {
     setStorage(storageResults)
   }, [])
 
+  // Filter voter keys
   const voterKeys = Object.keys(storage).filter((key) => key.startsWith('voter-'))
 
   return (
@@ -37,11 +39,16 @@ function ShowBrowserStoragePage() {
       <Head title="Show Browser Storage" />
       <h1 className="text-3xl font-bold">Show Browser Storage</h1>
 
+      {/* Page title */}
+      <h1 className="text-3xl font-bold">View Browser Storage</h1>
+
+      {/* Description */}
       <div className="mt-8">
         <p>This tool helps you see all the vote data stored in this device{"'"}s browser.</p>
         <p className="text-sm opacity-50">This information is local only, and not shared with anyone.</p>
       </div>
 
+      {/* Anti-Coercion Reminder */}
       <details className="p-2 pt-0 mt-4 -ml-2 rounded-lg open:bg-gray-100 group">
         <summary className="p-2 -ml-2 font-medium rounded-lg cursor-pointer hover:bg-gray-200 w-fit group-open:w-full">
           Reminder: Your vote is your private choice{' '}
@@ -59,8 +66,10 @@ function ShowBrowserStoragePage() {
         </div>
       </details>
 
+      {/* Error */}
       {error && <p className="text-red-500">{error}</p>}
 
+      {/* Voter Data */}
       {voterKeys.length > 0 ? (
         <>
           <h2 className="mt-8 text-2xl font-bold">Voter:</h2>
@@ -98,6 +107,7 @@ function ShowBrowserStoragePage() {
         <p className="mt-10 text-xl font-bold opacity-50">No votes found</p>
       )}
 
+      {/* Raw Data */}
       <details className="mt-8">
         <summary className="p-2 -ml-2 text-lg font-medium rounded-lg cursor-pointer hover:bg-gray-200 w-fit">
           Show Raw data:
