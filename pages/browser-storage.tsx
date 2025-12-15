@@ -61,7 +61,9 @@ function BrowserStoragePage() {
       {error && <p className="text-red-500">{error}</p>}
 
       {/* Voter Data */}
-      {voterKeys.length > 0 ? (
+      {!voterKeys.length ? (
+        <p className="mt-10 text-xl font-bold opacity-50">No votes found</p>
+      ) : (
         <>
           <h2 className="mt-8 text-2xl font-bold">Voter:</h2>
           <ul>
@@ -94,8 +96,6 @@ function BrowserStoragePage() {
             })}
           </ul>
         </>
-      ) : (
-        <p className="mt-10 text-xl font-bold opacity-50">No votes found</p>
       )}
 
       {/* Raw Data */}
