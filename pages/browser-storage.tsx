@@ -45,7 +45,7 @@ function BrowserStoragePage() {
           Reminder: Your vote is your private choice{' '}
           <SafetyOutlined className="mr-1.5 text-lg text-green-800 relative top-px" />
         </summary>
-        <div className="p-2 space-y-1 text-sm opacity-50">
+        <div className="p-2 space-y-1 text-sm text-black/50">
           <p>For elections to be truly Free and Fair, every voter must be able to make their own honest choices.</p>
           <p>
             If anyone is pressuring you to vote or prove you voted a certain way, SIV has{' '}
