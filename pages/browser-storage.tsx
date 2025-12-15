@@ -4,15 +4,7 @@ import { useState } from 'react'
 import { Head } from 'src/Head'
 import { TailwindPreflight } from 'src/TailwindPreflight'
 
-function Link({ children, href }: { children: React.ReactNode; href: string }) {
-  return (
-    <a className="text-blue-500 hover:underline" href={href} rel="noreferrer" target="_blank">
-      {children}
-    </a>
-  )
-}
-
-function ShowBrowserStoragePage() {
+function BrowserStoragePage() {
   const [storage, setStorage] = useState<Record<string, string>>({})
   const [error, setError] = useState<string>('')
 
@@ -121,4 +113,12 @@ function ShowBrowserStoragePage() {
   )
 }
 
-export default ShowBrowserStoragePage
+function Link({ children, href }: { children: React.ReactNode; href: string }) {
+  return (
+    <a className="text-blue-500 hover:underline" href={href} rel="noreferrer" target="_blank">
+      {children}
+    </a>
+  )
+}
+
+export default BrowserStoragePage
