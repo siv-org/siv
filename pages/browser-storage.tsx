@@ -62,7 +62,10 @@ function BrowserStoragePage() {
 
       {/* Voter Data */}
       {!voterKeys.length ? (
-        <p className="mt-10 text-xl font-bold opacity-50">No votes found</p>
+        <>
+          <p className="mt-10 text-xl italic opacity-50">No vote data found.</p>
+          <p className="text-sm opacity-30">Cleared by Incognito windows</p>
+        </>
       ) : (
         <>
           <h2 className="mt-8 text-2xl font-bold">Voter:</h2>
