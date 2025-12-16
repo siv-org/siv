@@ -72,6 +72,10 @@ export const SubmitButton = ({
             // If auth is `link`, redirect to /auth page
             if (auth === 'link') {
               const { link_auth, visit_to_add_auth } = await response.json()
+              // Store link_auth in localStorage so we can retrieve it if they return
+              if (link_auth) {
+                localStorage.setItem(`link_auth_${election_id}`, link_auth)
+              }
               if (embed) {
                 // console.log('SIV submit button', link_auth, embed)
                 window.parent.postMessage({ link_auth }, embed)

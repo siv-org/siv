@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 
 import { GlobalCSS } from '../GlobalCSS'
 import { CustomAuthFlow, hasCustomAuthFlow } from './auth/11choosesAuth/CustomAuthFlow'
@@ -15,13 +16,14 @@ import { YourAuthToken } from './YourAuthToken'
 export const AuthenticatedContent = ({ auth, election_id }: { auth: string; election_id: string }): JSX.Element => {
   // Initialize local vote state on client
   const [state, dispatch] = useVoteState(`voter-${election_id}-${auth}`)
+  const { query } = useRouter()
 
   storeElectionInfo(dispatch, election_id)
 
   return (
     <>
       {state.submitted_at ? (
-        hasCustomAuthFlow(election_id) ? (
+        hasCustomAuthFlow(election_id) && query.show !== 'verification' ? (
           <CustomAuthFlow {...{ auth, election_id }} />
         ) : state.esignature_requested && !state.esigned_at ? (
           <ESignScreen {...{ auth, dispatch, election_id }} />

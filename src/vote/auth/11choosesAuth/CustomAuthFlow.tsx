@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { api } from 'src/api-helper'
 import { TailwindPreflight } from 'src/TailwindPreflight'
 
@@ -11,6 +11,7 @@ export const election_ids_for_11chooses = [
   '1764391039716', // D test
   '1764646354556', // A test
   '1764187291234', // prod
+  '1765914034351', // Ariana test to enable Verification Link to Provisional Ballot
 ]
 
 export const hasCustomAuthFlow = (election_id: string) => {
@@ -25,13 +26,54 @@ export const hasCustomAuthFlow = (election_id: string) => {
 }
 
 export const CustomAuthFlow = ({ auth, election_id }: { auth: string; election_id: string }) => {
-  const { query } = useRouter()
+  const router = useRouter()
+  const { query } = router
   const { is_withheld, loaded, voterName } = useVoterInfo(auth, election_id)
   const passedYOB = query.passed_yob === 'true'
-  if (auth === 'link') return <ReturnToProvisional />
+  const hasRedirected = useRef(false)
+
+  // If auth is 'link', try to redirect to auth page with link param if available
+  // Check URL query first, then localStorage
+  useEffect(() => {
+    if (auth === 'link' && !hasRedirected.current) {
+      const link_auth =
+        (query.link as string | undefined) ||
+        (typeof window !== 'undefined' ? localStorage.getItem(`link_auth_${election_id}`) : null)
+      if (link_auth && !query.link) {
+        // If we have link_auth from localStorage but not in URL, redirect to auth page
+        hasRedirected.current = true
+        router.replace(`/election/${election_id}/auth?link=${link_auth}`)
+      }
+    }
+  }, [auth, election_id, query.link, router])
+
+  if (auth === 'link') {
+    // Always use auth=link for verification URL to match the stored vote state key
+    const verificationUrl = `/election/${election_id}/vote?auth=link&show=verification`
+    return (
+      <div className="text-center">
+        <div className="mb-6">
+          <a className="text-lg font-semibold text-blue-700 hover:underline" href={verificationUrl}>
+            Your Verification Info
+          </a>
+        </div>
+        <ReturnToProvisional />
+      </div>
+    )
+  }
+
+  // Build verification link URL
+  const verificationUrl = `/election/${election_id}/vote?auth=${auth}${
+    query.passed_yob ? `&passed_yob=${query.passed_yob}` : ''
+  }${query.passed_email ? `&passed_email=${query.passed_email}` : ''}&show=verification`
 
   return (
     <div className="text-center">
+      <div className="mb-6">
+        <a className="text-lg font-semibold text-blue-700 hover:underline" href={verificationUrl}>
+          Your Verification Info
+        </a>
+      </div>
       {!loaded ? (
         // Loading voter info
         <p className="mt-8 text-lg italic animate-pulse text-black/50">Loading voter info...</p>
