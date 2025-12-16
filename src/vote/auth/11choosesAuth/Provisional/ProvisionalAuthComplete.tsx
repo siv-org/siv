@@ -1,5 +1,7 @@
 import useSWR, { mutate } from 'swr'
 
+import { LinkToVerification } from './LinkToVerification'
+
 export const ProvisionalAuthComplete = ({ election_id, link_auth }: { election_id: string; link_auth: string }) => {
   const { isAuthComplete } = useAuthComplete(election_id, link_auth)
 
@@ -15,6 +17,8 @@ export const ProvisionalAuthComplete = ({ election_id, link_auth }: { election_i
         </span>
         <div className="mt-4 text-3xl">Thank you.</div>
       </h1>
+
+      <LinkToVerification />
     </div>
   )
 }
