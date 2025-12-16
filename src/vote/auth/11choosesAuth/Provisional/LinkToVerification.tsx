@@ -1,3 +1,4 @@
+import { LinkOutlined } from '@ant-design/icons'
 import { useRouter } from 'next/router'
 
 export const LinkToVerification = () => {
@@ -5,10 +6,10 @@ export const LinkToVerification = () => {
 
   return (
     <a
-      className="block mb-10 text-lg font-semibold text-blue-700 hover:underline"
+      className="block mt-5 text-lg font-semibold text-blue-700 hover:underline"
       href={`/election/${election_id}/vote?auth=link&show=verification`}
     >
-      Link to Verification
+      <LinkOutlined /> Link to see your Vote Verification info
     </a>
   )
 }

@@ -1,4 +1,3 @@
-import { LinkToVerification } from './LinkToVerification'
 import { PassportScan } from './PassportScan'
 import { ProvisionalAuthComplete } from './ProvisionalAuthComplete'
 import { SMSNewTab } from './SMS/SMSNewTab'
@@ -6,8 +5,6 @@ import { SMSNewTab } from './SMS/SMSNewTab'
 export const ProvisionalAuthOptions = ({ election_id, link_auth }: { election_id: string; link_auth: string }) => {
   return (
     <div className="px-4 pt-10 mx-auto max-w-2xl text-center sm:px-6">
-      <LinkToVerification />
-
       <ProvisionalAuthComplete {...{ election_id, link_auth }} />
       {/* <p className="mb-1 text-lg font-medium opacity-50">Step 2 of 2</p> */}
 
