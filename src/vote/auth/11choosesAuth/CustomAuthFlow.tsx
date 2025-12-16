@@ -16,12 +16,16 @@ export const election_ids_for_11chooses = [
 
 export const hasCustomAuthFlow = (election_id: string) => {
   const {
-    query: { link, passed_email },
+    query: { link, passed_email, show },
   } = useRouter()
 
   // link = provisional ballot
   // non-provisional's are done after email
   if (!link && passed_email === 'true') return false
+
+  // Allow Provisional ballots to get back to their Verification page
+  if (show === 'verification') return false
+
   return election_ids_for_11chooses.includes(election_id)
 }
 
