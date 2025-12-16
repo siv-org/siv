@@ -11,7 +11,7 @@ export const election_ids_for_11chooses = [
   '1764391039716', // D test
   '1764646354556', // A test
   '1764187291234', // prod
-  '1765914034351', // Ariana test to enable Verification Link to Provisional Ballot
+  '1765914034351', // A test: Provisional ballot's Verification Link
 ]
 
 export const hasCustomAuthFlow = (election_id: string) => {
