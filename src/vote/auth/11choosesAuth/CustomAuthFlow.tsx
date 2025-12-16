@@ -30,25 +30,11 @@ export const hasCustomAuthFlow = (election_id: string) => {
 }
 
 export const CustomAuthFlow = ({ auth, election_id }: { auth: string; election_id: string }) => {
-  const router = useRouter()
-  const { query } = router
+  const { query } = useRouter()
   const { is_withheld, loaded, voterName } = useVoterInfo(auth, election_id)
   const passedYOB = query.passed_yob === 'true'
 
-  if (auth === 'link') {
-    // Always use auth=link for verification URL to match the stored vote state key
-    const verificationUrl = `/election/${election_id}/vote?auth=link&show=verification`
-    return (
-      <div className="text-center">
-        <div className="mb-6">
-          <a className="text-lg font-semibold text-blue-700 hover:underline" href={verificationUrl}>
-            Your Verification Info
-          </a>
-        </div>
-        <ReturnToProvisional />
-      </div>
-    )
-  }
+  if (auth === 'link') return <ReturnToProvisional {...{ election_id }} />
 
   // Build verification link URL
   const verificationUrl = `/election/${election_id}/vote?auth=${auth}${
