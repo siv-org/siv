@@ -1,6 +1,8 @@
+import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
-export const ReturnToProvisional = ({ election_id }: { election_id: string }) => {
+export const ReturnToProvisional = () => {
+  const { election_id } = useRouter().query as { election_id: string }
   const [fadeIn, setFadeIn] = useState(false)
 
   // Fade in after short delay

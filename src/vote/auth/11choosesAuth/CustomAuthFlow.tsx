@@ -33,8 +33,7 @@ export const CustomAuthFlow = ({ auth, election_id }: { auth: string; election_i
   const { query } = useRouter()
   const { is_withheld, loaded, voterName } = useVoterInfo(auth, election_id)
   const passedYOB = query.passed_yob === 'true'
-
-  if (auth === 'link') return <ReturnToProvisional {...{ election_id }} />
+  if (auth === 'link') return <ReturnToProvisional />
 
   return (
     <div className="text-center">
