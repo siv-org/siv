@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { api } from 'src/api-helper'
 import { TailwindPreflight } from 'src/TailwindPreflight'
 
@@ -34,22 +34,6 @@ export const CustomAuthFlow = ({ auth, election_id }: { auth: string; election_i
   const { query } = router
   const { is_withheld, loaded, voterName } = useVoterInfo(auth, election_id)
   const passedYOB = query.passed_yob === 'true'
-  const hasRedirected = useRef(false)
-
-  // If auth is 'link', try to redirect to auth page with link param if available
-  // Check URL query first, then localStorage
-  useEffect(() => {
-    if (auth === 'link' && !hasRedirected.current) {
-      const link_auth =
-        (query.link as string | undefined) ||
-        (typeof window !== 'undefined' ? localStorage.getItem(`link_auth_${election_id}`) : null)
-      if (link_auth && !query.link) {
-        // If we have link_auth from localStorage but not in URL, redirect to auth page
-        hasRedirected.current = true
-        router.replace(`/election/${election_id}/auth?link=${link_auth}`)
-      }
-    }
-  }, [auth, election_id, query.link, router])
 
   if (auth === 'link') {
     // Always use auth=link for verification URL to match the stored vote state key
