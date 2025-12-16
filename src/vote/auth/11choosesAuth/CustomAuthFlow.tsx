@@ -36,18 +36,8 @@ export const CustomAuthFlow = ({ auth, election_id }: { auth: string; election_i
 
   if (auth === 'link') return <ReturnToProvisional {...{ election_id }} />
 
-  // Build verification link URL
-  const verificationUrl = `/election/${election_id}/vote?auth=${auth}${
-    query.passed_yob ? `&passed_yob=${query.passed_yob}` : ''
-  }${query.passed_email ? `&passed_email=${query.passed_email}` : ''}&show=verification`
-
   return (
     <div className="text-center">
-      <div className="mb-6">
-        <a className="text-lg font-semibold text-blue-700 hover:underline" href={verificationUrl}>
-          Your Verification Info
-        </a>
-      </div>
       {!loaded ? (
         // Loading voter info
         <p className="mt-8 text-lg italic animate-pulse text-black/50">Loading voter info...</p>
