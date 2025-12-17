@@ -82,10 +82,10 @@ function BrowserStoragePage() {
                   <div>
                     <b>Vote Submitted at:</b> {rowData.submitted_at || <i className="opacity-50">Not submitted</i>}
                   </div>
-                  <div>
+                  <div className="mt-1.5">
                     <b>Verification #:</b> {rowData.tracking}
                   </div>
-                  <div>
+                  <div className="text-sm opacity-50">
                     <b># selections:</b>{' '}
                     {
                       Object.entries((rowData.plaintext as Record<string, string>) || {}).filter(
