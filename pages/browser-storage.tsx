@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { Head } from 'src/Head'
 import { TailwindPreflight } from 'src/TailwindPreflight'
 import { AntiCoercionReminder } from 'src/vote/submitted/AntiCoercionReminder'
+import TimeAgo from 'timeago-react'
 
 function BrowserStoragePage() {
   const [storage, setStorage] = useState<Record<string, string>>({})
@@ -64,7 +65,7 @@ function BrowserStoragePage() {
               const auth_token = key.split('-')[2] || 'unknown'
 
               return (
-                <li className="mt-4" key={key}>
+                <li className="mt-8" key={key}>
                   <div>
                     {index + 1}. {key}
                   </div>
@@ -73,6 +74,10 @@ function BrowserStoragePage() {
                   </div>
                   <div>
                     <b className="font-semibold">Auth Token:</b> {auth_token}
+                  </div>
+                  <div className="mt-1.5 text-sm opacity-50">
+                    <b>Last modified:</b>{' '}
+                    <TimeAgo datetime={new Date(rowData.last_modified_at)} title={rowData.last_modified_at} />
                   </div>
                   <div>
                     <b>Vote Submitted at:</b> {rowData.submitted_at || <i className="opacity-50">Not submitted</i>}
