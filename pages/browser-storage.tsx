@@ -90,8 +90,8 @@ function BrowserStoragePage() {
 
       {/* Raw Data */}
       <details className="mt-8">
-        <summary className="p-2 -ml-2 text-lg font-medium rounded-lg cursor-pointer hover:bg-gray-200 w-fit">
-          Show Raw data:
+        <summary className="p-2 -ml-2 font-medium rounded-lg cursor-pointer hover:bg-gray-200 w-fit">
+          Show raw data:
         </summary>
         <pre className="p-4 whitespace-pre-wrap break-all rounded-md bg-gray-00">
           {JSON.stringify(storage, null, 2)}
