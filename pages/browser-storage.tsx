@@ -48,7 +48,7 @@ function BrowserStoragePage() {
         <div className="p-2 space-y-1 text-sm text-black/50">
           <p>For elections to be truly Free and Fair, every voter must be able to make their own honest choices.</p>
           <p>
-            If anyone is pressuring you to vote or prove you voted a certain way, SIV has{' '}
+            If anyone is pressuring you to prove you voted a certain way, SIV has{' '}
             <Link href="/overrides">advanced tools</Link> available to help.
           </p>
           <p>
