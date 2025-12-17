@@ -59,6 +59,7 @@ function BrowserStoragePage() {
           <ul>
             {voterKeys.map((key, index) => {
               const rowData = JSON.parse(storage[key])
+              // console.log(rowData)
 
               const auth_token = key.split('-')[2] || 'unknown'
 
@@ -74,13 +75,19 @@ function BrowserStoragePage() {
                     <b className="font-semibold">Auth Token:</b> {auth_token}
                   </div>
                   <div>
-                    <b>Vote Submitted at:</b> {rowData.submitted_at || 'Not submitted'}
+                    <b>Vote Submitted at:</b> {rowData.submitted_at || <i className="opacity-50">Not submitted</i>}
                   </div>
-                  {
-                    <div>
-                      <b>Verification #:</b> {rowData.tracking}
-                    </div>
-                  }
+                  <div>
+                    <b>Verification #:</b> {rowData.tracking}
+                  </div>
+                  <div>
+                    <b># selections:</b>{' '}
+                    {
+                      Object.entries((rowData.plaintext as Record<string, string>) || {}).filter(
+                        ([, value]) => !value.endsWith('BLANK'),
+                      ).length
+                    }
+                  </div>
                 </li>
               )
             })}
