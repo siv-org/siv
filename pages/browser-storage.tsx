@@ -62,7 +62,7 @@ function BrowserStoragePage() {
               const rowData = JSON.parse(storage[key])
               // console.log(rowData)
 
-              const auth_token = key.split('-')[2] || 'unknown'
+              const [, election_id, auth_token = 'unknown'] = key.split('-')
 
               return (
                 <li className="p-4 mt-6 rounded-lg bg-blue-50/80" key={key}>
@@ -74,7 +74,15 @@ function BrowserStoragePage() {
                     <SB>Election Title:</SB> {rowData.election_title}
                   </div>
                   <div>
-                    <SB>Auth Token:</SB> {auth_token}
+                    <SB>Auth Token:</SB>{' '}
+                    <a
+                      className="hover:underline"
+                      href={`election/${election_id}/vote?auth=${auth_token}`}
+                      rel="noreferrer"
+                      target="_blank"
+                    >
+                      {auth_token}
+                    </a>
                   </div>
 
                   <div className="mt-1.5 text-sm opacity-50">
@@ -86,7 +94,10 @@ function BrowserStoragePage() {
                   </div>
 
                   <div className="mt-1.5">
-                    <SB>Verification #:</SB> {rowData.tracking}
+                    <SB>Verification #:</SB>{' '}
+                    <a className="hover:underline" href={`election/${election_id}`} rel="noreferrer" target="_blank">
+                      {rowData.tracking}
+                    </a>
                   </div>
                   <div className="text-sm opacity-50">
                     <SB># selections:</SB>{' '}
