@@ -69,12 +69,14 @@ function BrowserStoragePage() {
                   <div>
                     {index + 1}. {key}
                   </div>
+
                   <div className="mt-0.5">
                     <SB>Election Title:</SB> {rowData.election_title}
                   </div>
                   <div>
                     <SB>Auth Token:</SB> {auth_token}
                   </div>
+
                   <div className="mt-1.5 text-sm opacity-50">
                     <SB>Last modified:</SB>{' '}
                     <TimeAgo datetime={new Date(rowData.last_modified_at)} title={rowData.last_modified_at} />
@@ -82,6 +84,7 @@ function BrowserStoragePage() {
                   <div>
                     <SB>Vote Submitted:</SB> {rowData.submitted_at || <i className="opacity-50">Not submitted</i>}
                   </div>
+
                   <div className="mt-1.5">
                     <SB>Verification #:</SB> {rowData.tracking}
                   </div>
