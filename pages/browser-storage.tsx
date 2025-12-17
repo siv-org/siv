@@ -65,7 +65,7 @@ function BrowserStoragePage() {
               const auth_token = key.split('-')[2] || 'unknown'
 
               return (
-                <li className="mt-8" key={key}>
+                <li className="p-4 mt-6 rounded-lg bg-blue-50/80" key={key}>
                   <div>
                     {index + 1}. {key}
                   </div>
@@ -80,7 +80,7 @@ function BrowserStoragePage() {
                     <TimeAgo datetime={new Date(rowData.last_modified_at)} title={rowData.last_modified_at} />
                   </div>
                   <div>
-                    <b>Vote Submitted at:</b> {rowData.submitted_at || <i className="opacity-50">Not submitted</i>}
+                    <b>Vote Submitted:</b> {rowData.submitted_at || <i className="opacity-50">Not submitted</i>}
                   </div>
                   <div className="mt-1.5">
                     <b>Verification #:</b> {rowData.tracking}
