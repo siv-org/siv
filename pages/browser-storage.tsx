@@ -70,23 +70,23 @@ function BrowserStoragePage() {
                     {index + 1}. {key}
                   </div>
                   <div className="mt-0.5">
-                    <b className="font-semibold">Election Title:</b> {rowData.election_title}
+                    <SB>Election Title:</SB> {rowData.election_title}
                   </div>
                   <div>
-                    <b className="font-semibold">Auth Token:</b> {auth_token}
+                    <SB>Auth Token:</SB> {auth_token}
                   </div>
                   <div className="mt-1.5 text-sm opacity-50">
-                    <b>Last modified:</b>{' '}
+                    <SB>Last modified:</SB>{' '}
                     <TimeAgo datetime={new Date(rowData.last_modified_at)} title={rowData.last_modified_at} />
                   </div>
                   <div>
-                    <b>Vote Submitted:</b> {rowData.submitted_at || <i className="opacity-50">Not submitted</i>}
+                    <SB>Vote Submitted:</SB> {rowData.submitted_at || <i className="opacity-50">Not submitted</i>}
                   </div>
                   <div className="mt-1.5">
-                    <b>Verification #:</b> {rowData.tracking}
+                    <SB>Verification #:</SB> {rowData.tracking}
                   </div>
                   <div className="text-sm opacity-50">
-                    <b># selections:</b>{' '}
+                    <SB># selections:</SB>{' '}
                     {
                       Object.entries((rowData.plaintext as Record<string, string>) || {}).filter(
                         ([, value]) => !value.endsWith('BLANK'),
@@ -113,6 +113,10 @@ function BrowserStoragePage() {
       <TailwindPreflight />
     </main>
   )
+}
+
+function SB({ children }: { children: React.ReactNode }) {
+  return <b className="font-semibold">{children}</b>
 }
 
 export default BrowserStoragePage
