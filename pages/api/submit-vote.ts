@@ -28,6 +28,24 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     // Create a unique link_auth token for this vote
     const link_auth = generateAuthToken()
 
+    // Did this election stop accepting votes?
+    if (election.stop_accepting_votes) {
+      const message = 'The election administrator has stopped accepting new votes.'
+
+      await Promise.all([
+        electionDoc.collection('votes-rejected').doc(link_auth).set({
+          auth,
+          created_at: new Date(),
+          encrypted_vote,
+          headers: req.headers,
+          link_auth,
+          rejection: message,
+        }),
+        pushover('Link submission when closed', `election: ${election_id}\nauth: ${auth}\nmessage: ${message}`),
+      ])
+      return res.status(400).json({ error: message })
+    }
+
     // Store in db as 'votes-pending'
     await Promise.all([
       // 2a. Store the encrypted vote in db
