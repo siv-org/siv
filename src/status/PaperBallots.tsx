@@ -10,7 +10,10 @@ export const PaperBallots = () => {
   const { columns } = generateColumnNames({ ballot_design })
 
   return (
-    <div className="mt-8 bg-white p-4 rounded-lg shadow-[0_2px_2px_hsla(0,0%,50%,0.333),0_4px_4px_hsla(0,0%,50%,0.333),0_6px_6px_hsla(0,0%,50%,0.333)]">
+    <div
+      className="mt-8 bg-white p-4 rounded-lg shadow-[0_2px_2px_hsla(0,0%,50%,0.333),0_4px_4px_hsla(0,0%,50%,0.333),0_6px_6px_hsla(0,0%,50%,0.333)]"
+      id="paper-ballots"
+    >
       <h2>Paper Ballots</h2>
 
       <table className="block overflow-auto border-collapse [&_tr>*]:[border:1px_solid_#ccc] [&_tr>*]:px-2.5 [&_tr>*]:py-[3px] pb-2">
