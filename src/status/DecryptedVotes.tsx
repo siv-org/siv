@@ -1,6 +1,7 @@
 import { orderBy } from 'lodash-es'
 import { generateColumnNames } from 'src/vote/generateColumnNames'
 
+import { AutoVerifier } from './AutoVerifier'
 import { HowDoIVerify } from './HowDoIVerify'
 import { BudgetEntry, BudgetsAveraged, findBudgetQuestion, sumBudgetVotes } from './tallyBudgetLogic'
 import { unTruncateSelection } from './un-truncate-selection'
@@ -59,6 +60,8 @@ export const DecryptedVotes = ({ proofsPage }: { proofsPage?: boolean }): JSX.El
           ))}
         </tbody>
       </table>
+
+      <AutoVerifier />
     </div>
   )
 }
