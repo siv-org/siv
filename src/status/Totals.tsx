@@ -10,7 +10,7 @@ import { useDecryptedVotes } from './use-decrypted-votes'
 import { useElectionInfo } from './use-election-info'
 
 export const Totals = ({ proofsPage }: { proofsPage?: boolean }): JSX.Element => {
-  const { ballot_design, last_decrypted_at, paper_totals } = useElectionInfo()
+  const { ballot_design, last_decrypted_at, paper_totals, paper_votes } = useElectionInfo()
   const votes = useDecryptedVotes()
 
   // Stop if we don't have enough data yet
@@ -56,7 +56,7 @@ export const Totals = ({ proofsPage }: { proofsPage?: boolean }): JSX.Element =>
         ))}
       </div>
 
-      <PaperTotals {...{ paper_totals }} />
+      <PaperTotals {...{ paper_totals, paper_votes }} />
     </>
   )
 }

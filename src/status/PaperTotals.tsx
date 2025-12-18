@@ -1,5 +1,13 @@
-export const PaperTotals = ({ paper_totals }: { paper_totals?: Record<string, number> }) => {
+export const PaperTotals = ({
+  paper_totals,
+  paper_votes,
+}: {
+  paper_totals?: Record<string, number>
+  paper_votes?: Record<string, string>[]
+}) => {
   if (!paper_totals) return null
+
+  const num_paper_votes = paper_votes?.length
 
   const sorted_paper_totals = Object.entries(paper_totals).sort((a, b) => b[1] - a[1])
 
@@ -10,7 +18,12 @@ export const PaperTotals = ({ paper_totals }: { paper_totals?: Record<string, nu
       <ul>
         {sorted_paper_totals.map(([key, value]) => (
           <li key={key}>
-            {key}: {value}
+            {key}: {value}{' '}
+            {num_paper_votes ? (
+              <span className="ml-1 opacity-50 text-[12px]">({((100 * value) / num_paper_votes).toFixed(1)}%)</span>
+            ) : (
+              ''
+            )}
           </li>
         ))}
       </ul>

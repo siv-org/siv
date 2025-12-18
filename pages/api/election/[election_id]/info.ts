@@ -16,6 +16,7 @@ export type ElectionInfo = {
   observers?: string[]
   p?: string
   paper_totals?: Record<string, number>
+  paper_votes?: Record<string, string>[]
   privacy_protectors_statements?: string
   skip_shuffle_proofs?: boolean
   submission_confirmation?: string
@@ -59,6 +60,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     last_decrypted_at,
     p,
     paper_totals,
+    paper_votes,
     privacy_protectors_statements,
     skip_shuffle_proofs,
     submission_confirmation,
@@ -80,6 +82,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     observers,
     p,
     paper_totals,
+    paper_votes: paper_votes ? JSON.parse(paper_votes) : undefined,
     privacy_protectors_statements,
     skip_shuffle_proofs,
     submission_confirmation,
