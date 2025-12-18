@@ -5,7 +5,7 @@ import { useRef, useState } from 'react'
 import { OnClickButton } from 'src/_shared/Button'
 import { api } from 'src/api-helper'
 
-import { useWarnOnClose } from './useWarnOnClose'
+import { useWarnOnClose } from '../useWarnOnClose'
 
 export const AddEmailPage = ({
   auth,

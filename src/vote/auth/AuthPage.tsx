@@ -6,10 +6,13 @@ import { TailwindPreflight } from 'src/TailwindPreflight'
 import { Footer } from '../Footer'
 import { hasCustomAuthFlow } from './11choosesAuth/CustomAuthFlow'
 import { ProvisionalFlow } from './11choosesAuth/Provisional/ProvisionalFlow'
+import { useWarnOnClose } from './useWarnOnClose'
 import { VoterAuthInfoForm } from './VoterAuthInfoForm'
 
 export const AuthPage = () => {
   const { election_id } = useRouter().query as { election_id?: string }
+  useWarnOnClose()
+
   if (hasCustomAuthFlow(election_id || '')) return <ProvisionalFlow />
 
   return (
