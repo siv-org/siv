@@ -39,7 +39,7 @@ export const ElectionStatusPage = (): JSX.Element => {
 
               {/* View Ballot */}
               <a
-                className="inline-block p-1.5 text-black -ml-1.5 opacity-50 transition-opacity hover:opacity-100 hover:no-underline"
+                className="inline-block p-1.5 text-black -ml-1.5 opacity-50 border rounded-lg transition duration-300 hover:opacity-100 hover:no-underline border-solid border-black/0 hover:border-black/30"
                 href={`./${election_id}/vote?auth=preview`}
                 rel="noreferrer"
                 target="_blank"
