@@ -8,6 +8,9 @@
     },
     "pages/api/election/[election_id]/trustees/update-admin.ts": {
       "maxDuration": 300
+    },
+    "pages/api/election/[election_id]/notify-unlocked.ts": {
+      "maxDuration": 300
     }
   }
 }
