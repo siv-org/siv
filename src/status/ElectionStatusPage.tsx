@@ -37,6 +37,16 @@ export const ElectionStatusPage = (): JSX.Element => {
             <div>
               <h2>{election_title}</h2>
 
+              {/* View Ballot */}
+              <a
+                className="inline-block p-1.5 text-black -ml-1.5 opacity-50 transition-opacity hover:opacity-100 hover:no-underline"
+                href={`./${election_id}/vote?auth=preview`}
+                rel="noreferrer"
+                target="_blank"
+              >
+                View Ballot
+              </a>
+
               {/* Optional Election Homepage link */}
               {election_homepage && (
                 <p>
