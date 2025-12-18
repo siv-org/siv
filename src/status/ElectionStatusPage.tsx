@@ -58,6 +58,7 @@ export const ElectionStatusPage = (): JSX.Element => {
           {!hide_tallies && <Totals />}
           <br />
           <DecryptedVotes />
+          <PaperBallots />
           <br />
 
           {!hideEncryptedVotes.includes(election_id) && (
@@ -135,4 +136,6 @@ export const ElectionStatusPage = (): JSX.Element => {
 }
 
 import { live11chooses } from 'src/vote/YourAuthToken'
+
+import { PaperBallots } from './PaperBallots'
 const hideEncryptedVotes = [live11chooses]
