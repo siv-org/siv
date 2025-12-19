@@ -76,8 +76,9 @@ function NotifyVotersUnlocked({
         setLoading(true)
         setError('')
 
-        await api(`election/${election_id}/admin/notify-unlocked`).catch((e) => setError(e.message))
+        const response = await api(`election/${election_id}/admin/notify-unlocked`)
         revalidate(election_id)
+        if (response.status !== 200) setError(response.statusText || 'Unknown error')
 
         setTimeout(async () => {
           setLoading(false)
