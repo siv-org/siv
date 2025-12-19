@@ -1,7 +1,9 @@
 import Link from 'next/link'
+import { useState } from 'react'
 import { api } from 'src/api-helper'
 import { useDecryptedVotes } from 'src/status/use-decrypted-votes'
 
+import { Spinner } from '../Spinner'
 import { revalidate, useStored } from '../useStored'
 import { useIsUnlockBlocked } from './use-is-unlock-blocked'
 
@@ -11,7 +13,7 @@ export const UnlockedStatus = () => {
   const unlocked_votes = useDecryptedVotes()
   const isUnlockBlocked = useIsUnlockBlocked()
 
-  if (!num_voted || !unlocked_votes || (!isUnlockBlocked && !unlocked_votes.length)) return null
+  if (!election_id || !num_voted || !unlocked_votes || (!isUnlockBlocked && !unlocked_votes.length)) return null
 
   const more_to_unlock = num_voted > unlocked_votes.length
 
@@ -35,20 +37,7 @@ export const UnlockedStatus = () => {
               unlocked {unlocked_votes.length}
             </a>
           </Link>{' '}
-          votes.{' '}
-          {notified_unlocked !== unlocked_votes.length ? (
-            <a
-              className="font-semibold cursor-pointer"
-              onClick={async () => {
-                await api(`election/${election_id}/admin/notify-unlocked`)
-                revalidate(election_id)
-              }}
-            >
-              Notify voters?
-            </a>
-          ) : (
-            <b className="font-semibold">Voters notified.</b>
-          )}
+          votes. <NotifyVotersUnlocked {...{ election_id, notified_unlocked, unlocked_votes }} />
         </p>
       ) : (
         <p>
@@ -61,5 +50,42 @@ export const UnlockedStatus = () => {
         }
       `}</style>
     </div>
+  )
+}
+
+function NotifyVotersUnlocked({
+  election_id,
+  notified_unlocked,
+  unlocked_votes,
+}: {
+  election_id: string
+  notified_unlocked?: number
+  unlocked_votes: unknown[]
+}) {
+  const [loading, setLoading] = useState(false)
+
+  const notifiedAll = notified_unlocked === unlocked_votes.length
+  if (notifiedAll) return <b className="font-semibold">Voters notified.</b>
+
+  return !loading ? (
+    <a
+      className="font-semibold cursor-pointer"
+      onClick={async () => {
+        setLoading(true)
+
+        await api(`election/${election_id}/admin/notify-unlocked`)
+        revalidate(election_id)
+
+        setTimeout(async () => {
+          setLoading(false)
+        }, 500)
+      }}
+    >
+      Notify voters?
+    </a>
+  ) : (
+    <span className="font-semibold animate-pulse">
+      Notifying...&nbsp; <Spinner />
+    </span>
   )
 }
