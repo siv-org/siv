@@ -63,17 +63,20 @@ function NotifyVotersUnlocked({
   unlocked_votes: unknown[]
 }) {
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
   const notifiedAll = notified_unlocked === unlocked_votes.length
   if (notifiedAll) return <b className="font-semibold">Voters notified.</b>
+  if (error) return <span className="text-red-500">Notifying error: {error}</span>
 
   return !loading ? (
     <a
       className="font-semibold cursor-pointer"
       onClick={async () => {
         setLoading(true)
+        setError('')
 
-        await api(`election/${election_id}/admin/notify-unlocked`)
+        await api(`election/${election_id}/admin/notify-unlocked`).catch((e) => setError(e.message))
         revalidate(election_id)
 
         setTimeout(async () => {
@@ -81,7 +84,7 @@ function NotifyVotersUnlocked({
         }, 500)
       }}
     >
-      Notify voters?
+      Notify voters? {notified_unlocked ? <b className="font-light">(Sent to {notified_unlocked})</b> : ''}
     </a>
   ) : (
     <span className="font-semibold animate-pulse">
