@@ -10,7 +10,16 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (typeof auth_token !== 'string') return res.status(400).send('Missing auth_token')
   if (typeof verif_found !== 'boolean') return res.status(400).send('Missing verif_found')
 
-  if (!verif_found) await pushover('AutoVerifier FAIL', `auth_token: ${auth_token}\nelection_id: ${election_id}`)
+  if (!verif_found) {
+    // Pretty-print location
+    const headers = ['x-vercel-ip-city', 'x-vercel-ip-country-region', 'x-vercel-ip-country']
+    const location = headers.map((header) => req.headers[header]?.toString().replaceAll('%20', ' ')).join(', ')
+
+    await pushover(
+      'AutoVerifier FAIL',
+      `auth_token: ${auth_token}\nelection_id: ${election_id}\n${location}(${req.headers['x-real-ip']})`,
+    )
+  }
 
   if (auth_token === 'link') {
     // TODO: Handle link auth votes
