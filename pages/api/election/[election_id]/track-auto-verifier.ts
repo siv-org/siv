@@ -17,7 +17,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     await pushover(
       'AutoVerifier FAIL',
-      `auth_token: ${auth_token}\nelection_id: ${election_id}\n${location}(${req.headers['x-real-ip']})`,
+      `auth_token: ${auth_token}\nelection_id: ${election_id}\n${location} (${req.headers['x-real-ip']})`,
     )
   }
 
