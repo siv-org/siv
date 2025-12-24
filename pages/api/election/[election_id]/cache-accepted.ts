@@ -152,10 +152,6 @@ const maybePackNewVotes = async (args: {
     args
   const db = electionDoc.firestore
 
-  const root = await getOrInitRoot(rootRef)
-  const updatedAtMs = root.updatedAt.toMillis()
-  if (Date.now() - updatedAtMs < PACK_THROTTLE_MS) return false
-
   if (tailVotesDocs.length === 0 && tailPendingDocs.length === 0) return false
 
   const lease = await tryAcquireLease(db, leaseRef, LEASE_TTL_MS)
