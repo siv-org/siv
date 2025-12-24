@@ -64,9 +64,7 @@ const mapPendingVoteDoc = (doc: firestore.QueryDocumentSnapshot) => {
   return { auth: 'pending', ...encrypted_vote } as PendingVoteSummary
 }
 
-function makePageId(num: number) {
-  return String(num).padStart(6, '0')
-}
+const makePageId = (num: number) => String(num).padStart(6, '0')
 
 const getOrInitRoot = async (rootRef: firestore.DocumentReference): Promise<RootMeta> => {
   const snap = await rootRef.get()
