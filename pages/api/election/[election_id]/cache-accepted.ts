@@ -160,9 +160,9 @@ const maybePackNewVotes = async (args: {
     const openPageRef = pagesCol.doc(openPageId)
     const openPageSnap = await openPageRef.get()
 
-    const data = openPageSnap?.data?.() as
-      | undefined
-      | { bytesApprox?: number; pendingVotes?: VoteSummary[]; votes?: VoteSummary[] }
+    const data = openPageSnap.exists
+      ? (openPageSnap.data() as { bytesApprox?: number; pendingVotes?: VoteSummary[]; votes?: VoteSummary[] })
+      : undefined
     let pageVotes: VoteSummary[] = data?.votes ?? []
     let pagePending: VoteSummary[] = data?.pendingVotes ?? []
     let bytesApprox = data?.bytesApprox ?? approxBytes({ pendingVotes: pagePending, votes: pageVotes })
@@ -233,8 +233,18 @@ const maybePackNewVotes = async (args: {
       await pagesCol.doc(openPageId).set({ bytesApprox, pendingVotes: pagePending, votes: pageVotes }, { merge: true })
     }
 
-    const lastDoc = (newVotesSnap.docs[newVotesSnap.docs.length - 1] ??
-      newPendingSnap.docs[newPendingSnap.docs.length - 1]) as firestore.QueryDocumentSnapshot | undefined
+    const lastVote = newVotesSnap.docs.at(-1)
+    const lastPending = newPendingSnap.docs.at(-1)
+
+    let lastDoc = lastVote || lastPending
+
+    if (lastVote && lastPending) {
+      const vote_time = lastVote.get('created_at')?.toMillis() || 0
+      const pending_time = lastPending.get('created_at')?.toMillis() || 0
+
+      if (pending_time > vote_time) lastDoc = lastPending
+      else if (pending_time === vote_time && lastPending.id > lastVote.id) lastDoc = lastPending // tie-break same as query ordering
+    }
 
     const lastPackedCreatedAt = (lastDoc?.get('created_at') as firestore.Timestamp | undefined) ?? null
     const lastPackedDocId = lastDoc?.id ?? null
@@ -273,8 +283,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (!electionSnap.exists) return res.status(400).json({ error: 'Unknown Election ID.' })
 
   const electionData = (electionSnap.data() as { num_pending_votes?: number; num_votes?: number }) || {}
-  const observedVotes = electionData?.num_votes ?? 0
-  const observedPending = electionData?.num_pending_votes ?? 0
+  const observedPending = electionData.num_pending_votes ?? 0
+  const observedVotes = (electionData.num_votes ?? 0) - observedPending
 
   const cachedRootRef = electionDoc.collection('votes-cached').doc('root')
   const cachedPagesCol = cachedRootRef.collection('pages')
@@ -339,7 +349,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Warn if we're missing votes
   await (async function () {
-    const expectedTotal = observedVotes
+    const expectedTotal = observedVotes + observedPending
     const served = votes.length + pendingVotes.length
     if (served < expectedTotal)
       await pushover(
