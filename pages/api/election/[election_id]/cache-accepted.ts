@@ -197,7 +197,6 @@ const maybePackNewVotes = async (args: {
       {
         bytesApprox,
         pendingVotes: pagePending,
-        sealed: bytesApprox > MAX_PAGE_BYTES * 0.98,
         votes: pageVotes,
       },
       { merge: true },
@@ -205,16 +204,13 @@ const maybePackNewVotes = async (args: {
     totalWrites += 1
 
     const rollToNewPage = async () => {
-      await openPageRef.set({ sealed: true }, { merge: true })
-      totalWrites += 1
-
       openPageId = makePageId(nextPageNum)
       nextPageNum += 1
       pageVotes = []
       pagePending = []
       bytesApprox = approxBytes({ pendingVotes: [], votes: [] })
 
-      await pagesCol.doc(openPageId).set({ bytesApprox, pendingVotes: [], sealed: false, votes: [] }, { merge: true })
+      await pagesCol.doc(openPageId).set({ bytesApprox, pendingVotes: [], votes: [] }, { merge: true })
       totalWrites += 1
     }
 
