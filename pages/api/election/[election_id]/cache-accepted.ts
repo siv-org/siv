@@ -83,7 +83,7 @@ const getOrInitRoot = async (rootRef: firestore.DocumentReference) => {
     observedVotes: 0,
     packedPending: 0,
     packedVotes: 0,
-    updatedAt: firestore.Timestamp.now(),
+    updatedAt: firestore.Timestamp.fromMillis(Date.now() - PACK_THROTTLE_MS),
   }
 
   await rootRef.set(init, { merge: true })
