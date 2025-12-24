@@ -15,7 +15,6 @@ type RootMeta = {
   nextPageNum: number
   observedPending: number
   observedVotes: number
-  openPageId: string
   packedPending: number
   packedVotes: number
   updatedAt: firestore.Timestamp | null
@@ -45,7 +44,7 @@ const makeEtag = (root: RootMeta) => {
     root.lastPackedDocId ?? '',
   ].join('|')
 
-  return createHash('sha1').update(seed).digest('hex').slice(0, 10)
+  return createHash('sha1').update(seed).digest('hex').slice(0, 12)
 }
 
 const mapVoteDoc = (doc: firestore.QueryDocumentSnapshot) => {
@@ -71,7 +70,6 @@ const getOrInitRoot = async (rootRef: firestore.DocumentReference): Promise<Root
     nextPageNum: 2,
     observedPending: 0,
     observedVotes: 0,
-    openPageId: makePageId(1),
     packedPending: 0,
     packedVotes: 0,
     updatedAt: firestore.Timestamp.fromMillis(0),
@@ -146,8 +144,8 @@ const maybePackNewVotes = async (args: {
     // re-read root after lease to avoid duplicate work
     const freshRoot = await getOrInitRoot(rootRef)
 
-    let openPageId = freshRoot.openPageId
     let nextPageNum = freshRoot.nextPageNum
+    let openPageId = makePageId(nextPageNum - 1)
 
     const openPageRef = pagesCol.doc(openPageId)
     const openPageSnap = await openPageRef.get()
@@ -248,7 +246,6 @@ const maybePackNewVotes = async (args: {
         nextPageNum,
         observedPending,
         observedVotes,
-        openPageId,
         packedPending: (freshRoot.packedPending ?? 0) + newPending.length,
         packedVotes: (freshRoot.packedVotes ?? 0) + newVotes.length,
         updatedAt: firestore.Timestamp.now(),
