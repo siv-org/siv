@@ -36,6 +36,7 @@ const setCachingHeaders = (res: NextApiResponse, etag: string) => {
 
 let totalReads = 0
 let totalWrites = 0
+let totalDeletes = 0
 
 const makeEtag = ({
   observedPending,
@@ -116,8 +117,8 @@ const releaseLease = async (db: firestore.Firestore, leaseRef: firestore.Documen
     if (!snap.exists) return
     const data = snap.data() as { owner?: string }
     if (data?.owner !== owner) return
-    tx.set(leaseRef, { expiresAt: firestore.Timestamp.fromMillis(0) }, { merge: true })
-    totalWrites += 1
+    tx.delete(leaseRef)
+    totalDeletes += 1
   })
 }
 
@@ -262,6 +263,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const startTime = Date.now()
   totalReads = 0
   totalWrites = 0
+  totalDeletes = 0
 
   const { election_id } = req.query
   if (typeof election_id !== 'string') return res.status(400).json({ error: 'Missing required election_id' })
@@ -381,6 +383,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       votes: { cached: cached.votes.length, fresh: freshVotes.length },
       z_total_reads: totalReads,
       z_total_writes: totalWrites,
+      zz_total_deletes: totalDeletes,
     },
     results: [...votes, ...pendingVotes],
   })
