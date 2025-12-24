@@ -17,7 +17,7 @@ type RootMeta = {
   observedVotes: number
   packedPending: number
   packedVotes: number
-  updatedAt: firestore.Timestamp | null
+  updatedAt: firestore.Timestamp
 }
 type Summary = PendingVoteSummary | VoteSummary
 type VoteSummary = EncryptedVote & { auth: string }
@@ -72,7 +72,7 @@ const getOrInitRoot = async (rootRef: firestore.DocumentReference): Promise<Root
     observedVotes: 0,
     packedPending: 0,
     packedVotes: 0,
-    updatedAt: firestore.Timestamp.fromMillis(0),
+    updatedAt: firestore.Timestamp.now(),
   }
 
   await rootRef.set(init, { merge: true })
@@ -134,7 +134,7 @@ const maybePackNewVotes = async (args: {
   const db = electionDoc.firestore
 
   const root = await getOrInitRoot(rootRef)
-  const updatedAtMs = root.updatedAt?.toMillis() ?? 0
+  const updatedAtMs = root.updatedAt.toMillis()
   if (Date.now() - updatedAtMs < PACK_THROTTLE_MS) return
 
   const lease = await tryAcquireLease(db, leaseRef, LEASE_TTL_MS)
