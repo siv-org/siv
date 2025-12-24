@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-import { createHash, randomUUID } from 'crypto'
+import { createHash, randomBytes, randomUUID } from 'crypto'
 import { firestore } from 'firebase-admin'
 import { CipherStrings } from 'src/crypto/stringify-shuffle'
 
@@ -64,7 +64,7 @@ const getOrInitRoot = async (rootRef: firestore.DocumentReference): Promise<Root
   if (snap.exists) return snap.data() as RootMeta
 
   const init: RootMeta = {
-    etagSeed: randomUUID(),
+    etagSeed: randomBytes(4).toString('hex'),
     lastPackedCreatedAt: null,
     lastPackedDocId: null,
     nextPageNum: 2,
