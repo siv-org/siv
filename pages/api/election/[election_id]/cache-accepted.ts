@@ -193,14 +193,11 @@ const maybePackNewVotes = async (args: {
     let remainingVotes = appendIntoCurrentPage(newVotes, pageVotes)
     let remainingPending = appendIntoCurrentPage(newPending, pagePending)
 
-    await openPageRef.set(
-      {
-        bytesApprox,
-        pendingVotes: pagePending,
-        votes: pageVotes,
-      },
-      { merge: true },
-    )
+    await openPageRef.set({
+      bytesApprox,
+      pendingVotes: pagePending,
+      votes: pageVotes,
+    })
     totalWrites += 1
 
     const rollToNewPage = async () => {
@@ -210,7 +207,7 @@ const maybePackNewVotes = async (args: {
       pagePending = []
       bytesApprox = approxBytes({ pendingVotes: [], votes: [] })
 
-      await pagesCol.doc(openPageId).set({ bytesApprox, pendingVotes: [], votes: [] }, { merge: true })
+      await pagesCol.doc(openPageId).set({ bytesApprox, pendingVotes: [], votes: [] })
       totalWrites += 1
     }
 
@@ -219,7 +216,7 @@ const maybePackNewVotes = async (args: {
       remainingVotes = appendIntoCurrentPage(remainingVotes, pageVotes)
       remainingPending = appendIntoCurrentPage(remainingPending, pagePending)
 
-      await pagesCol.doc(openPageId).set({ bytesApprox, pendingVotes: pagePending, votes: pageVotes }, { merge: true })
+      await pagesCol.doc(openPageId).set({ bytesApprox, pendingVotes: pagePending, votes: pageVotes })
       totalWrites += 1
     }
 
