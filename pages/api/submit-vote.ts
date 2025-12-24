@@ -37,7 +37,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       await Promise.all([
         electionDoc.collection('votes-rejected').doc(link_auth).set({
           auth,
-          created_at: new Date(),
+          created_at: firestore.FieldValue.serverTimestamp(),
           encrypted_vote,
           headers: req.headers,
           link_auth,
@@ -51,12 +51,16 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     // Store in db as 'votes-pending'
     await Promise.all([
       // 2a. Store the encrypted vote in db
-      electionDoc
-        .collection('votes-pending')
-        .doc(link_auth)
-        .set({ created_at: new Date(), embed, encrypted_vote, headers: req.headers, link_auth }),
+      electionDoc.collection('votes-pending').doc(link_auth).set({
+        created_at: firestore.FieldValue.serverTimestamp(),
+        embed,
+        encrypted_vote,
+        headers: req.headers,
+        link_auth,
+      }),
       // 2b. Update election's cached tally of num_votes
       electionDoc.update({
+        most_recent_vote_at: firestore.FieldValue.serverTimestamp(),
         num_pending_votes: firestore.FieldValue.increment(1),
         num_votes: firestore.FieldValue.increment(1),
       }),
@@ -82,9 +86,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   await validateAuthToken(auth, election_id, {
     fail: async (message) => {
       await Promise.all([
-        electionDoc
-          .collection('votes-rejected')
-          .add({ auth, created_at: new Date(), encrypted_vote, headers: req.headers, rejection: message }),
+        electionDoc.collection('votes-rejected').add({
+          auth,
+          created_at: firestore.FieldValue.serverTimestamp(),
+          encrypted_vote,
+          headers: req.headers,
+          rejection: message,
+        }),
         pushover('SIV submission: Bad Auth Token', `election: ${election_id}\nauth: ${auth}\nmessage: ${message}`),
       ])
       res.status(400).json({ error: message })
@@ -100,7 +108,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   await Promise.all([
     // 2a. Store the encrypted vote in db
-    electionDoc.collection('votes').add({ auth, created_at: new Date(), encrypted_vote, headers: req.headers }),
+    electionDoc
+      .collection('votes')
+      .add({ auth, created_at: firestore.FieldValue.serverTimestamp(), encrypted_vote, headers: req.headers }),
     // 2b. Update elections cached tally of num_votes
     electionDoc.update({ num_votes: firestore.FieldValue.increment(1) }),
   ])
