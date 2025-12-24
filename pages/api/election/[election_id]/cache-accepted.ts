@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-import { createHash, randomBytes, randomUUID } from 'crypto'
+import { createHash, randomUUID } from 'crypto'
 import { firestore } from 'firebase-admin'
 import { CipherStrings } from 'src/crypto/stringify-shuffle'
 
@@ -9,7 +9,6 @@ import { firebase, pushover } from '../../_services'
 type EncryptedVote = Record<string, CipherStrings>
 type PendingVoteSummary = EncryptedVote & { auth: 'pending' }
 type RootMeta = {
-  etagSeed: string
   lastPackedCreatedAt: firestore.Timestamp | null
   lastPackedDocId: null | string
   nextPageNum: number
@@ -38,10 +37,10 @@ const setCachingHeaders = (res: NextApiResponse, etag: string) => {
 
 const makeEtag = (root: RootMeta) => {
   const seed = [
-    root.etagSeed,
     root.nextPageNum,
     root.lastPackedCreatedAt?.toMillis() ?? 0,
     root.lastPackedDocId ?? '',
+    root.updatedAt.toMillis(),
   ].join('|')
 
   return createHash('sha1').update(seed).digest('hex').slice(0, 12)
@@ -64,7 +63,6 @@ const getOrInitRoot = async (rootRef: firestore.DocumentReference): Promise<Root
   if (snap.exists) return snap.data() as RootMeta
 
   const init: RootMeta = {
-    etagSeed: randomBytes(4).toString('hex'),
     lastPackedCreatedAt: null,
     lastPackedDocId: null,
     nextPageNum: 2,
