@@ -34,7 +34,7 @@ const setCachingHeaders = (res: NextApiResponse, etag: string) => {
   res.setHeader('CDN-Cache-Control', 'public, s-maxage=60, stale-while-revalidate=86400')
 }
 
-// Assumes we're running in (Vercel) isolated serverless nodes, so global state doesn't risk contention
+// Per-invocation counters, reset at start of handler. Fine for isolated serverless
 let reads = 0
 let writes = 0
 let deletes = 0
