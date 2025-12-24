@@ -40,18 +40,12 @@ const setCachingHeaders = (res: NextApiResponse, etag: string) => {
 const makeEtag = (root: RootMeta) => {
   const seed = [
     root.etagSeed,
-    root.openPageId,
     root.nextPageNum,
     root.lastPackedCreatedAt?.toMillis() ?? 0,
     root.lastPackedDocId ?? '',
-    root.updatedAt?.toMillis() ?? 0,
-    root.packedVotes,
-    root.packedPending,
-    root.observedVotes,
-    root.observedPending,
   ].join('|')
 
-  return createHash('sha1').update(seed).digest('hex').slice(0, 6)
+  return createHash('sha1').update(seed).digest('hex').slice(0, 10)
 }
 
 const mapVoteDoc = (doc: firestore.QueryDocumentSnapshot) => {
