@@ -97,7 +97,7 @@ const tryAcquireLease = async (db: firestore.Firestore, leaseRef: firestore.Docu
 
   return db.runTransaction(async (tx) => {
     const snap = await tx.get(leaseRef)
-    totalReads += 1
+    totalReads += 1 // Note: Firestore transactions may auto-retry, without charging for retries, so totalReads/totalWrites may slightly overcount in rare contention cases
     const data = (snap?.data() as { expiresAt?: firestore.Timestamp }) || {}
     const { expiresAt } = data
 
