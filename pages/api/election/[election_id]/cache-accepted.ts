@@ -34,9 +34,9 @@ const setCachingHeaders = (res: NextApiResponse, etag: string) => {
   res.setHeader('CDN-Cache-Control', 'public, s-maxage=60, stale-while-revalidate=86400')
 }
 
-let totalReads = 0
-let totalWrites = 0
-let totalDeletes = 0
+let reads = 0
+let writes = 0
+let deletes = 0
 
 const makeEtag = ({
   observedPending,
@@ -71,7 +71,7 @@ const makePageId = (num: number) => String(num).padStart(6, '0')
 
 const getOrInitRoot = async (rootRef: firestore.DocumentReference) => {
   const snap = await rootRef.get()
-  totalReads += 1
+  reads += 1
   if (snap.exists) return snap.data() as RootMeta
 
   const init: RootMeta = {
@@ -86,7 +86,7 @@ const getOrInitRoot = async (rootRef: firestore.DocumentReference) => {
   }
 
   await rootRef.set(init, { merge: true })
-  totalWrites += 1
+  writes += 1
   return init
 }
 
@@ -96,7 +96,7 @@ const tryAcquireLease = async (db: firestore.Firestore, leaseRef: firestore.Docu
 
   return db.runTransaction(async (tx) => {
     const snap = await tx.get(leaseRef)
-    totalReads += 1 // Note: Firestore transactions may auto-retry, without charging for retries, so totalReads/totalWrites may slightly overcount in rare contention cases
+    reads += 1 // Note: Firestore transactions may auto-retry, without charging for retries, so reads/writes may slightly overcount in rare contention cases
     const data = (snap?.data() as { expiresAt?: firestore.Timestamp }) || {}
     const { expiresAt } = data
 
@@ -105,7 +105,7 @@ const tryAcquireLease = async (db: firestore.Firestore, leaseRef: firestore.Docu
 
     const newExpiresAt = firestore.Timestamp.fromMillis(nowMs + ttlMs)
     tx.set(leaseRef, { expiresAt: newExpiresAt, owner }, { merge: true })
-    totalWrites += 1
+    writes += 1
     return { ok: true as const, owner }
   })
 }
@@ -113,19 +113,19 @@ const tryAcquireLease = async (db: firestore.Firestore, leaseRef: firestore.Docu
 const releaseLease = async (db: firestore.Firestore, leaseRef: firestore.DocumentReference, owner: string) => {
   await db.runTransaction(async (tx) => {
     const snap = await tx.get(leaseRef)
-    totalReads += 1
+    reads += 1
     if (!snap.exists) return
     const data = snap.data() as { owner?: string }
     if (data?.owner !== owner) return
     tx.delete(leaseRef)
-    totalDeletes += 1
+    deletes += 1
   })
 }
 
 const readAllCachedPages = async (pagesCol: firestore.CollectionReference) => {
   // 000001 style ids => lexicographic order
   const snap = await pagesCol.orderBy(firestore.FieldPath.documentId()).get()
-  totalReads += Math.max(1, snap.docs.length)
+  reads += Math.max(1, snap.docs.length)
   const votes: VoteSummary[] = []
   const pendingVotes: VoteSummary[] = []
 
@@ -167,7 +167,7 @@ const maybePackNewVotes = async (args: {
 
     const openPageRef = pagesCol.doc(openPageId)
     const openPageSnap = await openPageRef.get()
-    totalReads += 1
+    reads += 1
 
     const data = openPageSnap.exists
       ? (openPageSnap.data() as { bytesApprox?: number; pendingVotes?: PendingVoteSummary[]; votes?: VoteSummary[] })
@@ -199,7 +199,7 @@ const maybePackNewVotes = async (args: {
       pendingVotes: pagePending,
       votes: pageVotes,
     })
-    totalWrites += 1
+    writes += 1
 
     const rollToNewPage = async () => {
       openPageId = makePageId(nextPageNum)
@@ -209,7 +209,7 @@ const maybePackNewVotes = async (args: {
       bytesApprox = approxBytes({ pendingVotes: [], votes: [] })
 
       await pagesCol.doc(openPageId).set({ bytesApprox, pendingVotes: [], votes: [] })
-      totalWrites += 1
+      writes += 1
     }
 
     while (remainingVotes.length || remainingPending.length) {
@@ -218,7 +218,7 @@ const maybePackNewVotes = async (args: {
       remainingPending = appendIntoCurrentPage(remainingPending, pagePending)
 
       await pagesCol.doc(openPageId).set({ bytesApprox, pendingVotes: pagePending, votes: pageVotes })
-      totalWrites += 1
+      writes += 1
     }
 
     // Cursor: max(lastVote,lastPending) under (created_at, docId) ordering
@@ -251,7 +251,7 @@ const maybePackNewVotes = async (args: {
       },
       { merge: true },
     )
-    totalWrites += 1
+    writes += 1
 
     return true
   } finally {
@@ -261,9 +261,9 @@ const maybePackNewVotes = async (args: {
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const startTime = Date.now()
-  totalReads = 0
-  totalWrites = 0
-  totalDeletes = 0
+  reads = 0
+  writes = 0
+  deletes = 0
 
   const { election_id } = req.query
   if (typeof election_id !== 'string') return res.status(400).json({ error: 'Missing required election_id' })
@@ -272,7 +272,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const electionDoc = db.collection('elections').doc(election_id)
 
   const electionSnap = await electionDoc.get()
-  totalReads += 1
+  reads += 1
   if (!electionSnap.exists) return res.status(400).json({ error: 'Unknown Election ID.' })
 
   const electionData = (electionSnap.data() as { num_pending_votes?: number; num_votes?: number }) || {}
@@ -309,8 +309,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     const [votesSnap, pendingSnap] = await Promise.all([votesQuery.get(), pendingQuery.get()])
-    totalReads += Math.max(1, votesSnap.docs.length)
-    totalReads += Math.max(1, pendingSnap.docs.length)
+    reads += Math.max(1, votesSnap.docs.length)
+    reads += Math.max(1, pendingSnap.docs.length)
 
     tailVotesDocs = votesSnap.docs
     tailPendingDocs = pendingSnap.docs
@@ -337,7 +337,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       if (didPack) {
         // Root changed; re-read once so ETag + cursor match what we'll serve.
         const postPackSnap = await cachedRootRef.get()
-        totalReads += 1
+        reads += 1
         root = (postPackSnap.data() as RootMeta) ?? root
         // Packed tail is now in cache; don't return it as "fresh"
         tailVotesDocs = []
@@ -371,19 +371,19 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   return res.status(200).json({
     _stats: {
-      __endpoint: {
+      _endpoint: {
         __name: '/cache-accepted',
         _etag: etag,
         duration: `${Date.now() - startTime}ms`,
         now: new Date().toLocaleString(),
       },
-      //   cached_pages: cached.pageCount,
+      cacheHits: {
+        // cached_pages: cached.pageCount,
+        pending: { cached: cached.pendingVotes.length, fresh: freshPendingVotes.length },
+        votes: { cached: cached.votes.length, fresh: freshVotes.length },
+      },
       didPack,
-      pending: { cached: cached.pendingVotes.length, fresh: freshPendingVotes.length },
-      votes: { cached: cached.votes.length, fresh: freshVotes.length },
-      z_total_reads: totalReads,
-      z_total_writes: totalWrites,
-      zz_total_deletes: totalDeletes,
+      ops: { deletes, reads, writes },
     },
     results: [...votes, ...pendingVotes],
   })
