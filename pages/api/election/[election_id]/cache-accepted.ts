@@ -378,7 +378,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         now: new Date().toLocaleString(),
       },
       cacheHits: {
-        // cached_pages: cached.pageCount,
+        last_updated_at: root.updatedAt?.toDate().toLocaleString(),
+        pages: cached.pageCount,
         pending: { cached: cached.pendingVotes.length, fresh: freshPendingVotes.length },
         votes: { cached: cached.votes.length, fresh: freshVotes.length },
       },
