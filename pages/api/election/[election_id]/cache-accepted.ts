@@ -47,10 +47,8 @@ const makeEtag = ({
   root: RootMeta
 }) => {
   const seed = [
-    root.nextPageNum,
     root.lastPackedCreatedAt?.toMillis() ?? 0,
     root.lastPackedDocId ?? '',
-    root.updatedAt.toMillis(),
     observedVotes,
     observedPending,
   ].join('|')
