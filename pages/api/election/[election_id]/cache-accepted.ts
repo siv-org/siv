@@ -9,9 +9,9 @@ import { firebase, pushover } from '../../_services'
 type EncryptedVote = Record<string, CipherStrings>
 type PendingVoteSummary = EncryptedVote & { auth: 'pending' }
 type RootMeta = {
+  currentPageNum: number
   lastPackedCreatedAt: firestore.Timestamp | null
   lastPackedDocId: null | string
-  nextPageNum: number
   observedPending: number
   observedVotes: number
   packedPending: number
@@ -76,9 +76,9 @@ const getOrInitRoot = async (rootRef: firestore.DocumentReference) => {
   if (snap.exists) return snap.data() as RootMeta
 
   const init: RootMeta = {
+    currentPageNum: 1,
     lastPackedCreatedAt: null,
     lastPackedDocId: null,
-    nextPageNum: 2,
     observedPending: 0,
     observedVotes: 0,
     packedPending: 0,
@@ -86,7 +86,7 @@ const getOrInitRoot = async (rootRef: firestore.DocumentReference) => {
     updatedAt: firestore.Timestamp.fromMillis(Date.now() - PACK_THROTTLE_MS),
   }
 
-  await rootRef.set(init, { merge: true })
+  await rootRef.set(init)
   writes += 1
   return init
 }
@@ -163,8 +163,8 @@ const maybePackNewVotes = async (args: {
     // Re-read root after lease to avoid duplicate work
     const freshRoot = await getOrInitRoot(rootRef)
 
-    let nextPageNum = freshRoot.nextPageNum
-    let openPageId = makePageId(nextPageNum - 1)
+    let { currentPageNum } = freshRoot
+    let openPageId = makePageId(currentPageNum)
 
     const openPageRef = pagesCol.doc(openPageId)
     const openPageSnap = await openPageRef.get()
@@ -203,8 +203,8 @@ const maybePackNewVotes = async (args: {
     writes += 1
 
     const rollToNewPage = async () => {
-      openPageId = makePageId(nextPageNum)
-      nextPageNum += 1
+      currentPageNum += 1
+      openPageId = makePageId(currentPageNum)
       pageVotes = []
       pagePending = []
       bytesApprox = approxBytes({ pendingVotes: [], votes: [] })
@@ -241,9 +241,9 @@ const maybePackNewVotes = async (args: {
 
     await rootRef.set(
       {
+        currentPageNum,
         lastPackedCreatedAt: lastPackedCreatedAt ?? freshRoot.lastPackedCreatedAt ?? null,
         lastPackedDocId: lastPackedDocId ?? freshRoot.lastPackedDocId ?? null,
-        nextPageNum,
         observedPending,
         observedVotes,
         packedPending: (freshRoot.packedPending ?? 0) + newPending.length,
