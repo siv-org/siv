@@ -18,7 +18,6 @@ type RootMeta = {
   packedVotes: number
   updatedAt: firestore.Timestamp
 }
-type Summary = PendingVoteSummary | VoteSummary
 type VoteSummary = EncryptedVote & { auth: string }
 
 const seconds = 1000
@@ -159,9 +158,10 @@ const maybePackNewVotes = async (args: {
   const updatedAtMs = root.updatedAt.toMillis()
   if (Date.now() - updatedAtMs < PACK_THROTTLE_MS) return false
 
+  if (tailVotesDocs.length === 0 && tailPendingDocs.length === 0) return false
+
   const lease = await tryAcquireLease(db, leaseRef, LEASE_TTL_MS)
   if (!lease.ok || !lease.owner) return false
-  if (tailVotesDocs.length === 0 && tailPendingDocs.length === 0) return false
 
   try {
     // Re-read root after lease to avoid duplicate work
@@ -175,16 +175,16 @@ const maybePackNewVotes = async (args: {
     totalReads += 1
 
     const data = openPageSnap.exists
-      ? (openPageSnap.data() as { bytesApprox?: number; pendingVotes?: VoteSummary[]; votes?: VoteSummary[] })
+      ? (openPageSnap.data() as { bytesApprox?: number; pendingVotes?: PendingVoteSummary[]; votes?: VoteSummary[] })
       : undefined
     let pageVotes: VoteSummary[] = data?.votes ?? []
-    let pagePending: VoteSummary[] = data?.pendingVotes ?? []
+    let pagePending: PendingVoteSummary[] = data?.pendingVotes ?? []
     let bytesApprox = data?.bytesApprox ?? approxBytes({ pendingVotes: pagePending, votes: pageVotes })
 
     const newVotes = tailVotesDocs.map(mapVoteDoc)
     const newPending = tailPendingDocs.map(mapPendingVoteDoc)
 
-    const appendIntoCurrentPage = <T extends Summary>(items: T[], target: T[]) => {
+    const appendIntoCurrentPage = <T extends PendingVoteSummary | VoteSummary>(items: T[], target: T[]) => {
       let i = 0
       for (; i < items.length; i += 1) {
         const item = items[i]
