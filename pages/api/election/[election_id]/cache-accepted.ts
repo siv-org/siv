@@ -51,7 +51,7 @@ const makeEtag = (root: RootMeta) => {
     root.observedPending,
   ].join('|')
 
-  return createHash('sha1').update(seed).digest('hex')
+  return createHash('sha1').update(seed).digest('hex').slice(0, 6)
 }
 
 const mapVoteDoc = (doc: firestore.QueryDocumentSnapshot) => {
@@ -358,10 +358,15 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   return res.status(200).json({
     _stats: {
-      cached_counts: { pending: cached.pendingVotes.length, votes: cached.votes.length },
-      cached_pages: cached.pageCount,
-      duration: `${Date.now() - startTime}ms`,
-      fresh_counts: { pending: freshPendingVotes.length, votes: freshVotes.length },
+      __endpoint: {
+        __name: '/cache-accepted',
+        _etag: etag,
+        duration: `${Date.now() - startTime}ms`,
+        now: new Date().toLocaleString(),
+      },
+      //   cached_pages: cached.pageCount,
+      pending: { cached: cached.pendingVotes.length, fresh: freshPendingVotes.length },
+      votes: { cached: cached.votes.length, fresh: freshVotes.length },
       z_total_reads: totalReads,
     },
     results: [...votes, ...pendingVotes],
