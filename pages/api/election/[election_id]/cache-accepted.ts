@@ -172,8 +172,7 @@ const maybePackNewVotes = async (args: {
 
     const [newVotesSnap, newPendingSnap] = await Promise.all([votesQuery.get(), pendingQuery.get()])
 
-    if (newVotesSnap.empty && newPendingSnap.empty)
-      return rootRef.set({ observedPending, observedVotes, updatedAt: firestore.Timestamp.now() }, { merge: true })
+    if (newVotesSnap.empty && newPendingSnap.empty) return
 
     const newVotes = newVotesSnap.docs.map(mapVoteDoc)
     const newPending = newPendingSnap.docs.map(mapPendingVoteDoc)
