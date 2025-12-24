@@ -277,6 +277,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const electionData = (electionSnap.data() as { num_pending_votes?: number; num_votes?: number }) || {}
   const observedPending = electionData.num_pending_votes ?? 0
   const observedVotes = (electionData.num_votes ?? 0) - observedPending
+  if (observedVotes < 0)
+    await pushover('/cache-accepted: observedVotes < 0', `[${election_id}] observedVotes: ${observedVotes}`)
 
   const cachedRootRef = electionDoc.collection('votes-cached').doc('root')
   const cachedPagesCol = cachedRootRef.collection('pages')
