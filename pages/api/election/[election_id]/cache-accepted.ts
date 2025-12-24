@@ -160,7 +160,7 @@ const maybePackNewVotes = async (args: {
   if (!lease.ok || !lease.owner) return false
 
   try {
-    // Re-read root after lease to avoid duplicate work
+    // Get fresh root after lease so we use the latest page/cursor state before writing.
     const freshRoot = await getOrInitRoot(rootRef)
 
     let { currentPageNum } = freshRoot
