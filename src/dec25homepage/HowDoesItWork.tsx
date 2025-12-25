@@ -35,8 +35,16 @@ export const HowDoesItWork = () => {
             </ol>
           </section>
 
-          <section className="pt-4 mt-4 border-t border-gray-400/70">
+          <section className="px-2 pt-4 mt-4 border-t border-gray-400/70">
             <span className="text-xs font-medium uppercase">Voting Period</span>
+            <ul className="mt-2 text-xs list-disc list-inside text-left">
+              <li>Voters can vote from own devices in seconds</li>
+              <li>Everyone can see encrypted votes arrive in real-time</li>
+            </ul>
+            <div className="mt-3 text-xs italic">
+              <p>&quot;The easiest voting experience I&apos;ve ever had&quot; - A voter</p>
+              <p className="mt-1">&quot;Like voting nirvana&quot; - An election official</p>
+            </div>
           </section>
 
           <section className="pt-4 mt-4 border-t border-gray-400/70">
