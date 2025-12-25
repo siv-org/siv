@@ -29,12 +29,12 @@ export const HowDoesItWork = () => {
         <div className="px-2 py-2 w-full text-center border shadow-lg">
           {/* 1: Setup */}
           <AccordionSection isOpen={openSection === 1} onToggle={() => toggleSection(1)} title="Setup">
-            <div className="pt-1.5 text-xs font-medium uppercase opacity-60">Choose your</div>
+            <div className="pt-2 pb-3 text-xs font-medium uppercase opacity-60">Choose your</div>
 
-            <ol className="flex justify-between mt-1.5 w-full max-w-[18rem] mx-auto pb-2.5">
+            <ol className="flex justify-between w-full max-w-[18rem] mx-auto pb-3">
               {[
-                ['Voters List', 'text-green-800', 'bg-green-200'],
-                ['Question(s)', 'text-orange-800', 'bg-orange-200'],
+                ['Voters List', 'text-sky-800', 'bg-sky-200'],
+                ['Question(s)', 'text-lime-800', 'bg-lime-200'],
               ].map(([title, color, bgColor], index) => (
                 <li key={index}>
                   <span
