@@ -56,7 +56,9 @@ export const HowDoesItWork = () => {
             title="Voting Period"
           >
             <ul className="mt-2 space-y-1.5 text-xs list-disc list-inside text-left">
-              <li>Voters can vote from own devices in seconds</li>
+              <li>
+                Voters can <b>vote from own devices</b> in seconds
+              </li>
               <li>Everyone can see encrypted votes arrive in real-time</li>
             </ul>
             <div className="mt-3 text-xs italic">
@@ -79,10 +81,18 @@ export const HowDoesItWork = () => {
             title="Verifiable Results"
           >
             <ul className="mt-2 text-xs list-disc list-inside text-left">
-              <li>Administrators can prove they&apos;re not cheating</li>
-              <li>Voters can confirm own votes are counted as intended</li>
-              <li>Voter Roll auditable against fake voters, ballot stuffing</li>
-              <p className="mt-3">Advanced protections against Malware, Coercion, False Claims</p>
+              <li>
+                Voters can <b className="font-semibold text-green-700">confirm own votes</b> are counted as intended
+              </li>
+              <li>
+                <b className="font-semibold text-orange-700">Voter Roll auditable</b> against fake voters, ballot
+                stuffing
+              </li>
+              <p className="mt-3">
+                Advanced protections against <b className="font-semibold text-blue-700">Malware</b>,{' '}
+                <b className="font-semibold text-purple-700">Coercion</b>,{' '}
+                <b className="font-semibold text-red-700">False Claims</b>
+              </p>
             </ul>
           </AccordionSection>
         </div>
