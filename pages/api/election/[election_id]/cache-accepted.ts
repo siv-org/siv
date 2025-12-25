@@ -115,9 +115,9 @@ const releaseLease = async (db: firestore.Firestore, leaseRef: firestore.Documen
   await db.runTransaction(async (tx) => {
     const snap = await tx.get(leaseRef)
     reads += 1
-    if (!snap.exists) return
+    if (!snap.exists) return pushover('cache-accepted releaseLease missing', `lease not found: ${leaseRef.path}`)
     const data = snap.data() as { owner?: string }
-    if (data?.owner !== owner) return
+    if (data?.owner !== owner) return pushover('cache-accepted releaseLease', `lease not owned: ${leaseRef.path}`)
     tx.delete(leaseRef)
     deletes += 1
   })
