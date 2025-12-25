@@ -7,9 +7,9 @@ export const CreateAVote = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [question, setQuestion] = useState('')
   return (
-    <>
+    <div className="max-w-[23rem] w-full">
       <button
-        className={`relative p-2 w-full max-w-xs font-bold text-white bg-blue-600 rounded hover:bg-blue-800 active:xbg-blue-900  ${
+        className={`relative p-2 w-full font-bold text-white bg-blue-600 rounded hover:bg-blue-800 active:xbg-blue-900  ${
           isOpen ? 'rounded-b-none' : 'active:top-0.5'
         }`}
         onClick={() => setIsOpen(!isOpen)}
@@ -18,7 +18,7 @@ export const CreateAVote = () => {
       </button>
 
       {isOpen && (
-        <div className="p-2 w-full bg-amber-50 border border-amber-400 rounded-t-none rounded !-mt-2 max-w-xs mb-8">
+        <div className="p-2 mb-8 w-full bg-amber-50 rounded rounded-t-none border border-t-0 border-amber-400">
           <h1 className="mb-1 text-base font-bold">Vote on what?</h1>
           <textarea
             className="block p-1.5 rounded-lg w-full min-h-16"
@@ -26,7 +26,7 @@ export const CreateAVote = () => {
             placeholder={`Describe your vote${newline}in a few words`}
           />
           <button
-            className={`p-1 mt-3 w-full max-w-xs font-bold text-white bg-green-600 rounded-md  ${
+            className={`p-1 mt-3 w-full font-bold text-white bg-green-600 rounded-md  ${
               !question ? 'opacity-50' : 'hover:bg-green-700 active:bg-green-800'
             }`}
             disabled={!question}
@@ -39,6 +39,6 @@ export const CreateAVote = () => {
           </button>
         </div>
       )}
-    </>
+    </div>
   )
 }

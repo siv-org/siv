@@ -9,9 +9,9 @@ export const HowDoesItWork = () => {
   }
 
   return (
-    <div className="w-full max-w-xs">
+    <div className="w-full max-w-[23rem]">
       <button
-        className={`p-2 w-full max-w-xs font-medium bg-sky-100 rounded-md text-black/75 hover:bg-sky-200 active:bg-sky-300 ${
+        className={`p-2 w-full font-medium bg-sky-100 rounded-md text-black/75 hover:bg-sky-200 active:bg-sky-300 ${
           isOpen ? 'rounded-b-none' : ''}`}
         onClick={() => {
           setIsOpen(!isOpen)
@@ -22,12 +22,12 @@ export const HowDoesItWork = () => {
       </button>
 
       {isOpen && (
-        <div className="px-2 py-2 w-full max-w-xs text-center border shadow-lg">
+        <div className="px-2 py-2 w-full text-center border shadow-lg">
           {/* 1: Setup */}
           <AccordionSection isOpen={openSection === 1} onToggle={() => toggleSection(1)} title="Setup">
             <div className="pt-1 text-xs font-medium uppercase opacity-60">Choose your</div>
 
-            <ol className="flex justify-between mt-1.5 w-full">
+            <ol className="flex justify-between mt-1.5 w-full max-w-[18rem] mx-auto">
               {[
                 ['Voters List', 'text-green-800', 'bg-green-200'],
                 ['Question(s)', 'text-orange-800', 'bg-orange-200'],
