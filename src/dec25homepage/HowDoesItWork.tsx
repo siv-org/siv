@@ -11,7 +11,7 @@ export const HowDoesItWork = () => {
   return (
     <div className="w-full max-w-[23rem]">
       <button
-        className={`p-2 w-full font-medium bg-sky-100 rounded-md text-black/75 hover:bg-sky-200 active:bg-sky-300 ${
+        className={`p-2 w-full font-medium bg-sky-100 rounded-md text-black/75 hover:bg-sky-200 active:bg-sky-300 select-none ${
           isOpen ? 'rounded-b-none' : ''}`}
         onClick={() => {
           setIsOpen(!isOpen)

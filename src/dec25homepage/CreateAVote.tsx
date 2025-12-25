@@ -9,7 +9,7 @@ export const CreateAVote = () => {
   return (
     <div className="max-w-[23rem] w-full">
       <button
-        className={`relative p-2 w-full font-bold text-white bg-blue-600 rounded hover:bg-blue-800 active:xbg-blue-900  ${
+        className={`relative p-2 w-full font-bold text-white bg-blue-600 rounded hover:bg-blue-800 active:xbg-blue-900 select-none ${
           isOpen ? 'rounded-b-none' : 'active:top-0.5'
         }`}
         onClick={() => setIsOpen(!isOpen)}
