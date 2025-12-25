@@ -280,7 +280,7 @@ const maybePackNewVotes = async (args: {
 
     const newRoot: RootMeta = {
       currentPageNum,
-      lastPackedCreatedAt: lastPackedCreatedAt ?? freshRoot.lastPackedCreatedAt ?? null,
+      lastPackedCreatedAt: lastPackedCreatedAt ?? freshRoot.lastPackedCreatedAt,
       lastPackedDocId: lastPackedDocId ?? freshRoot.lastPackedDocId ?? null,
       observedPending,
       observedVotes,
