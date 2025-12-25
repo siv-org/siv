@@ -1,4 +1,7 @@
+import Image from 'next/image'
 import { ReactNode, useState } from 'react'
+
+import devices from './devices.png'
 
 export const HowDoesItWork = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -55,11 +58,19 @@ export const HowDoesItWork = () => {
             onToggle={() => toggleSection(2)}
             title="Voting Period"
           >
-            <ul className="mt-2 space-y-1.5 text-sm list-disc list-inside text-left">
+            <ul className="mt-2 text-sm text-center">
+              <div className="mx-auto w-fit">
+                <Image alt="devices" height={40} src={devices} width={40} />
+              </div>
               <li>
                 Voters can <b>vote from own devices</b> in seconds
               </li>
-              <li>Everyone can see encrypted votes arrive in real-time</li>
+
+              <li className="mt-4">
+                Everyone can see encrypted votes
+                <br />
+                arrive in real-time
+              </li>
             </ul>
             <div className="mt-3 text-sm italic">
               <div>
