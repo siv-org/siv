@@ -247,9 +247,6 @@ const maybePackNewVotes = async (args: {
       pageVotes = []
       pagePending = []
       bytesApprox = approxBytes({ pendingVotes: [], votes: [] })
-
-      await pagesCol.doc(openPageId).set({ bytesApprox, pendingVotes: [], votes: [] })
-      logWrite(1, 'maybePackNewVotes rollToNewPage')
     }
 
     while (remainingVotes.length || remainingPending.length) {
