@@ -17,7 +17,11 @@ export const CreateAVote = () => {
         Create A Vote
       </button>
 
-      {isOpen && (
+      <div
+        className={`overflow-hidden transition-all duration-300 ease-in-out ${
+          isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+        }`}
+      >
         <div className="p-2 mb-8 w-full bg-amber-50 rounded rounded-t-none border border-t-0 border-amber-400">
           <h1 className="mb-1 text-base font-bold">Vote on what?</h1>
           <textarea
@@ -38,7 +42,7 @@ export const CreateAVote = () => {
             Next
           </button>
         </div>
-      )}
+      </div>
     </div>
   )
 }

@@ -21,7 +21,11 @@ export const HowDoesItWork = () => {
         How does it work?
       </button>
 
-      {isOpen && (
+      <div
+        className={`overflow-hidden transition-all duration-300 ease-in-out ${
+          isOpen ? 'opacity-100 max-h-[800px]' : 'max-h-0 opacity-0'
+        }`}
+      >
         <div className="px-2 py-2 w-full text-center border shadow-lg">
           {/* 1: Setup */}
           <AccordionSection isOpen={openSection === 1} onToggle={() => toggleSection(1)} title="Setup">
@@ -82,7 +86,7 @@ export const HowDoesItWork = () => {
             </ul>
           </AccordionSection>
         </div>
-      )}
+      </div>
     </div>
   )
 }
