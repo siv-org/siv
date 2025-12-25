@@ -12,11 +12,11 @@ export const HowDoesItWork = () => {
       </button>
 
       {isOpen && (
-        <div className="px-1.5 pt-3.5 pb-6 w-full text-center shadow-lg max-w-xs border">
+        <div className="px-0.5 pt-3.5 pb-6 w-full text-center shadow-lg max-w-xs border">
           <section>
             <span className="p-1 mr-2.5 text-xs font-semibold bg-purple-200 rounded-md text-purple-700/90">Setup</span>
             <span className="mr-14 text-xs font-medium uppercase">Define your</span>
-            <ol className="flex justify-between mt-1.5 w-full">
+            <ol className="flex justify-around mt-1.5 w-full">
               <li>
                 <span className="inline-flex justify-center items-center mr-1.5 w-7 h-7 font-semibold text-green-800 text-sm bg-green-200 rounded-full">
                   1
