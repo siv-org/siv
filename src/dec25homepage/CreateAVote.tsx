@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { api } from 'src/api-helper'
 
 const newline = ''.padEnd(100)
 
@@ -24,7 +25,10 @@ export const CreateAVote = () => {
           />
           <button
             className="p-1 mt-3 w-full max-w-xs font-bold text-white bg-green-600 rounded-md hover:bg-green-700 active:bg-green-800"
-            onClick={() => alert(`Still testing: ${question}`)}
+            onClick={() => {
+              alert(`Still testing: ${question}`)
+              api('dec25/create-vote', { question })
+            }}
           >
             Next
           </button>
