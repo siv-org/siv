@@ -122,7 +122,7 @@ const getOrInitRoot = async (rootRef: firestore.DocumentReference) => {
     observedVotes: 0,
     packedPending: 0,
     packedVotes: 0,
-    updatedAt: firestore.Timestamp.fromMillis(Date.now() - PACK_THROTTLE_MS),
+    updatedAt: firestore.Timestamp.fromMillis(Date.now() - PACK_THROTTLE_MS), // so first request can pack immediately
   }
 
   await rootRef.set(init)
@@ -130,6 +130,8 @@ const getOrInitRoot = async (rootRef: firestore.DocumentReference) => {
   return init
 }
 
+/** Lease is best-effort concurrency control: prevents two packers from writing pages concurrently.
+    TTL handles crashed workers; release deletes lease doc early. */
 const tryAcquireLease = async (db: firestore.Firestore, leaseRef: firestore.DocumentReference, ttlMs: number) => {
   const owner = randomUUID()
   const nowMs = Date.now()
@@ -219,6 +221,8 @@ const maybePackNewVotes = async (args: {
     const newVotes = tailVotesDocs.map(mapVoteDoc)
     const newPending = tailPendingDocs.map(mapPendingVoteDoc)
 
+    /** `bytesApprox` is a heuristic to keep pages under Firestore doc limits.
+        We accept some slop; correctness doesn't depend on exact byte counts. */
     const appendIntoCurrentPage = <T extends PendingVoteSummary | VoteSummary>(items: T[], target: T[]) => {
       let i = 0
       for (; i < items.length; i += 1) {
@@ -241,16 +245,13 @@ const maybePackNewVotes = async (args: {
     })
     logWrite(1, 'maybePackNewVotes openPageRef')
 
-    const rollToNewPage = async () => {
+    while (remainingVotes.length || remainingPending.length) {
       currentPageNum += 1
       openPageId = makePageId(currentPageNum)
       pageVotes = []
       pagePending = []
       bytesApprox = approxBytes({ pendingVotes: [], votes: [] })
-    }
 
-    while (remainingVotes.length || remainingPending.length) {
-      await rollToNewPage()
       remainingVotes = appendIntoCurrentPage(remainingVotes, pageVotes)
       remainingPending = appendIntoCurrentPage(remainingPending, pagePending)
 
@@ -330,6 +331,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   let tailVotesDocs: firestore.QueryDocumentSnapshot[] = []
   let tailPendingDocs: firestore.QueryDocumentSnapshot[] = []
 
+  /** Tail query is the single source of truth for "what isn't cached yet".
+      Must use the same ordering + tie-break as cursor updates. */
   const runTailQuery = async () => {
     let votesQuery = electionDoc.collection('votes').orderBy('created_at').orderBy(firestore.FieldPath.documentId())
     let pendingQuery = electionDoc
@@ -355,7 +358,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (hasFreshVotes) {
     await runTailQuery()
 
-    // Attempt pack if allowed, using tail we already fetched.
+    // Attempt pack if allowed, using tail we already fetched
     if (throttlePassed) {
       const packResult = await maybePackNewVotes({
         electionDoc,
@@ -368,7 +371,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         tailVotesDocs,
       })
       if (packResult.didPack) {
-        // Root changed; re-read so ETag + cursor match what we'll serve.
+        // Root changed; use computed newRoot so ETag + cursor match what we'll serve
         root = packResult.newRoot
         // Packed tail is now in cache; don't return it as "fresh"
         tailVotesDocs = []
@@ -421,3 +424,39 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     results: [...votes, ...pendingVotes],
   })
 }
+
+/** /api/election/[election_id]/cache-accepted
+
+Goal:
+- Serve all votes (accepted + pending) with low Firestore read costs.
+- Maintain a cached, paged copy under elections/{id}/votes-cached/root/pages/{000001..}
+- Only do heavy packing work occasionally (throttled) and under a lease.
+
+Data model:
+- root doc: cursor + bookkeeping
+  - lastPackedCreatedAt + lastPackedDocId define the "cursor" (ordered by created_at, then docId).
+  - currentPageNum is the *open* page number we append into.
+- pages/{000001..}: arrays { votes, pendingVotes } + bytesApprox (approx size guard)
+
+Serving strategy:
+- Always serve: (all cached pages) + (tail query since cursor)
+- If we successfully pack, we write tail into cache and then serve cached-only (tail cleared).
+
+Packing strategy (best-effort):
+- Only attempt pack when counters suggest new docs exist (observedVotes/observedPending moved)
+- Pack is throttled via root.updatedAt (PACK_THROTTLE_MS).
+- Lease is a single doc with TTL; acquisition is transactional.
+
+ETag:
+- ETag is derived from (cursor + observed counters) so it matches the representation we serve.
+- Important: ETag must change if response body would change, even if root didn’t pack yet.
+
+Important invariants:
+- Cursor ordering is (created_at ASC, docId ASC) for both votes collections.
+- Cursor always advances to max(lastVote,lastPending) under that ordering.
+- Pages are append-only in practice (we rewrite whole arrays, but logically append-only).
+- Page ids are zero-padded so lexicographic order == numeric order.
+
+Ops counters:
+- reads/writes/deletes are debugging-only.
+- Transactions can retry; counts may slightly overcount under contention. */
