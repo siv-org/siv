@@ -5,7 +5,8 @@ export const HowDoesItWork = () => {
   return (
     <div className="w-full max-w-xs">
       <button
-        className="p-2 w-full max-w-xs font-medium bg-sky-100 rounded-md text-black/75 hover:bg-sky-200 active:bg-sky-300"
+        className={`p-2 w-full max-w-xs font-medium bg-sky-100 rounded-md text-black/75 hover:bg-sky-200 active:bg-sky-300 ${
+          isOpen ? 'rounded-b-none' : ''}`}
         onClick={() => setIsOpen(!isOpen)}
       >
         How does it work?

@@ -9,7 +9,9 @@ export const CreateAVote = () => {
   return (
     <>
       <button
-        className="relative p-2 w-full max-w-xs font-bold text-white bg-blue-600 rounded hover:bg-blue-800 active:xbg-blue-900 active:top-0.5"
+        className={`relative p-2 w-full max-w-xs font-bold text-white bg-blue-600 rounded hover:bg-blue-800 active:xbg-blue-900  ${
+          isOpen ? 'rounded-b-none' : 'active:top-0.5'
+        }`}
         onClick={() => setIsOpen(!isOpen)}
       >
         Create A Vote
