@@ -39,6 +39,8 @@ export function Dec25HomepageIdea() {
           <h4>35,000 votes cast</h4>
           <h4>in 12 countries</h4>
 
+          <p className="!mt-4 text-xs italic text-gray-400">So far</p>
+
           <WhoShouldBeNext />
         </div>
       </main>
