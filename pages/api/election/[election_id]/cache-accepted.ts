@@ -35,34 +35,48 @@ const setCachingHeaders = (res: NextApiResponse, etag: string) => {
 }
 
 // Per-invocation counters, reset at start of handler. Fine for isolated serverless
-let reads = 0
-let writes = 0
-let deletes = 0
+let [reads, writes, deletes] = [0, 0, 0]
 function logOp(key: 'delete' | 'read' | 'write', amount: number, ...label: string[]) {
   const minAmount = Math.max(1, amount)
   let newAmount: number = 0
-  if (key === 'delete') {
-    deletes += minAmount
-    newAmount = deletes
-  } else if (key === 'read') {
-    reads += minAmount
-    newAmount = reads
-  } else if (key === 'write') {
-    writes += minAmount
-    newAmount = writes
-  } else {
-    throw new Error(`Invalid key: ${key}`)
+  let color = ''
+  const BLUE = '\x1b[34m'
+  const ORANGE = '\x1b[33m'
+  const PINK = '\x1b[35m'
+  switch (key) {
+    case 'delete':
+      deletes += minAmount
+      newAmount = deletes
+      color = PINK
+      break
+    case 'read':
+      reads += minAmount
+      newAmount = reads
+      color = BLUE
+      break
+    case 'write':
+      writes += minAmount
+      newAmount = writes
+      color = ORANGE
+      break
+    default:
+      throw new Error(`Invalid key: ${key}`)
   }
 
   const GRAY = '\x1b[90m'
   const RESET = '\x1b[0m'
   if (amount === 0) label.push(`${GRAY}[min 1]${RESET}`)
 
-  if (process.env.NODE_ENV !== 'production') console.log(key + 's', newAmount, '|', ...label)
+  if (process.env.NODE_ENV !== 'production')
+    console.log(color, (key + 's').padStart(7, ' '), String(newAmount).padStart(2) + RESET, '|', ...label)
 }
 const logRead = (amount: number, ...label: string[]) => logOp('read', amount, ...label)
 const logWrite = (amount: number, ...label: string[]) => logOp('write', amount, ...label)
 const logDelete = (amount: number, ...label: string[]) => logOp('delete', amount, ...label)
+function resetOpCounters() {
+  ;[reads, writes, deletes] = [0, 0, 0]
+  if (process.env.NODE_ENV !== 'production') console.log('\n/cache-accepted')
+}
 
 const makeEtag = ({
   observedPending,
@@ -288,9 +302,7 @@ const maybePackNewVotes = async (args: {
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const startTime = Date.now()
-  reads = 0
-  writes = 0
-  deletes = 0
+  resetOpCounters()
 
   const { election_id } = req.query
   if (typeof election_id !== 'string') return res.status(400).json({ error: 'Missing required election_id' })
