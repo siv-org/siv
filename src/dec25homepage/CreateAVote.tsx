@@ -1,5 +1,7 @@
 import { useState } from 'react'
 
+const newline = ''.padEnd(100)
+
 export const CreateAVote = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [question, setQuestion] = useState('')
@@ -18,7 +20,7 @@ export const CreateAVote = () => {
           <textarea
             className="block p-1.5 rounded-lg w-full min-h-16"
             onChange={(e) => setQuestion(e.target.value)}
-            placeholder="Describe your vote                          10 word summary"
+            placeholder={`Describe your vote${newline}10 word summary`}
           />
           <button
             className="p-1 mt-3 w-full max-w-xs font-bold text-white bg-green-600 rounded-md hover:bg-green-700 active:bg-green-800"
