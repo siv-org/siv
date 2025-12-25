@@ -9,14 +9,14 @@ export const CreateAVote = () => {
   return (
     <>
       <button
-        className="p-2 w-full max-w-xs font-bold text-white bg-blue-500 rounded-md hover:bg-blue-600 active:bg-blue-700"
+        className="relative p-2 w-full max-w-xs font-bold text-white bg-blue-600 rounded hover:bg-blue-800 active:xbg-blue-900 active:top-0.5"
         onClick={() => setIsOpen(!isOpen)}
       >
         Create A Vote
       </button>
 
       {isOpen && (
-        <div className="p-2 w-full bg-amber-50 border border-amber-400 rounded-t-none rounded !-mt-2 max-w-xs">
+        <div className="p-2 w-full bg-amber-50 border border-amber-400 rounded-t-none rounded !-mt-2 max-w-xs mb-8">
           <h1 className="text-lg font-bold">Vote on what?</h1>
           <textarea
             className="block p-1.5 rounded-lg w-full min-h-16"
