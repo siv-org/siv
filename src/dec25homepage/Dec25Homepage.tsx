@@ -46,7 +46,9 @@ export function Dec25HomepageIdea() {
       </main>
 
       <div className="h-screen" />
-      <Footer />
+      <div className="px-4">
+        <Footer />
+      </div>
       <TailwindPreflight />
     </>
   )
