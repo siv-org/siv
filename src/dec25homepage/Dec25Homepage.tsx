@@ -4,7 +4,7 @@ import { TailwindPreflight } from 'src/TailwindPreflight'
 
 import { CreateAVote } from './CreateAVote'
 import { HowDoesItWork } from './HowDoesItWork'
-import { WhoShouldBeNext } from './WhosNext'
+// import { WhoShouldBeNext } from './WhosNext'
 
 export function Dec25HomepageIdea() {
   return (
@@ -41,7 +41,7 @@ export function Dec25HomepageIdea() {
 
           <p className="!mt-4 text-xs italic text-gray-400">So far</p>
 
-          <WhoShouldBeNext />
+          {/* <WhoShouldBeNext /> */}
         </div>
       </main>
 
