@@ -179,7 +179,6 @@ const readAllCachedPages = async (pagesCol: firestore.CollectionReference) => {
   return { pageCount: snap.size, pendingVotes, votes }
 }
 
-/** Returns didPack so the handler can avoid returning duplicates. */
 const maybePackNewVotes = async (args: {
   electionDoc: firestore.DocumentReference
   leaseRef: firestore.DocumentReference
@@ -189,15 +188,15 @@ const maybePackNewVotes = async (args: {
   rootRef: firestore.DocumentReference
   tailPendingDocs: firestore.QueryDocumentSnapshot[]
   tailVotesDocs: firestore.QueryDocumentSnapshot[]
-}): Promise<boolean> => {
+}): Promise<{ didPack: false } | { didPack: true; newRoot: RootMeta }> => {
   const { electionDoc, leaseRef, observedPending, observedVotes, pagesCol, rootRef, tailPendingDocs, tailVotesDocs } =
     args
   const db = electionDoc.firestore
 
-  if (tailVotesDocs.length === 0 && tailPendingDocs.length === 0) return false
+  if (tailVotesDocs.length === 0 && tailPendingDocs.length === 0) return { didPack: false }
 
   const lease = await tryAcquireLease(db, leaseRef, LEASE_TTL_MS)
-  if (!lease.ok || !lease.owner) return false
+  if (!lease.ok || !lease.owner) return { didPack: false }
 
   try {
     // Get fresh root after lease so we use the latest page/cursor state before writing.
@@ -279,22 +278,21 @@ const maybePackNewVotes = async (args: {
     const lastPackedCreatedAt = (lastDoc?.get('created_at') as firestore.Timestamp | undefined) ?? null
     const lastPackedDocId = lastDoc?.id ?? null
 
-    await rootRef.set(
-      {
-        currentPageNum,
-        lastPackedCreatedAt: lastPackedCreatedAt ?? freshRoot.lastPackedCreatedAt ?? null,
-        lastPackedDocId: lastPackedDocId ?? freshRoot.lastPackedDocId ?? null,
-        observedPending,
-        observedVotes,
-        packedPending: (freshRoot.packedPending ?? 0) + newPending.length,
-        packedVotes: (freshRoot.packedVotes ?? 0) + newVotes.length,
-        updatedAt: firestore.Timestamp.now(),
-      },
-      { merge: true },
-    )
+    const newRoot: RootMeta = {
+      currentPageNum,
+      lastPackedCreatedAt: lastPackedCreatedAt ?? freshRoot.lastPackedCreatedAt ?? null,
+      lastPackedDocId: lastPackedDocId ?? freshRoot.lastPackedDocId ?? null,
+      observedPending,
+      observedVotes,
+      packedPending: (freshRoot.packedPending ?? 0) + newPending.length,
+      packedVotes: (freshRoot.packedVotes ?? 0) + newVotes.length,
+      updatedAt: firestore.Timestamp.now(),
+    }
+
+    await rootRef.set(newRoot, { merge: true })
     logWrite(1, 'maybePackNewVotes root')
 
-    return true
+    return { didPack: true, newRoot }
   } finally {
     await releaseLease(db, leaseRef, lease.owner)
   }
@@ -362,7 +360,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     // Attempt pack if allowed, using tail we already fetched.
     if (throttlePassed) {
-      didPack = await maybePackNewVotes({
+      const packResult = await maybePackNewVotes({
         electionDoc,
         leaseRef,
         observedPending,
@@ -372,15 +370,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         tailPendingDocs,
         tailVotesDocs,
       })
-
-      if (didPack) {
-        // Root changed; re-read once so ETag + cursor match what we'll serve.
-        const postPackSnap = await cachedRootRef.get()
-        logRead(1, 'main postPackSnap')
-        root = (postPackSnap.data() as RootMeta) ?? root
+      if (packResult.didPack) {
+        // Root changed; re-read so ETag + cursor match what we'll serve.
+        root = packResult.newRoot
         // Packed tail is now in cache; don't return it as "fresh"
         tailVotesDocs = []
         tailPendingDocs = []
+        didPack = true
       }
     }
   }
