@@ -13,7 +13,7 @@ export const CreateAVote = () => {
       </button>
 
       {isOpen && (
-        <div className="p-2 w-full bg-amber-50 border border-amber-400 rounded-t-none rounded !-mt-2">
+        <div className="p-2 w-full bg-amber-50 border border-amber-400 rounded-t-none rounded !-mt-2 max-w-xs">
           <h1 className="text-lg font-bold">Vote on what?</h1>
           <textarea
             className="block p-1.5 rounded-lg w-full min-h-16"
