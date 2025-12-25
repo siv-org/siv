@@ -85,13 +85,12 @@ export const HowDoesItWork = () => {
                 Voters can <b className="font-semibold text-green-700">confirm own votes</b> are counted as intended
               </li>
               <li>
-                <b className="font-semibold text-orange-700">Voter Roll auditable</b> against fake voters, ballot
-                stuffing
+                <b className="font-semibold text-sky-600">Voter Roll auditable</b> against fake voters, ballot stuffing
               </li>
               <p className="mt-3">
-                Advanced protections against <b className="font-semibold text-blue-700">Malware</b>,{' '}
-                <b className="font-semibold text-purple-700">Coercion</b>,{' '}
-                <b className="font-semibold text-red-700">False Claims</b>
+                Advanced protections against <b className="font-semibold text-purple-700">Malware</b>,{' '}
+                <b className="font-semibold text-red-700">Coercion</b>,{' '}
+                <b className="font-semibold text-orange-600">False Claims</b>
               </p>
             </ul>
           </AccordionSection>
