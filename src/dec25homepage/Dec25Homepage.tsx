@@ -4,6 +4,7 @@ import { TailwindPreflight } from 'src/TailwindPreflight'
 
 import { CreateAVote } from './CreateAVote'
 import { HowDoesItWork } from './HowDoesItWork'
+import { WhoShouldBeNext } from './WhosNext'
 
 export function Dec25HomepageIdea() {
   return (
@@ -38,9 +39,7 @@ export function Dec25HomepageIdea() {
           <h4>35,000 votes cast</h4>
           <h4>in 12 countries</h4>
 
-          <button className="p-4 !mt-4 rounded-lg border-transparent hover:border-amber-600/20 hover:bg-amber-50/20 active:bg-amber-50 border-2 font-semibold">
-            Who should be next?
-          </button>
+          <WhoShouldBeNext />
         </div>
       </main>
 
