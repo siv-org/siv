@@ -1,63 +1,122 @@
-import { useState } from 'react'
+import { ReactNode, useState } from 'react'
 
 export const HowDoesItWork = () => {
   const [isOpen, setIsOpen] = useState(false)
+  const [openSection, setOpenSection] = useState<1 | 2 | 3 | null>(1)
+
+  const toggleSection = (section: 1 | 2 | 3) => {
+    setOpenSection(openSection === section ? null : section)
+  }
+
   return (
     <div className="w-full max-w-xs">
       <button
         className={`p-2 w-full max-w-xs font-medium bg-sky-100 rounded-md text-black/75 hover:bg-sky-200 active:bg-sky-300 ${
           isOpen ? 'rounded-b-none' : ''}`}
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => {
+          setIsOpen(!isOpen)
+          if (isOpen) setOpenSection(null)
+        }}
       >
         How does it work?
       </button>
 
       {isOpen && (
-        <div className="px-0.5 pt-3.5 pb-6 w-full text-center shadow-lg max-w-xs border">
-          <section>
-            <span className="p-1 mr-2.5 text-xs font-medium border border-purple-500 rounded-md text-purple-700/90">
-              Setup
-            </span>
-            <span className="mr-14 text-xs font-medium uppercase">Pick your</span>
-            <ol className="flex justify-around mt-1.5 w-full">
-              <li>
-                <span className="inline-flex justify-center items-center mr-1.5 w-7 h-7 font-semibold text-green-800 text-sm bg-green-200 rounded-full">
-                  1
-                </span>
-                Voters List
-              </li>
-              <li>
-                <span className="inline-flex justify-center items-center mr-1.5 w-7 h-7 font-semibold text-orange-800 text-sm bg-orange-200 rounded-full">
-                  2
-                </span>
-                Question(s)
-              </li>
-            </ol>
-          </section>
+        <div className="px-2 py-2 w-full max-w-xs text-center border shadow-lg">
+          {/* 1: Setup */}
+          <AccordionSection isOpen={openSection === 1} onToggle={() => toggleSection(1)} title="Setup">
+            <div className="pt-1 text-xs font-medium uppercase opacity-60">Choose your</div>
 
-          <section className="px-2 pt-4 mt-4 border-t border-gray-400/70">
-            <span className="text-xs font-medium uppercase">Voting Period</span>
-            <ul className="mt-2 text-xs list-disc list-inside text-left">
+            <ol className="flex justify-between mt-1.5 w-full">
+              {[
+                ['Voters List', 'text-green-800', 'bg-green-200'],
+                ['Question(s)', 'text-orange-800', 'bg-orange-200'],
+              ].map(([title, color, bgColor], index) => (
+                <li key={index}>
+                  <span
+                    className={`inline-flex justify-center items-center mr-1.5 w-7 h-7 font-semibold ${color} text-sm ${bgColor} rounded-full`}
+                  >
+                    {index + 1}
+                  </span>
+                  {title}
+                </li>
+              ))}
+            </ol>
+          </AccordionSection>
+
+          {/* 2: Voting Period */}
+          <AccordionSection
+            hasBorderTop
+            isOpen={openSection === 2}
+            onToggle={() => toggleSection(2)}
+            title="Voting Period"
+          >
+            <ul className="mt-2 space-y-1.5 text-xs list-disc list-inside text-left">
               <li>Voters can vote from own devices in seconds</li>
               <li>Everyone can see encrypted votes arrive in real-time</li>
             </ul>
             <div className="mt-3 text-xs italic">
-              <p>&quot;The easiest voting experience I&apos;ve ever had&quot; - A voter</p>
-              <p className="mt-1">&quot;Like voting nirvana&quot; - An election official</p>
+              <div>
+                &quot;The easiest voting experience I&apos;ve ever had&quot;
+                <div className="text-[10px]">- A voter</div>
+              </div>
+              <div className="mt-1.5">
+                &quot;Like voting nirvana&quot;
+                <div className="text-[10px]">- An election official</div>
+              </div>
             </div>
-          </section>
+          </AccordionSection>
 
-          <section className="px-2 pt-4 mt-4 border-t border-gray-400/70">
-            <span className="text-xs font-medium uppercase">Verifiable Results</span>
+          {/* 3: Verifiable Results */}
+          <AccordionSection
+            hasBorderTop
+            isOpen={openSection === 3}
+            onToggle={() => toggleSection(3)}
+            title="Verifiable Results"
+          >
             <ul className="mt-2 text-xs list-disc list-inside text-left">
               <li>Administrators can prove they&apos;re not cheating</li>
               <li>Voters can confirm own votes are counted as intended</li>
               <li>Voter Roll auditable against fake voters, ballot stuffing</li>
+              <p className="mt-3">Advanced protections against Malware, Coercion, False Claims</p>
             </ul>
-            <p className="mt-3 text-xs font-medium">Advanced protections against Malware, Coercion, False Claims</p>
-          </section>
+          </AccordionSection>
         </div>
       )}
     </div>
   )
 }
+
+const AccordionSection = ({
+  children,
+  hasBorderTop = false,
+  isOpen,
+  onToggle,
+  title,
+}: {
+  children: ReactNode
+  hasBorderTop?: boolean
+  isOpen: boolean
+  onToggle: () => void
+  title: string
+}) => (
+  <section className={hasBorderTop ? 'pt-2 my-2 border-t border-gray-400/70' : ''}>
+    {/* Header */}
+    <button
+      className="flex justify-between items-center py-3.5 w-full text-left hover:bg-black/5 px-2 rounded"
+      onClick={onToggle}
+    >
+      <span className="text-xs font-medium uppercase">{title}</span>
+      <span className="text-xs">{isOpen ? '−' : '+'}</span>
+    </button>
+
+    {/* Expanded Content */}
+    <div
+      className={`overflow-hidden transition-all duration-300 ease-in-out px-2 ${
+        isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+      }`}
+    >
+      {children}
+    </div>
+  </section>
+)
