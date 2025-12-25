@@ -29,9 +29,9 @@ export const HowDoesItWork = () => {
         <div className="px-2 py-2 w-full text-center border shadow-lg">
           {/* 1: Setup */}
           <AccordionSection isOpen={openSection === 1} onToggle={() => toggleSection(1)} title="Setup">
-            <div className="pt-1 text-xs font-medium uppercase opacity-60">Choose your</div>
+            <div className="pt-1.5 text-xs font-medium uppercase opacity-60">Choose your</div>
 
-            <ol className="flex justify-between mt-1.5 w-full max-w-[18rem] mx-auto">
+            <ol className="flex justify-between mt-1.5 w-full max-w-[18rem] mx-auto pb-2.5">
               {[
                 ['Voters List', 'text-green-800', 'bg-green-200'],
                 ['Question(s)', 'text-orange-800', 'bg-orange-200'],
@@ -55,20 +55,20 @@ export const HowDoesItWork = () => {
             onToggle={() => toggleSection(2)}
             title="Voting Period"
           >
-            <ul className="mt-2 space-y-1.5 text-xs list-disc list-inside text-left">
+            <ul className="mt-2 space-y-1.5 text-sm list-disc list-inside text-left">
               <li>
                 Voters can <b>vote from own devices</b> in seconds
               </li>
               <li>Everyone can see encrypted votes arrive in real-time</li>
             </ul>
-            <div className="mt-3 text-xs italic">
+            <div className="mt-3 text-sm italic">
               <div>
                 &quot;The easiest voting experience I&apos;ve ever had&quot;
-                <div className="text-[10px]">- A voter</div>
+                <div className="text-xs">- A voter</div>
               </div>
               <div className="mt-1.5">
                 &quot;Like voting nirvana&quot;
-                <div className="text-[10px]">- An election official</div>
+                <div className="text-xs">- An election official</div>
               </div>
             </div>
           </AccordionSection>
@@ -80,7 +80,7 @@ export const HowDoesItWork = () => {
             onToggle={() => toggleSection(3)}
             title="Verifiable Results"
           >
-            <ul className="mt-2 text-xs list-disc list-inside text-left">
+            <ul className="mt-2 text-sm list-disc list-inside text-left">
               <li>
                 Voters can <b className="font-semibold text-green-700">confirm own votes</b> are counted as intended
               </li>
@@ -120,8 +120,8 @@ const AccordionSection = ({
       className="flex justify-between items-center py-3.5 w-full text-left hover:bg-black/5 px-2 rounded"
       onClick={onToggle}
     >
-      <span className="text-xs font-medium uppercase">{title}</span>
-      <span className="text-xs">{isOpen ? '−' : '+'}</span>
+      <span className="text-[13px] font-medium uppercase">{title}</span>
+      <span className="pr-1 text-xs">{isOpen ? '−' : '+'}</span>
     </button>
 
     {/* Expanded Content */}
