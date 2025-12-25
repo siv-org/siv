@@ -19,14 +19,17 @@ export const CreateAVote = () => {
 
       {isOpen && (
         <div className="p-2 w-full bg-amber-50 border border-amber-400 rounded-t-none rounded !-mt-2 max-w-xs mb-8">
-          <h1 className="text-lg font-bold">Vote on what?</h1>
+          <h1 className="mb-1 text-base font-bold">Vote on what?</h1>
           <textarea
             className="block p-1.5 rounded-lg w-full min-h-16"
             onChange={(e) => setQuestion(e.target.value)}
-            placeholder={`Describe your vote${newline}10 word summary`}
+            placeholder={`Describe your vote${newline}in a few words`}
           />
           <button
-            className="p-1 mt-3 w-full max-w-xs font-bold text-white bg-green-600 rounded-md hover:bg-green-700 active:bg-green-800"
+            className={`p-1 mt-3 w-full max-w-xs font-bold text-white bg-green-600 rounded-md  ${
+              !question ? 'opacity-50' : 'hover:bg-green-700 active:bg-green-800'
+            }`}
+            disabled={!question}
             onClick={() => {
               alert(`Still testing: ${question}`)
               api('dec25/create-vote', { question })
