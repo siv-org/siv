@@ -38,6 +38,31 @@ const setCachingHeaders = (res: NextApiResponse, etag: string) => {
 let reads = 0
 let writes = 0
 let deletes = 0
+function logOp(key: 'delete' | 'read' | 'write', amount: number, ...label: string[]) {
+  const minAmount = Math.max(1, amount)
+  let newAmount: number = 0
+  if (key === 'delete') {
+    deletes += minAmount
+    newAmount = deletes
+  } else if (key === 'read') {
+    reads += minAmount
+    newAmount = reads
+  } else if (key === 'write') {
+    writes += minAmount
+    newAmount = writes
+  } else {
+    throw new Error(`Invalid key: ${key}`)
+  }
+
+  const GRAY = '\x1b[90m'
+  const RESET = '\x1b[0m'
+  if (amount === 0) label.push(`${GRAY}[min 1]${RESET}`)
+
+  if (process.env.NODE_ENV !== 'production') console.log(key + 's', newAmount, '|', ...label)
+}
+const logRead = (amount: number, ...label: string[]) => logOp('read', amount, ...label)
+const logWrite = (amount: number, ...label: string[]) => logOp('write', amount, ...label)
+const logDelete = (amount: number, ...label: string[]) => logOp('delete', amount, ...label)
 
 const makeEtag = ({
   observedPending,
@@ -72,7 +97,7 @@ const makePageId = (num: number) => String(num).padStart(6, '0')
 
 const getOrInitRoot = async (rootRef: firestore.DocumentReference) => {
   const snap = await rootRef.get()
-  reads += 1
+  logRead(+snap.exists, 'getOrInitRoot')
   if (snap.exists) return snap.data() as RootMeta
 
   const init: RootMeta = {
@@ -87,7 +112,7 @@ const getOrInitRoot = async (rootRef: firestore.DocumentReference) => {
   }
 
   await rootRef.set(init)
-  writes += 1
+  logWrite(1, 'getOrInitRoot')
   return init
 }
 
@@ -97,7 +122,8 @@ const tryAcquireLease = async (db: firestore.Firestore, leaseRef: firestore.Docu
 
   return db.runTransaction(async (tx) => {
     const snap = await tx.get(leaseRef)
-    reads += 1 // Note: Firestore transactions may auto-retry, without charging for retries, so reads/writes may slightly overcount in rare contention cases
+    // Note: Firestore transactions may auto-retry, without charging for retries, so reads/writes may slightly overcount in rare contention cases
+    logRead(1, 'tryAcquireLease')
     const data = (snap?.data() as { expiresAt?: firestore.Timestamp }) || {}
     const { expiresAt } = data
 
@@ -105,8 +131,8 @@ const tryAcquireLease = async (db: firestore.Firestore, leaseRef: firestore.Docu
     if (!expired) return { ok: false as const }
 
     const newExpiresAt = firestore.Timestamp.fromMillis(nowMs + ttlMs)
-    tx.set(leaseRef, { expiresAt: newExpiresAt, owner }, { merge: true })
-    writes += 1
+    tx.set(leaseRef, { expiresAt: newExpiresAt, owner })
+    logWrite(1, 'tryAcquireLease')
     return { ok: true as const, owner }
   })
 }
@@ -114,19 +140,19 @@ const tryAcquireLease = async (db: firestore.Firestore, leaseRef: firestore.Docu
 const releaseLease = async (db: firestore.Firestore, leaseRef: firestore.DocumentReference, owner: string) => {
   await db.runTransaction(async (tx) => {
     const snap = await tx.get(leaseRef)
-    reads += 1
+    logRead(1, 'releaseLease')
     if (!snap.exists) return pushover('cache-accepted releaseLease missing', `lease not found: ${leaseRef.path}`)
     const data = snap.data() as { owner?: string }
     if (data?.owner !== owner) return pushover('cache-accepted releaseLease', `lease not owned: ${leaseRef.path}`)
     tx.delete(leaseRef)
-    deletes += 1
+    logDelete(1, 'releaseLease')
   })
 }
 
 const readAllCachedPages = async (pagesCol: firestore.CollectionReference) => {
   // 000001 style ids => lexicographic order
   const snap = await pagesCol.orderBy(firestore.FieldPath.documentId()).get()
-  reads += Math.max(1, snap.docs.length)
+  logRead(snap.size, 'readAllCachedPages')
   const votes: VoteSummary[] = []
   const pendingVotes: VoteSummary[] = []
 
@@ -136,7 +162,7 @@ const readAllCachedPages = async (pagesCol: firestore.CollectionReference) => {
     if (Array.isArray(data.pendingVotes)) pendingVotes.push(...data.pendingVotes)
   }
 
-  return { pageCount: snap.docs.length, pendingVotes, votes }
+  return { pageCount: snap.size, pendingVotes, votes }
 }
 
 /** Returns didPack so the handler can avoid returning duplicates. */
@@ -168,7 +194,7 @@ const maybePackNewVotes = async (args: {
 
     const openPageRef = pagesCol.doc(openPageId)
     const openPageSnap = await openPageRef.get()
-    reads += 1
+    logRead(1, 'maybePackNewVotes openPageRef')
 
     const data = openPageSnap.exists
       ? (openPageSnap.data() as { bytesApprox?: number; pendingVotes?: PendingVoteSummary[]; votes?: VoteSummary[] })
@@ -200,7 +226,7 @@ const maybePackNewVotes = async (args: {
       pendingVotes: pagePending,
       votes: pageVotes,
     })
-    writes += 1
+    logWrite(1, 'maybePackNewVotes openPageRef')
 
     const rollToNewPage = async () => {
       currentPageNum += 1
@@ -210,7 +236,7 @@ const maybePackNewVotes = async (args: {
       bytesApprox = approxBytes({ pendingVotes: [], votes: [] })
 
       await pagesCol.doc(openPageId).set({ bytesApprox, pendingVotes: [], votes: [] })
-      writes += 1
+      logWrite(1, 'maybePackNewVotes rollToNewPage')
     }
 
     while (remainingVotes.length || remainingPending.length) {
@@ -219,7 +245,7 @@ const maybePackNewVotes = async (args: {
       remainingPending = appendIntoCurrentPage(remainingPending, pagePending)
 
       await pagesCol.doc(openPageId).set({ bytesApprox, pendingVotes: pagePending, votes: pageVotes })
-      writes += 1
+      logWrite(1, 'maybePackNewVotes while loop')
     }
 
     // Cursor: max(lastVote,lastPending) under (created_at, docId) ordering
@@ -252,7 +278,7 @@ const maybePackNewVotes = async (args: {
       },
       { merge: true },
     )
-    writes += 1
+    logWrite(1, 'maybePackNewVotes root')
 
     return true
   } finally {
@@ -273,7 +299,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const electionDoc = db.collection('elections').doc(election_id)
 
   const electionSnap = await electionDoc.get()
-  reads += 1
+  logRead(1, 'main electionDoc')
   if (!electionSnap.exists) return res.status(400).json({ error: 'Unknown Election ID.' })
 
   const electionData = (electionSnap.data() as { num_pending_votes?: number; num_votes?: number }) || {}
@@ -310,8 +336,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     const [votesSnap, pendingSnap] = await Promise.all([votesQuery.get(), pendingQuery.get()])
-    reads += Math.max(1, votesSnap.docs.length)
-    reads += Math.max(1, pendingSnap.docs.length)
+    logRead(votesSnap.size, 'runTailQuery (votes)')
+    logRead(pendingSnap.size, 'runTailQuery (pending)')
 
     tailVotesDocs = votesSnap.docs
     tailPendingDocs = pendingSnap.docs
@@ -338,7 +364,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       if (didPack) {
         // Root changed; re-read once so ETag + cursor match what we'll serve.
         const postPackSnap = await cachedRootRef.get()
-        reads += 1
+        logRead(1, 'main postPackSnap')
         root = (postPackSnap.data() as RootMeta) ?? root
         // Packed tail is now in cache; don't return it as "fresh"
         tailVotesDocs = []
