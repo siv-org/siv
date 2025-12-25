@@ -7,7 +7,7 @@ import { CipherStrings } from 'src/crypto/stringify-shuffle'
 import { firebase, pushover } from '../../_services'
 
 type EncryptedVote = Record<string, CipherStrings>
-type PendingVoteSummary = EncryptedVote & { auth: 'pending' }
+type PendingVoteSummary = EncryptedVote & { auth: 'pending'; link_auth?: string }
 type RootMeta = {
   currentPageNum: number
   lastPackedCreatedAt: firestore.Timestamp | null
@@ -103,8 +103,8 @@ const mapVoteDoc = (doc: firestore.QueryDocumentSnapshot) => {
 }
 
 const mapPendingVoteDoc = (doc: firestore.QueryDocumentSnapshot) => {
-  const { encrypted_vote } = doc.data()
-  return { auth: 'pending', ...encrypted_vote } as PendingVoteSummary
+  const { encrypted_vote, link_auth } = doc.data()
+  return { auth: 'pending', ...encrypted_vote, link_auth } as PendingVoteSummary
 }
 
 const makePageId = (num: number) => String(num).padStart(6, '0')
@@ -398,9 +398,22 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const votes = [...cached.votes, ...freshVotes]
   const pendingVotes = [...cached.pendingVotes, ...freshPendingVotes]
 
+  // 6) Deduplicate: remove pending votes that have been accepted
+  //    (pending votes use link_auth, accepted votes use auth=link_auth)
+  let deduplicatedPending = pendingVotes
+  const runDedupe = votes.length && pendingVotes.length
+  if (runDedupe) {
+    // We only need to deduplicate if we have both accepted and pending votes
+    const acceptedAuths = new Set(votes.map((v) => v.auth))
+    deduplicatedPending = pendingVotes.filter((pv) => {
+      const linkAuth = typeof pv.link_auth === 'string' ? pv.link_auth : undefined
+      return !linkAuth || !acceptedAuths.has(linkAuth)
+    })
+  }
+
   // Warn if votes missing
   const expectedTotal = observedVotes + observedPending
-  const served = votes.length + pendingVotes.length
+  const served = votes.length + deduplicatedPending.length
   if (served < expectedTotal)
     await pushover('cache-accepted mismatch:', `[${election_id}] expected: ${expectedTotal} served: ${served}`)
 
@@ -415,13 +428,17 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       cacheHits: {
         last_updated_at: root.updatedAt.toDate().toLocaleString(),
         pages: cached.pageCount,
-        pending: { cached: cached.pendingVotes.length, fresh: freshPendingVotes.length },
+        pending: {
+          cached: cached.pendingVotes.length,
+          fresh: freshPendingVotes.length,
+          ...(runDedupe && { removed_by_dedupe: pendingVotes.length - deduplicatedPending.length }),
+        },
         votes: { cached: cached.votes.length, fresh: freshVotes.length },
       },
       didPack,
       ops: { deletes, reads, writes },
     },
-    results: [...votes, ...pendingVotes],
+    results: [...votes, ...deduplicatedPending],
   })
 }
 
@@ -441,6 +458,8 @@ Data model:
 Serving strategy:
 - Always serve: (all cached pages) + (tail query since cursor)
 - If we successfully pack, we write tail into cache and then serve cached-only (tail cleared).
+- Deduplication: pending votes with link_auth matching an accepted vote's auth are filtered out.
+  This prevents votes from appearing twice (once as pending, once as accepted) when they transition.
 
 Packing strategy (best-effort):
 - Only attempt pack when counters suggest new docs exist (observedVotes/observedPending moved)
