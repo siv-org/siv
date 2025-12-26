@@ -37,12 +37,17 @@ export const SaveAndLogin = ({
     }
   }
 
+  function handleClose() {
+    setError('')
+    onClose()
+  }
+
   return (
     // Page overlay
     <div
       className="flex fixed inset-0 z-50 justify-center items-center bg-black bg-opacity-70"
       onClick={(e) => {
-        if (e.target === e.currentTarget) onClose()
+        if (e.target === e.currentTarget) handleClose()
       }}
     >
       {/* Modal box */}
@@ -51,7 +56,7 @@ export const SaveAndLogin = ({
         <button
           aria-label="Close modal"
           className="absolute top-1 right-3 text-4xl font-thin text-gray-500 bg-transparent border-none cursor-pointer hover:text-black"
-          onClick={onClose}
+          onClick={handleClose}
         >
           ×
         </button>
