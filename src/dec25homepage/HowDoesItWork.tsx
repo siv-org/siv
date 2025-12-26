@@ -49,6 +49,7 @@ export const HowDoesItWork = () => {
                 </li>
               ))}
             </ol>
+            <div className="mt-2 mb-2 text-xs italic text-black/50">Highly adaptable to almost any situation</div>
           </AccordionSection>
 
           {/* 2: Voting Period */}
