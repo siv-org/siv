@@ -72,12 +72,12 @@ export const HowDoesItWork = () => {
                 arrive in real-time
               </li>
             </ul>
-            <div className="mt-3 text-sm italic">
+            <div className="mt-9 text-sm italic">
               <div>
                 &quot;The easiest voting experience I&apos;ve ever had&quot;
                 <div className="text-xs">- A voter</div>
               </div>
-              <div className="mt-1.5">
+              <div className="mt-5 mb-3">
                 &quot;Like voting nirvana&quot;
                 <div className="text-xs">- An election official</div>
               </div>
