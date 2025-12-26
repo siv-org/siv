@@ -116,6 +116,9 @@ export const HowDoesItWork = () => {
                   <li>
                     - <b className="font-semibold text-blue-800">End-to-End Cryptographic Privacy</b>
                   </li>
+                  <li>
+                    - <b className="font-semibold text-sky-500">Spoiler-Free Voting Methods</b>
+                  </li>
                 </ul>
               </p>
             </ul>
