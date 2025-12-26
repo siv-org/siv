@@ -91,17 +91,32 @@ export const HowDoesItWork = () => {
             onToggle={() => toggleSection(3)}
             title="Verifiable Results"
           >
-            <ul className="mt-2 text-sm list-disc list-inside text-left">
+            <ul className="mt-2 text-sm text-center">
               <li>
-                Voters can <b className="font-semibold text-green-700">confirm own votes</b> are counted as intended
+                Voters can <b className="font-semibold text-green-700">confirm own votes</b> counted as intended
               </li>
-              <li>
-                <b className="font-semibold text-sky-600">Voter Roll auditable</b> against fake voters, ballot stuffing
+              <li className="my-5 leading-tight">
+                <b className="block font-semibold text-sky-600">Voter Roll</b> auditable against fake voters, ballot
+                stuffing
               </li>
-              <p className="mt-3">
-                Advanced protections against <b className="font-semibold text-purple-700">Malware</b>,{' '}
-                <b className="font-semibold text-red-700">Coercion</b>,{' '}
-                <b className="font-semibold text-orange-600">False Claims</b>
+
+              <p className="text-left">
+                Advanced protections available:
+                <ul>
+                  <li>
+                    - from <b className="font-semibold text-purple-800">On-Device Malware</b>
+                  </li>
+                  <li>
+                    - from <b className="font-semibold text-red-700">Coercion</b> &{' '}
+                    <b className="font-semibold text-lime-700">Bribery</b>
+                  </li>
+                  <li>
+                    - from <b className="font-semibold text-amber-600">False Claims</b> of tampered votes
+                  </li>
+                  <li>
+                    - <b className="font-semibold text-blue-800">End-to-End Cryptographic Privacy</b>
+                  </li>
+                </ul>
               </p>
             </ul>
           </AccordionSection>
