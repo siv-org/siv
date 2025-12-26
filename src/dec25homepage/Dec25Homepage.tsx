@@ -36,8 +36,8 @@ export function Dec25HomepageIdea() {
         {/* Stats */}
         <div className="space-y-1 text-center">
           <h4>75,000 voters</h4>
-          <h4>35,000 votes cast</h4>
-          <h4>from 332 cities across 25 countries</h4>
+          <h4>110,000 votes cast</h4>
+          <h4>from 330 cities across 25 countries</h4>
 
           <p className="!mt-4 text-xs italic text-gray-400">So far</p>
 
