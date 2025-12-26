@@ -1,11 +1,15 @@
 import { useState } from 'react'
 import { api } from 'src/api-helper'
 
+import { SaveAndLogin } from './SaveAndLogin'
+
 const newline = ''.padEnd(100)
 
 export const CreateAVote = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [question, setQuestion] = useState('')
+  const [modalOpen, setModalOpen] = useState(false)
+
   return (
     <div className="max-w-[23rem] w-full">
       <button
@@ -38,12 +42,15 @@ export const CreateAVote = () => {
             }`}
             disabled={!question}
             onClick={() => {
-              alert(`Still testing: ${question}`)
-              api('dec25/create-vote', { question })
+              if (window.location.hostname !== 'localhost') api('dec25/create-vote', { question })
+
+              setModalOpen(true)
             }}
           >
             Next
           </button>
+
+          <SaveAndLogin isOpen={modalOpen} onClose={() => setModalOpen(false)} />
         </div>
       </div>
     </div>
