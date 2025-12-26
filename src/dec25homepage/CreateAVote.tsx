@@ -23,7 +23,10 @@ export const CreateAVote = () => {
         }`}
       >
         <div className="p-2 mb-8 w-full bg-amber-50 rounded rounded-t-none border border-t-0 border-amber-400">
-          <h1 className="mb-1 text-base font-bold">Vote on what?</h1>
+          <h1 className="flex justify-between items-center mb-1 font-bold">
+            Vote on what?
+            <i className="ml-4 text-xs font-normal text-right opacity-50">Editable later</i>
+          </h1>
           <textarea
             className="block p-1.5 rounded-lg w-full min-h-16"
             onChange={(e) => setQuestion(e.target.value)}
