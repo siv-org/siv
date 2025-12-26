@@ -28,7 +28,7 @@ export function Dec25HomepageIdea() {
         </div>
 
         {/* Buttons */}
-        <div className="flex flex-col gap-2 items-center w-full">
+        <div className="flex flex-col gap-5 items-center w-full">
           <CreateAVote />
           <HowDoesItWork />
         </div>
