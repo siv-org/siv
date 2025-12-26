@@ -37,7 +37,7 @@ export const HowDoesItWork = () => {
             <ol className="flex justify-between w-full max-w-[18rem] mx-auto pb-3">
               {[
                 ['Voters List', 'text-sky-800', 'bg-sky-200'],
-                ['Question(s)', 'text-lime-800', 'bg-lime-200'],
+                ['Questions', 'text-lime-800', 'bg-lime-200'],
               ].map(([title, color, bgColor], index) => (
                 <li key={index}>
                   <span
