@@ -3,7 +3,7 @@ import { createContext, useContext, useMemo, useReducer } from 'react'
 import { random_bigint, RP, stringToPoint } from 'src/crypto/curve'
 import { generateTrackingNum } from 'src/vote/tracking-num'
 
-import encrypt from '../crypto/encrypt'
+import { encrypt } from '../crypto/encrypt'
 import { public_key, voters } from './election-parameters'
 
 const rand = () => RP.BASE.multiplyUnsafe(random_bigint()).toHex()
