@@ -3,6 +3,10 @@
  * Base64URL is URL-safe: uses '-' instead of '+', '_' instead of '/', and removes padding '='
  */
 
+const Big0 = BigInt(0)
+const Big8 = BigInt(8)
+const BigFF = BigInt(0xff)
+
 /**
  * Convert a base64url string back to bigint
  */
@@ -25,9 +29,9 @@ export function base64URLToBigint(encoded: string): bigint {
       : new Uint8Array(Buffer.from(base64, 'base64'))
 
   // Convert bytes to bigint (big-endian)
-  let result = 0n
+  let result = Big0
   for (let i = 0; i < bytes.length; i++) {
-    result = (result << 8n) | BigInt(bytes[i])
+    result = (result << Big8) | BigInt(bytes[i])
   }
 
   return result
@@ -40,9 +44,9 @@ export function bigintToBase64URL(value: bigint): string {
   // Convert bigint to bytes (little-endian)
   const bytes: number[] = []
   let n = value
-  while (n > 0n) {
-    bytes.push(Number(n & 0xffn))
-    n = n >> 8n
+  while (n > Big0) {
+    bytes.push(Number(n & BigFF))
+    n = n >> Big8
   }
 
   // Reverse to get big-endian (most significant byte first)
