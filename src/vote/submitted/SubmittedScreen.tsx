@@ -7,6 +7,7 @@ import { State } from '../vote-state'
 import { DetailedEncryptionReceipt } from './DetailedEncryptionReceipt'
 import { EncryptedVote } from './EncryptedVote'
 import { InvalidatedVoteMessage } from './InvalidatedVoteMessage'
+import { MalwareCheck } from './MalwareCheck'
 import { UnlockedVote } from './UnlockedVote'
 import { UnverifiedEmailModal } from './UnverifiedEmailModal'
 
@@ -63,6 +64,8 @@ export function SubmittedScreen({
         <br />
         No one else can possibly know it.
       </p>
+
+      <MalwareCheck />
 
       {/* Encryption */}
       <h3 className="mt-16">How your vote was submitted:</h3>
