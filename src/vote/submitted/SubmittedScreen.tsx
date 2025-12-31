@@ -2,12 +2,12 @@ import Link from 'next/link'
 import { useEffect, useReducer } from 'react'
 import { NoSsr } from 'src/_shared/NoSsr'
 
+import { MalwareCheck } from '../../malware-check/InitMalwareCheck'
 import { generateColumnNames } from '../generateColumnNames'
 import { State } from '../vote-state'
 import { DetailedEncryptionReceipt } from './DetailedEncryptionReceipt'
 import { EncryptedVote } from './EncryptedVote'
 import { InvalidatedVoteMessage } from './InvalidatedVoteMessage'
-import { MalwareCheck } from './MalwareCheck'
 import { UnlockedVote } from './UnlockedVote'
 import { UnverifiedEmailModal } from './UnverifiedEmailModal'
 
