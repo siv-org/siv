@@ -49,6 +49,7 @@ export const SubmitButton = ({
               if (state.plaintext[id]) return
               if (item.multiple_votes_allowed) return
               if (item.type === 'ranked-choice-irv') return
+              if (item.type === 'approval') return
 
               dispatch({ [id]: 'BLANK' })
             })
