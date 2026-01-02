@@ -2,7 +2,7 @@ import { mapValues, merge } from 'lodash-es'
 import { random_bigint, RP, stringToPoint } from 'src/crypto/curve'
 import { CipherStrings } from 'src/crypto/stringify-shuffle'
 
-import encrypt from '../crypto/encrypt'
+import { encrypt } from '../crypto/encrypt'
 import { Item } from './storeElectionInfo'
 import { generateTrackingNum } from './tracking-num'
 import { useLocalStorageReducer } from './useLocalStorage'

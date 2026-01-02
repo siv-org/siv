@@ -30,10 +30,10 @@ export const generateColumnNames = ({ ballot_design }: { ballot_design?: Item[] 
     // 'Score' & 'budget' expect a vote for each of the question's options
     if (type === 'score' || type === 'budget') return options.map(({ name, value }) => `${id}_${value || name}`)
 
-    // Otherwise we'll just show the question ID, like Just Choose One ("Plurality")
+    // Otherwise we just show the question ID, eg "Choose Only One — Plurality"
     return id
   })
 
-  // Finally we flatten the possibly two-dimensional arrays into a single one
+  // Finally, flatten the possibly two-dimensional arrays into a single one
   return { columns: flatten(for_each_question) }
 }
