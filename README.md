@@ -7,8 +7,8 @@ Internet voting system designed for **government-grade election security**, with
 ## Core Security Goals
 
 - **Authenticated voters:** Only legitimately registered voters are allowed to vote, and only once per person.
-- **Private voting:** A fair election requires that voters can freely choose without anyone learning how they voted.
 - **Verifiable tallies:** For widely accepted results, vote totals must be independently auditable for accuracy.
+- **Private voting:** A fair election requires that voters can freely choose without anyone learning how they voted.
 
 ## Resources
 
