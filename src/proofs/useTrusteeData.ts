@@ -5,6 +5,7 @@ import { useElectionId } from '../status/use-election-id'
 export function useTrusteeData() {
   const e_id = useElectionId()
 
-  const data = useData(`election/${e_id}/trustees/latest`) as TrusteesLatest | undefined
-  return data || { t: undefined, trustees: undefined }
+  const { data } = useData(`election/${e_id}/trustees/latest`)
+  const typedData = data as TrusteesLatest | undefined
+  return typedData || { t: undefined, trustees: undefined }
 }
