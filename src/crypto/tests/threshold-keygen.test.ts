@@ -2,8 +2,8 @@ import { expect, test } from 'bun:test'
 import { mapValues, noop } from 'lodash'
 
 import { CURVE, G, random_bigint, RP, stringToPoint } from '../curve'
-import decrypt from '../decrypt'
-import encrypt from '../encrypt'
+import { decrypt } from '../decrypt'
+import { encrypt } from '../encrypt'
 import {
   combine_partials,
   compute_keyshare,

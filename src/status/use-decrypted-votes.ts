@@ -6,5 +6,6 @@ type Votes = Record<string, string>[]
 export const useDecryptedVotes = (): Votes => {
   const e_id = useElectionId()
 
-  return useData(`election/${e_id}/decrypted-votes`, [e_id, 'decrypted'])
+  const { data } = useData(`election/${e_id}/decrypted-votes`, [e_id, 'decrypted'])
+  return data || []
 }

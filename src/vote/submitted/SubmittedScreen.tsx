@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { useEffect, useReducer } from 'react'
 import { NoSsr } from 'src/_shared/NoSsr'
 
+import { MalwareCheck } from '../../malware-check/InitMalwareCheck'
 import { generateColumnNames } from '../generateColumnNames'
 import { State } from '../vote-state'
 import { DetailedEncryptionReceipt } from './DetailedEncryptionReceipt'
@@ -63,6 +64,8 @@ export function SubmittedScreen({
         <br />
         No one else can possibly know it.
       </p>
+
+      <MalwareCheck {...{ auth, election_id, state }} />
 
       {/* Encryption */}
       <h3 className="mt-16">How your vote was submitted:</h3>

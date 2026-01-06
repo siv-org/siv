@@ -35,8 +35,11 @@ export const useData = (key: string, pusherChannel?: [string | undefined, string
 
   return useSWR(cacheKey, (url: string) =>
     fetch(url).then(async (r) => {
-      if (!r.ok) throw await r.json()
+      if (!r.ok) {
+        const errorData = await r.json().catch(() => ({ error: `HTTP ${r.status}: ${r.statusText}` }))
+        throw new Error(errorData.error || `Failed to load: ${r.status}`)
+      }
       return await r.json()
     }),
-  ).data
+  )
 }
