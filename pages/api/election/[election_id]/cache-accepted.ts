@@ -411,9 +411,15 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     })
   }
 
+  // 7) Strip out pendings' link_auth before serving
+  const cleanedPending = deduplicatedPending.map((pv) => {
+    delete pv.link_auth
+    return pv
+  })
+
   // Warn if votes missing
   const expectedTotal = observedVotes + observedPending
-  const served = votes.length + deduplicatedPending.length
+  const served = votes.length + cleanedPending.length
   if (served < expectedTotal)
     await pushover('cache-accepted mismatch:', `[${election_id}] expected: ${expectedTotal} served: ${served}`)
 
@@ -438,7 +444,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       didPack,
       ops: { deletes, reads, writes },
     },
-    results: [...votes, ...deduplicatedPending],
+    results: [...votes, ...cleanedPending],
   })
 }
 
