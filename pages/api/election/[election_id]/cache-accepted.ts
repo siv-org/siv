@@ -441,7 +441,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   })
 
   // Warn if votes missing
-  const expectedTotal = observedVotes + observedPending - filteredInvalidatedCount
+  const expectedTotal = observedVotes + observedPending - invalidatedAuths.size
   const served = votes.length + cleanedPending.length
   if (served < expectedTotal)
     await pushover('cache-accepted mismatch:', `[${election_id}] expected: ${expectedTotal} served: ${served}`)
