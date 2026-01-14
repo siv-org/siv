@@ -391,14 +391,37 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // 4) Read cached pages
   const cached = await readAllCachedPages(cachedPagesCol)
 
-  // 5) Merge cached & fresh votes together
+  // 5) Load invalidated vote auth tokens (to filter them out)
+  const invalidatedVotesSnap = await electionDoc.collection('invalidated_votes').select('auth').get()
+  logRead(invalidatedVotesSnap.size, 'invalidated_votes')
+  const invalidatedAuths = new Set(
+    invalidatedVotesSnap.docs.map((doc) => {
+      const data = doc.data()
+      return data.auth as string
+    }),
+  )
+
+  // 6) Merge cached & fresh votes together
   const freshVotes = tailVotesDocs.map(mapVoteDoc)
   const freshPendingVotes = tailPendingDocs.map(mapPendingVoteDoc)
 
-  const votes = [...cached.votes, ...freshVotes]
-  const pendingVotes = [...cached.pendingVotes, ...freshPendingVotes]
+  let votes = [...cached.votes, ...freshVotes]
+  let pendingVotes = [...cached.pendingVotes, ...freshPendingVotes]
 
-  // 6) Deduplicate: remove pending votes that have been accepted
+  // 7) Filter out invalidated votes
+  let filteredInvalidatedCount = 0
+  if (invalidatedAuths.size > 0) {
+    const beforeFilter = votes.length + pendingVotes.length
+    votes = votes.filter((v) => !invalidatedAuths.has(v.auth))
+    // Also filter pending votes by link_auth if it matches an invalidated auth
+    pendingVotes = pendingVotes.filter((pv) => {
+      const linkAuth = typeof pv.link_auth === 'string' ? pv.link_auth : undefined
+      return !linkAuth || !invalidatedAuths.has(linkAuth)
+    })
+    filteredInvalidatedCount = beforeFilter - (votes.length + pendingVotes.length)
+  }
+
+  // 8) Deduplicate: remove pending votes that have been accepted
   //    (pending votes use link_auth, accepted votes use auth=link_auth)
   let deduplicatedPending = pendingVotes
   const runDedupe = votes.length && pendingVotes.length
@@ -411,7 +434,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     })
   }
 
-  // 7) Strip out pendings' link_auth before serving
+  // 9) Strip out pendings' link_auth before serving
   const cleanedPending = deduplicatedPending.map((pv) => {
     delete pv.link_auth
     return pv
@@ -439,7 +462,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           fresh: freshPendingVotes.length,
           ...(runDedupe && { removed_by_dedupe: pendingVotes.length - deduplicatedPending.length }),
         },
-        votes: { cached: cached.votes.length, fresh: freshVotes.length },
+        votes: {
+          cached: cached.votes.length,
+          fresh: freshVotes.length,
+          ...(filteredInvalidatedCount > 0 && { filtered_invalidated: filteredInvalidatedCount }),
+        },
       },
       didPack,
       ops: { deletes, reads, writes },
