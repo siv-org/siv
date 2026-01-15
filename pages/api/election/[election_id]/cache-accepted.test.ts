@@ -1,5 +1,4 @@
 import { expect, test } from 'bun:test'
-import { suite } from 'node:test'
 
 const API_BASE = 'http://localhost:3001/api'
 
@@ -163,7 +162,8 @@ test.skip('Voting During Packing - vote appears in subsequent cache read', async
   }
 })
 
-// Future tests - placeholders
+// Placeholder future tests
+/*
 suite.skip('Future tests', () => {
   test.skip('Pending Vote Transition During Packing - verify deduplication works', () => {
     // Test 3: When a pending vote is approved (moved from votes-pending to votes) while packing is in progress,
@@ -226,7 +226,6 @@ suite.skip('Future tests', () => {
     // Test 17: Cursor should advance correctly when only one collection (votes or pending) has new items.
   })
 
-  /*
 ## Additional Edge Cases to Test
 
 ### Test 3: Pending Vote Transition During Packing
@@ -451,5 +450,5 @@ suite.skip('Future tests', () => {
 8. **Throttling**: Packing respects throttle window
 9. **Multi-page**: Large vote sets split across pages correctly
 10. **Tie-breaking**: Cursor uses docId for tie-breaking when timestamps match
-*/
 })
+*/
