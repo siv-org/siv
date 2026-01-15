@@ -1,4 +1,5 @@
 // @ts-check
+const webpack = require('webpack')
 const withMDX = require('@next/mdx')()
 
 /**
@@ -45,6 +46,16 @@ const nextConfig = withMDX({
     // Dangerously allow production builds to successfully complete even if
     // your project has type errors.
     // ignoreBuildErrors: true,
+  },
+  webpack: (config) => {
+    config.plugins.push(
+      new webpack.IgnorePlugin({
+        checkResource(resource) {
+          return /\.test\.(ts|tsx)$/.test(resource)
+        },
+      }),
+    )
+    return config
   },
 })
 
