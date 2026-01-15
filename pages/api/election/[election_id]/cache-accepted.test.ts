@@ -105,7 +105,7 @@ test('Concurrent Packing - only one packer succeeds', async () => {
   } finally {
     await cleanupTestElection(electionId)
   }
-})
+}, 30000) // 30s timeout to allow for throttle wait
 
 // Test 2: Voting During Packing
 test.skip('Voting During Packing - vote appears in subsequent cache read', async () => {
