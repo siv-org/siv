@@ -100,6 +100,9 @@ test('Concurrent Packing - only one packer succeeds', async () => {
     const auths2 = results2.map((r) => r.auth)
 
     // Both responses should have the votes (one from packed cache, one from fresh tail)
+    expect(auths1.length).toBe(2)
+    expect(auths2.length).toBe(2)
+
     expect(auths1).toContain('a1b2c3d4e5')
     expect(auths1).toContain('b1c2d3e4f5')
 
