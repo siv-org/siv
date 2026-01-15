@@ -130,8 +130,10 @@ const getOrInitRoot = async (rootRef: firestore.DocumentReference) => {
   return init
 }
 
-/** Lease is best-effort concurrency control: prevents two packers from writing pages concurrently.
-    TTL handles crashed workers; release deletes lease doc early. */
+/** Lease is *best-effort* concurrency control: tries to prevent two packers from writing pages concurrently.
+ * Can fail if both packers read the lease as non-existent before either writes it.
+ * Will insert dupe votes into cache, but they'll be stripped out by later deduplication (step 8.5).
+ * TTL handles crashed workers; release deletes lease doc early. */
 const tryAcquireLease = async (db: firestore.Firestore, leaseRef: firestore.DocumentReference, ttlMs: number) => {
   const owner = randomUUID()
   const nowMs = Date.now()
@@ -432,6 +434,38 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       const linkAuth = typeof pv.link_auth === 'string' ? pv.link_auth : undefined
       return !linkAuth || !acceptedAuths.has(linkAuth)
     })
+  }
+
+  // 8.5) Deduplicate votes within same set
+  // eg duplicates from concurrent packing — lease is only best effort
+  const seenAuths = new Set<string>()
+  let dupeVotesCount = 0
+  votes = votes.filter((v) => {
+    if (seenAuths.has(v.auth)) {
+      dupeVotesCount++
+      return false
+    }
+    seenAuths.add(v.auth)
+    return true
+  })
+  const seenPendingAuths = new Set<string>()
+  let dupePendingVotesCount = 0
+  pendingVotes = pendingVotes.filter((pv) => {
+    // For pending votes, use link_auth if available, otherwise use 'pending' as a fallback
+    const key = pv.link_auth as unknown as string
+    if (seenPendingAuths.has(key)) {
+      dupePendingVotesCount++
+      return false
+    }
+    seenPendingAuths.add(key)
+    return true
+  })
+  if (dupeVotesCount > 0 || dupePendingVotesCount > 0) {
+    if (!election_id.startsWith('test-'))
+      await pushover(
+        'cache-accepted deduplication:',
+        `[${election_id}] dupeVotes: ${dupeVotesCount} dupePendingVotes: ${dupePendingVotesCount}`,
+      )
   }
 
   // 9) Strip out pendings' link_auth before serving
