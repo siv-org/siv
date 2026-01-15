@@ -26,6 +26,17 @@ const cleanupTestElection = async (electionId: string) => {
   return response
 }
 
+// Helper to create voters with specific auth tokens
+const createTestVoters = async (electionId: string, voters: Array<{ auth_token: string; email?: string }>) => {
+  const response = await fetch(`${API_BASE}/test/create-voters`, {
+    body: JSON.stringify({ election_id: electionId, voters }),
+    headers: { 'Content-Type': 'application/json' },
+    method: 'POST',
+  })
+  const body = await response.json()
+  return { body, status: response.status }
+}
+
 // Helper to submit a vote via the API
 const submitTestVote = async (electionId: string, auth: string, encryptedVote: Record<string, unknown> = {}) => {
   const response = await fetch(`${API_BASE}/submit-vote`, {
@@ -43,9 +54,16 @@ test('Concurrent Packing - only one packer succeeds', async () => {
   const electionId = `test-concurrent-${Date.now()}`
 
   try {
-    // Setup: Create election with votes
+    // Setup: Create election with voters and votes
     const createResponse = await createTestElection(electionId)
     expect(createResponse.status).toBe(201)
+
+    // Create voters with known auth tokens
+    const createVotersResponse = await createTestVoters(electionId, [
+      { auth_token: 'a1b2c3d4e5' },
+      { auth_token: 'b1c2d3e4f5' },
+    ])
+    expect(createVotersResponse.status).toBe(201)
 
     const submitResponse1 = await submitTestVote(electionId, 'a1b2c3d4e5', { test: 'vote1' })
     const submitResponse1Body = await submitResponse1.json()
@@ -96,11 +114,18 @@ test.skip('Voting During Packing - vote appears in subsequent cache read', async
   const electionId = `test-voting-during-${Date.now()}`
 
   try {
-    // Setup: Create election with initial votes
+    // Setup: Create election with voters and initial votes
     const createResponse = await createTestElection(electionId)
     expect(createResponse.status).toBe(201)
 
-    await submitTestVote(electionId, 'auth1', { test: 'vote1' })
+    // Create voters with known auth tokens
+    const createVotersResponse = await createTestVoters(electionId, [
+      { auth_token: 'a1b2c3d4e5' },
+      { auth_token: 'b1c2d3e4f5' },
+    ])
+    expect(createVotersResponse.status).toBe(201)
+
+    await submitTestVote(electionId, 'a1b2c3d4e5', { test: 'vote1' })
     await waitForThrottle()
 
     // Start packing operation (don't await yet)
@@ -109,7 +134,7 @@ test.skip('Voting During Packing - vote appears in subsequent cache read', async
     // While packing is in progress, submit a new vote
     // Small delay to ensure packing has started (lease acquired)
     await new Promise((resolve) => setTimeout(resolve, 200))
-    await submitTestVote(electionId, 'auth2', { test: 'vote2' })
+    await submitTestVote(electionId, 'b1c2d3e4f5', { test: 'vote2' })
 
     // Wait for packing to complete
     const packResponse = await packPromise
@@ -128,8 +153,8 @@ test.skip('Voting During Packing - vote appears in subsequent cache read', async
     const auths = results.map((r) => r.auth)
 
     // Verify both votes appear
-    expect(auths).toContain('auth1')
-    expect(auths).toContain('auth2')
+    expect(auths).toContain('a1b2c3d4e5')
+    expect(auths).toContain('b1c2d3e4f5')
 
     // Verify vote counts are correct
     const stats = readBody?._stats
