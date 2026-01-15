@@ -223,3 +223,230 @@ test.skip('observedVotes < 0 Edge Case - verify graceful handling', () => {
 test.skip('Cursor with Only Votes or Only Pending - verify cursor advancement', () => {
   // Test 17: Cursor should advance correctly when only one collection (votes or pending) has new items.
 })
+
+/*
+## Additional Edge Cases to Test
+
+### Test 3: Pending Vote Transition During Packing
+
+**Goal**: Verify that when a pending vote is approved (moved from `votes-pending` to `votes`) while packing is in progress, deduplication works correctly.
+
+**Steps**:
+
+1. Create election with pending votes
+2. Start packing operation
+3. While packing, approve a pending vote (via `/api/election/[election_id]/admin/approve-pending-vote`)
+4. Verify:
+
+- Packed pending vote is not duplicated in response
+- Accepted vote appears correctly
+- Deduplication removes pending vote with matching `link_auth`
+
+### Test 4: Invalidated Votes Filtering
+
+**Goal**: Verify invalidated votes are filtered out from both cached and fresh results.
+
+**Steps**:
+
+1. Create election with votes (some cached, some fresh)
+2. Invalidate a vote via `/api/election/[election_id]/admin/invalidate-voters`
+3. Call `/cache-accepted` and verify:
+
+- Invalidated vote is filtered from cached pages
+- Invalidated vote is filtered from fresh tail query
+- Pending votes with matching `link_auth` are also filtered
+- `filtered_invalidated` count is correct
+
+### Test 5: ETag Behavior (304 Not Modified)
+
+**Goal**: Verify ETag-based caching works correctly.
+
+**Steps**:
+
+1. Call `/cache-accepted` and capture ETag
+2. Call again with `If-None-Match` header set to ETag
+3. Verify 304 response (no body)
+4. Submit new vote
+5. Call again with old ETag
+6. Verify 200 response with new data and new ETag
+
+**Key assertions**:
+
+- ETag changes when votes are added (even if not packed)
+- ETag is based on cursor + observed counters
+- 304 responses save bandwidth
+
+### Test 6: Throttle Behavior
+
+**Goal**: Verify packing is throttled correctly.
+
+**Steps**:
+
+1. Create election and trigger packing
+2. Immediately call `/cache-accepted` again (within `PACK_THROTTLE_MS`)
+3. Verify `didPack: false` (throttle active)
+4. Wait `PACK_THROTTLE_MS + buffer`
+5. Call again with new votes
+6. Verify `didPack: true` (throttle passed)
+
+### Test 7: Empty Tail Query (No Packing)
+
+**Goal**: Verify packing doesn't happen when no new votes exist.
+
+**Steps**:
+
+1. Create election and pack initial votes
+2. Call `/cache-accepted` with no new votes
+3. Verify `didPack: false`
+4. Verify response still serves cached votes correctly
+
+### Test 8: Page Size Limits (Multi-Page Packing)
+
+**Goal**: Verify votes exceeding `MAX_PAGE_BYTES` (850KB) are split across multiple pages.
+
+**Steps**:
+
+1. Create election with many large votes (exceeding page size)
+2. Trigger packing
+3. Verify:
+
+- Multiple pages are created (`000001`, `000002`, etc.)
+- `currentPageNum` advances correctly
+- All votes are packed across pages
+- Page IDs are zero-padded for lexicographic ordering
+
+### Test 9: Cursor Tie-Breaking Logic
+
+**Goal**: Verify cursor advances correctly when votes and pending votes have same `created_at`.
+
+**Steps**:
+
+1. Create votes with identical `created_at` timestamps
+2. Ensure some are in `votes` and some in `votes-pending`
+3. Trigger packing
+4. Verify cursor uses `docId` as tie-breaker (lexicographic order)
+5. Verify cursor advances to `max(lastVote, lastPending)` under ordering
+
+### Test 10: Lease Expiration and Recovery
+
+**Goal**: Verify expired leases can be acquired by new packers (crash recovery).
+
+**Steps**:
+
+1. Manually create a lease document with expired `expiresAt`
+2. Attempt to pack
+3. Verify lease is acquired successfully
+4. Verify packing proceeds normally
+
+### Test 11: Concurrent Reads During Packing
+
+**Goal**: Verify multiple clients can read while packing is in progress.
+
+**Steps**:
+
+1. Start packing operation
+2. Fire multiple concurrent read requests to `/cache-accepted`
+3. Verify:
+
+- All reads succeed (no blocking)
+- Reads return consistent data (cached + fresh tail)
+- No errors or race conditions
+
+### Test 12: Empty Election (Root Initialization)
+
+**Goal**: Verify first request to empty election initializes root correctly.
+
+**Steps**:
+
+1. Create election with no votes
+2. Call `/cache-accepted`
+3. Verify:
+
+- Root document is created with correct initial state
+- `currentPageNum = 1`
+- `lastPackedCreatedAt = null`
+- `updatedAt` is set to allow immediate packing
+- Response is empty but valid
+
+### Test 13: Vote Count Mismatch Detection
+
+**Goal**: Verify system detects and reports when served votes < expected total.
+
+**Steps**:
+
+1. Create election with known vote count
+2. Manually corrupt cache (delete some pages or votes)
+3. Call `/cache-accepted`
+4. Verify:
+
+- Pushover alert is sent (if implemented)
+- Response still returns available votes
+- Mismatch is logged in stats
+
+### Test 14: Lease Release Edge Cases
+
+**Goal**: Verify lease release handles edge cases gracefully.
+
+**Steps**:
+
+1. Acquire lease and pack
+2. Manually delete lease document
+3. Attempt to release lease
+4. Verify pushover alert is sent (lease not found)
+5. Verify no errors crash the endpoint
+
+### Test 15: Rapid Vote Submissions (Stress Test)
+
+**Goal**: Verify system handles rapid vote submissions correctly.
+
+**Steps**:
+
+1. Create election
+2. Submit 50+ votes rapidly (concurrent submissions)
+3. Call `/cache-accepted` multiple times
+4. Verify:
+
+- All votes are eventually packed
+- No votes are lost
+- Cursor advances correctly
+- No race conditions cause data corruption
+
+### Test 16: observedVotes < 0 Edge Case
+
+**Goal**: Verify system handles negative observedVotes gracefully.
+
+**Steps**:
+
+1. Manually corrupt election document to have `num_votes < num_pending_votes`
+2. Call `/cache-accepted`
+3. Verify:
+
+- Pushover alert is sent
+- Endpoint doesn't crash
+- Response still works (with corrected calculation)
+
+### Test 17: Cursor with Only Votes or Only Pending
+
+**Goal**: Verify cursor advancement when only one collection has new items.
+
+**Steps**:
+
+1. Create election with only accepted votes (no pending)
+2. Pack and verify cursor advances
+3. Create election with only pending votes (no accepted)
+4. Pack and verify cursor advances
+5. Verify cursor logic handles both cases correctly
+
+## Expected Behavior
+
+1. **Concurrent packing**: One succeeds, one fails gracefully (returns `didPack: false`)
+2. **Voting during packing**: Vote is accepted and appears in next cache read
+3. **Lease expiration**: Expired leases can be acquired by new packers
+4. **Data integrity**: No votes lost, no duplicates, cursor always advances
+5. **Deduplication**: Pending votes that become accepted are deduplicated correctly
+6. **Invalidation**: Invalidated votes are filtered from all responses
+7. **ETag caching**: 304 responses work correctly, ETag changes with data
+8. **Throttling**: Packing respects throttle window
+9. **Multi-page**: Large vote sets split across pages correctly
+10. **Tie-breaking**: Cursor uses docId for tie-breaking when timestamps match
+*/
