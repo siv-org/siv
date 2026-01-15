@@ -1,4 +1,5 @@
 import { expect, test } from 'bun:test'
+import { suite } from 'node:test'
 
 const API_BASE = 'http://localhost:3001/api'
 
@@ -163,68 +164,69 @@ test.skip('Voting During Packing - vote appears in subsequent cache read', async
 })
 
 // Future tests - placeholders
-test.skip('Pending Vote Transition During Packing - verify deduplication works', () => {
-  // Test 3: When a pending vote is approved (moved from votes-pending to votes) while packing is in progress,
-  // deduplication should work correctly.
-})
+suite.skip('Future tests', () => {
+  test.skip('Pending Vote Transition During Packing - verify deduplication works', () => {
+    // Test 3: When a pending vote is approved (moved from votes-pending to votes) while packing is in progress,
+    // deduplication should work correctly.
+  })
 
-test.skip('Invalidated Votes Filtering - verify invalidated votes are filtered', () => {
-  // Test 4: Invalidated votes should be filtered out from both cached and fresh results.
-})
+  test.skip('Invalidated Votes Filtering - verify invalidated votes are filtered', () => {
+    // Test 4: Invalidated votes should be filtered out from both cached and fresh results.
+  })
 
-test.skip('ETag Behavior - verify 304 Not Modified responses', () => {
-  // Test 5: ETag-based caching should work correctly, returning 304 when ETag matches.
-})
+  test.skip('ETag Behavior - verify 304 Not Modified responses', () => {
+    // Test 5: ETag-based caching should work correctly, returning 304 when ETag matches.
+  })
 
-test.skip('Throttle Behavior - verify packing is throttled', () => {
-  // Test 6: Packing should not happen within PACK_THROTTLE_MS (5 seconds) of previous pack.
-})
+  test.skip('Throttle Behavior - verify packing is throttled', () => {
+    // Test 6: Packing should not happen within PACK_THROTTLE_MS (5 seconds) of previous pack.
+  })
 
-test.skip('Empty Tail Query - verify no packing when no new votes', () => {
-  // Test 7: Packing should not happen when no new votes exist (empty tail query).
-})
+  test.skip('Empty Tail Query - verify no packing when no new votes', () => {
+    // Test 7: Packing should not happen when no new votes exist (empty tail query).
+  })
 
-test.skip('Page Size Limits - verify multi-page packing', () => {
-  // Test 8: Votes exceeding MAX_PAGE_BYTES (850KB) should be split across multiple pages.
-})
+  test.skip('Page Size Limits - verify multi-page packing', () => {
+    // Test 8: Votes exceeding MAX_PAGE_BYTES (850KB) should be split across multiple pages.
+  })
 
-test.skip('Cursor Tie-Breaking Logic - verify cursor advances correctly', () => {
-  // Test 9: Cursor should use docId as tie-breaker when votes have identical created_at timestamps.
-})
+  test.skip('Cursor Tie-Breaking Logic - verify cursor advances correctly', () => {
+    // Test 9: Cursor should use docId as tie-breaker when votes have identical created_at timestamps.
+  })
 
-test.skip('Lease Expiration and Recovery - verify expired leases can be acquired', () => {
-  // Test 10: Expired leases should be acquirable by new packers (crash recovery scenario).
-})
+  test.skip('Lease Expiration and Recovery - verify expired leases can be acquired', () => {
+    // Test 10: Expired leases should be acquirable by new packers (crash recovery scenario).
+  })
 
-test.skip('Concurrent Reads During Packing - verify multiple clients can read', () => {
-  // Test 11: Multiple clients should be able to read while packing is in progress without blocking.
-})
+  test.skip('Concurrent Reads During Packing - verify multiple clients can read', () => {
+    // Test 11: Multiple clients should be able to read while packing is in progress without blocking.
+  })
 
-test.skip('Empty Election - verify root initialization', () => {
-  // Test 12: First request to empty election should initialize root document correctly.
-})
+  test.skip('Empty Election - verify root initialization', () => {
+    // Test 12: First request to empty election should initialize root document correctly.
+  })
 
-test.skip('Vote Count Mismatch Detection - verify system detects mismatches', () => {
-  // Test 13: System should detect and report when served votes < expected total.
-})
+  test.skip('Vote Count Mismatch Detection - verify system detects mismatches', () => {
+    // Test 13: System should detect and report when served votes < expected total.
+  })
 
-test.skip('Lease Release Edge Cases - verify graceful handling', () => {
-  // Test 14: Lease release should handle edge cases (missing lease, wrong owner) gracefully.
-})
+  test.skip('Lease Release Edge Cases - verify graceful handling', () => {
+    // Test 14: Lease release should handle edge cases (missing lease, wrong owner) gracefully.
+  })
 
-test.skip('Rapid Vote Submissions - stress test', () => {
-  // Test 15: System should handle rapid vote submissions (50+ concurrent) correctly.
-})
+  test.skip('Rapid Vote Submissions - stress test', () => {
+    // Test 15: System should handle rapid vote submissions (50+ concurrent) correctly.
+  })
 
-test.skip('observedVotes < 0 Edge Case - verify graceful handling', () => {
-  // Test 16: System should handle negative observedVotes gracefully without crashing.
-})
+  test.skip('observedVotes < 0 Edge Case - verify graceful handling', () => {
+    // Test 16: System should handle negative observedVotes gracefully without crashing.
+  })
 
-test.skip('Cursor with Only Votes or Only Pending - verify cursor advancement', () => {
-  // Test 17: Cursor should advance correctly when only one collection (votes or pending) has new items.
-})
+  test.skip('Cursor with Only Votes or Only Pending - verify cursor advancement', () => {
+    // Test 17: Cursor should advance correctly when only one collection (votes or pending) has new items.
+  })
 
-/*
+  /*
 ## Additional Edge Cases to Test
 
 ### Test 3: Pending Vote Transition During Packing
@@ -450,3 +452,4 @@ test.skip('Cursor with Only Votes or Only Pending - verify cursor advancement', 
 9. **Multi-page**: Large vote sets split across pages correctly
 10. **Tie-breaking**: Cursor uses docId for tie-breaking when timestamps match
 */
+})
