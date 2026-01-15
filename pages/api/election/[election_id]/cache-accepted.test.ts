@@ -3,51 +3,48 @@ import { suite } from 'node:test'
 
 const API_BASE = 'http://localhost:3001/api'
 
-// Helper to call cache-accepted endpoint
-const callCacheAccepted = async (electionId: string, headers: Record<string, string> = {}) => {
-  const response = await fetch(`${API_BASE}/election/${electionId}/cache-accepted`, { headers: { ...headers } })
-  const body = await response.json()
-  return { body, headers: Object.fromEntries(response.headers.entries()), status: response.status }
+const helpers = {
+  callCacheAccepted: async (electionId: string, headers: Record<string, string> = {}) => {
+    // Helper to call cache-accepted endpoint
+    const response = await fetch(`${API_BASE}/election/${electionId}/cache-accepted`, { headers: { ...headers } })
+    const body = await response.json()
+    return { body, headers: Object.fromEntries(response.headers.entries()), status: response.status }
+  },
+  cleanupTestElection: async (electionId: string) => {
+    // Helper to cleanup a test election
+    const response = await fetch(`${API_BASE}/test/cleanup-election?election_id=${electionId}`, { method: 'DELETE' })
+    return response
+  },
+  createTestElection: async (electionId: string, electionTitle?: string) => {
+    // Helper to create a test election
+    const response = await fetch(`${API_BASE}/test/create-election`, {
+      body: JSON.stringify({ election_id: electionId, election_title: electionTitle }),
+      headers: { 'Content-Type': 'application/json' },
+      method: 'POST',
+    })
+    const body = await response.json()
+    return { body, status: response.status }
+  },
+  createTestVoters: async (electionId: string, voters: Array<{ auth_token: string; email?: string }>) => {
+    // Helper to create voters with specific auth tokens
+    const response = await fetch(`${API_BASE}/test/create-voters`, {
+      body: JSON.stringify({ election_id: electionId, voters }),
+      headers: { 'Content-Type': 'application/json' },
+      method: 'POST',
+    })
+    const body = await response.json()
+    return { body, status: response.status }
+  },
+  submitTestVote: async (electionId: string, auth: string, encryptedVote: Record<string, unknown> = {}) => {
+    // Helper to submit a vote via the API
+    return fetch(`${API_BASE}/submit-vote`, {
+      body: JSON.stringify({ auth, election_id: electionId, encrypted_vote: JSON.stringify(encryptedVote) }),
+      headers: { 'Content-Type': 'application/json' },
+      method: 'POST',
+    })
+  },
+  waitForThrottle: () => new Promise((resolve) => setTimeout(resolve, 6000)), // PACK_THROTTLE_MS (5s) + 1s buffer
 }
-
-// Helper to create a test election
-const createTestElection = async (electionId: string, electionTitle?: string) => {
-  const response = await fetch(`${API_BASE}/test/create-election`, {
-    body: JSON.stringify({ election_id: electionId, election_title: electionTitle }),
-    headers: { 'Content-Type': 'application/json' },
-    method: 'POST',
-  })
-  const body = await response.json()
-  return { body, status: response.status }
-}
-
-// Helper to cleanup a test election
-const cleanupTestElection = async (electionId: string) => {
-  const response = await fetch(`${API_BASE}/test/cleanup-election?election_id=${electionId}`, { method: 'DELETE' })
-  return response
-}
-
-// Helper to create voters with specific auth tokens
-const createTestVoters = async (electionId: string, voters: Array<{ auth_token: string; email?: string }>) => {
-  const response = await fetch(`${API_BASE}/test/create-voters`, {
-    body: JSON.stringify({ election_id: electionId, voters }),
-    headers: { 'Content-Type': 'application/json' },
-    method: 'POST',
-  })
-  const body = await response.json()
-  return { body, status: response.status }
-}
-
-// Helper to submit a vote via the API
-const submitTestVote = async (electionId: string, auth: string, encryptedVote: Record<string, unknown> = {}) => {
-  return fetch(`${API_BASE}/submit-vote`, {
-    body: JSON.stringify({ auth, election_id: electionId, encrypted_vote: JSON.stringify(encryptedVote) }),
-    headers: { 'Content-Type': 'application/json' },
-    method: 'POST',
-  })
-}
-
-const waitForThrottle = () => new Promise((resolve) => setTimeout(resolve, 6000)) // PACK_THROTTLE_MS (5s) + 1s buffer
 
 // Test 1: Concurrent Packing
 test('Concurrent Packing - only one packer succeeds', async () => {
@@ -55,27 +52,30 @@ test('Concurrent Packing - only one packer succeeds', async () => {
 
   try {
     // Setup: Create election with voters and votes
-    const createResponse = await createTestElection(electionId)
+    const createResponse = await helpers.createTestElection(electionId)
     expect(createResponse.status).toBe(201)
 
     // Create voters with known auth tokens
-    const createVotersResponse = await createTestVoters(electionId, [
+    const createVotersResponse = await helpers.createTestVoters(electionId, [
       { auth_token: 'a1b2c3d4e5' },
       { auth_token: 'b1c2d3e4f5' },
     ])
     expect(createVotersResponse.status).toBe(201)
 
-    const submitResponse1 = await submitTestVote(electionId, 'a1b2c3d4e5', { test: 'vote1' })
+    const submitResponse1 = await helpers.submitTestVote(electionId, 'a1b2c3d4e5', { test: 'vote1' })
     expect(submitResponse1.status).toBe(200)
 
-    const submitResponse2 = await submitTestVote(electionId, 'b1c2d3e4f5', { test: 'vote2' })
+    const submitResponse2 = await helpers.submitTestVote(electionId, 'b1c2d3e4f5', { test: 'vote2' })
     expect(submitResponse2.status).toBe(200)
 
     // Wait for throttle to pass
-    await waitForThrottle()
+    await helpers.waitForThrottle()
 
     // Fire two concurrent requests to the actual API
-    const [response1, response2] = await Promise.all([callCacheAccepted(electionId), callCacheAccepted(electionId)])
+    const [response1, response2] = await Promise.all([
+      helpers.callCacheAccepted(electionId),
+      helpers.callCacheAccepted(electionId),
+    ])
 
     const body1 = response1.body as { _stats?: { didPack?: boolean }; results?: Array<{ auth: string }> }
     const body2 = response2.body as { _stats?: { didPack?: boolean }; results?: Array<{ auth: string }> }
@@ -104,7 +104,7 @@ test('Concurrent Packing - only one packer succeeds', async () => {
     expect(auths2).toContain('a1b2c3d4e5')
     expect(auths2).toContain('b1c2d3e4f5')
   } finally {
-    await cleanupTestElection(electionId)
+    await helpers.cleanupTestElection(electionId)
   }
 }, 30000) // 30s timeout to allow for throttle wait
 
@@ -114,33 +114,33 @@ test.skip('Voting During Packing - vote appears in subsequent cache read', async
 
   try {
     // Setup: Create election with voters and initial votes
-    const createResponse = await createTestElection(electionId)
+    const createResponse = await helpers.createTestElection(electionId)
     expect(createResponse.status).toBe(201)
 
     // Create voters with known auth tokens
-    const createVotersResponse = await createTestVoters(electionId, [
+    const createVotersResponse = await helpers.createTestVoters(electionId, [
       { auth_token: 'a1b2c3d4e5' },
       { auth_token: 'b1c2d3e4f5' },
     ])
     expect(createVotersResponse.status).toBe(201)
 
-    await submitTestVote(electionId, 'a1b2c3d4e5', { test: 'vote1' })
-    await waitForThrottle()
+    await helpers.submitTestVote(electionId, 'a1b2c3d4e5', { test: 'vote1' })
+    await helpers.waitForThrottle()
 
     // Start packing operation (don't await yet)
-    const packPromise = callCacheAccepted(electionId)
+    const packPromise = helpers.callCacheAccepted(electionId)
 
     // While packing is in progress, submit a new vote
     // Small delay to ensure packing has started (lease acquired)
     await new Promise((resolve) => setTimeout(resolve, 200))
-    await submitTestVote(electionId, 'b1c2d3e4f5', { test: 'vote2' })
+    await helpers.submitTestVote(electionId, 'b1c2d3e4f5', { test: 'vote2' })
 
     // Wait for packing to complete
     const packResponse = await packPromise
     expect(packResponse.status).toBe(200)
 
     // Call cache-accepted again to verify the vote submitted during packing appears
-    const readResponse = await callCacheAccepted(electionId)
+    const readResponse = await helpers.callCacheAccepted(electionId)
     expect(readResponse.status).toBe(200)
 
     const readBody = readResponse.body as {
@@ -159,7 +159,7 @@ test.skip('Voting During Packing - vote appears in subsequent cache read', async
     const stats = readBody?._stats
     expect(stats).toBeDefined()
   } finally {
-    await cleanupTestElection(electionId)
+    await helpers.cleanupTestElection(electionId)
   }
 })
 
