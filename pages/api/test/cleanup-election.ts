@@ -17,7 +17,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const doc = firebase.firestore().collection('elections').doc(election_id)
 
   // Delete all subcollections
-  const subcollections = ['votes', 'votes-pending', 'votes-cached', 'voters', 'trustees']
+  const subcollections = ['votes', 'votes-pending', 'votes-cached', 'voters', 'trustees', 'votes-rejected']
   for (const subcol of subcollections) {
     const snapshot = await doc.collection(subcol).get()
     const batch = firebase.firestore().batch()
