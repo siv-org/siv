@@ -71,12 +71,12 @@ test('Concurrent Packing - only one packer succeeds', async () => {
     // Wait for throttle to pass
     await helpers.waitForThrottle()
 
-    // Fire two concurrent requests to the actual API
+    // Fire two concurrent requests
     const [response1, response2] = await Promise.all([
       helpers.callCacheAccepted(electionId),
       helpers.callCacheAccepted(electionId),
     ])
-    // Verify both responses are valid (both should return data even if only one packed)
+    // Verify both responses are valid
     expect(response1.status).toBe(200)
     expect(response2.status).toBe(200)
 
@@ -88,9 +88,8 @@ test('Concurrent Packing - only one packer succeeds', async () => {
     const didPack2 = body2._stats.didPack
 
     expect(didPack1 || didPack2).toBe(true) // At least one should pack
-
-    // TODO: Commented out because this is currently failing.
-    // expect(didPack1 && didPack2).toBe(false) // But not both (lease prevented concurrent packing)
+    // TODO: Currently failing
+    expect(didPack1 && didPack2).toBe(false) // But not both (lease prevented concurrent packing)
 
     // Verify both responses contain the votes (either from cache or fresh tail)
     for (const results of [body1.results, body2.results]) {
