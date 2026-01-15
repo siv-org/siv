@@ -108,7 +108,7 @@ test('Concurrent Packing - still give correct results', async () => {
 }, 15_000) // 15s timeout to allow for throttle wait
 
 // Test 2: Voting During Packing
-test.skip('Voting During Packing - vote appears in subsequent cache read', async () => {
+test('Voting During Packing - vote not lost', async () => {
   const electionId = `test-voting-during-${Date.now()}`
 
   try {
@@ -124,7 +124,7 @@ test.skip('Voting During Packing - vote appears in subsequent cache read', async
     expect(createVotersResponse.status).toBe(201)
 
     await helpers.submitTestVote(electionId, 'a1b2c3d4e5', { test: 'vote1' })
-    await helpers.waitForThrottle()
+    // await helpers.waitForThrottle()
 
     // Start packing operation (don't await yet)
     const packPromise = helpers.callCacheAccepted(electionId)
@@ -142,15 +142,12 @@ test.skip('Voting During Packing - vote appears in subsequent cache read', async
     const readResponse = await helpers.callCacheAccepted(electionId)
     expect(readResponse.status).toBe(200)
 
-    const readBody = readResponse.body as {
-      _stats?: unknown
-      results?: Array<{ auth: string }>
-    }
+    const readBody = readResponse.body as { _stats: unknown; results: Array<{ auth: string }> }
 
-    const results = readBody?.results ?? []
-    const auths = results.map((r) => r.auth)
+    const auths = readBody.results.map((r) => r.auth)
 
     // Verify both votes appear
+    expect(auths.length).toBe(2)
     expect(auths).toContain('a1b2c3d4e5')
     expect(auths).toContain('b1c2d3e4f5')
 
