@@ -76,38 +76,29 @@ test('Concurrent Packing - only one packer succeeds', async () => {
       helpers.callCacheAccepted(electionId),
       helpers.callCacheAccepted(electionId),
     ])
+    // Verify both responses are valid (both should return data even if only one packed)
+    expect(response1.status).toBe(200)
+    expect(response2.status).toBe(200)
 
-    const body1 = response1.body as { _stats?: { didPack?: boolean }; results?: Array<{ auth: string }> }
-    const body2 = response2.body as { _stats?: { didPack?: boolean }; results?: Array<{ auth: string }> }
+    const body1 = response1.body as { _stats: { didPack: boolean }; results: Array<{ auth: string }> }
+    const body2 = response2.body as { _stats: { didPack: boolean }; results: Array<{ auth: string }> }
 
     // Verify only one packed (lease mechanism worked)
-    const didPack1 = body1?._stats?.didPack ?? false
-    const didPack2 = body2?._stats?.didPack ?? false
+    const didPack1 = body1._stats.didPack
+    const didPack2 = body2._stats.didPack
 
     expect(didPack1 || didPack2).toBe(true) // At least one should pack
 
     // TODO: Commented out because this is currently failing.
     // expect(didPack1 && didPack2).toBe(false) // But not both (lease prevented concurrent packing)
 
-    // Verify both responses are valid (both should return data even if only one packed)
-    expect(response1.status).toBe(200)
-    expect(response2.status).toBe(200)
-
     // Verify both responses contain the votes (either from cache or fresh tail)
-    const results1 = body1?.results ?? []
-    const results2 = body2?.results ?? []
-    const auths1 = results1.map((r) => r.auth)
-    const auths2 = results2.map((r) => r.auth)
-
-    // Both responses should have the votes (one from packed cache, one from fresh tail)
-    expect(auths1.length).toBe(2)
-    expect(auths2.length).toBe(2)
-
-    expect(auths1).toContain('a1b2c3d4e5')
-    expect(auths1).toContain('b1c2d3e4f5')
-
-    expect(auths2).toContain('a1b2c3d4e5')
-    expect(auths2).toContain('b1c2d3e4f5')
+    for (const results of [body1.results, body2.results]) {
+      const auths = results.map((r) => r.auth)
+      expect(auths.length).toBe(2)
+      expect(auths).toContain('a1b2c3d4e5')
+      expect(auths).toContain('b1c2d3e4f5')
+    }
   } finally {
     await helpers.cleanupTestElection(electionId)
   }
