@@ -42,9 +42,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           // Skip if they have not voted
           if (!votes.docs.length) return
 
-          // TODO: Skip if voter's email address is unverified, BLOCKED by PR #125 Registration link
-          // if (voter.status == 'pending') return
-
           return sendEmail({
             recipient: voter.email,
             subject: 'Your vote has been invalidated',
