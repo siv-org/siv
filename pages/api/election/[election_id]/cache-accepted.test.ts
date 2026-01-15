@@ -127,7 +127,7 @@ test('Voting During Packing - vote not lost', async () => {
     // await helpers.waitForThrottle()
 
     // Start packing operation (don't await yet)
-    const packPromise = helpers.callCacheAccepted(electionId)
+    const pack1Promise = helpers.callCacheAccepted(electionId)
 
     // While packing is in progress, submit a new vote
     // Small delay to ensure packing has started (lease acquired)
@@ -135,8 +135,14 @@ test('Voting During Packing - vote not lost', async () => {
     await helpers.submitTestVote(electionId, 'b1c2d3e4f5', { test: 'vote2' })
 
     // Wait for packing to complete
-    const packResponse = await packPromise
-    expect(packResponse.status).toBe(200)
+    const pack1Response = await pack1Promise
+    expect(pack1Response.status).toBe(200)
+
+    // The first packing should have just the 1st vote
+    const pack1Body = pack1Response.body as { _stats: unknown; results: Array<{ auth: string }> }
+    const pack1Auths = pack1Body.results.map((r) => r.auth)
+    expect(pack1Auths.length).toBe(1)
+    expect(pack1Auths).toContain('a1b2c3d4e5')
 
     // Call cache-accepted again to verify the vote submitted during packing appears
     const readResponse = await helpers.callCacheAccepted(electionId)
