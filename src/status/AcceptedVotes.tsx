@@ -39,8 +39,8 @@ export const AcceptedVotes = ({
   // Load all the encrypted votes (heavy, so only on first load)
   useEffect(() => {
     if (!election_id) return
-    fetch(`/api/election/${election_id}/accepted-votes`)
-      .then((r) => r.json())
+    fetch(`/api/election/${election_id}/cache-accepted`)
+      .then(async (r) => (await r.json()).results)
       .then(setVotes)
   }, [election_id])
 
