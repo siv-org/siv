@@ -39,12 +39,11 @@ const createTestVoters = async (electionId: string, voters: Array<{ auth_token: 
 
 // Helper to submit a vote via the API
 const submitTestVote = async (electionId: string, auth: string, encryptedVote: Record<string, unknown> = {}) => {
-  const response = await fetch(`${API_BASE}/submit-vote`, {
-    body: JSON.stringify({ auth, election_id: electionId, encrypted_vote: encryptedVote }),
+  return fetch(`${API_BASE}/submit-vote`, {
+    body: JSON.stringify({ auth, election_id: electionId, encrypted_vote: JSON.stringify(encryptedVote) }),
     headers: { 'Content-Type': 'application/json' },
     method: 'POST',
   })
-  return response
 }
 
 const waitForThrottle = () => new Promise((resolve) => setTimeout(resolve, 6000)) // PACK_THROTTLE_MS (5s) + 1s buffer
@@ -66,11 +65,10 @@ test('Concurrent Packing - only one packer succeeds', async () => {
     expect(createVotersResponse.status).toBe(201)
 
     const submitResponse1 = await submitTestVote(electionId, 'a1b2c3d4e5', { test: 'vote1' })
-    const submitResponse1Body = await submitResponse1.json()
-    expect(submitResponse1.status, submitResponse1Body?.error).toBe(200)
+    expect(submitResponse1.status).toBe(200)
+
     const submitResponse2 = await submitTestVote(electionId, 'b1c2d3e4f5', { test: 'vote2' })
-    const submitResponse2Body = await submitResponse2.json()
-    expect(submitResponse2.status, submitResponse2Body?.error).toBe(200)
+    expect(submitResponse2.status).toBe(200)
 
     // Wait for throttle to pass
     await waitForThrottle()
