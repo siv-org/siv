@@ -169,12 +169,32 @@ test('Voting During Packing - vote not lost', async () => {
 /*
 describe.skip('Future tests', () => {
   test.skip('Pending Vote Transition During Packing - verify deduplication works', () => {
-    // Test 3: When a pending vote is approved (moved from votes-pending to votes) while packing is in progress,
+    // --- Test 3: Pending Vote Transition During Packing ---
+    // When a pending vote is approved (moved from `votes-pending` to `votes`) while packing is in progress,
     // deduplication should work correctly.
+
+    // - Steps -
+    // 1. Create election with pending votes
+    // 2. Start packing operation
+    // 3. While packing, approve a pending vote (via `/api/election/[election_id]/admin/approve-pending-vote`)
+    // 4. Verify:
+    // - Packed pending vote is not duplicated in response
+    // - Accepted vote appears correctly
+    // - Deduplication removes pending vote with matching `link_auth`
   })
 
   test.skip('Invalidated Votes Filtering - verify invalidated votes are filtered', () => {
-    // Test 4: Invalidated votes should be filtered out from both cached and fresh results.
+    // --- Test 4: Invalidated Votes Filtering ---
+    // Invalidated votes should be filtered out from both cached and fresh results.
+
+    // - Steps -
+    // 1. Create election with votes(some cached, some fresh)
+    // 2. Invalidate a vote via`/api/election/[election_id]/admin/invalidate-voters`
+    // 3. Call `/cache-accepted` and verify:
+    // - Invalidated vote is filtered from cached pages
+    // - Invalidated vote is filtered from fresh tail query
+    // - Pending votes with matching`link_auth` are also filtered
+    // - `filtered_invalidated` count is correct
   })
 
   test.skip('ETag Behavior - verify 304 Not Modified responses', () => {
@@ -228,38 +248,9 @@ describe.skip('Future tests', () => {
   test.skip('Cursor with Only Votes or Only Pending - verify cursor advancement', () => {
     // Test 17: Cursor should advance correctly when only one collection (votes or pending) has new items.
   })
+})
 
-## Additional Edge Cases to Test
-
-### Test 3: Pending Vote Transition During Packing
-
-**Goal**: Verify that when a pending vote is approved (moved from `votes-pending` to `votes`) while packing is in progress, deduplication works correctly.
-
-**Steps**:
-
-1. Create election with pending votes
-2. Start packing operation
-3. While packing, approve a pending vote (via `/api/election/[election_id]/admin/approve-pending-vote`)
-4. Verify:
-
-- Packed pending vote is not duplicated in response
-- Accepted vote appears correctly
-- Deduplication removes pending vote with matching `link_auth`
-
-### Test 4: Invalidated Votes Filtering
-
-**Goal**: Verify invalidated votes are filtered out from both cached and fresh results.
-
-**Steps**:
-
-1. Create election with votes (some cached, some fresh)
-2. Invalidate a vote via `/api/election/[election_id]/admin/invalidate-voters`
-3. Call `/cache-accepted` and verify:
-
-- Invalidated vote is filtered from cached pages
-- Invalidated vote is filtered from fresh tail query
-- Pending votes with matching `link_auth` are also filtered
-- `filtered_invalidated` count is correct
+/*
 
 ### Test 5: ETag Behavior (304 Not Modified)
 
@@ -453,5 +444,4 @@ describe.skip('Future tests', () => {
 8. **Throttling**: Packing respects throttle window
 9. **Multi-page**: Large vote sets split across pages correctly
 10. **Tie-breaking**: Cursor uses docId for tie-breaking when timestamps match
-})
 */
