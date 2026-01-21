@@ -198,7 +198,22 @@ describe.skip('Future tests', () => {
   })
 
   test.skip('ETag Behavior - verify 304 Not Modified responses', () => {
-    // Test 5: ETag-based caching should work correctly, returning 304 when ETag matches.
+    // --- Test 5: ETag Behavior (304 Not Modified) ---
+    // ETag-based caching should work correctly, returning 304 when ETag matches.
+
+    - Steps -
+    1. Call `/cache-accepted` and capture ETag
+    2. Call again with `If-None-Match` header set to ETag
+    3. Verify 304 response (no body)
+    4. Submit new vote
+    5. Call again with old ETag
+    6. Verify 200 response with new data and new ETag
+
+    **Key assertions**:
+
+    - ETag changes when votes are added (even if not packed)
+    - ETag is based on cursor + observed counters
+    - 304 responses save bandwidth
   })
 
   test.skip('Throttle Behavior - verify packing is throttled', () => {
@@ -250,25 +265,6 @@ describe.skip('Future tests', () => {
   })
 
 /*
-
-### Test 5: ETag Behavior (304 Not Modified)
-
-**Goal**: Verify ETag-based caching works correctly.
-
-**Steps**:
-
-1. Call `/cache-accepted` and capture ETag
-2. Call again with `If-None-Match` header set to ETag
-3. Verify 304 response (no body)
-4. Submit new vote
-5. Call again with old ETag
-6. Verify 200 response with new data and new ETag
-
-**Key assertions**:
-
-- ETag changes when votes are added (even if not packed)
-- ETag is based on cursor + observed counters
-- 304 responses save bandwidth
 
 ### Test 6: Throttle Behavior
 
