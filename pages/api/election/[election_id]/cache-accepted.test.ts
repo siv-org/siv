@@ -218,6 +218,15 @@ describe.skip('Future tests', () => {
 
   test.skip('Throttle Behavior - verify packing is throttled', () => {
     // Test 6: Packing should not happen within PACK_THROTTLE_MS (5 seconds) of previous pack.
+    **Goal**: Verify packing is throttled correctly.
+
+    - Steps -
+    1. Create election and trigger packing
+    2. Immediately call `/cache-accepted` again (within `PACK_THROTTLE_MS`)
+    3. Verify `didPack: false` (throttle active)
+    4. Wait `PACK_THROTTLE_MS + buffer`
+    5. Call again with new votes
+    6. Verify `didPack: true` (throttle passed)
   })
 
   test.skip('Empty Tail Query - verify no packing when no new votes', () => {
@@ -265,19 +274,6 @@ describe.skip('Future tests', () => {
   })
 
 /*
-
-### Test 6: Throttle Behavior
-
-**Goal**: Verify packing is throttled correctly.
-
-**Steps**:
-
-1. Create election and trigger packing
-2. Immediately call `/cache-accepted` again (within `PACK_THROTTLE_MS`)
-3. Verify `didPack: false` (throttle active)
-4. Wait `PACK_THROTTLE_MS + buffer`
-5. Call again with new votes
-6. Verify `didPack: true` (throttle passed)
 
 ### Test 7: Empty Tail Query (No Packing)
 
