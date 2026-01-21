@@ -57,7 +57,7 @@ export const sendEmail = ({
   tag?: string
   text: string
 }) => {
-  if (recipient.includes('@test.local')) return console.log('Skipping mailgun send for test.local recipient', recipient)
+  if (recipient.includes('@test.local')) return new Promise((resolve) => { console.log('Skipping mailgun send for test.local recipient', recipient); resolve(true) })
 
 
   return mailgun.messages().send({
