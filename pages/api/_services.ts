@@ -15,13 +15,13 @@ const {
 // Init firebase (only once)
 export const firebase = !Firebase.apps.length
   ? Firebase.initializeApp({
-      credential: Firebase.credential.cert({
-        clientEmail: FIREBASE_CLIENT_EMAIL,
-        privateKey: FIREBASE_PRIVATE_KEY,
-        projectId: FIREBASE_PROJECT_ID,
-      }),
-      databaseURL: FIREBASE_DATABASE_URL || 'https://siv-demo.firebaseio.com',
-    })
+    credential: Firebase.credential.cert({
+      clientEmail: FIREBASE_CLIENT_EMAIL,
+      privateKey: FIREBASE_PRIVATE_KEY,
+      projectId: FIREBASE_PROJECT_ID,
+    }),
+    databaseURL: FIREBASE_DATABASE_URL || 'https://siv-demo.firebaseio.com',
+  })
   : Firebase.app()
 
 type SerializedTimestamp = { _seconds: number }
@@ -56,8 +56,11 @@ export const sendEmail = ({
   subject: string
   tag?: string
   text: string
-}) =>
-  mailgun.messages().send({
+}) => {
+  if (recipient.includes('@test.local')) return console.log('Skipping mailgun send for test.local recipient', recipient)
+
+
+  return mailgun.messages().send({
     attachment: !attachment ? undefined : new mailgun.Attachment(attachment),
     bcc,
     from: `${from || 'SIV Admin'} <${fromEmail || 'election@siv.org'}>`,
@@ -79,6 +82,8 @@ export const sendEmail = ({
     subject,
     to: recipient,
   })
+}
+
 
 const buildPreheader = (preheader: string) =>
   `<div style="display:none!important;visibility:hidden!important;mso-hide:all!important;font-size:1px;overflow:hidden!important;display:none!important;">${preheader}</div>`
