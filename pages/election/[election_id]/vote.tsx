@@ -1,3 +1,5 @@
+import { GetServerSideProps } from 'next'
+
 export { VotePage as default } from '../../../src/vote/VotePage'
 
-export const getServerSideProps = (context: { query: { election_id: string } }) => ({ props: { query: context.query } })
+export const getServerSideProps: GetServerSideProps = async (context) => ({ props: { query: context.query } })

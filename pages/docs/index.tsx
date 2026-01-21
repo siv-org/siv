@@ -6,7 +6,7 @@ import path from 'path'
 
 export type DocsIndexPageProps = { files: string[] }
 export const getStaticProps: GetStaticProps<DocsIndexPageProps> = async () => {
-  const files = (await fs.readdir(path.join(__dirname, '../../../src/docs')))
+  const files = (await fs.readdir(path.join(process.cwd(), 'src/docs')))
     .filter((file) => file.endsWith('.mdx'))
     .map((f) => f.slice(0, -4)) // remove .mdx
 
