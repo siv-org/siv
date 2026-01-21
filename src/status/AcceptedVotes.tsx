@@ -106,7 +106,9 @@ export const AcceptedVotes = ({
                 {esignature_requested && (
                   <td className="font-bold text-center">{vote.signature_approved ? '✓' : ''}</td>
                 )}
-                <td className={`${vote.auth === 'pending' && 'italic opacity-50 text-xs'}`}>{vote.auth}</td>
+                <td className={`${vote.auth === 'pending' && 'italic opacity-50 text-xs'}`}>
+                  {vote.auth === 'pending' && has_decrypted_votes ? 'not accepted' : vote.auth}
+                </td>
                 {columns.map((key) => {
                   if (key !== 'auth') {
                     return (
