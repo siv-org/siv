@@ -9,6 +9,7 @@ import { DecryptedVotes } from './DecryptedVotes'
 import { InvalidatedVotes } from './InvalidatedVotes'
 import { debug, Mixnet } from './Mixnet/Mixnet'
 import { OnlyMixnet } from './OnlyMixnet'
+import { PaperBallots } from './PaperBallots'
 import { Totals } from './Totals'
 import { useElectionInfo } from './use-election-info'
 
@@ -147,7 +148,4 @@ export const ElectionStatusPage = (): JSX.Element => {
   )
 }
 
-import { live11chooses } from 'src/vote/YourAuthToken'
-
-import { PaperBallots } from './PaperBallots'
-const hideEncryptedVotes = [live11chooses]
+const hideEncryptedVotes: string[] = []
