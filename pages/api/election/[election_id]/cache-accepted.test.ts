@@ -165,7 +165,9 @@ test('Voting During Packing - vote not lost', async () => {
   }
 })
 
-// Placeholder future tests
+// -- Placeholder future tests --
+// Given existing guards in the endpoint and manual coverage during development, there aren’t any remaining must-have tests.
+// These remaining ones are nice-to-haves — for performance/availability/edge-cases — rather than correctness/blockers.
 describe.skip('Future tests', () => {
   /*
   test.skip('Pending Vote Transition During Packing - verify deduplication works', () => {
