@@ -237,6 +237,9 @@ describe.skip('Future tests', () => {
 
   test.skip('Page Size Limits - verify multi-page packing', () => {
     // Test 8: Votes exceeding MAX_PAGE_BYTES (850KB) should be split across multiple pages.
+
+    // - [x] Manually confirmed the multiple-page logic works too, for 11chooses: 2 pages
+    // - [x] For another election with 145 votes * 17 cols = 409655 approxBytes, stayed within 1 page.
   })
 
   test.skip('Cursor Tie-Breaking Logic - verify cursor advances correctly', () => {
