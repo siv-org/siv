@@ -37,7 +37,7 @@ export function checkJwt(
   // Is it valid jwt?
   let payload: JWT_Payload = { email: '', name: '' }
   try {
-    payload = jwt.verify(cookie, JWT_SECRET) as JWT_Payload
+    payload = jwt.verify(cookie, JWT_SECRET, { algorithms: ['HS256'] }) as JWT_Payload
   } catch (e) {
     console.error('caught error verifying jwt', e)
     pushover(
@@ -87,13 +87,13 @@ export async function checkJwtOwnsElection(
   election_id: string,
 ): Promise<
   | (JWT_Payload & {
-      ballot_design: string
-      ballot_design_finalized?: boolean
-      election_manager: string
-      election_title: string
-      num_votes: number
-      valid: true
-    })
+    ballot_design: string
+    ballot_design_finalized?: boolean
+    election_manager: string
+    election_title: string
+    num_votes: number
+    valid: true
+  })
   | { res: void; valid: false }
 > {
   const jwt_status = checkJwt(req, res)

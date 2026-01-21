@@ -62,7 +62,7 @@ export function setJWT({
 
   // Set authentication cookie
   const cookies = new Cookies(req, res)
-  const signed_jwt = jwt.sign(payload, JWT_SECRET)
+  const signed_jwt = jwt.sign(payload, JWT_SECRET, { algorithm: 'HS256' })
   // 2038 is max 32-bit date: https://stackoverflow.com/questions/532635/javascript-cookie-with-no-expiration-date
   cookies.set(cookie_name, signed_jwt, { expires: new Date('Tue, 19 Jan 2038 03:14:07 UTC') })
 }
