@@ -166,8 +166,8 @@ test('Voting During Packing - vote not lost', async () => {
 })
 
 // Placeholder future tests
-/*
 describe.skip('Future tests', () => {
+  /*
   test.skip('Pending Vote Transition During Packing - verify deduplication works', () => {
     // --- Test 3: Pending Vote Transition During Packing ---
     // When a pending vote is approved (moved from `votes-pending` to `votes`) while packing is in progress,
@@ -248,7 +248,6 @@ describe.skip('Future tests', () => {
   test.skip('Cursor with Only Votes or Only Pending - verify cursor advancement', () => {
     // Test 17: Cursor should advance correctly when only one collection (votes or pending) has new items.
   })
-})
 
 /*
 
@@ -445,3 +444,5 @@ describe.skip('Future tests', () => {
 9. **Multi-page**: Large vote sets split across pages correctly
 10. **Tie-breaking**: Cursor uses docId for tie-breaking when timestamps match
 */
+})
+
