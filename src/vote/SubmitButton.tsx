@@ -47,7 +47,7 @@ export const SubmitButton = ({
         const { error } = (await response.json()) as { error: string }
         Sentry.captureMessage(error, {
           extra: { auth, election_id, encrypted_vote: state.encrypted },
-          level: Sentry.Severity.Error,
+          level: 'error',
         })
         console.log(error)
 

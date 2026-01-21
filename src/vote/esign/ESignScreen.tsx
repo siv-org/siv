@@ -60,7 +60,7 @@ export const ESignScreen = ({
                 console.log('response.json', json)
                 Sentry.captureMessage(json.error, {
                   extra: { auth, election_id, esignature },
-                  level: Sentry.Severity.Error,
+                  level: 'error',
                 })
               }
             }}
