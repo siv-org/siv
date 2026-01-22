@@ -1,15 +1,15 @@
 import Image from 'next/image'
-import React, { Fragment } from 'react'
+import { Fragment } from 'react'
 import { darkBlue } from 'src/homepage/colors'
 
 import { research } from './research'
 
 export const AcademicResearchPapers = () => (
-  <main>
+  <main className="mx-auto mb-8 w-full max-w-screen-lg">
     {/* Crypto Research */}
     {research.map(({ group, papers }) => (
       <div key={group}>
-        <h4 className="text-lg">
+        <h4 className="flex mt-20 text-lg">
           <div className="horiz-line" />
           {group}
         </h4>
@@ -19,9 +19,9 @@ export const AcademicResearchPapers = () => (
             <div className="paper" key={authors.join('')}>
               <h3>{year}</h3>
               <div className="img-container">{cover && <Image alt={name} fill src={cover} style={{ objectFit: 'contain' }} />}</div>
-              <p className="name">{name}</p>
-              <p className="author">
-                <span>by </span>
+              <p className="italic font-semibold">{name}</p>
+              <p>
+                <span className="text-gray-400">by </span>
                 {authors.map((author, i) => (
                   <Fragment key={author}>
                     {author}
@@ -37,18 +37,7 @@ export const AcademicResearchPapers = () => (
     ))}
 
     <style jsx>{`
-      main {
-        max-width: 1220px;
-        width: 100%;
-        margin: 0 auto 2rem;
-      }
-
       .group {
-        display: flex;
-      }
-
-      h4 {
-        margin-top: 5rem;
         display: flex;
       }
 
@@ -84,15 +73,6 @@ export const AcademicResearchPapers = () => (
         position: relative;
         width: 100%;
         aspect-ratio: 1;
-      }
-
-      .name {
-        font-style: italic;
-        font-weight: 600;
-      }
-
-      .author span {
-        color: #0006;
       }
 
       .affiliation {
