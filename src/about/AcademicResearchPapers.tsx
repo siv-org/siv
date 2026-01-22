@@ -14,7 +14,7 @@ export const AcademicResearchPapers = () => (
           {group}
         </h4>
 
-        <div className="group">
+        <div className="flex flex-wrap justify-between sm:justify-start sm:flex-nowrap group">
           {papers?.map(({ affiliation, authors, cover, name, year }) => (
             <div className="paper" key={authors.join('')}>
               <h3>{year}</h3>
@@ -29,7 +29,7 @@ export const AcademicResearchPapers = () => (
                   </Fragment>
                 ))}
               </p>
-              <p className="affiliation">{affiliation}</p>
+              <p className="text-[11px]">{affiliation}</p>
             </div>
           ))}
         </div>
@@ -37,10 +37,6 @@ export const AcademicResearchPapers = () => (
     ))}
 
     <style jsx>{`
-      .group {
-        display: flex;
-      }
-
       h4 .horiz-line {
         display: inline-block;
         width: 50px;
@@ -58,10 +54,6 @@ export const AcademicResearchPapers = () => (
       }
       /* 2-column for small screens */
       @media (max-width: 700px) {
-        .group {
-          flex-wrap: wrap;
-          justify-content: space-between;
-        }
         .paper {
           width: 40%;
           margin: 0;
@@ -73,10 +65,6 @@ export const AcademicResearchPapers = () => (
         position: relative;
         width: 100%;
         aspect-ratio: 1;
-      }
-
-      .affiliation {
-        font-size: 11px;
       }
     `}</style>
   </main>
