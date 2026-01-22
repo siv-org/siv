@@ -1,6 +1,5 @@
 import Image from 'next/image'
 import { Fragment } from 'react'
-import { darkBlue } from 'src/homepage/colors'
 
 import { research } from './research'
 
@@ -10,7 +9,7 @@ export const AcademicResearchPapers = () => (
     {research.map(({ group, papers }) => (
       <div key={group}>
         <h4 className="flex mt-20 text-lg">
-          <div className="horiz-line" />
+          <div className="inline-block w-12 bg-black h-0.5 my-auto mr-2.5" />
           {group}
         </h4>
 
@@ -37,16 +36,6 @@ export const AcademicResearchPapers = () => (
     ))}
 
     <style jsx>{`
-      h4 .horiz-line {
-        display: inline-block;
-        width: 50px;
-        height: 2px;
-        background: ${darkBlue};
-
-        margin: auto 0;
-        margin-right: 10px;
-      }
-
       .img-container {
         box-shadow: 4px 4px 8px 0 rgba(0, 0, 0, 0.3);
         position: relative;
