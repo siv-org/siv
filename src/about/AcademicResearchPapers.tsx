@@ -17,12 +17,14 @@ export const AcademicResearchPapers = () => (
         {/* Papers */}
         <div className="flex flex-wrap justify-between sm:justify-start sm:flex-nowrap group">
           {papers?.map(({ affiliation, authors, cover, name, year }) => (
-            <div className="text-center max-w-[180px] sm:mr-[6vw] paper w-[40%] sm:w-auto" key={authors.join('')}>
+            <div className="text-center max-w-[180px] sm:mr-[6vw] w-[40%] sm:w-auto" key={authors.join('')}>
               {/* Year */}
               <h3>{year}</h3>
 
               {/* Image preview */}
-              <div className="shadow-[4px_4px_8px_0_rgba(0,0,0,0.3)] relative w-full aspect-[1]">{cover && <Image alt={name} fill src={cover} style={{ objectFit: 'contain' }} />}</div>
+              <div className="shadow-[3px_3px_6px_1px_rgba(0,0,0,0.22)]">
+                <Image alt="First page image" className="w-full h-full" src={cover} />
+              </div>
 
               {/* Paper title */}
               <p className="italic font-semibold">{name}</p>
