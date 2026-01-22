@@ -1,4 +1,4 @@
-import Image from 'next/legacy/image'
+import Image from 'next/image'
 import Link from 'next/link'
 
 import logo from './siv-logo.png'
@@ -8,7 +8,7 @@ export const Introduction = () => {
     <div style={{ padding: '10px 30px' }}>
       <Link href="/" legacyBehavior>
         <a className="logo-container">
-          <Image src={logo} />
+          <Image alt="SIV Logo" fill src={logo} style={{ objectFit: 'contain' }} />
         </a>
       </Link>
 
@@ -46,8 +46,10 @@ export const Introduction = () => {
       <style jsx>{`
         .logo-container {
           width: 40px;
-          margin: 20px 0;
+          height: 40px;
+          margin: 10px 0;
           display: block;
+          position: relative;
           transition: 0.05s opacity linear;
         }
 

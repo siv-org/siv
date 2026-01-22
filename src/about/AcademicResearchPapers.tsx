@@ -1,27 +1,37 @@
-import Image from 'next/legacy/image'
-import React, { Fragment } from 'react'
-import { darkBlue } from 'src/homepage/colors'
+import Image from 'next/image'
+import { Fragment } from 'react'
 
 import { research } from './research'
 
 export const AcademicResearchPapers = () => (
-  <main>
+  <main className="mx-auto mb-8 w-full max-w-screen-lg">
     {/* Crypto Research */}
     {research.map(({ group, papers }) => (
       <div key={group}>
-        <h4 className="text-lg">
-          <div className="horiz-line" />
+        {/* Group header */}
+        <h4 className="flex mt-20 text-lg">
+          <div className="inline-block w-12 bg-black h-0.5 my-auto mr-2.5" />
           {group}
         </h4>
 
-        <div className="group">
+        {/* Papers */}
+        <div className="flex flex-wrap justify-between sm:justify-start sm:flex-nowrap group">
           {papers?.map(({ affiliation, authors, cover, name, year }) => (
-            <div className="paper" key={authors.join('')}>
+            <div className="text-center max-w-[180px] sm:mr-[6vw] w-[40%] sm:w-auto" key={authors.join('')}>
+              {/* Year */}
               <h3>{year}</h3>
-              <div className="img-container">{cover && <Image src={cover} />}</div>
-              <p className="name">{name}</p>
-              <p className="author">
-                <span>by </span>
+
+              {/* Image preview */}
+              <div className="shadow-[3px_3px_6px_1px_rgba(0,0,0,0.22)]">
+                <Image alt="First page image" className="w-full h-full" src={cover} />
+              </div>
+
+              {/* Paper title */}
+              <p className="italic font-semibold">{name}</p>
+
+              {/* Authors */}
+              <p>
+                <span className="text-gray-400">by </span>
                 {authors.map((author, i) => (
                   <Fragment key={author}>
                     {author}
@@ -29,72 +39,13 @@ export const AcademicResearchPapers = () => (
                   </Fragment>
                 ))}
               </p>
-              <p className="affiliation">{affiliation}</p>
+
+              {/* Affiliation */}
+              <p className="text-[11px]">{affiliation}</p>
             </div>
           ))}
         </div>
       </div>
     ))}
-
-    <style jsx>{`
-      main {
-        max-width: 1220px;
-        width: 100%;
-        margin: 0 auto 2rem;
-      }
-
-      .group {
-        display: flex;
-      }
-
-      h4 {
-        margin-top: 5rem;
-        display: flex;
-      }
-
-      h4 .horiz-line {
-        display: inline-block;
-        width: 50px;
-        height: 2px;
-        background: ${darkBlue};
-
-        margin: auto 0;
-        margin-right: 10px;
-      }
-
-      .paper {
-        text-align: center;
-        max-width: 180px;
-        margin-right: 6vw;
-      }
-      /* 2-column for small screens */
-      @media (max-width: 700px) {
-        .group {
-          flex-wrap: wrap;
-          justify-content: space-between;
-        }
-        .paper {
-          width: 40%;
-          margin: 0;
-        }
-      }
-
-      .img-container {
-        box-shadow: 4px 4px 8px 0 rgba(0, 0, 0, 0.3);
-      }
-
-      .name {
-        font-style: italic;
-        font-weight: 600;
-      }
-
-      .author span {
-        color: #0006;
-      }
-
-      .affiliation {
-        font-size: 11px;
-      }
-    `}</style>
   </main>
 )

@@ -1,4 +1,4 @@
-import Image from 'next/legacy/image'
+import Image from 'next/image'
 
 import { darkBlue } from './colors'
 
@@ -11,20 +11,20 @@ export const OnePersonOneVote = () => (
     <ul>
       <li>
         <div className="auth1">
-          <Image height={597} priority src="/home3/auth-1.png" width={620} />
+          <Image alt="Voter authentication options" className="w-full h-full" height={597} priority src="/home3/auth-1.png" width={620} />
         </div>
         Voters can be authenticated by email, SMS, postal mail, drawn signatures, ID photos, or any preferred
         combination.
       </li>
       <li>
         <div className="auth2">
-          <Image height={1080} priority src="/home3/auth-2.png" width={1920} />
+          <Image alt="Voter authentication token management" className="w-full h-full" height={1080} priority src="/home3/auth-2.png" width={1920} />
         </div>
         Voter Authentication Tokens can be re-issued or revoked as necessary.
       </li>
       <li>
         <div className="auth3">
-          <Image height={1080} priority src="/home3/auth-3.png" width={1920} />
+          <Image alt="Audit trail verification" className="w-full h-full" height={1080} priority src="/home3/auth-3.png" width={1920} />
         </div>
         The entire process creates a full audit trail for independent verification.
       </li>
