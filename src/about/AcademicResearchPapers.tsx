@@ -16,7 +16,7 @@ export const AcademicResearchPapers = () => (
 
         <div className="flex flex-wrap justify-between sm:justify-start sm:flex-nowrap group">
           {papers?.map(({ affiliation, authors, cover, name, year }) => (
-            <div className="paper" key={authors.join('')}>
+            <div className="text-center max-w-[180px] sm:mr-[6vw] paper w-[40%] sm:w-auto" key={authors.join('')}>
               <h3>{year}</h3>
               <div className="img-container">{cover && <Image alt={name} fill src={cover} style={{ objectFit: 'contain' }} />}</div>
               <p className="italic font-semibold">{name}</p>
@@ -45,19 +45,6 @@ export const AcademicResearchPapers = () => (
 
         margin: auto 0;
         margin-right: 10px;
-      }
-
-      .paper {
-        text-align: center;
-        max-width: 180px;
-        margin-right: 6vw;
-      }
-      /* 2-column for small screens */
-      @media (max-width: 700px) {
-        .paper {
-          width: 40%;
-          margin: 0;
-        }
       }
 
       .img-container {
