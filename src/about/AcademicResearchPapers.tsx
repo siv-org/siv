@@ -1,4 +1,4 @@
-import Image from 'next/legacy/image'
+import Image from 'next/image'
 import React, { Fragment } from 'react'
 import { darkBlue } from 'src/homepage/colors'
 
@@ -18,7 +18,7 @@ export const AcademicResearchPapers = () => (
           {papers?.map(({ affiliation, authors, cover, name, year }) => (
             <div className="paper" key={authors.join('')}>
               <h3>{year}</h3>
-              <div className="img-container">{cover && <Image src={cover} />}</div>
+              <div className="img-container">{cover && <Image alt={name} fill src={cover} style={{ objectFit: 'contain' }} />}</div>
               <p className="name">{name}</p>
               <p className="author">
                 <span>by </span>
@@ -81,6 +81,9 @@ export const AcademicResearchPapers = () => (
 
       .img-container {
         box-shadow: 4px 4px 8px 0 rgba(0, 0, 0, 0.3);
+        position: relative;
+        width: 100%;
+        aspect-ratio: 1;
       }
 
       .name {

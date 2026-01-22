@@ -1,4 +1,4 @@
-import Image from 'next/legacy/image'
+import Image from 'next/image'
 
 import ariana from './team/ariana.png'
 import david from './team/david.png'
@@ -35,7 +35,7 @@ export const Team = () => (
       {people.map(({ name, photo, title }) => (
         <div className="person" key={name}>
           <div className="photo">
-            <Image src={photo} />
+            <Image alt={name} fill src={photo} style={{ objectFit: 'cover' }} />
           </div>
           <div className="name">{name}</div>
           <div>{title}</div>
@@ -87,6 +87,8 @@ export const Team = () => (
         margin-bottom: 1rem;
         display: flex;
         align-items: flex-end;
+        position: relative;
+        min-height: 200px;
       }
 
       .name {

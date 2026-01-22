@@ -1,4 +1,4 @@
-import Image, { StaticImageData } from 'next/legacy/image'
+import Image, { StaticImageData } from 'next/image'
 import verifiability1 from 'public/home3/verifiability-1.png'
 import verifiability2 from 'public/home3/verifiability-2.png'
 
@@ -70,7 +70,7 @@ export const Verifiability = () => (
 const Screenshot = ({ image, label }: { image: StaticImageData; label: string }) => (
   <div>
     <span className="px-2">{label}</span>
-    <Image height={516} placeholder="blur" src={image} width={992} />
+    <Image alt={label} height={516} placeholder="blur" src={image} width={992} />
     <style jsx>{`
       div {
         position: relative;
