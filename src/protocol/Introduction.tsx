@@ -47,7 +47,7 @@ export const Introduction = () => {
         .logo-container {
           width: 40px;
           height: 40px;
-          margin: 20px 0;
+          margin: 10px 0;
           display: block;
           position: relative;
           transition: 0.05s opacity linear;
