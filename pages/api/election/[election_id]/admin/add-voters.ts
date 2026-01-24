@@ -81,7 +81,7 @@ export async function addVotersToElection(new_voters: NewVoter[], election_id: s
           .set({
             added_at: new Date(),
             auth_token,
-            display_name: display_name_by_email[email],
+            ...(display_name_by_email[email] ? { display_name: display_name_by_email[email] } : {}),
             email,
             index: index + existing_voters.size,
           })
