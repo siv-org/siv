@@ -12,6 +12,7 @@ import { OnlyMixnet } from './OnlyMixnet'
 import { PaperBallots } from './PaperBallots'
 import { Totals } from './Totals'
 import { useElectionInfo } from './use-election-info'
+import { WhosVoted } from './WhosVoted'
 
 export const ElectionStatusPage = (): JSX.Element => {
   const { election_id, hide_tallies } = useRouter().query as { election_id: string; hide_tallies?: string }
@@ -72,6 +73,7 @@ export const ElectionStatusPage = (): JSX.Element => {
           <br />
           <DecryptedVotes />
           <PaperBallots />
+          <WhosVoted />
           <br />
 
           {!hideEncryptedVotes.includes(election_id) && (
