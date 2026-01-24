@@ -39,6 +39,8 @@ export const ValidVotersTable = ({
       !invalidated && (!has_voted || !hide_voted) && (getStatus(esignature_review) !== 'approve' || !hide_approved),
   )
 
+  const shouldShowDisplayNameColumn = shown_voters.some(({ display_name }) => !!display_name?.trim())
+
   const shouldShowRegistrationColumns =
     // eslint-disable-next-line no-prototype-builtins
     shown_voters.some((voter) => voter.hasOwnProperty('is_email_verified'))
@@ -63,6 +65,7 @@ export const ValidVotersTable = ({
                 <th>last name</th>
               </>
             )}
+            {shouldShowDisplayNameColumn && <th>display name</th>}
             <th>email</th>
             {shouldShowRegistrationColumns && <th>email verified?</th>}
             <th className={hoverable} onClick={toggle_tokens}>
@@ -95,6 +98,7 @@ export const ValidVotersTable = ({
             (
               {
                 auth_token,
+                display_name,
                 email,
                 esignature,
                 esignature_review,
@@ -117,6 +121,7 @@ export const ValidVotersTable = ({
                     <td>{last_name}</td>
                   </>
                 )}
+                {shouldShowDisplayNameColumn && <td>{display_name}</td>}
 
                 <td>
                   <span className="flex justify-between group">

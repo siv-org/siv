@@ -45,6 +45,7 @@ export type Trustee = {
 
 export type Voter = {
   auth_token: string
+  display_name?: string
   email: string
   esignature?: string
   esignature_review: ReviewLog[]
@@ -163,6 +164,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const {
       additionalAuthInfo,
       auth_token,
+      display_name,
       email,
       esignature_review,
       first_name,
@@ -177,6 +179,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     } as {
       additionalAuthInfo?: Record<string, string>
       auth_token: string
+      display_name?: string
       email: string
       esignature_review: ReviewLog[]
       first_name: string
@@ -192,6 +195,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       {
         additionalAuthInfo,
         auth_token,
+        display_name,
         email,
         esignature: (votesByAuth[auth_token] || [])[1],
         esignature_review,

@@ -8,6 +8,7 @@ import { CustomEmailHeaderbar } from './CustomEmailHeaderbar'
 import { CustomInvitationEditor } from './CustomInvitationEditor'
 import { DuplicatesNotAdded } from './DuplicatesNotAdded'
 import { ExistingVoters } from './ExistingVoters'
+import { parseAddVoters } from './parseAddVoters'
 import { PrivacyProtectorsWarning } from './PrivacyProtectorsWarning'
 import { RequestEsignatures } from './RequestEsignatures'
 import { StopAcceptingVotes } from './StopAcceptingVotes'
@@ -34,9 +35,8 @@ export const AddVoters = () => {
       ) : (
         <SaveButton
           onPress={async () => {
-            const response = await api(`election/${election_id}/admin/add-voters`, {
-              new_voters: new_voters.split('\n').map((s) => s.trim().toLowerCase()),
-            })
+            const parsed = parseAddVoters(new_voters)
+            const response = await api(`election/${election_id}/admin/add-voters`, { new_voters: parsed })
 
             if (response.status === 201) {
               const data = await response.json()
