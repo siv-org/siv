@@ -12,9 +12,9 @@ export const PublishWhosVoted = () => {
   const hasAnyDisplayName = !!voters?.some(({ display_name }) => !!display_name?.trim())
   if (!hasAnyDisplayName) return null
 
-  const currentVotes = voters?.filter(({ has_voted }) => has_voted).length
+  const currentVotes = voters?.filter(({ has_voted }) => has_voted).length || 0
   const publishedVotes = public_whos_voted_snapshot?.filter(({ has_voted }) => has_voted).length
-  const isUpToDate = typeof currentVotes === 'number' && typeof publishedVotes === 'number' && currentVotes === publishedVotes
+  const isUpToDate = typeof publishedVotes === 'number' && currentVotes === publishedVotes
   const disablePublish = publishing || isUpToDate
 
   return (
@@ -31,7 +31,6 @@ export const PublishWhosVoted = () => {
           setPublishing(false)
           if (response.status !== 201) throw await response.json()
           revalidate(election_id)
-          alert('Published.')
         }}
         type="button"
       >
@@ -50,6 +49,7 @@ export const PublishWhosVoted = () => {
             Published
           </a>{' '}
           {publishedVotes} {publishedVotes === 1 ? 'vote' : 'votes'}
+          {!isUpToDate && <>. {(currentVotes || 0) - publishedVotes} unpublished</>}
         </div>
       )}
     </section>
