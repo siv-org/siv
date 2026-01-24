@@ -6,11 +6,13 @@ import { Spinner } from '../Spinner'
 import { revalidate, useStored } from '../useStored'
 
 export const PublishWhosVoted = () => {
-  const { election_id, voters } = useStored()
+  const { election_id, public_whos_voted_snapshot, voters } = useStored()
   const [publishing, setPublishing] = useState(false)
 
   const hasAnyDisplayName = !!voters?.some(({ display_name }) => !!display_name?.trim())
   if (!hasAnyDisplayName) return null
+
+  const publishedVotes = public_whos_voted_snapshot?.filter(({ has_voted }) => has_voted).length
 
   return (
     <section className="block mt-2 pt-0 p-1 ml-[-5px] pr-3">
@@ -35,6 +37,15 @@ export const PublishWhosVoted = () => {
           </span>
         )}
       </button>
+
+      {typeof publishedVotes === 'number' && (
+        <div className="text-[12px] opacity-70 mt-1 ml-1">
+          <a href={`/election/${election_id}`} rel="noreferrer" target="_blank">
+            Published
+          </a>{' '}
+          {publishedVotes} {publishedVotes === 1 ? 'vote' : 'votes'}
+        </div>
+      )}
     </section>
   )
 }
