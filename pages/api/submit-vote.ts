@@ -139,6 +139,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   For your records, your encrypted vote is attached.
 
   <em style="font-size:13px">You can press reply if you have a problem.</em>`,
+      }).catch((error) => {
+        console.error('Error sending submission receipt email', error)
+        return Promise.resolve()
       }),
     )
   }
