@@ -19,7 +19,6 @@ export type ParsedVoter = { display_name?: string; email: string }
  */
 export function parseAddVoters(input: string): ParsedVoter[] {
   const results: ParsedVoter[] = []
-  const seen = new Set<string>()
 
   for (const rawLine of input.split('\n')) {
     const line = rawLine.trim()
@@ -32,10 +31,6 @@ export function parseAddVoters(input: string): ParsedVoter[] {
 
       const email = normalizeEmail(rec.email)
       if (!email) continue
-
-      // Dedupe by normalized email
-      if (seen.has(email)) continue
-      seen.add(email)
 
       results.push({ display_name: rec.display_name, email })
     }
