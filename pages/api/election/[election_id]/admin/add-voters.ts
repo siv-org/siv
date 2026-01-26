@@ -94,7 +94,7 @@ export async function addVotersToElection(new_voters: NewVoter[], election_id: s
         electionDoc.update({
           new_voters_raw: firestore.FieldValue.arrayUnion({
             new_voters_raw,
-            timestamp: firestore.FieldValue.serverTimestamp(),
+            timestamp: new Date(),
           }),
           num_voters: firestore.FieldValue.increment(unique_new_emails.length),
         }),
