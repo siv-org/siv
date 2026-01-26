@@ -16,6 +16,7 @@ export type AdminData = {
   esignature_requested?: boolean
   notified_unlocked?: number
   pending_votes?: PendingVote[]
+  public_whos_voted_snapshot?: Array<{ display_name?: string; has_voted: boolean }>
   stop_accepting_votes?: boolean
   threshold_public_key?: string
   trustees?: Trustee[]
@@ -45,6 +46,7 @@ export type Trustee = {
 
 export type Voter = {
   auth_token: string
+  display_name?: string
   email: string
   esignature?: string
   esignature_review: ReviewLog[]
@@ -96,6 +98,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     election_title,
     esignature_requested,
     notified_unlocked,
+    public_whos_voted_snapshot,
     stop_accepting_votes,
     threshold_public_key,
     voter_applications_allowed,
@@ -110,6 +113,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     election_title?: string
     esignature_requested?: boolean
     notified_unlocked?: number
+    public_whos_voted_snapshot?: Array<{ display_name?: string; has_voted: boolean }>
     stop_accepting_votes?: boolean
     threshold_public_key?: string
     voter_applications_allowed?: boolean
@@ -163,6 +167,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const {
       additionalAuthInfo,
       auth_token,
+      display_name,
       email,
       esignature_review,
       first_name,
@@ -177,6 +182,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     } as {
       additionalAuthInfo?: Record<string, string>
       auth_token: string
+      display_name?: string
       email: string
       esignature_review: ReviewLog[]
       first_name: string
@@ -192,6 +198,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       {
         additionalAuthInfo,
         auth_token,
+        display_name,
         email,
         esignature: (votesByAuth[auth_token] || [])[1],
         esignature_review,
@@ -241,6 +248,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     esignature_requested,
     notified_unlocked,
     pending_votes,
+    public_whos_voted_snapshot,
     stop_accepting_votes,
     threshold_public_key,
     trustees,

@@ -18,6 +18,7 @@ export type ElectionInfo = {
   paper_totals?: Record<string, number>
   paper_votes?: Record<string, string>[]
   privacy_protectors_statements?: string
+  public_whos_voted_snapshot?: Array<{ display_name?: string; has_voted: boolean }>
   skip_shuffle_proofs?: boolean
   submission_confirmation?: string
   threshold_public_key?: string
@@ -62,6 +63,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     paper_totals,
     paper_votes,
     privacy_protectors_statements,
+    public_whos_voted_snapshot,
     skip_shuffle_proofs,
     submission_confirmation,
     threshold_public_key,
@@ -84,6 +86,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     paper_totals,
     paper_votes: paper_votes ? JSON.parse(paper_votes) : undefined,
     privacy_protectors_statements,
+    public_whos_voted_snapshot,
     skip_shuffle_proofs,
     submission_confirmation,
     threshold_public_key,
