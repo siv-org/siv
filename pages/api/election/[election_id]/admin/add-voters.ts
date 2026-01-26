@@ -2,13 +2,16 @@ import { firebase } from 'api/_services'
 import { checkJwtOwnsElection } from 'api/validate-admin-jwt'
 import { firestore } from 'firebase-admin'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { parseAddVoters } from 'src/admin/Voters/parseAddVoters'
 import { generateAuthToken } from 'src/crypto/generate-auth-tokens'
 
-type NewVoter = string | { display_name?: string; email: string; }
+type NewVoter = string | { display_name?: string; email: string }
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { new_voters } = req.body
+  const { new_voters: new_voters_raw } = req.body
   const { election_id } = req.query
+
+  const new_voters = parseAddVoters(new_voters_raw)
 
   if (typeof election_id !== 'string') return res.status(401).json({ error: 'Missing election_id' })
   if (!Array.isArray(new_voters)) return res.status(400).json({ error: 'new_voters must be an array' })
@@ -21,7 +24,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     already_added,
     duplicates_in_submission,
     unique_new_emails: unique_new_voters,
-  } = await addVotersToElection(new_voters as NewVoter[], election_id)
+  } = await addVotersToElection(new_voters as NewVoter[], election_id, new_voters_raw)
 
   return res.status(201).json({
     all_duplicates: [...already_added, ...duplicates_in_submission],
@@ -35,12 +38,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
  * 2. Creates and stores unique auth tokens for each
  * 3. Updates election's num_voters tally
  */
-export async function addVotersToElection(new_voters: NewVoter[], election_id: string) {
+export async function addVotersToElection(new_voters: NewVoter[], election_id: string, new_voters_raw?: string) {
   // Get existing voter from DB
   const electionDoc = firebase.firestore().collection('elections').doc(election_id)
   const loadVoters = electionDoc.collection('voters').get()
   const existing_voters = new Set()
-    ; (await loadVoters).docs.map((d) => existing_voters.add(d.data().email))
+  ;(await loadVoters).docs.map((d) => existing_voters.add(d.data().email))
 
   // Filter out duplicates within the submission
   const unique_in_submission = new Set<string>()
@@ -87,7 +90,15 @@ export async function addVotersToElection(new_voters: NewVoter[], election_id: s
           })
       })
       // Increment electionDoc's num_voters cached tally
-      .concat(electionDoc.update({ num_voters: firestore.FieldValue.increment(unique_new_emails.length) })),
+      .concat(
+        electionDoc.update({
+          new_voters_raw: firestore.FieldValue.arrayUnion({
+            new_voters_raw,
+            timestamp: firestore.FieldValue.serverTimestamp(),
+          }),
+          num_voters: firestore.FieldValue.increment(unique_new_emails.length),
+        }),
+      ),
   )
 
   return { already_added, duplicates_in_submission, email_to_auth, unique_new_emails }
