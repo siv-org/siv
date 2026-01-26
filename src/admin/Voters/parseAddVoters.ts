@@ -1,6 +1,6 @@
 import { validate as validateEmail } from 'email-validator'
 
-export type ParsedVoter = { display_name?: string; email: string; }
+export type ParsedVoter = { display_name?: string; email: string }
 
 /**
  * Parse admin-pasted voter input into structured records.
@@ -30,9 +30,10 @@ export function parseAddVoters(input: string): ParsedVoter[] {
       const rec = parseOneRecipient(part.trim())
       if (!rec) continue
 
-      // Dedupe by normalized email
       const email = normalizeEmail(rec.email)
       if (!email) continue
+
+      // Dedupe by normalized email
       if (seen.has(email)) continue
       seen.add(email)
 
@@ -47,7 +48,11 @@ function cleanupDisplayName(s: string): string {
   const t = s.trim()
   if (!t) return ''
   // Strip leading/trailing quotes and surrounding punctuation.
-  return t.replace(/^[\s"'“”]+/, '').replace(/[\s"'“”]+$/, '').replace(/^[,;]+|[,;]+$/g, '').trim()
+  return t
+    .replace(/^[\s"'“”]+/, '')
+    .replace(/[\s"'“”]+$/, '')
+    .replace(/^[,;]+|[,;]+$/g, '')
+    .trim()
 }
 
 function isLooselyEmailLike(s: string): boolean {
@@ -102,7 +107,10 @@ function parseOneRecipient(s: string): null | ParsedVoter {
 
     const email = pickEmailToken(tokens)
     if (!email) return null
-    const display = tokens.filter((t) => t !== email).join(' ').trim()
+    const display = tokens
+      .filter((t) => t !== email)
+      .join(' ')
+      .trim()
     return { display_name: cleanupDisplayName(display) || undefined, email }
   }
 
