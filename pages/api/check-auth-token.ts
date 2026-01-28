@@ -52,10 +52,11 @@ export async function validateAuthToken(
   const [voter] = (await voters).docs
   if (!voter) {
     if (auth !== exampleAuthToken)
-      await pushover(
-        'SIV auth token lookup miss',
-        `election: ${election_id}\nbad auth: ${auth}\nPossible brute force attack?`,
-      )
+      if (auth !== '1a2b3c4d5e')
+        await pushover(
+          'SIV auth token lookup miss',
+          `election: ${election_id}\nbad auth: ${auth}\nPossible brute force attack?`,
+        )
 
     if (customFailureMessages[election_id]) return fail(customFailureMessages[election_id])
 
