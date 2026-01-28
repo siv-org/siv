@@ -20,8 +20,9 @@ export const PublishWhosVoted = () => {
   return (
     <section className="block mt-2 pt-0 p-1 ml-[-5px] pr-3">
       <button
-        className={`flex items-center px-3 py-2 bg-white rounded border-2 border-solid shadow-sm border-black/15 ${disablePublish ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer hover:bg-neutral-50'
-          }`}
+        className={`flex items-center px-3 py-2 bg-white rounded border-2 border-solid shadow-sm border-black/15 ${
+          disablePublish ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer hover:bg-neutral-50'
+        }`}
         onClick={async () => {
           if (publishing) return
           if (isUpToDate) return alert('Already up to date.')
@@ -48,11 +49,10 @@ export const PublishWhosVoted = () => {
           <a href={`/election/${election_id}`} rel="noreferrer" target="_blank">
             Published
           </a>{' '}
-          {publishedVotes} {publishedVotes === 1 ? 'vote' : 'votes'}
+          {publishedVotes} {publishedVotes === 1 ? 'voter' : 'voters'}
           {!isUpToDate && <>. {(currentVotes || 0) - publishedVotes} unpublished</>}
         </div>
       )}
     </section>
   )
 }
-

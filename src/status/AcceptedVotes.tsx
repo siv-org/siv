@@ -27,14 +27,7 @@ export const AcceptedVotes = ({
 }): JSX.Element => {
   const { election_id } = useRouter().query
   const [votes, setVotes] = useState<EncryptedVote[]>()
-
-  // Exponentially poll for num votes (just a single read)
-  const { data } = useSWRExponentialBackoff(
-    !election_id ? null : `/api/election/${election_id}/num-votes`,
-    fetcher,
-    1,
-  ) as { data: NumAcceptedVotes }
-  const { num_pending_votes = 0, num_votes = 0 } = data || {}
+  const { num_pending_votes, num_votes } = useNumVotes(election_id)
 
   // Load all the encrypted votes (uses /cache-accepted endpoint. See https://github.com/siv-org/siv/pull/292)
   useEffect(() => {
@@ -147,4 +140,15 @@ export const AcceptedVotes = ({
       </section>
     </>
   )
+}
+
+export function useNumVotes(election_id?: null | string | string[]): NumAcceptedVotes {
+  // Exponentially poll for num votes (just a single read)
+  const { data } = useSWRExponentialBackoff(
+    !election_id ? null : `/api/election/${election_id}/num-votes`,
+    fetcher,
+    1,
+  ) as { data: NumAcceptedVotes }
+  const { num_invalidated_votes = 0, num_pending_votes = 0, num_votes = 0 } = data || {}
+  return { num_invalidated_votes, num_pending_votes, num_votes }
 }
