@@ -1,6 +1,6 @@
-import { useNumVotes } from './AcceptedVotes'
 import { useElectionId } from './use-election-id'
 import { useElectionInfo } from './use-election-info'
+import { useNumVotes } from './useNumVotes'
 
 const missing = '(no name)'
 

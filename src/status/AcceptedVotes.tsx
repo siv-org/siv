@@ -1,4 +1,3 @@
-import { NumAcceptedVotes } from 'api/election/[election_id]/num-votes'
 import { useRouter } from 'next/router'
 import { Fragment, useEffect, useState } from 'react'
 import { CipherStrings } from 'src/crypto/stringify-shuffle'
@@ -7,10 +6,9 @@ import { generateColumnNames } from 'src/vote/generateColumnNames'
 
 import { Item } from '../vote/storeElectionInfo'
 import { TotalVotesCast } from './TotalVotesCast'
-import { useSWRExponentialBackoff } from './useSWRExponentialBackoff'
+import { useNumVotes } from './useNumVotes'
 
 export type EncryptedVote = { [index: string]: CipherStrings } & { auth: string }
-const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
 export const AcceptedVotes = ({
   allow_truncation = false,
@@ -142,13 +140,3 @@ export const AcceptedVotes = ({
   )
 }
 
-export function useNumVotes(election_id?: null | string | string[]): NumAcceptedVotes {
-  // Exponentially poll for num votes (just a single read)
-  const { data } = useSWRExponentialBackoff(
-    !election_id ? null : `/api/election/${election_id}/num-votes`,
-    fetcher,
-    1,
-  ) as { data: NumAcceptedVotes }
-  const { num_invalidated_votes = 0, num_pending_votes = 0, num_votes = 0 } = data || {}
-  return { num_invalidated_votes, num_pending_votes, num_votes }
-}
