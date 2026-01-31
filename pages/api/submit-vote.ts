@@ -12,6 +12,7 @@ import { pusher } from './pusher'
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const payload = req.method === 'POST' ? req.body : req.query
   const { auth, election_id, embed = '' } = payload
+  if (!election_id) return res.status(400).json({ error: 'Missing Election ID' })
   if (embed) await pushover('Submitted Vote w/ embed', `election: ${election_id}\nembed: ${embed}\nauth: ${auth}`)
 
   let { encrypted_vote } = payload
