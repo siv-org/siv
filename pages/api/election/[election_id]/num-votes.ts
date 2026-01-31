@@ -11,6 +11,8 @@ export type NumAcceptedVotes = {
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { election_id } = req.query
 
+  // console.log('🕥 num-votes', new Date().toISOString())
+
   const electionDoc = await firebase
     .firestore()
     .collection('elections')
