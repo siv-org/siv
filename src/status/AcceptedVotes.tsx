@@ -5,6 +5,7 @@ import { useTruncatedTable } from 'src/trustee/decrypt/useTruncatedTable'
 import { generateColumnNames } from 'src/vote/generateColumnNames'
 
 import { Item } from '../vote/storeElectionInfo'
+import { HowSubmittedVotesWork } from './HowSubmittedVotesWork'
 import { TotalVotesCast } from './TotalVotesCast'
 import { useNumVotes } from './useNumVotes'
 
@@ -67,6 +68,9 @@ export const AcceptedVotes = ({
         be shuffled and then unlocked.`
           )}
         </p>
+
+        <HowSubmittedVotesWork />
+
         <table className="block pb-2.5 mt-8 overflow-auto border-collapse [&_tr>*]:[border:1px_solid_#ccc] [&_tr>*]:px-2.5 [&_tr>*]:py-[3px] [&_tr>*]:max-w-[227px]">
           <thead className="text-[11px]">
             <tr>
