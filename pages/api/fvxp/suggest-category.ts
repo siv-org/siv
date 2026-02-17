@@ -3,12 +3,16 @@ import { pushover } from 'api/_services'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 export default allowCors(async (req: NextApiRequest, res: NextApiResponse) => {
-    const headers = ['x-vercel-ip-city', 'x-vercel-ip-country-region', 'x-vercel-ip-country']
-    const location = headers.map((header) => req.headers[header]?.toString().replaceAll('%20', ' ')).join(', ')
+  const { category } = req.body
 
-    await pushover(
-        'fvxp/suggest-category',
-        'request received from: ' + location + ' (' + req.headers['x-real-ip'] + ')',
-    )
-    return res.status(200).json({ success: true })
+  const headers = ['x-vercel-ip-city', 'x-vercel-ip-country-region', 'x-vercel-ip-country']
+  const location = headers.map((header) => req.headers[header]?.toString().replaceAll('%20', ' ')).join(', ')
+
+  await pushover(
+    'fvxp/suggest-category',
+    `${category}
+
+request received from: ${location} (${req.headers['x-real-ip']})`,
+  )
+  return res.status(200).json({ success: true })
 })
