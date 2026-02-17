@@ -65,11 +65,11 @@ ${location} (${req.headers['x-real-ip'] || 'LOCALHOST'})`,
       recipient: 'fvxp-admin@siv.org',
       subject: 'FVXP Patron Submission: ' + email,
       text: `<div style="text-align:center"><h2>FVXP Patron Submission</h2></div>
-Someone just submitted a patron submission: ${email}
+Someone just submitted the Become A Patron form:
 
 Type: ${type}
 Name: ${name}
-Contribution: ${contribution}
+Contribution: $${contribution}
 Email: ${email}
 
 From: ${location}`,
