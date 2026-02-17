@@ -24,7 +24,7 @@ export default allowCors(async (req: NextApiRequest, res: NextApiResponse) => {
     `fvxp/patron [${uid}]`,
     `type: ${type}
 name: ${name}${contribution ? `\ncontribution: ${contribution}` : ''}${email ? `\nemail: ${email}` : ''}
-${location}\n${req.headers['x-real-ip'] || 'LOCALHOST'}`,
+${location} (${req.headers['x-real-ip'] || 'LOCALHOST'})`,
   )
 
   // Store new record in db
