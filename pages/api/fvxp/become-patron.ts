@@ -62,7 +62,7 @@ ${location} (${req.headers['x-real-ip'] || 'LOCALHOST'})`,
     await sendEmail({
       from: 'SIV',
       fromEmail: 'fvxp@siv.org',
-      recipient: 'fvxp-admin@siv.org',
+      recipient: 'fvxp@siv.org',
       subject: 'FVXP Patron Submission: ' + email,
       text: `<div style="text-align:center"><h2>FVXP Patron Submission</h2></div>
 Someone just submitted the Become A Patron form:
