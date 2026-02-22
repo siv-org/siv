@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useState } from 'react'
 
-import { homepage2026FontClass } from './fonts'
+import type { ModalVariant } from './modalContent'
+
 import { ChatSection } from './ChatSection'
+import { homepage2026FontClass } from './fonts'
 import { Hero } from './Hero'
 import { Modal } from './Modal'
-import type { ModalVariant } from './modalContent'
 import { Nav } from './Nav'
 import { NewsSection } from './NewsSection'
 
@@ -22,22 +23,22 @@ export function Homepage2026() {
   }, [])
 
   return (
-    <div className={`min-h-screen overflow-x-hidden bg-h2026-bg text-h2026-text antialiased ${homepage2026FontClass}`}>
+    <div className={`overflow-x-hidden min-h-screen antialiased bg-h2026-bg text-h2026-text ${homepage2026FontClass}`}>
       {/* Ambient orbs */}
       <div
         className="pointer-events-none fixed z-0 h-[600px] w-[600px] rounded-full opacity-45 blur-[120px] animate-orb-1"
         style={{
-          top: -200,
-          right: -100,
           background: 'radial-gradient(circle, rgba(37,99,235,0.07), transparent 70%)',
+          right: -100,
+          top: -200,
         }}
       />
       <div
         className="pointer-events-none fixed z-0 h-[500px] w-[500px] rounded-full opacity-45 blur-[120px] animate-orb-2"
         style={{
+          background: 'radial-gradient(circle, rgba(251,191,36,0.05), transparent 70%)',
           bottom: '10%',
           left: -150,
-          background: 'radial-gradient(circle, rgba(251,191,36,0.05), transparent 70%)',
         }}
       />
 
@@ -49,14 +50,14 @@ export function Homepage2026() {
           <div className="my-5 h-px bg-h2026-border md:my-10" />
         </div>
         <ChatSection />
-        <footer className="border-t border-h2026-border py-7 text-center">
+        <footer className="py-7 text-center border-t border-h2026-border">
           <div className="mx-auto max-w-[1060px] px-7">
             <p className="text-[0.75rem] font-light text-h2026-muted">© 2026 SIV. All rights reserved.</p>
           </div>
         </footer>
       </div>
 
-      <Modal variant={modalVariant} onClose={closeModal} />
+      <Modal onClose={closeModal} variant={modalVariant} />
     </div>
   )
 }

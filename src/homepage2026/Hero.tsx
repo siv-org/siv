@@ -22,9 +22,9 @@ export function Hero({ onWordClick }: HeroProps) {
               <span key={variant}>
                 {i > 0 && ', '}
                 <button
-                  type="button"
                   className="hero-word relative cursor-pointer pr-0 transition-colors duration-200 hover:after:translate-x-0 hover:after:opacity-45 after:absolute after:ml-0.5 after:inline-block after:translate-x-[-3px] after:translate-y-px after:text-[0.45em] after:align-super after:font-light after:text-h2026-muted after:opacity-0 after:transition-all after:content-['›']"
                   onClick={() => onWordClick(variant)}
+                  type="button"
                 >
                   {label}
                 </button>
@@ -48,15 +48,15 @@ export function Hero({ onWordClick }: HeroProps) {
         >
           Start a Vote
           <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
+            className="transition-transform duration-200 group-hover:translate-x-1"
             fill="none"
+            height="16"
             stroke="currentColor"
-            strokeWidth="2.5"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="transition-transform duration-200 group-hover:translate-x-1"
+            strokeWidth="2.5"
+            viewBox="0 0 24 24"
+            width="16"
           >
             <path d="M5 12h14" />
             <path d="m12 5 7 7-7 7" />
