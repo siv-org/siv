@@ -22,7 +22,7 @@ export function Hero({ onWordClick }: HeroProps) {
               <span key={variant}>
                 {i > 0 && ', '}
                 <button
-                  className="hero-word relative cursor-pointer pr-0 transition-colors duration-200 hover:after:translate-x-0 hover:after:opacity-45 after:absolute after:ml-0.5 after:inline-block after:translate-x-[-3px] after:translate-y-px after:text-[0.45em] after:align-super after:font-light after:text-h2026-muted after:opacity-0 after:transition-all after:content-['›']"
+                  className="cursor-pointer border-0 bg-transparent p-0 font-serif2026 text-[1em] font-normal leading-[inherit] tracking-[inherit] text-inherit decoration-h2026-muted/40 underline-offset-[6px] transition-all duration-200 hover:text-h2026-blue hover:underline"
                   onClick={() => onWordClick(variant)}
                   type="button"
                 >
@@ -31,7 +31,7 @@ export function Hero({ onWordClick }: HeroProps) {
               </span>
             ))}
             ,<br />
-            Digital Voting,
+            Digital Voting
           </h1>
           <span className="mt-5 block font-sans text-[clamp(0.85rem,1.6vw,1.05rem)] font-semibold uppercase tracking-widest text-h2026-blue">
             even for the highest stakes
