@@ -34,10 +34,14 @@ export const ValidVotersTable = ({
 
   if (!voters) return null
 
-  const shown_voters = voters.filter(
-    ({ esignature_review, has_voted, invalidated }) =>
-      !invalidated && (!has_voted || !hide_voted) && (getStatus(esignature_review) !== 'approve' || !hide_approved),
-  )
+  // Use validIndex for checked[] array, not displayIndex
+  const valid_voters_list = voters.filter(({ invalidated }) => !invalidated)
+  const shown_voters = valid_voters_list
+    .map((voter, validIndex) => ({ ...voter, validIndex }))
+    .filter(
+      ({ esignature_review, has_voted }) =>
+        (!has_voted || !hide_voted) && (getStatus(esignature_review) !== 'approve' || !hide_approved),
+    )
 
   const shouldShowDisplayNameColumn = shown_voters.some(({ display_name }) => !!display_name?.trim())
 
@@ -108,13 +112,16 @@ export const ValidVotersTable = ({
                 is_email_verified,
                 last_name,
                 mailgun_events,
+                validIndex,
               },
-              index,
+              displayIndex,
             ) => (
-              <tr className={`${checked[index] && 'bg-[#f1f1f1]'}`} key={email}>
-                <CheckboxCell {...{ checked, index, last_selected, pressing_shift, set_checked, set_last_selected }} />
+              <tr className={`${checked[validIndex] && 'bg-[#f1f1f1]'}`} key={email}>
+                <CheckboxCell
+                  {...{ checked, index: validIndex, last_selected, pressing_shift, set_checked, set_last_selected }}
+                />
 
-                <td>{index + 1}</td>
+                <td>{displayIndex + 1}</td>
                 {shouldShowRegistrationColumns && (
                   <>
                     <td>{first_name}</td>
