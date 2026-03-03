@@ -22,7 +22,7 @@ export function NewsSection() {
   return (
     <section className="px-7 py-10 md:py-[60px]" id="news">
       <div className="mx-auto max-w-[1060px]">
-        <p className="font-mono2026 mb-5 text-[0.68rem] uppercase tracking-[0.15em] text-h2026-muted">Latest</p>
+        <p className="font-mono2026 mb-5 text-xs uppercase tracking-[0.15em] text-h2026-muted">Latest</p>
         <div className="grid gap-3 md:grid-cols-3">
           {NEWS_ITEMS.map((item) => (
             <a
