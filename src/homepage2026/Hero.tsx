@@ -34,10 +34,10 @@ export function Hero({ onWordClick }: HeroProps) {
             Digital Voting
           </h1>
           <span className="mt-5 block font-sans text-[clamp(0.85rem,1.6vw,1.05rem)] font-semibold uppercase tracking-widest text-h2026-blue">
-            even for the highest stakes environments
+            especially for the highest stakes environments
           </span>
         </div>
-        <p className="mx-auto mb-12 mt-5 max-w-[460px] text-[1.05rem] font-light leading-[1.65] text-h2026-textSecondary animate-[fadeInUp_0.8s_0.15s_ease_both]">
+        <p className="mx-auto mb-12 mt-3 text-[clamp(0.7rem,1.3vw,0.85rem)] text-sm uppercase tracking-widest leading-[1.65] text-h2026-textSecondary animate-[fadeInUp_0.8s_0.15s_ease_both]">
           used by voters from 330 cities across 25 countries
         </p>
         <Link
