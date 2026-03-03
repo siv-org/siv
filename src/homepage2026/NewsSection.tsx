@@ -2,18 +2,18 @@ import { ChevronRight } from 'lucide-react'
 
 const NEWS_ITEMS: { description: string; href: string; title: string }[] = [
   {
-    description: 'Deployed at scale, verified end-to-end.',
-    href: '#',
-    title: 'The largest digital vote in US history',
+    description: '1 in 50 voters chose to cast their vote online.',
+    href: 'https://blog.siv.org/2025/12/11chooses',
+    title: 'Multiple historic firsts, incl. the biggest digital election in US history',
   },
   {
-    description: 'Protecting voters from influence & intimidation.',
-    href: '#',
-    title: 'Anti-coercion solution, deployed',
+    description: 'Preservers privacy & verifiability.',
+    href: 'https://blog.siv.org/2025/08/overrides',
+    title: 'Anti-coercion & vote-selling solution, deployed',
   },
   {
-    description: "The world's top hackers took their best shot.",
-    href: '#',
+    description: '$10,000 prizes. Top security researchers.',
+    href: 'https://hack.siv.org/reports/2024defcon',
     title: 'DEF CON Red-Team Hack SIV Challenge: Results',
   },
 ]
