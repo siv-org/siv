@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from 'react'
 
 import type { ModalVariant } from './modalContent'
 
-import { ChatSection } from './ChatSection'
 import { homepage2026FontClass } from './fonts'
 import { Hero } from './Hero'
 import { Modal } from './Modal'
@@ -49,7 +48,6 @@ export function Homepage2026() {
         <div className="mx-auto max-w-[1060px] px-7">
           <div className="my-5 h-px bg-h2026-border md:my-10" />
         </div>
-        <ChatSection />
         <footer className="py-7 text-center border-t border-h2026-border">
           <div className="mx-auto max-w-[1060px] px-7">
             <p className="text-[0.75rem] font-light text-h2026-muted">© 2020-2026 SIV. All rights reserved.</p>
