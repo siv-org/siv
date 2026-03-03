@@ -1,18 +1,11 @@
-import { useCallback, useEffect, useState } from 'react'
-
-import type { ModalVariant } from './modalContent'
+import { useEffect } from 'react'
 
 import { homepage2026FontClass } from './fonts'
 import { Hero } from './Hero'
-import { Modal } from './Modal'
 import { Nav } from './Nav'
 import { NewsSection } from './NewsSection'
 
 export function Homepage2026() {
-  const [modalVariant, setModalVariant] = useState<ModalVariant | null>(null)
-  const openModal = useCallback((v: ModalVariant) => setModalVariant(v), [])
-  const closeModal = useCallback(() => setModalVariant(null), [])
-
   useEffect(() => {
     const prev = document.documentElement.style.scrollBehavior
     document.documentElement.style.scrollBehavior = 'smooth'
@@ -43,7 +36,7 @@ export function Homepage2026() {
 
       <div className="relative z-10">
         <Nav />
-        <Hero onWordClick={openModal} />
+        <Hero />
         <NewsSection />
         <div className="mx-auto max-w-[1060px] px-7">
           <div className="my-5 h-px bg-h2026-border md:my-10" />
@@ -54,8 +47,6 @@ export function Homepage2026() {
           </div>
         </footer>
       </div>
-
-      <Modal onClose={closeModal} variant={modalVariant} />
     </div>
   )
 }

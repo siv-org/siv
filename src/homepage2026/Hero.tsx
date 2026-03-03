@@ -1,37 +1,14 @@
 import { Globe } from 'lucide-react'
 import Link from 'next/link'
 
-import type { ModalVariant } from './modalContent'
-
-type HeroProps = {
-  onWordClick: (variant: ModalVariant) => void
-}
-
-const HERO_WORDS: { label: string; variant: ModalVariant }[] = [
-  { label: 'Easy', variant: 'easy' },
-  { label: 'Safe', variant: 'safe' },
-  { label: 'Smart', variant: 'smart' },
-]
-
-export function Hero({ onWordClick }: HeroProps) {
+export function Hero() {
   return (
     <section className="px-7 py-[100px] text-center md:py-[150px]">
       <div className="mx-auto max-w-[1060px]">
         <div className="animate-[fadeInUp_0.8s_ease_both]">
           <h1 className="font-serif2026 text-[clamp(3rem,6.5vw,5.2rem)] font-normal leading-[1.08] tracking-tight">
-            {HERO_WORDS.map(({ label, variant }, i) => (
-              <span key={variant}>
-                {i > 0 && ', '}
-                <button
-                  className="cursor-pointer border-0 bg-transparent p-0 font-serif2026 text-[1em] font-normal leading-[inherit] tracking-[inherit] text-inherit decoration-h2026-muted/40 underline-offset-[6px] transition-all duration-200 hover:text-h2026-blue hover:underline"
-                  onClick={() => onWordClick(variant)}
-                  type="button"
-                >
-                  {label}
-                </button>
-              </span>
-            ))}
-            ,<br />
+            Easy, Safe, Smart,
+            <br />
             Digital Voting
           </h1>
           <span className="mt-5 block font-sans text-[clamp(0.85rem,1.6vw,1.05rem)] font-semibold uppercase tracking-widest text-h2026-blue">
