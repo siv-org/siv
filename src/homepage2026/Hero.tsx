@@ -6,7 +6,7 @@ export function Hero() {
     <section className="px-7 py-[100px] text-center md:py-[150px]">
       <div className="mx-auto max-w-[1060px]">
         <div className="animate-[fadeInUp_0.8s_ease_both]">
-          <h1 className="font-serif2026 text-[clamp(2.5rem,6.5vw,5.2rem)] font-normal leading-[1.08] tracking-tight">
+          <h1 className="font-serif2026 text-[clamp(2.5rem,6.5vw,5.2rem)] font-normal leading-[1.3] tracking-tight">
             Easy, Safe, Smart
             <br />
             Digital Voting
