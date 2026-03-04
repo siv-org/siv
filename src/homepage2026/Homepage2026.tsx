@@ -4,6 +4,7 @@ import { homepage2026FontClass } from './fonts'
 import { Hero } from './Hero'
 import { Nav } from './Nav'
 import { NewsSection } from './NewsSection'
+import { Properties } from './Properties'
 
 export function Homepage2026() {
   useEffect(() => {
@@ -38,6 +39,7 @@ export function Homepage2026() {
         <Nav />
         <Hero />
         <NewsSection />
+        <Properties />
         <div className="mx-auto max-w-[1060px] px-7">
           <div className="my-5 h-px bg-h2026-border md:my-10" />
         </div>
