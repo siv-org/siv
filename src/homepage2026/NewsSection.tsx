@@ -2,7 +2,7 @@ import { ChevronRight, Rss } from 'lucide-react'
 
 const NEWS_ITEMS: { description: string; href: string; title: string }[] = [
   {
-    description: '1 in 50 voters chose to cast their vote online.',
+    description: 'For every paper voter, 50 voted digitally.',
     href: 'https://blog.siv.org/2025/12/11chooses',
     title: 'Multiple historic firsts, incl. the biggest digital election in US history',
   },
