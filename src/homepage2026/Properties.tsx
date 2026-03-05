@@ -8,8 +8,7 @@ const PROPERTIES: { description: string; word: string }[] = [
     word: 'Safe',
   },
   {
-    description:
-      'Supports better spoiler-free voting methods. Improve the fundamental nature of the collective conversation.',
+    description: 'Supports better spoiler-free voting methods. Improve the nature of the  conversation.',
     word: 'Smart',
   },
 ]
