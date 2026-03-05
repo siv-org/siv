@@ -16,7 +16,7 @@ export function Hero() {
           </span>
         </div>
         <p className="mx-auto mb-12 mt-3 text-[clamp(0.7rem,1.3vw,0.85rem)] text-sm  tracking-widest leading-[1.65] text-h2026-textSecondary animate-[fadeInUp_0.8s_0.15s_ease_both]">
-          <Globe className="inline size-[1.15em] align-[-0.125em]" /> used by voters from 330 cities
+          <Globe className="inline size-[1.15em] align-[-0.125em]" /> used by voters from 330 cities{' '}
           <br className="sm:hidden" />
           across 25 countries
         </p>
