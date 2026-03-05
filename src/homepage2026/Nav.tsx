@@ -4,8 +4,8 @@ import Link from 'next/link'
 import logo from '../homepage/logo.png'
 
 const NAV_LINKS: { cta?: boolean; href: string; label: string }[] = [
-  { href: '/about', label: 'People' },
-  { href: '#news', label: 'News' },
+  { href: '/about', label: 'About' },
+  { href: 'https://blog.siv.org', label: 'News' },
   { href: '/faq', label: 'Resources' },
   { cta: true, href: '/admin', label: 'Login' },
 ]
