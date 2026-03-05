@@ -1,14 +1,14 @@
 const PROPERTIES: { description: string; word: string }[] = [
   {
-    description: 'Vote from any device in under a minute. No apps to install, no training needed, no friction.',
+    description: 'Vote from any device, in seconds. No installs needed.',
     word: 'Easy',
   },
   {
-    description: 'End-to-end encrypted. Independently auditable. Red-teamed by top security researchers.',
+    description: 'Strong privacy, verifiability, and coercion-resistance. \nPublicly auditable code.',
     word: 'Safe',
   },
   {
-    description: 'Ranked choice, approval, weighted — every method built in. Real-time results, full transparency.',
+    description: 'Supports better spoiler-free voting methods. Race to the top, instead to the bottom.',
     word: 'Smart',
   },
 ]
@@ -29,7 +29,9 @@ export function Properties() {
                 {word}
               </span>
               <div className="mt-3 w-8 h-px bg-h2026-green/30" />
-              <p className="mt-4 max-w-[280px] text-[0.82rem] leading-[1.7] text-h2026-textSecondary">{description}</p>
+              <p className="whitespace-pre-wrap mt-4 max-w-[280px] text-[1rem] leading-[1.7] text-h2026-textSecondary">
+                {description}
+              </p>
             </div>
           ))}
         </div>
