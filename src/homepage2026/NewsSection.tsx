@@ -7,7 +7,7 @@ const NEWS_ITEMS: { description: string; href: string; title: string }[] = [
     title: 'Multiple historic firsts, incl. the biggest digital election in US history',
   },
   {
-    description: 'Preservers privacy & verifiability.',
+    description: 'Preserving privacy & verifiability.',
     href: 'https://blog.siv.org/2025/08/overrides',
     title: 'Anti-coercion & vote-selling solution, deployed',
   },
