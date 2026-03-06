@@ -32,6 +32,8 @@ export function NewsSection() {
               className="group relative flex flex-col gap-2 rounded-h2026 border border-h2026-border bg-h2026-bgCard p-5 no-underline text-inherit transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-h2026-borderStrong hover:shadow-h2026-md md:px-6 md:py-6 after:absolute after:right-5 after:top-[22px] after:-translate-x-1.5 after:text-[0.9rem] after:text-h2026-muted after:opacity-0 after:transition-all after:content-['→'] group-hover:after:translate-x-0 group-hover:after:opacity-100 after:md:right-6"
               href={item.href}
               key={item.title}
+              rel="noreferrer"
+              target="_blank"
             >
               <h3 className="pr-5 text-[0.92rem] font-medium leading-snug md:pr-6">{item.title}</h3>
               <p className="text-[0.78rem] leading-[1.5] text-h2026-muted">{item.description}</p>
@@ -42,6 +44,8 @@ export function NewsSection() {
           <a
             className="inline-flex items-center gap-1 text-[0.80em] text-h2026-muted no-underline transition-colors hover:text-inherit"
             href="https://blog.siv.org"
+            rel="noreferrer"
+            target="_blank"
           >
             <ChevronRight size={15} />
             See more
