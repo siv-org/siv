@@ -21,7 +21,7 @@ export const RESOURCES: Resource[] = [
   {
     category: 'Documentation',
     description:
-      'The detailed technical specification defining what constitutes a SIV election, covering cryptographic primitives, data structures, and network endpoints.',
+      'The detailed technical specification defining a SIV election, covering cryptographic primitives, data structures, and network endpoints.',
     href: 'https://docs.siv.org/technical-specifications',
     icon: FileText,
     title: 'Technical Specification',
