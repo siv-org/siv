@@ -1,8 +1,8 @@
-import { Check, Zap } from 'lucide-react'
+import { Zap } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 
 import { HighlightCard } from './HighlightCard'
-import { DEPLOYMENTS, SECURITY_SOLUTIONS } from './highlights-data'
+import { HIGHLIGHTS } from './highlights-data'
 
 export function Highlights() {
   const sectionRef = useRef<HTMLElement>(null)
@@ -23,8 +23,6 @@ export function Highlights() {
     obs.observe(el)
     return () => obs.disconnect()
   }, [])
-
-  const [congress, trust, zcash, harlem, firstNation, alongside, officials] = DEPLOYMENTS
 
   return (
     <section
@@ -51,45 +49,11 @@ export function Highlights() {
             paddingRight: '4rem',
           }}
         >
-          <HighlightCard
-            body="For decades, digital voting was correctly considered unsafe. SIV solved:"
-            className="w-[320px]"
-            tag="Security"
-            title="Strong solutions, built & deployed"
-          >
-            <ul className="mt-3 grid gap-1.5">
-              {SECURITY_SOLUTIONS.map((item) => (
-                <li className="flex items-start gap-2 text-[0.78rem] text-h2026-textSecondary" key={item}>
-                  <Check className="mt-0.5 size-3 shrink-0 text-h2026-green" />
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </HighlightCard>
-
-          <HighlightCard className="w-[240px]" tag={congress.tag} title={congress.title} />
-
-          <HighlightCard
-            body={trust.body}
-            className="w-[300px]"
-            quote={trust.quote}
-            tag={trust.tag}
-            title={trust.title}
-          />
-
-          <HighlightCard body={zcash.body} className="w-[240px]" tag={zcash.tag} title={zcash.title} />
-          <HighlightCard body={harlem.body} className="w-[240px]" tag={harlem.tag} title={harlem.title} />
-          <HighlightCard
-            body={firstNation.body}
-            className="w-[240px]"
-            tag={firstNation.tag}
-            title={firstNation.title}
-          />
-          <HighlightCard body={alongside.body} className="w-[260px]" tag={alongside.tag} title={alongside.title} />
-          <HighlightCard body={officials.body} className="w-[280px]" tag={officials.tag} title={officials.title} />
+          {HIGHLIGHTS.map((h) => (
+            <HighlightCard key={h.id} {...h} />
+          ))}
         </div>
 
-        {/* Right edge fade to hint at scrollability */}
         <div className="absolute inset-y-0 right-0 w-20 bg-gradient-to-l to-transparent pointer-events-none from-h2026-bg" />
       </div>
     </section>
