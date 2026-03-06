@@ -14,7 +14,7 @@ const NEWS_ITEMS: { description: string; href: string; title: string }[] = [
   {
     description: '$10,000 prizes. Top security researchers.',
     href: 'https://hack.siv.org/reports/2024defcon',
-    title: 'DEF CON Red-Team Hack SIV Challenge: Results',
+    title: 'DEF CON Red-Team Hack\u00A0SIV Challenge: Results',
   },
 ]
 
