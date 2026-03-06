@@ -18,21 +18,13 @@ export function Homepage2026() {
 
   return (
     <div className={`overflow-x-hidden min-h-screen antialiased bg-h2026-bg text-h2026-text ${homepage2026FontClass}`}>
-      {/* Ambient orbs */}
+      {/* Ambient orb */}
       <div
-        className="pointer-events-none fixed z-0 h-[600px] w-[600px] rounded-full opacity-45 blur-[120px] animate-orb-1"
+        className="pointer-events-none fixed z-0 sm:h-[700px] sm:w-[700px] h-[500px] w-[500px] rounded-full blur-[140px]"
         style={{
-          background: 'radial-gradient(circle, rgba(37,99,235,0.07), transparent 70%)',
-          right: -100,
-          top: -200,
-        }}
-      />
-      <div
-        className="pointer-events-none fixed z-0 h-[500px] w-[500px] rounded-full opacity-45 blur-[120px] animate-orb-2"
-        style={{
-          background: 'radial-gradient(circle, rgba(251,191,36,0.05), transparent 70%)',
-          bottom: '10%',
-          left: -150,
+          background: 'radial-gradient(circle, rgba(26,107,74,0.3), transparent 70%)',
+          right: -200,
+          top: -100,
         }}
       />
 
