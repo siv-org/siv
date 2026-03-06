@@ -53,7 +53,7 @@ export const RESOURCES: Resource[] = [
   {
     category: 'Documentation',
     description:
-      'A comprehensive space to learn about the SIV Protocol, authentication, privacy, verifiability, how attacks are mitigated, and more.',
+      'Learn about the SIV Protocol, authentication, privacy, verifiability, how attacks are mitigated, and more.',
     href: 'https://docs.siv.org',
     icon: BookOpen,
     title: 'Detailed Docs',
