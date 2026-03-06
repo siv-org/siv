@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 
 import { homepage2026FontClass } from './fonts'
 import { Hero } from './Hero'
+import { Highlights } from './highlights/Highlights'
 import { Nav } from './Nav'
 import { NewsSection } from './NewsSection'
 import { Properties } from './Properties'
@@ -40,6 +41,7 @@ export function Homepage2026() {
         <Hero />
         <NewsSection />
         <Properties />
+        <Highlights />
         <div className="mx-auto max-w-[1060px] px-7">
           <div className="my-5 h-px bg-h2026-border md:my-10" />
         </div>
