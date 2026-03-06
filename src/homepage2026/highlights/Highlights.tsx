@@ -41,14 +41,23 @@ export function Highlights() {
         </p>
 
         <div className="relative">
-          <div className="flex items-stretch gap-3 overflow-x-auto pb-3 px-1 [&::-webkit-scrollbar]:hidden [scrollbar-width:none]">
+          <div
+            className={[
+              'flex items-stretch gap-3 overflow-x-auto px-1 pb-5',
+              '[scrollbar-width:thin] [scrollbar-color:theme(colors.h2026-border)_transparent]',
+              '[&::-webkit-scrollbar]:h-[5px]',
+              '[&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent',
+              '[&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-h2026-border',
+              'hover:[&::-webkit-scrollbar-thumb]:bg-h2026-muted',
+            ].join(' ')}
+          >
             {HIGHLIGHTS.map((h) => (
               <HighlightCard key={h.id} {...h} />
             ))}
           </div>
 
-          <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-h2026-bg to-transparent" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-20 bg-gradient-to-l from-h2026-bg to-transparent" />
+          <div className="absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r to-transparent pointer-events-none from-h2026-bg" />
+          <div className="absolute inset-y-0 right-0 z-10 w-20 bg-gradient-to-l to-transparent pointer-events-none from-h2026-bg" />
         </div>
       </div>
     </section>
