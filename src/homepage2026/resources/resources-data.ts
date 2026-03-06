@@ -1,6 +1,6 @@
 import type { ElementType } from 'react'
 
-import { BookOpen, FileText, MessageCircleQuestionMark, Presentation } from 'lucide-react'
+import { BookOpen, FileText, MessageCircleQuestionMark, Presentation, ShieldCheck } from 'lucide-react'
 
 export type Resource = {
   category: string
@@ -12,16 +12,16 @@ export type Resource = {
 
 export const RESOURCES: Resource[] = [
   {
-    category: 'Interactive',
-    description: 'A visual, step-by-step walkthrough of how SIV works — from ballot creation through verification.',
+    category: 'Documentation',
+    description: 'An interactive, step-by-step walkthrough of how SIV works.',
     href: '/protocol',
-    icon: BookOpen,
-    title: 'Illustrated Protocol — High Level',
+    icon: ShieldCheck,
+    title: 'Illustrated SIV Protocol',
   },
   {
-    category: 'Specification',
+    category: 'Documentation',
     description:
-      'The complete technical specification defining what constitutes a SIV election, covering cryptographic primitives, data structures, and verification procedures.',
+      'The detailed technical specification defining what constitutes a SIV election, covering cryptographic primitives, data structures, and network endpoints.',
     href: 'https://docs.siv.org/technical-specifications',
     icon: FileText,
     title: 'Technical Specification',
