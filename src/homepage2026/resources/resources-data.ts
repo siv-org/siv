@@ -42,4 +42,12 @@ export const RESOURCES: Resource[] = [
     icon: Presentation,
     title: 'Frequently Asked Questions',
   },
+  {
+    category: 'Research',
+    description:
+      'The cryptographic building blocks that make authenticated, private, and verifiable digital voting possible.',
+    href: '/about#research',
+    icon: BookOpen,
+    title: 'Academic Research Papers',
+  },
 ]
