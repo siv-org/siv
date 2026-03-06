@@ -43,7 +43,7 @@ export function NewsSection() {
             className="inline-flex items-center gap-1 text-[0.80em] text-h2026-muted no-underline transition-colors hover:text-inherit"
             href="https://blog.siv.org"
           >
-            <ChevronRight size={25} />
+            <ChevronRight size={15} />
             See more
           </a>
         </div>
