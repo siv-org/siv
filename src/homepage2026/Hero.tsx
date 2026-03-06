@@ -1,5 +1,6 @@
 import { Globe } from 'lucide-react'
-import Link from 'next/link'
+
+import { StartAVoteButton } from './StartAVoteButton'
 
 export function Hero() {
   return (
@@ -20,26 +21,7 @@ export function Hero() {
           <br className="sm:hidden" />
           across 25 countries
         </p>
-        <Link
-          className="group inline-flex items-center gap-2.5 rounded-full bg-h2026-green px-10 py-4 text-[0.92rem] font-medium text-white no-underline shadow-h2026-cta transition-all duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:shadow-h2026-cta-hover animate-[fadeInUp_0.8s_0.3s_ease_both]"
-          href="/admin"
-        >
-          Start a Vote
-          <svg
-            className="transition-transform duration-200 group-hover:translate-x-1"
-            fill="none"
-            height="16"
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2.5"
-            viewBox="0 0 24 24"
-            width="16"
-          >
-            <path d="M5 12h14" />
-            <path d="m12 5 7 7-7 7" />
-          </svg>
-        </Link>
+        <StartAVoteButton className="animate-[fadeInUp_0.8s_0.3s_ease_both]" />
       </div>
     </section>
   )
