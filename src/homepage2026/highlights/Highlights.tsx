@@ -1,4 +1,4 @@
-import { Zap } from 'lucide-react'
+import { Sparkles } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 
 import { HighlightCard } from './HighlightCard'
@@ -36,8 +36,8 @@ export function Highlights() {
     >
       <div className="mx-auto max-w-[1060px] px-7">
         <p className="mb-6 flex items-center gap-2 font-mono2026 text-xs uppercase tracking-[0.15em] text-h2026-muted">
-          <Zap className="text-h2026-green" size={16} />
-          SIV Highlights
+          <Sparkles className="text-h2026-green" size={16} />
+          Highlights
         </p>
       </div>
 
