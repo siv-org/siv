@@ -2,7 +2,7 @@ import { ChevronRight, Rss } from 'lucide-react'
 
 const NEWS_ITEMS: { description: string; href: string; title: string }[] = [
   {
-    description: 'For every paper voter, 50 voted digitally.',
+    description: 'For each paper voter, 50x voted digitally.',
     href: 'https://blog.siv.org/2025/12/11chooses',
     title: 'Multiple historic firsts, incl. the biggest digital election in US history',
   },
