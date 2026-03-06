@@ -1,6 +1,6 @@
 import type { ElementType } from 'react'
 
-import { BookOpen, FileText, Presentation, Shield } from 'lucide-react'
+import { BookOpen, FileText, MessageCircleQuestionMark, Presentation } from 'lucide-react'
 
 export type Resource = {
   category: string
@@ -27,19 +27,19 @@ export const RESOURCES: Resource[] = [
     title: 'Technical Specification',
   },
   {
-    category: 'Research',
+    category: 'Documentation',
     description:
-      'Peer-reviewed poster presented at E-Vote-ID, detailing the formal security properties of the SIV protocol.',
-    href: '/evoteid-poster',
-    icon: Shield,
-    title: 'EVoteID Poster — Security Properties',
+      'Presented at the academic conference E-Vote-ID, this poster details the specific security properties of the SIV protocol, and more.',
+    href: 'https://blog.siv.org/images/2025/11/evoteid-2025-poster.png',
+    icon: Presentation,
+    title: 'SIV in One Poster',
   },
   {
     category: 'Reference',
     description:
       'Answers to common questions about digital voting, security, privacy, and how SIV compares to traditional methods.',
     href: '/faq',
-    icon: Presentation,
+    icon: MessageCircleQuestionMark,
     title: 'Frequently Asked Questions',
   },
   {
