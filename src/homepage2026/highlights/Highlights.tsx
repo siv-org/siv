@@ -39,22 +39,17 @@ export function Highlights() {
           <Sparkles className="text-h2026-green" size={16} />
           Highlights
         </p>
-      </div>
 
-      <div className="relative">
-        <div
-          className="flex items-stretch gap-3 overflow-x-auto pb-3 [&::-webkit-scrollbar]:hidden [scrollbar-width:none]"
-          style={{
-            paddingLeft: 'max(1.75rem, calc((100vw - 1060px) / 2 + 1.75rem))',
-            paddingRight: '4rem',
-          }}
-        >
-          {HIGHLIGHTS.map((h) => (
-            <HighlightCard key={h.id} {...h} />
-          ))}
+        <div className="relative">
+          <div className="flex items-stretch gap-3 overflow-x-auto pb-3 px-1 [&::-webkit-scrollbar]:hidden [scrollbar-width:none]">
+            {HIGHLIGHTS.map((h) => (
+              <HighlightCard key={h.id} {...h} />
+            ))}
+          </div>
+
+          <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-h2026-bg to-transparent" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-20 bg-gradient-to-l from-h2026-bg to-transparent" />
         </div>
-
-        <div className="absolute inset-y-0 right-0 w-20 bg-gradient-to-l to-transparent pointer-events-none from-h2026-bg" />
       </div>
     </section>
   )
