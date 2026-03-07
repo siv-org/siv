@@ -18,13 +18,8 @@ export function Properties() {
     <section className="px-7 py-16 md:py-24" id="properties">
       <div className="mx-auto max-w-[1060px]">
         <div className="grid gap-12 md:grid-cols-3 md:gap-0">
-          {PROPERTIES.map(({ description, word }, i) => (
-            <div
-              className={`flex flex-col items-center text-center md:px-10 ${
-                i > 0 ? 'md:border-l md:border-h2026-border' : ''
-              }`}
-              key={word}
-            >
+          {PROPERTIES.map(({ description, word }) => (
+            <div className="flex flex-col items-center text-center md:px-10" key={word}>
               <span className="font-serif2026 text-[clamp(2rem,4vw,2.8rem)] font-normal tracking-tight text-h2026-text">
                 {word}
               </span>
