@@ -6,9 +6,9 @@ export function HighlightCard({ body, items, quote, tag, title, width }: Highlig
   return (
     <div
       className={[
-        'group flex shrink-0 flex-col rounded-h2026 border border-h2026-border border-t-2 border-t-h2026-green/60 bg-h2026-bgCard p-5',
+        'group flex shrink-0 flex-col rounded-h2026 border border-h2026-border bg-h2026-bgCard p-5',
         'transition-all duration-300 ease-out',
-        'hover:-translate-y-1 hover:border-t-h2026-green hover:shadow-[0_6px_24px_rgba(26,107,74,0.1)]',
+        'hover:-translate-y-1 hover:shadow-[0_6px_24px_rgba(26,107,74,0.1)]',
         width,
       ].join(' ')}
     >
