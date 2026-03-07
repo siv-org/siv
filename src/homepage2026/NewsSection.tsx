@@ -42,7 +42,7 @@ export function NewsSection() {
               target="_blank"
             >
               {/* Card title */}
-              <h3 className="font-serif2026 text-[0.95rem] font-normal leading-snug tracking-tight text-h2026-text pr-8">
+              <h3 className="font-serif2026 text-[0.95rem] font-normal  tracking-tight text-h2026-text pr-8">
                 {item.title}
               </h3>
               {/* Card description */}
@@ -51,7 +51,7 @@ export function NewsSection() {
               <span className="mt-4 flex items-center gap-0.5 text-[0.65rem] text-h2026-muted transition-colors duration-200 ease-out group-hover:text-h2026-green">
                 Read
                 <ArrowUpRight
-                  className="size-2 shrink-0 transition-transform duration-200 ease-out group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                  className="size-3 shrink-0 transition-transform duration-200 ease-out group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                   strokeWidth={1.5}
                 />
               </span>
