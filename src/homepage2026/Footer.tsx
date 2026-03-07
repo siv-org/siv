@@ -67,7 +67,7 @@ export function Footer() {
         </div>
 
         <div className="pt-6 mt-10">
-          <p className="text-[0.72rem] text-h2026-muted">&copy; 2020&ndash;2026 SIV. All rights reserved.</p>
+          <p className="text-[0.72rem] text-h2026-muted text-left sm:text-center">&copy; 2020&ndash;2026 SIV. All rights reserved.</p>
         </div>
       </div>
     </footer>
