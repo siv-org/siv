@@ -1,3 +1,5 @@
+import { ScrollReveal } from './ScrollReveal'
+
 const PROPERTIES: { description: string; word: string }[] = [
   {
     description: 'Vote from any device, in seconds. No installs needed.',
@@ -18,8 +20,8 @@ export function Properties() {
     <section className="px-7 py-16 md:py-24" id="properties">
       <div className="mx-auto max-w-[1060px]">
         <div className="grid gap-12 md:grid-cols-3 md:gap-0">
-          {PROPERTIES.map(({ description, word }) => (
-            <div className="flex flex-col items-center text-center md:px-10" key={word}>
+          {PROPERTIES.map(({ description, word }, i) => (
+            <ScrollReveal className="flex flex-col items-center text-center md:px-10" delay={i * 0.12} key={word}>
               <span className="font-serif2026 text-[clamp(2rem,4vw,2.8rem)] font-normal tracking-tight text-h2026-text">
                 {word}
               </span>
@@ -27,7 +29,7 @@ export function Properties() {
               <p className="whitespace-pre-wrap mt-4 max-w-[280px] text-[1rem] leading-[1.7] text-h2026-textSecondary">
                 {description}
               </p>
-            </div>
+            </ScrollReveal>
           ))}
         </div>
       </div>

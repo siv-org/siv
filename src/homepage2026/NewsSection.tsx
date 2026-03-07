@@ -1,5 +1,7 @@
 import { ChevronRight, Rss } from 'lucide-react'
 
+import { ScrollReveal } from './ScrollReveal'
+
 const NEWS_ITEMS: { description: string; href: string; title: string }[] = [
   {
     description: 'For each paper voter, 50x voted digitally.',
@@ -21,7 +23,7 @@ const NEWS_ITEMS: { description: string; href: string; title: string }[] = [
 export function NewsSection() {
   return (
     <section className="px-7 py-10 md:py-[60px]" id="news">
-      <div className="mx-auto max-w-[1060px]">
+      <ScrollReveal className="mx-auto max-w-[1060px]">
         <p className="font-mono2026 mb-5 flex items-center gap-2 text-xs uppercase tracking-[0.15em] text-h2026-muted">
           <Rss size={19} />
           Latest
@@ -51,7 +53,7 @@ export function NewsSection() {
             See more
           </a>
         </div>
-      </div>
+      </ScrollReveal>
     </section>
   )
 }

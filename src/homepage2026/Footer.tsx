@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 import logo from '../homepage/logo.png'
+import { ScrollReveal } from './ScrollReveal'
 
 const COLUMNS: { links: { href: string; label: string }[]; title: string }[] = [
   {
@@ -32,7 +33,7 @@ const COLUMNS: { links: { href: string; label: string }[]; title: string }[] = [
 export function Footer() {
   return (
     <footer className="px-7 pb-8">
-      <div className="mx-auto max-w-[1060px] border-t border-h2026-border pt-12">
+      <ScrollReveal className="mx-auto max-w-[1060px] border-t border-h2026-border pt-12">
         <div className="flex flex-col gap-10 md:flex-row md:justify-between">
           <div className="shrink-0">
             <Link className="no-underline" href="/">
@@ -69,7 +70,7 @@ export function Footer() {
         <div className="pt-6 mt-10">
           <p className="text-[0.72rem] text-h2026-muted text-left sm:text-center">&copy; 2020&ndash;2026 SIV. All rights reserved.</p>
         </div>
-      </div>
+      </ScrollReveal>
     </footer>
   )
 }

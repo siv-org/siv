@@ -1,31 +1,14 @@
 import { Sparkles } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 
+import { ScrollReveal } from '../ScrollReveal'
 import { HighlightCard } from './HighlightCard'
 import { HIGHLIGHTS } from './highlights-data'
 
 export function Highlights() {
-  const sectionRef = useRef<HTMLElement>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
-  const [visible, setVisible] = useState(false)
   const [scrolledFromStart, setScrolledFromStart] = useState(false)
   const [scrolledToEnd, setScrolledToEnd] = useState(false)
-
-  useEffect(() => {
-    const el = sectionRef.current
-    if (!el) return
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true)
-          obs.disconnect()
-        }
-      },
-      { threshold: 0.1 },
-    )
-    obs.observe(el)
-    return () => obs.disconnect()
-  }, [])
 
   useEffect(() => {
     const el = scrollRef.current
@@ -40,16 +23,8 @@ export function Highlights() {
   }, [])
 
   return (
-    <section
-      className={[
-        'py-14 md:py-20',
-        'transition-all duration-700 ease-out',
-        visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4',
-      ].join(' ')}
-      id="highlights"
-      ref={sectionRef}
-    >
-      <div className="mx-auto max-w-[1060px] px-7">
+    <section className="py-14 md:py-20" id="highlights">
+      <ScrollReveal className="mx-auto max-w-[1060px] px-7">
         <p className="mb-6 flex items-center gap-2 font-mono2026 text-xs uppercase tracking-[0.15em] text-h2026-muted">
           <Sparkles className="text-h2026-green" size={16} />
           Highlights
@@ -87,7 +62,7 @@ export function Highlights() {
             ].join(' ')}
           />
         </div>
-      </div>
+      </ScrollReveal>
     </section>
   )
 }

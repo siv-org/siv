@@ -1,9 +1,10 @@
+import { ScrollReveal } from './ScrollReveal'
 import { StartAVoteButton } from './StartAVoteButton'
 
 export function ClosingCta() {
   return (
     <section className="px-7 py-16 text-center md:py-24">
-      <div className="mx-auto max-w-[600px]">
+      <ScrollReveal className="mx-auto max-w-[600px]">
         <h2 className="font-serif2026 text-[clamp(1.5rem,3.5vw,2.2rem)] font-normal tracking-tight">
           Ready to modernize your elections?
         </h2>
@@ -13,7 +14,7 @@ export function ClosingCta() {
         <div className="mt-8">
           <StartAVoteButton />
         </div>
-      </div>
+      </ScrollReveal>
     </section>
   )
 }
