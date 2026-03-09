@@ -6,7 +6,7 @@ import logo from '../homepage/logo.png'
 const NAV_LINKS: { cta?: boolean; href: string; label: string }[] = [
   { href: '/about', label: 'About' },
   { href: 'https://blog.siv.org', label: 'News' },
-  { href: '/resources', label: 'Resources' },
+  { href: '/resources', label: 'How It Works' },
   { cta: true, href: '/admin', label: 'Login' },
 ]
 
