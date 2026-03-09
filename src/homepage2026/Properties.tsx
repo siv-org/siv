@@ -1,3 +1,5 @@
+import Markdown from 'react-markdown'
+
 import { ScrollReveal } from './ScrollReveal'
 
 const PROPERTIES: { description: string; word: string }[] = [
@@ -6,7 +8,8 @@ const PROPERTIES: { description: string; word: string }[] = [
     word: 'Easy',
   },
   {
-    description: 'Strong privacy, verifiability, and coercion-resistance. \nPublicly auditable code.',
+    description:
+      'Strong privacy, verifiability, and coercion-resistance. \nPublicly [auditable code](https://github.com/siv-org/siv).',
     word: 'Safe',
   },
   {
@@ -26,9 +29,23 @@ export function Properties() {
                 {word}
               </span>
               <div className="mt-3 w-8 h-px bg-h2026-green/30" />
-              <p className="whitespace-pre-wrap mt-4 max-w-[280px] text-[1rem] leading-[1.7] text-h2026-textSecondary">
-                {description}
-              </p>
+              <div className="whitespace-pre-wrap mt-4 max-w-[280px] text-[1rem] leading-[1.7] text-h2026-textSecondary">
+                <Markdown
+                  components={{
+                    a: ({ children, href, ...props }) => (
+                      <a
+                        className="font-medium hover:underline"
+                        {...{ children, href }}
+                        rel="noreferrer noopener"
+                        target="_blank"
+                        {...props}
+                      />
+                    ),
+                  }}
+                >
+                  {description}
+                </Markdown>
+              </div>
             </ScrollReveal>
           ))}
         </div>
