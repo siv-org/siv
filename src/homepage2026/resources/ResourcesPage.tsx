@@ -76,7 +76,9 @@ export function ResourcesPage() {
         {/* Footer */}
         <footer className="py-7 text-center border-t border-h2026-border">
           <div className="mx-auto max-w-[1060px] px-7">
-            <p className="text-[0.75rem] font-light text-h2026-muted">© 2020-2026 SIV. All rights reserved.</p>
+            <p className="text-[0.75rem] font-light text-h2026-muted">
+              © 2020-{new Date().getFullYear()} SIV. All rights reserved.
+            </p>
           </div>
         </footer>
       </div>
