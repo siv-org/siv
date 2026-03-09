@@ -15,7 +15,7 @@ export const RESOURCES: Resource[] = [
     category: 'Documentation',
     description:
       'Presented at the academic conference E-Vote-ID, this poster details the specific security properties of the SIV protocol, and more.',
-    href: 'https://blog.siv.org/images/2025/11/evoteid-2025-poster.png',
+    href: 'https://blog.siv.org/2025/11/siv-in-one-poster',
     icon: Presentation,
     title: 'SIV in One Poster',
   },
