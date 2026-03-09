@@ -25,11 +25,11 @@ export function Properties() {
         <div className="grid gap-12 md:grid-cols-3 md:gap-0">
           {PROPERTIES.map(({ description, word }, i) => (
             <ScrollReveal className="flex flex-col items-center text-center md:px-10" delay={i * 0.12} key={word}>
-              <span className="font-serif2026 text-[clamp(2.1rem,4.6vw,3.2rem)] font-normal tracking-tight text-h2026-text">
+              <span className="font-serif2026 text-[clamp(2rem,4vw,2.8rem)] font-normal tracking-tight text-h2026-text">
                 {word}
               </span>
               <div className="mt-3 w-8 h-px bg-h2026-green/30" />
-              <div className="whitespace-pre-wrap mt-4 max-w-[280px] text-[1rem] md:text-[1.05rem] lg:text-[1.1rem] leading-[1.7] text-h2026-textSecondary">
+              <div className="whitespace-pre-wrap mt-4 max-w-[280px] text-[1rem] leading-[1.7] text-h2026-textSecondary">
                 <Markdown
                   components={{
                     a: ({ children, href, ...props }) => (

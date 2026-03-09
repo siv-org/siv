@@ -25,7 +25,7 @@ export function Highlights() {
   return (
     <section className="py-14 md:py-20" id="highlights">
       <ScrollReveal className="mx-auto max-w-[1060px] px-7">
-        <p className="mb-6 flex items-center gap-2 font-mono2026 text-xs md:text-[0.8rem] uppercase tracking-[0.15em] text-h2026-muted">
+        <p className="mb-6 flex items-center gap-2 font-mono2026 text-xs uppercase tracking-[0.15em] text-h2026-muted">
           <Sparkles className="text-h2026-green" size={16} />
           Highlights
         </p>

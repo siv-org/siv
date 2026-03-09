@@ -12,17 +12,13 @@ export function HighlightCard({ body, items, quotes, tag, title, width }: Highli
         width,
       ].join(' ')}
     >
-      <span className="font-mono2026 text-[0.65rem] md:text-[0.7rem] uppercase tracking-[0.2em] text-h2026-green">
-        {tag}
-      </span>
-      <h3 className="mt-2 font-serif2026 text-[1rem] md:text-[1.1rem] font-normal leading-snug tracking-tight">{title}</h3>
-      {body && (
-        <p className="mt-2.5 text-[0.85rem] md:text-[0.95rem] leading-[1.6] text-h2026-textSecondary">{body}</p>
-      )}
+      <span className="font-mono2026 text-[0.6rem] uppercase tracking-[0.2em] text-h2026-green">{tag}</span>
+      <h3 className="mt-2 font-serif2026 text-[0.95rem] font-normal leading-snug tracking-tight">{title}</h3>
+      {body && <p className="mt-2.5 text-[0.8rem] leading-[1.6] text-h2026-textSecondary">{body}</p>}
       {items && (
         <ul className="mt-3 grid gap-1.5">
           {items.map((item) => (
-            <li className="flex items-start gap-2 text-[0.8rem] md:text-[0.9rem] text-h2026-textSecondary" key={item}>
+            <li className="flex items-start gap-2 text-[0.78rem] text-h2026-textSecondary" key={item}>
               <Check className="mt-0.5 size-3 shrink-0 text-h2026-green" />
               {item}
             </li>
@@ -31,7 +27,7 @@ export function HighlightCard({ body, items, quotes, tag, title, width }: Highli
       )}
       {quotes?.map((quote) => (
         <p
-          className="mt-4 border-l-2 border-h2026-green/40 pl-3 font-serif2026 text-[0.85rem] md:text-[0.95rem] italic leading-[1.6] text-h2026-textSecondary whitespace-pre-line"
+          className="mt-4 border-l-2 border-h2026-green/40 pl-3 font-serif2026 text-[0.8rem] italic leading-[1.6] text-h2026-textSecondary whitespace-pre-line"
           key={quote}
         >
           {'\u201C'}
