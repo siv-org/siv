@@ -22,7 +22,7 @@ export const HIGHLIGHTS: Highlight[] = [
     ],
     tag: 'Security',
     title: 'Strong solutions, built & deployed',
-    width: 'w-[320px]',
+    width: 'w-[295px]',
   },
   {
     id: 'congress',
