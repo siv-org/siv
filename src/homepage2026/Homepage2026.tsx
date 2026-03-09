@@ -7,7 +7,6 @@ import { Footer } from './Footer'
 import { Hero } from './Hero'
 import { Highlights } from './highlights/Highlights'
 import { Nav } from './Nav'
-import { NewsSection } from './NewsSection'
 import { Properties } from './Properties'
 
 export function Homepage2026() {
@@ -24,9 +23,8 @@ export function Homepage2026() {
       <div className="relative z-10">
         <Nav />
         <Hero />
-        <NewsSection />
-        <Properties />
         <Highlights />
+        <Properties />
         <ClosingCta />
         <Footer />
       </div>
