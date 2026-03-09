@@ -4,7 +4,7 @@ import { StartAVoteButton } from './StartAVoteButton'
 
 export function Hero() {
   return (
-    <section className="px-7 py-[100px] text-center md:py-[150px]">
+    <section className="px-7 pt-40 pb-32 text-center md:pb-40">
       <div className="mx-auto max-w-[1060px]">
         <div className="animate-[fadeInUp_0.8s_ease_both]">
           <h1 className="font-serif2026 text-[clamp(2.5rem,6.5vw,5.2rem)] font-normal leading-[1.3] tracking-tight">
