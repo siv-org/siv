@@ -67,10 +67,10 @@ export const HIGHLIGHTS: Highlight[] = [
     width: 'w-[260px]',
   },
   {
-    body: 'They can prove their elections were run fairly, it costs a fraction of their budget, and voters are asking for it.',
+    body: 'They can prove their elections were run fairly, it costs a fraction of their existing budget, and voters are asking for it.',
     id: 'officials',
     tag: 'Adoption',
-    title: 'Election officials loved SIV',
+    title: 'Election officials love SIV',
     width: 'w-[280px]',
   },
 ]
