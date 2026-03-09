@@ -46,9 +46,9 @@ export const HIGHLIGHTS: Highlight[] = [
     width: 'w-[240px]',
   },
   {
-    body: 'Rep. allocated a $2M community budget and invited all constituents to participate.',
+    body: 'Rep. invited all residents to jointly allocate $2M community-improvement budget.',
     id: 'harlem',
-    tag: 'Participatory Budget',
+    tag: 'Participatory Budgeting',
     title: 'Harlem, New York',
     width: 'w-[240px]',
   },
