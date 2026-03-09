@@ -34,7 +34,7 @@ export function Highlights() {
           <div
             className={[
               'flex items-stretch gap-3 overflow-x-auto px-7 pb-5',
-              '[scrollbar-width:thin] [scrollbar-color:theme(colors.h2026-border)_transparent]',
+              '[scrollbar-width:thin]',
               '[&::-webkit-scrollbar]:h-[5px]',
               '[&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent',
               '[&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-h2026-border',
