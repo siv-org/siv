@@ -60,7 +60,7 @@ export const HIGHLIGHTS: Highlight[] = [
     width: 'w-[240px]',
   },
   {
-    body: 'SIV was not meant to replace other voting methods.',
+    body: 'SIV is meant to complement, not replace other voting methods.',
     id: 'alongside',
     tag: 'Compatibility',
     title: 'Deployed alongside mail & in\u2011person voting',
