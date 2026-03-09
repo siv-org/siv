@@ -23,7 +23,7 @@ export function Nav() {
         {NAV_LINKS.map(({ cta, href, label }) =>
           cta ? (
             <Link
-              className="rounded-full bg-h2026-green px-5 py-2 text-sm font-medium text-white no-underline transition-all duration-200 hover:scale-[1.03] hover:bg-h2026-greenHover"
+              className="rounded-full bg-h2026-green px-5 py-2 text-sm md:text-[0.95rem] font-medium text-white no-underline transition-all duration-200 hover:scale-[1.03] hover:bg-h2026-greenHover"
               href={href}
               key={label}
             >
@@ -31,7 +31,7 @@ export function Nav() {
             </Link>
           ) : (
             <Link
-              className="text-[0.82rem] font-normal text-h2026-textSecondary no-underline transition-colors hover:text-h2026-text"
+              className="text-[0.82rem] md:text-[0.9rem] lg:text-[0.95rem] font-normal text-h2026-textSecondary no-underline transition-colors hover:text-h2026-text"
               href={href}
               key={label}
             >

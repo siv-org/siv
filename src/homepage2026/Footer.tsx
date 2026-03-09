@@ -39,7 +39,7 @@ export function Footer() {
             <Link className="no-underline" href="/">
               <Image alt="SIV" height={20} src={logo} width={(50 / 23) * 20} />
             </Link>
-            <p className="mt-3 max-w-[220px] text-[0.8rem] leading-[1.6] text-h2026-textSecondary">
+            <p className="mt-3 max-w-[220px] text-[0.82rem] md:text-[0.9rem] leading-[1.6] text-h2026-textSecondary">
               Easy, Safe, Smart.
               <br />
               team@siv.org
@@ -49,12 +49,14 @@ export function Footer() {
           <div className="flex flex-wrap gap-12 md:gap-16">
             {COLUMNS.map(({ links, title }) => (
               <div key={title}>
-                <p className="mb-3 font-mono2026 text-[0.65rem] uppercase tracking-[0.2em] text-h2026-muted">{title}</p>
+                <p className="mb-3 font-mono2026 text-[0.7rem] md:text-[0.78rem] uppercase tracking-[0.2em] text-h2026-muted">
+                  {title}
+                </p>
                 <ul className="grid gap-2 pl-0 list-none">
                   {links.map(({ href, label }) => (
                     <li key={label}>
                       <Link
-                        className="text-[0.82rem] text-h2026-textSecondary no-underline transition-colors hover:text-h2026-text"
+                        className="text-[0.86rem] md:text-[0.95rem] text-h2026-textSecondary no-underline transition-colors hover:text-h2026-text"
                         href={href}
                       >
                         {label}
@@ -68,7 +70,9 @@ export function Footer() {
         </div>
 
         <div className="pt-6 mt-10">
-          <p className="text-[0.72rem] text-h2026-muted text-left sm:text-center">&copy; 2020&ndash;2026 SIV. All rights reserved.</p>
+          <p className="text-[0.76rem] md:text-[0.82rem] text-h2026-muted text-left sm:text-center">
+            &copy; 2020&ndash;2026 SIV. All rights reserved.
+          </p>
         </div>
       </ScrollReveal>
     </footer>
