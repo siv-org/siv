@@ -8,7 +8,7 @@ import { RESOURCES } from './resources-data'
 
 export function ResourcesPage() {
   return (
-    <div className={`min-h-screen overflow-x-hidden antialiased bg-h2026-bg text-h2026-text ${homepage2026FontClass}`}>
+    <div className={`overflow-x-hidden min-h-screen antialiased bg-h2026-bg text-h2026-text ${homepage2026FontClass}`}>
       {/* Ambient orbs */}
       <div
         className="pointer-events-none fixed z-0 h-[600px] w-[600px] rounded-full opacity-45 blur-[120px] animate-orb-1"
@@ -42,7 +42,8 @@ export function ResourcesPage() {
                 Learn How SIV Works
               </h1>
               <p className="mx-auto mt-4 max-w-[520px] text-[0.88rem] leading-[1.7] text-h2026-textSecondary animate-[fadeInUp_0.8s_0.15s_ease_both]">
-                From high-level illustrations to formal specifications — everything you need to understand secure internet voting.
+                From high-level illustrations to formal specifications — everything you need to understand secure
+                internet voting.
               </p>
             </div>
           </div>
@@ -73,7 +74,7 @@ export function ResourcesPage() {
         </section>
 
         {/* Footer */}
-        <footer className="border-t border-h2026-border py-7 text-center">
+        <footer className="py-7 text-center border-t border-h2026-border">
           <div className="mx-auto max-w-[1060px] px-7">
             <p className="text-[0.75rem] font-light text-h2026-muted">© 2020-2026 SIV. All rights reserved.</p>
           </div>
