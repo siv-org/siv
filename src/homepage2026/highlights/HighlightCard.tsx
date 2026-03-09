@@ -3,10 +3,10 @@ import { ArrowUpRight, Check } from 'lucide-react'
 import type { Highlight } from './highlights-data'
 
 const cardClassName = [
-  'group flex flex-col rounded-h2026 border border-h2026-border p-5 md:p-6',
-  'bg-gradient-to-br from-h2026-bgCard via-h2026-bgCard to-h2026-green/[0.06]',
+  'group flex flex-col rounded-[18px] border border-white/80 p-6 md:p-7',
+  'bg-white/95 shadow-[0_2px_12px_-4px_rgba(0,0,0,0.06)] backdrop-blur-sm',
   'transition-all duration-300 ease-out',
-  'hover:-translate-y-0.5 hover:border-h2026-borderStrong hover:shadow-h2026-md',
+  'hover:-translate-y-0.5 hover:shadow-[0_12px_32px_-8px_rgba(0,0,0,0.08)] hover:border-white',
 ].join(' ')
 
 export function HighlightCard({
@@ -22,20 +22,22 @@ export function HighlightCard({
 
   const content = (
     <>
-      <span className="font-mono2026 text-[0.6rem] uppercase tracking-[0.2em] text-h2026-green">
-        {tag}
-      </span>
-      <h3 className="mt-2 font-serif2026 text-[0.95rem] font-normal leading-snug tracking-tight text-h2026-text">
-        {title}
-      </h3>
+      <div className="flex flex-col gap-1.5">
+        <span className="font-mono2026 text-[0.6rem] uppercase tracking-[0.2em] text-h2026-green">
+          {tag}
+        </span>
+        <h3 className="font-serif2026 text-[0.98rem] font-normal leading-[1.35] tracking-tight text-h2026-text">
+          {title}
+        </h3>
+      </div>
       {blurb && (
-        <p className="mt-2.5 text-[0.8rem] leading-[1.6] text-h2026-textSecondary">{blurb}</p>
+        <p className="mt-3.5 text-[0.81rem] leading-[1.65] text-h2026-textSecondary">{blurb}</p>
       )}
       {items && (
-        <ul className="mt-3 grid gap-1.5">
+        <ul className="mt-4 grid gap-2">
           {items.map((item) => (
-            <li className="flex items-start gap-2 text-[0.78rem] text-h2026-textSecondary" key={item}>
-              <Check className="mt-0.5 size-3 shrink-0 text-h2026-green" />
+            <li className="flex items-start gap-2.5 text-[0.79rem] leading-[1.5] text-h2026-textSecondary" key={item}>
+              <Check className="mt-0.5 size-3.5 shrink-0 text-h2026-green" />
               {item}
             </li>
           ))}
@@ -43,7 +45,7 @@ export function HighlightCard({
       )}
       {quotes?.map((quote) => (
         <p
-          className="mt-4 border-l-2 border-h2026-green/40 pl-3 font-serif2026 text-[0.8rem] italic leading-[1.6] text-h2026-textSecondary whitespace-pre-line"
+          className="mt-4 border-l-2 border-h2026-green/50 pl-4 font-serif2026 text-[0.81rem] italic leading-[1.65] text-h2026-textSecondary whitespace-pre-line"
           key={quote}
         >
           {'\u201C'}
@@ -52,7 +54,7 @@ export function HighlightCard({
         </p>
       ))}
       {href && (
-        <span className="mt-4 flex items-center gap-0.5 text-[0.65rem] text-h2026-muted transition-colors duration-200 ease-out group-hover:text-h2026-green">
+        <span className="mt-5 flex items-center gap-0.5 text-[0.65rem] text-h2026-muted transition-colors duration-200 ease-out group-hover:text-h2026-green">
           Read
           <ArrowUpRight
             className="size-3 shrink-0 transition-transform duration-200 ease-out group-hover:translate-x-0.5 group-hover:-translate-y-0.5"

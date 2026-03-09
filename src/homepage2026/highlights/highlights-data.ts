@@ -46,12 +46,12 @@ export const HIGHLIGHTS: Highlight[] = [
     tag: 'Government',
     title: 'Sitting Member of Congress elected using SIV',
   },
-  {
-    body: 'Groups with strong pre-existing distrust in US elections used SIV vs paper — leading to less fighting and more cooperation.',
-    quotes: ['This is election nirvana.', 'Today, we were all pollwatchers.'],
-    tag: 'Trust',
-    title: 'From distrust to cooperation',
-  },
+  // {
+  //   body: 'Groups with strong pre-existing distrust in US elections used SIV vs paper — leading to less fighting and more cooperation.',
+  //   quotes: ['This is election nirvana.', 'Today, we were all pollwatchers.'],
+  //   tag: 'Trust',
+  //   title: 'From distrust to cooperation',
+  // },
   {
     body: 'Switched to SIV for governance voting over funds worth millions.',
     tag: 'Governance',
@@ -72,9 +72,9 @@ export const HIGHLIGHTS: Highlight[] = [
     tag: 'Compatibility',
     title: 'Deployed alongside mail & in\u2011person voting',
   },
-  {
-    body: 'They can prove their elections were run fairly, it costs a fraction of their existing budget, and voters are asking for it.',
-    tag: 'Adoption',
-    title: 'Election officials love SIV',
-  },
+  // {
+  //   body: 'They can prove their elections were run fairly, it costs a fraction of their existing budget, and voters are asking for it.',
+  //   tag: 'Adoption',
+  //   title: 'Election officials love SIV',
+  // },
 ]
