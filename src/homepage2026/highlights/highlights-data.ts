@@ -10,7 +10,7 @@ export type Highlight = {
 
 export const HIGHLIGHTS: Highlight[] = [
   {
-    body: 'For decades, digital voting was correctly considered unsafe. SIV has solved:',
+    body: 'For decades, digital voting was correctly considered unsafe for high-stakes settings.\n\nSIV has solved:',
     id: 'security',
     items: [
       'Malware on voter devices',
