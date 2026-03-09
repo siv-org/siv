@@ -1,6 +1,5 @@
 export type Highlight = {
   body?: string
-  id: string
   items?: string[]
   quotes?: string[]
   tag: string
@@ -11,7 +10,6 @@ export type Highlight = {
 export const HIGHLIGHTS: Highlight[] = [
   {
     body: 'For decades, digital voting was correctly considered unsafe for high-stakes settings.\n\nSIV has solved:',
-    id: 'security',
     items: [
       'Malware on voter devices',
       'Strong privacy',
@@ -25,14 +23,12 @@ export const HIGHLIGHTS: Highlight[] = [
     width: 'w-[295px]',
   },
   {
-    id: 'congress',
     tag: 'Government',
     title: 'Sitting Member of Congress elected using SIV',
     width: 'w-[240px]',
   },
   {
     body: 'Groups with strong pre-existing distrust in US elections used SIV vs paper — leading to less fighting and more cooperation.',
-    id: 'trust',
     quotes: ['This is election nirvana.', 'Today, we were all pollwatchers.'],
     tag: 'Trust',
     title: 'From distrust to cooperation',
@@ -40,35 +36,30 @@ export const HIGHLIGHTS: Highlight[] = [
   },
   {
     body: 'Switched to SIV for governance voting over funds worth millions.',
-    id: 'zcash',
     tag: 'Governance',
     title: 'Zcash Foundation governance',
     width: 'w-[240px]',
   },
   {
     body: 'Rep. invited all residents to jointly allocate $2M community-improvement budget.',
-    id: 'harlem',
     tag: 'Participatory Budgeting',
     title: 'Harlem, New York',
     width: 'w-[240px]',
   },
   {
     body: 'Used SIV to elect its leaders.',
-    id: 'first-nation',
     tag: 'Global',
     title: 'Canadian First Nation government',
     width: 'w-[240px]',
   },
   {
     body: 'SIV is meant to complement, not replace other voting methods.',
-    id: 'alongside',
     tag: 'Compatibility',
     title: 'Deployed alongside mail & in\u2011person voting',
     width: 'w-[260px]',
   },
   {
     body: 'They can prove their elections were run fairly, it costs a fraction of their existing budget, and voters are asking for it.',
-    id: 'officials',
     tag: 'Adoption',
     title: 'Election officials love SIV',
     width: 'w-[280px]',

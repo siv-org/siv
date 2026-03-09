@@ -43,7 +43,7 @@ export function Highlights() {
             ref={scrollRef}
           >
             {HIGHLIGHTS.map((h) => (
-              <HighlightCard key={h.id} {...h} />
+              <HighlightCard key={h.title} {...h} />
             ))}
           </div>
 
