@@ -2,7 +2,7 @@ export type Highlight = {
   body?: string
   id: string
   items?: string[]
-  quote?: string
+  quotes?: string[]
   tag: string
   title: string
   width: string
@@ -33,7 +33,7 @@ export const HIGHLIGHTS: Highlight[] = [
   {
     body: 'Groups with strong pre-existing distrust in US elections used SIV vs paper — leading to less fighting and more cooperation.',
     id: 'trust',
-    quote: '\u201CThis is election nirvana\u201D \u00B7 \u201CWe were all pollwatchers today\u201D',
+    quotes: ['This is election nirvana.', 'Today, we were all pollwatchers.'],
     tag: 'Trust',
     title: 'From distrust to cooperation',
     width: 'w-[300px]',

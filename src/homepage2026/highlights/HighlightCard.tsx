@@ -2,7 +2,7 @@ import { Check } from 'lucide-react'
 
 import type { Highlight } from './highlights-data'
 
-export function HighlightCard({ body, items, quote, tag, title, width }: Highlight) {
+export function HighlightCard({ body, items, quotes, tag, title, width }: Highlight) {
   return (
     <div
       className={[
@@ -25,11 +25,16 @@ export function HighlightCard({ body, items, quote, tag, title, width }: Highlig
           ))}
         </ul>
       )}
-      {quote && (
-        <p className="mt-3 border-l-2 border-h2026-green/40 pl-3 font-serif2026 text-[0.8rem] italic leading-[1.6] text-h2026-textSecondary">
+      {quotes?.map((quote) => (
+        <p
+          className="mt-4 border-l-2 border-h2026-green/40 pl-3 font-serif2026 text-[0.8rem] italic leading-[1.6] text-h2026-textSecondary whitespace-pre-line"
+          key={quote}
+        >
+          {'\u201C'}
           {quote}
+          {'\u201D'}
         </p>
-      )}
+      ))}
     </div>
   )
 }
