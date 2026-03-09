@@ -22,7 +22,7 @@ const COLUMNS: { links: { href: string; label: string }[]; title: string }[] = [
   },
   {
     links: [
-      { href: '/resources', label: 'Resources' },
+      { href: '/resources', label: 'How It Works' },
       { href: 'https://hack.siv.org', label: 'Security' },
       { href: 'https://docs.siv.org', label: 'Docs' },
     ],
