@@ -7,7 +7,7 @@ export function ResourceCard({ category, description, href, icon: Icon, title }:
 
   return (
     <a
-      className="flex relative flex-col gap-4 p-7 no-underline border transition-all duration-300 ease-out group rounded-[20px] border-h26-border bg-h26-bgCard text-inherit hover:-translate-y-1 hover:border-h26-borderStrong hover:shadow-h2026-lg md:p-8"
+      className="flex relative flex-col gap-4 p-7 no-underline border transition-all duration-300 ease-out group rounded-[20px] border-h26-border bg-h26-bgCard text-inherit hover:-translate-y-1 hover:border-h26-borderStrong hover:shadow-h26-lg md:p-8"
       href={href}
       rel="noreferrer"
       target="_blank"
