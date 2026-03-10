@@ -19,18 +19,21 @@ export function CompareModal({ closeModal, goLeft, goRight, modalContent, opened
   if (!modalContent || !openedModalIndex) return null
 
   return (
-    <div className="flex fixed inset-0 z-[110] justify-center items-center px-4 py-8 bg-slate-900/60" onClick={closeModal}>
+    <div
+      className="flex fixed inset-0 z-[110] justify-center items-center px-4 py-8 bg-slate-900/60"
+      onClick={closeModal}
+    >
       <div
         className="relative max-h-[80vh] w-full max-w-[640px] overflow-y-auto rounded-2xl border border-white/10 bg-h2026-bg px-6 py-6 text-left shadow-[0_24px_80px_rgba(15,23,42,0.65)] md:px-8 md:py-7"
         onClick={(e) => e.stopPropagation()}
       >
         <button
           aria-label="Close comparison details"
-          className="absolute top-4 right-4 flex size-10 items-center justify-center rounded-full transition-colors text-h2026-muted hover:bg-white/5 hover:text-h2026-text"
+          className="flex absolute top-4 right-4 justify-center items-center rounded-full transition-colors size-10 text-h2026-muted hover:bg-white/5 hover:text-h2026-text"
           onClick={closeModal}
           type="button"
         >
-          <span className="relative block size-5">
+          <span className="block relative size-5">
             <span className="absolute inset-0 m-auto h-[1.5px] w-5 rotate-45 bg-current" />
             <span className="absolute inset-0 m-auto h-[1.5px] w-5 -rotate-45 bg-current" />
           </span>
@@ -54,10 +57,8 @@ export function CompareModal({ closeModal, goLeft, goRight, modalContent, opened
             .map((c) => c.trim())
             .filter((c) => c)
             .map((advantage, index) => (
-              <div className="flex gap-2 mb-2 items-start" key={`adv-${index.toString()}`}>
-                <span className="flex h-[1.7em] min-w-[1.2em] shrink-0 items-center justify-center text-[1.1rem] font-bold leading-none text-emerald-600">
-                  +
-                </span>
+              <div className="flex gap-2 items-baseline mb-2" key={`adv-${index.toString()}`}>
+                <span className="min-w-[1.2em] shrink-0 text-[1.1rem] font-bold leading-[1.7] text-emerald-600">+</span>
                 <span className="leading-[1.7]">{advantage}</span>
               </div>
             ))}
@@ -70,10 +71,8 @@ export function CompareModal({ closeModal, goLeft, goRight, modalContent, opened
             .map((c) => c.trim())
             .filter((c) => c)
             .map((disadvantage, index) => (
-              <div className="flex gap-2 mb-2 items-start" key={`disadv-${index.toString()}`}>
-                <span className="flex h-[1.7em] min-w-[1.2em] shrink-0 items-center justify-center text-[1.1rem] font-bold leading-none text-rose-600">
-                  –
-                </span>
+              <div className="flex gap-2 items-baseline mb-2" key={`disadv-${index.toString()}`}>
+                <span className="min-w-[1.2em] shrink-0 text-[1.1rem] font-bold leading-[1.7] text-rose-600">–</span>
                 <span className="leading-[1.7]">{disadvantage}</span>
               </div>
             ))}
