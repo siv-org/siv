@@ -5,29 +5,29 @@ import logo from '../homepage/logo.png'
 import { logoRatio } from './Nav'
 import { ScrollReveal } from './ScrollReveal'
 
-const COLUMNS: { links: { href: string; label: string }[]; title: string }[] = [
+const COLUMNS: { group: string; links: { text: string; url: string }[] }[] = [
   {
+    group: 'Product',
     links: [
-      { href: '/admin', label: 'Start a Vote' },
-      { href: '/admin', label: 'Login' },
+      { text: 'Start a Vote', url: '/admin' },
+      { text: 'Login', url: '/admin' },
     ],
-    title: 'Product',
   },
   {
+    group: 'Company',
     links: [
-      { href: '/about', label: 'About' },
-      { href: 'https://blog.siv.org', label: 'News' },
-      { href: '/faq', label: 'FAQ' },
+      { text: 'About', url: '/about' },
+      { text: 'News', url: 'https://blog.siv.org' },
+      { text: 'FAQ', url: '/faq' },
     ],
-    title: 'Company',
   },
   {
+    group: 'Resources',
     links: [
-      { href: '/resources', label: 'How It Works' },
-      { href: 'https://hack.siv.org', label: 'Security' },
-      { href: 'https://docs.siv.org', label: 'Docs' },
+      { text: 'How It Works', url: '/resources' },
+      { text: 'Security', url: 'https://hack.siv.org' },
+      { text: 'Docs', url: 'https://docs.siv.org' },
     ],
-    title: 'Resources',
   },
 ]
 
@@ -50,17 +50,17 @@ export function Footer() {
           </div>
 
           <div className="flex flex-wrap gap-12 md:gap-16">
-            {COLUMNS.map(({ links, title }) => (
-              <div key={title}>
-                <p className="mb-3 font-mono2026 text-[0.65rem] uppercase tracking-[0.2em] text-h2026-muted">{title}</p>
+            {COLUMNS.map(({ group, links }) => (
+              <div key={group}>
+                <p className="mb-3 font-mono2026 text-[0.65rem] uppercase tracking-[0.2em] text-h2026-muted">{group}</p>
                 <ul className="grid gap-2 pl-0 list-none">
-                  {links.map(({ href, label }) => (
-                    <li key={label}>
+                  {links.map(({ text, url }) => (
+                    <li key={text}>
                       <Link
                         className="text-[0.82rem] text-h2026-textSecondary no-underline transition-colors hover:text-h2026-text"
-                        href={href}
+                        href={url}
                       >
-                        {label}
+                        {text}
                       </Link>
                     </li>
                   ))}
