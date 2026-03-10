@@ -1,12 +1,13 @@
 import Link from 'next/link'
 
-export function StartAVoteButton({ className = '' }: { className?: string }) {
+export function StartAVoteButton() {
   return (
     <Link
-      className={`group inline-flex items-center gap-2.5 rounded-full bg-h2026-green px-10 py-4 text-[0.92rem] font-medium text-white no-underline shadow-h2026-cta transition-all duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:shadow-h2026-cta-hover ${className}`}
+      className="group inline-flex items-center gap-2.5 rounded-full bg-h2026-green px-10 py-4 text-[0.92rem] font-medium text-white no-underline shadow-h2026-cta transition-all duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:shadow-h2026-cta-hover"
       href="/admin"
     >
       Start a Vote
+      {/* right arrow icon */}
       <svg
         className="transition-transform duration-200 group-hover:translate-x-1"
         fill="none"
