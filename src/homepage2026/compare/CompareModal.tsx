@@ -87,7 +87,7 @@ export function CompareModal({ closeModal, goLeft, goRight, modalContent, opened
           ))}
         </div>
 
-        <div className="mt-6 flex items-center justify-between gap-3 text-[0.78rem] text-h2026-muted">
+        <div className="mt-6 flex items-center justify-center md:justify-between gap-3 text-[0.78rem] text-h2026-muted">
           <div className="flex gap-3">
             <button
               className="rounded-full border border-h2026-border bg-white/5 px-3 py-1.5 text-[0.76rem] font-medium text-h2026-textSecondary shadow-sm transition-colors hover:border-h2026-green/70 hover:text-h2026-text"
