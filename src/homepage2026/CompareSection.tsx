@@ -1,5 +1,7 @@
 import { Fragment, useCallback, useEffect, useReducer, useState } from 'react'
 
+import { ScrollReveal } from './ScrollReveal'
+
 type Category = { name: string; rows: Row[] }
 
 type OpenedModalIndex = [number, number, number] | null
@@ -514,8 +516,9 @@ export function CompareSection() {
   return (
     <section aria-labelledby="compare-heading" className="px-7 py-16 md:py-24" id="compare">
       <div className="mx-auto max-w-[1060px]">
-        <div className="rounded-[28px] border border-white/70 bg-white/60 px-6 py-9 shadow-[0_16px_40px_rgba(15,23,42,0.10)] backdrop-blur-md md:px-10 md:py-12">
-          <div>
+        <ScrollReveal>
+          <div className="rounded-[28px] border border-white/70 bg-white/60 px-6 py-9 shadow-[0_16px_40px_rgba(15,23,42,0.10)] backdrop-blur-md md:px-10 md:py-12">
+            <div>
             <p className="font-mono2026 mb-3 text-[0.7rem] uppercase tracking-[0.18em] text-h2026-muted">Compare</p>
             <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
               <h2
@@ -530,9 +533,9 @@ export function CompareSection() {
                 an additional voting method, meant to work alongside mail and in-person voting.
               </p>
             </div>
-          </div>
+            </div>
 
-          <div className="mt-6">
+            <div className="mt-6">
             <button
               aria-expanded={!isCollapsed}
               className="flex w-full items-center justify-between rounded-2xl border border-h2026-border bg-white/70 px-4 py-3 text-[0.82rem] font-medium text-h2026-text shadow-sm transition-colors hover:border-h2026-green/70"
@@ -647,8 +650,9 @@ export function CompareSection() {
                 </div>
               </div>
             )}
+            </div>
           </div>
-        </div>
+        </ScrollReveal>
       </div>
 
       {!!modalContent && (
