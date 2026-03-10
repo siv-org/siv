@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { Head } from 'src/Head'
 
 import { homepage2026FontClass } from '../fonts'
+import { Footer } from '../Footer'
 import { Nav } from '../Nav'
 import { ResourceCard } from './ResourceCard'
 import { RESOURCES } from './resources-data'
@@ -75,14 +76,7 @@ export function ResourcesPage() {
           </div>
         </section>
 
-        {/* Footer */}
-        <footer className="py-7 text-center border-t border-h2026-border">
-          <div className="mx-auto max-w-[1060px] px-7">
-            <p className="text-[0.75rem] font-light text-h2026-muted">
-              © 2020-{new Date().getFullYear()} SIV. All rights reserved.
-            </p>
-          </div>
-        </footer>
+        <Footer />
       </div>
     </div>
   )
