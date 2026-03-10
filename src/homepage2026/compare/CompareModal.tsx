@@ -49,33 +49,42 @@ export function CompareModal({ closeModal, goLeft, goRight, modalContent, opened
         </div>
 
         <div className="mt-5 text-[0.85rem] leading-[1.7] text-h2026-textSecondary">
-          <div className="mb-3 text-[0.75rem] font-semibold uppercase tracking-[0.16em] text-emerald-700">
-            Advantages
-          </div>
-          {modalContent.advantages
-            .split('\n')
-            .map((c) => c.trim())
-            .filter((c) => c)
-            .map((advantage, index) => (
-              <div className="flex gap-2 items-baseline mb-2" key={`adv-${index.toString()}`}>
-                <span className="min-w-[1.2em] shrink-0 text-[1.1rem] font-bold leading-[1.7] text-emerald-600">+</span>
-                <span className="leading-[1.7]">{advantage}</span>
+          {[
+            {
+              icon: '+',
+              iconClass: 'text-emerald-600',
+              items: modalContent.advantages,
+              keyPrefix: 'adv',
+              title: 'Advantages',
+              titleClass: 'text-emerald-700',
+            },
+            {
+              icon: '–',
+              iconClass: 'text-rose-600',
+              items: modalContent.disadvantages,
+              keyPrefix: 'disadv',
+              title: 'Disadvantages',
+              titleClass: 'text-rose-700',
+            },
+          ].map(({ icon, iconClass, items, keyPrefix, title, titleClass }, sectionIndex) => (
+            <div className={sectionIndex > 0 ? 'mt-5' : undefined} key={keyPrefix}>
+              <div className={`mb-3 text-[0.75rem] font-semibold uppercase tracking-[0.16em] ${titleClass}`}>
+                {title}
               </div>
-            ))}
-
-          <div className="mt-5 mb-3 text-[0.75rem] font-semibold uppercase tracking-[0.16em] text-rose-700">
-            Disadvantages
-          </div>
-          {modalContent.disadvantages
-            .split('\n')
-            .map((c) => c.trim())
-            .filter((c) => c)
-            .map((disadvantage, index) => (
-              <div className="flex gap-2 items-baseline mb-2" key={`disadv-${index.toString()}`}>
-                <span className="min-w-[1.2em] shrink-0 text-[1.1rem] font-bold leading-[1.7] text-rose-600">–</span>
-                <span className="leading-[1.7]">{disadvantage}</span>
-              </div>
-            ))}
+              {items
+                .split('\n')
+                .map((c) => c.trim())
+                .filter(Boolean)
+                .map((line, index) => (
+                  <div className="flex gap-2 items-baseline mb-2" key={`${keyPrefix}-${index}`}>
+                    <span className={`min-w-[1.2em] shrink-0 text-[1.1rem] font-bold leading-[1.7] ${iconClass}`}>
+                      {icon}
+                    </span>
+                    <span className="leading-[1.7]">{line}</span>
+                  </div>
+                ))}
+            </div>
+          ))}
         </div>
 
         <div className="mt-6 flex items-center justify-between gap-3 text-[0.78rem] text-h2026-muted">
