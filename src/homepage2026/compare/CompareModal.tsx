@@ -54,9 +54,11 @@ export function CompareModal({ closeModal, goLeft, goRight, modalContent, opened
             .map((c) => c.trim())
             .filter((c) => c)
             .map((advantage, index) => (
-              <div className="flex gap-2 mb-2" key={`adv-${index.toString()}`}>
-                <span className="mt-[1px] text-[1.1rem] font-bold text-emerald-600">+</span>
-                <span>{advantage}</span>
+              <div className="flex gap-2 mb-2 items-start" key={`adv-${index.toString()}`}>
+                <span className="flex h-[1.7em] min-w-[1.2em] shrink-0 items-center justify-center text-[1.1rem] font-bold leading-none text-emerald-600">
+                  +
+                </span>
+                <span className="leading-[1.7]">{advantage}</span>
               </div>
             ))}
 
@@ -68,9 +70,11 @@ export function CompareModal({ closeModal, goLeft, goRight, modalContent, opened
             .map((c) => c.trim())
             .filter((c) => c)
             .map((disadvantage, index) => (
-              <div className="flex gap-2 mb-2" key={`disadv-${index.toString()}`}>
-                <span className="mt-[1px] text-[1.1rem] font-bold text-rose-600">–</span>
-                <span>{disadvantage}</span>
+              <div className="flex gap-2 mb-2 items-start" key={`disadv-${index.toString()}`}>
+                <span className="flex h-[1.7em] min-w-[1.2em] shrink-0 items-center justify-center text-[1.1rem] font-bold leading-none text-rose-600">
+                  –
+                </span>
+                <span className="leading-[1.7]">{disadvantage}</span>
               </div>
             ))}
         </div>
