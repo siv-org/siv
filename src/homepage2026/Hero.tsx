@@ -13,7 +13,7 @@ export function Hero() {
             <br />
             Digital Voting
           </h1>
-          <span className="mt-8 block font-sans text-[clamp(0.8rem,1.5vw,1rem)] font-medium uppercase tracking-[0.2em] text-h2026-blue/90">
+          <span className="mt-8 block font-sans text-[clamp(0.8rem,1.5vw,0.95rem)] font-medium uppercase tracking-[0.2em] text-h2026-blue/90">
             even for the highest stakes environments
           </span>
         </div>
