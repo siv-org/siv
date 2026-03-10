@@ -188,13 +188,7 @@ export function CompareSection() {
         </ScrollReveal>
       </div>
 
-      <CompareModal
-        closeModal={closeModal}
-        goLeft={goLeft}
-        goRight={goRight}
-        modalContent={modalContent}
-        openedModalIndex={openedModalIndex}
-      />
+      <CompareModal {...{ closeModal, goLeft, goRight, modalContent, openedModalIndex }} />
     </section>
   )
 }
