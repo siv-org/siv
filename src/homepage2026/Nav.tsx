@@ -16,7 +16,7 @@ const logoWidth = (50 / 23) * logoHeight
 export function Nav() {
   return (
     <nav className="fixed left-1/2 top-4 z-[100] flex -translate-x-1/2 items-center sm:gap-9 gap-6 rounded-full border border-h2026-border bg-white/70 px-6 py-2.5 shadow-h2026-sm backdrop-blur-[24px]">
-      <Link className="relative leading-none no-underline" href="/">
+      <Link className="relative hidden leading-none no-underline sm:inline-block" href="/">
         <Image alt="SIV" height={logoHeight} src={logo} width={logoWidth} />
       </Link>
       <div className="flex gap-4 items-center sm:gap-7">
