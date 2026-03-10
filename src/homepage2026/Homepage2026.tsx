@@ -6,6 +6,7 @@ import { homepage2026FontClass } from './fonts'
 import { Footer } from './Footer'
 import { Hero } from './Hero'
 import { Highlights } from './highlights/Highlights'
+import { HowItWorks } from './HowItWorks'
 import { Nav } from './Nav'
 import { Properties } from './Properties'
 
@@ -25,6 +26,7 @@ export function Homepage2026() {
         <Hero />
         <Highlights />
         <Properties />
+        <HowItWorks />
         <ClosingCta />
         <Footer />
       </div>
