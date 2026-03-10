@@ -32,7 +32,7 @@ export const HIGHLIGHTS: Highlight[] = [
   {
     href: 'https://blog.siv.org/2023/11/utah-gop-special-election',
     tag: 'Congressional Election',
-    title: 'Sitting Member of Congress elected using SIV',
+    title: 'Sitting Member of US Congress elected using SIV',
   },
   {
     body: 'For decades, digital voting was correctly considered unsafe for high-stakes settings.\n\nSIV has solved:',
@@ -64,7 +64,7 @@ export const HIGHLIGHTS: Highlight[] = [
   },
   {
     body: 'Switched to SIV for governance voting over funds worth millions.',
-    href: 'https://forum.zcashcommunity.com/t/request-for-zcap-members-thoughts-on-moving-from-helios-to-siv-for-future-voting/51785/7',
+    href: 'https://forum.zcashcommunity.com/t/request-for-zcap-members-thoughts-on-moving-from-helios-to-siv-for-future-voting/51785',
     tag: 'Governance Voting',
     title: 'Zcash Foundation governance',
   },
