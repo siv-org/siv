@@ -135,15 +135,15 @@ export function CompareSection() {
           <div className="rounded-[28px] border border-white/70 bg-white/60 px-4 py-7 shadow-[0_16px_40px_rgba(15,23,42,0.10)] backdrop-blur-md sm:px-6 sm:py-9 md:px-10 md:py-12">
             <div>
               <p className="font-mono26 mb-3 text-[0.7rem] uppercase tracking-[0.18em] text-h26-muted">Compare</p>
-              <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+              <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                 <h2
                   className="font-serif26 text-[clamp(1.35rem,3vw,2rem)] font-normal leading-[1.2] tracking-tight text-h26-text"
                   id="compare-heading"
                 >
                   How SIV compares to mail <br className="hidden md:block" />& in-person voting
                 </h2>
-                <p className="mt-1 sm:max-w-[340px] text-[0.86rem] leading-[1.7] text-h26-textSecondary md:mt-0 md:text-right">
-                  Explore where each method shines and struggles.
+                <p className="mt-1 sm:max-w-[340px] text-[0.86rem] md:text-base leading-[1.7] text-h26-textSecondary md:mt-0 md:text-right">
+                  Explore where each method <br className="hidden md:block" /> shines and struggles.
                 </p>
               </div>
             </div>
