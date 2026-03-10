@@ -11,32 +11,18 @@ const cardClassName = [
   'hover:-translate-y-0.5 hover:shadow-[0_12px_32px_-8px_rgba(0,0,0,0.08),inset_0_1px_0_0_rgba(255,255,255,0.6)] hover:border-white/90 hover:bg-white/70',
 ].join(' ')
 
-export function HighlightCard({
-  body,
-  description,
-  href,
-  items,
-  quotes,
-  tag,
-  title,
-}: Highlight) {
-  const blurb = description ?? body
-
+export function HighlightCard({ body, href, items, quotes, tag, title }: Highlight) {
   const content = (
     <>
       <div className="flex flex-col gap-1.5">
-        <span className="font-mono2026 text-[0.6rem] uppercase tracking-[0.2em] text-h2026-green">
-          {tag}
-        </span>
+        <span className="font-mono2026 text-[0.6rem] uppercase tracking-[0.2em] text-h2026-green">{tag}</span>
         <h3 className="font-serif2026 text-[0.98rem] font-normal leading-[1.35] tracking-tight text-h2026-text">
           {title}
         </h3>
       </div>
-      {blurb && (
-        <p className="mt-3.5 text-[0.81rem] leading-[1.65] text-h2026-textSecondary">{blurb}</p>
-      )}
+      {body && <p className="mt-3.5 text-[0.81rem] leading-[1.65] text-h2026-textSecondary">{body}</p>}
       {items && (
-        <ul className="mt-4 grid gap-2">
+        <ul className="grid gap-2 mt-4">
           {items.map((item) => (
             <li className="flex items-start gap-2.5 text-[0.79rem] leading-[1.5] text-h2026-textSecondary" key={item}>
               <Check className="mt-0.5 size-3.5 shrink-0 text-h2026-green" />
@@ -69,12 +55,7 @@ export function HighlightCard({
 
   if (href) {
     return (
-      <a
-        className={`${cardClassName} no-underline text-inherit`}
-        href={href}
-        rel="noreferrer"
-        target="_blank"
-      >
+      <a className={`no-underline ${cardClassName} text-inherit`} href={href} rel="noreferrer" target="_blank">
         {content}
       </a>
     )

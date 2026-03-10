@@ -1,7 +1,5 @@
 export type Highlight = {
   body?: string
-  /** Short blurb for link cards (e.g. news). */
-  description?: string
   href?: string
   items?: string[]
   quotes?: string[]
@@ -12,19 +10,19 @@ export type Highlight = {
 /** Unified highlights: news/latest first (with links), then evergreen highlights. */
 export const HIGHLIGHTS: Highlight[] = [
   {
-    description: 'For each paper voter, 50x voted digitally.',
+    body: 'For each paper voter, 50x voted digitally.',
     href: 'https://blog.siv.org/2025/12/11chooses',
     tag: 'Latest • December 2025',
     title: 'Multiple historic firsts, including the biggest digital election in US history',
   },
   {
-    description: 'Preserving privacy & verifiability.',
+    body: 'Preserving privacy & verifiability.',
     href: 'https://blog.siv.org/2025/08/overrides',
     tag: 'Security',
     title: 'Anti-coercion & vote-selling solution, deployed',
   },
   {
-    description: '$10,000 prizes. Top security researchers.',
+    body: '$10,000 prizes. Top security researchers.',
     href: 'https://hack.siv.org/reports/2024defcon',
     tag: 'Security',
     title: 'DEF CON Red-Team Hack\u00A0SIV Challenge: Results',
