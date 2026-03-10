@@ -6,7 +6,7 @@ export function Hero() {
   return (
     <section className="px-7 pt-[11rem] pb-36 text-center md:pt-[12.5rem] md:pb-44">
       <div className="mx-auto max-w-[920px]">
-        {/* Headline block — generous single-unit spacing */}
+        {/* Headline & subheader */}
         <div className="animate-[fadeInUp_0.9s_ease-out_both]">
           <h1 className="font-serif2026 text-[clamp(2.5rem,5.5vw,4.25rem)] font-normal leading-[1.25] tracking-[-0.02em]">
             Easy, Safe, Smart
@@ -18,14 +18,14 @@ export function Hero() {
           </span>
         </div>
 
-        {/* Social proof — sits close to tagline as one intro block */}
+        {/* Social proof */}
         <p className="mx-auto mt-4 max-w-md text-[clamp(0.7rem,1.25vw,0.82rem)] tracking-[0.12em] leading-[1.7] text-h2026-textSecondary/95 animate-[fadeInUp_0.9s_0.2s_ease-out_both]">
           <Globe className="inline size-[1.1em] align-[-0.2em] text-h2026-green/90 mr-[5px]" />
           used by voters in 330+ cities <br className="sm:hidden" />
           across 25 countries
         </p>
 
-        {/* CTA — clear visual next step */}
+        {/* CTA button */}
         <div className="mt-14 animate-[fadeInUp_0.9s_0.32s_ease-out_both]">
           <StartAVoteButton />
         </div>
