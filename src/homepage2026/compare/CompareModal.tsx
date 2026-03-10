@@ -19,7 +19,7 @@ export function CompareModal({ closeModal, goLeft, goRight, modalContent, opened
   if (!modalContent || !openedModalIndex) return null
 
   return (
-    <div className="flex fixed inset-0 z-40 justify-center items-center px-4 py-8 bg-slate-900/60" onClick={closeModal}>
+    <div className="flex fixed inset-0 z-[110] justify-center items-center px-4 py-8 bg-slate-900/60" onClick={closeModal}>
       <div
         className="relative max-h-[80vh] w-full max-w-[640px] overflow-y-auto rounded-2xl border border-white/10 bg-h2026-bg px-6 py-6 text-left shadow-[0_24px_80px_rgba(15,23,42,0.65)] md:px-8 md:py-7"
         onClick={(e) => e.stopPropagation()}
