@@ -6,6 +6,7 @@ const withMDX = require('@next/mdx')()
  * @type {import('next').NextConfig}
  **/
 const nextConfig = withMDX({
+  devIndicators: false,
   async redirects() {
     return [
       {

@@ -64,6 +64,7 @@
     "isomorphic-dompurify": "^2.29.0",
     "jsonwebtoken": "^9.0.3",
     "lodash-es": "^4.17.15",
+    "lucide-react": "^0.576.0",
     "mailgun-js": "^0.22.0",
     "marked": "^16.4.0",
     "moment": "^2.29.1",

@@ -1,7 +1,37 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./src/**/*.tsx', './pages/**/*.tsx'],
+  content: ['./src/**/*.{ts,tsx}', './pages/**/*.tsx'],
   corePlugins: { preflight: false },
   plugins: [],
-  theme: { extend: {} },
+  theme: {
+    extend: {
+      boxShadow: {
+        'h26-cta': '0 4px 20px rgba(26,107,74,0.25)',
+        'h26-cta-hover': '0 8px 35px rgba(26,107,74,0.3)',
+        'h26-lg': '0 20px 60px rgba(0,0,0,0.08)',
+      },
+      colors: {
+        h26: {
+          bg: '#fafaf9',
+          blue: '#1e3a5f',
+          border: 'rgba(0,0,0,0.06)',
+          green: '#1a6b4a',
+          greenHover: '#155a3e',
+          muted: '#999999',
+          text: '#1a1a1a',
+          textSecondary: '#6b6b6b',
+        },
+      },
+      fontFamily: {
+        mono26: ['var(--font-jetbrains-mono)', 'monospace'],
+        serif26: ['var(--font-libre-baskerville)', 'Georgia', 'serif'],
+      },
+      keyframes: {
+        fadeInUp: {
+          from: { opacity: '0', transform: 'translateY(16px)' },
+          to: { opacity: '1', transform: 'translateY(0)' },
+        },
+      },
+    },
+  },
 }
