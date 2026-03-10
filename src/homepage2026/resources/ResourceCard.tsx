@@ -7,13 +7,13 @@ export function ResourceCard({ category, description, href, icon: Icon, title }:
 
   return (
     <a
-      className="flex relative flex-col gap-4 p-7 no-underline border transition-all duration-300 ease-out group rounded-h2026-lg border-h2026-border bg-h2026-bgCard text-inherit hover:-translate-y-1 hover:border-h2026-borderStrong hover:shadow-h2026-lg md:p-8"
+      className="flex relative flex-col gap-4 p-7 no-underline border transition-all duration-300 ease-out group rounded-[20px] border-h2026-border bg-h2026-bgCard text-inherit hover:-translate-y-1 hover:border-h2026-borderStrong hover:shadow-h2026-lg md:p-8"
       href={href}
       rel="noreferrer"
       target="_blank"
     >
       <div className="flex gap-4 justify-between items-start">
-        <div className="flex justify-center items-center w-11 h-11 transition-colors duration-300 shrink-0 rounded-h2026 bg-h2026-bgWarm text-h2026-textSecondary group-hover:bg-h2026-green/10 group-hover:text-h2026-green">
+        <div className="flex justify-center items-center w-11 h-11 transition-colors duration-300 shrink-0 rounded-[14px] bg-h2026-bgWarm text-h2026-textSecondary group-hover:bg-h2026-green/10 group-hover:text-h2026-green">
           <Icon size={20} strokeWidth={1.5} />
         </div>
         <span className="translate-y-0.5 text-h2026-muted opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">

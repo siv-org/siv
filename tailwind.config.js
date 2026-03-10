@@ -5,10 +5,6 @@ module.exports = {
   plugins: [],
   theme: {
     extend: {
-      borderRadius: {
-        h2026: '14px',
-        'h2026-lg': '20px',
-      },
       boxShadow: {
         'h2026-cta': '0 4px 20px rgba(26,107,74,0.25)',
         'h2026-cta-hover': '0 8px 35px rgba(26,107,74,0.3)',
