@@ -567,7 +567,7 @@ export function CompareSection() {
                     Show descriptions
                   </button>
                   <p className="max-w-[520px] text-[0.75rem] text-h2026-muted">
-                    Show descriptions. Click a cell for a detailed explanation. Use arrow keys to move around.
+                    Click a number for a detailed explanation. Use arrow keys to move around.
                   </p>
                 </div>
 
