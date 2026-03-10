@@ -37,7 +37,7 @@ export function ResourcesPage() {
 
       {/* Header */}
       <section className="px-7 pt-[120px] pb-10 text-center md:pt-[150px] md:pb-14 mx-auto max-w-[1060px] animate-[fadeInUp_0.8s_ease_both]">
-        <p className="font-mono2026 mb-4 flex items-center justify-center gap-2 text-xs uppercase tracking-[0.15em] text-h2026-muted">
+        <p className="font-mono26 mb-4 flex items-center justify-center gap-2 text-xs uppercase tracking-[0.15em] text-h2026-muted">
           <Library size={16} />
           Resources
         </p>

@@ -22,7 +22,7 @@ export function ResourceCard({ category, description, href, icon: Icon, title }:
       </div>
 
       <div className="flex flex-col gap-2">
-        <span className="font-mono2026 text-[0.65rem] uppercase tracking-[0.18em] text-h2026-muted">{category}</span>
+        <span className="font-mono26 text-[0.65rem] uppercase tracking-[0.18em] text-h2026-muted">{category}</span>
         <h3 className="font-serif2026 text-[1.15rem] font-normal leading-snug tracking-tight md:text-[1.25rem]">
           {title}
         </h3>

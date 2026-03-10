@@ -16,7 +16,7 @@ export function Highlights() {
           style={{ boxShadow: '0 4px 40px -8px rgba(26,107,74,0.12), 0 0 0 1px rgba(26,107,74,0.04)' }}
         >
           <ScrollReveal className="mb-8 md:mb-12">
-            <p className="flex gap-2 items-center text-xs uppercase tracking-[0.15em] font-mono2026 text-h2026-muted">
+            <p className="flex gap-2 items-center text-xs uppercase tracking-[0.15em] font-mono26 text-h2026-muted">
               <Rss className="text-h2026-green" size={16} />
               Highlights
             </p>

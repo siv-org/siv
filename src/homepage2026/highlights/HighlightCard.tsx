@@ -15,7 +15,7 @@ export function HighlightCard({ body, href, items, quotes, tag, title }: Highlig
   const content = (
     <>
       <div className="flex flex-col gap-1.5">
-        <span className="font-mono2026 text-[0.6rem] uppercase tracking-[0.2em] text-h2026-green">{tag}</span>
+        <span className="font-mono26 text-[0.6rem] uppercase tracking-[0.2em] text-h2026-green">{tag}</span>
         <h3 className="font-serif2026 text-[0.98rem] font-normal leading-[1.35] tracking-tight text-h2026-text">
           {title}
         </h3>

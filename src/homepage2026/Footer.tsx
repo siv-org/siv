@@ -52,7 +52,7 @@ export function Footer() {
           <div className="flex flex-wrap gap-12 md:gap-16">
             {COLUMNS.map(({ group, links }) => (
               <div key={group}>
-                <p className="mb-3 font-mono2026 text-[0.65rem] uppercase tracking-[0.2em] text-h2026-muted">{group}</p>
+                <p className="mb-3 font-mono26 text-[0.65rem] uppercase tracking-[0.2em] text-h2026-muted">{group}</p>
                 <ul className="grid gap-2 pl-0 list-none">
                   {links.map(({ text, url }) => (
                     <li key={text}>

@@ -10,7 +10,7 @@ export function HowItWorks() {
         <ScrollReveal>
           <div className="rounded-[28px] bg-h2026-green/[0.06] px-8 py-14 md:px-14 md:py-20 text-center shadow-[0_0_0_1px_rgba(0,0,0,0.03)]">
             {/* Tag label */}
-            <p className="font-mono2026 mb-4 flex items-center justify-center gap-2 text-xs uppercase tracking-[0.15em] text-h2026-muted">
+            <p className="font-mono26 mb-4 flex items-center justify-center gap-2 text-xs uppercase tracking-[0.15em] text-h2026-muted">
               <Library size={16} />
               Resources
             </p>

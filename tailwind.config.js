@@ -30,7 +30,7 @@ module.exports = {
         },
       },
       fontFamily: {
-        mono2026: ['var(--font-jetbrains-mono)', 'monospace'],
+        mono26: ['var(--font-jetbrains-mono)', 'monospace'],
         serif2026: ['var(--font-libre-baskerville)', 'Georgia', 'serif'],
       },
       keyframes: {
