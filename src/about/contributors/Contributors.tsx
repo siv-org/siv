@@ -1,7 +1,7 @@
 import { ScrollReveal } from '../../homepage2026/ScrollReveal'
 import { ContributorRow } from './ContributorRow'
 
-const STAGGER_DELAY = 0.08
+const STAGGER_DELAY = 0.05
 
 const contributors = [
   {
