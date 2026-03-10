@@ -14,7 +14,7 @@ export const HIGHLIGHTS: Highlight[] = [
   {
     description: 'For each paper voter, 50x voted digitally.',
     href: 'https://blog.siv.org/2025/12/11chooses',
-    tag: 'Latest • December 2026',
+    tag: 'Latest • December 2025',
     title: 'Multiple historic firsts, including the biggest digital election in US history',
   },
   {
