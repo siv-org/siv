@@ -96,7 +96,7 @@ export function CompareModal({ closeModal, goLeft, goRight, modalContent, opened
               Next →
             </button>
           </div>
-          <span>Use arrow keys to move across cells</span>
+          <span className="hidden md:inline">Use arrow keys to move across cells</span>
         </div>
       </div>
     </div>
