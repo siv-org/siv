@@ -3,11 +3,11 @@ import Link from 'next/link'
 
 import logo from '../homepage/logo.png'
 
-const NAV_LINKS: { cta?: boolean; href: string; label: string }[] = [
-  { href: '/about', label: 'About' },
-  { href: 'https://blog.siv.org', label: 'News' },
-  { href: '/resources', label: 'How\u00A0It\u00A0Works' },
-  { cta: true, href: '/admin', label: 'Login' },
+const NAV_LINKS: { cta?: boolean; text: string; url: string }[] = [
+  { text: 'About', url: '/about' },
+  { text: 'News', url: 'https://blog.siv.org' },
+  { text: 'How\u00A0It\u00A0Works', url: '/resources' },
+  { cta: true, text: 'Login', url: '/admin' },
 ]
 
 export const logoRatio = 50 / 23
@@ -22,24 +22,24 @@ export function Nav() {
       </Link>
 
       <div className="flex gap-4 items-center sm:gap-7">
-        {NAV_LINKS.map(({ cta, href, label }) =>
+        {NAV_LINKS.map(({ cta, text, url }) =>
           !cta ? (
             // Nav links
             <Link
               className="text-[0.82rem] font-normal text-h2026-textSecondary no-underline transition-colors hover:text-h2026-text"
-              {...{ href }}
-              key={label}
+              href={url}
+              key={text}
             >
-              {label}
+              {text}
             </Link>
           ) : (
             // Login button
             <Link
               className="rounded-full bg-h2026-green px-5 py-2 text-sm font-medium text-white no-underline transition-all duration-200 hover:scale-[1.03] hover:bg-h2026-greenHover"
-              {...{ href }}
-              key={label}
+              href={url}
+              key={text}
             >
-              {label}
+              {text}
             </Link>
           ),
         )}
