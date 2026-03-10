@@ -5,10 +5,6 @@ module.exports = {
   plugins: [],
   theme: {
     extend: {
-      animation: {
-        'orb-1': 'orbFloat 30s ease-in-out infinite alternate',
-        'orb-2': 'orbFloat 25s ease-in-out infinite alternate-reverse',
-      },
       borderRadius: {
         h2026: '14px',
         'h2026-lg': '20px',
@@ -45,10 +41,6 @@ module.exports = {
         fadeInUp: {
           from: { opacity: '0', transform: 'translateY(16px)' },
           to: { opacity: '1', transform: 'translateY(0)' },
-        },
-        orbFloat: {
-          '0%': { transform: 'translate(0, 0)' },
-          '100%': { transform: 'translate(40px, -30px)' },
         },
       },
     },

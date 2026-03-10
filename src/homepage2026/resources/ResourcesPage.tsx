@@ -18,7 +18,7 @@ export function ResourcesPage() {
       {/* Ambient orbs */}
       <>
         <div
-          className="pointer-events-none fixed z-0 h-[600px] w-[600px] rounded-full opacity-45 blur-[120px] animate-orb-1"
+          className="pointer-events-none fixed z-0 h-[600px] w-[600px] rounded-full opacity-45 blur-[120px]"
           style={{
             background: 'radial-gradient(circle, rgba(37,99,235,0.15), transparent 70%)',
             right: -100,
@@ -26,7 +26,7 @@ export function ResourcesPage() {
           }}
         />
         <div
-          className="pointer-events-none fixed z-0 h-[500px] w-[500px] rounded-full opacity-45 blur-[120px] animate-orb-2"
+          className="pointer-events-none fixed z-0 h-[500px] w-[500px] rounded-full opacity-45 blur-[120px]"
           style={{
             background: 'radial-gradient(circle, rgba(251,191,36,0.4), transparent 70%)',
             bottom: '5%',
