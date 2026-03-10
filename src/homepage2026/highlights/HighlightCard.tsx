@@ -3,10 +3,12 @@ import { ArrowUpRight, Check } from 'lucide-react'
 import type { Highlight } from './highlights-data'
 
 const cardClassName = [
-  'group flex flex-col rounded-[18px] border border-white/80 p-6 md:p-7',
-  'bg-white/95 shadow-[0_2px_12px_-4px_rgba(0,0,0,0.06)] backdrop-blur-sm',
+  'group flex flex-col rounded-[18px] p-6 md:p-7',
+  'bg-white/60 shadow-[0_2px_12px_-4px_rgba(0,0,0,0.06)]',
+  'border border-white/70 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.5)]',
+  'backdrop-blur-md',
   'transition-all duration-300 ease-out',
-  'hover:-translate-y-0.5 hover:shadow-[0_12px_32px_-8px_rgba(0,0,0,0.08)] hover:border-white',
+  'hover:-translate-y-0.5 hover:shadow-[0_12px_32px_-8px_rgba(0,0,0,0.08),inset_0_1px_0_0_rgba(255,255,255,0.6)] hover:border-white/90 hover:bg-white/70',
 ].join(' ')
 
 export function HighlightCard({
