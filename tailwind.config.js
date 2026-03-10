@@ -13,7 +13,6 @@ module.exports = {
       colors: {
         h26: {
           bg: '#fafaf9',
-          bgCard: '#ffffff',
           blue: '#1e3a5f',
           border: 'rgba(0,0,0,0.06)',
           borderStrong: 'rgba(0,0,0,0.1)',
