@@ -27,7 +27,7 @@ export const AboutPage = (): JSX.Element => {
         <div
           className="pointer-events-none fixed z-0 h-[500px] w-[500px] rounded-full opacity-45 blur-[120px]"
           style={{
-            background: 'radial-gradient(circle, rgba(251,191,36,0.4), transparent 70%)',
+            background: 'radial-gradient(circle, rgba(251,191,36,0.3), transparent 70%)',
             bottom: '5%',
             left: -150,
           }}
