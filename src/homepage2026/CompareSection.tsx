@@ -421,7 +421,7 @@ type SwitchProps = {
 export function CompareSection() {
   const [bountyEnabled, toggleBounty] = useReducer((t: boolean) => !t, true)
   const [isDescriptionShown, toggleDescription] = useReducer((t: boolean) => !t, true)
-  const [isCollapsed, toggleCollapsed] = useReducer((t: boolean) => !t, false)
+  const [isCollapsed, toggleCollapsed] = useReducer((t: boolean) => !t, true)
   const [openedModalIndex, setOpenedModalIndex] = useState<OpenedModalIndex>(null)
 
   function getModalContent(index: OpenedModalIndex) {
