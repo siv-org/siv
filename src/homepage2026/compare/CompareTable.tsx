@@ -9,10 +9,17 @@ type Props = {
   isDescriptionShown: boolean
   openedModalIndex: OpenedModalIndex
   setOpenedModalIndex: (index: OpenedModalIndex) => void
+  toggleCollapsed: () => void
   toggleDescription: () => void
 }
 
-export function CompareTable({ isDescriptionShown, openedModalIndex, setOpenedModalIndex, toggleDescription }: Props) {
+export function CompareTable({
+  isDescriptionShown,
+  openedModalIndex,
+  setOpenedModalIndex,
+  toggleCollapsed,
+  toggleDescription,
+}: Props) {
   return (
     <div className="mt-5">
       <div className="flex flex-col items-start gap-2 text-[0.8rem] text-h2026-textSecondary">
@@ -58,9 +65,7 @@ export function CompareTable({ isDescriptionShown, openedModalIndex, setOpenedMo
                           'ring-2 ring-h2026-green/80'
                         }`}
                         onClick={() => setOpenedModalIndex([cIndex, rIndex, colIndex])}
-                        style={{
-                          backgroundColor: interpolateColor(getScore(score)),
-                        }}
+                        style={{ backgroundColor: interpolateColor(getScore(score)) }}
                         type="button"
                       >
                         {getScore(score)}
@@ -124,9 +129,7 @@ export function CompareTable({ isDescriptionShown, openedModalIndex, setOpenedMo
                             'ring-2 ring-h2026-green/80'
                           } ${isDescriptionShown ? 'h-10 sm:h-12' : 'h-8 sm:h-9'}`}
                           onClick={() => setOpenedModalIndex([cIndex, rIndex, colIndex])}
-                          style={{
-                            backgroundColor: interpolateColor(getScore(score)),
-                          }}
+                          style={{ backgroundColor: interpolateColor(getScore(score)) }}
                           type="button"
                         >
                           {getScore(score)}
@@ -139,6 +142,22 @@ export function CompareTable({ isDescriptionShown, openedModalIndex, setOpenedMo
             ))}
           </tbody>
         </table>
+      </div>
+
+      {/* Hide table button */}
+      <div className="mt-6">
+        <button
+          className="flex w-full items-center justify-center rounded-2xl border border-h2026-border bg-white/70 py-1 text-[0.82rem] font-medium text-h2026-text shadow-sm transition-colors hover:border-h2026-green/70"
+          onClick={toggleCollapsed}
+          type="button"
+        >
+          <span>Hide table</span>
+
+          {/* Up arrow icon */}
+          <span className="ml-3 inline-flex h-6 w-6 items-center justify-center rounded-full bg-h2026-bg text-[0.9rem] text-h2026-muted">
+            <span className="inline-block rotate-90 translate-y-[1px] transition-transform">‹</span>
+          </span>
+        </button>
       </div>
     </div>
   )

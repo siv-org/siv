@@ -158,10 +158,7 @@ export function CompareSection() {
 
               {!isCollapsed && (
                 <CompareTable
-                  isDescriptionShown={isDescriptionShown}
-                  openedModalIndex={openedModalIndex}
-                  setOpenedModalIndex={setOpenedModalIndex}
-                  toggleDescription={toggleDescription}
+                  {...{ isDescriptionShown, openedModalIndex, setOpenedModalIndex, toggleCollapsed, toggleDescription }}
                 />
               )}
             </div>
