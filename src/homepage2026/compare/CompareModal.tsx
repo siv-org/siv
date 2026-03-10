@@ -24,12 +24,12 @@ export function CompareModal({ closeModal, goLeft, goRight, modalContent, opened
       onClick={closeModal}
     >
       <div
-        className="relative max-h-[80vh] w-full max-w-[640px] overflow-y-auto rounded-2xl border border-white/10 bg-h2026-bg px-6 py-6 text-left shadow-[0_24px_80px_rgba(15,23,42,0.65)] md:px-8 md:py-7"
+        className="relative max-h-[80vh] w-full max-w-[640px] overflow-y-auto rounded-2xl border border-white/10 bg-h26-bg px-6 py-6 text-left shadow-[0_24px_80px_rgba(15,23,42,0.65)] md:px-8 md:py-7"
         onClick={(e) => e.stopPropagation()}
       >
         <button
           aria-label="Close comparison details"
-          className="flex absolute top-4 right-4 justify-center items-center rounded-full transition-colors size-10 text-h2026-muted hover:bg-white/5 hover:text-h2026-text"
+          className="flex absolute top-4 right-4 justify-center items-center rounded-full transition-colors size-10 text-h26-muted hover:bg-white/5 hover:text-h26-text"
           onClick={closeModal}
           type="button"
         >
@@ -41,14 +41,14 @@ export function CompareModal({ closeModal, goLeft, goRight, modalContent, opened
 
         <div className="flex gap-3 justify-between items-center pr-7">
           <div className="space-y-1">
-            <p className="font-mono26 text-[0.7rem] uppercase tracking-[0.18em] text-h2026-muted">Explanation</p>
-            <h3 className="font-serif26 text-[1.1rem] font-normal leading-[1.4] tracking-tight text-h2026-text">
+            <p className="font-mono26 text-[0.7rem] uppercase tracking-[0.18em] text-h26-muted">Explanation</p>
+            <h3 className="font-serif26 text-[1.1rem] font-normal leading-[1.4] tracking-tight text-h26-text">
               {modalContent.title}
             </h3>
           </div>
         </div>
 
-        <div className="mt-5 text-[0.85rem] leading-[1.7] text-h2026-textSecondary">
+        <div className="mt-5 text-[0.85rem] leading-[1.7] text-h26-textSecondary">
           {[
             {
               icon: '+',
@@ -87,17 +87,17 @@ export function CompareModal({ closeModal, goLeft, goRight, modalContent, opened
           ))}
         </div>
 
-        <div className="mt-6 flex items-center justify-center md:justify-between gap-3 text-[0.78rem] text-h2026-muted">
+        <div className="mt-6 flex items-center justify-center md:justify-between gap-3 text-[0.78rem] text-h26-muted">
           <div className="flex gap-3">
             <button
-              className="rounded-full border border-h2026-border bg-white/5 px-3 py-1.5 text-[0.76rem] font-medium text-h2026-textSecondary shadow-sm transition-colors hover:border-h2026-green/70 hover:text-h2026-text"
+              className="rounded-full border border-h26-border bg-white/5 px-3 py-1.5 text-[0.76rem] font-medium text-h26-textSecondary shadow-sm transition-colors hover:border-h26-green/70 hover:text-h26-text"
               onClick={goLeft}
               type="button"
             >
               ← Previous
             </button>
             <button
-              className="rounded-full border border-h2026-border bg-white/5 px-3 py-1.5 text-[0.76rem] font-medium text-h2026-textSecondary shadow-sm transition-colors hover:border-h2026-green/70 hover:text-h2026-text"
+              className="rounded-full border border-h26-border bg-white/5 px-3 py-1.5 text-[0.76rem] font-medium text-h26-textSecondary shadow-sm transition-colors hover:border-h26-green/70 hover:text-h26-text"
               onClick={goRight}
               type="button"
             >

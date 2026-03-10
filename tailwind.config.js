@@ -13,7 +13,7 @@ module.exports = {
         'h2026-sm': '0 1px 3px rgba(0,0,0,0.04)',
       },
       colors: {
-        h2026: {
+        h26: {
           bg: '#fafaf9',
           bgCard: '#ffffff',
           bgWarm: '#f5f4f0',

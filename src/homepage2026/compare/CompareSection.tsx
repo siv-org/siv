@@ -134,15 +134,15 @@ export function CompareSection() {
         <ScrollReveal>
           <div className="rounded-[28px] border border-white/70 bg-white/60 px-4 py-7 shadow-[0_16px_40px_rgba(15,23,42,0.10)] backdrop-blur-md sm:px-6 sm:py-9 md:px-10 md:py-12">
             <div>
-              <p className="font-mono26 mb-3 text-[0.7rem] uppercase tracking-[0.18em] text-h2026-muted">Compare</p>
+              <p className="font-mono26 mb-3 text-[0.7rem] uppercase tracking-[0.18em] text-h26-muted">Compare</p>
               <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
                 <h2
-                  className="font-serif26 text-[clamp(1.35rem,3vw,2rem)] font-normal leading-[1.2] tracking-tight text-h2026-text"
+                  className="font-serif26 text-[clamp(1.35rem,3vw,2rem)] font-normal leading-[1.2] tracking-tight text-h26-text"
                   id="compare-heading"
                 >
                   How SIV compares to mail <br className="hidden md:block" />& in-person voting
                 </h2>
-                <p className="mt-1 sm:max-w-[340px] text-[0.86rem] leading-[1.7] text-h2026-textSecondary md:mt-0 md:text-right">
+                <p className="mt-1 sm:max-w-[340px] text-[0.86rem] leading-[1.7] text-h26-textSecondary md:mt-0 md:text-right">
                   Explore how it compares to these methods to understand where the protocol stands.
                 </p>
               </div>
@@ -151,12 +151,12 @@ export function CompareSection() {
             <div className="mt-6">
               <button
                 aria-expanded={!isCollapsed}
-                className="flex w-full items-center justify-between rounded-2xl border border-h2026-border bg-white/70 px-4 py-3 text-[0.82rem] font-medium text-h2026-text shadow-sm transition-colors hover:border-h2026-green/70"
+                className="flex w-full items-center justify-between rounded-2xl border border-h26-border bg-white/70 px-4 py-3 text-[0.82rem] font-medium text-h26-text shadow-sm transition-colors hover:border-h26-green/70"
                 onClick={toggleCollapsed}
                 type="button"
               >
                 <span>{isCollapsed ? 'Show detailed comparison table' : 'Hide detailed comparison table'}</span>
-                <span className="ml-3 inline-flex h-6 w-6 items-center justify-center rounded-full bg-h2026-bg text-[0.9rem] text-h2026-muted">
+                <span className="ml-3 inline-flex h-6 w-6 items-center justify-center rounded-full bg-h26-bg text-[0.9rem] text-h26-muted">
                   <span
                     className={`inline-block transition-transform ${
                       isCollapsed ? 'rotate-0 translate-y-[1px]' : 'rotate-90 translate-y-[1px]'

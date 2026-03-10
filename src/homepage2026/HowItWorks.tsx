@@ -8,9 +8,9 @@ export function HowItWorks() {
     <section aria-labelledby="how-it-works-heading" className="px-7 py-16 md:py-24" id="how-it-works">
       <div className="mx-auto max-w-[1060px]">
         <ScrollReveal>
-          <div className="rounded-[28px] bg-h2026-green/[0.06] px-8 py-14 md:px-14 md:py-20 text-center shadow-[0_0_0_1px_rgba(0,0,0,0.03)]">
+          <div className="rounded-[28px] bg-h26-green/[0.06] px-8 py-14 md:px-14 md:py-20 text-center shadow-[0_0_0_1px_rgba(0,0,0,0.03)]">
             {/* Tag label */}
-            <p className="font-mono26 mb-4 flex items-center justify-center gap-2 text-xs uppercase tracking-[0.15em] text-h2026-muted">
+            <p className="font-mono26 mb-4 flex items-center justify-center gap-2 text-xs uppercase tracking-[0.15em] text-h26-muted">
               <Library size={16} />
               Resources
             </p>
@@ -24,14 +24,14 @@ export function HowItWorks() {
             </h2>
 
             {/* Description */}
-            <p className="mx-auto mt-4 max-w-[520px] text-[0.88rem] leading-[1.7] text-h2026-textSecondary">
+            <p className="mx-auto mt-4 max-w-[520px] text-[0.88rem] leading-[1.7] text-h26-textSecondary">
               From high-level illustrations to formal specifications — everything you need to understand the SIV
               protocol.
             </p>
 
             {/* Button */}
             <Link
-              className="mt-8 inline-flex items-center justify-center gap-2 rounded-full border border-h2026-green/30 bg-h2026-green/[0.06] px-6 py-3 text-[0.88rem] font-medium text-h2026-green no-underline shadow-sm transition-colors hover:border-h2026-green/70 hover:bg-h2026-green/[0.11]"
+              className="mt-8 inline-flex items-center justify-center gap-2 rounded-full border border-h26-green/30 bg-h26-green/[0.06] px-6 py-3 text-[0.88rem] font-medium text-h26-green no-underline shadow-sm transition-colors hover:border-h26-green/70 hover:bg-h26-green/[0.11]"
               href="/resources"
             >
               View resources

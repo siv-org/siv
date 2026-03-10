@@ -26,15 +26,15 @@ export function Properties() {
         {PROPERTIES.map(({ description, word }, i) => (
           <ScrollReveal className="flex flex-col items-center text-center md:px-10" delay={i * 0.12} key={word}>
             {/* Name */}
-            <span className="font-serif26 text-[clamp(2rem,4vw,2.8rem)] font-normal tracking-tight text-h2026-text">
+            <span className="font-serif26 text-[clamp(2rem,4vw,2.8rem)] font-normal tracking-tight text-h26-text">
               {word}
             </span>
 
             {/* Short divider */}
-            <div className="mt-3 w-8 h-px bg-h2026-green/30" />
+            <div className="mt-3 w-8 h-px bg-h26-green/30" />
 
             {/* Description */}
-            <div className="whitespace-pre-wrap mt-4 max-w-[280px] text-[1rem] leading-[1.7] text-h2026-textSecondary">
+            <div className="whitespace-pre-wrap mt-4 max-w-[280px] text-[1rem] leading-[1.7] text-h26-textSecondary">
               <Markdown
                 components={{
                   a: ({ children, href, ...props }) => (

@@ -10,7 +10,7 @@ import { RESOURCES } from './resources-data'
 
 export function ResourcesPage() {
   return (
-    <div className={`overflow-x-hidden min-h-screen antialiased bg-h2026-bg text-h2026-text ${h26fonts}`}>
+    <div className={`overflow-x-hidden min-h-screen antialiased bg-h26-bg text-h26-text ${h26fonts}`}>
       <Head title="Learn How SIV Works" />
 
       <Nav />
@@ -37,14 +37,14 @@ export function ResourcesPage() {
 
       {/* Header */}
       <section className="px-7 pt-[120px] pb-10 text-center md:pt-[150px] md:pb-14 mx-auto max-w-[1060px] animate-[fadeInUp_0.8s_ease_both]">
-        <p className="font-mono26 mb-4 flex items-center justify-center gap-2 text-xs uppercase tracking-[0.15em] text-h2026-muted">
+        <p className="font-mono26 mb-4 flex items-center justify-center gap-2 text-xs uppercase tracking-[0.15em] text-h26-muted">
           <Library size={16} />
           Resources
         </p>
         <h1 className="font-serif26 text-[clamp(2rem,5vw,3.5rem)] font-normal leading-[1.25] tracking-tight">
           Learn How SIV Works
         </h1>
-        <p className="mx-auto mt-4 max-w-[520px] text-[0.88rem] leading-[1.7] text-h2026-textSecondary animate-[fadeInUp_0.8s_0.15s_ease_both]">
+        <p className="mx-auto mt-4 max-w-[520px] text-[0.88rem] leading-[1.7] text-h26-textSecondary animate-[fadeInUp_0.8s_0.15s_ease_both]">
           From high-level illustrations to formal specifications — everything you need to understand secure internet
           voting.
         </p>
@@ -62,7 +62,7 @@ export function ResourcesPage() {
       {/* Back to home */}
       <section className="px-7 pb-16 text-center">
         <Link
-          className="inline-flex items-center gap-2 text-[0.82rem] text-h2026-muted no-underline transition-colors hover:text-h2026-text"
+          className="inline-flex items-center gap-2 text-[0.82rem] text-h26-muted no-underline transition-colors hover:text-h26-text"
           href="/"
         >
           <span>←</span>
