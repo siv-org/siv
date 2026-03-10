@@ -112,6 +112,17 @@ export function CompareSection() {
     [openedModalIndex, goDown, goLeft, goRight, goUp],
   )
 
+  const collapseFromBottom = useCallback(() => {
+    toggleCollapsed()
+    const $compare = document.getElementById('compare')
+    if (!$compare) return
+
+    window.scrollTo({
+      behavior: 'smooth',
+      top: window.scrollY + $compare.getBoundingClientRect().top - 40,
+    })
+  }, [])
+
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
@@ -167,7 +178,7 @@ export function CompareSection() {
                     isDescriptionShown,
                     openedModalIndex,
                     setOpenedModalIndex,
-                    toggleCollapsed,
+                    toggleCollapsed: collapseFromBottom,
                     toggleDescription,
                   }}
                 />
