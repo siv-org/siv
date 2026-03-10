@@ -4,7 +4,7 @@ import { TailwindPreflight } from 'src/TailwindPreflight'
 
 import { ClosingCta } from './ClosingCta'
 import { CompareSection } from './compare/CompareSection'
-import { homepage2026FontClass } from './fonts'
+import { h26fonts } from './fonts'
 import { Footer } from './Footer'
 import { Hero } from './Hero'
 import { Highlights } from './highlights/Highlights'
@@ -22,7 +22,7 @@ export function Homepage2026() {
   }, [])
 
   return (
-    <div className={`overflow-x-hidden min-h-screen antialiased bg-h2026-bg text-h2026-text ${homepage2026FontClass}`}>
+    <div className={`overflow-x-hidden min-h-screen antialiased bg-h2026-bg text-h2026-text ${h26fonts}`}>
       <Head title="Digital Democracy" />
       <div className="relative z-10">
         <Nav />

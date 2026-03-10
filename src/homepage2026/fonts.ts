@@ -17,4 +17,4 @@ const jetbrainsMono = JetBrains_Mono({
   weight: ['400'],
 })
 
-export const homepage2026FontClass = [libreBaskerville.variable, jetbrainsMono.variable, inter.className].join(' ')
+export const h26fonts = [libreBaskerville.variable, jetbrainsMono.variable, inter.className].join(' ')

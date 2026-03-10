@@ -2,7 +2,7 @@ import { Library } from 'lucide-react'
 import Link from 'next/link'
 import { Head } from 'src/Head'
 
-import { homepage2026FontClass } from '../fonts'
+import { h26fonts } from '../fonts'
 import { Footer } from '../Footer'
 import { Nav } from '../Nav'
 import { ResourceCard } from './ResourceCard'
@@ -10,7 +10,7 @@ import { RESOURCES } from './resources-data'
 
 export function ResourcesPage() {
   return (
-    <div className={`overflow-x-hidden min-h-screen antialiased bg-h2026-bg text-h2026-text ${homepage2026FontClass}`}>
+    <div className={`overflow-x-hidden min-h-screen antialiased bg-h2026-bg text-h2026-text ${h26fonts}`}>
       <Head title="Learn How SIV Works" />
 
       <Nav />
