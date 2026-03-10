@@ -104,9 +104,7 @@ export function CompareTable({ isDescriptionShown, openedModalIndex, setOpenedMo
                 </tr>
                 {cat.rows.map((row, rIndex) => (
                   <tr
-                    className={`border-b border-h2026-border/25 hover:bg-h2026-bg/40 ${
-                      isDescriptionShown ? 'align-top' : 'align-middle'
-                    }`}
+                    className={`border-b border-h2026-border/5 ${isDescriptionShown ? 'align-top' : 'align-middle'}`}
                     key={row.d_name}
                   >
                     <td className="py-3 pr-3 min-w-0 sm:py-4 sm:pr-6">
