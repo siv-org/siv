@@ -525,7 +525,7 @@ export function CompareSection() {
                 How SIV compares to mail
                 <br />& in-person voting
               </h2>
-              <p className="mt-1 max-w-[540px] text-[0.86rem] leading-[1.7] text-h2026-textSecondary md:mt-0 md:text-right">
+              <p className="mt-1 max-w-[440px] text-[0.86rem] leading-[1.7] text-h2026-textSecondary md:mt-0 md:text-right">
                 Explore how it compares with these methods to understand where the protocol stands. SIV is designed as
                 an additional voting method, meant to work alongside mail and in-person voting.
               </p>
