@@ -13,7 +13,7 @@ export function ResourceCard({ category, description, href, icon: Icon, title }:
       target="_blank"
     >
       <div className="flex gap-4 justify-between items-start">
-        <div className="flex justify-center items-center w-11 h-11 transition-colors duration-300 shrink-0 rounded-[14px] bg-h26-bgWarm text-h26-textSecondary group-hover:bg-h26-green/10 group-hover:text-h26-green">
+        <div className="flex justify-center items-center w-11 h-11 transition-colors duration-300 shrink-0 rounded-[14px] bg-[#f5f4f0] text-h26-textSecondary group-hover:bg-h26-green/10 group-hover:text-h26-green">
           <Icon size={20} strokeWidth={1.5} />
         </div>
         <span className="translate-y-0.5 text-h26-muted opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">

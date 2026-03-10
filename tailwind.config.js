@@ -14,7 +14,6 @@ module.exports = {
         h26: {
           bg: '#fafaf9',
           bgCard: '#ffffff',
-          bgWarm: '#f5f4f0',
           blue: '#1e3a5f',
           border: 'rgba(0,0,0,0.06)',
           borderStrong: 'rgba(0,0,0,0.1)',
