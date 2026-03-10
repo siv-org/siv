@@ -15,7 +15,6 @@ module.exports = {
           bg: '#fafaf9',
           blue: '#1e3a5f',
           border: 'rgba(0,0,0,0.06)',
-          borderStrong: 'rgba(0,0,0,0.1)',
           green: '#1a6b4a',
           greenHover: '#155a3e',
           muted: '#999999',
