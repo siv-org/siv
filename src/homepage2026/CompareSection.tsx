@@ -421,6 +421,7 @@ type SwitchProps = {
 export function CompareSection() {
   const [bountyEnabled, toggleBounty] = useReducer((t: boolean) => !t, true)
   const [isDescriptionShown, toggleDescription] = useReducer((t: boolean) => !t, true)
+  const [isCollapsed, toggleCollapsed] = useReducer((t: boolean) => !t, false)
   const [openedModalIndex, setOpenedModalIndex] = useState<OpenedModalIndex>(null)
 
   function getModalContent(index: OpenedModalIndex) {
@@ -514,112 +515,137 @@ export function CompareSection() {
     <section aria-labelledby="compare-heading" className="px-7 py-16 md:py-24" id="compare">
       <div className="mx-auto max-w-[1060px]">
         <div className="rounded-[28px] border border-white/70 bg-white/60 px-6 py-9 shadow-[0_16px_40px_rgba(15,23,42,0.10)] backdrop-blur-md md:px-10 md:py-12">
-          <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-            <div>
-              <p className="font-mono2026 mb-3 text-[0.7rem] uppercase tracking-[0.18em] text-h2026-muted">Compare</p>
+          <div>
+            <p className="font-mono2026 mb-3 text-[0.7rem] uppercase tracking-[0.18em] text-h2026-muted">Compare</p>
+            <div className="flex flex-col gap-3 md:flex-row md:items-baseline md:justify-between">
               <h2
                 className="font-serif2026 text-[clamp(1.35rem,3vw,2rem)] font-normal leading-[1.2] tracking-tight text-h2026-text"
                 id="compare-heading"
               >
                 How SIV compares to mail and in-person voting
               </h2>
-              <p className="mt-3 max-w-[540px] text-[0.86rem] leading-[1.7] text-h2026-textSecondary">
+              <p className="mt-1 max-w-[540px] text-[0.86rem] leading-[1.7] text-h2026-textSecondary md:mt-0 md:text-right">
                 Explore how SIV stacks up on accuracy, privacy, coercion-resistance, voter experience, and costs. Click
                 any score to see the reasoning behind it.
               </p>
             </div>
-            <div className="flex flex-col items-start gap-2 text-[0.8rem] text-h2026-textSecondary">
-              <button
-                className="inline-flex items-center gap-2 rounded-full border border-h2026-border bg-white/70 px-3 py-1 text-[0.78rem] font-medium shadow-sm transition-colors hover:border-h2026-green/70"
-                onClick={toggleDescription}
-                type="button"
-              >
-                <span
-                  className={`inline-block h-3 w-3 rounded-full border ${
-                    isDescriptionShown ? 'border-h2026-green bg-h2026-green/80' : 'bg-white border-h2026-border'
-                  }`}
-                />
-                Show descriptions
-              </button>
-              <span className="text-[0.75rem] text-h2026-muted">
-                Click a cell for a detailed explanation. Use arrow keys to move around.
-              </span>
-            </div>
           </div>
 
-          <div className="overflow-x-auto mt-8">
-            <table className="w-full border-collapse text-[0.8rem]">
-              <thead className="sticky top-0 z-10 hidden bg-white/80 text-left text-[0.75rem] text-h2026-muted backdrop-blur md:table-header-group">
-                <tr>
-                  <th className="min-w-[160px] py-2 pr-4 font-normal" />
-                  {methods.map((method) => (
-                    <th className="w-[14%] py-2 text-center font-normal" key={method}>
-                      {method}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {tableData.map((cat, cIndex) => (
-                  <Fragment key={cat.name}>
-                    <tr>
-                      <td className={cIndex === 0 ? 'pt-4' : 'pt-10'} colSpan={4}>
-                        <div className="inline-flex rounded-full bg-h2026-green/[0.08] px-3 py-1 text-[0.78rem] font-medium text-h2026-green">
-                          {cat.name}
-                        </div>
-                      </td>
-                    </tr>
-                    {cat.rows.map((row, rIndex) => (
-                      <tr
-                        className={`border-b border-h2026-border/50 md:hover:bg-h2026-bg/40 ${
-                          isDescriptionShown ? 'align-top' : 'align-middle'
-                        }`}
-                        key={row.d_name}
-                      >
-                        <td className="py-4 pr-6">
-                          <div className="text-[0.9rem] font-medium text-h2026-text">
-                            {row.d_name}
-                            {row.d_name === 'Coercion resistance' && (
-                              <span className="inline-block ml-2 align-middle">
-                                <BountyRewardsSwitch bountyEnabled={bountyEnabled} toggleBounty={toggleBounty} />
-                              </span>
-                            )}
-                          </div>
-                          {isDescriptionShown && (
-                            <p className="mt-2 max-w-[360px] text-[0.78rem] leading-[1.6] text-h2026-textSecondary">
-                              {row.desc}
-                            </p>
-                          )}
-                        </td>
-                        {[...(bountyEnabled && row.scores_with_bounty ? row.scores_with_bounty : row.scores)].map(
-                          (score, colIndex) => (
-                            <td className="w-[22%] py-3 text-center md:w-auto" key={`${row.d_name}-${colIndex}`}>
-                              <div className="mb-2 rounded-full bg-white/70 px-2 py-1 text-[0.7rem] font-medium text-h2026-muted md:hidden">
-                                {methods[colIndex]}
-                              </div>
-                              <button
-                                className={`flex w-full items-center justify-center rounded-[10px] border border-white/60 px-2 text-[0.9rem] font-semibold text-slate-900 shadow-[0_1px_4px_rgba(15,23,42,0.16)] transition-all hover:shadow-[0_6px_18px_rgba(15,23,42,0.22)] ${
-                                  openedModalIndex &&
-                                  arraysEqual(openedModalIndex, [cIndex, rIndex, colIndex]) &&
-                                  'ring-2 ring-h2026-green/80'
-                                } ${isDescriptionShown ? 'h-12' : 'h-9'}`}
-                                onClick={() => setOpenedModalIndex([cIndex, rIndex, colIndex])}
-                                style={{
-                                  backgroundColor: interpolateColor(getScore(score)),
-                                }}
-                                type="button"
-                              >
-                                {getScore(score)}
-                              </button>
-                            </td>
-                          ),
-                        )}
+          <div className="mt-6">
+            <button
+              aria-expanded={!isCollapsed}
+              className="flex w-full items-center justify-between rounded-2xl border border-h2026-border bg-white/70 px-4 py-3 text-[0.82rem] font-medium text-h2026-text shadow-sm transition-colors hover:border-h2026-green/70"
+              onClick={toggleCollapsed}
+              type="button"
+            >
+              <span>{isCollapsed ? 'Show detailed comparison table' : 'Hide detailed comparison table'}</span>
+              <span className="ml-3 inline-flex h-6 w-6 items-center justify-center rounded-full bg-h2026-bg text-[0.9rem] text-h2026-muted">
+                <span
+                  className={`inline-block transition-transform ${
+                    isCollapsed ? 'translate-y-[1px] rotate-0' : 'translate-y-[1px] rotate-90'
+                  }`}
+                >
+                  ›
+                </span>
+              </span>
+            </button>
+
+            {!isCollapsed && (
+              <div className="mt-5">
+                <div className="flex flex-col items-start gap-2 text-[0.8rem] text-h2026-textSecondary">
+                  <button
+                    className="inline-flex items-center gap-2 rounded-full border border-h2026-border bg-white/70 px-3 py-1 text-[0.78rem] font-medium shadow-sm transition-colors hover:border-h2026-green/70"
+                    onClick={toggleDescription}
+                    type="button"
+                  >
+                    <span
+                      className={`inline-block h-3 w-3 rounded-full border ${
+                        isDescriptionShown ? 'border-h2026-green bg-h2026-green/80' : 'bg-white border-h2026-border'
+                      }`}
+                    />
+                    Show descriptions
+                  </button>
+                  <p className="max-w-[520px] text-[0.75rem] text-h2026-muted">
+                    Show descriptions. Click a cell for a detailed explanation. Use arrow keys to move around.
+                  </p>
+                </div>
+
+                <div className="overflow-x-auto mt-6">
+                  <table className="w-full border-collapse text-[0.8rem]">
+                    <thead className="sticky top-0 z-10 hidden bg-white/80 text-left text-[0.75rem] text-h2026-muted backdrop-blur md:table-header-group">
+                      <tr>
+                        <th className="min-w-[160px] py-2 pr-4 font-normal" />
+                        {methods.map((method) => (
+                          <th className="w-[14%] py-2 text-center font-normal" key={method}>
+                            {method}
+                          </th>
+                        ))}
                       </tr>
-                    ))}
-                  </Fragment>
-                ))}
-              </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                      {tableData.map((cat, cIndex) => (
+                        <Fragment key={cat.name}>
+                          <tr>
+                            <td className={cIndex === 0 ? 'pt-4' : 'pt-10'} colSpan={4}>
+                              <div className="inline-flex rounded-full bg-h2026-green/[0.08] px-3 py-1 text-[0.78rem] font-medium text-h2026-green">
+                                {cat.name}
+                              </div>
+                            </td>
+                          </tr>
+                          {cat.rows.map((row, rIndex) => (
+                            <tr
+                              className={`border-b border-h2026-border/50 md:hover:bg-h2026-bg/40 ${
+                                isDescriptionShown ? 'align-top' : 'align-middle'
+                              }`}
+                              key={row.d_name}
+                            >
+                              <td className="py-4 pr-6">
+                                <div className="text-[0.9rem] font-medium text-h2026-text">
+                                  {row.d_name}
+                                  {row.d_name === 'Coercion resistance' && (
+                                    <span className="inline-block ml-2 align-middle">
+                                      <BountyRewardsSwitch bountyEnabled={bountyEnabled} toggleBounty={toggleBounty} />
+                                    </span>
+                                  )}
+                                </div>
+                                {isDescriptionShown && (
+                                  <p className="mt-2 max-w-[360px] text-[0.78rem] leading-[1.6] text-h2026-textSecondary">
+                                    {row.desc}
+                                  </p>
+                                )}
+                              </td>
+                              {[...(bountyEnabled && row.scores_with_bounty ? row.scores_with_bounty : row.scores)].map(
+                                (score, colIndex) => (
+                                  <td className="w-[22%] py-3 text-center md:w-auto" key={`${row.d_name}-${colIndex}`}>
+                                    <div className="mb-2 rounded-full bg-white/70 px-2 py-1 text-[0.7rem] font-medium text-h2026-muted md:hidden">
+                                      {methods[colIndex]}
+                                    </div>
+                                    <button
+                                      className={`flex w-full items-center justify-center rounded-[10px] border border-white/60 px-2 text-[0.9rem] font-semibold text-slate-900 shadow-[0_1px_4px_rgba(15,23,42,0.16)] transition-all hover:shadow-[0_6px_18px_rgba(15,23,42,0.22)] ${
+                                        openedModalIndex &&
+                                        arraysEqual(openedModalIndex, [cIndex, rIndex, colIndex]) &&
+                                        'ring-2 ring-h2026-green/80'
+                                      } ${isDescriptionShown ? 'h-12' : 'h-9'}`}
+                                      onClick={() => setOpenedModalIndex([cIndex, rIndex, colIndex])}
+                                      style={{
+                                        backgroundColor: interpolateColor(getScore(score)),
+                                      }}
+                                      type="button"
+                                    >
+                                      {getScore(score)}
+                                    </button>
+                                  </td>
+                                ),
+                              )}
+                            </tr>
+                          ))}
+                        </Fragment>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
