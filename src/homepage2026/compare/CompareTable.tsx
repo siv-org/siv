@@ -42,7 +42,7 @@ export function CompareTable({ isDescriptionShown, openedModalIndex, setOpenedMo
             </div>
             {cat.rows.map((row, rIndex) => (
               // Property
-              <div className="pb-4 mb-2 border-b border-h2026-border/25" key={row.d_name}>
+              <div className="pb-4 mb-2 border-b border-h2026-border/10" key={row.d_name}>
                 {/* Property name */}
                 <div className="text-[0.85rem] font-medium text-h2026-text pt-1">{row.d_name}</div>
 
