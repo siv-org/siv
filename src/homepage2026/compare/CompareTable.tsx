@@ -1,7 +1,8 @@
 import { Fragment } from 'react'
 
-import { BountyRewardsSwitch } from './BountyRewardsSwitch'
 import type { OpenedModalIndex } from './compare-data'
+
+import { BountyRewardsSwitch } from './BountyRewardsSwitch'
 import { methods, tableData } from './compare-data'
 import { arraysEqual, getScore, interpolateColor } from './compare-utils'
 
@@ -89,8 +90,8 @@ export function CompareTable({
                     {[...(bountyEnabled && row.scores_with_bounty ? row.scores_with_bounty : row.scores)].map(
                       (score, colIndex) => (
                         <td className="w-[22%] py-3 text-center md:w-auto" key={`${row.d_name}-${colIndex}`}>
-                          <div className="mb-2 rounded-full bg-white/70 px-2 py-1 text-[0.7rem] font-medium text-h2026-muted md:hidden">
-                            {methods[colIndex]}
+                          <div className="mb-2 flex min-h-[2.5rem] items-center justify-center rounded-full bg-white/70 px-2 py-1 text-[0.7rem] font-medium text-h2026-muted md:hidden">
+                            <span className="text-center">{methods[colIndex]}</span>
                           </div>
                           <button
                             className={`flex w-full items-center justify-center rounded-[10px] border border-white/60 px-2 text-[0.9rem] font-semibold text-slate-900 shadow-[0_1px_4px_rgba(15,23,42,0.16)] transition-all hover:shadow-[0_6px_18px_rgba(15,23,42,0.22)] ${
