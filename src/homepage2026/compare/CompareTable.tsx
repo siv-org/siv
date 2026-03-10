@@ -151,7 +151,7 @@ export function CompareTable({
           onClick={toggleCollapsed}
           type="button"
         >
-          <span>Hide table</span>
+          <span className="opacity-50">Hide table</span>
 
           {/* Up arrow icon */}
           <span className="ml-3 inline-flex h-6 w-6 items-center justify-center rounded-full bg-h2026-bg text-[0.9rem] text-h2026-muted">
