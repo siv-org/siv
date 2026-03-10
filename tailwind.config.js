@@ -9,7 +9,6 @@ module.exports = {
         'h2026-cta': '0 4px 20px rgba(26,107,74,0.25)',
         'h2026-cta-hover': '0 8px 35px rgba(26,107,74,0.3)',
         'h2026-lg': '0 20px 60px rgba(0,0,0,0.08)',
-        'h2026-sm': '0 1px 3px rgba(0,0,0,0.04)',
       },
       colors: {
         h26: {
