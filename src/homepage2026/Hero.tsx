@@ -8,7 +8,7 @@ export function Hero() {
       <div className="mx-auto max-w-[920px]">
         {/* Headline block — generous single-unit spacing */}
         <div className="animate-[fadeInUp_0.9s_ease-out_both]">
-          <h1 className="font-serif2026 text-[clamp(2.5rem,6.5vw,5.2rem)] font-normal leading-[1.25] tracking-[-0.02em]">
+          <h1 className="font-serif2026 text-[clamp(2.5rem,5.5vw,4.25rem)] font-normal leading-[1.25] tracking-[-0.02em]">
             Easy, Safe, Smart
             <br />
             Digital Voting
