@@ -26,13 +26,13 @@ export function CompareModal({ closeModal, goLeft, goRight, modalContent, opened
       >
         <button
           aria-label="Close comparison details"
-          className="absolute top-4 right-4 p-1 rounded-full transition-colors text-h2026-muted hover:bg-white/5 hover:text-h2026-text"
+          className="absolute top-4 right-4 flex size-10 items-center justify-center rounded-full transition-colors text-h2026-muted hover:bg-white/5 hover:text-h2026-text"
           onClick={closeModal}
           type="button"
         >
-          <span className="block w-4 h-4">
-            <span className="absolute h-[1px] w-4 rotate-45 bg-current" />
-            <span className="absolute h-[1px] w-4 -rotate-45 bg-current" />
+          <span className="relative block size-5">
+            <span className="absolute inset-0 m-auto h-[1.5px] w-5 rotate-45 bg-current" />
+            <span className="absolute inset-0 m-auto h-[1.5px] w-5 -rotate-45 bg-current" />
           </span>
         </button>
 
