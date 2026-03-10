@@ -17,7 +17,7 @@ export function HowItWorks() {
 
             {/* Title */}
             <h2
-              className="font-serif2026 text-[clamp(1rem,5vw,2rem)] font-normal leading-[1.25] tracking-tight"
+              className="font-serif26 text-[clamp(1rem,5vw,2rem)] font-normal leading-[1.25] tracking-tight"
               id="how-it-works-heading"
             >
               Learn How SIV Works

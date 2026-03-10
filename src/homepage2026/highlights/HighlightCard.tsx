@@ -16,7 +16,7 @@ export function HighlightCard({ body, href, items, quotes, tag, title }: Highlig
     <>
       <div className="flex flex-col gap-1.5">
         <span className="font-mono26 text-[0.6rem] uppercase tracking-[0.2em] text-h2026-green">{tag}</span>
-        <h3 className="font-serif2026 text-[0.98rem] font-normal leading-[1.35] tracking-tight text-h2026-text">
+        <h3 className="font-serif26 text-[0.98rem] font-normal leading-[1.35] tracking-tight text-h2026-text">
           {title}
         </h3>
       </div>
@@ -33,7 +33,7 @@ export function HighlightCard({ body, href, items, quotes, tag, title }: Highlig
       )}
       {quotes?.map((quote) => (
         <p
-          className="mt-4 border-l-2 border-h2026-green/50 pl-4 font-serif2026 text-[0.81rem] italic leading-[1.65] text-h2026-textSecondary whitespace-pre-line"
+          className="mt-4 border-l-2 border-h2026-green/50 pl-4 font-serif26 text-[0.81rem] italic leading-[1.65] text-h2026-textSecondary whitespace-pre-line"
           key={quote}
         >
           {'\u201C'}

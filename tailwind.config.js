@@ -31,7 +31,7 @@ module.exports = {
       },
       fontFamily: {
         mono26: ['var(--font-jetbrains-mono)', 'monospace'],
-        serif2026: ['var(--font-libre-baskerville)', 'Georgia', 'serif'],
+        serif26: ['var(--font-libre-baskerville)', 'Georgia', 'serif'],
       },
       keyframes: {
         fadeInUp: {

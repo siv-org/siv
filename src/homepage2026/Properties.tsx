@@ -26,7 +26,7 @@ export function Properties() {
         {PROPERTIES.map(({ description, word }, i) => (
           <ScrollReveal className="flex flex-col items-center text-center md:px-10" delay={i * 0.12} key={word}>
             {/* Name */}
-            <span className="font-serif2026 text-[clamp(2rem,4vw,2.8rem)] font-normal tracking-tight text-h2026-text">
+            <span className="font-serif26 text-[clamp(2rem,4vw,2.8rem)] font-normal tracking-tight text-h2026-text">
               {word}
             </span>
 

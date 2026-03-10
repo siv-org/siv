@@ -42,7 +42,7 @@ export function CompareModal({ closeModal, goLeft, goRight, modalContent, opened
         <div className="flex gap-3 justify-between items-center pr-7">
           <div className="space-y-1">
             <p className="font-mono26 text-[0.7rem] uppercase tracking-[0.18em] text-h2026-muted">Explanation</p>
-            <h3 className="font-serif2026 text-[1.1rem] font-normal leading-[1.4] tracking-tight text-h2026-text">
+            <h3 className="font-serif26 text-[1.1rem] font-normal leading-[1.4] tracking-tight text-h2026-text">
               {modalContent.title}
             </h3>
           </div>

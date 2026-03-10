@@ -41,7 +41,7 @@ export function ResourcesPage() {
           <Library size={16} />
           Resources
         </p>
-        <h1 className="font-serif2026 text-[clamp(2rem,5vw,3.5rem)] font-normal leading-[1.25] tracking-tight">
+        <h1 className="font-serif26 text-[clamp(2rem,5vw,3.5rem)] font-normal leading-[1.25] tracking-tight">
           Learn How SIV Works
         </h1>
         <p className="mx-auto mt-4 max-w-[520px] text-[0.88rem] leading-[1.7] text-h2026-textSecondary animate-[fadeInUp_0.8s_0.15s_ease_both]">

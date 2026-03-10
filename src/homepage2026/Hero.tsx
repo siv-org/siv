@@ -7,7 +7,7 @@ export function Hero() {
     <section className="px-7 pt-[11rem] pb-36 text-center md:pt-[12.5rem] md:pb-44 mx-auto max-w-[920px]">
       {/* Headline & subheader */}
       <div className="animate-[fadeInUp_0.9s_ease-out_both]">
-        <h1 className="font-serif2026 text-[clamp(2.5rem,5.5vw,4.25rem)] font-normal leading-[1.25] tracking-[-0.02em]">
+        <h1 className="font-serif26 text-[clamp(2.5rem,5.5vw,4.25rem)] font-normal leading-[1.25] tracking-[-0.02em]">
           Easy, Safe, Smart
           <br />
           Digital Voting

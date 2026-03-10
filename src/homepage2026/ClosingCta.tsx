@@ -5,7 +5,7 @@ export function ClosingCta() {
   return (
     <section className="px-7 py-16 text-center md:py-24 mx-auto max-w-[600px]">
       <ScrollReveal>
-        <h2 className="font-serif2026 text-[clamp(1.5rem,3.5vw,2.2rem)] tracking-tight">
+        <h2 className="font-serif26 text-[clamp(1.5rem,3.5vw,2.2rem)] tracking-tight">
           Ready to modernize your elections?
         </h2>
 

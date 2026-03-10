@@ -137,7 +137,7 @@ export function CompareSection() {
               <p className="font-mono26 mb-3 text-[0.7rem] uppercase tracking-[0.18em] text-h2026-muted">Compare</p>
               <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
                 <h2
-                  className="font-serif2026 text-[clamp(1.35rem,3vw,2rem)] font-normal leading-[1.2] tracking-tight text-h2026-text"
+                  className="font-serif26 text-[clamp(1.35rem,3vw,2rem)] font-normal leading-[1.2] tracking-tight text-h2026-text"
                   id="compare-heading"
                 >
                   How SIV compares to mail <br className="hidden md:block" />& in-person voting
