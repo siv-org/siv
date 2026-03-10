@@ -522,11 +522,12 @@ export function CompareSection() {
                 className="font-serif2026 text-[clamp(1.35rem,3vw,2rem)] font-normal leading-[1.2] tracking-tight text-h2026-text"
                 id="compare-heading"
               >
-                How SIV compares to mail and in-person voting
+                How SIV compares to mail
+                <br />& in-person voting
               </h2>
               <p className="mt-1 max-w-[540px] text-[0.86rem] leading-[1.7] text-h2026-textSecondary md:mt-0 md:text-right">
-                Explore how SIV stacks up on accuracy, privacy, coercion-resistance, voter experience, and costs. Click
-                any score to see the reasoning behind it.
+                Explore how it compares with these methods to understand where the protocol stands. SIV is designed as
+                an additional voting method, meant to work alongside mail and in-person voting.
               </p>
             </div>
           </div>
@@ -542,7 +543,7 @@ export function CompareSection() {
               <span className="ml-3 inline-flex h-6 w-6 items-center justify-center rounded-full bg-h2026-bg text-[0.9rem] text-h2026-muted">
                 <span
                   className={`inline-block transition-transform ${
-                    isCollapsed ? 'translate-y-[1px] rotate-0' : 'translate-y-[1px] rotate-90'
+                    isCollapsed ? 'rotate-0 translate-y-[1px]' : 'rotate-90 translate-y-[1px]'
                   }`}
                 >
                   ›
