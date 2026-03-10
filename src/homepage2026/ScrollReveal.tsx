@@ -7,14 +7,11 @@ const FADE_DURATION = '0.8s'
 type ScrollRevealProps = {
   children: React.ReactNode
   className?: string
-  /** Delay in seconds before starting the animation (for stagger). */
-  delay?: number
+  delay?: number // Stagger delay in seconds before starting the animation
 }
 
-/**
- * Reveals children with the same fadeInUp animation as the hero when they
- * enter the viewport (or on initial load if already in view).
- */
+/** Reveal children with fadeInUp animation when they enter viewport
+    (or on initial load if already in view). */
 export function ScrollReveal({ children, className = '', delay = 0 }: ScrollRevealProps) {
   const ref = useRef<HTMLDivElement>(null)
   const [visible, setVisible] = useState(false)
@@ -40,12 +37,9 @@ export function ScrollReveal({ children, className = '', delay = 0 }: ScrollReve
       className={className}
       ref={ref}
       style={
-        visible
-          ? {
-              animation: `fadeInUp ${FADE_DURATION} ease both`,
-              animationDelay: delay ? `${delay}s` : undefined,
-            }
-          : { opacity: 0, transform: 'translateY(16px)' }
+        !visible
+          ? { opacity: 0, transform: 'translateY(16px)' }
+          : { animation: `fadeInUp ${FADE_DURATION} ease both`, animationDelay: delay ? `${delay}s` : '' }
       }
     >
       {children}
