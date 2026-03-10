@@ -12,23 +12,26 @@ export function ResourcesPage() {
   return (
     <div className={`overflow-x-hidden min-h-screen antialiased bg-h2026-bg text-h2026-text ${homepage2026FontClass}`}>
       <Head title="Resources" />
+
       {/* Ambient orbs */}
-      <div
-        className="pointer-events-none fixed z-0 h-[600px] w-[600px] rounded-full opacity-45 blur-[120px] animate-orb-1"
-        style={{
-          background: 'radial-gradient(circle, rgba(37,99,235,0.15), transparent 70%)',
-          right: -100,
-          top: -200,
-        }}
-      />
-      <div
-        className="pointer-events-none fixed z-0 h-[500px] w-[500px] rounded-full opacity-45 blur-[120px] animate-orb-2"
-        style={{
-          background: 'radial-gradient(circle, rgba(251,191,36,0.4), transparent 70%)',
-          bottom: '5%',
-          left: -150,
-        }}
-      />
+      <>
+        <div
+          className="pointer-events-none fixed z-0 h-[600px] w-[600px] rounded-full opacity-45 blur-[120px] animate-orb-1"
+          style={{
+            background: 'radial-gradient(circle, rgba(37,99,235,0.15), transparent 70%)',
+            right: -100,
+            top: -200,
+          }}
+        />
+        <div
+          className="pointer-events-none fixed z-0 h-[500px] w-[500px] rounded-full opacity-45 blur-[120px] animate-orb-2"
+          style={{
+            background: 'radial-gradient(circle, rgba(251,191,36,0.4), transparent 70%)',
+            bottom: '5%',
+            left: -150,
+          }}
+        />
+      </>
 
       <div className="relative z-10">
         <Nav />
