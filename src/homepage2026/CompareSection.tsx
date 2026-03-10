@@ -517,7 +517,7 @@ export function CompareSection() {
         <div className="rounded-[28px] border border-white/70 bg-white/60 px-6 py-9 shadow-[0_16px_40px_rgba(15,23,42,0.10)] backdrop-blur-md md:px-10 md:py-12">
           <div>
             <p className="font-mono2026 mb-3 text-[0.7rem] uppercase tracking-[0.18em] text-h2026-muted">Compare</p>
-            <div className="flex flex-col gap-3 md:flex-row md:items-baseline md:justify-between">
+            <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
               <h2
                 className="font-serif2026 text-[clamp(1.35rem,3vw,2rem)] font-normal leading-[1.2] tracking-tight text-h2026-text"
                 id="compare-heading"
