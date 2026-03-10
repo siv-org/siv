@@ -8,29 +8,18 @@ type ModalContent = {
 }
 
 type Props = {
-  bountyEnabled: boolean
-  modalContent: ModalContent | null
-  openedModalIndex: OpenedModalIndex
   closeModal: () => void
   goLeft: () => void
   goRight: () => void
+  modalContent: ModalContent | null
+  openedModalIndex: OpenedModalIndex
 }
 
-export function CompareModal({
-  bountyEnabled,
-  modalContent,
-  openedModalIndex,
-  closeModal,
-  goLeft,
-  goRight,
-}: Props) {
+export function CompareModal({ closeModal, goLeft, goRight, modalContent, openedModalIndex }: Props) {
   if (!modalContent || !openedModalIndex) return null
 
   return (
-    <div
-      className="flex fixed inset-0 z-40 justify-center items-center px-4 py-8 bg-slate-900/60"
-      onClick={closeModal}
-    >
+    <div className="flex fixed inset-0 z-40 justify-center items-center px-4 py-8 bg-slate-900/60" onClick={closeModal}>
       <div
         className="relative max-h-[80vh] w-full max-w-[640px] overflow-y-auto rounded-2xl border border-white/10 bg-h2026-bg px-6 py-6 text-left shadow-[0_24px_80px_rgba(15,23,42,0.65)] md:px-8 md:py-7"
         onClick={(e) => e.stopPropagation()}
@@ -57,7 +46,9 @@ export function CompareModal({
         </div>
 
         <div className="mt-5 text-[0.85rem] leading-[1.7] text-h2026-textSecondary">
-          <div className="mb-3 text-[0.75rem] font-semibold uppercase tracking-[0.16em] text-emerald-700">Advantages</div>
+          <div className="mb-3 text-[0.75rem] font-semibold uppercase tracking-[0.16em] text-emerald-700">
+            Advantages
+          </div>
           {modalContent.advantages
             .split('\n')
             .map((c) => c.trim())

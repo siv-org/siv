@@ -9,7 +9,6 @@ import { CompareTable } from './compare/CompareTable'
 import { ScrollReveal } from './ScrollReveal'
 
 export function CompareSection() {
-  const [bountyEnabled, toggleBounty] = useReducer((t: boolean) => !t, true)
   const [isDescriptionShown, toggleDescription] = useReducer((t: boolean) => !t, true)
   const [isCollapsed, toggleCollapsed] = useReducer((t: boolean) => !t, true)
   const [openedModalIndex, setOpenedModalIndex] = useState<OpenedModalIndex>(null)
@@ -20,7 +19,7 @@ export function CompareSection() {
 
     const cat = tableData[catIndex]
     const row = cat.rows[rowIndex]
-    const scores = bountyEnabled ? row.scores_with_bounty || row.scores : row.scores
+    const scores = row.scores
     const score = scores[colIndex]
 
     return {
@@ -144,11 +143,9 @@ export function CompareSection() {
 
               {!isCollapsed && (
                 <CompareTable
-                  bountyEnabled={bountyEnabled}
                   isDescriptionShown={isDescriptionShown}
                   openedModalIndex={openedModalIndex}
                   setOpenedModalIndex={setOpenedModalIndex}
-                  toggleBounty={toggleBounty}
                   toggleDescription={toggleDescription}
                 />
               )}
@@ -158,7 +155,6 @@ export function CompareSection() {
       </div>
 
       <CompareModal
-        bountyEnabled={bountyEnabled}
         closeModal={closeModal}
         goLeft={goLeft}
         goRight={goRight}

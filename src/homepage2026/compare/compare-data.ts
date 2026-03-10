@@ -1,25 +1,24 @@
-export type ScoreDetail = { adv: string; disadv: string }
+export type Category = { name: string; rows: Row[] }
 
-export type Score = [number, ScoreDetail]
+export type OpenedModalIndex = [number, number, number] | null
 
 export type Row = {
   d_name: string
   desc: string
   scores: [Score, Score, Score]
-  scores_with_bounty?: [Score, Score, Score]
 }
 
-export type Category = { name: string; rows: Row[] }
+export type Score = [number, ScoreDetail]
 
-export type OpenedModalIndex = [number, number, number] | null
+export type ScoreDetail = { adv: string; disadv: string }
 
 export const methods = ['SIV', 'Mail', 'In Person']
 
 const antiCoercionArguments = {
   all: {
     pro: `Vote selling is hypothetical, not observed.
-    Coercion and vote-buying attacks are challenging to scale because every manipulated vote requires a cooperating voter.`,
-    withBounty: `Because it is in the best interest of both buyers & sellers to defect, the trust necessary to carry out illegal vote selling diminishes significantly.`,
+    Coercion and vote-buying attacks are challenging to scale because every manipulated vote requires a cooperating voter.
+    Because it is in the best interest of both buyers & sellers to defect, the trust necessary to carry out illegal vote selling diminishes significantly.`,
   },
   inPerson: {
     con: `Coercers can peek from neighboring voting booths.`,
@@ -32,8 +31,8 @@ const antiCoercionArguments = {
     con: `Can still provide strong-but-not-perfect evidence of voting a particular way to a remote coercer, such as over a video call or recording.
             Many voters, including high-profile celebrities, have taken pictures of their filled-in ballots and posted it to their social media profiles.`,
     pro: `Challenging to unquestionably prove how one voted to a remote coercer.
-          As with SIV, biggest deterrent is heavy criminal penalties for both buyer and seller: large fines, jail time, loss of voting-rights.`,
-    withBounty: `With Vote Selling Bounty Rewards:`,
+          As with SIV, biggest deterrent is heavy criminal penalties for both buyer and seller: large fines, jail time, loss of voting-rights.
+          With Vote Selling Bounty Rewards:`,
   },
   siv: {
     con: `Digital receipts make it easier to unforgeably prove to a remote coercer how you voted.
@@ -47,16 +46,8 @@ const antiCoercionArguments = {
 const coercionScore = {
   inPerson: {
     adv: `${antiCoercionArguments.inPerson.pro}
-          ${antiCoercionArguments.paper.pro}
-          ${antiCoercionArguments.all.pro}`,
-    disadv: `${antiCoercionArguments.inPerson.con}
-             ${antiCoercionArguments.paper.con}`,
-  },
-  inPerson_w_bounty: {
-    adv: `${antiCoercionArguments.inPerson.pro}
           ${antiCoercionArguments.all.pro}
-          ${antiCoercionArguments.paper.pro}
-          ${antiCoercionArguments.paper.withBounty} ${antiCoercionArguments.all.withBounty}`,
+          ${antiCoercionArguments.paper.pro}`,
     disadv: `${antiCoercionArguments.inPerson.con}
              ${antiCoercionArguments.paper.con}`,
   },
@@ -66,24 +57,11 @@ const coercionScore = {
     disadv: `${antiCoercionArguments.mail.con}
              ${antiCoercionArguments.paper.con}`,
   },
-  mail_w_bounty: {
-    adv: `${antiCoercionArguments.paper.pro}
-          ${antiCoercionArguments.all.pro}
-          ${antiCoercionArguments.paper.withBounty} ${antiCoercionArguments.all.withBounty}`,
-    disadv: `${antiCoercionArguments.mail.con}
-             ${antiCoercionArguments.paper.con}`,
-  },
   siv: {
-    adv: `${antiCoercionArguments.siv.pro}
-          ${antiCoercionArguments.all.pro}`,
-    disadv: antiCoercionArguments.siv.con,
-  },
-  siv_w_bounty: {
     adv: `${antiCoercionArguments.siv.pro}
           ${antiCoercionArguments.all.pro}
           SIV's *Verifiable Private Overrides* enable voters to trick coercers into thinking they voted a different way than they did.
-          With a bounty reward system in place, the unique and unforgeable proofs that SIV creates turn into benefits against vote selling, as strong evidence of prosecutable illegal activity if shared.
-          ${antiCoercionArguments.all.withBounty}`,
+          With a bounty reward system in place, the unique and unforgeable proofs that SIV creates turn into benefits against vote selling, as strong evidence of prosecutable illegal activity if shared.`,
     disadv: `${antiCoercionArguments.siv.con}
             Even with bounty rewards, buyers may still be able to stay anonymous, thus hard to prosecute.`,
   },
@@ -220,14 +198,9 @@ export const tableData: Category[] = [
         d_name: 'Coercion resistance',
         desc: 'How protected are voters against attempts to threaten or purchase their vote selections?',
         scores: [
-          [3, coercionScore.siv],
-          [6, coercionScore.mail],
-          [8, coercionScore.inPerson],
-        ],
-        scores_with_bounty: [
-          [9, coercionScore.siv_w_bounty],
-          [8, coercionScore.mail_w_bounty],
-          [9, coercionScore.inPerson_w_bounty],
+          [9, coercionScore.siv],
+          [8, coercionScore.mail],
+          [9, coercionScore.inPerson],
         ],
       },
     ],
