@@ -38,8 +38,15 @@ export function CompareSection() {
     setOpenedModalIndex((current) => {
       if (!current) return current
       const [catIndex, rowIndex, colIndex] = current
-      if (colIndex + 1 >= methods.length) return current
-      return [catIndex, rowIndex, colIndex + 1]
+
+      if (colIndex + 1 < methods.length) return [catIndex, rowIndex, colIndex + 1]
+
+      const nextRowIndex = rowIndex + 1
+
+      if (nextRowIndex < tableData[catIndex].rows.length) return [catIndex, nextRowIndex, 0]
+      if (catIndex + 1 < tableData.length) return [catIndex + 1, 0, 0]
+
+      return current
     })
   }, [])
 
@@ -47,8 +54,18 @@ export function CompareSection() {
     setOpenedModalIndex((current) => {
       if (!current) return current
       const [catIndex, rowIndex, colIndex] = current
-      if (colIndex === 0) return current
-      return [catIndex, rowIndex, colIndex - 1]
+
+      if (colIndex > 0) return [catIndex, rowIndex, colIndex - 1]
+
+      const previousRowIndex = rowIndex - 1
+
+      if (previousRowIndex >= 0) return [catIndex, previousRowIndex, methods.length - 1]
+      if (catIndex - 1 >= 0) {
+        const prevCatLastRowIndex = tableData[catIndex - 1].rows.length - 1
+        return [catIndex - 1, prevCatLastRowIndex, methods.length - 1]
+      }
+
+      return current
     })
   }, [])
 
