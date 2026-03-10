@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { Head } from 'src/Head'
 import { TailwindPreflight } from 'src/TailwindPreflight'
 
 import { ClosingCta } from './ClosingCta'
@@ -22,6 +23,7 @@ export function Homepage2026() {
 
   return (
     <div className={`overflow-x-hidden min-h-screen antialiased bg-h2026-bg text-h2026-text ${homepage2026FontClass}`}>
+      <Head title="Digital Democracy" />
       <div className="relative z-10">
         <Nav />
         <Hero />
