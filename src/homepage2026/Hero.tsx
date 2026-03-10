@@ -20,7 +20,7 @@ export function Hero() {
 
         {/* Social proof — sits close to tagline as one intro block */}
         <p className="mx-auto mt-4 max-w-md text-[clamp(0.7rem,1.25vw,0.82rem)] tracking-[0.12em] leading-[1.7] text-h2026-textSecondary/95 animate-[fadeInUp_0.9s_0.2s_ease-out_both]">
-          <Globe className="inline size-[1.1em] align-[-0.2em] text-h2026-green/90 mr-1" />
+          <Globe className="inline size-[1.1em] align-[-0.2em] text-h2026-green/90 mr-[5px]" />
           used by voters in 330+ cities <br className="sm:hidden" />
           across 25 countries
         </p>
