@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useReducer, useState } from 'react'
 
-import type { OpenedModalIndex } from './compare/compare-data'
+import type { OpenedModalIndex } from './compare-data'
 
-import { methods, tableData } from './compare/compare-data'
-import { getScore } from './compare/compare-utils'
-import { CompareModal } from './compare/CompareModal'
-import { CompareTable } from './compare/CompareTable'
-import { ScrollReveal } from './ScrollReveal'
+import { ScrollReveal } from '../ScrollReveal'
+import { methods, tableData } from './compare-data'
+import { getScore } from './compare-utils'
+import { CompareModal } from './CompareModal'
+import { CompareTable } from './CompareTable'
 
 export function CompareSection() {
   const [isDescriptionShown, toggleDescription] = useReducer((t: boolean) => !t, true)

@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { TailwindPreflight } from 'src/TailwindPreflight'
 
 import { ClosingCta } from './ClosingCta'
-import { CompareSection } from './CompareSection'
+import { CompareSection } from './compare/CompareSection'
 import { homepage2026FontClass } from './fonts'
 import { Footer } from './Footer'
 import { Hero } from './Hero'
