@@ -143,7 +143,7 @@ export function CompareSection() {
                   How SIV compares to mail <br className="hidden md:block" />& in-person voting
                 </h2>
                 <p className="mt-1 sm:max-w-[340px] text-[0.86rem] leading-[1.7] text-h26-textSecondary md:mt-0 md:text-right">
-                  Explore how it compares to these methods to understand where the protocol stands.
+                  Explore where each method shines and struggles.
                 </p>
               </div>
             </div>
