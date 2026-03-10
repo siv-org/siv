@@ -43,11 +43,11 @@ export function CompareTable({
         </p>
       </div>
 
-      <div className="overflow-x-auto mt-6">
-        <table className="w-full border-collapse text-[0.8rem]">
+      <div className="mt-6 overflow-x-hidden sm:overflow-x-auto">
+        <table className="w-full min-w-0 border-collapse text-[0.8rem]">
           <thead className="sticky top-0 z-10 hidden bg-white/80 text-left text-[0.75rem] text-h2026-muted backdrop-blur md:table-header-group">
             <tr>
-              <th className="min-w-[160px] py-2 pr-4 font-normal" />
+              <th className="min-w-0 py-2 pr-2 font-normal sm:min-w-[160px] sm:pr-4" />
               {methods.map((method) => (
                 <th className="w-[14%] py-2 text-center font-normal" key={method}>
                   {method}
@@ -72,8 +72,8 @@ export function CompareTable({
                     }`}
                     key={row.d_name}
                   >
-                    <td className="py-4 pr-6">
-                      <div className="text-[0.9rem] font-medium text-h2026-text">
+                    <td className="min-w-0 py-3 pr-3 sm:py-4 sm:pr-6">
+                      <div className="text-[0.85rem] font-medium text-h2026-text sm:text-[0.9rem]">
                         {row.d_name}
                         {row.d_name === 'Coercion resistance' && (
                           <span className="inline-block ml-2 align-middle">
@@ -89,8 +89,8 @@ export function CompareTable({
                     </td>
                     {[...(bountyEnabled && row.scores_with_bounty ? row.scores_with_bounty : row.scores)].map(
                       (score, colIndex) => (
-                        <td className="w-[22%] py-3 text-center md:w-auto" key={`${row.d_name}-${colIndex}`}>
-                          <div className="mb-2 flex min-h-[2.5rem] items-center justify-center rounded-full bg-white/70 px-2 py-1 text-[0.7rem] font-medium text-h2026-muted md:hidden">
+                        <td className="w-[22%] min-w-0 py-2 pl-1 pr-1 text-center sm:py-3 sm:pl-2 sm:pr-2 md:w-auto" key={`${row.d_name}-${colIndex}`}>
+                          <div className="mb-1.5 flex min-h-[2.25rem] items-center justify-center rounded-full bg-white/70 px-1.5 py-1 text-[0.65rem] font-medium text-h2026-muted sm:mb-2 sm:min-h-[2.5rem] sm:px-2 sm:text-[0.7rem] md:hidden">
                             <span className="text-center">{methods[colIndex]}</span>
                           </div>
                           <button
@@ -98,7 +98,7 @@ export function CompareTable({
                               openedModalIndex &&
                               arraysEqual(openedModalIndex, [cIndex, rIndex, colIndex]) &&
                               'ring-2 ring-h2026-green/80'
-                            } ${isDescriptionShown ? 'h-12' : 'h-9'}`}
+                            } ${isDescriptionShown ? 'h-10 sm:h-12' : 'h-8 sm:h-9'}`}
                             onClick={() => setOpenedModalIndex([cIndex, rIndex, colIndex])}
                             style={{
                               backgroundColor: interpolateColor(getScore(score)),

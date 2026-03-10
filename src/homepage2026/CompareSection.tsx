@@ -102,10 +102,10 @@ export function CompareSection() {
   }, [handleKeyDown])
 
   return (
-    <section aria-labelledby="compare-heading" className="px-7 py-16 md:py-24" id="compare">
+    <section aria-labelledby="compare-heading" className="px-4 py-12 sm:px-7 sm:py-16 md:py-24" id="compare">
       <div className="mx-auto max-w-[1060px]">
         <ScrollReveal>
-          <div className="rounded-[28px] border border-white/70 bg-white/60 px-6 py-9 shadow-[0_16px_40px_rgba(15,23,42,0.10)] backdrop-blur-md md:px-10 md:py-12">
+          <div className="rounded-[28px] border border-white/70 bg-white/60 px-4 py-7 shadow-[0_16px_40px_rgba(15,23,42,0.10)] backdrop-blur-md sm:px-6 sm:py-9 md:px-10 md:py-12">
             <div>
               <p className="font-mono2026 mb-3 text-[0.7rem] uppercase tracking-[0.18em] text-h2026-muted">Compare</p>
               <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
