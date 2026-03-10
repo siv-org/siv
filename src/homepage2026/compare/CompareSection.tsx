@@ -156,11 +156,22 @@ export function CompareSection() {
                 </span>
               </button>
 
-              {!isCollapsed && (
+              <div
+                className="overflow-hidden transition-all duration-300"
+                style={
+                  isCollapsed ? { maxHeight: 0, opacity: 0.5, transform: 'translateY(-4px)' } : { maxHeight: 4000 }
+                }
+              >
                 <CompareTable
-                  {...{ isDescriptionShown, openedModalIndex, setOpenedModalIndex, toggleCollapsed, toggleDescription }}
+                  {...{
+                    isDescriptionShown,
+                    openedModalIndex,
+                    setOpenedModalIndex,
+                    toggleCollapsed,
+                    toggleDescription,
+                  }}
                 />
-              )}
+              </div>
             </div>
           </div>
         </ScrollReveal>
