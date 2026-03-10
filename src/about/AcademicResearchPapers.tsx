@@ -9,29 +9,32 @@ export const AcademicResearchPapers = () => (
     {research.map(({ group, papers }) => (
       <div key={group}>
         {/* Group header */}
-        <h4 className="flex mt-20 text-lg">
-          <div className="inline-block w-12 bg-black h-0.5 my-auto mr-2.5" />
+        <h4 className="flex gap-3 items-center mt-20 text-lg font-medium tracking-tight text-h26-text">
+          <span className="w-12 h-px shrink-0 bg-h26-text" />
           {group}
         </h4>
 
         {/* Papers */}
-        <div className="flex flex-wrap justify-between sm:justify-start sm:flex-nowrap group">
+        <div className="mt-8 flex flex-wrap justify-between gap-y-10 sm:justify-start sm:flex-nowrap sm:gap-0 sm:gap-x-[6vw]">
           {papers?.map(({ affiliation, authors, cover, name, year }) => (
-            <div className="text-center max-w-[180px] sm:mr-[6vw] w-[40%] sm:w-auto" key={authors.join('')}>
+            <article
+              className="w-[40%] min-w-0 max-w-[200px] text-center sm:w-auto sm:max-w-[200px]"
+              key={authors.join('')}
+            >
               {/* Year */}
-              <h3>{year}</h3>
+              <p className="text-sm tracking-wider font-mono26 text-h26-muted">{year}</p>
 
-              {/* Image preview */}
-              <div className="shadow-[3px_3px_6px_1px_rgba(0,0,0,0.22)]">
-                <Image alt="First page image" className="w-full h-full" src={cover} />
+              {/* Cover */}
+              <div className="mt-2 shadow-[0_2px_12px_-4px_rgba(0,0,0,0.15)]">
+                <Image alt="" className="w-full" src={cover} />
               </div>
 
               {/* Paper title */}
-              <p className="italic font-semibold">{name}</p>
+              <p className="mt-3 font-serif26 text-[0.95rem] font-normal text-h26-text">{name}</p>
 
               {/* Authors */}
-              <p>
-                <span className="text-gray-400">by </span>
+              <p className="mt-2 text-[0.8rem] leading-snug text-black/80">
+                <span className="text-h26-muted">by </span>
                 {authors.map((author, i) => (
                   <Fragment key={author}>
                     {author}
@@ -41,8 +44,8 @@ export const AcademicResearchPapers = () => (
               </p>
 
               {/* Affiliation */}
-              <p className="text-[11px]">{affiliation}</p>
-            </div>
+              <p className="mt-2 text-[0.75rem] leading-snug text-h26-textSecondary">{affiliation}</p>
+            </article>
           ))}
         </div>
       </div>
