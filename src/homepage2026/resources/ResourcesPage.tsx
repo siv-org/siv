@@ -1,5 +1,6 @@
 import { Library } from 'lucide-react'
 import Link from 'next/link'
+import { Head } from 'src/Head'
 
 import { homepage2026FontClass } from '../fonts'
 import { Nav } from '../Nav'
@@ -9,6 +10,7 @@ import { RESOURCES } from './resources-data'
 export function ResourcesPage() {
   return (
     <div className={`overflow-x-hidden min-h-screen antialiased bg-h2026-bg text-h2026-text ${homepage2026FontClass}`}>
+      <Head title="Resources" />
       {/* Ambient orbs */}
       <div
         className="pointer-events-none fixed z-0 h-[600px] w-[600px] rounded-full opacity-45 blur-[120px] animate-orb-1"
