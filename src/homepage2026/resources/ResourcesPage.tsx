@@ -11,7 +11,7 @@ import { RESOURCES } from './resources-data'
 export function ResourcesPage() {
   return (
     <div className={`overflow-x-hidden min-h-screen antialiased bg-h2026-bg text-h2026-text ${homepage2026FontClass}`}>
-      <Head title="Resources" />
+      <Head title="Learn How SIV Works" />
 
       {/* Ambient orbs */}
       <>
