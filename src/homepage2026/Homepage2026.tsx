@@ -1,14 +1,15 @@
 import { useEffect } from 'react'
-import { TailwindPreflight } from 'src/TailwindPreflight'
+import { TailwindPreflight } from "src/TailwindPreflight"
 
-import { ClosingCta } from './ClosingCta'
-import { homepage2026FontClass } from './fonts'
-import { Footer } from './Footer'
-import { Hero } from './Hero'
-import { Highlights } from './highlights/Highlights'
-import { HowItWorks } from './HowItWorks'
-import { Nav } from './Nav'
-import { Properties } from './Properties'
+import { ClosingCta } from "./ClosingCta"
+import { CompareSection } from "./CompareSection"
+import { homepage2026FontClass } from "./fonts"
+import { Footer } from "./Footer"
+import { Hero } from "./Hero"
+import { Highlights } from "./highlights/Highlights"
+import { HowItWorks } from "./HowItWorks"
+import { Nav } from "./Nav"
+import { Properties } from "./Properties"
 
 export function Homepage2026() {
   useEffect(() => {
@@ -26,6 +27,7 @@ export function Homepage2026() {
         <Hero />
         <Highlights />
         <Properties />
+        <CompareSection />
         <HowItWorks />
         <ClosingCta />
         <Footer />
