@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 import logo from '../homepage/logo.png'
+import { logoRatio } from './Nav'
 import { ScrollReveal } from './ScrollReveal'
 
 const COLUMNS: { links: { href: string; label: string }[]; title: string }[] = [
@@ -30,6 +31,8 @@ const COLUMNS: { links: { href: string; label: string }[]; title: string }[] = [
   },
 ]
 
+const logoHeight = 20
+
 export function Footer() {
   return (
     <footer className="px-7 pb-8">
@@ -37,7 +40,7 @@ export function Footer() {
         <div className="flex flex-col gap-10 md:flex-row md:justify-between">
           <div className="shrink-0">
             <Link className="no-underline" href="/">
-              <Image alt="SIV" height={20} src={logo} width={(50 / 23) * 20} />
+              <Image alt="SIV" height={logoHeight} src={logo} width={logoRatio * logoHeight} />
             </Link>
             <p className="mt-3 max-w-[220px] text-[0.8rem] leading-[1.6] text-h2026-textSecondary">
               Easy, Safe, Smart.
