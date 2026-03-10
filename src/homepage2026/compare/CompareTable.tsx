@@ -28,9 +28,7 @@ export function CompareTable({ isDescriptionShown, openedModalIndex, setOpenedMo
           />
           Show descriptions
         </button>
-        <p className="max-w-[520px] text-[0.75rem] text-h2026-muted">
-          Click a number for a detailed explanation. Use arrow keys to move around.
-        </p>
+        <p className="max-w-[520px] text-[0.75rem] text-h2026-muted">Click a number for a detailed explanation.</p>
       </div>
 
       <div className="overflow-x-hidden mt-6 sm:overflow-x-auto">
