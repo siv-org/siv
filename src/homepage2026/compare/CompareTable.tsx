@@ -103,10 +103,7 @@ export function CompareTable({ isDescriptionShown, openedModalIndex, setOpenedMo
                   </td>
                 </tr>
                 {cat.rows.map((row, rIndex) => (
-                  <tr
-                    className={`border-b border-h2026-border/5 ${isDescriptionShown ? 'align-top' : 'align-middle'}`}
-                    key={row.d_name}
-                  >
+                  <tr className="align-middle border-b border-h2026-border/5" key={row.d_name}>
                     <td className="py-3 pr-3 min-w-0 sm:py-4 sm:pr-6">
                       <div className="text-[0.85rem] font-medium text-h2026-text sm:text-[0.9rem]">{row.d_name}</div>
                       {isDescriptionShown && (
