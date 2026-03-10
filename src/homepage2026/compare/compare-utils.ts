@@ -6,7 +6,7 @@ export const interpolateColor = (score: number): string => {
   const clamped = Math.max(0, Math.min(score, 10))
 
   const startColor = { b: 94, g: 63, r: 244 }
-  const middleColor = { b: 250, g: 250, r: 250 }
+  const middleColor = { b: 212, g: 242, r: 252 }
   const endColor = { b: 74, g: 163, r: 22 }
 
   let r: number
