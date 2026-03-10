@@ -20,7 +20,7 @@ const PROPERTIES: { description: string; word: string }[] = [
 
 export function Properties() {
   return (
-    <section aria-labelledby="properties-heading" className="px-7 py-16 md:py-24" id="properties">
+    <section className="px-7 py-16 md:py-24" id="properties">
       <div className="mx-auto max-w-[1060px]">
         <div className="grid gap-12 md:grid-cols-3 md:gap-0">
           {PROPERTIES.map(({ description, word }, i) => (
