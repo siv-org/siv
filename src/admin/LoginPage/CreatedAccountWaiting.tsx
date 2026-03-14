@@ -2,45 +2,25 @@ import { useEffect } from 'react'
 import { pusher } from 'src/pusher-helper'
 
 import { attemptInitLoginCode } from './CreateAccount'
-import { breakpoint } from './LoginPage'
 
 export const CreatedAccountWaiting = ({ email }: { email: string }) => {
-  // Listen for 'approved'
   useEffect(() => {
     if (!pusher) return alert('Missing pusher')
     const channel = pusher.subscribe(`admin-${email}`)
     channel.bind('approved', attemptInitLoginCode)
-
     return () => {
       channel.unsubscribe()
     }
-  })
+  }, [email])
 
   return (
-    <section>
-      <h2>Your account info has been submitted.</h2>
-      <p>You&apos;ll receive an email notification when you can login.</p>
-      <style jsx>{`
-        section {
-          max-width: 410px;
-        }
-
-        h2 {
-          font-size: 30px;
-          font-weight: 600;
-          margin-top: 0;
-        }
-
-        p {
-          font-size: 20px;
-        }
-
-        @media (max-width: ${breakpoint}px) {
-          section {
-            padding-bottom: 3rem;
-          }
-        }
-      `}</style>
+    <section className="rounded-xl border border-h26-border bg-white/60 px-6 py-6 shadow-sm">
+      <h2 className="font-serif26 text-[1.35rem] font-normal tracking-tight text-h26-text">
+        Request received
+      </h2>
+      <p className="mt-3 text-[0.92rem] leading-[1.6] text-h26-textSecondary">
+        You’ll receive an email notification when your account is approved and you can sign in.
+      </p>
     </section>
   )
 }

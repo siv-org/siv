@@ -1,25 +1,23 @@
-import { TextField } from '@mui/material'
 import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
-import { OnClickButton } from 'src/_shared/Button'
 import { api } from 'src/api-helper'
-import { GlobalCSS } from 'src/GlobalCSS'
 import { Head } from 'src/Head'
+import { TailwindPreflight } from 'src/TailwindPreflight'
 
+import { h26fonts } from '../../homepage2026/fonts'
+import { Footer } from '../../homepage2026/Footer'
+import { Nav } from '../../homepage2026/Nav'
 import { checkLoginCode } from '../auth'
-import { Headerbar } from './Headerbar'
-
-export const breakpoint = 500
 
 export const EnterCodePage = () => {
   const router = useRouter()
   const { email, expired, invalid } = router.query
   const [error, setError] = useState('')
   const [loginCode, setLoginCode] = useState('')
-  const submitBtn = useRef<HTMLAnchorElement>(null)
+  const submitRef = useRef<HTMLButtonElement>(null)
 
   function handleExpired() {
-    setError('This login code has expired.\nSending you another...')
+    setError('This login code has expired. Sending you another...')
     api('admin-login', { email })
   }
   const resetURL = () => router.replace(`${window.location.pathname}?email=${email}`)
@@ -31,103 +29,105 @@ export const EnterCodePage = () => {
       resetURL()
     }
     if (invalid) {
-      setError('This login link appears invalid.\nSending you another...')
+      setError('This login link appears invalid. Sending you another...')
       api('admin-login', { email })
       resetURL()
     }
   }, [expired, invalid])
 
-  if (typeof email !== 'string') return <p>Missing email</p>
+  if (typeof email !== 'string') {
+    return (
+      <div className={`p-8 min-h-screen bg-h26-bg ${h26fonts}`}>
+        <Head title="Admin Login" />
+        <p className="text-h26-textSecondary">Missing email. Please start from the login page.</p>
+        <a className="inline-block mt-4 text-h26-green hover:underline" href="/login">
+          Back to login
+        </a>
+        <TailwindPreflight />
+      </div>
+    )
+  }
 
   return (
-    <main>
+    <div className={`overflow-x-hidden min-h-screen antialiased bg-h26-bg text-h26-text ${h26fonts}`}>
       <Head title="Admin Login" />
-      <Headerbar hideLogin />
-      <section>
-        <p>An email with login information is being sent to:</p>
-        <h3>{email}</h3>
+      <div className="relative z-10">
+        <Nav />
+        <main className="px-7 pt-[7rem] pb-16 md:pt-[8.5rem]">
+          <div className="mx-auto max-w-[440px] animate-[fadeInUp_0.8s_ease-out_both] text-center">
+            <h1 className="font-serif26 text-[clamp(1.5rem,3.5vw,2rem)] font-normal tracking-tight">
+              Check your email
+            </h1>
+            <p className="mt-3 text-[0.9rem] text-h26-textSecondary">We sent a one-time code to:</p>
+            <p className="mt-2 font-medium text-h26-text">{email}</p>
 
-        <div>
-          <TextField
-            autoFocus
-            label="Code in Email"
-            onChange={({ target }) => {
-              setError('')
-              const next = target.value
-              // Allow up to 6 numbers only
-              if (/^\d{0,6}$/.test(next)) return setLoginCode(next)
-              setError('Login codes are 6 digit numbers')
-            }}
-            onKeyPress={(event) => event.key === 'Enter' && submitBtn.current?.click()}
-            placeholder="123456"
-            size="small"
-            style={{ backgroundColor: '#fff' }}
-            value={loginCode}
-            variant="outlined"
-          />
-          <OnClickButton
-            onClick={() => {
-              if (loginCode.length < 6) return setError(`Login codes are 6 digits, not ${loginCode.length}`)
+            <div className="mt-8 text-left">
+              {error && (
+                <p
+                  className="mb-3 rounded-lg border border-red-200 bg-red-50/80 px-3 py-2 text-[0.8rem] font-medium text-red-700 whitespace-pre-wrap"
+                  role="alert"
+                >
+                  {error}
+                </p>
+              )}
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                <input
+                  aria-label="Code from email"
+                  autoFocus
+                  className="min-w-0 flex-1 rounded-lg border border-h26-border bg-white px-4 py-3 text-[1rem] text-h26-text tracking-[0.2em] outline-none transition-colors placeholder:text-h26-muted focus:border-h26-green focus:ring-2 focus:ring-h26-green/20"
+                  inputMode="numeric"
+                  maxLength={6}
+                  onChange={({ target }) => {
+                    const next = target.value
+                    if (/^\d{0,6}$/.test(next)) {
+                      setLoginCode(next)
+                      setError('')
+                    } else if (next.length > 0) {
+                      setError('Login codes are 6 digit numbers')
+                    }
+                  }}
+                  onKeyDown={(e) => e.key === 'Enter' && submitRef.current?.click()}
+                  placeholder="123456"
+                  type="text"
+                  value={loginCode}
+                />
+                <button
+                  className="shrink-0 rounded-full px-8 py-3 text-[0.92rem] font-medium shadow-h26-cta transition-all duration-200 hover:-translate-y-0.5 hover:shadow-h26-cta-hover"
+                  onClick={() => {
+                    if (loginCode.length < 6) {
+                      setError(`Login codes are 6 digits, not ${loginCode.length}`)
+                      return
+                    }
+                    checkLoginCode({
+                      code: loginCode,
+                      email,
+                      onExpired: () => {
+                        setLoginCode('')
+                        handleExpired()
+                      },
+                      onInvalid: (message: string) => setError(message || 'Unknown error signing in'),
+                      router,
+                    })
+                  }}
+                  ref={submitRef}
+                  style={{ backgroundColor: '#1a6b4a', color: '#fff' }}
+                  type="button"
+                >
+                  Submit
+                </button>
+              </div>
+            </div>
 
-              checkLoginCode({
-                code: loginCode,
-                email,
-                onExpired: () => {
-                  setLoginCode('')
-                  handleExpired()
-                },
-                onInvalid: (message: string) => setError(message || 'Unknown error signing in'),
-                router,
-              })
-            }}
-            ref={submitBtn}
-            style={{ margin: 0, marginLeft: 10, padding: '8px 20px' }}
-          >
-            Submit
-          </OnClickButton>
-        </div>
-        <div className="error" style={{ opacity: error ? '' : 0 }}>
-          ⚠️&nbsp; {error}
-        </div>
-      </section>
-      <style jsx>{`
-        section {
-          text-align: center;
-          margin-top: 3rem;
-          padding: 0 5px;
-        }
-
-        p {
-          margin: 0;
-          font-size: 24px;
-        }
-
-        h3 {
-          margin: 2rem 0;
-        }
-
-        .error {
-          color: red;
-          opacity: 0.75;
-          font-size: 12px;
-          font-weight: 700;
-
-          border: 1px solid #f00a;
-          padding: 5px;
-          border-radius: 5px;
-
-          margin-top: 1rem;
-          display: inline-block;
-
-          white-space: pre-wrap;
-        }
-      `}</style>
-      <style global jsx>{`
-        body {
-          background: #f9fafb;
-        }
-      `}</style>
-      <GlobalCSS />
-    </main>
-  );
+            <p className="mt-6 text-[0.82rem] text-h26-muted">
+              <a className="text-h26-green hover:underline" href="/login">
+                Use a different email
+              </a>
+            </p>
+          </div>
+        </main>
+        <Footer />
+      </div>
+      <TailwindPreflight />
+    </div>
+  )
 }

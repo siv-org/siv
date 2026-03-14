@@ -1,13 +1,15 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { GlobalCSS } from 'src/GlobalCSS'
+import { Head } from 'src/Head'
+import { TailwindPreflight } from 'src/TailwindPreflight'
 
-import { Head } from '../../Head'
+import { h26fonts } from '../../homepage2026/fonts'
+import { Footer } from '../../homepage2026/Footer'
+import { Nav } from '../../homepage2026/Nav'
 import { useUser } from '../auth'
-import { AboutSection } from './AboutSection'
 import { CreateAccount } from './CreateAccount'
-import { Headerbar } from './Headerbar'
-import { MobileLogin } from './MobileLogin'
+import { LoginFormSection } from './LoginFormSection'
+import { LoginProperties } from './LoginProperties'
 
 export const breakpoint = 500
 
@@ -15,46 +17,32 @@ export const LoginPage = () => {
   useLoggedOutOnly()
 
   return (
-    <main>
+    <div className={`overflow-x-hidden min-h-screen antialiased bg-h26-bg text-h26-text ${h26fonts}`}>
       <Head title="Admin Login" />
-      <Headerbar />
-      <div className="flex justify-center px-[3vw]">
-        <div className="columns">
-          <AboutSection />
-          <div className="spacer" />
-          <MobileLogin />
-          <CreateAccount />
-        </div>
+      <div className="relative z-10">
+        <Nav />
+        <main className="px-7 pt-[7rem] pb-6 md:pt-[8.5rem] md:pb-12">
+          <div className="mx-auto max-w-[600px] animate-[fadeInUp_0.8s_ease-out_both]">
+            <h1 className="font-serif26 text-[clamp(1.75rem,4vw,2.4rem)] font-normal tracking-tight text-center">
+              Sign in to run your vote
+            </h1>
+            <p className="mt-3 text-center text-[0.9rem] leading-[1.6] text-h26-textSecondary">
+              Enter your email and we’ll send you a one-time code.
+            </p>
+
+            <LoginFormSection />
+
+            <p className="my-8 text-center text-[0.85rem] italic text-h26-muted">— or —</p>
+
+            <CreateAccount />
+          </div>
+
+          <LoginProperties />
+        </main>
+        <Footer />
       </div>
-      <style jsx>{`
-        .columns {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          height: max(calc(100vh - 68px), 620px);
-
-          flex: 1;
-          max-width: 1000px;
-        }
-
-        .spacer {
-          width: 15px;
-        }
-
-        @media (max-width: ${breakpoint}px) {
-          .columns {
-            flex-direction: column;
-            max-width: 322px;
-          }
-        }
-      `}</style>
-      <style global jsx>{`
-        body {
-          background: #f9fafb;
-        }
-      `}</style>
-      <GlobalCSS />
-    </main>
+      <TailwindPreflight />
+    </div>
   )
 }
 
