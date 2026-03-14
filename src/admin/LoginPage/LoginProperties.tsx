@@ -8,11 +8,11 @@ const PROPERTIES: { description: string; title: string }[] = [
     title: 'Easy for voters',
   },
   {
-    description: 'Every eligible voter gets exactly one vote. No double-voting.',
+    description: 'Every eligible voter can cast only one vote. Auditable voter roll.',
     title: 'One person, one vote',
   },
   {
-    description: 'Strong privacy and coercion-resistance. Votes stay secret.',
+    description: 'Strong privacy and coercion-resistance. No one can see how people vote.',
     title: 'Private voting',
   },
   {
@@ -20,7 +20,7 @@ const PROPERTIES: { description: string; title: string }[] = [
     title: 'Provably fair',
   },
   {
-    description: 'Run professional elections at a fraction of government election costs.',
+    description: 'Run government-grade elections at a fraction of the usual costs.',
     title: 'A fraction of the cost',
   },
 ]
