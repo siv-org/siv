@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 import logo from '../homepage/logo.png'
 
@@ -14,6 +15,9 @@ export const logoRatio = 50 / 23
 const logoHeight = 18
 
 export function Nav() {
+  const router = useRouter()
+  const isLoginPage = router.pathname === '/login'
+
   return (
     <nav className="fixed left-1/2 top-4 z-[100] flex -translate-x-1/2 items-center sm:gap-9 gap-6 rounded-full border border-h26-border bg-white/70 px-6 py-2.5 shadow-sm backdrop-blur-[24px]">
       {/* Logo */}
@@ -33,9 +37,13 @@ export function Nav() {
               {text}
             </Link>
           ) : (
-            // Login button
+            // Login button — outlined on login page so it's less prominent
             <Link
-              className="rounded-full bg-h26-green px-5 py-2 text-sm font-medium text-white no-underline transition-all duration-200 hover:scale-[1.03] hover:bg-h26-greenHover"
+              className={
+                isLoginPage
+                  ? 'rounded-full border-2 border-h26-green bg-white px-5 py-2 text-sm font-medium text-h26-green no-underline transition-all duration-200 hover:bg-h26-green/5'
+                  : 'rounded-full bg-h26-green px-5 py-2 text-sm font-medium text-white no-underline transition-all duration-200 hover:scale-[1.03] hover:bg-h26-greenHover'
+              }
               href={url}
               key={text}
             >
