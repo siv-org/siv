@@ -24,10 +24,10 @@ export const LoginPage = () => {
         <main className="px-7 pt-[7rem] pb-6 md:pt-[8.5rem] md:pb-12">
           <div className="mx-auto max-w-[600px] animate-[fadeInUp_0.8s_ease-out_both]">
             <h1 className="font-serif26 text-[clamp(1.75rem,4vw,2.4rem)] font-normal tracking-tight text-center">
-              Sign in to run your vote
+              Log in to run your vote
             </h1>
             <p className="mt-3 text-center text-[0.9rem] leading-[1.6] text-h26-textSecondary">
-              Enter your email and we’ll send you a one-time code.
+              Enter your email and we’ll send you a one-time code. No password required.
             </p>
 
             <LoginFormSection />
