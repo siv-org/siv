@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import { LoginFormSection } from 'src/admin/LoginPage/LoginFormSection'
 import { Head } from 'src/Head'
 import { TailwindPreflight } from 'src/TailwindPreflight'
 
@@ -8,7 +9,6 @@ import { Footer } from '../../homepage2026/Footer'
 import { Nav } from '../../homepage2026/Nav'
 import { useUser } from '../auth'
 import { CreateAccount } from './CreateAccount'
-import { LoginFormSection } from './LoginFormSection'
 import { LoginProperties } from './LoginProperties'
 
 export const breakpoint = 500
