@@ -35,19 +35,17 @@ export const LoginPage = () => {
 
           {/* One section: "or create account" — phone + form in a single container */}
           <div className="mx-auto mt-14 md:mt-16 max-w-[640px] lg:max-w-[900px] animate-[fadeInUp_0.8s_ease-out_0.08s_both]">
-            <p className="text-center text-[0.8rem] font-medium uppercase tracking-wider text-h26-muted mb-6">
-              — or —
-            </p>
-            <div className="rounded-2xl border border-h26-border bg-white/50 shadow-sm px-6 py-8 lg:px-10 lg:py-10">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-8 lg:items-center">
-                <aside className="order-2 lg:order-1 flex justify-center lg:justify-start">
+            <p className="text-center text-[0.8rem] font-medium uppercase tracking-wider text-h26-muted mb-6">— or —</p>
+            <div className="px-6 py-8 rounded-2xl border shadow-sm border-h26-border bg-white/50 lg:px-10 lg:py-10">
+              <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-8 lg:items-center">
+                <aside className="flex order-2 justify-center lg:order-1 lg:justify-start">
                   <img
                     alt="Vote on your phone"
-                    className="w-[200px] max-w-[85%] object-contain drop-shadow-md"
+                    className="w-[200px] max-w-[85%] object-contain"
                     src="/login/iphone.png"
                   />
                 </aside>
-                <div className="order-1 lg:order-2 min-w-0">
+                <div className="order-1 min-w-0 lg:order-2">
                   <CreateAccount />
                 </div>
               </div>
