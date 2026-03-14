@@ -36,9 +36,11 @@ export function LoginProperties({ variant = 'section' }: LoginPropertiesProps) {
         What you get with SIV
       </h2>
       <ul className={`grid gap-6 pl-0 list-none ${isSidebar ? 'mt-6' : 'mt-10 md:grid-cols-2'}`}>
-        {PROPERTIES.map(({ description, title }) => (
+        {PROPERTIES.map(({ description, title }, i) => (
           <li
-            className="flex gap-4 items-start px-5 py-4 rounded-xl border shadow-sm border-h26-border bg-white/60"
+            className={`flex gap-4 items-start px-5 py-4 rounded-xl border shadow-sm border-h26-border bg-white/60 ${
+              !isSidebar && i === PROPERTIES.length - 1 ? 'md:col-span-2' : ''
+            }`}
             key={title}
           >
             <span className="mt-0.5 shrink-0 rounded-full bg-h26-green/12 p-1.5 text-h26-green">
