@@ -26,7 +26,7 @@ export const LoginPage = () => {
               Log in to run your vote
             </h1>
             <p className="mt-3 text-center text-[0.9rem] leading-[1.6] text-h26-textSecondary">
-              Enter your email. If you have an account we’ll send a one-time code; if not, we’ll ask for a few details to create one.
+              A login code will be sent to your email. No password required.
             </p>
             <LoginFormSection />
           </div>
