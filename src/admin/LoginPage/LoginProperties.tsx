@@ -65,7 +65,7 @@ export function LoginProperties({ variant = 'section' }: LoginPropertiesProps) {
   }
 
   return (
-    <section aria-label="What you get with SIV" className="px-7 pt-16 pb-14 md:pt-20 md:pb-20 mx-auto max-w-[800px]">
+    <section aria-label="What you get with SIV" className="sm:px-7 pt-16 pb-14 md:pt-20 md:pb-20 mx-auto max-w-[800px]">
       <div className="pt-14 border-t border-h26-border md:pt-16">
         <ScrollReveal>{content}</ScrollReveal>
       </div>
