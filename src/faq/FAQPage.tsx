@@ -74,10 +74,10 @@ export const FAQPage = (): JSX.Element => {
 
               {expanded[index] && (
                 <>
-                  <p dangerouslySetInnerHTML={{ __html: resp }} />
+                  <p className="p-4" dangerouslySetInnerHTML={{ __html: resp }} />
 
                   {id && (
-                    <p className="permalink-row">
+                    <p className="pr-4 pb-1 text-right">
                       <a className="permalink" href={`#${id}`}>
                         <LinkOutlined /> #{id}
                       </a>
@@ -101,13 +101,6 @@ export const FAQPage = (): JSX.Element => {
         }
       `}</style>
       <style jsx>{`
-        .permalink-row {
-          width: 100%;
-          text-align: right;
-          padding-top: 0px;
-          padding-bottom: 5px;
-        }
-
         .permalink {
           display: inline-block;
           padding: 3px 5px;
@@ -126,7 +119,6 @@ export const FAQPage = (): JSX.Element => {
         p {
           white-space: pre-wrap;
           margin: 0;
-          padding: 1rem;
         }
       `}</style>
     </div>
