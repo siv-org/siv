@@ -74,7 +74,7 @@ export const FAQPage = (): JSX.Element => {
                 <span>
                   {index + 1}. {q}
                 </span>
-                <label>{!expanded[index] ? '+' : '–'}</label>
+                <label className="ml-5 w-[11px] cursor-pointer">{!expanded[index] ? '+' : '–'}</label>
               </h3>
 
               {/* Expanded content */}
@@ -108,12 +108,6 @@ export const FAQPage = (): JSX.Element => {
         }
       `}</style>
       <style jsx>{`
-        label {
-          margin-left: 20px;
-          width: 11px;
-          cursor: pointer;
-        }
-
         p {
           white-space: pre-wrap;
           margin: 0;
