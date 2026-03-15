@@ -7,7 +7,6 @@ import { Nav } from 'src/homepage2026/Nav'
 import { TailwindPreflight } from 'src/TailwindPreflight'
 import { useAnalytics } from 'src/useAnalytics'
 
-import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
 import { h26fonts } from '../homepage2026/fonts'
 import { AddYourQuestion } from './AddYourQuestion'
@@ -163,7 +162,6 @@ export const FAQPage = (): JSX.Element => {
           padding: 1rem;
         }
       `}</style>
-      <GlobalCSS />
     </div>
   )
 }
