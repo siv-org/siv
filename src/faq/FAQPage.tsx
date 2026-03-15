@@ -58,7 +58,7 @@ export const FAQPage = (): JSX.Element => {
             <div className="mb-12 border border-black/15" key={index}>
               {deprecated_ids && deprecated_ids.map((id) => <div id={id} key={id} />)}
               <h3
-                className="text-[16px] font-semibold"
+                className="text-[16px] font-semibold bg-gray-700/10 hover:bg-black/10 p-4 cursor-pointer flex justify-between"
                 id={id}
                 onClick={() => {
                   const update = [...expanded]
@@ -101,20 +101,6 @@ export const FAQPage = (): JSX.Element => {
         }
       `}</style>
       <style jsx>{`
-        h3 {
-          background: hsl(0, 0%, 93%);
-          margin: 0;
-          padding: 1rem;
-          cursor: pointer;
-
-          display: flex;
-          justify-content: space-between;
-        }
-
-        h3:hover {
-          background: hsl(0, 0%, 90%);
-        }
-
         .permalink-row {
           width: 100%;
           text-align: right;
