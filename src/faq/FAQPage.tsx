@@ -80,7 +80,7 @@ export const FAQPage = (): JSX.Element => {
               {/* Expanded content */}
               {expanded[index] && (
                 <>
-                  <p className="p-4" dangerouslySetInnerHTML={{ __html: resp }} />
+                  <p className="p-4 whitespace-pre-wrap" dangerouslySetInnerHTML={{ __html: resp }} />
 
                   {/* Permalink */}
                   {id && (
@@ -105,12 +105,6 @@ export const FAQPage = (): JSX.Element => {
       <style global jsx>{`
         a {
           font-weight: bold;
-        }
-      `}</style>
-      <style jsx>{`
-        p {
-          white-space: pre-wrap;
-          margin: 0;
         }
       `}</style>
     </div>
