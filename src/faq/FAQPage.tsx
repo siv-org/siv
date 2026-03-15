@@ -43,57 +43,55 @@ export const FAQPage = (): JSX.Element => {
 
       <Nav />
       <main className="mt-24">
-        <div className="faq-content-font">
-          <section>
-            <h1>Frequently Asked Questions</h1>
-            <div className="button-container">
-              <OnClickButton
+        <section>
+          <h1>Frequently Asked Questions</h1>
+          <div className="button-container">
+            <OnClickButton
+              onClick={() => {
+                const update = [...expanded].fill(any_collapsed)
+                setExpanded(update)
+              }}
+              style={{ margin: 0, padding: '5px 15px', textAlign: 'right' }}
+            >
+              <>{any_collapsed ? 'Expand' : 'Collapse'} all</>
+            </OnClickButton>
+          </div>
+
+          {faq.map(({ deprecated_ids, id, q, resp }, index) => (
+            <div className="question" key={index}>
+              {deprecated_ids && deprecated_ids.map((id) => <div id={id} key={id} />)}
+              <h3
+                id={id}
                 onClick={() => {
-                  const update = [...expanded].fill(any_collapsed)
+                  const update = [...expanded]
+                  update[index] = !update[index]
                   setExpanded(update)
                 }}
-                style={{ margin: 0, padding: '5px 15px', textAlign: 'right' }}
               >
-                <>{any_collapsed ? 'Expand' : 'Collapse'} all</>
-              </OnClickButton>
+                <span>
+                  {index + 1}. {q}
+                </span>
+                <label>{!expanded[index] ? '+' : '–'}</label>
+              </h3>
+
+              {expanded[index] && (
+                <>
+                  <p dangerouslySetInnerHTML={{ __html: resp }} />
+
+                  {id && (
+                    <p className="permalink-row">
+                      <a className="permalink" href={`#${id}`}>
+                        <LinkOutlined /> #{id}
+                      </a>
+                    </p>
+                  )}
+                </>
+              )}
             </div>
+          ))}
 
-            {faq.map(({ deprecated_ids, id, q, resp }, index) => (
-              <div className="question" key={index}>
-                {deprecated_ids && deprecated_ids.map((id) => <div id={id} key={id} />)}
-                <h3
-                  id={id}
-                  onClick={() => {
-                    const update = [...expanded]
-                    update[index] = !update[index]
-                    setExpanded(update)
-                  }}
-                >
-                  <span>
-                    {index + 1}. {q}
-                  </span>
-                  <label>{!expanded[index] ? '+' : '–'}</label>
-                </h3>
-
-                {expanded[index] && (
-                  <>
-                    <p dangerouslySetInnerHTML={{ __html: resp }} />
-
-                    {id && (
-                      <p className="permalink-row">
-                        <a className="permalink" href={`#${id}`}>
-                          <LinkOutlined /> #{id}
-                        </a>
-                      </p>
-                    )}
-                  </>
-                )}
-              </div>
-            ))}
-
-            <AddYourQuestion />
-          </section>
-        </div>
+          <AddYourQuestion />
+        </section>
 
         <Footer />
       </main>
@@ -129,7 +127,7 @@ export const FAQPage = (): JSX.Element => {
           color: #1a1a1a;
           text-decoration: none;
         }
-        .faq-content-font {
+        main {
           font-family: ${systemFont};
         }
       `}</style>
