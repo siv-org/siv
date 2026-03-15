@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { OnClickButton } from 'src/_shared/Button'
 import { Footer } from 'src/homepage2026/Footer'
 import { Nav } from 'src/homepage2026/Nav'
+import { TailwindPreflight } from 'src/TailwindPreflight'
 import { useAnalytics } from 'src/useAnalytics'
 
 import { GlobalCSS } from '../GlobalCSS'
@@ -97,6 +98,7 @@ export const FAQPage = (): JSX.Element => {
 
           <Footer />
         </main>
+        <TailwindPreflight />
       </div>
 
       <style global jsx>{`
