@@ -34,20 +34,20 @@ export const FAQPage = (): JSX.Element => {
   }, [asPath])
 
   return (
-    <div className={h26fonts}>
+    <div className={`antialiased bg-h26-bg text-h26-text ${h26fonts}`}>
       <Head title="FAQ" />
 
       <Nav />
-      <main className="mt-24">
+      <main className="!pt-24">
         <section>
-          <h1>Frequently Asked Questions</h1>
+          <h1 className="text-2xl font-bold">Frequently Asked Questions</h1>
           <div className="button-container">
             <OnClickButton
               onClick={() => {
                 const update = [...expanded].fill(any_collapsed)
                 setExpanded(update)
               }}
-              style={{ margin: 0, padding: '5px 15px', textAlign: 'right' }}
+              style={{ fontSize: '14px', margin: 0, padding: '5px 15px', textAlign: 'right' }}
             >
               <>{any_collapsed ? 'Expand' : 'Collapse'} all</>
             </OnClickButton>
@@ -57,6 +57,7 @@ export const FAQPage = (): JSX.Element => {
             <div className="question" key={index}>
               {deprecated_ids && deprecated_ids.map((id) => <div id={id} key={id} />)}
               <h3
+                className="text-[16px] font-semibold"
                 id={id}
                 onClick={() => {
                   const update = [...expanded]
