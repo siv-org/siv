@@ -103,6 +103,16 @@ export const FAQPage = (): JSX.Element => {
         a {
           font-weight: bold;
         }
+        /* Reset global link styles for 2026 nav so it matches other pages */
+        nav a {
+          font-weight: normal;
+          text-decoration: none;
+        }
+        nav a:hover,
+        nav a:focus,
+        nav a:active {
+          text-decoration: none;
+        }
         /* Reset global link styles for 2026 footer so it matches other pages */
         main footer a {
           color: #6b6b6b;
