@@ -30,7 +30,9 @@ export function Nav() {
           !cta ? (
             // Nav links
             <Link
-              className="text-[0.82rem] font-normal text-h26-textSecondary no-underline transition-colors hover:text-h26-text"
+              className={`text-[0.82rem] font-normal text-h26-textSecondary no-underline transition-colors hover:text-h26-text border-y-2 border-transparent px-0.5 ${
+                url.startsWith('/') && router.pathname === url ? 'border-b-green-700/40' : ''
+              }`}
               href={url}
               key={text}
             >
