@@ -84,8 +84,8 @@ export const FAQPage = (): JSX.Element => {
 
                   {/* Permalink */}
                   {id && (
-                    <p className="pr-4 pb-1 text-right">
-                      <a className="permalink" href={`#${id}`}>
+                    <p className="pr-5 pb-2 text-right">
+                      <a className="font-normal text-black/50 hover:text-black/70" href={`#${id}`}>
                         <LinkOutlined /> #{id}
                       </a>
                     </p>
@@ -108,15 +108,6 @@ export const FAQPage = (): JSX.Element => {
         }
       `}</style>
       <style jsx>{`
-        .permalink {
-          display: inline-block;
-          padding: 3px 5px;
-          color: black;
-          opacity: 0.5;
-          font-weight: 400;
-          text-align: right;
-        }
-
         label {
           margin-left: 20px;
           width: 11px;
