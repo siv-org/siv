@@ -34,9 +34,6 @@ export const FAQPage = (): JSX.Element => {
     }
   }, [asPath])
 
-  const systemFont =
-    '-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif'
-
   return (
     <div className={h26fonts}>
       <Head title="FAQ" />
@@ -100,35 +97,6 @@ export const FAQPage = (): JSX.Element => {
       <style global jsx>{`
         a {
           font-weight: bold;
-        }
-        /* Reset global link styles for 2026 nav so it matches other pages */
-        nav a {
-          font-weight: normal;
-          text-decoration: none;
-        }
-        nav a:hover,
-        nav a:focus,
-        nav a:active {
-          text-decoration: none;
-        }
-        /* Match homepage 2026 line above footer */
-        main footer {
-          border-top: 1px solid rgba(0, 0, 0, 0.06);
-        }
-        /* Reset global link styles for 2026 footer so it matches other pages */
-        main footer a {
-          color: #6b6b6b;
-          font-weight: normal;
-          text-decoration: none;
-        }
-        main footer a:hover,
-        main footer a:focus,
-        main footer a:active {
-          color: #1a1a1a;
-          text-decoration: none;
-        }
-        main {
-          font-family: ${systemFont};
         }
       `}</style>
       <style jsx>{`
