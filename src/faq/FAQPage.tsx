@@ -41,7 +41,7 @@ export const FAQPage = (): JSX.Element => {
       <main className="!pt-24">
         <section>
           <h1 className="text-2xl font-bold">Frequently Asked Questions</h1>
-          <div className="button-container">
+          <div className="mb-4 text-right">
             <OnClickButton
               onClick={() => {
                 const update = [...expanded].fill(any_collapsed)
@@ -109,11 +109,6 @@ export const FAQPage = (): JSX.Element => {
         section {
           max-width: 750px;
           margin: 2rem auto 5rem;
-        }
-
-        .button-container {
-          text-align: right;
-          margin-bottom: 1rem;
         }
 
         .question {
