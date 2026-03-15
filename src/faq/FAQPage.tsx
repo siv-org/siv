@@ -113,6 +113,10 @@ export const FAQPage = (): JSX.Element => {
         nav a:active {
           text-decoration: none;
         }
+        /* Match homepage 2026 line above footer */
+        main footer {
+          border-top: 1px solid rgba(0, 0, 0, 0.06);
+        }
         /* Reset global link styles for 2026 footer so it matches other pages */
         main footer a {
           color: #6b6b6b;
