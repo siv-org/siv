@@ -103,8 +103,12 @@ export const FAQPage = (): JSX.Element => {
       <TailwindPreflight />
 
       <style global jsx>{`
-        a {
+        main a {
           font-weight: bold;
+          color: #1c72d7;
+        }
+        main a:hover {
+          text-decoration: underline;
         }
       `}</style>
     </div>
