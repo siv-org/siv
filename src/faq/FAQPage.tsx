@@ -62,7 +62,7 @@ export const FAQPage = (): JSX.Element => {
 
             {/* Question title */}
             <h3
-              className="text-[16px] font-semibold bg-gray-700/10 hover:bg-black/10 p-4 cursor-pointer flex justify-between"
+              className="text-[16px] font-semibold bg-gray-700/10 hover:bg-black/10 p-4 cursor-pointer flex justify-between scroll-mt-24"
               id={id}
               onClick={() => {
                 const update = [...expanded]
