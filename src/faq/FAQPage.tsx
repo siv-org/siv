@@ -42,6 +42,8 @@ export const FAQPage = (): JSX.Element => {
       <main className="overflow-hidden p-4 pt-24 w-full">
         <section className="max-w-[750px] mx-auto mb-10">
           <h1 className="text-2xl font-bold">Frequently Asked Questions</h1>
+
+          {/* Expand/collapse all button */}
           <div className="mb-4 text-right">
             <OnClickButton
               onClick={() => {
@@ -55,8 +57,11 @@ export const FAQPage = (): JSX.Element => {
           </div>
 
           {faq.map(({ deprecated_ids, id, q, resp }, index) => (
+            // Each item
             <div className="mb-12 border border-black/15" key={index}>
               {deprecated_ids && deprecated_ids.map((id) => <div id={id} key={id} />)}
+
+              {/* Question title */}
               <h3
                 className="text-[16px] font-semibold bg-gray-700/10 hover:bg-black/10 p-4 cursor-pointer flex justify-between"
                 id={id}
@@ -72,10 +77,12 @@ export const FAQPage = (): JSX.Element => {
                 <label>{!expanded[index] ? '+' : '–'}</label>
               </h3>
 
+              {/* Expanded content */}
               {expanded[index] && (
                 <>
                   <p className="p-4" dangerouslySetInnerHTML={{ __html: resp }} />
 
+                  {/* Permalink */}
                   {id && (
                     <p className="pr-4 pb-1 text-right">
                       <a className="permalink" href={`#${id}`}>
