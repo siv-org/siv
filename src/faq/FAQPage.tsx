@@ -38,8 +38,9 @@ export const FAQPage = (): JSX.Element => {
       <Head title="FAQ" />
 
       <Nav />
+
       <main className="overflow-hidden p-4 pt-24 w-full">
-        <section>
+        <section className="max-w-[750px] mx-auto mb-10">
           <h1 className="text-2xl font-bold">Frequently Asked Questions</h1>
           <div className="mb-4 text-right">
             <OnClickButton
@@ -100,11 +101,6 @@ export const FAQPage = (): JSX.Element => {
         }
       `}</style>
       <style jsx>{`
-        section {
-          max-width: 750px;
-          margin: 2rem auto 5rem;
-        }
-
         .question {
           margin-bottom: 3rem;
           border: 1px solid hsl(0, 0%, 87%);
