@@ -8,6 +8,7 @@ import { useAnalytics } from 'src/useAnalytics'
 
 import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
+import { h26fonts } from '../homepage2026/fonts'
 import { AddYourQuestion } from './AddYourQuestion'
 import { faq } from './faq'
 
@@ -32,12 +33,17 @@ export const FAQPage = (): JSX.Element => {
     }
   }, [asPath])
 
+  const systemFont =
+    '-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif'
+
   return (
     <>
       <Head title="FAQ" />
 
-      <Nav />
-      <main>
+      <div className={h26fonts}>
+        <Nav />
+        <main>
+          <div className="faq-content-font">
         <section>
           <h1>Frequently Asked Questions</h1>
           <div className="button-container">
@@ -87,13 +93,30 @@ export const FAQPage = (): JSX.Element => {
 
           <AddYourQuestion />
         </section>
+          </div>
 
-        <Footer />
-      </main>
+          <Footer />
+        </main>
+      </div>
 
       <style global jsx>{`
         a {
           font-weight: bold;
+        }
+        /* Reset global link styles for 2026 footer so it matches other pages */
+        main footer a {
+          color: #6b6b6b;
+          font-weight: normal;
+          text-decoration: none;
+        }
+        main footer a:hover,
+        main footer a:focus,
+        main footer a:active {
+          color: #1a1a1a;
+          text-decoration: none;
+        }
+        .faq-content-font {
+          font-family: ${systemFont};
         }
       `}</style>
       <style jsx>{`
