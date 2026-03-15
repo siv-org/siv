@@ -55,7 +55,7 @@ export const FAQPage = (): JSX.Element => {
           </div>
 
           {faq.map(({ deprecated_ids, id, q, resp }, index) => (
-            <div className="question" key={index}>
+            <div className="mb-12 border border-black/15" key={index}>
               {deprecated_ids && deprecated_ids.map((id) => <div id={id} key={id} />)}
               <h3
                 className="text-[16px] font-semibold"
@@ -101,11 +101,6 @@ export const FAQPage = (): JSX.Element => {
         }
       `}</style>
       <style jsx>{`
-        .question {
-          margin-bottom: 3rem;
-          border: 1px solid hsl(0, 0%, 87%);
-        }
-
         h3 {
           background: hsl(0, 0%, 93%);
           margin: 0;
