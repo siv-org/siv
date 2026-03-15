@@ -2,14 +2,14 @@ import { LinkOutlined } from '@ant-design/icons'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { OnClickButton } from 'src/_shared/Button'
-import { Footer } from 'src/homepage/Footer'
+import { Footer } from 'src/homepage2026/Footer'
+import { Nav } from 'src/homepage2026/Nav'
 import { useAnalytics } from 'src/useAnalytics'
 
 import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
 import { AddYourQuestion } from './AddYourQuestion'
 import { faq } from './faq'
-import { HeaderBar } from './HeaderBar'
 
 export const FAQPage = (): JSX.Element => {
   useAnalytics()
@@ -36,7 +36,7 @@ export const FAQPage = (): JSX.Element => {
     <>
       <Head title="FAQ" />
 
-      <HeaderBar />
+      <Nav />
       <main>
         <section>
           <h1>Frequently Asked Questions</h1>
