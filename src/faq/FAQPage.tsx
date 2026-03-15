@@ -38,7 +38,7 @@ export const FAQPage = (): JSX.Element => {
       <Head title="FAQ" />
 
       <Nav />
-      <main className="!pt-24">
+      <main className="overflow-hidden p-4 pt-24 w-full">
         <section>
           <h1 className="text-2xl font-bold">Frequently Asked Questions</h1>
           <div className="mb-4 text-right">
@@ -100,12 +100,6 @@ export const FAQPage = (): JSX.Element => {
         }
       `}</style>
       <style jsx>{`
-        main {
-          width: 100%;
-          padding: 1rem;
-          overflow-x: hidden;
-        }
-
         section {
           max-width: 750px;
           margin: 2rem auto 5rem;
