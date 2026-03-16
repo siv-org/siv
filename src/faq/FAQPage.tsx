@@ -43,7 +43,7 @@ export const FAQPage = (): JSX.Element => {
         <h1 className="text-2xl font-bold">Frequently Asked Questions</h1>
 
         {/* Expand/collapse all button */}
-        <div className="mb-4 text-right">
+        <div className="mt-2 mb-4 text-right sm:mt-0">
           <OnClickButton
             onClick={() => {
               const update = [...expanded].fill(any_collapsed)
