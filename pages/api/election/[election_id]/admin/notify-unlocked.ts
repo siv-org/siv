@@ -68,7 +68,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           recipient: email,
           subject: 'Election Results Posted',
           text: `<h2 style="margin: 0">Election Results Posted</h2>
-          ${voters.length} votes for "${election_title}" have been unlocked: ${req.headers.origin}/election/${election_id}
+          ${voters.length} vote${voters.length !== 1 ? 's' : ''} for "${election_title}" ha${
+            voters.length !== 1 ? 've' : 's'
+          } been unlocked: ${req.headers.origin}/election/${election_id}
           `,
         }).then(() => {
           // Wait a second after sending to not overload Mailgun
