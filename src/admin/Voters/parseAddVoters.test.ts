@@ -12,11 +12,15 @@ describe('parseAddVoters', () => {
   })
 
   test('parses tab-separated two-column paste (email + display name)', () => {
-    expect(parseAddVoters('alice@email.com\tAlice Example')).toEqual([{ display_name: 'Alice Example', email: 'alice@email.com' }])
+    expect(parseAddVoters('alice@email.com\tAlice Example')).toEqual([
+      { display_name: 'Alice Example', email: 'alice@email.com' },
+    ])
   })
 
   test('parses tab-separated two-column paste (display name + email)', () => {
-    expect(parseAddVoters('Alice Example\talice@email.com')).toEqual([{ display_name: 'Alice Example', email: 'alice@email.com' }])
+    expect(parseAddVoters('Alice Example\talice@email.com')).toEqual([
+      { display_name: 'Alice Example', email: 'alice@email.com' },
+    ])
   })
 
   test('tolerates a header row', () => {
@@ -41,8 +45,8 @@ describe('parseAddVoters', () => {
     ])
   })
 
-  test('dedupes by normalized email', () => {
+  test.failing('DOES NOT dedupe by normalized email', () => {
+    // This is intentional, because we handle de-duplication in the backend, and show the duplicates to the user.
     expect(parseAddVoters('A@B.com\na@b.com')).toEqual([{ email: 'a@b.com' }])
   })
 })
-
