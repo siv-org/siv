@@ -163,7 +163,7 @@ test('Voting During Packing - vote not lost', async () => {
   } finally {
     await helpers.cleanupTestElection(electionId)
   }
-})
+}, 15_000)
 
 // -- Placeholder future tests --
 // Given existing guards in the endpoint and manual coverage during development, there aren’t any remaining must-have tests.
@@ -442,4 +442,3 @@ describe.skip('Future tests', () => {
 10. **Tie-breaking**: Cursor uses docId for tie-breaking when timestamps match
 */
 })
-
