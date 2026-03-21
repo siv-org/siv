@@ -28,6 +28,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         .replace(' day', 'd')
         .replace(' week', 'w')
         .replace('s', ''),
+      id: doc.id,
       ...pick(data, ['election_manager', 'election_title']),
       stats: `${plural(data.num_voters, 'voter')}. votes: ${data.num_pending_votes || 0} pending, ${
         data.num_votes
@@ -38,7 +39,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const formattedKeys = mapKeys(elections_by_manager, (value, key) => key + ` — ${value.length}`)
 
   const formatted = mapValues(formattedKeys, (elections) =>
-    elections.map((e, i) => `${i + 1}. ${e.created}  ${e.election_title}  [${e.stats}]`),
+    elections.map((e, i) => `${i + 1}. ${e.created} [${e.id}] ${e.election_title}  [${e.stats}]`),
   )
 
   res.status(200).json({
