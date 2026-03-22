@@ -30,9 +30,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         .replace('s', ''),
       id: doc.id,
       ...pick(data, ['election_manager', 'election_title']),
-      stats: `${plural(data.num_voters, 'voter')}. votes: ${data.num_pending_votes || 0} pending, ${
-        data.num_votes
-      } total, ${(data.decrypted || []).length} unlocked`,
+      stats: `${plural(data.num_voters, 'voter')}. votes: ${
+        data.num_pending_votes ? `${data.num_pending_votes} pending, ` : ''
+      }${data.num_votes} total${data.num_votes ? `, ${data.decrypted?.length || 0} unlocked` : ''}`,
     }
   })
   const elections_by_manager = groupBy(elections, 'election_manager')
