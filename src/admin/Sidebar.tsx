@@ -15,7 +15,6 @@ export const steps = ['Ballot Design', 'Privacy', 'Voters']
 
 const linkClasses =
   'my-1 block cursor-pointer rounded-[5px] py-[3px] px-2 text-base font-medium text-[#000c] transition-colors duration-50 ease-linear hover:bg-[#ffffff58] hover:text-black hover:no-underline'
-const inputClasses = 'relative bottom-0.5 mr-2'
 
 export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => void }) => {
   const { election_id, section } = useRouter().query
@@ -59,7 +58,7 @@ export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => voi
                   onClick={closeMenu}
                 >
                   {name !== 'Voters' && (
-                    <input checked={completed[name]} className={inputClasses} readOnly type="checkbox" />
+                    <input checked={completed[name]} className="relative bottom-0.5 mr-2" readOnly type="checkbox" />
                   )}
                   {name}
                 </Link>
