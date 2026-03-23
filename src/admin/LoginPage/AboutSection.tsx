@@ -6,10 +6,8 @@ import { breakpoint } from './LoginPage'
 export const AboutSection = () => {
   return (
     <aside>
-      <Link href="/" legacyBehavior>
-        <a>
-          <img className="logo" src="/login/circle-logo.png" />
-        </a>
+      <Link href="/">
+        <img className="logo" src="/login/circle-logo.png" />
       </Link>
       <h3>
         Fast, private, & verifiable <br />
