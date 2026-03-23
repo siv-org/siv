@@ -44,8 +44,7 @@ module.exports = [
       parser: tsParser,
       parserOptions: {
         ecmaFeatures: { jsx: true },
-        project: './tsconfig.json',
-        tsconfigRootDir: process.cwd(),
+        projectService: true,
       },
     },
     plugins: { '@typescript-eslint': tseslint },
