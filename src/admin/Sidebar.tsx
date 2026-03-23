@@ -47,9 +47,10 @@ export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => voi
           <>
             {/* Election Management section */}
             <>
-              <label>
+              <Label>
                 <ApartmentOutlined style={{ marginRight: 5 }} /> Election Management
-              </label>
+              </Label>
+
               {steps.map((name) => (
                 <Link
                   className={`${linkClasses} ${urled(name) === section ? '!bg-white' : ''}`}
@@ -67,10 +68,11 @@ export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => voi
 
             {/* Post Election section */}
             <>
-              <label>
+              <Label>
                 <SnippetsOutlined style={{ marginRight: 5 }} />
                 Post Election
-              </label>
+              </Label>
+
               <Link
                 className={`${linkClasses} ${'marked-ballots' === section ? '!bg-white' : ''}`}
                 href={`/admin/${election_id}/marked-ballots`}
@@ -82,10 +84,11 @@ export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => voi
 
             {/* Public pages section */}
             <>
-              <label>
+              <Label>
                 <LinkOutlined style={{ marginRight: 5 }} />
                 Public Pages
-              </label>
+              </Label>
+
               <Link className={linkClasses} href={`/election/${election_id}/vote`} target="_blank">
                 Cast Vote
               </Link>
@@ -98,10 +101,11 @@ export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => voi
       </main>
 
       <div className="pb-4">
-        <label>
+        <Label>
           <QuestionCircleOutlined style={{ marginRight: 5 }} />
           Support
-        </label>
+        </Label>
+
         <Link className={linkClasses} href="/protocol" target="_blank">
           Protocol Overview
         </Link>
@@ -113,15 +117,10 @@ export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => voi
           Logout
         </a>
       </div>
-
-      <style jsx>{`
-        label {
-          display: block;
-          margin-top: 30px;
-          opacity: 0.5;
-          padding-left: 8px;
-        }
-      `}</style>
     </div>
   )
 }
+
+const Label = ({ children }: { children: React.ReactNode }) => (
+  <label className="block pl-2 mt-8 opacity-50">{children}</label>
+)
