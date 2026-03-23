@@ -9,7 +9,7 @@
     "e2e": "cypress run --config-file cypress/cypress-config.json",
     "format": "prettier --write **/*.{js,ts,tsx}",
     "postinstall": "patch-package",
-    "lint": "eslint src/ pages/",
+    "lint": "eslint src/ pages/ --cache",
     "start": "next start",
     "test": "bun lint && bun typecheck && bun unit && bun e2e",
     "test:crypto": "bun test src/crypto/tests/*.test.ts",
