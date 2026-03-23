@@ -5,7 +5,7 @@ import { GlobalCSS } from 'src/GlobalCSS'
 
 export const DocsIndexPage = ({ files }: DocsIndexPageProps) => {
   return (
-    <main>
+    <main className="p-4">
       <h1>SIV Docs</h1>
       <h3>Pages:</h3>
       <ul>
@@ -15,11 +15,7 @@ export const DocsIndexPage = ({ files }: DocsIndexPageProps) => {
           </li>
         ))}
       </ul>
-      <style jsx>{`
-        main {
-          padding: 1rem;
-        }
-      `}</style>
+
       <GlobalCSS />
     </main>
   )
