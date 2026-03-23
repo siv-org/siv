@@ -11,9 +11,7 @@ export const DocsIndexPage = ({ files }: DocsIndexPageProps) => {
       <ul>
         {files.map((file) => (
           <li key={file}>
-            <Link href={`docs/${file}`} legacyBehavior>
-              <a>{startCase(file)}</a>
-            </Link>
+            <Link href={`docs/${file}`}>{startCase(file)}</Link>
           </li>
         ))}
       </ul>
