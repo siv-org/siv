@@ -72,7 +72,7 @@ export function SubmittedScreen({
       <h3 className="mt-16">How your vote was submitted:</h3>
 
       <p>
-        <img id="lock-icon" src="/vote/lock.png" width="12px" />
+        <img className="relative top-[3px] mr-[7px] opacity-80" src="/vote/lock.png" width="12px" />
         To protect your privacy, your vote was encrypted before submission:
       </p>
 
@@ -96,16 +96,6 @@ export function SubmittedScreen({
           <DetailedEncryptionReceipt {...{ auth, election_id, state }} />
         </>
       )}
-
-      <style jsx>{`
-        #lock-icon {
-          margin-right: 7px;
-          position: relative;
-          top: 3px;
-          opacity: 0.8;
-        }
-
-      `}</style>
     </NoSsr>
   )
 }
