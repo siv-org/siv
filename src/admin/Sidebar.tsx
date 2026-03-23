@@ -40,7 +40,7 @@ export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => voi
             if (el) el.scrollTop = 0
           }}
         >
-          <h2 className="logo sm:hidden">SIV</h2>
+          <h2 className="my-4 mx-2 text-2xl font-bold text-[#010b26] sm:hidden">SIV</h2>
         </Link>
 
         {election_id && (
@@ -115,13 +115,6 @@ export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => voi
       </div>
 
       <style jsx>{`
-        .logo {
-          font-size: 24px;
-          font-weight: 700;
-          color: #010b26;
-          margin: 16px 8px;
-        }
-
         label {
           display: block;
           margin-top: 30px;
