@@ -22,9 +22,7 @@ const commonConfig = {
     },
     sourceType: 'module',
   },
-  plugins: {
-    react: reactPlugin,
-  },
+  plugins: { react: reactPlugin },
   rules: {
     ...reactPlugin.configs.flat.recommended.rules,
     'no-unreachable': 'warn',
@@ -42,10 +40,7 @@ module.exports = [
     files: ['**/*.ts?(x)'],
     languageOptions: {
       parser: tsParser,
-      parserOptions: {
-        ecmaFeatures: { jsx: true },
-        projectService: true,
-      },
+      parserOptions: { projectService: true },
     },
     plugins: { '@typescript-eslint': tseslint },
     rules: {
