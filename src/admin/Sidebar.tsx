@@ -14,7 +14,7 @@ export const Sidebar = () => (
 export const steps = ['Ballot Design', 'Privacy', 'Voters']
 
 const linkClasses =
-  'my-1 mx-0 block cursor-pointer rounded-[5px] py-[3px] px-2 text-base font-medium text-[#000c] transition-colors duration-50 ease-linear hover:bg-[#ffffff58] hover:text-black hover:no-underline'
+  'my-1 block cursor-pointer rounded-[5px] py-[3px] px-2 text-base font-medium text-[#000c] transition-colors duration-50 ease-linear hover:bg-[#ffffff58] hover:text-black hover:no-underline'
 const inputClasses = 'relative bottom-0.5 mr-2'
 
 export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => void }) => {
@@ -29,7 +29,7 @@ export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => voi
   const urled = (s: string) => s.toLowerCase().replaceAll(' ', '-')
 
   return (
-    <div className="sidebar">
+    <div className="flex h-full w-[215px] flex-col justify-between overflow-y-auto bg-[#eee] pl-2 pr-[13px]">
       <main>
         <Link
           className={`${linkClasses} hover:!bg-white/0 !p-0`}
@@ -115,21 +115,6 @@ export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => voi
       </div>
 
       <style jsx>{`
-        .sidebar {
-          width: 215px;
-          padding: 0px 13px;
-          padding-left: 8px;
-          background-color: #eee;
-
-          height: 100%;
-
-          overflow-y: auto;
-
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-        }
-
         .logo {
           font-size: 24px;
           font-weight: 700;
