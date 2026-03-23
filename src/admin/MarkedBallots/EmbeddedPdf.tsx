@@ -12,7 +12,7 @@ export const EmbeddedPdf = ({ index, vote }: { index: number; vote: Record<strin
 
       const pdfBytes = await (await markPdf({ ballot_design, election_title, vote })).save()
 
-      const blob = new Blob([pdfBytes], { type: 'application/pdf' })
+      const blob = new Blob([new Uint8Array(pdfBytes)], { type: 'application/pdf' })
       const blobUrl = URL.createObjectURL(blob)
       const el = document.getElementById(`iframe-${index}`) as HTMLIFrameElement
       if (!el) return alert("Can't find iframe to insert pdf")
