@@ -9,7 +9,7 @@ export const YourConventionsLink = () => {
         </h2>
         <p>
           Reusable voter credentials, for multiple ballots throughout a day.{' '}
-          <a className="ml-3 opacity-70 hover:no-underline">Go {'→'}</a>
+          <span className="ml-3 text-blue-600 opacity-70">Go {'→'}</span>
         </p>
       </div>
     </Link>
