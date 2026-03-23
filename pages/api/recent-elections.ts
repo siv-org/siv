@@ -23,6 +23,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Format elections list
   const elections = (await electionsDocs).docs.map((doc) => {
     const data = doc.data()
+
+    const pctUnlocked = Math.floor(((data.decrypted?.length || 0) / data.num_votes) * 100)
+
     return {
       created: timeAgo(new Date(data.created_at._seconds * 1000))
         .replace(' day', 'd')
@@ -32,7 +35,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       ...pick(data, ['election_manager', 'election_title']),
       stats: `${plural(data.num_voters, 'voter')}. votes: ${
         data.num_pending_votes ? `${data.num_pending_votes} pending, ` : ''
-      }${data.num_votes} total${data.num_votes ? `, ${data.decrypted?.length || 0} unlocked` : ''}`,
+      }${data.num_votes} total${data.num_votes ? `, ${pctUnlocked}% unlocked` : ''}`,
     }
   })
   const elections_by_manager = groupBy(elections, 'election_manager')
