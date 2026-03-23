@@ -1,6 +1,5 @@
 const js = require('@eslint/js')
-const tseslint = require('@typescript-eslint/eslint-plugin')
-const tsParser = require('@typescript-eslint/parser')
+const tseslint = require('typescript-eslint')
 const perfectionist = require('eslint-plugin-perfectionist')
 const reactPlugin = require('eslint-plugin-react')
 const globals = require('globals')
@@ -39,8 +38,8 @@ module.exports = [
   // TypeScript-specific overrides
   merge({}, commonConfig, {
     files: ['**/*.{ts,tsx}'],
-    languageOptions: { parser: tsParser, parserOptions: { projectService: true } },
-    plugins: { '@typescript-eslint': tseslint },
-    rules: { ...tseslint.configs.strict.rules },
+    languageOptions: { parser: tseslint.parser, parserOptions: { projectService: true } },
+    plugins: { '@typescript-eslint': tseslint.plugin },
+    rules: { ...tseslint.plugin.configs.strict.rules },
   }),
 ]
