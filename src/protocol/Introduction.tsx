@@ -6,10 +6,8 @@ import logo from './siv-logo.png'
 export const Introduction = () => {
   return (
     <div style={{ padding: '10px 30px' }}>
-      <Link href="/" legacyBehavior>
-        <a className="logo-container">
-          <Image alt="SIV Logo" fill src={logo} style={{ objectFit: 'contain' }} />
-        </a>
+      <Link className="relative my-2.5 block size-10 transition duration-50 ease-linear hover:opacity-80" href="/">
+        <Image alt="SIV Logo" fill src={logo} style={{ objectFit: 'contain' }} />
       </Link>
 
       <h1 style={{ fontSize: 21, fontWeight: 700, marginBottom: 0, opacity: 0.9 }}>Secure Internet Voting Protocol</h1>
@@ -44,19 +42,6 @@ export const Introduction = () => {
       <h3 style={{ fontWeight: 400, marginBottom: 0, marginTop: 35 }}>Here is how SIV meets all three requirements:</h3>
 
       <style jsx>{`
-        .logo-container {
-          width: 40px;
-          height: 40px;
-          margin: 10px 0;
-          display: block;
-          position: relative;
-          transition: 0.05s opacity linear;
-        }
-
-        .logo-container:hover {
-          opacity: 0.8;
-        }
-
         p {
           margin-top: 0;
           font-size: 15px;
