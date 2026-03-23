@@ -25,7 +25,7 @@ const commonConfig = {
   rules: {
     ...reactPlugin.configs.flat.recommended.rules,
     'no-unreachable': 'warn',
-    'react/no-unknown-property': [2, { ignore: ['jsx', 'global'] }], // inserted by next's styled-jsx
+    'react/no-unknown-property': [2, { ignore: ['jsx', 'global'] }], // styled-jsx
   },
   settings: { react: { version: 'detect' } },
 }
