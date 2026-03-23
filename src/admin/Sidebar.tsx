@@ -97,7 +97,7 @@ export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => voi
         )}
       </main>
 
-      <div className="bottom">
+      <div className="pb-4">
         <label>
           <QuestionCircleOutlined style={{ marginRight: 5 }} />
           Support
@@ -120,10 +120,6 @@ export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => voi
           margin-top: 30px;
           opacity: 0.5;
           padding-left: 8px;
-        }
-
-        .bottom {
-          padding-bottom: 15px;
         }
       `}</style>
     </div>
