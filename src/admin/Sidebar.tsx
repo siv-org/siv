@@ -13,6 +13,10 @@ export const Sidebar = () => (
 
 export const steps = ['Ballot Design', 'Privacy', 'Voters']
 
+const linkClasses =
+  'my-1 mx-0 block cursor-pointer rounded-[5px] py-[3px] px-2 text-base font-medium text-[#000c] transition-colors duration-50 ease-linear hover:bg-[#ffffff58] hover:text-black hover:no-underline'
+const inputClasses = 'relative bottom-0.5 mr-2'
+
 export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => void }) => {
   const { election_id, section } = useRouter().query
   const { ballot_design_finalized, threshold_public_key } = useStored()
@@ -28,7 +32,7 @@ export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => voi
     <div className="sidebar">
       <main>
         <Link
-          className="hover:!bg-white/0 !p-0"
+          className={`${linkClasses} hover:!bg-white/0 !p-0`}
           href="/admin"
           onClick={() => {
             closeMenu()
@@ -47,11 +51,16 @@ export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => voi
                 <ApartmentOutlined style={{ marginRight: 5 }} /> Election Management
               </label>
               {steps.map((name) => (
-                <Link href={`/admin/${election_id}/${urled(name)}`} key={name} legacyBehavior>
-                  <a className={urled(name) === section ? 'current' : ''} onClick={closeMenu}>
-                    {name !== 'Voters' && <input checked={completed[name]} readOnly type="checkbox" />}
-                    {name}
-                  </a>
+                <Link
+                  className={`${linkClasses} ${urled(name) === section ? '!bg-white' : ''}`}
+                  href={`/admin/${election_id}/${urled(name)}`}
+                  key={name}
+                  onClick={closeMenu}
+                >
+                  {name !== 'Voters' && (
+                    <input checked={completed[name]} className={inputClasses} readOnly type="checkbox" />
+                  )}
+                  {name}
                 </Link>
               ))}
             </>
@@ -62,10 +71,12 @@ export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => voi
                 <SnippetsOutlined style={{ marginRight: 5 }} />
                 Post Election
               </label>
-              <Link href={`/admin/${election_id}/marked-ballots`} legacyBehavior>
-                <a className={'marked-ballots' === section ? 'current' : ''} onClick={closeMenu}>
-                  Marked Ballots
-                </a>
+              <Link
+                className={`${linkClasses} ${'marked-ballots' === section ? '!bg-white' : ''}`}
+                href={`/admin/${election_id}/marked-ballots`}
+                onClick={closeMenu}
+              >
+                Marked Ballots
               </Link>
             </>
 
@@ -75,11 +86,11 @@ export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => voi
                 <LinkOutlined style={{ marginRight: 5 }} />
                 Public Pages
               </label>
-              <Link href={`/election/${election_id}/vote`} legacyBehavior>
-                <a target="_blank">Cast Vote</a>
+              <Link className={linkClasses} href={`/election/${election_id}/vote`} target="_blank">
+                Cast Vote
               </Link>
-              <Link href={`/election/${election_id}`} legacyBehavior>
-                <a target="_blank">Election Results</a>
+              <Link className={linkClasses} href={`/election/${election_id}`} target="_blank">
+                Election Results
               </Link>
             </>
           </>
@@ -91,14 +102,14 @@ export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => voi
           <QuestionCircleOutlined style={{ marginRight: 5 }} />
           Support
         </label>
-        <Link href="/protocol" legacyBehavior>
-          <a target="_blank">Protocol Overview</a>
+        <Link className={linkClasses} href="/protocol" target="_blank">
+          Protocol Overview
         </Link>
-        <Link href="mailto:help@siv.org" legacyBehavior>
-          <a>Get Help</a>
+        <Link className={linkClasses} href="mailto:help@siv.org">
+          Get Help
         </Link>
 
-        <a className="opacity-70" onClick={promptLogout}>
+        <a className={`opacity-70 ${linkClasses}`} onClick={promptLogout}>
           Logout
         </a>
       </div>
@@ -131,35 +142,6 @@ export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => voi
           margin-top: 30px;
           opacity: 0.5;
           padding-left: 8px;
-        }
-
-        a {
-          display: block;
-          padding: 3px 8px;
-          border-radius: 5px;
-          margin: 4px 0;
-          font-weight: 500;
-          cursor: pointer;
-          color: #000c;
-          transition: 0.05s color linear;
-          font-size: 16px;
-        }
-
-        a:hover {
-          color: #000;
-          background-color: #ffffff58;
-          text-decoration: none;
-        }
-
-        a.current,
-        a.current:hover {
-          background-color: #fff !important;
-        }
-
-        a input {
-          position: relative;
-          bottom: 2px;
-          margin-right: 8px;
         }
 
         .bottom {
