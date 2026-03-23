@@ -38,7 +38,7 @@ module.exports = [
 
   // TypeScript-specific overrides
   merge({}, commonConfig, {
-    files: ['**/*.ts?(x)'],
+    files: ['**/*.{ts,tsx}'],
     languageOptions: { parser: tsParser, parserOptions: { projectService: true } },
     plugins: { '@typescript-eslint': tseslint },
     rules: { ...tseslint.configs.strict.rules },
