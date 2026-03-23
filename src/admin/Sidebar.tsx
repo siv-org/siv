@@ -14,7 +14,7 @@ export const Sidebar = () => (
 export const steps = ['Ballot Design', 'Privacy', 'Voters']
 
 const linkClasses =
-  'my-1 block cursor-pointer rounded-[5px] py-[3px] px-2 text-base font-medium text-[#000c] transition-colors duration-50 ease-linear hover:bg-[#ffffff58] hover:text-black hover:no-underline'
+  'my-1 block cursor-pointer rounded-[5px] py-[3px] px-2 text-[16px] font-medium text-[#000c] transition-colors duration-50 ease-linear hover:bg-[#ffffff58] hover:text-black hover:no-underline'
 
 export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => void }) => {
   const { election_id, section } = useRouter().query
@@ -121,5 +121,5 @@ export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => voi
 }
 
 const Label = ({ children }: { children: React.ReactNode }) => (
-  <label className="block pl-2 mt-8 opacity-50">{children}</label>
+  <label className="block pl-2 mt-[30px] opacity-50">{children}</label>
 )
