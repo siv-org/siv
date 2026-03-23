@@ -8,8 +8,8 @@ export const Headerbar = ({ hideLogin }: { hideLogin?: boolean }) => {
     <header>
       <div>
         <h2>
-          <Link href="/" legacyBehavior>
-            <a>Secure Internet Voting</a>
+          <Link className="text-white" href="/">
+            Secure Internet Voting
           </Link>
         </h2>
         {!hideLogin && (
@@ -45,10 +45,6 @@ export const Headerbar = ({ hideLogin }: { hideLogin?: boolean }) => {
         h2 {
           white-space: nowrap;
           margin-right: 2rem;
-        }
-
-        h2 a {
-          color: white;
         }
 
         section {
