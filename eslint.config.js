@@ -9,7 +9,6 @@ const { merge } = require('lodash')
 // Common configuration shared between JS and TS files
 const commonConfig = {
   files: ['**/*.js'],
-  ignores: ['.next', 'node_modules', 'dist', 'build'],
   languageOptions: {
     ecmaVersion: 2018,
     globals: {
@@ -32,19 +31,16 @@ const commonConfig = {
 }
 
 module.exports = [
+  { ignores: ['.next', 'node_modules', 'dist', 'build'] },
   js.configs.recommended,
   perfectionist.configs['recommended-natural'],
   commonConfig,
+
   // TypeScript-specific overrides
   merge({}, commonConfig, {
     files: ['**/*.ts?(x)'],
-    languageOptions: {
-      parser: tsParser,
-      parserOptions: { projectService: true },
-    },
+    languageOptions: { parser: tsParser, parserOptions: { projectService: true } },
     plugins: { '@typescript-eslint': tseslint },
-    rules: {
-      ...tseslint.configs.strict.rules,
-    },
+    rules: { ...tseslint.configs.strict.rules },
   }),
 ]
