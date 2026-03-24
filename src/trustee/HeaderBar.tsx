@@ -1,8 +1,8 @@
 import Link from 'next/link'
 
 export const HeaderBar = (): JSX.Element => (
-  <div className="headerbar-container">
-    <div>
+  <div className="bg-[linear-gradient(90deg,#010b26_0%,#072054_100%)]">
+    <div className="mx-auto flex w-full max-w-[750px] items-baseline p-4 max-[480px]:flex-col">
       <Link className="text-[24px] font-bold text-white hover:no-underline" href="/">
         SIV
       </Link>
@@ -10,31 +10,5 @@ export const HeaderBar = (): JSX.Element => (
         Protocol
       </Link>
     </div>
-    <style jsx>{`
-      .headerbar-container {
-        background: rgb(1, 5, 11);
-        background: linear-gradient(90deg, #010b26 0%, #072054 100%);
-
-        color: #fff;
-
-        cursor: default;
-      }
-
-      .headerbar-container > div {
-        max-width: 750px;
-        width: 100%;
-        margin: 0 auto;
-        padding: 1rem;
-
-        display: flex;
-        align-items: baseline;
-      }
-
-      @media (max-width: 480px) {
-        div {
-          flex-direction: column;
-        }
-      }
-    `}</style>
   </div>
 )
