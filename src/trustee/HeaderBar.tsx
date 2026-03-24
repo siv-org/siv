@@ -3,11 +3,11 @@ import Link from 'next/link'
 export const HeaderBar = (): JSX.Element => (
   <div className="headerbar-container">
     <div>
-      <Link href="/" legacyBehavior>
-        <a className="big">SIV</a>
+      <Link className="text-[24px] font-bold text-white hover:no-underline" href="/">
+        SIV
       </Link>
-      <Link href="/protocol" legacyBehavior>
-        <a>Protocol</a>
+      <Link className="ml-12 text-[16px] text-white max-[480px]:mt-2 max-[480px]:ml-0" href="/protocol">
+        Protocol
       </Link>
     </div>
     <style jsx>{`
@@ -30,34 +30,7 @@ export const HeaderBar = (): JSX.Element => (
         align-items: baseline;
       }
 
-      .big {
-        font-size: 24px;
-        font-weight: 700;
-        color: white;
-      }
-
-      a:not(:first-child) {
-        margin-left: 3rem;
-        color: white;
-        font-size: 16px;
-        text-decoration: none;
-        font-weight: 400;
-      }
-
-      a:hover {
-        text-decoration: underline;
-      }
-
-      a.big:hover {
-        text-decoration: none;
-      }
-
       @media (max-width: 480px) {
-        a:not(:first-child) {
-          margin-left: 0;
-          margin-top: 0.5rem;
-        }
-
         div {
           flex-direction: column;
         }
