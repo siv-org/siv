@@ -142,7 +142,7 @@ export function LoginFormSection() {
               value={org}
             />
           </label>
-          <div className="p-5 rounded-xl border shadow-sm border-h26-border/80 bg-white/90">
+          <div className="rounded-xl border border-h26-border/25 bg-white/90 p-5 shadow-sm">
             <h2 className="font-serif26 text-[1.05rem] font-normal leading-snug text-h26-text">
               How do you want to use SIV?
             </h2>
