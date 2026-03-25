@@ -154,6 +154,7 @@ export function LoginFormSection() {
                 <input
                   className="w-full rounded-lg border border-h26-border bg-white px-3 py-2.5 text-[0.95rem] text-h26-text outline-none focus:border-h26-green focus:ring-1 focus:ring-h26-green/30"
                   onChange={(e) => setElectionType(e.target.value)}
+                  placeholder="e.g. Government, NGO, Social"
                   type="text"
                   value={electionType}
                 />
