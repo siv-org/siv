@@ -128,9 +128,6 @@ export function LoginFormSection() {
   if (step === 'signup-profile') {
     return (
       <div className="mt-8">
-        <p className="mb-4 text-[0.9rem] text-h26-textSecondary">
-          No account found for this email. Enter your details to request access.
-        </p>
         {error && (
           <p
             className="mb-3 rounded-lg border border-red-200 bg-red-50/80 px-3 py-2 text-[0.8rem] font-medium text-red-700"
@@ -149,6 +146,12 @@ export function LoginFormSection() {
               value={email}
             />
           </label>
+          <p
+            className="rounded-lg border border-h26-green/30 bg-h26-green/10 px-3.5 py-3 text-[0.92rem] font-medium leading-snug text-h26-text shadow-sm"
+            role="status"
+          >
+            No account found for this email. Enter your details to request access.
+          </p>
           <div className="grid gap-4 sm:grid-cols-2">
             <label className="block">
               <span className="mb-1 block text-[0.75rem] font-medium uppercase tracking-wider text-h26-muted">

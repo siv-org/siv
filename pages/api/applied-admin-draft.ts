@@ -7,7 +7,7 @@ import { firebase } from './_services'
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'POST') return res.status(405).end()
 
-  const { email, first_name, last_name, your_organization, step } = req.body as {
+  const { email, first_name, last_name, step, your_organization } = req.body as {
     email?: string
     first_name?: string
     last_name?: string
