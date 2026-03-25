@@ -23,21 +23,17 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     your_organization?: string
   } = req.body
 
-  // Confirm they sent a valid email address
+  // Confirm they sent a valid email address (only required field)
   if (!email) return res.status(400).send({ error: 'Missing email' })
   if (!validateEmail(email)) return res.status(400).send({ error: 'Invalid email' })
   email = email.toLowerCase()
 
-  if (
-    typeof election_type !== 'string' ||
-    !election_type.trim() ||
-    typeof election_date !== 'string' ||
-    !election_date.trim() ||
-    typeof election_num_voters !== 'string' ||
-    !election_num_voters.trim()
-  ) {
-    return res.status(400).send({ error: 'Please provide election type, date, and number of voters.' })
-  }
+  const first = typeof first_name === 'string' ? first_name.trim() : ''
+  const last = typeof last_name === 'string' ? last_name.trim() : ''
+  const org = typeof your_organization === 'string' ? your_organization.trim() : ''
+  const et = typeof election_type === 'string' ? election_type.trim() : ''
+  const ed = typeof election_date === 'string' ? election_date.trim() : ''
+  const env = typeof election_num_voters === 'string' ? election_num_voters.trim() : ''
 
   // Stop if they already have an account
   const adminDoc = firebase.firestore().collection('admins').doc(email)
@@ -52,19 +48,32 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     .firestore()
     .collection('applied-admins')
     .doc(doc_id)
-    .create({ created_at: new Date(), ...req.body, email, init_login_code })
+    .create({
+      created_at: new Date(),
+      ...req.body,
+      election_date: ed,
+      election_num_voters: env,
+      election_type: et,
+      email,
+      first_name: first,
+      init_login_code,
+      last_name: last,
+      your_organization: org,
+    })
+
+  const blank = (s: string) => (s ? s : '—')
 
   // Send message w/ Approval Link
   const message = `New SIV Admin Application
 
-First Name: ${first_name}
-Last Name: ${last_name}
+First Name: ${blank(first)}
+Last Name: ${blank(last)}
 Email: ${email}
-Organization: ${your_organization}
+Organization: ${blank(org)}
 
-Election details — type: ${election_type.trim()}
-Election details — date: ${election_date.trim()}
-Election details — number of voters: ${election_num_voters.trim()}
+Election details — type: ${blank(et)}
+Election details — date: ${blank(ed)}
+Election details — number of voters: ${blank(env)}
 
 Link to approve: ${req.headers.origin}/approve-admin?id=${doc_id}
 

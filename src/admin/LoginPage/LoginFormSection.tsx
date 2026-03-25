@@ -48,16 +48,8 @@ export function LoginFormSection() {
   }
 
   const handleSignupSubmit = async () => {
-    if (!firstName.trim() || !lastName.trim() || !org.trim()) {
-      setError('Please fill in first name, last name, and organization.')
-      return
-    }
     const election_type =
       electionCategory === 'other' ? electionCategoryOther.trim() : electionCategory === '' ? '' : electionCategory
-    if (!election_type || !electionDate.trim() || !electionNumVoters.trim()) {
-      setError('Please choose how you’ll use SIV, and add a date and approximate number of voters.')
-      return
-    }
     setError('')
     setPending(true)
     const response = await api('admin-create-account', {
