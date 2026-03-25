@@ -17,6 +17,9 @@ export function LoginFormSection() {
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [org, setOrg] = useState('')
+  const [electionType, setElectionType] = useState('')
+  const [electionDate, setElectionDate] = useState('')
+  const [electionNumVoters, setElectionNumVoters] = useState('')
   const submitRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
@@ -48,6 +51,10 @@ export function LoginFormSection() {
       setError('Please fill in first name, last name, and organization.')
       return
     }
+    if (!electionType.trim() || !electionDate.trim() || !electionNumVoters.trim()) {
+      setError('Please fill in election type, date, and number of voters.')
+      return
+    }
     setError('')
     setPending(true)
     const response = await api('admin-create-account', {
@@ -55,6 +62,9 @@ export function LoginFormSection() {
       first_name: firstName.trim(),
       last_name: lastName.trim(),
       your_organization: org.trim(),
+      election_type: electionType.trim(),
+      election_date: electionDate.trim(),
+      election_num_voters: electionNumVoters.trim(),
     })
     setPending(false)
     if (response.status !== 200) {
@@ -131,6 +141,45 @@ export function LoginFormSection() {
               value={org}
             />
           </label>
+          <fieldset className="grid gap-4 border-0 p-0">
+            <legend className="mb-1 block w-full text-[0.75rem] font-medium uppercase tracking-wider text-h26-muted">
+              Election details
+            </legend>
+            <p className="-mt-1 text-[0.8rem] leading-[1.5] text-h26-textSecondary">
+              Type, date, and number of voters for the election you plan to run.
+            </p>
+            <div className="grid gap-4 sm:grid-cols-3">
+              <label className="block sm:col-span-1">
+                <span className="mb-1 block text-[0.72rem] font-medium text-h26-muted">Type</span>
+                <input
+                  className="w-full rounded-lg border border-h26-border bg-white px-3 py-2.5 text-[0.95rem] text-h26-text outline-none focus:border-h26-green focus:ring-1 focus:ring-h26-green/30"
+                  onChange={(e) => setElectionType(e.target.value)}
+                  type="text"
+                  value={electionType}
+                />
+              </label>
+              <label className="block sm:col-span-1">
+                <span className="mb-1 block text-[0.72rem] font-medium text-h26-muted">Date</span>
+                <input
+                  className="w-full rounded-lg border border-h26-border bg-white px-3 py-2.5 text-[0.95rem] text-h26-text outline-none focus:border-h26-green focus:ring-1 focus:ring-h26-green/30"
+                  onChange={(e) => setElectionDate(e.target.value)}
+                  placeholder="e.g. Nov 5, 2025"
+                  type="text"
+                  value={electionDate}
+                />
+              </label>
+              <label className="block sm:col-span-1">
+                <span className="mb-1 block text-[0.72rem] font-medium text-h26-muted">Number of voters</span>
+                <input
+                  className="w-full rounded-lg border border-h26-border bg-white px-3 py-2.5 text-[0.95rem] text-h26-text outline-none focus:border-h26-green focus:ring-1 focus:ring-h26-green/30"
+                  inputMode="numeric"
+                  onChange={(e) => setElectionNumVoters(e.target.value)}
+                  type="text"
+                  value={electionNumVoters}
+                />
+              </label>
+            </div>
+          </fieldset>
           <div className="flex flex-wrap gap-3 pt-1">
             <button
               className="rounded-full px-6 py-2.5 text-[0.9rem] font-medium text-h26-textSecondary hover:text-h26-text"
@@ -140,6 +189,9 @@ export function LoginFormSection() {
                 setFirstName('')
                 setLastName('')
                 setOrg('')
+                setElectionType('')
+                setElectionDate('')
+                setElectionNumVoters('')
               }}
               type="button"
             >
