@@ -7,6 +7,7 @@ import { generateEmailLoginCode } from './admin-login'
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   let { email } = req.body
   const {
+    application_intent,
     election_date,
     election_num_voters,
     election_type,
@@ -14,6 +15,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     last_name,
     your_organization,
   }: {
+    application_intent?: 'exploring' | 'upcoming_election'
     election_date?: string
     election_num_voters?: string
     election_type?: string
@@ -35,6 +37,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const ed = typeof election_date === 'string' ? election_date.trim() : ''
   const env = typeof election_num_voters === 'string' ? election_num_voters.trim() : ''
 
+  const intent: 'exploring' | 'upcoming_election' =
+    application_intent === 'exploring' ? 'exploring' : 'upcoming_election'
+  const intentLine =
+    intent === 'exploring'
+      ? 'Exploring SIV (no upcoming election details)'
+      : 'Upcoming election (details below as provided)'
+
   // Stop if they already have an account
   const adminDoc = firebase.firestore().collection('admins').doc(email)
   if ((await adminDoc.get()).exists)
@@ -51,6 +60,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     .create({
       created_at: new Date(),
       ...req.body,
+      application_intent: intent,
       election_date: ed,
       election_num_voters: env,
       election_type: et,
@@ -61,6 +71,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       your_organization: org,
     })
 
+  firebase.firestore().collection('applied-admins-drafts').doc(email).delete().catch(() => {})
+
   const blank = (s: string) => (s ? s : '—')
 
   // Send message w/ Approval Link
@@ -70,6 +82,8 @@ First Name: ${blank(first)}
 Last Name: ${blank(last)}
 Email: ${email}
 Organization: ${blank(org)}
+
+Intent: ${intentLine}
 
 Election details — type: ${blank(et)}
 Election details — date: ${blank(ed)}

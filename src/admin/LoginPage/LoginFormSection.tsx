@@ -7,12 +7,14 @@ import { Spinner } from '../Spinner'
 import { attemptInitLoginCode } from './CreateAccount'
 import { CreatedAccountWaiting } from './CreatedAccountWaiting'
 
+type SignupStep = 'email' | 'signup-election' | 'signup-intent' | 'signup-profile'
+
 export function LoginFormSection() {
   const router = useRouter()
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
   const [pending, setPending] = useState(false)
-  const [step, setStep] = useState<'email' | 'signup'>('email')
+  const [step, setStep] = useState<SignupStep>('email')
   const [submittedEmail, setSubmittedEmail] = useState<null | string>(null)
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
@@ -27,6 +29,19 @@ export function LoginFormSection() {
     attemptInitLoginCode()
   }, [])
 
+  const resetSignupToEmail = () => {
+    setStep('email')
+    setError('')
+    setEmail('')
+    setFirstName('')
+    setLastName('')
+    setOrg('')
+    setElectionCategory('')
+    setElectionCategoryOther('')
+    setElectionDate('')
+    setElectionNumVoters('')
+  }
+
   const handleEmailSubmit = async () => {
     if (!email) return
     if (!validateEmail(email)) {
@@ -40,22 +55,57 @@ export function LoginFormSection() {
     if (response.status === 400) {
       setError('Invalid email address')
     } else if (response.status === 404) {
-      setStep('signup')
+      const draft = await api('applied-admin-draft', {
+        email: email.toLowerCase(),
+        step: 'email_no_account',
+      })
+      if (!draft.ok) {
+        setError('Something went wrong. Please try again.')
+        return
+      }
+      setStep('signup-profile')
       setError('')
     } else {
       router.push(`./enter-login-code?email=${encodeURIComponent(email)}`)
     }
   }
 
-  const handleSignupSubmit = async () => {
+  const handleProfileNext = async () => {
+    setError('')
+    setPending(true)
+    const draft = await api('applied-admin-draft', {
+      email: email.toLowerCase(),
+      first_name: firstName.trim(),
+      last_name: lastName.trim(),
+      step: 'profile',
+      your_organization: org.trim(),
+    })
+    setPending(false)
+    if (!draft.ok) {
+      const data = await draft.json().catch(() => ({}))
+      setError(data?.error ?? 'Something went wrong. Please try again.')
+      return
+    }
+    setStep('signup-intent')
+  }
+
+  const submitApplication = async (application_intent: 'exploring' | 'upcoming_election') => {
     const election_type =
-      electionCategory === 'other' ? electionCategoryOther.trim() : electionCategory === '' ? '' : electionCategory
+      application_intent === 'exploring'
+        ? ''
+        : electionCategory === 'other'
+          ? electionCategoryOther.trim()
+          : electionCategory === ''
+            ? ''
+            : electionCategory
+
     setError('')
     setPending(true)
     const response = await api('admin-create-account', {
-      election_date: electionDate.trim(),
-      election_num_voters: electionNumVoters.trim(),
-      election_type,
+      application_intent,
+      election_date: application_intent === 'exploring' ? '' : electionDate.trim(),
+      election_num_voters: application_intent === 'exploring' ? '' : electionNumVoters.trim(),
+      election_type: application_intent === 'exploring' ? '' : election_type,
       email: email.toLowerCase(),
       first_name: firstName.trim(),
       last_name: lastName.trim(),
@@ -75,7 +125,7 @@ export function LoginFormSection() {
 
   if (submittedEmail) return <CreatedAccountWaiting email={submittedEmail} />
 
-  if (step === 'signup') {
+  if (step === 'signup-profile') {
     return (
       <div className="mt-8">
         <p className="mb-4 text-[0.9rem] text-h26-textSecondary">
@@ -134,6 +184,89 @@ export function LoginFormSection() {
               value={org}
             />
           </label>
+          <div className="flex flex-wrap gap-3 pt-1">
+            <button
+              className="rounded-full px-6 py-2.5 text-[0.9rem] font-medium text-h26-textSecondary hover:text-h26-text"
+              onClick={resetSignupToEmail}
+              type="button"
+            >
+              Use a different email
+            </button>
+            <button
+              className="rounded-full px-8 py-3 text-[0.92rem] font-medium shadow-h26-cta transition-all duration-200 hover:-translate-y-0.5 hover:shadow-h26-cta-hover disabled:opacity-70 disabled:hover:translate-y-0"
+              disabled={pending}
+              onClick={handleProfileNext}
+              style={{ backgroundColor: '#1a6b4a', color: '#fff' }}
+              type="button"
+            >
+              {pending ? <Spinner /> : 'Next'}
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (step === 'signup-intent') {
+    return (
+      <div className="mt-8">
+        {error && (
+          <p
+            className="mb-3 rounded-lg border border-red-200 bg-red-50/80 px-3 py-2 text-[0.8rem] font-medium text-red-700"
+            role="alert"
+          >
+            {error}
+          </p>
+        )}
+        <h2 className="font-serif26 text-[1.05rem] font-normal leading-snug text-h26-text">
+          Do you have an upcoming election already, or just want to look around?
+        </h2>
+        <p className="mt-2 text-[0.85rem] leading-relaxed text-h26-textSecondary">Choose one to continue.</p>
+        <div className="mt-6 grid gap-3 sm:grid-cols-2 sm:gap-4">
+          <button
+            className="rounded-xl border border-h26-border bg-white px-5 py-4 text-left text-[0.92rem] font-medium text-h26-text shadow-sm transition-all hover:border-h26-green/50 hover:shadow-md disabled:opacity-60"
+            disabled={pending}
+            onClick={() => setStep('signup-election')}
+            type="button"
+          >
+            I have an upcoming election
+          </button>
+          <button
+            className="rounded-xl border border-h26-border bg-white px-5 py-4 text-left text-[0.92rem] font-medium text-h26-text shadow-sm transition-all hover:border-h26-green/50 hover:shadow-md disabled:opacity-60"
+            disabled={pending}
+            onClick={() => submitApplication('exploring')}
+            type="button"
+          >
+            {pending ? <Spinner /> : 'Just looking around'}
+          </button>
+        </div>
+        <button
+          className="mt-6 rounded-full px-6 py-2.5 text-[0.9rem] font-medium text-h26-textSecondary hover:text-h26-text"
+          disabled={pending}
+          onClick={() => {
+            setError('')
+            setStep('signup-profile')
+          }}
+          type="button"
+        >
+          Back
+        </button>
+      </div>
+    )
+  }
+
+  if (step === 'signup-election') {
+    return (
+      <div className="mt-8">
+        {error && (
+          <p
+            className="mb-3 rounded-lg border border-red-200 bg-red-50/80 px-3 py-2 text-[0.8rem] font-medium text-red-700"
+            role="alert"
+          >
+            {error}
+          </p>
+        )}
+        <div className="grid gap-4">
           <div className="rounded-xl border border-h26-border/25 bg-white/90 p-5 shadow-sm">
             <h2 className="font-serif26 text-[1.05rem] font-normal leading-snug text-h26-text">
               How do you want to use SIV?
@@ -141,7 +274,7 @@ export function LoginFormSection() {
             <p className="mt-1.5 text-[0.82rem] leading-relaxed text-h26-textSecondary">
               Ballpark answers are fine — this helps us understand your election.
             </p>
-            <div className="grid gap-5 mt-5">
+            <div className="mt-5 grid gap-5">
               <label className="block">
                 <span className="mb-1.5 block text-[0.8125rem] font-medium text-h26-text">Election type</span>
                 <select
@@ -166,7 +299,7 @@ export function LoginFormSection() {
                 </select>
               </label>
               {electionCategory === 'other' && (
-                <label className="block -mt-1">
+                <label className="-mt-1 block">
                   <span className="mb-1.5 block text-[0.8125rem] font-medium text-h26-text">Describe briefly</span>
                   <input
                     className="w-full rounded-lg border border-h26-border bg-white px-3 py-2.5 text-[0.95rem] text-h26-text outline-none placeholder:text-h26-muted/80 focus:border-h26-green focus:ring-1 focus:ring-h26-green/30"
@@ -207,25 +340,19 @@ export function LoginFormSection() {
           <div className="flex flex-wrap gap-3 pt-1">
             <button
               className="rounded-full px-6 py-2.5 text-[0.9rem] font-medium text-h26-textSecondary hover:text-h26-text"
+              disabled={pending}
               onClick={() => {
-                setStep('email')
                 setError('')
-                setFirstName('')
-                setLastName('')
-                setOrg('')
-                setElectionCategory('')
-                setElectionCategoryOther('')
-                setElectionDate('')
-                setElectionNumVoters('')
+                setStep('signup-intent')
               }}
               type="button"
             >
-              Use a different email
+              Back
             </button>
             <button
               className="rounded-full px-8 py-3 text-[0.92rem] font-medium shadow-h26-cta transition-all duration-200 hover:-translate-y-0.5 hover:shadow-h26-cta-hover disabled:opacity-70 disabled:hover:translate-y-0"
               disabled={pending}
-              onClick={handleSignupSubmit}
+              onClick={() => submitApplication('upcoming_election')}
               style={{ backgroundColor: '#1a6b4a', color: '#fff' }}
               type="button"
             >
