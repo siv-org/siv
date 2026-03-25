@@ -94,10 +94,10 @@ export function LoginFormSection() {
       application_intent === 'exploring'
         ? ''
         : electionCategory === 'other'
-          ? electionCategoryOther.trim()
-          : electionCategory === ''
-            ? ''
-            : electionCategory
+        ? electionCategoryOther.trim()
+        : electionCategory === ''
+        ? ''
+        : electionCategory
 
     setError('')
     setPending(true)
@@ -225,9 +225,9 @@ export function LoginFormSection() {
           Do you have an upcoming election already, or just want to look around?
         </h2>
         <p className="mt-2 text-[0.85rem] leading-relaxed text-h26-textSecondary">Choose one to continue.</p>
-        <div className="mt-6 grid gap-3 sm:grid-cols-2 sm:gap-4">
+        <div className="grid gap-3 mt-6 sm:grid-cols-2 sm:gap-4">
           <button
-            className="rounded-xl border border-h26-border bg-white px-5 py-4 text-left text-[0.92rem] font-medium text-h26-text shadow-sm transition-all hover:border-h26-green/50 hover:shadow-md disabled:opacity-60"
+            className="flex min-h-[4.75rem] items-center rounded-2xl border border-[#1a6b4a]/14 !bg-[#d8ebe0] px-6 py-5 text-left text-[0.875rem] font-normal leading-snug tracking-[0.02em] text-[#141414] shadow-[0_4px_28px_-8px_rgba(26,107,74,0.14)] transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 hover:border-[#1a6b4a]/28 hover:!bg-[#c8e3d4] hover:shadow-[0_18px_48px_-12px_rgba(26,107,74,0.2)] disabled:pointer-events-none disabled:opacity-50 disabled:hover:translate-y-0"
             disabled={pending}
             onClick={() => setStep('signup-election')}
             type="button"
@@ -235,7 +235,7 @@ export function LoginFormSection() {
             I have an upcoming election
           </button>
           <button
-            className="rounded-xl border border-h26-border bg-white px-5 py-4 text-left text-[0.92rem] font-medium text-h26-text shadow-sm transition-all hover:border-h26-green/50 hover:shadow-md disabled:opacity-60"
+            className="flex min-h-[4.75rem] items-center rounded-2xl border border-sky-200/70  px-6 py-5 text-left text-[0.875rem] font-normal leading-snug tracking-[0.02em] text-[#141414] shadow-[0_4px_28px_-8px_rgba(30,120,180,0.12)] transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 hover:border-sky-300/70 hover:bg-[#cce6f722] hover:shadow-[0_18px_48px_-12px_rgba(30,120,180,0.16)] disabled:pointer-events-none disabled:opacity-50 disabled:hover:translate-y-0"
             disabled={pending}
             onClick={() => submitApplication('exploring')}
             type="button"
@@ -270,14 +270,14 @@ export function LoginFormSection() {
           </p>
         )}
         <div className="grid gap-4">
-          <div className="rounded-xl border border-h26-border/25 bg-white/90 p-5 shadow-sm">
+          <div className="p-5 rounded-xl border shadow-sm border-h26-border/25 bg-white/90">
             <h2 className="font-serif26 text-[1.05rem] font-normal leading-snug text-h26-text">
               How do you want to use SIV?
             </h2>
             <p className="mt-1.5 text-[0.82rem] leading-relaxed text-h26-textSecondary">
               Ballpark answers are fine — this helps us understand your election.
             </p>
-            <div className="mt-5 grid gap-5">
+            <div className="grid gap-5 mt-5">
               <label className="block">
                 <span className="mb-1.5 block text-[0.8125rem] font-medium text-h26-text">Election type</span>
                 <select
@@ -302,7 +302,7 @@ export function LoginFormSection() {
                 </select>
               </label>
               {electionCategory === 'other' && (
-                <label className="-mt-1 block">
+                <label className="block -mt-1">
                   <span className="mb-1.5 block text-[0.8125rem] font-medium text-h26-text">Describe briefly</span>
                   <input
                     className="w-full rounded-lg border border-h26-border bg-white px-3 py-2.5 text-[0.95rem] text-h26-text outline-none placeholder:text-h26-muted/80 focus:border-h26-green focus:ring-1 focus:ring-h26-green/30"
