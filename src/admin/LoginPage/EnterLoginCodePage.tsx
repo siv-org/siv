@@ -72,6 +72,7 @@ export const EnterLoginCodePage = () => {
           </p>
         )}
 
+        {/* Input code form */}
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
           {/* Code input */}
           <input
