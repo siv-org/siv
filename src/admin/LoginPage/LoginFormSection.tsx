@@ -4,8 +4,8 @@ import { useEffect, useRef, useState } from 'react'
 import { api } from 'src/api-helper'
 
 import { Spinner } from '../Spinner'
+import { AdminRequestReceived } from './AdminRequestReceived'
 import { attemptInitLoginCode } from './attemptInitLoginCode'
-import { CreatedAccountWaiting } from './CreatedAccountWaiting'
 
 type SignupStep = 'email' | 'signup-election' | 'signup-intent' | 'signup-profile'
 
@@ -133,7 +133,7 @@ export function LoginFormSection() {
     setSubmittedEmail(normalizedEmail)
   }
 
-  if (submittedEmail) return <CreatedAccountWaiting email={submittedEmail} />
+  if (submittedEmail) return <AdminRequestReceived email={submittedEmail} />
 
   if (step === 'signup-profile') {
     return (

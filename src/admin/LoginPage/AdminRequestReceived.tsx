@@ -3,7 +3,7 @@ import { pusher } from 'src/pusher-helper'
 
 import { attemptInitLoginCode } from './attemptInitLoginCode'
 
-export const CreatedAccountWaiting = ({ email }: { email: string }) => {
+export const AdminRequestReceived = ({ email }: { email: string }) => {
   // Listen for 'approved'
   useEffect(() => {
     if (!pusher) return alert('Missing pusher')
