@@ -59,7 +59,7 @@ export const EnterLoginCodePage = () => {
       <main className="px-7 pt-[7rem] pb-16 md:pt-[8.5rem]">
         <div className="mx-auto max-w-[440px] animate-[fadeInUp_0.8s_ease-out_both] text-center">
           {/* Instructions */}
-          <h1 className="font-serif26 text-[clamp(1.5rem,3.5vw,2rem)] font-normal tracking-tight">Check your email</h1>
+          <h1 className="font-serif26 text-[clamp(1.5rem,3.5vw,2rem)] tracking-tight">Check your email</h1>
           <p className="mt-3 text-[0.9rem] text-h26-textSecondary">We sent a one-time code to:</p>
           <p className="mt-2 font-medium text-h26-text">{email}</p>
 
@@ -79,7 +79,7 @@ export const EnterLoginCodePage = () => {
               <input
                 aria-label="Code from email"
                 autoFocus
-                className="min-w-0 flex-1 rounded-lg border border-h26-border bg-white px-4 py-3 text-[1rem] text-h26-text tracking-[0.2em] outline-none transition-colors placeholder:text-h26-muted focus:border-h26-green focus:ring-2 focus:ring-h26-green/20"
+                className="min-w-0 flex-1 rounded-lg border border-h26-border bg-white px-4 py-3 text-[1rem] text-h26-text tracking-[0.15em] outline-none transition-colors placeholder:text-h26-muted focus:border-h26-green focus:ring-2 focus:ring-h26-green/20"
                 inputMode="numeric"
                 maxLength={6}
                 onChange={({ target }) => {
