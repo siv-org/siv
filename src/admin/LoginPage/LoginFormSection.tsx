@@ -17,22 +17,6 @@ const SECONDARY_BUTTON_CLASS =
   'rounded-full px-6 py-2.5 text-[0.9rem] font-medium text-h26-textSecondary hover:text-h26-text'
 const PRIMARY_BUTTON_STYLE = { backgroundColor: '#1a6b4a', color: '#fff' } as const
 
-function ErrorBanner({ error }: { error: string }) {
-  if (!error) return null
-  return (
-    <p
-      className="mb-3 rounded-lg border border-red-200 bg-red-50/80 px-3 py-2 text-[0.8rem] font-medium text-red-700"
-      role="alert"
-    >
-      {error}
-    </p>
-  )
-}
-
-async function safeJson(response: Response): Promise<any> {
-  return response.json().catch(() => ({}))
-}
-
 export function LoginFormSection({ setIsSignupFlow }: { setIsSignupFlow: (isSignupFlow: boolean) => void }) {
   const router = useRouter()
   const [email, setEmail] = useState('')
@@ -412,4 +396,20 @@ export function LoginFormSection({ setIsSignupFlow }: { setIsSignupFlow: (isSign
       </div>
     </div>
   )
+}
+
+function ErrorBanner({ error }: { error: string }) {
+  if (!error) return null
+  return (
+    <p
+      className="mb-3 rounded-lg border border-red-200 bg-red-50/80 px-3 py-2 text-[0.8rem] font-medium text-red-700"
+      role="alert"
+    >
+      {error}
+    </p>
+  )
+}
+
+async function safeJson(response: Response): Promise<any> {
+  return response.json().catch(() => ({}))
 }
