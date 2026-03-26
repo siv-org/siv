@@ -25,9 +25,7 @@ const PROPERTIES: { description: string; title: string }[] = [
   },
 ]
 
-type LoginPropertiesProps = { variant?: 'section' | 'sidebar' }
-
-export function LoginProperties({ variant = 'section' }: LoginPropertiesProps) {
+export function WhatYouGetWithSIV({ variant = 'section' }: { variant?: 'section' | 'sidebar' }) {
   const isSidebar = variant === 'sidebar'
 
   const content = (

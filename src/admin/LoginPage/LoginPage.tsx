@@ -8,7 +8,7 @@ import { h26fonts } from '../../homepage2026/fonts'
 import { Footer } from '../../homepage2026/Footer'
 import { Nav } from '../../homepage2026/Nav'
 import { useUser } from '../auth'
-import { LoginProperties } from './LoginProperties'
+import { WhatYouGetWithSIV } from './WhatYouGetWithSIV'
 
 export const breakpoint = 500
 
@@ -35,7 +35,7 @@ export const LoginPage = () => {
           </div>
 
           {/* What you get — clear next section */}
-          <LoginProperties />
+          <WhatYouGetWithSIV />
         </main>
         <Footer />
       </div>
