@@ -56,81 +56,79 @@ export const EnterLoginCodePage = () => {
       <Head title={PageTitle} />
       <Nav />
 
-      <main className="px-7 pt-[7rem] pb-16 md:pt-[8.5rem]">
-        <div className="mx-auto max-w-[440px] animate-[fadeInUp_0.8s_ease-out_both] text-center">
-          {/* Instructions */}
-          <h1 className="font-serif26 text-[clamp(1.5rem,3.5vw,2rem)] tracking-tight">Check your email</h1>
-          <p className="mt-3 text-[0.9rem] text-h26-textSecondary">We sent a one-time code to:</p>
-          <p className="mt-2 font-medium text-h26-text">{email}</p>
+      <main className="px-7 pt-[7rem] pb-16 md:pt-[8.5rem] mx-auto max-w-[440px] animate-[fadeInUp_0.8s_ease-out_both] text-center">
+        {/* Instructions */}
+        <h1 className="font-serif26 text-[clamp(1.5rem,3.5vw,2rem)] tracking-tight">Check your email</h1>
+        <p className="mt-3 text-[0.9rem] text-h26-textSecondary">We sent a one-time code to:</p>
+        <p className="mt-2 font-medium text-h26-text">{email}</p>
 
-          <div className="mt-8 text-left">
-            {/* Error message */}
-            {error && (
-              <p
-                className="mb-3 rounded-lg border border-red-200 bg-red-50/80 px-3 py-2 text-[0.8rem] font-medium text-red-700 whitespace-pre-wrap"
-                role="alert"
-              >
-                {error}
-              </p>
-            )}
+        <div className="mt-8 text-left">
+          {/* Error message */}
+          {error && (
+            <p
+              className="mb-3 rounded-lg border border-red-200 bg-red-50/80 px-3 py-2 text-[0.8rem] font-medium text-red-700 whitespace-pre-wrap"
+              role="alert"
+            >
+              {error}
+            </p>
+          )}
 
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-              {/* Code input */}
-              <input
-                aria-label="Code from email"
-                autoFocus
-                className="min-w-0 flex-1 rounded-lg border border-h26-border bg-white px-4 py-3 text-[1rem] text-h26-text tracking-[0.15em] outline-none transition-colors placeholder:text-h26-muted focus:border-h26-green focus:ring-2 focus:ring-h26-green/20"
-                inputMode="numeric"
-                maxLength={6}
-                onChange={({ target }) => {
-                  const next = target.value
-                  if (/^\d{0,6}$/.test(next)) {
-                    setLoginCode(next)
-                    setError('')
-                  } else if (next.length > 0) {
-                    setError('Login codes are 6 digit numbers')
-                  }
-                }}
-                onKeyDown={(e) => e.key === 'Enter' && submitRef.current?.click()}
-                placeholder="123456"
-                type="text"
-                value={loginCode}
-              />
-              {/* Submit button */}
-              <button
-                className="shrink-0 rounded-full px-8 py-3 text-[0.92rem] font-medium shadow-h26-cta transition-all duration-200 hover:-translate-y-0.5 hover:shadow-h26-cta-hover"
-                onClick={() => {
-                  if (loginCode.length < 6) {
-                    setError(`Login codes are 6 digits, not ${loginCode.length}`)
-                    return
-                  }
-                  checkLoginCode({
-                    code: loginCode,
-                    email,
-                    onExpired: () => {
-                      setLoginCode('')
-                      handleExpired()
-                    },
-                    onInvalid: (message: string) => setError(message || 'Unknown error signing in'),
-                    router,
-                  })
-                }}
-                ref={submitRef}
-                style={{ backgroundColor: '#1a6b4a', color: '#fff' }}
-                type="button"
-              >
-                Submit
-              </button>
-            </div>
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+            {/* Code input */}
+            <input
+              aria-label="Code from email"
+              autoFocus
+              className="min-w-0 flex-1 rounded-lg border border-h26-border bg-white px-4 py-3 text-[1rem] text-h26-text tracking-[0.15em] outline-none transition-colors placeholder:text-h26-muted focus:border-h26-green focus:ring-2 focus:ring-h26-green/20"
+              inputMode="numeric"
+              maxLength={6}
+              onChange={({ target }) => {
+                const next = target.value
+                if (/^\d{0,6}$/.test(next)) {
+                  setLoginCode(next)
+                  setError('')
+                } else if (next.length > 0) {
+                  setError('Login codes are 6 digit numbers')
+                }
+              }}
+              onKeyDown={(e) => e.key === 'Enter' && submitRef.current?.click()}
+              placeholder="123456"
+              type="text"
+              value={loginCode}
+            />
+            {/* Submit button */}
+            <button
+              className="shrink-0 rounded-full px-8 py-3 text-[0.92rem] font-medium shadow-h26-cta transition-all duration-200 hover:-translate-y-0.5 hover:shadow-h26-cta-hover"
+              onClick={() => {
+                if (loginCode.length < 6) {
+                  setError(`Login codes are 6 digits, not ${loginCode.length}`)
+                  return
+                }
+                checkLoginCode({
+                  code: loginCode,
+                  email,
+                  onExpired: () => {
+                    setLoginCode('')
+                    handleExpired()
+                  },
+                  onInvalid: (message: string) => setError(message || 'Unknown error signing in'),
+                  router,
+                })
+              }}
+              ref={submitRef}
+              style={{ backgroundColor: '#1a6b4a', color: '#fff' }}
+              type="button"
+            >
+              Submit
+            </button>
           </div>
-
-          {/* Use different email link */}
-          <p className="mt-6 text-[0.82rem] text-h26-muted">
-            <a className="text-h26-green hover:underline" href="/login">
-              Use a different email
-            </a>
-          </p>
         </div>
+
+        {/* Use different email link */}
+        <p className="mt-6 text-[0.82rem] text-h26-muted">
+          <a className="text-h26-green hover:underline" href="/login">
+            Use a different email
+          </a>
+        </p>
       </main>
 
       <Footer />
