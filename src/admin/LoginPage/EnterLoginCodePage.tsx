@@ -37,6 +37,7 @@ export const EnterLoginCodePage = () => {
     }
   }, [expired, invalid])
 
+  // Error page if their URL params are missing email
   if (typeof email !== 'string') {
     return (
       <div className={`p-8 min-h-screen bg-h26-bg ${h26fonts}`}>
