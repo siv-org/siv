@@ -125,8 +125,6 @@ export function LoginFormSection({ setIsSignupFlow }: { setIsSignupFlow: (isSign
         ? ''
         : electionCategory === 'other'
         ? electionCategoryOther.trim()
-        : electionCategory === ''
-        ? ''
         : electionCategory
 
     setError('')
