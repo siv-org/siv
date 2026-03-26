@@ -16,7 +16,7 @@ const logoHeight = 18
 
 export function Nav() {
   const router = useRouter()
-  const isLoginPage = router.pathname === '/login'
+  const isLoginPage = router.pathname === '/login' || router.pathname === '/enter-login-code'
 
   return (
     <nav className="fixed left-1/2 top-4 z-[100] flex -translate-x-1/2 items-center sm:gap-9 gap-6 rounded-full border border-h26-border bg-white/70 px-6 py-2.5 shadow-sm backdrop-blur-[24px]">
