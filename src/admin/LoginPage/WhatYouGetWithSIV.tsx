@@ -17,12 +17,12 @@ export function WhatYouGetWithSIV() {
       className="sm:px-7 mt-16 pb-14 md:mt-20 md:pb-20 mx-auto max-w-[800px] pt-14 border-t border-h26-border md:pt-16"
     >
       <ScrollReveal>
-        <h2 className="font-serif26 text-[clamp(1.35rem,3vw,1.75rem)] font-normal tracking-tight text-h26-text text-center lg:text-left">
+        <h2 className="font-serif26 text-[clamp(1.35rem,3vw,1.75rem)] font-normal tracking-tight text-h26-text text-center md:text-left">
           What you get with SIV
         </h2>
 
         {/* Properties list */}
-        <ul className="grid gap-6 pl-0 mt-10 list-none md:grid-cols-2">
+        <ul className="grid gap-6 mt-10 list-none md:grid-cols-2">
           {PROPERTIES.map(({ header, subtitle }, i) => (
             <li
               className={`flex gap-4 items-start px-5 py-4 rounded-xl border shadow-sm border-h26-border bg-white/60 ${
@@ -31,7 +31,7 @@ export function WhatYouGetWithSIV() {
               key={header}
             >
               {/* Left checkbox col */}
-              <span className="mt-0.5 shrink-0 rounded-full bg-h26-green/12 p-1.5 text-h26-green">
+              <span className="mt-0.5 p-1.5 text-h26-green">
                 <Check className="size-4" strokeWidth={2.5} />
               </span>
 
