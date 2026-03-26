@@ -4,17 +4,10 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { firebase, pushover, sendEmail } from './_services'
 import { generateEmailLoginCode } from './admin-login'
 
+const trimString = (v: unknown) => (typeof v === 'string' ? v.trim() : '')
+
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  let { email } = req.body
-  const {
-    application_intent,
-    election_date,
-    election_num_voters,
-    election_type,
-    first_name,
-    last_name,
-    your_organization,
-  }: {
+  const body: {
     application_intent?: 'exploring' | 'upcoming_election'
     election_date?: string
     election_num_voters?: string
@@ -25,68 +18,69 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     your_organization?: string
   } = req.body
 
+  const email = trimString(body.email).toLowerCase()
+
   // Confirm they sent a valid email address (only required field)
   if (!email) return res.status(400).send({ error: 'Missing email' })
   if (!validateEmail(email)) return res.status(400).send({ error: 'Invalid email' })
-  email = email.toLowerCase()
-
-  const first = typeof first_name === 'string' ? first_name.trim() : ''
-  const last = typeof last_name === 'string' ? last_name.trim() : ''
-  const org = typeof your_organization === 'string' ? your_organization.trim() : ''
-  const et = typeof election_type === 'string' ? election_type.trim() : ''
-  const ed = typeof election_date === 'string' ? election_date.trim() : ''
-  const env = typeof election_num_voters === 'string' ? election_num_voters.trim() : ''
-
-  const intent: 'exploring' | 'upcoming_election' =
-    application_intent === 'exploring' ? 'exploring' : 'upcoming_election'
 
   // Stop if they already have an account
   const adminDoc = firebase.firestore().collection('admins').doc(email)
   if ((await adminDoc.get()).exists)
     return res.status(409).send({ error: `'${email}' already has an account.\n\nLog in above.` })
 
+  const firstName = trimString(body.first_name)
+  const lastName = trimString(body.last_name)
+  const organization = trimString(body.your_organization)
+
+  const electionType = trimString(body.election_type)
+  const electionDate = trimString(body.election_date)
+  const electionNumVoters = trimString(body.election_num_voters)
+
   const init_login_code = generateEmailLoginCode()
 
   // Store their application in the DB
   const doc_id = new Date().toISOString() + '-' + String(Math.random()).slice(2, 7)
-  firebase.firestore().collection('applied-admins').doc(doc_id).create({
-    application_intent: intent,
-    created_at: new Date(),
-    election_date: ed,
-    election_num_voters: env,
-    election_type: et,
-    email,
-    first_name: first,
-    init_login_code,
-    last_name: last,
-    your_organization: org,
-  })
+  await Promise.all([
+    firebase.firestore().collection('applied-admins').doc(doc_id).create({
+      application_intent: body.application_intent,
+      created_at: new Date(),
+      election_date: electionDate,
+      election_num_voters: electionNumVoters,
+      election_type: electionType,
+      email,
+      first_name: firstName,
+      init_login_code,
+      last_name: lastName,
+      your_organization: organization,
+    }),
 
-  firebase
-    .firestore()
-    .collection('applied-admins-drafts')
-    .doc(email)
-    .delete()
-    .catch(() => {})
+    // Remove their draft application if it exists
+    firebase
+      .firestore()
+      .collection('applied-admins-drafts')
+      .doc(email)
+      .delete()
+      .catch(() => {}),
+  ])
 
   const blank = (s: string) => (s ? s : '—')
-
   // Send message w/ Approval Link
   const message = `New SIV Admin Application
 
-First Name: ${blank(first)}
-Last Name: ${blank(last)}
+First Name: ${blank(firstName)}
+Last Name: ${blank(lastName)}
 Email: ${email}
-Organization: ${blank(org)}
+Organization: ${blank(organization)}
 
-Intent: ${intent === 'exploring' ? 'Exploring SIV' : 'Upcoming election'}
+Intent: ${body.application_intent}
 
 ${
-  intent === 'exploring'
+  body.application_intent === 'exploring'
     ? ''
-    : `Election type: ${blank(et)}
-Election date: ${blank(ed)}
-Election number of voters: ${blank(env)}`
+    : `Election type: ${blank(electionType)}
+Election date: ${blank(electionDate)}
+Election number of voters: ${blank(electionNumVoters)}`
 }
 
 Link to approve: ${req.headers.origin}/approve-admin?id=${doc_id}
@@ -103,5 +97,5 @@ Approve & skip email verification: ${req.headers.origin}/approve-admin?id=${doc_
     pushover(`new admin: ${email}`, message),
   ])
 
-  res.status(200).send({ init_login_code, message: 'Success' })
+  return res.status(200).send({ init_login_code, message: 'Success' })
 }
