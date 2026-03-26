@@ -14,24 +14,22 @@ export const LoginPage = () => {
   useLoggedOutOnly()
 
   return (
-    <div className={`overflow-x-hidden min-h-screen antialiased bg-h26-bg text-h26-text ${h26fonts}`}>
+    <div className={`min-h-screen antialiased bg-h26-bg text-h26-text ${h26fonts}`}>
       <Head title="Admin Login" />
-      <div className="relative z-10">
-        <Nav />
-        <main className="px-7 pt-[7rem] pb-6 md:pt-[8.5rem] md:pb-12">
-          <div className="mx-auto max-w-[600px] animate-[fadeInUp_0.8s_ease-out_both]">
-            <h1 className="font-serif26 text-[clamp(1.75rem,4vw,2.4rem)] font-normal tracking-tight text-center">
-              Start your vote
-            </h1>
+      <Nav />
 
-            <LoginFormSection />
-          </div>
+      <main className="px-7 pt-[7rem] pb-6 md:pt-[8.5rem] md:pb-12">
+        <div className="mx-auto max-w-[600px] animate-[fadeInUp_0.8s_ease-out_both]">
+          <h1 className="font-serif26 text-[clamp(1.75rem,4vw,2.4rem)] tracking-tight text-center">Start your vote</h1>
 
-          {/* What you get — clear next section */}
-          <WhatYouGetWithSIV />
-        </main>
-        <Footer />
-      </div>
+          <LoginFormSection />
+        </div>
+
+        {/* What you get — clear next section */}
+        <WhatYouGetWithSIV />
+      </main>
+
+      <Footer />
       <TailwindPreflight />
     </div>
   )
