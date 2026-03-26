@@ -78,7 +78,7 @@ export const EnterLoginCodePage = () => {
           <input
             aria-label="Code from email"
             autoFocus
-            className="min-w-0 flex-1 rounded-lg border border-h26-border bg-white px-4 py-3 text-[1rem] text-h26-text tracking-[0.15em] outline-none transition-colors placeholder:text-h26-muted focus:border-h26-green focus:ring-2 focus:ring-h26-green/20"
+            className="rounded-lg border border-h26-border bg-white px-4 py-3 text-[1rem] text-h26-text tracking-[0.15em] outline-none transition-colors focus:border-h26-green focus:ring-2 focus:ring-h26-green/20"
             inputMode="numeric"
             maxLength={6}
             onChange={({ target }) => {
