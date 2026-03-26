@@ -19,7 +19,7 @@ export function LoginFormSection() {
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [org, setOrg] = useState('')
-  const [electionCategory, setElectionCategory] = useState<'' | 'Government' | 'NGO' | 'other' | 'Social'>('')
+  const [electionCategory, setElectionCategory] = useState<'' | 'Friends & Family' | 'Government' | 'NGO' | 'other'>('')
   const [electionCategoryOther, setElectionCategoryOther] = useState('')
   const [electionDate, setElectionDate] = useState('')
   const [electionNumVoters, setElectionNumVoters] = useState('')
@@ -278,29 +278,45 @@ export function LoginFormSection() {
               Ballpark answers are fine — this helps us understand your election.
             </p>
             <div className="grid gap-5 mt-5">
-              <label className="block">
-                <span className="mb-1.5 block text-[0.8125rem] font-medium text-h26-text">Election type</span>
-                <select
-                  className="w-full cursor-pointer appearance-none rounded-lg border border-h26-border bg-white bg-[length:1rem] bg-[right_0.75rem_center] bg-no-repeat py-2.5 pl-3 pr-9 text-[0.95rem] text-h26-text outline-none focus:border-h26-green focus:ring-1 focus:ring-h26-green/30"
-                  onChange={(e) => {
-                    const v = e.target.value as '' | 'Government' | 'NGO' | 'other' | 'Social'
-                    setElectionCategory(v === '' ? '' : v)
-                    if (v !== 'other') setElectionCategoryOther('')
-                  }}
-                  style={{
-                    backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E")`,
-                  }}
-                  value={electionCategory === '' ? '' : electionCategory}
-                >
-                  <option disabled value="">
-                    Choose one
-                  </option>
-                  <option value="Government">Government</option>
-                  <option value="NGO">NGO</option>
-                  <option value="Social">Social</option>
-                  <option value="other">Other…</option>
-                </select>
-              </label>
+              <fieldset className="border-0 p-0">
+                <legend className="mb-2.5 block text-[0.8125rem] font-medium text-h26-text">Election type</legend>
+                <div aria-label="Election type" className="flex flex-col gap-2" role="radiogroup">
+                  {(
+                    [
+                      ['Government', 'Government'],
+                      ['NGO', 'NGO'],
+                      ['Friends & Family', 'Friends & Family'],
+                      ['other', 'Other…'],
+                    ] as const
+                  ).map(([value, label]) => (
+                    <label
+                      className={`flex min-h-[3rem] cursor-pointer items-center gap-3.5 overflow-visible rounded-xl border px-4 py-3 transition-colors ${
+                        electionCategory === value
+                          ? 'border-h26-green/40 bg-h26-green/[0.06]'
+                          : 'border-h26-border bg-white'
+                      }`}
+                      key={value}
+                    >
+                      <input
+                        checked={electionCategory === value}
+                        className="peer sr-only"
+                        name="election-type"
+                        onChange={() => {
+                          setElectionCategory(value)
+                          if (value !== 'other') setElectionCategoryOther('')
+                        }}
+                        type="radio"
+                        value={value}
+                      />
+                      <span
+                        aria-hidden
+                        className="inline-flex h-[18px] w-[18px] shrink-0 rounded-full border-2 border-[#c8d0cc] bg-white transition-all peer-checked:border-[#1a6b4a] peer-checked:bg-[#1a6b4a] peer-focus-visible:ring-2 peer-focus-visible:ring-h26-green/35 peer-focus-visible:ring-offset-2"
+                      />
+                      <span className="text-[0.95rem] leading-snug text-h26-text">{label}</span>
+                    </label>
+                  ))}
+                </div>
+              </fieldset>
               {electionCategory === 'other' && (
                 <label className="block -mt-1">
                   <span className="mb-1.5 block text-[0.8125rem] font-medium text-h26-text">Describe briefly</span>
@@ -315,7 +331,7 @@ export function LoginFormSection() {
               )}
               <div className="grid gap-5 sm:grid-cols-2 sm:gap-6">
                 <label className="block min-w-0">
-                  <span className="mb-1.5 block text-[0.8125rem] font-medium text-h26-text">Approx. election date</span>
+                  <span className="mb-1.5 block text-[0.8125rem] font-medium text-h26-text">Election date</span>
                   <input
                     className="w-full max-w-full rounded-lg border border-h26-border bg-white px-3 py-2.5 text-[0.95rem] text-h26-text outline-none placeholder:text-h26-muted/80 focus:border-h26-green focus:ring-1 focus:ring-h26-green/30 sm:max-w-[220px]"
                     onChange={(e) => setElectionDate(e.target.value)}
@@ -325,9 +341,7 @@ export function LoginFormSection() {
                   />
                 </label>
                 <label className="block min-w-0">
-                  <span className="mb-1.5 block text-[0.8125rem] font-medium text-h26-text">
-                    Approx. number of voters
-                  </span>
+                  <span className="mb-1.5 block text-[0.8125rem] font-medium text-h26-text">Number of voters</span>
                   <input
                     className="w-full max-w-full rounded-lg border border-h26-border bg-white px-3 py-2.5 text-[0.95rem] text-h26-text outline-none placeholder:text-h26-muted/80 focus:border-h26-green focus:ring-1 focus:ring-h26-green/30 sm:max-w-[180px]"
                     inputMode="numeric"
