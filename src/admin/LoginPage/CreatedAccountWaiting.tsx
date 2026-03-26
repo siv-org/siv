@@ -4,13 +4,13 @@ import { pusher } from 'src/pusher-helper'
 import { attemptInitLoginCode } from './CreateAccount'
 
 export const CreatedAccountWaiting = ({ email }: { email: string }) => {
+  // Listen for 'approved'
   useEffect(() => {
     if (!pusher) return alert('Missing pusher')
     const channel = pusher.subscribe(`admin-${email}`)
     channel.bind('approved', attemptInitLoginCode)
-    return () => {
-      channel.unsubscribe()
-    }
+
+    return () => channel.unsubscribe()
   }, [email])
 
   return (
