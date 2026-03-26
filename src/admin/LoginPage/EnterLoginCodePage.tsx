@@ -11,7 +11,7 @@ import { checkLoginCode } from '../auth'
 
 const PageTitle = 'Admin Enter Login Code'
 
-export const EnterCodePage = () => {
+export const EnterLoginCodePage = () => {
   const router = useRouter()
   const { email, expired, invalid } = router.query
   const [error, setError] = useState('')
