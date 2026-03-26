@@ -122,11 +122,9 @@ export const EnterLoginCodePage = () => {
         </div>
 
         {/* Use different email link */}
-        <p className="mt-6 text-[0.82rem] text-h26-muted">
-          <a className="text-h26-green hover:underline" href="/login">
-            Use a different email
-          </a>
-        </p>
+        <a className="block mt-6 text-[0.82rem] text-h26-green hover:underline" href="/login">
+          Use a different email
+        </a>
       </main>
 
       <Footer />
