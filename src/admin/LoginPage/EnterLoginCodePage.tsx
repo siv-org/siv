@@ -52,7 +52,7 @@ export const EnterLoginCodePage = () => {
   }
 
   return (
-    <div className={`overflow-x-hidden min-h-screen antialiased bg-h26-bg text-h26-text ${h26fonts}`}>
+    <div className={`min-h-screen antialiased bg-h26-bg text-h26-text ${h26fonts}`}>
       <Head title={PageTitle} />
       <Nav />
 
