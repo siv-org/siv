@@ -9,7 +9,7 @@ import { CreatedAccountWaiting } from './CreatedAccountWaiting'
 
 type SignupStep = 'email' | 'signup-election' | 'signup-intent' | 'signup-profile'
 
-export function LoginFormSection() {
+export function LoginFormSection({ setIsSignupFlow }: { setIsSignupFlow: (isSignupFlow: boolean) => void }) {
   const router = useRouter()
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
@@ -64,6 +64,7 @@ export function LoginFormSection() {
         return
       }
       setStep('signup-profile')
+      setIsSignupFlow(true)
       setError('')
     } else {
       router.push(`./enter-login-code?email=${encodeURIComponent(email)}`)
@@ -278,7 +279,7 @@ export function LoginFormSection() {
               Ballpark answers are fine — this helps us understand your election.
             </p>
             <div className="grid gap-5 mt-5">
-              <fieldset className="border-0 p-0">
+              <fieldset className="p-0 border-0">
                 <legend className="mb-2.5 block text-[0.8125rem] font-medium text-h26-text">Election type</legend>
                 <div aria-label="Election type" className="flex flex-col gap-2" role="radiogroup">
                   {(
@@ -299,7 +300,7 @@ export function LoginFormSection() {
                     >
                       <input
                         checked={electionCategory === value}
-                        className="peer sr-only"
+                        className="sr-only peer"
                         name="election-type"
                         onChange={() => {
                           setElectionCategory(value)

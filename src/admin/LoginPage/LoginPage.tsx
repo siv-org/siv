@@ -14,6 +14,7 @@ export const breakpoint = 500
 
 export const LoginPage = () => {
   useLoggedOutOnly()
+  const [isSignupFlow, setIsSignupFlow] = useState(false)
 
   return (
     <div className={`overflow-x-hidden min-h-screen antialiased bg-h26-bg text-h26-text ${h26fonts}`}>
@@ -25,10 +26,12 @@ export const LoginPage = () => {
             <h1 className="font-serif26 text-[clamp(1.75rem,4vw,2.4rem)] font-normal tracking-tight text-center">
               Start your vote
             </h1>
-            <p className="mt-3 text-center text-[0.9rem] leading-[1.6] text-h26-textSecondary">
-              A code will be sent to your email. No password required.
-            </p>
-            <LoginFormSection />
+            {!isSignupFlow && (
+              <p className="mt-3 text-center text-[0.9rem] leading-[1.6] text-h26-textSecondary">
+                A code will be sent to your email. No password required.
+              </p>
+            )}
+            <LoginFormSection {...{ setIsSignupFlow }} />
           </div>
 
           {/* What you get — clear next section */}
