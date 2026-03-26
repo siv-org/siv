@@ -10,8 +10,6 @@ import { Nav } from '../../homepage2026/Nav'
 import { useUser } from '../auth'
 import { WhatYouGetWithSIV } from './WhatYouGetWithSIV'
 
-export const breakpoint = 500
-
 export const LoginPage = () => {
   useLoggedOutOnly()
 
