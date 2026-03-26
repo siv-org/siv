@@ -29,19 +29,6 @@ export function LoginFormSection({ setIsSignupFlow }: { setIsSignupFlow: (isSign
     attemptInitLoginCode()
   }, [])
 
-  const resetSignupToEmail = () => {
-    setStep('email')
-    setError('')
-    setEmail('')
-    setFirstName('')
-    setLastName('')
-    setOrg('')
-    setElectionCategory('')
-    setElectionCategoryOther('')
-    setElectionDate('')
-    setElectionNumVoters('')
-  }
-
   const handleEmailSubmit = async () => {
     if (!email) return
     if (!validateEmail(email)) {
@@ -191,7 +178,7 @@ export function LoginFormSection({ setIsSignupFlow }: { setIsSignupFlow: (isSign
           <div className="flex flex-wrap gap-3 pt-1">
             <button
               className="rounded-full px-6 py-2.5 text-[0.9rem] font-medium text-h26-textSecondary hover:text-h26-text"
-              onClick={resetSignupToEmail}
+              onClick={() => window.location.reload()}
               type="button"
             >
               Use a different email
