@@ -43,8 +43,10 @@ export const EnterLoginCodePage = () => {
 
       {/* Error URL params missing email */}
       <NoSsr>
-        {typeof email !== 'string' ? (
-          <div className="pt-32 text-center delay-1000 animate-[fadeInUp_0.8s_ease-out_both]">
+        {!router.isReady ? (
+          <div />
+        ) : typeof email !== 'string' ? (
+          <div className="pt-32 text-center">
             <p className="mb-2 text-xl font-medium">Missing email</p>
             <p className="text-h26-textSecondary">Please restart from the login page.</p>
             <a className="inline-block mt-4 text-h26-green hover:underline" href="/login">
