@@ -9,6 +9,30 @@ import { CreatedAccountWaiting } from './CreatedAccountWaiting'
 
 type SignupStep = 'email' | 'signup-election' | 'signup-intent' | 'signup-profile'
 
+const DEFAULT_ERROR_MESSAGE = 'Something went wrong. Please try again.'
+
+const PRIMARY_BUTTON_CLASS =
+  'rounded-full px-8 py-3 text-[0.92rem] font-medium shadow-h26-cta transition-all duration-200 hover:-translate-y-0.5 hover:shadow-h26-cta-hover disabled:opacity-70 disabled:hover:translate-y-0'
+const SECONDARY_BUTTON_CLASS =
+  'rounded-full px-6 py-2.5 text-[0.9rem] font-medium text-h26-textSecondary hover:text-h26-text'
+const PRIMARY_BUTTON_STYLE = { backgroundColor: '#1a6b4a', color: '#fff' } as const
+
+function ErrorBanner({ error }: { error: string }) {
+  if (!error) return null
+  return (
+    <p
+      className="mb-3 rounded-lg border border-red-200 bg-red-50/80 px-3 py-2 text-[0.8rem] font-medium text-red-700"
+      role="alert"
+    >
+      {error}
+    </p>
+  )
+}
+
+async function safeJson(response: Response): Promise<any> {
+  return response.json().catch(() => ({}))
+}
+
 export function LoginFormSection({ setIsSignupFlow }: { setIsSignupFlow: (isSignupFlow: boolean) => void }) {
   const router = useRouter()
   const [email, setEmail] = useState('')
@@ -26,9 +50,27 @@ export function LoginFormSection({ setIsSignupFlow }: { setIsSignupFlow: (isSign
   const submitRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
+    // Prefetch/init any persisted login code state so a newly-created admin can immediately proceed.
     attemptInitLoginCode()
   }, [])
 
+  const normalizedEmail = email.trim().toLowerCase()
+
+  const runWithPending = async <T,>(fn: () => Promise<T>): Promise<T> => {
+    setPending(true)
+    try {
+      return await fn()
+    } finally {
+      setPending(false)
+    }
+  }
+
+  const setApiErrorFromResponse = async (response: Response) => {
+    const data = await safeJson(response)
+    setError(data?.error ?? DEFAULT_ERROR_MESSAGE)
+  }
+
+  // Step 1: check email. Existing accounts go to code entry; unknown emails go into the signup flow.
   const handleEmailSubmit = async () => {
     if (!email) return
     if (!validateEmail(email)) {
@@ -36,42 +78,42 @@ export function LoginFormSection({ setIsSignupFlow }: { setIsSignupFlow: (isSign
       return
     }
     setError('')
-    setPending(true)
-    const response = await api('admin-login', { email })
-    setPending(false)
+    const response = await runWithPending(() => api('admin-login', { email: normalizedEmail }))
     if (response.status === 400) {
       setError('Invalid email address')
     } else if (response.status === 404) {
-      const draft = await api('applied-admin-draft', {
-        email: email.toLowerCase(),
-        step: 'email_no_account',
-      })
+      const draft = await runWithPending(() =>
+        api('applied-admin-draft', {
+          email: normalizedEmail,
+          step: 'email_no_account',
+        }),
+      )
       if (!draft.ok) {
-        setError('Something went wrong. Please try again.')
+        setError(DEFAULT_ERROR_MESSAGE)
         return
       }
       setStep('signup-profile')
       setIsSignupFlow(true)
       setError('')
     } else {
-      router.push(`./enter-login-code?email=${encodeURIComponent(email)}`)
+      router.push(`./enter-login-code?email=${encodeURIComponent(normalizedEmail)}`)
     }
   }
 
+  // Step 2: collect profile fields, save to draft, then ask for intent/election context.
   const handleProfileNext = async () => {
     setError('')
-    setPending(true)
-    const draft = await api('applied-admin-draft', {
-      email: email.toLowerCase(),
-      first_name: firstName.trim(),
-      last_name: lastName.trim(),
-      step: 'profile',
-      your_organization: org.trim(),
-    })
-    setPending(false)
+    const draft = await runWithPending(() =>
+      api('applied-admin-draft', {
+        email: normalizedEmail,
+        first_name: firstName.trim(),
+        last_name: lastName.trim(),
+        step: 'profile',
+        your_organization: org.trim(),
+      }),
+    )
     if (!draft.ok) {
-      const data = await draft.json().catch(() => ({}))
-      setError(data?.error ?? 'Something went wrong. Please try again.')
+      await setApiErrorFromResponse(draft)
       return
     }
     setStep('signup-intent')
@@ -88,27 +130,26 @@ export function LoginFormSection({ setIsSignupFlow }: { setIsSignupFlow: (isSign
         : electionCategory
 
     setError('')
-    setPending(true)
-    const response = await api('admin-create-account', {
-      application_intent,
-      election_date: application_intent === 'exploring' ? '' : electionDate.trim(),
-      election_num_voters: application_intent === 'exploring' ? '' : electionNumVoters.trim(),
-      election_type: application_intent === 'exploring' ? '' : election_type,
-      email: email.toLowerCase(),
-      first_name: firstName.trim(),
-      last_name: lastName.trim(),
-      your_organization: org.trim(),
-    })
-    setPending(false)
+    const response = await runWithPending(() =>
+      api('admin-create-account', {
+        application_intent,
+        election_date: application_intent === 'exploring' ? '' : electionDate.trim(),
+        election_num_voters: application_intent === 'exploring' ? '' : electionNumVoters.trim(),
+        election_type: application_intent === 'exploring' ? '' : election_type,
+        email: normalizedEmail,
+        first_name: firstName.trim(),
+        last_name: lastName.trim(),
+        your_organization: org.trim(),
+      }),
+    )
     if (response.status !== 200) {
-      const data = await response.json().catch(() => ({}))
-      setError(data?.error ?? 'Something went wrong. Please try again.')
+      await setApiErrorFromResponse(response)
       return
     }
     const data = await response.json()
     const { init_login_code } = data
-    localStorage.setItem('siv-admin-init', JSON.stringify({ code: init_login_code, email: email.toLowerCase() }))
-    setSubmittedEmail(email.toLowerCase())
+    localStorage.setItem('siv-admin-init', JSON.stringify({ code: init_login_code, email: normalizedEmail }))
+    setSubmittedEmail(normalizedEmail)
   }
 
   if (submittedEmail) return <CreatedAccountWaiting email={submittedEmail} />
@@ -116,14 +157,7 @@ export function LoginFormSection({ setIsSignupFlow }: { setIsSignupFlow: (isSign
   if (step === 'signup-profile') {
     return (
       <div className="mt-8">
-        {error && (
-          <p
-            className="mb-3 rounded-lg border border-red-200 bg-red-50/80 px-3 py-2 text-[0.8rem] font-medium text-red-700"
-            role="alert"
-          >
-            {error}
-          </p>
-        )}
+        <ErrorBanner error={error} />
         <div className="grid gap-4">
           <label className="block">
             <span className="mb-1 block text-[0.75rem] font-medium uppercase tracking-wider text-h26-muted">Email</span>
@@ -176,18 +210,14 @@ export function LoginFormSection({ setIsSignupFlow }: { setIsSignupFlow: (isSign
             />
           </label>
           <div className="flex flex-wrap gap-3 pt-1">
-            <button
-              className="rounded-full px-6 py-2.5 text-[0.9rem] font-medium text-h26-textSecondary hover:text-h26-text"
-              onClick={() => window.location.reload()}
-              type="button"
-            >
+            <button className={SECONDARY_BUTTON_CLASS} onClick={() => window.location.reload()} type="button">
               Use a different email
             </button>
             <button
-              className="rounded-full px-8 py-3 text-[0.92rem] font-medium shadow-h26-cta transition-all duration-200 hover:-translate-y-0.5 hover:shadow-h26-cta-hover disabled:opacity-70 disabled:hover:translate-y-0"
+              className={PRIMARY_BUTTON_CLASS}
               disabled={pending}
               onClick={handleProfileNext}
-              style={{ backgroundColor: '#1a6b4a', color: '#fff' }}
+              style={PRIMARY_BUTTON_STYLE}
               type="button"
             >
               {pending ? <Spinner /> : 'Next'}
@@ -201,14 +231,7 @@ export function LoginFormSection({ setIsSignupFlow }: { setIsSignupFlow: (isSign
   if (step === 'signup-intent') {
     return (
       <div className="mt-8">
-        {error && (
-          <p
-            className="mb-3 rounded-lg border border-red-200 bg-red-50/80 px-3 py-2 text-[0.8rem] font-medium text-red-700"
-            role="alert"
-          >
-            {error}
-          </p>
-        )}
+        <ErrorBanner error={error} />
         <h2 className="font-serif26 text-[1.05rem] font-normal leading-snug text-h26-text">
           Do you have an upcoming election already, or just want to look around?
         </h2>
@@ -232,7 +255,7 @@ export function LoginFormSection({ setIsSignupFlow }: { setIsSignupFlow: (isSign
           </button>
         </div>
         <button
-          className="mt-6 rounded-full px-6 py-2.5 text-[0.9rem] font-medium text-h26-textSecondary hover:text-h26-text"
+          className={`mt-6 ${SECONDARY_BUTTON_CLASS}`}
           disabled={pending}
           onClick={() => {
             setError('')
@@ -249,14 +272,7 @@ export function LoginFormSection({ setIsSignupFlow }: { setIsSignupFlow: (isSign
   if (step === 'signup-election') {
     return (
       <div className="mt-8">
-        {error && (
-          <p
-            className="mb-3 rounded-lg border border-red-200 bg-red-50/80 px-3 py-2 text-[0.8rem] font-medium text-red-700"
-            role="alert"
-          >
-            {error}
-          </p>
-        )}
+        <ErrorBanner error={error} />
         <div className="grid gap-4">
           <div className="p-5 rounded-xl border shadow-sm border-h26-border/25 bg-white/90">
             <h2 className="font-serif26 text-[1.05rem] font-normal leading-snug text-h26-text">
@@ -344,7 +360,7 @@ export function LoginFormSection({ setIsSignupFlow }: { setIsSignupFlow: (isSign
           </div>
           <div className="flex flex-wrap gap-3 pt-1">
             <button
-              className="rounded-full px-6 py-2.5 text-[0.9rem] font-medium text-h26-textSecondary hover:text-h26-text"
+              className={SECONDARY_BUTTON_CLASS}
               disabled={pending}
               onClick={() => {
                 setError('')
@@ -355,10 +371,10 @@ export function LoginFormSection({ setIsSignupFlow }: { setIsSignupFlow: (isSign
               Back
             </button>
             <button
-              className="rounded-full px-8 py-3 text-[0.92rem] font-medium shadow-h26-cta transition-all duration-200 hover:-translate-y-0.5 hover:shadow-h26-cta-hover disabled:opacity-70 disabled:hover:translate-y-0"
+              className={PRIMARY_BUTTON_CLASS}
               disabled={pending}
               onClick={() => submitApplication('upcoming_election')}
-              style={{ backgroundColor: '#1a6b4a', color: '#fff' }}
+              style={PRIMARY_BUTTON_STYLE}
               type="button"
             >
               {pending ? <Spinner /> : 'Request account'}
@@ -371,14 +387,7 @@ export function LoginFormSection({ setIsSignupFlow }: { setIsSignupFlow: (isSign
 
   return (
     <div className="mt-8">
-      {error && (
-        <p
-          className="mb-3 rounded-lg border border-red-200 bg-red-50/80 px-3 py-2 text-[0.8rem] font-medium text-red-700"
-          role="alert"
-        >
-          {error}
-        </p>
-      )}
+      <ErrorBanner error={error} />
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
         <input
           aria-label="Email"
@@ -393,11 +402,11 @@ export function LoginFormSection({ setIsSignupFlow }: { setIsSignupFlow: (isSign
           value={email}
         />
         <button
-          className="shrink-0 rounded-full px-8 py-3 text-[0.92rem] font-medium shadow-h26-cta transition-all duration-200 hover:-translate-y-0.5 hover:shadow-h26-cta-hover disabled:opacity-70 disabled:hover:translate-y-0"
+          className={`shrink-0 ${PRIMARY_BUTTON_CLASS}`}
           disabled={pending}
           onClick={handleEmailSubmit}
           ref={submitRef}
-          style={{ backgroundColor: '#1a6b4a', color: '#fff' }}
+          style={PRIMARY_BUTTON_STYLE}
           type="button"
         >
           {pending ? <Spinner /> : 'Continue'}
