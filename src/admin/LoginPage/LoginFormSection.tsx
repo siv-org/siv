@@ -50,7 +50,7 @@ export function LoginFormSection({ setIsSignupFlow }: { setIsSignupFlow: (isSign
   }
 
   const setApiErrorFromResponse = async (response: Response) => {
-    const data = await safeJson(response)
+    const data = await response.json()
     setError(data?.error ?? DEFAULT_ERROR_MESSAGE)
   }
 
@@ -408,8 +408,4 @@ function ErrorBanner({ error }: { error: string }) {
       {error}
     </p>
   )
-}
-
-async function safeJson(response: Response): Promise<any> {
-  return response.json().catch(() => ({}))
 }
