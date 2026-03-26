@@ -39,10 +39,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   const intent: 'exploring' | 'upcoming_election' =
     application_intent === 'exploring' ? 'exploring' : 'upcoming_election'
-  const intentLine =
-    intent === 'exploring'
-      ? 'Exploring SIV (no upcoming election details)'
-      : 'Upcoming election (details below as provided)'
 
   // Stop if they already have an account
   const adminDoc = firebase.firestore().collection('admins').doc(email)
@@ -53,23 +49,18 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Store their application in the DB
   const doc_id = new Date().toISOString() + '-' + String(Math.random()).slice(2, 7)
-  firebase
-    .firestore()
-    .collection('applied-admins')
-    .doc(doc_id)
-    .create({
-      created_at: new Date(),
-      ...req.body,
-      application_intent: intent,
-      election_date: ed,
-      election_num_voters: env,
-      election_type: et,
-      email,
-      first_name: first,
-      init_login_code,
-      last_name: last,
-      your_organization: org,
-    })
+  firebase.firestore().collection('applied-admins').doc(doc_id).create({
+    application_intent: intent,
+    created_at: new Date(),
+    election_date: ed,
+    election_num_voters: env,
+    election_type: et,
+    email,
+    first_name: first,
+    init_login_code,
+    last_name: last,
+    your_organization: org,
+  })
 
   firebase
     .firestore()
@@ -88,11 +79,15 @@ Last Name: ${blank(last)}
 Email: ${email}
 Organization: ${blank(org)}
 
-Intent: ${intentLine}
+Intent: ${intent === 'exploring' ? 'Exploring SIV' : 'Upcoming election'}
 
-Election type: ${blank(et)}
+${
+  intent === 'exploring'
+    ? ''
+    : `Election type: ${blank(et)}
 Election date: ${blank(ed)}
-Election number of voters: ${blank(env)}
+Election number of voters: ${blank(env)}`
+}
 
 Link to approve: ${req.headers.origin}/approve-admin?id=${doc_id}
 
