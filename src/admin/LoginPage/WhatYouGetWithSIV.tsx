@@ -2,26 +2,26 @@ import { Check } from 'lucide-react'
 
 import { ScrollReveal } from '../../homepage2026/ScrollReveal'
 
-const PROPERTIES: { description: string; title: string }[] = [
+const PROPERTIES: { _title: string; description: string }[] = [
   {
+    _title: 'Easy for voters',
     description: 'Vote from any device in seconds. No installs, no friction.',
-    title: 'Easy for voters',
   },
   {
+    _title: 'One person, one vote',
     description: 'Every eligible voter can cast only one vote. Auditable voter roll.',
-    title: 'One person, one vote',
   },
   {
+    _title: 'Private voting',
     description: 'Strong privacy and coercion-resistance. No one can see how people vote.',
-    title: 'Private voting',
   },
   {
+    _title: 'Provably fair',
     description: 'You can prove the election was run fairly. Publicly auditable.',
-    title: 'Provably fair',
   },
   {
+    _title: 'A fraction of the cost',
     description: 'Run government-grade elections at a fraction of the usual costs.',
-    title: 'A fraction of the cost',
   },
 ]
 
@@ -34,18 +34,18 @@ export function WhatYouGetWithSIV({ variant = 'section' }: { variant?: 'section'
         What you get with SIV
       </h2>
       <ul className={`grid gap-6 pl-0 list-none ${isSidebar ? 'mt-6' : 'mt-10 md:grid-cols-2'}`}>
-        {PROPERTIES.map(({ description, title }, i) => (
+        {PROPERTIES.map(({ _title, description }, i) => (
           <li
             className={`flex gap-4 items-start px-5 py-4 rounded-xl border shadow-sm border-h26-border bg-white/60 ${
               !isSidebar && i === PROPERTIES.length - 1 ? 'md:col-span-2' : ''
             }`}
-            key={title}
+            key={_title}
           >
             <span className="mt-0.5 shrink-0 rounded-full bg-h26-green/12 p-1.5 text-h26-green">
               <Check className="size-4" strokeWidth={2.5} />
             </span>
             <div>
-              <h3 className="text-[0.95rem] font-medium text-h26-text">{title}</h3>
+              <h3 className="text-[0.95rem] font-medium text-h26-text">{_title}</h3>
               <p className="mt-1 text-[0.85rem] leading-[1.55] text-h26-textSecondary">{description}</p>
             </div>
           </li>
