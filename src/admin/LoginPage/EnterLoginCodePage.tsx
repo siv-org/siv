@@ -97,7 +97,7 @@ export const EnterLoginCodePage = () => {
           />
           {/* Submit button */}
           <button
-            className="shrink-0 rounded-full px-8 py-3 text-[0.92rem] font-medium shadow-h26-cta transition-all duration-200 hover:-translate-y-0.5 hover:shadow-h26-cta-hover"
+            className="rounded-full px-8 py-3 text-[0.92rem] font-medium shadow-h26-cta transition-all duration-200 hover:-translate-y-0.5 hover:shadow-h26-cta-hover !bg-h26-green text-white"
             onClick={() => {
               if (loginCode.length < 6) {
                 setError(`Login codes are 6 digits, not ${loginCode.length}`)
@@ -115,7 +115,6 @@ export const EnterLoginCodePage = () => {
               })
             }}
             ref={submitRef}
-            style={{ backgroundColor: '#1a6b4a', color: '#fff' }}
             type="button"
           >
             Submit
