@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { pusher } from 'src/pusher-helper'
 
-import { attemptInitLoginCode } from './CreateAccount'
+import { attemptInitLoginCode } from './attemptInitLoginCode'
 
 export const CreatedAccountWaiting = ({ email }: { email: string }) => {
   // Listen for 'approved'

@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { api } from 'src/api-helper'
 
 import { Spinner } from '../Spinner'
-import { attemptInitLoginCode } from './CreateAccount'
+import { attemptInitLoginCode } from './attemptInitLoginCode'
 import { CreatedAccountWaiting } from './CreatedAccountWaiting'
 
 type SignupStep = 'email' | 'signup-election' | 'signup-intent' | 'signup-profile'
