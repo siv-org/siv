@@ -2,14 +2,15 @@ import { LinkOutlined } from '@ant-design/icons'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { OnClickButton } from 'src/_shared/Button'
-import { Footer } from 'src/homepage/Footer'
+import { Footer } from 'src/homepage2026/Footer'
+import { Nav } from 'src/homepage2026/Nav'
+import { TailwindPreflight } from 'src/TailwindPreflight'
 import { useAnalytics } from 'src/useAnalytics'
 
-import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
+import { h26fonts } from '../homepage2026/fonts'
 import { AddYourQuestion } from './AddYourQuestion'
 import { faq } from './faq'
-import { HeaderBar } from './HeaderBar'
 
 export const FAQPage = (): JSX.Element => {
   useAnalytics()
@@ -33,134 +34,81 @@ export const FAQPage = (): JSX.Element => {
   }, [asPath])
 
   return (
-    <>
+    <div className={`antialiased bg-h26-bg text-h26-text ${h26fonts}`}>
       <Head title="FAQ" />
 
-      <HeaderBar />
-      <main>
-        <section>
-          <h1>Frequently Asked Questions</h1>
-          <div className="button-container">
-            <OnClickButton
+      <Nav />
+
+      <main className="overflow-hidden p-4 pt-24 w-full max-w-[750px] mx-auto mb-10">
+        <h1 className="text-2xl font-bold">Frequently Asked Questions</h1>
+
+        {/* Expand/collapse all button */}
+        <div className="mt-2 mb-4 text-right sm:mt-0">
+          <OnClickButton
+            onClick={() => {
+              const update = [...expanded].fill(any_collapsed)
+              setExpanded(update)
+            }}
+            style={{ fontSize: '14px', margin: 0, padding: '5px 15px', textAlign: 'right' }}
+          >
+            <>{any_collapsed ? 'Expand' : 'Collapse'} all</>
+          </OnClickButton>
+        </div>
+
+        {faq.map(({ deprecated_ids, id, q, resp }, index) => (
+          // Each item
+          <div className="mb-12 border border-black/15" key={index}>
+            {deprecated_ids && deprecated_ids.map((id) => <div id={id} key={id} />)}
+
+            {/* Question title */}
+            <h3
+              className="text-[16px] font-semibold bg-gray-700/10 hover:bg-black/10 p-4 cursor-pointer flex justify-between scroll-mt-24"
+              id={id}
               onClick={() => {
-                const update = [...expanded].fill(any_collapsed)
+                const update = [...expanded]
+                update[index] = !update[index]
                 setExpanded(update)
               }}
-              style={{ margin: 0, padding: '5px 15px', textAlign: 'right' }}
             >
-              <>{any_collapsed ? 'Expand' : 'Collapse'} all</>
-            </OnClickButton>
+              <span>
+                {index + 1}. {q}
+              </span>
+              <label className="ml-5 w-[11px] cursor-pointer">{!expanded[index] ? '+' : '–'}</label>
+            </h3>
+
+            {/* Expanded content */}
+            {expanded[index] && (
+              <>
+                <p className="p-4 whitespace-pre-wrap" dangerouslySetInnerHTML={{ __html: resp }} />
+
+                {/* Permalink */}
+                {id && (
+                  <p className="pr-5 pb-2 text-right">
+                    <a className="font-normal text-black/50 hover:text-black/70" href={`#${id}`}>
+                      <LinkOutlined /> #{id}
+                    </a>
+                  </p>
+                )}
+              </>
+            )}
           </div>
+        ))}
 
-          {faq.map(({ deprecated_ids, id, q, resp }, index) => (
-            <div className="question" key={index}>
-              {deprecated_ids && deprecated_ids.map((id) => <div id={id} key={id} />)}
-              <h3
-                id={id}
-                onClick={() => {
-                  const update = [...expanded]
-                  update[index] = !update[index]
-                  setExpanded(update)
-                }}
-              >
-                <span>
-                  {index + 1}. {q}
-                </span>
-                <label>{!expanded[index] ? '+' : '–'}</label>
-              </h3>
-
-              {expanded[index] && (
-                <>
-                  <p dangerouslySetInnerHTML={{ __html: resp }} />
-
-                  {id && (
-                    <p className="permalink-row">
-                      <a className="permalink" href={`#${id}`}>
-                        <LinkOutlined /> #{id}
-                      </a>
-                    </p>
-                  )}
-                </>
-              )}
-            </div>
-          ))}
-
-          <AddYourQuestion />
-        </section>
-
-        <Footer />
+        <AddYourQuestion />
       </main>
 
+      <Footer />
+      <TailwindPreflight />
+
       <style global jsx>{`
-        a {
+        main a {
           font-weight: bold;
+          color: #1c72d7;
+        }
+        main a:hover {
+          text-decoration: underline;
         }
       `}</style>
-      <style jsx>{`
-        main {
-          width: 100%;
-          padding: 1rem;
-          overflow-x: hidden;
-        }
-
-        section {
-          max-width: 750px;
-          margin: 2rem auto 5rem;
-        }
-
-        .button-container {
-          text-align: right;
-          margin-bottom: 1rem;
-        }
-
-        .question {
-          margin-bottom: 3rem;
-          border: 1px solid hsl(0, 0%, 87%);
-        }
-
-        h3 {
-          background: hsl(0, 0%, 93%);
-          margin: 0;
-          padding: 1rem;
-          cursor: pointer;
-
-          display: flex;
-          justify-content: space-between;
-        }
-
-        h3:hover {
-          background: hsl(0, 0%, 90%);
-        }
-
-        .permalink-row {
-          width: 100%;
-          text-align: right;
-          padding-top: 0px;
-          padding-bottom: 5px;
-        }
-
-        .permalink {
-          display: inline-block;
-          padding: 3px 5px;
-          color: black;
-          opacity: 0.5;
-          font-weight: 400;
-          text-align: right;
-        }
-
-        label {
-          margin-left: 20px;
-          width: 11px;
-          cursor: pointer;
-        }
-
-        p {
-          white-space: pre-wrap;
-          margin: 0;
-          padding: 1rem;
-        }
-      `}</style>
-      <GlobalCSS />
-    </>
+    </div>
   )
 }

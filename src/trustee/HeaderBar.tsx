@@ -1,67 +1,14 @@
 import Link from 'next/link'
 
 export const HeaderBar = (): JSX.Element => (
-  <div className="headerbar-container">
-    <div>
-      <Link href="/" legacyBehavior>
-        <a className="big">SIV</a>
+  <div className="bg-[linear-gradient(90deg,#010b26_0%,#072054_100%)]">
+    <div className="mx-auto flex w-full max-w-[750px] items-baseline p-4 max-[480px]:flex-col">
+      <Link className="text-[24px] font-bold text-white hover:no-underline" href="/">
+        SIV
       </Link>
-      <Link href="/protocol" legacyBehavior>
-        <a>Protocol</a>
+      <Link className="ml-12 text-[16px] text-white max-[480px]:mt-2 max-[480px]:ml-0" href="/protocol">
+        Protocol
       </Link>
     </div>
-    <style jsx>{`
-      .headerbar-container {
-        background: rgb(1, 5, 11);
-        background: linear-gradient(90deg, #010b26 0%, #072054 100%);
-
-        color: #fff;
-
-        cursor: default;
-      }
-
-      .headerbar-container > div {
-        max-width: 750px;
-        width: 100%;
-        margin: 0 auto;
-        padding: 1rem;
-
-        display: flex;
-        align-items: baseline;
-      }
-
-      .big {
-        font-size: 24px;
-        font-weight: 700;
-        color: white;
-      }
-
-      a:not(:first-child) {
-        margin-left: 3rem;
-        color: white;
-        font-size: 16px;
-        text-decoration: none;
-        font-weight: 400;
-      }
-
-      a:hover {
-        text-decoration: underline;
-      }
-
-      a.big:hover {
-        text-decoration: none;
-      }
-
-      @media (max-width: 480px) {
-        a:not(:first-child) {
-          margin-left: 0;
-          margin-top: 0.5rem;
-        }
-
-        div {
-          flex-direction: column;
-        }
-      }
-    `}</style>
   </div>
 )

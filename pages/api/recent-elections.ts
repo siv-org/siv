@@ -23,22 +23,26 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Format elections list
   const elections = (await electionsDocs).docs.map((doc) => {
     const data = doc.data()
+
+    const pctUnlocked = Math.floor(((data.decrypted?.length || 0) / data.num_votes) * 100)
+
     return {
       created: timeAgo(new Date(data.created_at._seconds * 1000))
         .replace(' day', 'd')
         .replace(' week', 'w')
         .replace('s', ''),
+      id: doc.id,
       ...pick(data, ['election_manager', 'election_title']),
-      stats: `${plural(data.num_voters, 'voter')}. votes: ${data.num_pending_votes || 0} pending, ${
-        data.num_votes
-      } total, ${(data.decrypted || []).length} unlocked`,
+      stats: `${plural(data.num_voters, 'voter')}. votes: ${
+        data.num_pending_votes ? `${data.num_pending_votes} pending, ` : ''
+      }${data.num_votes} total${data.num_votes ? `, ${pctUnlocked}% unlocked` : ''}`,
     }
   })
   const elections_by_manager = groupBy(elections, 'election_manager')
   const formattedKeys = mapKeys(elections_by_manager, (value, key) => key + ` — ${value.length}`)
 
   const formatted = mapValues(formattedKeys, (elections) =>
-    elections.map((e, i) => `${i + 1}. ${e.created}  ${e.election_title}  [${e.stats}]`),
+    elections.map((e, i) => `${i + 1}. ${e.created} [${e.id}] ${e.election_title}  [${e.stats}]`),
   )
 
   res.status(200).json({

@@ -13,6 +13,9 @@ export const Sidebar = () => (
 
 export const steps = ['Ballot Design', 'Privacy', 'Voters']
 
+const linkClasses =
+  'my-1 block cursor-pointer rounded-[5px] py-[3px] px-2 text-[16px] font-medium text-[#000c] transition-colors duration-50 ease-linear hover:bg-[#ffffff58] hover:text-black hover:no-underline'
+
 export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => void }) => {
   const { election_id, section } = useRouter().query
   const { ballot_design_finalized, threshold_public_key } = useStored()
@@ -25,10 +28,10 @@ export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => voi
   const urled = (s: string) => s.toLowerCase().replaceAll(' ', '-')
 
   return (
-    <div className="sidebar">
+    <div className="flex h-full w-[215px] flex-col justify-between overflow-y-auto bg-[#eee] pl-2 pr-[13px]">
       <main>
         <Link
-          className="hover:!bg-white/0 !p-0"
+          className={`${linkClasses} hover:!bg-white/0 !p-0`}
           href="/admin"
           onClick={() => {
             closeMenu()
@@ -36,136 +39,87 @@ export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => voi
             if (el) el.scrollTop = 0
           }}
         >
-          <h2 className="logo sm:hidden">SIV</h2>
+          <h2 className="my-4 mx-2 text-2xl font-bold text-[#010b26] sm:hidden">SIV</h2>
         </Link>
 
         {election_id && (
           <>
             {/* Election Management section */}
             <>
-              <label>
+              <Label>
                 <ApartmentOutlined style={{ marginRight: 5 }} /> Election Management
-              </label>
+              </Label>
+
               {steps.map((name) => (
-                <Link href={`/admin/${election_id}/${urled(name)}`} key={name} legacyBehavior>
-                  <a className={urled(name) === section ? 'current' : ''} onClick={closeMenu}>
-                    {name !== 'Voters' && <input checked={completed[name]} readOnly type="checkbox" />}
-                    {name}
-                  </a>
+                <Link
+                  className={`${linkClasses} ${urled(name) === section ? '!bg-white' : ''}`}
+                  href={`/admin/${election_id}/${urled(name)}`}
+                  key={name}
+                  onClick={closeMenu}
+                >
+                  {name !== 'Voters' && (
+                    <input checked={completed[name]} className="relative bottom-0.5 mr-2" readOnly type="checkbox" />
+                  )}
+                  {name}
                 </Link>
               ))}
             </>
 
             {/* Post Election section */}
             <>
-              <label>
+              <Label>
                 <SnippetsOutlined style={{ marginRight: 5 }} />
                 Post Election
-              </label>
-              <Link href={`/admin/${election_id}/marked-ballots`} legacyBehavior>
-                <a className={'marked-ballots' === section ? 'current' : ''} onClick={closeMenu}>
-                  Marked Ballots
-                </a>
+              </Label>
+
+              <Link
+                className={`${linkClasses} ${'marked-ballots' === section ? '!bg-white' : ''}`}
+                href={`/admin/${election_id}/marked-ballots`}
+                onClick={closeMenu}
+              >
+                Marked Ballots
               </Link>
             </>
 
             {/* Public pages section */}
             <>
-              <label>
+              <Label>
                 <LinkOutlined style={{ marginRight: 5 }} />
                 Public Pages
-              </label>
-              <Link href={`/election/${election_id}/vote`} legacyBehavior>
-                <a target="_blank">Cast Vote</a>
+              </Label>
+
+              <Link className={linkClasses} href={`/election/${election_id}/vote`} target="_blank">
+                Cast Vote
               </Link>
-              <Link href={`/election/${election_id}`} legacyBehavior>
-                <a target="_blank">Election Results</a>
+              <Link className={linkClasses} href={`/election/${election_id}`} target="_blank">
+                Election Results
               </Link>
             </>
           </>
         )}
       </main>
 
-      <div className="bottom">
-        <label>
+      <div className="pb-4">
+        <Label>
           <QuestionCircleOutlined style={{ marginRight: 5 }} />
           Support
-        </label>
-        <Link href="/protocol" legacyBehavior>
-          <a target="_blank">Protocol Overview</a>
+        </Label>
+
+        <Link className={linkClasses} href="/protocol" target="_blank">
+          Protocol Overview
         </Link>
-        <Link href="mailto:help@siv.org" legacyBehavior>
-          <a>Get Help</a>
+        <Link className={linkClasses} href="mailto:help@siv.org">
+          Get Help
         </Link>
 
-        <a className="opacity-70" onClick={promptLogout}>
+        <a className={`opacity-70 ${linkClasses}`} onClick={promptLogout}>
           Logout
         </a>
       </div>
-
-      <style jsx>{`
-        .sidebar {
-          width: 215px;
-          padding: 0px 13px;
-          padding-left: 8px;
-          background-color: #eee;
-
-          height: 100%;
-
-          overflow-y: auto;
-
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-        }
-
-        .logo {
-          font-size: 24px;
-          font-weight: 700;
-          color: #010b26;
-          margin: 16px 8px;
-        }
-
-        label {
-          display: block;
-          margin-top: 30px;
-          opacity: 0.5;
-          padding-left: 8px;
-        }
-
-        a {
-          display: block;
-          padding: 3px 8px;
-          border-radius: 5px;
-          margin: 4px 0;
-          font-weight: 500;
-          cursor: pointer;
-          color: #000c;
-          transition: 0.05s color linear;
-          font-size: 16px;
-        }
-
-        a:hover {
-          color: #000;
-          background-color: #ffffff58;
-          text-decoration: none;
-        }
-
-        a.current,
-        a.current:hover {
-          background-color: #fff !important;
-        }
-
-        a input {
-          position: relative;
-          bottom: 2px;
-          margin-right: 8px;
-        }
-
-        .bottom {
-          padding-bottom: 15px;
-        }
-      `}</style>
     </div>
   )
 }
+
+const Label = ({ children }: { children: React.ReactNode }) => (
+  <label className="block pl-2 mt-[30px] opacity-50">{children}</label>
+)

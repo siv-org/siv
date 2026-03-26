@@ -26,7 +26,7 @@ export const DownloadAllButton = ({ votes }: { votes: Record<string, string>[] }
       const pdfBytes = await merged.save()
 
       // Put the combined PDF onto the download link
-      const blob = new Blob([pdfBytes], { type: 'application/pdf' })
+      const blob = new Blob([new Uint8Array(pdfBytes)], { type: 'application/pdf' })
       const blobUrl = URL.createObjectURL(blob)
       button.current.href = blobUrl
     }

@@ -2,12 +2,22 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "api/*": ["./pages/api/*"],
-      "public/*": ["./public/*"],
-      "src/*": ["./src/*"]
+      "api/*": [
+        "./pages/api/*"
+      ],
+      "public/*": [
+        "./public/*"
+      ],
+      "src/*": [
+        "./src/*"
+      ]
     },
     "target": "es2016",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -28,6 +38,15 @@
       "module": "CommonJS"
     }
   },
-  "exclude": ["node_modules", ".next", "out", "cypress", "db-data"],
-  "include": ["**/*.ts", "**/*.tsx"]
+  "exclude": [
+    "node_modules",
+    ".next",
+    "out",
+    "cypress",
+    "db-data"
+  ],
+  "include": [
+    "**/*.ts",
+    "**/*.tsx"
+  ]
 }

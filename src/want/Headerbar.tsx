@@ -1,11 +1,10 @@
 import Link from 'next/link'
-import { darkBlue } from 'src/homepage/colors'
 
 export const Headerbar = () => (
   <header>
     <h3>
-      <Link href="/" legacyBehavior>
-        <a className="logo">SIV</a>
+      <Link className="text-[#050068] hover:no-underline" href="/">
+        SIV
       </Link>
     </h3>
 
@@ -18,14 +17,6 @@ export const Headerbar = () => (
       h3 {
         margin: 0;
         font-size: 3vw;
-      }
-
-      h3 a:hover {
-        text-decoration: none;
-      }
-
-      a {
-        color: ${darkBlue};
       }
 
       @media (max-width: 700px) {
