@@ -17,7 +17,7 @@ const SECONDARY_BUTTON_CLASS =
   'rounded-full px-6 py-2.5 text-[0.9rem] font-medium text-h26-textSecondary hover:text-h26-text'
 const PRIMARY_BUTTON_STYLE = { backgroundColor: '#1a6b4a', color: '#fff' } as const
 
-export function LoginFormSection({ setIsSignupFlow }: { setIsSignupFlow: (isSignupFlow: boolean) => void }) {
+export function LoginFormSection() {
   const router = useRouter()
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
@@ -77,7 +77,6 @@ export function LoginFormSection({ setIsSignupFlow }: { setIsSignupFlow: (isSign
         return
       }
       setStep('signup-profile')
-      setIsSignupFlow(true)
       setError('')
     } else {
       router.push(`./enter-login-code?email=${encodeURIComponent(normalizedEmail)}`)
@@ -367,8 +366,13 @@ export function LoginFormSection({ setIsSignupFlow }: { setIsSignupFlow: (isSign
     )
   }
 
+  // Default state, ask for email
   return (
-    <div className="mt-8">
+    <div>
+      <p className="mt-3 text-center text-[0.9rem] leading-[1.6] text-h26-textSecondary mb-8">
+        A code will be sent to your email. No password required.
+      </p>
+
       <ErrorBanner error={error} />
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
         <input
