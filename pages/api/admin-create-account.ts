@@ -71,7 +71,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       your_organization: org,
     })
 
-  firebase.firestore().collection('applied-admins-drafts').doc(email).delete().catch(() => {})
+  firebase
+    .firestore()
+    .collection('applied-admins-drafts')
+    .doc(email)
+    .delete()
+    .catch(() => {})
 
   const blank = (s: string) => (s ? s : '—')
 
@@ -85,9 +90,9 @@ Organization: ${blank(org)}
 
 Intent: ${intentLine}
 
-Election details — type: ${blank(et)}
-Election details — date: ${blank(ed)}
-Election details — number of voters: ${blank(env)}
+Election type: ${blank(et)}
+Election date: ${blank(ed)}
+Election number of voters: ${blank(env)}
 
 Link to approve: ${req.headers.origin}/approve-admin?id=${doc_id}
 
