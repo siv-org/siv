@@ -58,11 +58,13 @@ export const EnterLoginCodePage = () => {
 
       <main className="px-7 pt-[7rem] pb-16 md:pt-[8.5rem]">
         <div className="mx-auto max-w-[440px] animate-[fadeInUp_0.8s_ease-out_both] text-center">
+          {/* Instructions */}
           <h1 className="font-serif26 text-[clamp(1.5rem,3.5vw,2rem)] font-normal tracking-tight">Check your email</h1>
           <p className="mt-3 text-[0.9rem] text-h26-textSecondary">We sent a one-time code to:</p>
           <p className="mt-2 font-medium text-h26-text">{email}</p>
 
           <div className="mt-8 text-left">
+            {/* Error message */}
             {error && (
               <p
                 className="mb-3 rounded-lg border border-red-200 bg-red-50/80 px-3 py-2 text-[0.8rem] font-medium text-red-700 whitespace-pre-wrap"
@@ -71,7 +73,9 @@ export const EnterLoginCodePage = () => {
                 {error}
               </p>
             )}
+
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+              {/* Code input */}
               <input
                 aria-label="Code from email"
                 autoFocus
@@ -92,6 +96,7 @@ export const EnterLoginCodePage = () => {
                 type="text"
                 value={loginCode}
               />
+              {/* Submit button */}
               <button
                 className="shrink-0 rounded-full px-8 py-3 text-[0.92rem] font-medium shadow-h26-cta transition-all duration-200 hover:-translate-y-0.5 hover:shadow-h26-cta-hover"
                 onClick={() => {
@@ -119,6 +124,7 @@ export const EnterLoginCodePage = () => {
             </div>
           </div>
 
+          {/* Use different email link */}
           <p className="mt-6 text-[0.82rem] text-h26-muted">
             <a className="text-h26-green hover:underline" href="/login">
               Use a different email
