@@ -29,13 +29,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if ((await adminDoc.get()).exists)
     return res.status(409).send({ error: `'${email}' already has an account.\n\nLog in above.` })
 
-  const firstName = trimString(body.first_name)
-  const lastName = trimString(body.last_name)
+  const first_name = trimString(body.first_name)
+  const last_name = trimString(body.last_name)
   const organization = trimString(body.your_organization)
 
-  const electionType = trimString(body.election_type)
-  const electionDate = trimString(body.election_date)
-  const electionNumVoters = trimString(body.election_num_voters)
+  const election_type = trimString(body.election_type)
+  const election_date = trimString(body.election_date)
+  const election_num_voters = trimString(body.election_num_voters)
 
   const init_login_code = generateEmailLoginCode()
 
@@ -45,14 +45,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     firebase.firestore().collection('applied-admins').doc(doc_id).create({
       application_intent: body.application_intent,
       created_at: new Date(),
-      election_date: electionDate,
-      election_num_voters: electionNumVoters,
-      election_type: electionType,
+      election_date,
+      election_num_voters,
+      election_type,
       email,
-      first_name: firstName,
+      first_name,
       init_login_code,
-      last_name: lastName,
-      your_organization: organization,
+      last_name,
+      organization,
     }),
 
     // Remove their draft application if it exists
@@ -68,8 +68,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Send message w/ Approval Link
   const message = `New SIV Admin Application
 
-First Name: ${blank(firstName)}
-Last Name: ${blank(lastName)}
+First Name: ${blank(first_name)}
+Last Name: ${blank(last_name)}
 Email: ${email}
 Organization: ${blank(organization)}
 
@@ -78,9 +78,9 @@ Intent: ${body.application_intent}
 ${
   body.application_intent === 'exploring'
     ? ''
-    : `Election type: ${blank(electionType)}
-Election date: ${blank(electionDate)}
-Election number of voters: ${blank(electionNumVoters)}`
+    : `Election type: ${blank(election_type)}
+Election date: ${blank(election_date)}
+Election number of voters: ${blank(election_num_voters)}`
 }
 
 Link to approve: ${req.headers.origin}/approve-admin?id=${doc_id}
