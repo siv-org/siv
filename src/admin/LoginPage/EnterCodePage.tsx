@@ -9,6 +9,8 @@ import { Footer } from '../../homepage2026/Footer'
 import { Nav } from '../../homepage2026/Nav'
 import { checkLoginCode } from '../auth'
 
+const PageTitle = 'Admin Enter Login Code'
+
 export const EnterCodePage = () => {
   const router = useRouter()
   const { email, expired, invalid } = router.query
@@ -38,7 +40,7 @@ export const EnterCodePage = () => {
   if (typeof email !== 'string') {
     return (
       <div className={`p-8 min-h-screen bg-h26-bg ${h26fonts}`}>
-        <Head title="Admin Login" />
+        <Head title={PageTitle} />
         <p className="text-h26-textSecondary">Missing email. Please start from the login page.</p>
         <a className="inline-block mt-4 text-h26-green hover:underline" href="/login">
           Back to login
@@ -50,7 +52,7 @@ export const EnterCodePage = () => {
 
   return (
     <div className={`overflow-x-hidden min-h-screen antialiased bg-h26-bg text-h26-text ${h26fonts}`}>
-      <Head title="Admin Login" />
+      <Head title={PageTitle} />
       <div className="relative z-10">
         <Nav />
         <main className="px-7 pt-[7rem] pb-16 md:pt-[8.5rem]">
