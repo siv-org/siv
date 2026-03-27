@@ -8,7 +8,7 @@ const NAV_LINKS: { cta?: boolean; text: string; url: string }[] = [
   { text: 'About', url: '/about' },
   { text: 'News', url: 'https://blog.siv.org' },
   { text: 'How\u00A0It\u00A0Works', url: '/resources' },
-  { cta: true, text: 'Login', url: '/admin' },
+  { cta: true, text: 'Login', url: '/login' },
 ]
 
 export const logoRatio = 50 / 23
