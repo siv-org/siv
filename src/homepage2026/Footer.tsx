@@ -9,8 +9,8 @@ const COLUMNS: { group: string; links: { text: string; url: string }[] }[] = [
   {
     group: 'Product',
     links: [
-      { text: 'Start a Vote', url: '/admin' },
-      { text: 'Login', url: '/admin' },
+      { text: 'Start a Vote', url: '/login' },
+      { text: 'Login', url: '/login' },
     ],
   },
   {
