@@ -4,7 +4,7 @@ export function StartAVoteButton() {
   return (
     <Link
       className="group inline-flex items-center gap-2.5 rounded-full bg-h26-green px-10 py-4 text-[0.92rem] font-medium text-white no-underline shadow-h26-cta transition-all duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:shadow-h26-cta-hover"
-      href="/admin"
+      href="/login"
     >
       Start a Vote
       {/* right arrow icon */}
