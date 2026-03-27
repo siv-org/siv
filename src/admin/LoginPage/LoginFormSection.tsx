@@ -52,7 +52,7 @@ export function LoginFormSection() {
 
   const setApiErrorFromResponse = async (response: Response) => {
     const [data] = await catchErrors(response.json())
-    const status = response.status ? ` [${response.status}]` : ''
+    const status = response.status ? ` [error: ${response.status}]` : ''
     setError((data?.error || DEFAULT_ERROR_MESSAGE) + status)
   }
 
