@@ -1,1 +1,1 @@
-export { EnterCodePage as default } from '../src/admin/LoginPage/EnterCodePage'
+export { EnterLoginCodePage as default } from '../src/admin/LoginPage/EnterLoginCodePage'

@@ -1,0 +1,16 @@
+---
+description: Suggest commit message starters for completed changes
+alwaysApply: true
+---
+
+# Commit Message Suggestions
+
+- When work is complete or the user indicates they are about to commit/push, proactively suggest 1-3 commit message starters.
+- Base suggestions on:
+  - what is currently staged (preferred) or changed
+  - recent commit message style in this repository
+- Keep suggestions concise and immediately usable.
+- Match project tone and naming style (e.g. path-prefixed style like `/login: ...` when appropriate).
+- Prefer "why-focused" wording over purely mechanical "what changed" wording.
+- If multiple logical messages are possible, provide a best pick plus 1-2 alternatives.
+- Do not auto-commit; only suggest message text unless explicitly asked to commit.

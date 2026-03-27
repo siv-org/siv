@@ -1,60 +1,36 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { GlobalCSS } from 'src/GlobalCSS'
+import { LoginFormSection } from 'src/admin/LoginPage/LoginFormSection'
+import { Head } from 'src/Head'
+import { TailwindPreflight } from 'src/TailwindPreflight'
 
-import { Head } from '../../Head'
+import { h26fonts } from '../../homepage2026/fonts'
+import { Footer } from '../../homepage2026/Footer'
+import { Nav } from '../../homepage2026/Nav'
 import { useUser } from '../auth'
-import { AboutSection } from './AboutSection'
-import { CreateAccount } from './CreateAccount'
-import { Headerbar } from './Headerbar'
-import { MobileLogin } from './MobileLogin'
-
-export const breakpoint = 500
+import { WhatYouGetWithSIV } from './WhatYouGetWithSIV'
 
 export const LoginPage = () => {
   useLoggedOutOnly()
 
   return (
-    <main>
+    <div className={`min-h-screen antialiased bg-h26-bg text-h26-text ${h26fonts}`}>
       <Head title="Admin Login" />
-      <Headerbar />
-      <div className="flex justify-center px-[3vw]">
-        <div className="columns">
-          <AboutSection />
-          <div className="spacer" />
-          <MobileLogin />
-          <CreateAccount />
+      <Nav />
+
+      <main className="px-7 pt-28 pb-6 md:pt-[8.5rem] animate-[fadeInUp_0.8s_ease-out_both]">
+        <h1 className="font-serif26 text-[clamp(1.75rem,4vw,2.4rem)] tracking-tight text-center">Start your vote</h1>
+
+        <div className="mx-auto max-w-[600px]">
+          <LoginFormSection />
         </div>
-      </div>
-      <style jsx>{`
-        .columns {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          height: max(calc(100vh - 68px), 620px);
 
-          flex: 1;
-          max-width: 1000px;
-        }
+        <WhatYouGetWithSIV />
+      </main>
 
-        .spacer {
-          width: 15px;
-        }
-
-        @media (max-width: ${breakpoint}px) {
-          .columns {
-            flex-direction: column;
-            max-width: 322px;
-          }
-        }
-      `}</style>
-      <style global jsx>{`
-        body {
-          background: #f9fafb;
-        }
-      `}</style>
-      <GlobalCSS />
-    </main>
+      <Footer />
+      <TailwindPreflight />
+    </div>
   )
 }
 

@@ -15,13 +15,13 @@ const {
 // Init firebase (only once)
 export const firebase = !Firebase.apps.length
   ? Firebase.initializeApp({
-    credential: Firebase.credential.cert({
-      clientEmail: FIREBASE_CLIENT_EMAIL,
-      privateKey: FIREBASE_PRIVATE_KEY,
-      projectId: FIREBASE_PROJECT_ID,
-    }),
-    databaseURL: FIREBASE_DATABASE_URL || 'https://siv-demo.firebaseio.com',
-  })
+      credential: Firebase.credential.cert({
+        clientEmail: FIREBASE_CLIENT_EMAIL,
+        privateKey: FIREBASE_PRIVATE_KEY,
+        projectId: FIREBASE_PROJECT_ID,
+      }),
+      databaseURL: FIREBASE_DATABASE_URL || 'https://siv-demo.firebaseio.com',
+    })
   : Firebase.app()
 
 type SerializedTimestamp = { _seconds: number }
@@ -57,15 +57,24 @@ export const sendEmail = ({
   tag?: string
   text: string
 }) => {
-  if (recipient.includes('@test.local')) return new Promise((resolve) => { console.log('Skipping mailgun send for test.local recipient', recipient); resolve(true) })
-  if (recipient.includes('@example.')) return new Promise((resolve) => { console.log('Skipping mailgun send for @example. recipient', recipient); resolve(true) })
+  if (recipient.includes('@test.local'))
+    return new Promise((resolve) => {
+      console.log('Skipping mailgun send for test.local recipient', recipient)
+      resolve(true)
+    })
+  if (recipient.includes('@example.'))
+    return new Promise((resolve) => {
+      console.log('Skipping mailgun send for @example. recipient', recipient)
+      resolve(true)
+    })
 
-
-  return mailgun.messages().send({
-    attachment: !attachment ? undefined : new mailgun.Attachment(attachment),
-    bcc,
-    from: `${from || 'SIV Admin'} <${fromEmail || 'election@siv.org'}>`,
-    html: `<body style="background-color: #f5f5f5; padding: 2em 0.5em;">
+  return mailgun
+    .messages()
+    .send({
+      attachment: !attachment ? undefined : new mailgun.Attachment(attachment),
+      bcc,
+      from: `${from || 'SIV Admin'} <${fromEmail || 'election@siv.org'}>`,
+      html: `<body style="background-color: #f5f5f5; padding: 2em 0.5em;">
     <table align="center" style="text-align: left; max-width: 600px; background-color: white;">
         <tr>
           <td align="center" style="text-align:center; background: linear-gradient(90deg, #010b26 0%, #072054 100%);">
@@ -79,12 +88,17 @@ export const sendEmail = ({
           ${text.replace(/\n/g, '<br />')}
         </tr>
       </table></body>`,
-    'o:tag': tag,
-    subject,
-    to: recipient,
-  })
-}
+      'o:tag': tag,
+      subject,
+      to: recipient,
+    })
+    .catch((error) => {
+      // console.error('Error sending email:', error)
+      if (error.message.includes('Domain sandbox')) console.log({ from, recipient, subject, text })
 
+      throw error
+    })
+}
 
 const buildPreheader = (preheader: string) =>
   `<div style="display:none!important;visibility:hidden!important;mso-hide:all!important;font-size:1px;overflow:hidden!important;display:none!important;">${preheader}</div>`

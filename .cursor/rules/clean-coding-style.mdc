@@ -1,0 +1,72 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+
+# Coding Style Rules
+
+## General Principles
+
+- Prefer concise, readable code over verbose explanations
+- Eliminate unnecessary intermediate variables when the logic can be expressed inline
+- Use elegant fallbacks and default values
+- Consolidate related logic into single expressions when it improves readability
+
+## JavaScript/TypeScript Patterns
+
+### Variable Elimination
+
+- Remove intermediate variables when the value is only used once
+- Prefer inline expressions over separate variable declarations
+- Example: Use `new Date().getTimezoneOffset()` directly in API calls instead of storing in a variable
+
+### Conditional Logic Simplification
+
+- Consolidate multi-line conditional logic into single expressions when possible
+- Use logical operators (`||`, `&&`) for elegant fallbacks
+- Example: `req.body.election_title || new Date(Date.now() - (req.body.timezone_offset || 0) * 60_000).toString().slice(0, 21)`
+
+### Default Values and Fallbacks
+
+- Use `|| 0` or similar patterns for clean default value handling
+- Prefer inline fallbacks over separate conditional blocks
+- Example: `(req.body.timezone_offset || 0)` instead of checking if undefined
+
+### Mathematical Expressions
+
+- Use underscores in large numbers for readability (e.g., `60_000` instead of `60000`)
+- Prefer direct calculations over intermediate steps when the logic is clear
+
+## Code Structure Preferences
+
+### API Endpoints
+
+- Keep request body destructuring minimal
+- Handle optional parameters with inline fallbacks
+- Prefer single-line expressions for simple transformations
+
+### React Components
+
+- Eliminate unnecessary state variables when values can be computed inline
+- Use direct function calls in event handlers when the logic is simple
+- Prefer concise prop passing over intermediate variables
+
+## Readability Guidelines
+
+- When a single expression can replace multiple lines of conditional logic, prefer the single expression
+- Use descriptive variable names, but don't create variables just for the sake of naming
+- Balance conciseness with clarity - if an inline expression becomes too complex, break it out
+
+### Comments
+
+- Avoid comments that simply restate what each line of code does
+- Prefer comments that explain intent, trade-offs, constraints, or layout/section structure
+- Short JSX block comments that mark logical sections (e.g. `{/* Title */}`, `{/* Description */}`) are acceptable when they make it easier to scan or safely collapse regions in large components
+
+## Anti-Patterns to Avoid
+
+- Creating variables that are only used once
+- Multi-line conditional blocks that can be expressed as single expressions
+- Unnecessary intermediate steps in simple calculations
+- Verbose fallback handling when logical operators can handle it elegantly
