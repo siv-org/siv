@@ -147,6 +147,7 @@ export function LoginFormSection() {
       <div className="mt-8">
         <ErrorBanner error={error} />
         <div className="grid gap-4">
+          {/* Email (readonly) */}
           <label className="block">
             <span className="mb-1 block text-[0.75rem] font-medium uppercase tracking-wider text-h26-muted">Email</span>
             <input
@@ -156,12 +157,16 @@ export function LoginFormSection() {
               value={email}
             />
           </label>
+
+          {/* No account found message */}
           <p
             className="rounded-lg border border-h26-green/30 bg-h26-green/10 px-3.5 py-3 text-[0.92rem] font-medium leading-snug text-h26-text shadow-sm"
             role="status"
           >
             No account found for this email. Enter your details to request access.
           </p>
+
+          {/* First / Last / Org inputs */}
           <div className="grid gap-4 sm:grid-cols-2">
             <label className="block">
               <span className="mb-1 block text-[0.75rem] font-medium uppercase tracking-wider text-h26-muted">
@@ -197,6 +202,8 @@ export function LoginFormSection() {
               value={org}
             />
           </label>
+
+          {/* Back / Next buttons */}
           <div className="flex flex-wrap gap-3 pt-1">
             <button
               className={SECONDARY_BUTTON_CLASS + ' -ml-5'}
