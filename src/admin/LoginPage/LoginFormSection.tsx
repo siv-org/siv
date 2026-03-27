@@ -221,13 +221,13 @@ export function LoginFormSection() {
     return (
       <div className="mt-8">
         <ErrorBanner error={error} />
-        <h2 className="font-serif26 text-[1.05rem] font-normal leading-snug text-h26-text">
+        <h2 className="font-serif26 text-[1.05rem] leading-snug text-h26-text">
           Do you have an upcoming election already, or just want to look around?
         </h2>
         <p className="mt-2 text-[0.85rem] leading-relaxed text-h26-textSecondary">Choose one to continue.</p>
         <div className="grid gap-3 mt-6 sm:grid-cols-2 sm:gap-4">
           <button
-            className="flex min-h-[4.75rem] w-full items-center justify-center rounded-2xl border border-[#1a6b4a]/14 !bg-[#d8ebe0] px-6 py-5 text-center text-[0.875rem] font-normal leading-snug tracking-[0.02em] text-[#141414] shadow-[0_4px_28px_-8px_rgba(26,107,74,0.14)] transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 hover:border-[#1a6b4a]/28 hover:!bg-[#c8e3d4] hover:shadow-[0_18px_48px_-12px_rgba(26,107,74,0.2)] disabled:pointer-events-none disabled:opacity-50 disabled:hover:translate-y-0"
+            className="flex min-h-[4.75rem] w-full items-center justify-center rounded-2xl border border-[#1a6b4a]/14 !bg-[#d8ebe0] px-6 py-5 text-center text-[0.875rem] leading-snug tracking-[0.02em] text-[#141414] shadow-[0_4px_28px_-8px_rgba(26,107,74,0.14)] transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 hover:border-[#1a6b4a]/28 hover:!bg-[#c8e3d4] hover:shadow-[0_18px_48px_-12px_rgba(26,107,74,0.2)] disabled:pointer-events-none disabled:opacity-50 disabled:hover:translate-y-0"
             disabled={pending}
             onClick={() => setStep('signup-election')}
             type="button"
@@ -235,7 +235,7 @@ export function LoginFormSection() {
             I have an upcoming election
           </button>
           <button
-            className="flex min-h-[4.75rem] w-full items-center justify-center rounded-2xl border border-sky-200/70 px-6 py-5 text-center text-[0.875rem] font-normal leading-snug tracking-[0.02em] text-[#141414] shadow-[0_4px_28px_-8px_rgba(30,120,180,0.12)] transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 hover:border-sky-300/70 hover:bg-[#cce6f722] hover:shadow-[0_18px_48px_-12px_rgba(30,120,180,0.16)] disabled:pointer-events-none disabled:opacity-50 disabled:hover:translate-y-0"
+            className="flex min-h-[4.75rem] w-full items-center justify-center rounded-2xl border border-sky-200/70 px-6 py-5 text-center text-[0.875rem] leading-snug tracking-[0.02em] text-[#141414] shadow-[0_4px_28px_-8px_rgba(30,120,180,0.12)] transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 hover:border-sky-300/70 hover:bg-[#cce6f722] hover:shadow-[0_18px_48px_-12px_rgba(30,120,180,0.16)] disabled:pointer-events-none disabled:opacity-50 disabled:hover:translate-y-0"
             disabled={pending}
             onClick={() => submitApplication('exploring')}
             type="button"
@@ -265,9 +265,7 @@ export function LoginFormSection() {
         <ErrorBanner error={error} />
         <div className="grid gap-4">
           <div className="p-5 rounded-xl border shadow-sm border-h26-border/25 bg-white/90">
-            <h2 className="font-serif26 text-[1.05rem] font-normal leading-snug text-h26-text">
-              How do you want to use SIV?
-            </h2>
+            <h2 className="font-serif26 text-[1.05rem] leading-snug text-h26-text">How do you want to use SIV?</h2>
             <p className="mt-1.5 text-[0.82rem] leading-relaxed text-h26-textSecondary">
               Ballpark answers are fine — this helps us understand your election.
             </p>
