@@ -1,6 +1,7 @@
 import { validate as validateEmail } from 'email-validator'
 import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
+import { catchErrors } from 'src/_shared/catchErrors'
 import { api } from 'src/api-helper'
 
 import { Spinner } from '../Spinner'
@@ -50,8 +51,9 @@ export function LoginFormSection() {
   }
 
   const setApiErrorFromResponse = async (response: Response) => {
-    const data = await response.json()
-    setError(data?.error ?? DEFAULT_ERROR_MESSAGE)
+    const [data] = await catchErrors(response.json())
+    const status = response.status ? ` [${response.status}]` : ''
+    setError((data?.error || DEFAULT_ERROR_MESSAGE) + status)
   }
 
   // Step 1: check email. Existing accounts go to code entry; unknown emails go into the signup flow.
@@ -96,10 +98,7 @@ export function LoginFormSection() {
         your_organization: org.trim(),
       }),
     )
-    if (!draft.ok) {
-      await setApiErrorFromResponse(draft)
-      return
-    }
+    if (!draft.ok) return await setApiErrorFromResponse(draft)
     setStep('signup-intent')
   }
 
@@ -124,10 +123,8 @@ export function LoginFormSection() {
         your_organization: org.trim(),
       }),
     )
-    if (response.status !== 200) {
-      await setApiErrorFromResponse(response)
-      return
-    }
+    if (response.status !== 200) return await setApiErrorFromResponse(response)
+
     const data = await response.json()
     const { init_login_code } = data
     localStorage.setItem('siv-admin-init', JSON.stringify({ code: init_login_code, email: normalizedEmail }))
