@@ -34,6 +34,7 @@ export function LoginFormSection() {
   const [electionNumVoters, setElectionNumVoters] = useState('')
   const submitRef = useRef<HTMLButtonElement>(null)
 
+  // Attempt login if initLoginCode present
   useEffect(() => {
     // Prefetch/init any persisted login code state so a newly-created admin can immediately proceed.
     attemptInitLoginCode()
@@ -41,6 +42,7 @@ export function LoginFormSection() {
 
   const normalizedEmail = email.trim().toLowerCase()
 
+  // Helper function
   const runWithPending = async <T,>(fn: () => Promise<T>): Promise<T> => {
     setPending(true)
     try {
@@ -50,6 +52,7 @@ export function LoginFormSection() {
     }
   }
 
+  // Helper function
   const setApiErrorFromResponse = async (response: Response) => {
     const [data] = await catchErrors(response.clone().json())
     const [text] = await catchErrors(response.clone().text())
@@ -61,7 +64,7 @@ export function LoginFormSection() {
     setError(message + status)
   }
 
-  // Step 1: check email. Existing accounts go to code entry; unknown emails go into the signup flow.
+  // Submit Step 1: check email. Existing accounts go to code entry; unknown emails go into the signup flow.
   const handleEmailSubmit = async () => {
     if (!email) return
     if (!validateEmail(email)) {
@@ -89,7 +92,7 @@ export function LoginFormSection() {
     }
   }
 
-  // Step 2: collect profile fields, save to draft, then ask for intent/election context.
+  // Submit Step 2: collect profile fields, save to draft, then ask for intent/election context.
   const handleProfileNext = async () => {
     setError('')
     const draft = await runWithPending(() =>
@@ -105,6 +108,7 @@ export function LoginFormSection() {
     setStep('signup-intent')
   }
 
+  // Submit Step 3: complete application
   const submitApplication = async (application_intent: 'exploring' | 'upcoming_election') => {
     const election_type =
       application_intent === 'exploring'
@@ -134,8 +138,10 @@ export function LoginFormSection() {
     setSubmittedEmail(normalizedEmail)
   }
 
+  // Done: Show 'Request received' message
   if (submittedEmail) return <AdminRequestReceived email={submittedEmail} />
 
+  // Step 2 UI, first/last/org fields
   if (step === 'signup-profile') {
     return (
       <div className="mt-8">
@@ -210,6 +216,7 @@ export function LoginFormSection() {
     )
   }
 
+  // Step 2.5 UI, asking intent: upcoming vs exploring
   if (step === 'signup-intent') {
     return (
       <div className="mt-8">
@@ -251,6 +258,7 @@ export function LoginFormSection() {
     )
   }
 
+  // Step 3 UI, asking election details: type, date, num voters
   if (step === 'signup-election') {
     return (
       <div className="mt-8">
@@ -367,7 +375,7 @@ export function LoginFormSection() {
     )
   }
 
-  // Default state, ask for email
+  // Step 1 UI, email input field
   return (
     <div>
       <p className="mt-3 text-center text-[0.9rem] leading-[1.6] text-h26-textSecondary mb-8">
