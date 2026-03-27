@@ -41,10 +41,10 @@ export function Nav() {
           ) : (
             // Login button — outlined on login page so it's less prominent
             <Link
-              className={`rounded-full px-5 py-2 text-sm font-medium no-underline transition-all duration-200 ${
+              className={`rounded-full px-[18px] py-1.5 text-sm font-medium no-underline transition-all duration-200 border-2 ${
                 isLoginPage
-                  ? 'border-2 border-h26-green bg-white text-h26-green hover:bg-h26-green/5'
-                  : 'bg-h26-green text-white hover:scale-[1.03] hover:bg-h26-greenHover'
+                  ? 'border-h26-green bg-white text-h26-green hover:bg-h26-green/5'
+                  : 'border-transparent bg-h26-green text-white hover:scale-[1.03] hover:bg-h26-greenHover'
               }`}
               href={url}
               key={text}
