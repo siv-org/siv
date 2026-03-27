@@ -198,7 +198,11 @@ export function LoginFormSection() {
             />
           </label>
           <div className="flex flex-wrap gap-3 pt-1">
-            <button className={SECONDARY_BUTTON_CLASS} onClick={() => window.location.reload()} type="button">
+            <button
+              className={SECONDARY_BUTTON_CLASS + ' -ml-5'}
+              onClick={() => window.location.reload()}
+              type="button"
+            >
               Use a different email
             </button>
             <button
