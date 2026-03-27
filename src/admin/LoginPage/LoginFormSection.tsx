@@ -51,9 +51,14 @@ export function LoginFormSection() {
   }
 
   const setApiErrorFromResponse = async (response: Response) => {
-    const [data] = await catchErrors(response.json())
+    const [data] = await catchErrors(response.clone().json())
+    const [text] = await catchErrors(response.clone().text())
     const status = response.status ? ` [error: ${response.status}]` : ''
-    setError((data?.error || DEFAULT_ERROR_MESSAGE) + status)
+    const message =
+      (typeof data?.error === 'string' && data.error.trim()) ||
+      (typeof text === 'string' && text.trim()) ||
+      DEFAULT_ERROR_MESSAGE
+    setError(message + status)
   }
 
   // Step 1: check email. Existing accounts go to code entry; unknown emails go into the signup flow.
@@ -66,7 +71,7 @@ export function LoginFormSection() {
     setError('')
     const response = await runWithPending(() => api('admin-login', { email: normalizedEmail }))
     if (response.status === 400) {
-      setError('Invalid email address')
+      return await setApiErrorFromResponse(response)
     } else if (response.status === 404) {
       const draft = await runWithPending(() =>
         api('applied-admin-draft', {
@@ -74,13 +79,11 @@ export function LoginFormSection() {
           step: 'email_no_account',
         }),
       )
-      if (!draft.ok) {
-        return setError(DEFAULT_ERROR_MESSAGE + ' [error: draft ' + draft.status + ']')
-      }
+      if (!draft.ok) return await setApiErrorFromResponse(draft)
       setStep('signup-profile')
       setError('')
     } else if (!response.ok) {
-      setError(DEFAULT_ERROR_MESSAGE + ' [error: ' + response.status + ']')
+      return await setApiErrorFromResponse(response)
     } else {
       router.push(`./enter-login-code?email=${encodeURIComponent(normalizedEmail)}`)
     }
