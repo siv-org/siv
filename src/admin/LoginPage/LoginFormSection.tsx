@@ -9,7 +9,7 @@ import { attemptInitLoginCode } from './attemptInitLoginCode'
 
 type SignupStep = 'email' | 'signup-election' | 'signup-intent' | 'signup-profile'
 
-const DEFAULT_ERROR_MESSAGE = 'Something went wrong. Please try again.'
+const DEFAULT_ERROR_MESSAGE = 'Error on our side. Please try again.'
 
 const PRIMARY_BUTTON_CLASS =
   'rounded-full px-8 py-3 text-[0.92rem] font-medium shadow-h26-cta transition-all duration-200 hover:-translate-y-0.5 hover:shadow-h26-cta-hover disabled:opacity-70 disabled:hover:translate-y-0'
@@ -73,11 +73,12 @@ export function LoginFormSection() {
         }),
       )
       if (!draft.ok) {
-        setError(DEFAULT_ERROR_MESSAGE)
-        return
+        return setError(DEFAULT_ERROR_MESSAGE + ' [error: draft ' + draft.status + ']')
       }
       setStep('signup-profile')
       setError('')
+    } else if (!response.ok) {
+      setError(DEFAULT_ERROR_MESSAGE + ' [error: ' + response.status + ']')
     } else {
       router.push(`./enter-login-code?email=${encodeURIComponent(normalizedEmail)}`)
     }
