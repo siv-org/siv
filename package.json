@@ -3,6 +3,7 @@
   "version": "1.1.0",
   "private": true,
   "scripts": {
+    "audit": "npx --yes npm-audit-summary",
     "build": "next build",
     "cypress": "cypress open --config-file cypress/cypress-config.json",
     "dev": "next dev",
