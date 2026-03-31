@@ -19,13 +19,23 @@ export function Nav() {
   const isLoginPage = router.pathname === '/login' || router.pathname === '/enter-login-code'
 
   return (
-    <nav className="fixed left-1/2 top-4 z-[100] flex -translate-x-1/2 items-center sm:gap-9 gap-6 rounded-full border border-h26-border bg-white/70 px-6 py-2.5 shadow-sm backdrop-blur-[24px]">
+    <nav className="fixed left-1/2 top-4 z-[100] flex -translate-x-1/2 items-center gap-4 sm:gap-9 rounded-full border border-h26-border bg-white/70 px-4 sm:px-6 py-2.5 shadow-sm backdrop-blur-[24px]">
       {/* Logo */}
-      <Link className="hidden relative leading-none no-underline sm:inline-block" href="/">
-        <Image alt="SIV" height={logoHeight} src={logo} width={logoRatio * logoHeight} />
+      <Link
+        aria-label="Go to homepage"
+        className="inline-flex relative justify-center items-center w-10 h-10 no-underline shrink-0 min-[890px]:inline-block min-[890px]:h-auto min-[890px]:w-auto"
+        href="/"
+      >
+        <Image
+          alt="SIV"
+          className="h-[14px] w-auto min-[890px]:h-[18px]"
+          height={logoHeight}
+          src={logo}
+          width={logoRatio * logoHeight}
+        />
       </Link>
 
-      <div className="flex gap-4 items-center sm:gap-7">
+      <div className="flex gap-3 items-center sm:gap-7">
         {NAV_LINKS.map(({ cta, text, url }) =>
           !cta ? (
             // Nav links
