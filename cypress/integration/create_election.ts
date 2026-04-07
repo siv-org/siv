@@ -143,6 +143,26 @@ describe('Can create an election', () => {
     cy.get('.sidebar input[type="checkbox"]').eq(1).should('be.checked')
   })
 
+  it('Can add an Election Homepage', () => {
+    // Switch to Homepage tab
+    cy.get('.sidebar').contains('Homepage').click()
+
+    // Enter a mock URL into the text field
+    cy.get('input[placeholder="https://example.com"]').type('https://demo.siv.org/test-election')
+
+    // Hit the Save button
+    cy.contains('Save Homepage').click()
+
+    // Visit the election status page to confirm it displays properly
+    cy.visit(`/election/${election_id}`)
+
+    // Expect the URL to be correctly linked and visible on the public page
+    cy.contains('https://demo.siv.org/test-election').should('exist')
+
+    // Return to the Admin UI
+    cy.visit(`/admin/${election_id}/homepage`)
+  })
+
   it('Can add voters', () => {
     // Switch to voter tab
     cy.get('.sidebar').contains('Voters').click()
