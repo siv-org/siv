@@ -8,7 +8,6 @@ import { BallotDesign } from './BallotDesign/BallotDesign'
 import { YourConventionsLink } from './Conventions/YourConventionsLink'
 import { CreateNewElection } from './CreateNewElection'
 import { HeaderBar } from './HeaderBar'
-import { Homepage } from './Homepage'
 import { MarkedBallots } from './MarkedBallots/MarkedBallots'
 import { MobileMenu } from './MobileMenu'
 import { SetPrivacyProtectors } from './PrivacyPage/SetPrivacyProtectors'
@@ -48,7 +47,6 @@ export const AdminPage = (): JSX.Element => {
           {section === 'privacy' && <SetPrivacyProtectors />}
           {section === 'ballot-design' && <BallotDesign />}
           {section === 'voters' && <AddVoters />}
-          {section === 'homepage' && <Homepage />}
           {section === 'marked-ballots' && <MarkedBallots />}
         </div>
       </main>

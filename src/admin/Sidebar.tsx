@@ -11,7 +11,7 @@ export const Sidebar = () => (
   </div>
 )
 
-export const steps = ['Ballot Design', 'Privacy', 'Voters', 'Homepage']
+export const steps = ['Ballot Design', 'Privacy', 'Voters']
 
 const linkClasses =
   'my-1 block cursor-pointer rounded-[5px] py-[3px] px-2 text-[16px] font-medium text-[#000c] transition-colors duration-50 ease-linear hover:bg-[#ffffff58] hover:text-black hover:no-underline'
@@ -22,7 +22,6 @@ export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => voi
 
   const completed: Record<(typeof steps)[number], boolean> = {
     'Ballot Design': !!ballot_design_finalized,
-    Homepage: true,
     Privacy: !!threshold_public_key,
     Voters: true,
   }
@@ -58,7 +57,7 @@ export const SidebarContent = ({ closeMenu = () => {} }: { closeMenu?: () => voi
                   key={name}
                   onClick={closeMenu}
                 >
-                  {name !== 'Voters' && name !== 'Homepage' && (
+                  {name !== 'Voters' && (
                     <input checked={completed[name]} className="relative bottom-0.5 mr-2" readOnly type="checkbox" />
                   )}
                   {name}
