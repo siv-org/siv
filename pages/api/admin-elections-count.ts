@@ -9,9 +9,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const jwt = checkJwt(req, res)
   if (!jwt.valid) return
 
-  const election_count = (
-    await firebase.firestore().collection('elections').where('creator', '==', jwt.email).count().get()
-  ).data().count
+  const docs = (await firebase.firestore().collection('elections').where('creator', '==', jwt.email).get()).docs
+  const election_count = docs.filter((d) => !d.data().archived_at).length
+  const archived_count = docs.length - election_count
 
-  return res.status(200).send({ election_count })
+  return res.status(200).send({ archived_count, election_count })
 }

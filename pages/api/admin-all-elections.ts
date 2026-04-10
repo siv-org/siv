@@ -4,6 +4,8 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { firebase } from './_services'
 import { checkJwt } from './validate-admin-jwt'
 
+export type AdminAllElectionsResponse = { archived_count: number; elections: Election[] }
+
 export type Election = {
   ballot_design_finalized?: boolean
   created_at: { _seconds: number }
@@ -20,13 +22,23 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (!jwt.valid) return
 
   // Get all elections created by this admin
-  const elections = (
-    await firebase.firestore().collection('elections').where('creator', '==', jwt.email).get()
-  ).docs.reduce(
-    (acc: Election[], doc) => [
+  const docs = (await firebase.firestore().collection('elections').where('creator', '==', jwt.email).get()).docs
+
+  let archived_count = 0
+  // Select just the fields we need
+  const elections = docs.reduce((acc: Election[], doc) => {
+    const data = doc.data()
+
+    // Filter out archived
+    if (data.archived_at) {
+      archived_count += 1
+      return acc
+    }
+
+    return [
       {
         id: doc.id,
-        ...pick(doc.data(), [
+        ...pick(data, [
           'ballot_design_finalized',
           'created_at',
           'election_title',
@@ -36,9 +48,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         ]),
       } as Election,
       ...acc,
-    ],
-    [],
-  )
+    ]
+  }, [])
 
-  res.status(200).send({ elections })
+  res.status(200).send({ archived_count, elections } satisfies AdminAllElectionsResponse)
 }
