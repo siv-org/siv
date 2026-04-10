@@ -18,7 +18,8 @@ export const SetRedirection = () => {
   useEffect(() => {
     if (!elections) return
 
-    const filtered = elections.filter((item) => item.election_title.toLowerCase().includes(searchText.toLowerCase()))
+    const active = elections.filter((e) => !e.archived_at)
+    const filtered = active.filter((item) => item.election_title.toLowerCase().includes(searchText.toLowerCase()))
     setFilteredData(filtered)
   }, [searchText, elections])
 
