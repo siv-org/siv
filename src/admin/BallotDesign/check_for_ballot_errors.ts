@@ -1,4 +1,4 @@
-import { max_string_length } from 'src/vote/Ballot'
+import { optionPlaintextToken } from 'src/vote/Ballot'
 
 // These are for urgent errors where we want to disable the PointAndClick designer
 export function check_for_fatal_ballot_errors(design: string): null | string {
@@ -21,16 +21,9 @@ export function check_for_fatal_ballot_errors(design: string): null | string {
         throw `Question ${question.id ? `'${question.id}'` : ''} is missing an options array`
 
       // Validate options
-      question.options.forEach(({ name, value }: { name?: string; value?: string }) => {
+      question.options.forEach(({ name }: { name?: string }) => {
         // Check for name field
         if (name === undefined || typeof name !== 'string') throw 'Each option should have a { name: string } field'
-
-        // If value, keep short enough
-        if (value && value.length > max_string_length) throw `Keep "value" < ${max_string_length} characters: ${value}`
-
-        // If no value, name needs to be shorter
-        if (!value && name.length > 26)
-          throw `Name is too long. Add shorter "value" field, then longer name is ok: ${name}`
 
         // 'BLANK' is a reserved option
         if (name.toLowerCase() === 'blank') throw `'BLANK' is a reserved option name`
@@ -64,10 +57,20 @@ export function check_for_less_urgent_ballot_errors(design: string): null | stri
 
       // Validate options
       const optionsSeen: Record<string, boolean> = {}
-      question.options.forEach(({ name = '' }: { name?: string }, oIndex: number) => {
+      const truncationsSeen: Record<string, number> = {}
+      question.options.forEach(({ name = '', value }: { name?: string; value?: string }, oIndex: number) => {
         if (name === '') throw `Can't have empty options. Fix \`${id}\` option #${oIndex + 1}`
 
-        // Check no duplicate options (case insensitive)
+        // Confirm no .value/.name collisions, including after truncation
+        const truncated = optionPlaintextToken(name, value)
+        if (truncationsSeen[truncated] !== undefined)
+          throw `\`${id}\` options #${truncationsSeen[truncated] + 1} and #${
+            oIndex + 1
+          } collide after truncation: ${truncated}`
+        truncationsSeen[truncated] = oIndex
+
+        // Check no duplicate options, case insensitive
+        // (prevents confusing ballot UI, even if above collision check passes)
         if (optionsSeen[name.toLowerCase()])
           throw `Question ${question.id ? `'${question.id}'` : ''} has duplicate option: ${name}`
         optionsSeen[name.toLowerCase()] = true
