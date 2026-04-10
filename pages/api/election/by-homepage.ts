@@ -17,6 +17,7 @@ export default allowCors(async (req: NextApiRequest, res: NextApiResponse) => {
   const results = matches.docs.map((electionDoc) => {
     const {
       ballot_design_finalized,
+      election_homepage,
       election_title,
       last_decrypted_at,
       num_voters,
@@ -26,6 +27,7 @@ export default allowCors(async (req: NextApiRequest, res: NextApiResponse) => {
 
     return {
       ballot_design_finalized,
+      election_homepage,
       election_id: electionDoc.id,
       election_title,
       has_decrypted_votes: !!last_decrypted_at,
