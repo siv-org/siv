@@ -1,7 +1,7 @@
 import { keyBy } from 'lodash-es'
 import { Item } from 'src/vote/storeElectionInfo'
 
-import { max_string_length } from '../vote/Ballot'
+import { max_string_length, optionPlaintextToken } from '../vote/Ballot'
 import { multi_vote_regex } from './tally-votes'
 
 /**
@@ -32,7 +32,12 @@ export function unTruncateSelection(selection: string, ballot_design: Item[], co
   const ballot_design_item = ballot_items_by_id[column_key]
   if (!ballot_design_item) return selection
 
-  const truncated_selection = ballot_design_item.options.find((option) => option.name.startsWith(selection))
+  // If there's a truncation match, return the full value (if present) or name
+  const match = ballot_design_item.options.find(
+    (option) => optionPlaintextToken(option.name, option.value) === selection,
+  )
+  if (match) return match.value || match.name
 
-  return truncated_selection?.name || selection
+  // Otherwise return original selection as-is
+  return selection
 }

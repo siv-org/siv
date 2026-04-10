@@ -1,7 +1,7 @@
 import { Checkbox, FormControlLabel, FormGroup } from '@mui/material'
 import { Dispatch, useEffect, useState } from 'react'
 
-import { max_string_length } from './Ballot'
+import { optionPlaintextToken } from './Ballot'
 import { Label, TitleDescriptionQuestion } from './Item'
 import { Item as ItemType } from './storeElectionInfo'
 import { State } from './vote-state'
@@ -54,7 +54,7 @@ export const MultiVoteItem = ({
       </p>
       <FormGroup className="ml-2 sm:ml-4">
         {options.map(({ markdown_sub, name, photo_url, sub, value }) => {
-          const val = value || name.slice(0, max_string_length)
+          const val = optionPlaintextToken(name, value)
 
           return (
             <FormControlLabel

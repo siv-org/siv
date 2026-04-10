@@ -1,0 +1,7 @@
+# No Unprompted Defensive Fallbacks
+
+When changing application logic, **do not add “belt-and-suspenders” fallback logic** (extra checks, alternative paths, legacy heuristics, redundant recovery branches) unless the USER explicitly asks for it.
+
+- If a fallback seems prudent, **warn and explain the trade-off** in the response, but default to the simplest correct behavior.
+- If backward-compat behavior is genuinely required, **ask first** (or point to concrete evidence like existing persisted data / protocol requirements) before implementing it.
+

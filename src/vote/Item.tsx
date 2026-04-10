@@ -2,7 +2,7 @@ import { FormControlLabel, Radio, RadioGroup, TextField } from '@mui/material'
 import { Dispatch, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 
-import { max_string_length } from './Ballot'
+import { max_string_length, optionPlaintextToken } from './Ballot'
 import { Linkify } from './Linkify'
 import { Item as ItemType } from './storeElectionInfo'
 import { State } from './vote-state'
@@ -38,12 +38,9 @@ export const Item = ({
             key={name}
             label={<Label {...{ name, photo_url, sub }} nameClassName="!font-normal" />}
             onClick={() => {
-              // Deselect if already selected
-              if (state.plaintext[id] === (value || name.slice(0, max_string_length))) {
-                dispatch({ [id]: '' })
-              }
+              if (state.plaintext[id] === optionPlaintextToken(name, value)) dispatch({ [id]: '' })
             }}
-            value={value || name.slice(0, max_string_length)}
+            value={optionPlaintextToken(name, value)}
           />
         ))}
         {write_in_allowed && (

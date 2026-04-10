@@ -1,7 +1,7 @@
 import { Dispatch, forwardRef, useEffect, useState } from 'react'
 import FlipMove from 'react-flip-move'
 
-import { max_string_length } from './Ballot'
+import { max_string_length, optionPlaintextToken } from './Ballot'
 import { getOrdinal } from './getOrdinal'
 import { Label, TitleDescriptionQuestion } from './Item'
 import { Item as ItemType } from './storeElectionInfo'
@@ -25,8 +25,6 @@ export const RankedChoiceItem = ({
   rankings_allowed: number
   state: State
 }): JSX.Element => {
-  console.log(state.plaintext)
-
   const [writeIn, setWriteIn] = useState('')
   const [orderedOptions, setOrderedOptions] = useState(options)
 
@@ -94,7 +92,7 @@ const OneRow = forwardRef<
   { dispatch, id, isWriteIn, name, photo_url, rankings_allowed, setWriteIn, state, sub, value, writeIn },
   ref,
 ) {
-  const val = value || (!isWriteIn ? name : writeIn).slice(0, max_string_length)
+  const val = isWriteIn ? writeIn.slice(0, max_string_length) : optionPlaintextToken(name, value)
 
   const [error, setError] = useState(' ')
 
@@ -242,7 +240,7 @@ export function getSortedOrder(
   const rankedOptions: { name: string; value?: string }[] = []
   const unrankedOptions: { name: string; value?: string }[] = []
 
-  const optionToVal = ({ name, value }: { name: string; value?: string }) => (value || name).slice(0, max_string_length)
+  const optionToVal = ({ name, value }: { name: string; value?: string }) => optionPlaintextToken(name, value)
 
   // Build an array of ranked names based on their presence and order in 'selections'
   let index = 1

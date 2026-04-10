@@ -16,6 +16,9 @@ import { State } from './vote-state'
 // Calculate maximum write-in string length
 const verification_num_length = 15
 export const max_string_length = maxLength - verification_num_length
+/** Stored plaintext token per option; must stay within `stringToPoint(\`tracking:\${token}\`)` byte limit. */
+export const optionPlaintextToken = (name: string, value?: string) =>
+  (value || name).slice(0, max_string_length)
 export const defaultRankingsAllowed = 3
 
 const memoizedPermutationArray = memoize(build_permutation_array)
