@@ -1,3 +1,5 @@
+import { max_string_length } from 'src/vote/Ballot'
+
 // These are for urgent errors where we want to disable the PointAndClick designer
 export function check_for_fatal_ballot_errors(design: string): null | string {
   try {
@@ -24,7 +26,7 @@ export function check_for_fatal_ballot_errors(design: string): null | string {
         if (name === undefined || typeof name !== 'string') throw 'Each option should have a { name: string } field'
 
         // If value, keep short enough
-        if (value && value.length > 26) throw `Keep "value" < 26 characters: ${value}`
+        if (value && value.length > max_string_length) throw `Keep "value" < ${max_string_length} characters: ${value}`
 
         // If no value, name needs to be shorter
         if (!value && name.length > 26)
