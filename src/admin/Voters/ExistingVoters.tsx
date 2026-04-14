@@ -1,12 +1,12 @@
 import { useEffect, useReducer, useState } from 'react'
 
 import { useStored } from '../useStored'
-import { use_latest_mailgun_events } from './use-latest-mailgun-events'
 import { InvalidVotersTable } from './InvalidVotersTable'
 import { NumVotedRow } from './NumVotedRow'
 import { getStatus } from './Signature'
 import { TopBarButtons } from './TopBarButtons'
 import { UnlockedStatus } from './UnlockedStatus'
+import { use_latest_mailgun_events } from './use-latest-mailgun-events'
 import { ValidVotersTable } from './ValidVotersTable'
 import { VotesAwaitingApprovalTable } from './VotesAwaitingApprovalTable'
 
