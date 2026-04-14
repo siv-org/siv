@@ -1,6 +1,7 @@
 import { useEffect, useReducer, useState } from 'react'
 
 import { useStored } from '../useStored'
+import { use_latest_mailgun_events } from './use-latest-mailgun-events'
 import { InvalidVotersTable } from './InvalidVotersTable'
 import { NumVotedRow } from './NumVotedRow'
 import { getStatus } from './Signature'
@@ -10,7 +11,8 @@ import { ValidVotersTable } from './ValidVotersTable'
 import { VotesAwaitingApprovalTable } from './VotesAwaitingApprovalTable'
 
 export const ExistingVoters = () => {
-  const { esignature_requested, pending_votes, valid_voters, voters } = useStored()
+  const { election_id, election_manager, esignature_requested, pending_votes, valid_voters, voters } = useStored()
+  use_latest_mailgun_events(election_id, voters, election_manager)
   const [checked, set_checked] = useState<boolean[]>(new Array(valid_voters?.length).fill(false))
   const num_voted = valid_voters?.filter((v) => v.has_voted).length || 0
   const num_approved = !esignature_requested
