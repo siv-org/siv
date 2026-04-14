@@ -1,5 +1,3 @@
-import { useEffect } from 'react'
-
 import { Tooltip } from './Tooltip'
 
 export const DeliveriesAndFailures = ({
@@ -13,32 +11,6 @@ export const DeliveriesAndFailures = ({
   deliveries?: string[]
   failed?: unknown[]
 }) => {
-  // #region agent log
-  useEffect(() => {
-    if (!failed?.length) return
-    const first = failed[0] as Record<string, unknown>
-    const ds = first['delivery-status'] as Record<string, unknown> | undefined
-    fetch('http://127.0.0.1:7532/ingest/3b7aaa0c-d569-420d-ad8b-a6097c399793', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Debug-Session-Id': '99584a' },
-      body: JSON.stringify({
-        sessionId: '99584a',
-        runId: 'pre-fix',
-        hypothesisId: 'B',
-        location: 'DeliveriesAndFailures.tsx:failed-shape',
-        message: 'failed events present for cell',
-        data: {
-          failedLen: failed.length,
-          topKeys: Object.keys(first),
-          hasDeliveryStatus: !!ds,
-          deliveryStatusKeys: ds ? Object.keys(ds) : [],
-        },
-        timestamp: Date.now(),
-      }),
-    }).catch(() => {})
-  }, [failed])
-  // #endregion
-
   return (
     <>
       <Tooltip

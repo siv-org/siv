@@ -25,22 +25,6 @@ export const use_latest_mailgun_events = (
     if (election_manager === 'SIV End2End Tester') return
 
     if (pending_invites && election_id) {
-      // #region agent log
-      fetch('http://127.0.0.1:7532/ingest/3b7aaa0c-d569-420d-ad8b-a6097c399793', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-Debug-Session-Id': '99584a' },
-        body: JSON.stringify({
-          sessionId: '99584a',
-          runId: 'post-fix',
-          hypothesisId: 'A',
-          location: 'use-latest-mailgun-events.ts:poll-armed',
-          message: 'voter mailgun poll interval armed',
-          data: { election_id, pending_invites: true, num_invited },
-          timestamp: Date.now(),
-        }),
-      }).catch(() => {})
-      // #endregion
-
       const interval = setInterval(() => {
         console.log('Checking pending invites...')
         api(`election/${election_id}/admin/check-voter-invite-status`)

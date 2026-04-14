@@ -14,22 +14,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const jwt = await checkJwtOwnsElection(req, res, election_id)
   if (!jwt.valid) return
 
-  // #region agent log
-  fetch('http://127.0.0.1:7532/ingest/3b7aaa0c-d569-420d-ad8b-a6097c399793', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'X-Debug-Session-Id': '99584a' },
-    body: JSON.stringify({
-      sessionId: '99584a',
-      runId: 'pre-fix',
-      hypothesisId: 'A',
-      location: 'check-voter-invite-status.ts:entry',
-      message: 'check-voter-invite-status invoked after jwt ok',
-      data: { election_id },
-      timestamp: Date.now(),
-    }),
-  }).catch(() => {})
-  // #endregion
-
   const electionDoc = firebase.firestore().collection('elections').doc(election_id)
 
   // Get election title and created_at
@@ -65,41 +49,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           const voterDoc = electionDoc.collection('voters').doc(to)
           // Confirm voterDoc exists
           if (!(await voterDoc.get()).exists) {
-            // #region agent log
-            fetch('http://127.0.0.1:7532/ingest/3b7aaa0c-d569-420d-ad8b-a6097c399793', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json', 'X-Debug-Session-Id': '99584a' },
-              body: JSON.stringify({
-                sessionId: '99584a',
-                runId: 'pre-fix',
-                hypothesisId: 'E',
-                location: 'check-voter-invite-status.ts:no-voter-doc',
-                message: 'mailgun event skipped — no firestore voter doc for To header',
-                data: { to, event: item.event },
-                timestamp: Date.now(),
-              }),
-            }).catch(() => {})
-            // #endregion
             return console.log(`No voter doc for ${to}`)
           }
 
           num_events++
-          // #region agent log
-          if (item.event === 'failed' || item.event === 'permanent_fail' || item.event === 'complained')
-            fetch('http://127.0.0.1:7532/ingest/3b7aaa0c-d569-420d-ad8b-a6097c399793', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json', 'X-Debug-Session-Id': '99584a' },
-              body: JSON.stringify({
-                sessionId: '99584a',
-                runId: 'pre-fix',
-                hypothesisId: 'E',
-                location: 'check-voter-invite-status.ts:write-failure-ish-event',
-                message: 'writing mailgun event to voter',
-                data: { to, event: item.event },
-                timestamp: Date.now(),
-              }),
-            }).catch(() => {})
-          // #endregion
           // Store new items on voters' docs
           return voterDoc.update({ [`mailgun_events.${item.event}`]: firestore.FieldValue.arrayUnion(item) })
         },

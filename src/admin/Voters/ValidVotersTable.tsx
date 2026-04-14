@@ -1,6 +1,6 @@
 import { EditOutlined } from '@ant-design/icons'
 import { validate as validateEmail } from 'email-validator'
-import { useEffect, useReducer, useState } from 'react'
+import { useReducer, useState } from 'react'
 import { api } from 'src/api-helper'
 
 import { revalidate, useStored } from '../useStored'
@@ -31,41 +31,6 @@ export const ValidVotersTable = ({
   const [showAll, setShowAll] = useState(false)
 
   const voterInvites = useVoterInvites()
-
-  // #region agent log
-  useEffect(() => {
-    if (!voters?.length) return
-    const num_invited = voters.reduce(
-      (acc: { delivered: number; failed: number; queued: number }, voter) => {
-        if (voter.invite_queued) acc.queued += voter.invite_queued.length
-        if (voter.mailgun_events?.delivered) acc.delivered += voter.mailgun_events.delivered.length
-        if (voter.mailgun_events?.failed) acc.failed += voter.mailgun_events.failed.length
-        return acc
-      },
-      { delivered: 0, failed: 0, queued: 0 },
-    )
-    const pending_invites = num_invited && num_invited.queued > num_invited.delivered + num_invited.failed
-    const votersWithFailed = voters.filter((v) => (v.mailgun_events?.failed as unknown[] | undefined)?.length)
-    fetch('http://127.0.0.1:7532/ingest/3b7aaa0c-d569-420d-ad8b-a6097c399793', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Debug-Session-Id': '99584a' },
-      body: JSON.stringify({
-        sessionId: '99584a',
-        runId: 'pre-fix',
-        hypothesisId: 'A,C,D',
-        location: 'ValidVotersTable.tsx:voters-summary',
-        message: 'admin voters mailgun summary',
-        data: {
-          voterCount: voters.length,
-          num_invited,
-          pending_invites: !!pending_invites,
-          votersWithFailedCount: votersWithFailed.length,
-        },
-        timestamp: Date.now(),
-      }),
-    }).catch(() => {})
-  }, [voters])
-  // #endregion
 
   if (!voters) return null
 
