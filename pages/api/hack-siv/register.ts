@@ -13,7 +13,8 @@ export default allowCors(async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Validate that it is a valid email
   if (!validate(email)) {
-    pushover('hacksiv/register: Invalid email submitted', email)
+    console.error('bad hacksiv email', email)
+    await pushover('hacksiv/register: Invalid email submitted', email)
     return res.status(400).json({ error: 'Invalid email' })
   }
 
