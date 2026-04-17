@@ -34,12 +34,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       text: `Your email was not delivered to ${to}.
 
 <code style="white-space: pre-wrap;">${JSON.stringify(omit(eventData, ['storage']), null, 2)}</code>`,
-    }).catch((err) => {
-      pushover('mailgun-permanent-failures webhook error', JSON.stringify(err))
+    }).catch(async (err) => {
+      await pushover('mailgun-permanent-failures webhook error', JSON.stringify(err))
     })
   }
 
   // console.log({ data })
 
-  res.status(200).send('Success')
+  return res.status(200).send('Success')
 }

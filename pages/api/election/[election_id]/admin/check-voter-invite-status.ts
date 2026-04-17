@@ -58,9 +58,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         },
         { concurrency: 3 },
       )
-      .catch((error) => {
+      .catch(async (error) => {
         console.log(error)
-        pushover('Mailgun check-voter-invite-status error', error)
+        await pushover('Mailgun check-voter-invite-status error', error)
       })
     mgEventsList = await getMgEvents(mgEventsList.paging.next.split('https://api.mailgun.net/v3')[1])
   }

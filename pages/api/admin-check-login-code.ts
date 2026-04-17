@@ -40,7 +40,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     }
   }
 
-  pushover('Invalid admin login code', `${email} attempted w/ code '${code}'`)
+  await pushover('Invalid admin login code', `${email} attempted w/ code '${code}'`)
 
   return res.status(401).send({ error: `Invalid login code` })
 }

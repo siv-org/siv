@@ -16,7 +16,7 @@ export default allowCors(async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Validate that it is a valid email
   if (!validate(email)) {
-    pushover('fvxp/register: Invalid email submitted', `email\n${location}\n${req.headers['x-real-ip']}`)
+    await pushover('fvxp/register: Invalid email submitted', `email\n${location}\n${req.headers['x-real-ip']}`)
     return res.status(400).json({ error: 'Invalid email' })
   }
 
@@ -31,7 +31,11 @@ export default allowCors(async (req: NextApiRequest, res: NextApiResponse) => {
         registration: firestore.FieldValue.arrayUnion({
           created_at: new Date(),
           email,
-          geoip: { city: req.headers['x-vercel-ip-city'], country: req.headers['x-vercel-ip-country'], region: req.headers['x-vercel-ip-country-region'] },
+          geoip: {
+            city: req.headers['x-vercel-ip-city'],
+            country: req.headers['x-vercel-ip-country'],
+            region: req.headers['x-vercel-ip-country-region'],
+          },
           ip: req.headers['x-real-ip'],
           user_agent: req.headers['user-agent'],
         }),

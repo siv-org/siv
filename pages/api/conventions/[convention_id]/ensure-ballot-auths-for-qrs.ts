@@ -41,7 +41,7 @@ export const ensureBallotAuthsForQrs = async (convention_id: string, known_elect
   // Edge case if ballot already saw email, but the ballot_auth wasn't stored on QR_Id doc.
   if (already_added.length > 0) {
     console.log('Unexpected error! Already added:', already_added)
-    pushover('Unexpected convention error creating ballot auths', `Already added: ${already_added.join(', ')}`)
+    await pushover('Unexpected convention error creating ballot auths', `Already added: ${already_added.join(', ')}`)
   }
 
   // To convert unique_new_emails back to QR objects
