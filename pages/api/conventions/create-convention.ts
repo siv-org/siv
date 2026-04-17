@@ -7,7 +7,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { convention_title } = req.body
 
   // Confirm they're a valid admin
-  const jwt = checkJwt(req, res)
+  const jwt = await checkJwt(req, res)
   if (!jwt.valid) return
 
   // Create a new convention

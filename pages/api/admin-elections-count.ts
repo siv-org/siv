@@ -6,7 +6,7 @@ import { checkJwt } from './validate-admin-jwt'
 /** Aggregation read only — for dashboard header before loading the full elections list. */
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Confirm they're a valid admin
-  const jwt = checkJwt(req, res)
+  const jwt = await checkJwt(req, res)
   if (!jwt.valid) return
 
   const docs = (await firebase.firestore().collection('elections').where('creator', '==', jwt.email).get()).docs

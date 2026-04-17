@@ -9,7 +9,7 @@ import { JWT_Payload } from './admin-check-login-code'
 const { JWT_SECRET } = process.env
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const result = checkJwt(req, res)
+  const result = await checkJwt(req, res)
   if (result.valid) return res.status(200).send(result)
 }
 
@@ -23,10 +23,10 @@ export type Convention = {
   qrs: { createdAt: { _seconds: number }; number: number }[]
 }
 
-export function checkJwt(
+export async function checkJwt(
   req: NextApiRequest,
   res: NextApiResponse,
-): (JWT_Payload & { valid: true }) | { res: void; valid: false } {
+): Promise<(JWT_Payload & { valid: true }) | { res: void; valid: false }> {
   if (!JWT_SECRET) return { res: res.status(401).send({ error: `Missing process.env JWT_SECRET` }), valid: false }
 
   const cookie = req.cookies[cookie_name]
@@ -40,7 +40,7 @@ export function checkJwt(
     payload = jwt.verify(cookie, JWT_SECRET, { algorithms: ['HS256'] }) as JWT_Payload
   } catch (e) {
     console.error('caught error verifying jwt', e)
-    pushover(
+    await pushover(
       'Invalid JWT signature',
       `${req.headers.origin} ${req.url}\n${JSON.stringify(jwt.decode(cookie))}\n${cookie}`,
     )
@@ -56,7 +56,7 @@ export async function checkJwtOwnsConvention(
   res: NextApiResponse,
   convention_id: string,
 ): Promise<(Convention & JWT_Payload & { valid: true }) | { res: void; valid: false }> {
-  const jwt_status = checkJwt(req, res)
+  const jwt_status = await checkJwt(req, res)
 
   // Fail immediately if checkJwt failed
   if (!jwt_status.valid) return jwt_status
@@ -87,16 +87,16 @@ export async function checkJwtOwnsElection(
   election_id: string,
 ): Promise<
   | (JWT_Payload & {
-    ballot_design: string
-    ballot_design_finalized?: boolean
-    election_manager: string
-    election_title: string
-    num_votes: number
-    valid: true
-  })
+      ballot_design: string
+      ballot_design_finalized?: boolean
+      election_manager: string
+      election_title: string
+      num_votes: number
+      valid: true
+    })
   | { res: void; valid: false }
 > {
-  const jwt_status = checkJwt(req, res)
+  const jwt_status = await checkJwt(req, res)
 
   // Fail immediately if checkJwt failed
   if (!jwt_status.valid) return jwt_status

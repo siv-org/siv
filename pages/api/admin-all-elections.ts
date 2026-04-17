@@ -19,7 +19,7 @@ export type Election = {
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Confirm they're a valid admin
-  const jwt = checkJwt(req, res)
+  const jwt = await checkJwt(req, res)
   if (!jwt.valid) return
 
   // Get all elections created by this admin

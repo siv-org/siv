@@ -16,7 +16,7 @@ type History = { amount: number; date: string; description: string; type: 'grant
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Confirm they're a valid admin
-  const jwt = checkJwt(req, res)
+  const jwt = await checkJwt(req, res)
   if (!jwt.valid) return
 
   // Begin preloading
@@ -45,7 +45,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Find all elections created by this admin
   await Promise.all(
-    (await electionsDocs).docs.map(async (doc) => {
+    (
+      await electionsDocs
+    ).docs.map(async (doc) => {
       num_total_elections += 1
 
       const e = { id: doc.id, ...doc.data() } as Election

@@ -6,7 +6,7 @@ import { checkJwt } from './validate-admin-jwt'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Confirm they're a valid admin
-  const jwt = checkJwt(req, res)
+  const jwt = await checkJwt(req, res)
   if (!jwt.valid) return
 
   // Create a new election
