@@ -1,6 +1,6 @@
 import type { ElementType } from 'react'
 
-import { Atom, Blocks, BookOpen, FileText, MessageCircleQuestionMark, Presentation } from 'lucide-react'
+import { Atom, Blocks, BookOpen, FileText, MessageCircleQuestionMark, Presentation, ShieldCheck } from 'lucide-react'
 
 export type Resource = {
   category: string
@@ -57,5 +57,12 @@ export const RESOURCES: Resource[] = [
     href: 'https://docs.siv.org',
     icon: BookOpen,
     title: 'Detailed Docs',
+  },
+  {
+    category: 'Documentation',
+    description: 'Red-teaming competition results from DEF CON, the largest hacker conference in the world.',
+    href: 'https://hack.siv.org/reports/2024defcon',
+    icon: ShieldCheck,
+    title: 'Hack SIV Challenge: Results',
   },
 ]
