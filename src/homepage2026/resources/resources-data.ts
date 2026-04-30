@@ -59,8 +59,8 @@ export const RESOURCES: Resource[] = [
     title: 'Detailed Docs',
   },
   {
-    category: 'Documentation',
-    description: 'Red-teaming competition results from DEF CON, the largest hacker conference in the world.',
+    category: 'Security Report',
+    description: "Red-team competition results from DEF CON, the world's largest hacker conference.",
     href: 'https://hack.siv.org/reports/2024defcon',
     icon: ShieldCheck,
     title: 'Hack SIV Challenge: Results',

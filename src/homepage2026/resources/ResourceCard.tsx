@@ -3,8 +3,6 @@ import { ArrowUpRight } from 'lucide-react'
 import type { Resource } from './resources-data'
 
 export function ResourceCard({ category, description, href, icon: Icon, title }: Resource) {
-  const isExternal = href.startsWith('http')
-
   return (
     <a
       className="flex relative flex-col gap-4 p-7 no-underline border transition-all duration-300 ease-out group rounded-[20px] border-h26-border bg-white text-inherit hover:-translate-y-1 hover:border-black/10 hover:shadow-h26-lg md:p-8"
@@ -32,7 +30,7 @@ export function ResourceCard({ category, description, href, icon: Icon, title }:
 
       <div className="pt-2 mt-auto">
         <span className="inline-flex items-center gap-1.5 text-[0.78rem] font-medium text-h26-green transition-all duration-200 group-hover:gap-2.5">
-          {isExternal ? 'View docs' : 'Explore'}
+          Explore
           <ArrowUpRight
             className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
             size={13}
