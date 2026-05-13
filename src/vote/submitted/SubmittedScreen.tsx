@@ -11,7 +11,7 @@ import { InvalidatedVoteMessage } from './InvalidatedVoteMessage'
 import { UnlockedVote } from './UnlockedVote'
 import { UnverifiedEmailModal } from './UnverifiedEmailModal'
 
-const disabledLinkToStatusPage = ['1764273267967', '1764288582801']
+const disabledLinkToStatusPage = ['1764273267967', '1764288582801', '1778654905486']
 
 export function SubmittedScreen({
   auth,
