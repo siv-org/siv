@@ -26,7 +26,7 @@ export const AcceptedVotes = ({
 }): JSX.Element => {
   const { election_id } = useRouter().query
   const [votes, setVotes] = useState<EncryptedVote[]>()
-  const { num_pending_votes, num_votes } = useNumVotes(election_id)
+  const { num_invalidated_votes, num_pending_votes, num_votes } = useNumVotes(election_id)
 
   // Load all the encrypted votes (uses /cache-accepted endpoint. See https://github.com/siv-org/siv/pull/292)
   useEffect(() => {
@@ -44,7 +44,7 @@ export const AcceptedVotes = ({
 
   if (!votes || !ballot_design) return <div>Loading...</div>
 
-  const newTotalVotes = num_votes - votes.length
+  const newTotalVotes = Math.max(0, num_votes - num_invalidated_votes - votes.length)
 
   return (
     <>
