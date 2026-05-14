@@ -1,4 +1,5 @@
-import { firebase, sendEmail } from 'api/_services'
+import { firebase, pushover, sendEmail } from 'api/_services'
+import { validate } from 'email-validator'
 import { firestore } from 'firebase-admin'
 import { NextApiRequest, NextApiResponse } from 'next'
 
@@ -47,6 +48,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
           // Skip if no email
           if (!voter.email) return
+
+          // Skip if email invalid
+          if (!validate(voter.email))
+            return pushover('Invalidation: invalid email', `Election ID: ${election_id}\nEmail: ${voter.email}`)
 
           return sendEmail({
             recipient: voter.email,
