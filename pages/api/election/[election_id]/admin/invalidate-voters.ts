@@ -45,6 +45,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           // Skip if they have not voted
           if (!votes.docs.length) return
 
+          // Skip if no email
+          if (!voter.email) return
+
           return sendEmail({
             recipient: voter.email,
             subject: 'Your vote has been invalidated',
