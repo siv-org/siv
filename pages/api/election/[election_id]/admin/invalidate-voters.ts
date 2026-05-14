@@ -13,6 +13,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const jwt = await checkJwtOwnsElection(req, res, election_id)
   if (!jwt.valid) return
 
+  if (!Array.isArray(voters_to_invalidate))
+    return res.status(400).json({ error: 'voters_to_invalidate must be an array' })
+
   await Promise.all(
     voters_to_invalidate.map(async (voter) => {
       const db = firebase.firestore()
