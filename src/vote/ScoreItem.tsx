@@ -2,7 +2,7 @@ import { range } from 'lodash-es'
 import { Dispatch, useEffect } from 'react'
 import { default_max_score, default_min_score } from 'src/admin/BallotDesign/Wizard'
 
-import { Label, TitleDescriptionQuestion } from './Item'
+import { Label, TitleDescriptionQuestion, WideBallotTable } from './Item'
 import { Item as ItemType } from './storeElectionInfo'
 import { State } from './vote-state'
 
@@ -44,7 +44,7 @@ export const ScoreItem = ({
     <>
       <TitleDescriptionQuestion {...{ description, question, title }} />
 
-      <table className="sm:ml-3">
+      <WideBallotTable>
         {/* Top row Choice labels */}
         <thead>
           <tr>
@@ -95,7 +95,7 @@ export const ScoreItem = ({
             )
           })}
         </tbody>
-      </table>
+      </WideBallotTable>
 
       <br />
     </>

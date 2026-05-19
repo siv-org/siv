@@ -3,7 +3,7 @@ import FlipMove from 'react-flip-move'
 
 import { max_string_length, optionPlaintextToken } from './Ballot'
 import { getOrdinal } from './getOrdinal'
-import { Label, TitleDescriptionQuestion } from './Item'
+import { Label, TitleDescriptionQuestion, WideBallotTable } from './Item'
 import { Item as ItemType } from './storeElectionInfo'
 import { State } from './vote-state'
 
@@ -40,7 +40,7 @@ export const RankedChoiceItem = ({
     <>
       <TitleDescriptionQuestion {...{ description, question, title }} />
 
-      <table className="sm:ml-3">
+      <WideBallotTable>
         {/* Top row Choice labels */}
         <thead>
           <tr>
@@ -67,7 +67,7 @@ export const RankedChoiceItem = ({
             ))}
           </FlipMove>
         </tbody>
-      </table>
+      </WideBallotTable>
       <br />
     </>
   )
@@ -162,7 +162,7 @@ const OneRow = forwardRef<
   return (
     <tr className="flex flex-col sm:table-row" key={name} ref={ref}>
       {/* Display Name */}
-      <td className="relative pr-4 sm:bottom-0.5 sm:top-auto top-2">
+      <td className="relative min-w-0 max-w-full pr-4 sm:bottom-0.5 sm:top-auto top-2">
         {!isWriteIn ? (
           <Label {...{ name: `${name}:`, photo_url, sub }} />
         ) : (

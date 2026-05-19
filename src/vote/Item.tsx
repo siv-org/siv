@@ -133,6 +133,19 @@ export const Label = ({
   </div>
 )
 
+/** Horizontal scroll on narrow viewports for wide columnar ballot tables (RCV, Score, etc.) */
+export const WideBallotTable = ({
+  children,
+  className = 'sm:ml-3',
+}: {
+  children: React.ReactNode
+  className?: string
+}) => (
+  <div className="-mx-2 max-w-full overflow-x-auto overflow-y-hidden px-2 sm:mx-0 sm:overflow-visible sm:px-0">
+    <table className={`w-max min-w-full sm:w-full ${className}`}>{children}</table>
+  </div>
+)
+
 export const TitleDescriptionQuestion = ({
   description,
   question,
