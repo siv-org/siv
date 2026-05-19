@@ -93,11 +93,11 @@ export const SubmitButton = ({
             buttonText !== 'Submit'
           }
           onClick={() => {
+            if (auth === 'preview') return alert('You are in preview mode.\n\nNot submitting.')
+
             if (state.submission_confirmation) {
               if (!confirm(state.submission_confirmation)) return
             }
-
-            if (auth === 'preview') return alert('You are in preview mode.\n\nNot submitting.')
 
             // Guard against multiple clicks
             if (expectedColumns !== null) return
