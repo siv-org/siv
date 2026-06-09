@@ -5,6 +5,7 @@ import { h26fonts } from '../homepage2026/fonts'
 import { Footer } from '../homepage2026/Footer'
 import { Nav } from '../homepage2026/Nav'
 import { TailwindPreflight } from '../TailwindPreflight'
+import { AboutHeader } from './AboutHeader'
 import { AcademicResearchPapers } from './AcademicResearchPapers'
 import { Contributors } from './contributors/Contributors'
 import { ResearchHeader } from './ResearchHeader'
@@ -35,7 +36,8 @@ export const AboutPage = (): JSX.Element => {
       </>
       <div className="relative z-10">
         <Nav />
-        <div className="px-4 py-14 sm:px-6 sm:py-20 md:px-8">
+        <div className="px-4 pb-14 sm:px-6 sm:pb-20 md:px-8">
+          <AboutHeader />
           <Contributors />
           <a id="research" />
           <ResearchHeader />
