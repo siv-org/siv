@@ -17,7 +17,6 @@ export const CheckboxCell = ({
   pressing_shift: boolean
   set_checked: (checked: boolean[]) => void
   set_last_selected: (index?: number) => void
-  // Indices (into checked[]) of the rows currently visible after filtering. When omitted, every index between the two clicked rows is toggled.
   visible_indices?: number[]
 }) => {
   return (
@@ -52,7 +51,6 @@ export const CheckboxHeaderCell = ({
   checked: boolean[]
   set_checked: (checked: boolean[]) => void
   set_last_selected: (index?: number) => void
-  // Indices (into checked[]) of the rows currently visible after filtering.When omitted, all rows are toggled.
   visible_indices?: number[]
 }) => {
   const targets = visible_indices ?? range_of(0, checked.length - 1)
