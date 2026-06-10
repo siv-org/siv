@@ -7,6 +7,7 @@ export const CheckboxCell = ({
   pressing_shift,
   set_checked,
   set_last_selected,
+  visible_indices,
 }: {
   checked: boolean[]
   index: number
@@ -14,6 +15,8 @@ export const CheckboxCell = ({
   pressing_shift: boolean
   set_checked: (checked: boolean[]) => void
   set_last_selected: (index?: number) => void
+  // Indices (into checked[]) of the rows currently visible after filtering
+  visible_indices: number[]
 }) => {
   return (
     <td
@@ -21,10 +24,12 @@ export const CheckboxCell = ({
       onClick={() => {
         const new_checked = [...checked]
         if (pressing_shift && last_selected !== undefined) {
-          // If they're holding shift, set all between last_selected and this index to !checked[index]
-          for (let i = Math.min(index, last_selected); i <= Math.max(index, last_selected); i += 1) {
-            new_checked[i] = !checked[index]
-          }
+          // If they're holding shift, set all *visible* rows between last_selected and this index
+          // to !checked[index], so hidden (e.g. already-voted) rows in-between aren't touched
+          const [lo, hi] = [Math.min(index, last_selected), Math.max(index, last_selected)]
+          visible_indices.forEach((i) => {
+            if (i >= lo && i <= hi) new_checked[i] = !checked[index]
+          })
         } else {
           new_checked[index] = !checked[index]
         }

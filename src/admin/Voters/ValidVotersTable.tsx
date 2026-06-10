@@ -43,6 +43,8 @@ export const ValidVotersTable = ({
         (!has_voted || !hide_voted) && (getStatus(esignature_review) !== 'approve' || !hide_approved),
     )
 
+  const visible_indices = shown_voters.map((v) => v.validIndex)
+
   const shouldShowDisplayNameColumn = shown_voters.some(({ display_name }) => !!display_name?.trim())
 
   const shouldShowRegistrationColumns =
@@ -61,9 +63,7 @@ export const ValidVotersTable = ({
       <table className="block w-full mt-1 pb-3 overflow-auto border-collapse [&_tr>*]:[border:1px_solid_#ccc] [&_tr>*]:px-2.5 [&_tr>*]:py-[3px]">
         <thead>
           <tr className="bg-[#f9f9f9] text-[11px]">
-            <CheckboxHeaderCell
-              {...{ checked, set_checked, set_last_selected, visible_indices: shown_voters.map((v) => v.validIndex) }}
-            />
+            <CheckboxHeaderCell {...{ checked, set_checked, set_last_selected, visible_indices }} />
             <th>#</th>
             {shouldShowRegistrationColumns && (
               <>
@@ -120,7 +120,15 @@ export const ValidVotersTable = ({
             ) => (
               <tr className={`${checked[validIndex] && 'bg-[#f1f1f1]'}`} key={email}>
                 <CheckboxCell
-                  {...{ checked, index: validIndex, last_selected, pressing_shift, set_checked, set_last_selected }}
+                  {...{
+                    checked,
+                    index: validIndex,
+                    last_selected,
+                    pressing_shift,
+                    set_checked,
+                    set_last_selected,
+                    visible_indices,
+                  }}
                 />
 
                 <td>{displayIndex + 1}</td>
