@@ -17,8 +17,7 @@ export const CheckboxCell = ({
   pressing_shift: boolean
   set_checked: (checked: boolean[]) => void
   set_last_selected: (index?: number) => void
-  // Indices (into checked[]) of the rows currently visible after filtering.
-  // When omitted, every index between the two clicked rows is toggled.
+  // Indices (into checked[]) of the rows currently visible after filtering. When omitted, every index between the two clicked rows is toggled.
   visible_indices?: number[]
 }) => {
   return (
@@ -27,8 +26,7 @@ export const CheckboxCell = ({
       onClick={() => {
         const new_checked = [...checked]
         if (pressing_shift && last_selected !== undefined) {
-          // If they're holding shift, set all *visible* rows between last_selected and this index
-          // to !checked[index], so hidden (e.g. already-voted) rows in-between aren't touched
+          // If they're holding shift, set all *visible* rows between last_selected and this index to !checked[index], so hidden (e.g. already-voted) rows in-between aren't touched
           const [lo, hi] = [Math.min(index, last_selected), Math.max(index, last_selected)]
           const range = visible_indices?.filter((i) => i >= lo && i <= hi) ?? range_of(lo, hi)
           range.forEach((i) => (new_checked[i] = !checked[index]))
@@ -54,8 +52,7 @@ export const CheckboxHeaderCell = ({
   checked: boolean[]
   set_checked: (checked: boolean[]) => void
   set_last_selected: (index?: number) => void
-  // Indices (into checked[]) of the rows currently visible after filtering.
-  // When omitted, all rows are toggled.
+  // Indices (into checked[]) of the rows currently visible after filtering.When omitted, all rows are toggled.
   visible_indices?: number[]
 }) => {
   const targets = visible_indices ?? range_of(0, checked.length - 1)
@@ -66,8 +63,7 @@ export const CheckboxHeaderCell = ({
         checked={targets.length > 0 && targets.every((i) => checked[i])}
         className="cursor-pointer"
         onChange={(event) => {
-          // "Select All" means exactly the visible set: clear everything, then
-          // (when checking) select only the currently visible rows
+          // "Select All" means exactly the visible set: clear everything, then(when checking) select only the currently visible rows
           const new_checked = new Array(checked.length).fill(false)
           if (event.target.checked) targets.forEach((i) => (new_checked[i] = true))
           set_checked(new_checked)
