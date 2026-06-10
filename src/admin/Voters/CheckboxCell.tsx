@@ -1,5 +1,7 @@
 export const hoverable = `cursor-pointer hover:bg-[#f2f2f2]`
 
+const range_of = (lo: number, hi: number) => Array.from({ length: hi - lo + 1 }, (_, i) => lo + i)
+
 export const CheckboxCell = ({
   checked,
   index,
@@ -15,8 +17,9 @@ export const CheckboxCell = ({
   pressing_shift: boolean
   set_checked: (checked: boolean[]) => void
   set_last_selected: (index?: number) => void
-  // Indices (into checked[]) of the rows currently visible after filtering
-  visible_indices: number[]
+  // Indices (into checked[]) of the rows currently visible after filtering.
+  // When omitted, every index between the two clicked rows is toggled.
+  visible_indices?: number[]
 }) => {
   return (
     <td
@@ -27,9 +30,8 @@ export const CheckboxCell = ({
           // If they're holding shift, set all *visible* rows between last_selected and this index
           // to !checked[index], so hidden (e.g. already-voted) rows in-between aren't touched
           const [lo, hi] = [Math.min(index, last_selected), Math.max(index, last_selected)]
-          visible_indices.forEach((i) => {
-            if (i >= lo && i <= hi) new_checked[i] = !checked[index]
-          })
+          const range = visible_indices?.filter((i) => i >= lo && i <= hi) ?? range_of(lo, hi)
+          range.forEach((i) => (new_checked[i] = !checked[index]))
         } else {
           new_checked[index] = !checked[index]
         }
@@ -52,23 +54,27 @@ export const CheckboxHeaderCell = ({
   checked: boolean[]
   set_checked: (checked: boolean[]) => void
   set_last_selected: (index?: number) => void
-  // Indices (into checked[]) of the rows currently visible after filtering
-  visible_indices: number[]
-}) => (
-  <th>
-    <input
-      // Only reflect as checked when every visible row is selected
-      checked={visible_indices.length > 0 && visible_indices.every((i) => checked[i])}
-      className="cursor-pointer"
-      onChange={(event) => {
-        // Only toggle the currently visible rows, leaving hidden rows untouched
-        const new_checked = [...checked]
-        visible_indices.forEach((i) => (new_checked[i] = event.target.checked))
-        set_checked(new_checked)
-        set_last_selected(undefined)
-      }}
-      readOnly
-      type="checkbox"
-    />
-  </th>
-)
+  // Indices (into checked[]) of the rows currently visible after filtering.
+  // When omitted, all rows are toggled.
+  visible_indices?: number[]
+}) => {
+  const targets = visible_indices ?? range_of(0, checked.length - 1)
+  return (
+    <th>
+      <input
+        // Only reflect as checked when every visible row is selected
+        checked={targets.length > 0 && targets.every((i) => checked[i])}
+        className="cursor-pointer"
+        onChange={(event) => {
+          // Only toggle the currently visible rows, leaving hidden rows untouched
+          const new_checked = [...checked]
+          targets.forEach((i) => (new_checked[i] = event.target.checked))
+          set_checked(new_checked)
+          set_last_selected(undefined)
+        }}
+        readOnly
+        type="checkbox"
+      />
+    </th>
+  )
+}
