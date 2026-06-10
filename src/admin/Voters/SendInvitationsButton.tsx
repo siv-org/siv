@@ -29,11 +29,26 @@ export const SendInvitationsButton = ({
         if (!ballot_design_finalized) return alert('You need to Finalize a Ballot Design first.')
         if (!threshold_public_key) return alert('You need to finish setting the election Privacy Protectors first.')
 
-        toggle_sending()
         const voters_to_invite = checked.reduce((acc: string[], is_checked, index) => {
           if (is_checked) acc.push(valid_voters[index].email)
           return acc
         }, [])
+
+        // Warn if any selected voters have already cast a vote (e.g. accidentally selected while hidden)
+        const already_voted = checked.reduce((acc: string[], is_checked, index) => {
+          if (is_checked && valid_voters[index].has_voted) acc.push(valid_voters[index].email)
+          return acc
+        }, [])
+        if (already_voted.length) {
+          const preview = already_voted.slice(0, 5).join(', ')
+          const more = already_voted.length > 5 ? `, and ${already_voted.length - 5} more` : ''
+          const warning =
+            `Heads up: ${already_voted.length} of the selected voter${already_voted.length === 1 ? ' has' : 's have'} ` +
+            `already cast a vote (${preview}${more}).\n\nAre you sure you want to send them another invitation?`
+          if (!confirm(warning)) return
+        }
+
+        toggle_sending()
 
         // Revalidate every second
         const revalidate_interval = setInterval(() => revalidate(election_id), 1000)
