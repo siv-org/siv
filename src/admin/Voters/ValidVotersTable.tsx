@@ -61,7 +61,9 @@ export const ValidVotersTable = ({
       <table className="block w-full mt-1 pb-3 overflow-auto border-collapse [&_tr>*]:[border:1px_solid_#ccc] [&_tr>*]:px-2.5 [&_tr>*]:py-[3px]">
         <thead>
           <tr className="bg-[#f9f9f9] text-[11px]">
-            <CheckboxHeaderCell {...{ checked, set_checked, set_last_selected }} />
+            <CheckboxHeaderCell
+              {...{ checked, set_checked, set_last_selected, visible_indices: shown_voters.map((v) => v.validIndex) }}
+            />
             <th>#</th>
             {shouldShowRegistrationColumns && (
               <>

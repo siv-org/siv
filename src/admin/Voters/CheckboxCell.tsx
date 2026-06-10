@@ -42,20 +42,27 @@ export const CheckboxHeaderCell = ({
   checked,
   set_checked,
   set_last_selected,
+  visible_indices,
 }: {
   checked: boolean[]
   set_checked: (checked: boolean[]) => void
   set_last_selected: (index?: number) => void
+  // Indices (into checked[]) of the rows currently visible after filtering
+  visible_indices: number[]
 }) => (
   <th>
     <input
+      // Only reflect as checked when every visible row is selected
+      checked={visible_indices.length > 0 && visible_indices.every((i) => checked[i])}
       className="cursor-pointer"
       onChange={(event) => {
+        // Only toggle the currently visible rows, leaving hidden rows untouched
         const new_checked = [...checked]
-        new_checked.fill(event.target.checked)
+        visible_indices.forEach((i) => (new_checked[i] = event.target.checked))
         set_checked(new_checked)
         set_last_selected(undefined)
       }}
+      readOnly
       type="checkbox"
     />
   </th>
