@@ -66,9 +66,10 @@ export const CheckboxHeaderCell = ({
         checked={targets.length > 0 && targets.every((i) => checked[i])}
         className="cursor-pointer"
         onChange={(event) => {
-          // Only toggle the currently visible rows, leaving hidden rows untouched
-          const new_checked = [...checked]
-          targets.forEach((i) => (new_checked[i] = event.target.checked))
+          // "Select All" means exactly the visible set: clear everything, then
+          // (when checking) select only the currently visible rows
+          const new_checked = new Array(checked.length).fill(false)
+          if (event.target.checked) targets.forEach((i) => (new_checked[i] = true))
           set_checked(new_checked)
           set_last_selected(undefined)
         }}
