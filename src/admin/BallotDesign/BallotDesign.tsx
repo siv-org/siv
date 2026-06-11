@@ -6,6 +6,7 @@ import { AutoSaver } from './AutoSaver'
 import { BallotDesignFinalizedBanner } from './BallotDesignFinalizedBanner'
 import { check_for_fatal_ballot_errors } from './check_for_ballot_errors'
 import { default_ballot_design } from './default-ballot-design'
+import { ElectionHomepage } from './ElectionHomepage'
 import { Errors } from './Errors'
 import { FinalizeBallotDesignButton } from './FinalizeBallotDesignButton'
 import { JsonEditor } from './JsonEditor'
@@ -63,6 +64,8 @@ export const BallotDesign = () => {
           </NoSsr>
         )}
       </div>
+
+      <ElectionHomepage />
 
       {!ballot_design_finalized && (
         <FinalizeBallotDesignButton {...{ design, election_id, error, set_saving_errors }} />
