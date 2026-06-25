@@ -10,26 +10,26 @@ export type Election = {
 
 export const ELECTIONS: Election[] = [
   {
-    category: 'December 2025 · Government Election',
+    category: 'December 2025 · State Senate Election',
     description:
       'The largest digital election in US history. The Forward Party of Utah opened a midterm replacement vote to all registered voters in Utah Senate District 11, regardless of party affiliation.',
     href: 'https://blog.siv.org/2025/12/11chooses',
-    title: '11chooses',
+    title: 'Utah State Senate replacement race, 70k eligible voters',
   },
   {
-    category: 'August 2024 · Security',
+    category: 'August 2024 · HACK SIV Challenge',
     description:
-      'Run for a highly technical, security-minded audience at DEF CON. A public vote awarded $5k in prizes to the top red-team submissions. See the “Public Prize Awarding Process” subsection for details.',
-    href: 'https://hack.siv.org/reports/2024defcon#hack-siv-detailed-information',
-    secondaryHref: 'https://hack.siv.org/reports/2024defcon',
-    secondaryLabel: 'Full red-teaming contest writeup',
+      'Run for a highly technical, security-minded audience at DEF CON. $10,000 in prizes, with a public vote which awarded $5k in prizes to the top red-team submissions.',
+    href: 'https://hack.siv.org/reports/2024defcon',
+    secondaryHref: 'https://hack.siv.org/reports/2024defcon#hack-siv-detailed-information',
+    secondaryLabel: 'Public Prize Awarding Process',
     title: 'DEF CON Hack SIV Prize Awarding Vote',
   },
   {
     category: 'July 2024 · Open Primary',
     description:
-      'An open, publicly auditable effort to find a popular replacement after widespread calls for President Biden to drop out following his disastrous debate.',
-    href: 'https://newdemocraticprimary.org/',
+      'An open, publicly auditable effort to find a popular replacement after widespread calls for President Biden to drop out following his debate. The goal was hundreds of millions of Americans could weigh in, online but with strong authentication, and a ranked choice among 11 top presidential choices.',
+    href: 'https://newdemocraticprimary.org/results',
     title: 'New Democratic Primary',
   },
   {
@@ -42,7 +42,7 @@ export const ELECTIONS: Election[] = [
   {
     category: 'November 2023 · Congressional Race',
     description:
-      'Rep. Celeste Maloy won the nomination for Utah’s 2nd Congressional District in a SIV election, then the November general — becoming the first person elected through SIV to serve in the U.S. Congress.',
+      'Rep. Celeste Maloy won the nomination for Utah’s 2nd Congressional District in a SIV election, then the November general, becoming the first person elected through SIV to serve in the U.S. Congress.',
     href: 'https://blog.siv.org/2023/11/utah-gop-special-election',
     title: 'Celeste Maloy Congressional Race',
   },
@@ -56,7 +56,7 @@ export const ELECTIONS: Election[] = [
   {
     category: 'April 2023 · Party Convention',
     description:
-      'The Utah GOP’s first convention conducted with SIV. A group with strong pre-existing distrust in elections used SIV alongside paper — leading to less fighting and more cooperation. “This is election nirvana.”',
+      'The Utah GOP’s first convention conducted with SIV. People could choose between voting via SIV or paper. After election, people said “This is election nirvana.”, "We were all pollwatchers today."',
     href: 'https://blog.siv.org/2023/04/utah-gop-april-convention',
     title: 'Utah GOP First Convention',
   },
