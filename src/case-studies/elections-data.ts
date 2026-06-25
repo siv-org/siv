@@ -21,7 +21,8 @@ export const ELECTIONS: Election[] = [
     description:
       'Run for a highly technical, security-minded audience at DEF CON. $10,000 in prizes, with a public vote which awarded $5k in prizes to the top red-team submissions.',
     href: 'https://hack.siv.org/reports/2024defcon',
-    secondaryHref: 'https://hack.siv.org/reports/2024defcon#hack-siv-detailed-information',
+    secondaryHref:
+      'https://hack.siv.org/reports/2024defcon#:~:text=But%20we%20needed%20to%20protect%20against%20a%20few%20unique%20threats%2C%20detailed%20below',
     secondaryLabel: 'Public Prize Awarding Process',
     title: 'DEF CON Hack SIV Prize Awarding Vote',
   },
