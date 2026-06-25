@@ -37,7 +37,7 @@ export const ELECTIONS: Election[] = [
     description:
       'The Utah branch of the new Forward Party held its first statewide convention, using SIV and Approval Voting to set party priorities and nominate candidates. 908 votes were cast and tallied.',
     href: 'https://blog.siv.org/2024/05/forward-utah',
-    title: 'Utah Forward Party First Convention',
+    title: 'Utah Forward Party State Convention',
   },
   {
     category: 'November 2023 · Congressional Race',
@@ -56,8 +56,8 @@ export const ELECTIONS: Election[] = [
   {
     category: 'April 2023 · Party Convention',
     description:
-      'The Utah GOP’s first convention conducted with SIV. People could choose between voting via SIV or paper. After election, people said “This is election nirvana.”, "We were all pollwatchers today."',
+      'People could choose between voting via SIV or paper. After election, people said “This is election nirvana”, "We were all pollwatchers today".',
     href: 'https://blog.siv.org/2023/04/utah-gop-april-convention',
-    title: 'Utah GOP First Convention',
+    title: 'Utah GOP State Convention',
   },
 ]
