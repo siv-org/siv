@@ -20,10 +20,9 @@ export const QUOTES: Quote[] = [
   { quote: 'Easy! Keeps getting better and better.' },
   { quote: 'Very cool! Wow, SIV JUST WORKS!' },
   { quote: 'This vote was a total success, thanks in very large part to you!' },
-  { quote: 'Thank you both SO MUCH! You sure do build beautiful software!' },
   {
     quote:
-      "Everything has gone PERFECTLY! I'm so impressed! I posted this to the team last week:\n\n‘Have to callout how intuitive and clean the SIV admin layout is. What a huge step forward it is to have transitioned from Helios to SIV. I can't say enough about SIV as a product, the support, the alignment with our community's ethos, etc. This was a win for everyone across the board.’\n\nThank you both for incredible technology. You build beautiful software!",
+      "Everything has gone PERFECTLY! I'm so impressed! I posted this to the team last week:\n\n‘Have to callout how intuitive and clean the SIV admin layout is. What a huge step forward it is to have transitioned from Helios to SIV. I can't say enough about SIV as a product, the support, the alignment with our community's ethos, etc. This was a win for everyone across the board.’\n\nThank you for incredible technology. You build beautiful software!",
   },
 
   {
