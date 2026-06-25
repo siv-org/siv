@@ -46,8 +46,8 @@ export function ElectionsPage() {
           SIV Elections
         </h1>
         <p className="max-w-[560px] text-[0.92rem] leading-[1.7] text-h26-textSecondary animate-[fadeInUp_0.8s_0.15s_ease_both]">
-          Easy for voters & election administrators. Meeting high security standards of One Person-One Vote, End-to-End
-          Verifiable Results, & Private Voting.
+          SIV makes safe digital voting easy for voters and election administrators. Secure enough for high-stakes
+          elections, with One Person, One Vote, end-to-end verifiable results, and private voting.
         </p>
       </section>
 
