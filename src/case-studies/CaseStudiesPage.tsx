@@ -49,7 +49,7 @@ export function CaseStudiesPage() {
         </h1>
         <p className="max-w-[560px] text-[0.92rem] leading-[1.7] text-h26-textSecondary animate-[fadeInUp_0.8s_0.15s_ease_both]">
           SIV makes safe digital voting easy for voters and election administrators. And strong enough for high-stakes
-          elections, with One Person, One Vote, end-to-end verifiable results, and cryptographically private voting.
+          elections, with One-Person-One-Vote, end-to-end verifiable results, and cryptographically private voting.
         </p>
       </section>
 
