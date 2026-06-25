@@ -5,6 +5,13 @@ export type Quote = {
 }
 
 export const QUOTES: Quote[] = [
+  { author: 'Voter', quote: "Easiest voting I've ever done. Thank you!" },
+  {
+    author: 'Voter',
+    quote: `SIV voting system is as cool as ice cream. What I particularly like about it is the flexibility it offers when voting as an ex-ballot counter. This concept is truly innovative and represents the future of voting.
+
+Traditional elections can take days to count millions of votes, and human errors are inevitable. However, with this advanced voting technology that prioritizes privacy, the process becomes much more efficient and accurate.`,
+  },
   {
     author: 'Phil Boileau',
     context: "Dec '25 vote organizer",
@@ -27,6 +34,6 @@ export const QUOTES: Quote[] = [
 
   {
     quote:
-      "Hello! Thanks for thinking of us! I have been enjoying the ease of admin-ing this poll. It's amazing how calm I feel compared to the old Helios days! Thank you for building SIV! 🙌",
+      "Hello! Thanks for thinking of us! I have been enjoying the ease of admin-ing this poll. It's amazing how calm I feel compared to the old days! Thank you for building SIV! 🙌",
   },
 ]
