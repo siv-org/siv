@@ -25,15 +25,18 @@ Traditional elections can take days to count millions of votes, and human errors
   },
   { quote: "Amazing! Couldn't have been better." },
   { quote: 'Easy! Keeps getting better and better.' },
-  { quote: 'Very cool! Wow, SIV JUST WORKS!' },
-  { quote: 'This vote was a total success, thanks in very large part to you!' },
+  { quote: 'TOTAL SUCCESS! SIV...IT JUST WORKS, BABY! 🔥' },
   {
     quote:
       "Everything has gone PERFECTLY! I'm so impressed! I posted this to the team last week:\n\n> ‘Have to callout how intuitive and clean the SIV admin layout is. What a huge step forward it is to have transitioned from Helios to SIV. I can't say enough about SIV as a product, the support, the alignment with our community's ethos, etc. This was a win for everyone across the board.’\n\nThank you for incredible technology. You build beautiful software!",
   },
 
+  { quote: 'This vote was a total success, thanks in very large part to you!' },
   {
     quote:
       "Hello! Thanks for thinking of us! I have been enjoying the ease of admin-ing this poll. It's amazing how calm I feel compared to the old days! Thank you for building SIV! 🙌",
+  },
+  {
+    quote: 'Thanks for everything! SIV is such a pleasure for so many reasons.',
   },
 ]
