@@ -28,7 +28,7 @@ export const ELECTIONS: Election[] = [
   {
     category: 'July 2024 · Open Primary',
     description:
-      'An open, publicly auditable effort to find a popular replacement after widespread calls for President Biden to drop out following his debate. The goal was hundreds of millions of Americans could weigh in, online but with strong authentication, and a ranked choice among 11 top presidential choices.',
+      'An open, publicly auditable effort to find a popular replacement after widespread calls for President Biden to drop out following surprisingly poor debate performance. The goal was to allow hundreds of millions of Americans to securely weigh in, with strong authentication, and a ranked choice among 9 top presidential choices.',
     href: 'https://newdemocraticprimary.org/results',
     title: 'New Democratic Primary',
   },
