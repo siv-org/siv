@@ -12,7 +12,7 @@ export const ELECTIONS: Election[] = [
   {
     category: 'December 2025 · State Senate Election',
     description:
-      'The largest digital election in US history. The Forward Party of Utah opened a midterm replacement vote to all registered voters in Utah Senate District 11, regardless of party affiliation.',
+      'The largest digital election in US history. The Forward Party of Utah opened a midterm replacement vote to all registered voters in Utah Senate District 11, regardless of party affiliation. The winner was sworn in the morning after voting closed as the latest State Senator.',
     href: 'https://blog.siv.org/2025/12/11chooses',
     title: 'Utah State Senate replacement race, 70k eligible voters',
   },
