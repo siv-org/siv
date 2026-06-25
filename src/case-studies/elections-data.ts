@@ -45,7 +45,7 @@ export const ELECTIONS: Election[] = [
     description:
       'Rep. Celeste Maloy won the nomination for Utah’s 2nd Congressional District in a SIV election, then the November general, becoming the first person elected through SIV to serve in the U.S. Congress.',
     href: 'https://blog.siv.org/2023/11/utah-gop-special-election',
-    title: 'Celeste Maloy Congressional Race',
+    title: '2nd District Congressional Race',
   },
   {
     category: 'June 2023 · Participatory Budgeting',
