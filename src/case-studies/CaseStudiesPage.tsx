@@ -3,15 +3,15 @@ import Link from 'next/link'
 import { Head } from 'src/Head'
 import { TailwindPreflight } from 'src/TailwindPreflight'
 
-import { h26fonts } from '../fonts'
-import { Footer } from '../Footer'
-import { Nav } from '../Nav'
+import { h26fonts } from '../homepage2026/fonts'
+import { Footer } from '../homepage2026/Footer'
+import { Nav } from '../homepage2026/Nav'
 import { ElectionRow } from './ElectionRow'
 import { ELECTIONS } from './elections-data'
 import { QuoteRow } from './QuoteRow'
 import { QUOTES } from './quotes-data'
 
-export function ElectionsPage() {
+export function CaseStudiesPage() {
   return (
     <div className={`overflow-x-hidden min-h-screen antialiased bg-h26-bg text-h26-text ${h26fonts}`}>
       <Head title="Case Studies" />

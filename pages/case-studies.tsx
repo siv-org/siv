@@ -1,1 +1,1 @@
-export { ElectionsPage as default } from 'src/homepage2026/elections/ElectionsPage'
+export { CaseStudiesPage as default } from 'src/case-studies/CaseStudiesPage'
