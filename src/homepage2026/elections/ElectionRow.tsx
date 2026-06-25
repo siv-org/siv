@@ -3,6 +3,8 @@ import { ArrowUpRight } from 'lucide-react'
 import type { Election } from './elections-data'
 
 export function ElectionRow({ category, description, href, secondaryHref, secondaryLabel, title }: Election) {
+  const [date, ...rest] = category.split('·')
+
   return (
     <a
       className="grid grid-cols-1 gap-x-8 gap-y-2 py-7 no-underline transition-colors group text-inherit md:grid-cols-[160px_1fr] md:py-8"
@@ -12,7 +14,13 @@ export function ElectionRow({ category, description, href, secondaryHref, second
     >
       {/* Date / context */}
       <span className="font-mono26 text-[0.68rem] uppercase tracking-[0.16em] text-h26-muted md:pt-1.5">
-        {category}
+        {date.trim()}
+        {rest.length > 0 && (
+          <>
+            <span className="md:hidden"> · </span>
+            <span className="inline md:block md:text-h26-muted/70">{rest.join('·').trim()}</span>
+          </>
+        )}
       </span>
 
       {/* Content */}
