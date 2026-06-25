@@ -7,11 +7,12 @@ export type Quote = {
 export const QUOTES: Quote[] = [
   {
     author: 'Phil Boileau',
-    context: 'Forward Party Organizer · December 2025 vote',
+    context: "Dec '25 vote organizer",
     quote:
       'SIV is on the front lines of a truly important technology with incredible potential. The broader concept of online voting has the potential to shift paradigms around how and what it means to vote and, in doing so, strengthen global democracy. But any approach must begin with an absolute commitment to security, and this is where SIV most clearly sets itself apart.\n\nOur election had to be fast, adaptable, utterly secure, able to withstand academic and political scrutiny, and delivered at a fraction of the cost typically required to run an election. SIV delivered on every front.',
   },
   {
+    author: 'Other Private Elections',
     quote:
       "This went really well... and thank you for the kind words! Our whole data team was over the moon. We should do a post mortem to compare notes but I think this time next year we'll have the best voting system including registration in the country.",
   },
