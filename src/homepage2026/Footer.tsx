@@ -40,7 +40,7 @@ export function Footer() {
         <div className="flex flex-col gap-10 md:flex-row md:justify-between">
           <div className="shrink-0">
             <Link className="no-underline" href="/">
-              <Image alt="SIV" height={logoHeight} src={logo} width={logoRatio * logoHeight} />
+              <Image alt="SIV" height={logoHeight} src={logo} width={Math.round(logoRatio * logoHeight)} />
             </Link>
             <p className="mt-3 max-w-[220px] text-[0.8rem] leading-[1.6] text-h26-textSecondary">
               Easy, Safe, Smart.

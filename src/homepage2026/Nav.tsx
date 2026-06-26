@@ -32,7 +32,7 @@ export function Nav() {
           height={logoHeight}
           src={logo}
           style={{ width: 'auto' }}
-          width={logoRatio * logoHeight}
+          width={Math.round(logoRatio * logoHeight)}
         />
       </Link>
 
