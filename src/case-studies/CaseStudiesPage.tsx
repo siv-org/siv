@@ -19,7 +19,7 @@ export function CaseStudiesPage() {
       <Nav />
 
       {/* Ambient orbs */}
-      {/* <>
+      {/* <> Disabled because it's seemingly(?) causing the page to load super slow on mobile
         <div
           className="pointer-events-none fixed z-0 h-[600px] w-[600px] rounded-full opacity-45 blur-[120px]"
           style={{
