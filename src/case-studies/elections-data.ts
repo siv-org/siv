@@ -43,7 +43,7 @@ export const ELECTIONS: Election[] = [
   {
     category: 'November 2023 · Congressional Race',
     description:
-      'Rep. Celeste Maloy won the nomination for Utah’s 2nd Congressional District in a SIV election, then the November general, becoming the first person elected through SIV to serve in the U.S. Congress.',
+      "Rep. Celeste Maloy won the nomination for Utah's 2nd Congressional District in a SIV election, then the November general, becoming the first person elected through SIV to serve in the U.S. Congress.",
     href: 'https://blog.siv.org/2023/11/utah-gop-special-election',
     title: '2nd District Congressional Race',
   },
@@ -57,7 +57,7 @@ export const ELECTIONS: Election[] = [
   {
     category: 'April 2023 · Party Convention',
     description:
-      'People could choose between voting via SIV or paper. After election, people said “This is election nirvana”, "We were all pollwatchers today".',
+      'People could choose between voting via SIV or paper. After election, people said “This is election nirvana”, and "We were all pollwatchers today".',
     href: 'https://blog.siv.org/2023/04/utah-gop-april-convention',
     title: 'Utah GOP State Convention',
   },
