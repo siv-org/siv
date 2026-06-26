@@ -7,7 +7,7 @@ const withMDX = require('@next/mdx')()
  **/
 const nextConfig = withMDX({
   devIndicators: false,
-  images: { localPatterns: [{ pathname: '/_next/static/media/**' }] },
+  images: { localPatterns: [{ pathname: '/_next/static/media/**' }, { pathname: '/logo.png' }] },
   async redirects() {
     return [
       {

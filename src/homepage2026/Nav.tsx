@@ -2,8 +2,6 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
-import logo from '../homepage/logo.png'
-
 const NAV_LINKS: { cta?: boolean; text: string; url: string }[] = [
   { text: 'About', url: '/about' },
   { text: 'News', url: 'https://blog.siv.org' },
@@ -30,7 +28,7 @@ export function Nav() {
           alt="SIV"
           className="h-[14px] w-auto min-[890px]:h-[18px]"
           height={logoHeight}
-          src={logo}
+          src="/logo.png"
           width={Math.round(logoRatio * logoHeight)}
         />
       </Link>
