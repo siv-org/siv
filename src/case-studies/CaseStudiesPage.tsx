@@ -19,7 +19,7 @@ export function CaseStudiesPage() {
       <Nav />
 
       {/* Ambient orbs */}
-      <>
+      {/* <>
         <div
           className="pointer-events-none fixed z-0 h-[600px] w-[600px] rounded-full opacity-45 blur-[120px]"
           style={{
@@ -36,7 +36,7 @@ export function CaseStudiesPage() {
             left: -150,
           }}
         />
-      </>
+      </> */}
 
       {/* Header */}
       <section className="px-7 pt-[120px] pb-10 md:pt-[150px] md:pb-14 mx-auto max-w-[820px] animate-[fadeInUp_0.8s_ease_both]">
