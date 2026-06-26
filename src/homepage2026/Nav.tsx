@@ -28,9 +28,10 @@ export function Nav() {
       >
         <Image
           alt="SIV"
-          className="h-[14px] w-auto min-[890px]:h-[18px]"
+          className="h-[14px] min-[890px]:h-[18px]"
           height={logoHeight}
           src={logo}
+          style={{ width: 'auto' }}
           width={logoRatio * logoHeight}
         />
       </Link>
