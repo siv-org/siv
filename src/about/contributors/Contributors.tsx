@@ -27,7 +27,7 @@ const contributors = [
     name: 'Warren Ernst',
   },
   {
-    affiliation: 'PSE.dev & MACI',
+    affiliation: 'MACI, PSE.dev',
     focus: 'Privacy, Vote Selling & Coercion Resistant Algorithms',
     name: 'Alessandro C',
   },
@@ -51,7 +51,7 @@ const contributors = [
     name: 'Kathryn Mattie',
   },
   { affiliation: 'Amazon Web Services', focus: 'Software Engineering', name: 'Henry Wong' },
-  { affiliation: 'Technology Entrepreneur, LoopRL', focus: 'Funding', name: 'Eshan Kejriwal' },
+  { affiliation: 'Rice University, LoopRL', focus: 'Funding', name: 'Eshan Kejriwal' },
   { affiliation: 'University of California, Davis School of Law', focus: 'Legal', name: 'Max Calehuff' },
   {
     affiliation: 'Columbia University, zkFuzz',
