@@ -65,7 +65,7 @@ export function CaseStudiesPage() {
       </section>
 
       {/* Quotes header */}
-      <section className="px-7 pt-4 pb-8 md:pb-10 mx-auto max-w-[820px]">
+      <section className="px-7 pt-4 pb-8 md:pb-10 mx-auto max-w-[820px] scroll-mt-20" id="quotes">
         <p className="font-mono26 mb-4 flex items-center gap-2 text-xs uppercase tracking-[0.15em] text-h26-muted">
           <MessageSquareQuote size={16} />
           Quotes
