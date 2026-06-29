@@ -6,7 +6,7 @@ const STAGGER_DELAY = 0.05
 const contributors = [
   {
     affiliation: 'SIV.org Founder',
-    focus: 'System Architecture, Security, Cryptography & Organizational Strategy',
+    focus: 'System Architecture, Security, & Org Strategy',
     name: 'David Ernst',
   },
   { affiliation: 'SIV.org', focus: 'Operations & Software Engineering', name: 'Ariana Ivan' },
