@@ -58,6 +58,11 @@ const contributors = [
     focus: 'Security for Verifiable Private Overrides',
     name: 'Hideaki Takahashi, PhD Candidate',
   },
+  {
+    affiliation: 'University of São Paulo Brazil',
+    focus: 'Anti-malware Defenses',
+    name: 'Leonardo Kimura, PhD Candidate',
+  },
 ]
 
 export function Contributors() {
