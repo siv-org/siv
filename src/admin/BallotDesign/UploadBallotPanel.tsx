@@ -15,7 +15,7 @@ export const UploadBallotPanel = ({
   const inputRef = useRef<HTMLInputElement>(null)
   const [uploading, setUploading] = useState(false)
   const [dragOver, setDragOver] = useState(false)
-  const [message, setMessage] = useState<{ text: string; type: 'error' | 'success' } | null>(null)
+  const [message, setMessage] = useState<null | { text: string; type: 'error' | 'success' }>(null)
 
   const handleFile = async (file: File) => {
     if (disabled || !election_id) return
@@ -64,22 +64,22 @@ export const UploadBallotPanel = ({
   }
 
   return (
-    <div className="flex-1 border border-solid border-gray-300 bg-white p-5 sm:p-8 text-gray-700">
-      <div className="max-w-md">
+    <div className="flex-1 p-5 text-gray-700 bg-white border border-gray-300 border-solid sm:p-8">
+      <div className="w-full">
         <h3 className="m-0 text-base font-semibold">Upload Custom Ballot</h3>
-        <p className="mt-2 mb-0 text-sm text-gray-600 leading-relaxed">
+        <p className="mt-2 mb-0 leading-relaxed text-gray-600">
           Have an existing ballot design? Share your file & we'll work on integrating it into SIV.
         </p>
 
         <div
-          className={`mt-5 flex flex-col items-center justify-center rounded border-2 border-dashed px-6 py-10 text-center transition-colors ${
+          className={`mt-5 flex w-full flex-col items-center justify-center rounded border-2 border-dashed px-6 py-10 text-center transition-colors ${
             disabled
-              ? 'border-gray-200 bg-gray-50 cursor-not-allowed opacity-50'
+              ? 'bg-gray-50 border-gray-200 opacity-50 cursor-not-allowed'
               : uploading
-                ? 'border-gray-200 bg-gray-50 cursor-default'
-                : dragOver
-                  ? 'border-blue-400 bg-blue-50/40 cursor-pointer'
-                  : 'border-gray-300 hover:border-gray-400 hover:bg-gray-50/80 cursor-pointer'
+              ? 'bg-gray-50 border-gray-200 cursor-default'
+              : dragOver
+              ? 'border-blue-400 cursor-pointer bg-blue-50/40'
+              : 'border-gray-300 cursor-pointer hover:border-gray-400 hover:bg-gray-50/80'
           }`}
           onClick={() => !disabled && !uploading && inputRef.current?.click()}
           onDragLeave={() => setDragOver(false)}
