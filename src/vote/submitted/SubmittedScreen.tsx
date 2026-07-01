@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { useEffect, useReducer } from 'react'
 import { NoSsr } from 'src/_shared/NoSsr'
 
@@ -22,6 +23,8 @@ export function SubmittedScreen({
   election_id: string
   state: State & { submitted_at: Date }
 }): JSX.Element {
+  const { link_auth } = useRouter().query
+  const malwareCheckAuth = auth === 'link' && typeof link_auth === 'string' ? link_auth : auth
   const [showEncryptionDetails, toggleEncryptionDetails] = useReducer((state) => !state, false)
 
   // Widen the page for the tables
@@ -66,7 +69,7 @@ export function SubmittedScreen({
         No one else can possibly know it.
       </p>
 
-      <MalwareCheck {...{ auth, election_id, state }} />
+      <MalwareCheck auth={malwareCheckAuth} {...{ election_id, state }} />
 
       {/* Encryption */}
       <h3 className="mt-16">How your vote was submitted:</h3>
