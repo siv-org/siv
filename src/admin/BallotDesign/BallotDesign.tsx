@@ -66,7 +66,7 @@ export const BallotDesign = () => {
       />
       {upload_message && (
         <p
-          className={`mt-1 text-xs max-w-md text-right ${
+          className={`mt-1 mb-0 text-xs max-w-md text-right ${
             upload_message.status === 'error' ? 'text-red-600' : 'text-gray-600'
           }`}
         >
