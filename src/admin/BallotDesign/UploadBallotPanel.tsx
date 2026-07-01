@@ -54,7 +54,7 @@ export const UploadBallotPanel = ({
         setDesign(JSON.stringify(JSON.parse(text), null, 2))
         return setMessage({ content: 'Loaded into editor.', type: 'success' })
       }
-      return setMessage({ content: 'File received — saved for our team.', type: 'success' })
+      return setMessage({ content: 'Uploaded successfully, but you chose not to load it.', type: 'success' })
     }
 
     setMessage({
