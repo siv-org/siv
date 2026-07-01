@@ -21,8 +21,14 @@ export const firebase = !Firebase.apps.length
         projectId: FIREBASE_PROJECT_ID,
       }),
       databaseURL: FIREBASE_DATABASE_URL || 'https://siv-demo.firebaseio.com',
+      storageBucket: `${FIREBASE_PROJECT_ID || 'siv-demo'}.appspot.com`,
     })
   : Firebase.app()
+
+const firebaseStorageBucketName = () =>
+  process.env.FIREBASE_STORAGE_BUCKET || `${process.env.FIREBASE_PROJECT_ID || 'siv-demo'}.appspot.com`
+
+export const storageBucket = () => firebase.storage().bucket(firebaseStorageBucketName())
 
 type SerializedTimestamp = { _seconds: number }
 /** `new Date()`, which Firebase will automatically serialize into `{ _seconds: number }` */

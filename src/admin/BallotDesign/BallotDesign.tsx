@@ -39,7 +39,7 @@ export const BallotDesign = () => {
     <>
       <TipToRunPracticeVote />
 
-      <h2 className="hidden mb-0 sm:block">
+      <h2 className="hidden sm:block">
         Ballot Design
         <span className="ml-3">
           <PreviewButton election_id={election_id} />
@@ -66,7 +66,7 @@ export const BallotDesign = () => {
       />
       {upload_message && (
         <p
-          className={`mt-1 mb-0 text-xs max-w-md text-right ${
+          className={`clear-both pt-1 text-xs max-w-xl ${
             upload_message.status === 'error' ? 'text-red-600' : 'text-gray-600'
           }`}
         >

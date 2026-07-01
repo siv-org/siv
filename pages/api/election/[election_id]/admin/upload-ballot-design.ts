@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { check_for_fatal_ballot_errors } from 'src/admin/BallotDesign/check_for_ballot_errors'
 
-import { firebase, pushover } from '../../../_services'
+import { firebase, pushover, storageBucket } from '../../../_services'
 import { checkJwtOwnsElection } from '../../../validate-admin-jwt'
 
 const MAX_BYTES = 4 * 1024 * 1024
@@ -54,13 +54,18 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const uploadId = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
   const storagePath = `ballot-design-uploads/${election_id}/${uploadId}-${safeFilename}`
 
-  await firebase
-    .storage()
-    .bucket()
-    .file(storagePath)
-    .save(buffer, {
-      metadata: { contentType: typeof mime_type === 'string' ? mime_type : 'application/octet-stream' },
-    })
+  try {
+    await storageBucket()
+      .file(storagePath)
+      .save(buffer, {
+        metadata: { contentType: typeof mime_type === 'string' ? mime_type : 'application/octet-stream' },
+      })
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error)
+    console.error('ballot design upload: storage save failed', message)
+    await pushover('Ballot design upload: Storage failed', `${election_id}\n${safeFilename}\n${message}`)
+    return res.status(503).json({ error: `File storage failed: ${message}` })
+  }
 
   const format = detectFormat(buffer, safeFilename)
 
