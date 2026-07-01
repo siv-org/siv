@@ -8,11 +8,6 @@ const MAX_BYTES = 4 * 1024 * 1024
 
 export const config = { api: { bodyParser: { sizeLimit: '5mb' } } }
 
-function sanitizeFilename(filename: string) {
-  const base = filename.split(/[/\\]/).pop() || 'upload'
-  return base.replace(/[^\w.\-()+ ]/g, '_').slice(0, 200) || 'upload'
-}
-
 function detectFormat(buffer: Buffer, filename: string): 'siv_json' | undefined {
   const looksJson = filename.toLowerCase().endsWith('.json') || buffer[0] === 0x7b || buffer[0] === 0x5b
   if (!looksJson) return undefined
@@ -24,6 +19,11 @@ function detectFormat(buffer: Buffer, filename: string): 'siv_json' | undefined 
     // not valid SIV JSON
   }
   return undefined
+}
+
+function sanitizeFilename(filename: string) {
+  const base = filename.split(/[/\\]/).pop() || 'upload'
+  return base.replace(/[^\w.\-()+ ]/g, '_').slice(0, 200) || 'upload'
 }
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
