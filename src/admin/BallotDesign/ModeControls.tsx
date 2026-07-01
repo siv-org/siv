@@ -1,4 +1,20 @@
-export const ModeControls = ({ selected, setSelected }: { selected: number; setSelected: (s: number) => void }) => {
+import { UploadBallotDesignButton } from './UploadBallotDesignButton'
+
+export const ModeControls = ({
+  election_id,
+  onUploadMessage,
+  selected,
+  setDesign,
+  setSelected,
+  showUpload,
+}: {
+  election_id?: string
+  onUploadMessage?: (message: string, status: 'error' | 'success') => void
+  selected: number
+  setDesign?: (design: string) => void
+  setSelected: (s: number) => void
+  showUpload?: boolean
+}) => {
   return (
     <div className="float-right">
       {['Wizard', 'JSON', 'Split'].map((label, index) => (
@@ -12,6 +28,9 @@ export const ModeControls = ({ selected, setSelected }: { selected: number; setS
           {label}
         </span>
       ))}
+      {showUpload && setDesign && (
+        <UploadBallotDesignButton election_id={election_id} onMessage={onUploadMessage} setDesign={setDesign} />
+      )}
     </div>
   )
 }

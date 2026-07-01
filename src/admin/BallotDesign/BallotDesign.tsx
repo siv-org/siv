@@ -11,7 +11,6 @@ import { FinalizeBallotDesignButton } from './FinalizeBallotDesignButton'
 import { JsonEditor } from './JsonEditor'
 import { ModeControls } from './ModeControls'
 import { TipToRunPracticeVote } from './TipToRunPracticeVote'
-import { UploadBallotDesignButton } from './UploadBallotDesignButton'
 import { Wizard } from './Wizard'
 
 export const BallotDesign = () => {
@@ -22,6 +21,7 @@ export const BallotDesign = () => {
   const setDesignIfNotFinalized = !ballot_design_finalized ? setDesign : () => alert('Ballot design already finalized')
 
   const [saving_errors, set_saving_errors] = useState<null | string>(null)
+  const [upload_message, set_upload_message] = useState<null | { status: 'error' | 'success'; text: string }>(null)
 
   const error = check_for_fatal_ballot_errors(design) || saving_errors
 
@@ -39,13 +39,10 @@ export const BallotDesign = () => {
     <>
       <TipToRunPracticeVote />
 
-      <h2 className="hidden sm:block">
+      <h2 className="hidden mb-0 sm:block">
         Ballot Design
         <span className="ml-3">
           <PreviewButton election_id={election_id} />
-          {!ballot_design_finalized && (
-            <UploadBallotDesignButton election_id={election_id} setDesign={setDesignIfNotFinalized} />
-          )}
         </span>
       </h2>
 
@@ -53,14 +50,29 @@ export const BallotDesign = () => {
 
       <div className="mt-3 sm:hidden">
         <PreviewButton election_id={election_id} />
-        {!ballot_design_finalized && (
-          <UploadBallotDesignButton election_id={election_id} setDesign={setDesignIfNotFinalized} />
-        )}
       </div>
 
       <Errors {...{ error }} />
 
-      <ModeControls {...{ selected, setSelected }} />
+      <ModeControls
+        {...{
+          election_id,
+          onUploadMessage: (text, status) => set_upload_message(text ? { status, text } : null),
+          selected,
+          setDesign: setDesignIfNotFinalized,
+          setSelected,
+          showUpload: !ballot_design_finalized,
+        }}
+      />
+      {upload_message && (
+        <p
+          className={`mt-1 text-xs max-w-md text-right ${
+            upload_message.status === 'error' ? 'text-red-600' : 'text-gray-600'
+          }`}
+        >
+          {upload_message.text}
+        </p>
+      )}
       <div className="relative flex w-full top-[3px]">
         {selected !== 1 && <Wizard {...{ design, setDesign: setDesignIfNotFinalized }} />}
         {selected === 2 && <div className="w-5" /> /* spacer */}

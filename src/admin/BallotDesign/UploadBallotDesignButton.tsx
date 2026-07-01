@@ -2,16 +2,23 @@ import { useRef, useState } from 'react'
 
 import { Spinner } from '../Spinner'
 
+const tabClassName =
+  'select-none cursor-pointer border border-solid border-gray-400/70 border-l-0 hover:bg-gray-50 active:bg-gray-200 px-[15px] py-[5px]'
+
 export const UploadBallotDesignButton = ({
   election_id,
+  onMessage,
   setDesign,
 }: {
   election_id?: string
+  onMessage?: (message: string, status: 'error' | 'success') => void
   setDesign: (design: string) => void
 }) => {
   const inputRef = useRef<HTMLInputElement>(null)
   const [status, setStatus] = useState<'error' | 'idle' | 'success' | 'uploading'>('idle')
-  const [message, setMessage] = useState('')
+
+  const setMessage = (message: string, messageStatus: 'error' | 'success' = 'success') =>
+    onMessage?.(message, messageStatus)
 
   const handleFile = async (file: File) => {
     if (!election_id) return
@@ -41,7 +48,7 @@ export const UploadBallotDesignButton = ({
     const json = await response.json().catch(() => ({}))
     if (!response.ok) {
       setStatus('error')
-      setMessage(json.error || 'Upload failed')
+      setMessage(json.error || 'Upload failed', 'error')
       return
     }
 
@@ -60,21 +67,7 @@ export const UploadBallotDesignButton = ({
   }
 
   return (
-    <span className="inline-block ml-2">
-      <button
-        className="inline-block text-[12px] font-semibold hover:bg-gray-100 px-3 py-1 border border-blue-900 border-solid rounded-lg relative bottom-0.5 text-blue-900 bg-transparent cursor-pointer disabled:opacity-50"
-        disabled={status === 'uploading'}
-        onClick={() => inputRef.current?.click()}
-        type="button"
-      >
-        {status === 'uploading' ? (
-          <>
-            <Spinner /> Uploading...
-          </>
-        ) : (
-          'Upload ballot design'
-        )}
-      </button>
+    <label className={`${tabClassName} ${status === 'uploading' ? 'opacity-50 pointer-events-none' : ''}`}>
       <input
         className="hidden"
         onChange={(e) => {
@@ -84,9 +77,13 @@ export const UploadBallotDesignButton = ({
         ref={inputRef}
         type="file"
       />
-      {message && (
-        <p className={`mt-2 text-xs max-w-md ${status === 'error' ? 'text-red-600' : 'text-gray-600'}`}>{message}</p>
+      {status === 'uploading' ? (
+        <>
+          <Spinner /> Uploading...
+        </>
+      ) : (
+        'Upload'
       )}
-    </span>
+    </label>
   )
 }
