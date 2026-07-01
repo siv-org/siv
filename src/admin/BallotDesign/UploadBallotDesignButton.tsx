@@ -5,6 +5,8 @@ import { Spinner } from '../Spinner'
 const tabClassName =
   'select-none cursor-pointer border border-solid border-gray-400/70 border-l-0 hover:bg-gray-50 active:bg-gray-200 px-[15px] py-[5px]'
 
+const uploadConfirmMessage = 'Your format may not auto-import yet — but uploading helps add support for it sooner.'
+
 export const UploadBallotDesignButton = ({
   election_id,
   setDesign,
@@ -58,7 +60,23 @@ export const UploadBallotDesignButton = ({
   }
 
   return (
-    <label className={`${tabClassName} hidden sm:inline ${uploading ? 'opacity-50 pointer-events-none' : ''}`}>
+    <>
+      <span
+        className={`${tabClassName} hidden sm:inline ${uploading ? 'opacity-50 pointer-events-none' : ''}`}
+        onClick={() => {
+          if (uploading) return
+          if (!confirm(uploadConfirmMessage)) return
+          inputRef.current?.click()
+        }}
+      >
+        {uploading ? (
+          <>
+            <Spinner /> Uploading...
+          </>
+        ) : (
+          'Upload'
+        )}
+      </span>
       <input
         className="hidden"
         onChange={(e) => {
@@ -68,13 +86,6 @@ export const UploadBallotDesignButton = ({
         ref={inputRef}
         type="file"
       />
-      {uploading ? (
-        <>
-          <Spinner /> Uploading...
-        </>
-      ) : (
-        'Upload'
-      )}
-    </label>
+    </>
   )
 }
