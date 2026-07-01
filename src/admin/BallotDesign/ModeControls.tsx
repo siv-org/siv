@@ -2,14 +2,12 @@ import { UploadBallotDesignButton } from './UploadBallotDesignButton'
 
 export const ModeControls = ({
   election_id,
-  onUploadMessage,
   selected,
   setDesign,
   setSelected,
   showUpload,
 }: {
   election_id?: string
-  onUploadMessage?: (message: string, status: 'error' | 'success') => void
   selected: number
   setDesign?: (design: string) => void
   setSelected: (s: number) => void
@@ -28,9 +26,7 @@ export const ModeControls = ({
           {label}
         </span>
       ))}
-      {showUpload && setDesign && (
-        <UploadBallotDesignButton election_id={election_id} onMessage={onUploadMessage} setDesign={setDesign} />
-      )}
+      {showUpload && setDesign && <UploadBallotDesignButton election_id={election_id} setDesign={setDesign} />}
     </div>
   )
 }

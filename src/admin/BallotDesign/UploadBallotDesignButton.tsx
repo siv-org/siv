@@ -7,24 +7,18 @@ const tabClassName =
 
 export const UploadBallotDesignButton = ({
   election_id,
-  onMessage,
   setDesign,
 }: {
   election_id?: string
-  onMessage?: (message: string, status: 'error' | 'success') => void
   setDesign: (design: string) => void
 }) => {
   const inputRef = useRef<HTMLInputElement>(null)
-  const [status, setStatus] = useState<'error' | 'idle' | 'success' | 'uploading'>('idle')
-
-  const setMessage = (message: string, messageStatus: 'error' | 'success' = 'success') =>
-    onMessage?.(message, messageStatus)
+  const [uploading, setUploading] = useState(false)
 
   const handleFile = async (file: File) => {
     if (!election_id) return
 
-    setStatus('uploading')
-    setMessage('')
+    setUploading(true)
 
     const content_base64 = await new Promise<string>((resolve, reject) => {
       const reader = new FileReader()
@@ -46,28 +40,25 @@ export const UploadBallotDesignButton = ({
     })
 
     const json = await response.json().catch(() => ({}))
-    if (!response.ok) {
-      setStatus('error')
-      setMessage(json.error || 'Upload failed', 'error')
-      return
-    }
+    setUploading(false)
+    if (inputRef.current) inputRef.current.value = ''
+
+    if (!response.ok) return alert(json.error || 'Upload failed')
 
     if (json.format === 'siv_json') {
       const text = await file.text()
       if (confirm('Load this ballot design into the editor?')) {
         setDesign(JSON.stringify(JSON.parse(text), null, 2))
-        setMessage('Loaded into editor.')
-      } else setMessage('Uploaded.')
-    } else {
-      setMessage("Uploaded. We can't auto-parse this file format yet, but we're working to add support.")
+        return alert('Loaded into editor.')
+      }
+      return alert('Uploaded.')
     }
 
-    setStatus('success')
-    if (inputRef.current) inputRef.current.value = ''
+    alert("Uploaded. We can't auto-parse this file format yet, but we're working to add support.")
   }
 
   return (
-    <label className={`${tabClassName} ${status === 'uploading' ? 'opacity-50 pointer-events-none' : ''}`}>
+    <label className={`${tabClassName} ${uploading ? 'opacity-50 pointer-events-none' : ''}`}>
       <input
         className="hidden"
         onChange={(e) => {
@@ -77,7 +68,7 @@ export const UploadBallotDesignButton = ({
         ref={inputRef}
         type="file"
       />
-      {status === 'uploading' ? (
+      {uploading ? (
         <>
           <Spinner /> Uploading...
         </>

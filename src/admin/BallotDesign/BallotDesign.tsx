@@ -21,7 +21,6 @@ export const BallotDesign = () => {
   const setDesignIfNotFinalized = !ballot_design_finalized ? setDesign : () => alert('Ballot design already finalized')
 
   const [saving_errors, set_saving_errors] = useState<null | string>(null)
-  const [upload_message, set_upload_message] = useState<null | { status: 'error' | 'success'; text: string }>(null)
 
   const error = check_for_fatal_ballot_errors(design) || saving_errors
 
@@ -57,22 +56,12 @@ export const BallotDesign = () => {
       <ModeControls
         {...{
           election_id,
-          onUploadMessage: (text, status) => set_upload_message(text ? { status, text } : null),
           selected,
           setDesign: setDesignIfNotFinalized,
           setSelected,
           showUpload: !ballot_design_finalized,
         }}
       />
-      {upload_message && (
-        <p
-          className={`clear-both pt-1 text-xs max-w-xl ${
-            upload_message.status === 'error' ? 'text-red-600' : 'text-gray-600'
-          }`}
-        >
-          {upload_message.text}
-        </p>
-      )}
       <div className="relative flex w-full top-[3px]">
         {selected !== 1 && <Wizard {...{ design, setDesign: setDesignIfNotFinalized }} />}
         {selected === 2 && <div className="w-5" /> /* spacer */}
