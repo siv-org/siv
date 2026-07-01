@@ -11,6 +11,7 @@ import { FinalizeBallotDesignButton } from './FinalizeBallotDesignButton'
 import { JsonEditor } from './JsonEditor'
 import { ModeControls } from './ModeControls'
 import { TipToRunPracticeVote } from './TipToRunPracticeVote'
+import { UploadBallotPanel } from './UploadBallotPanel'
 import { Wizard } from './Wizard'
 
 export const BallotDesign = () => {
@@ -53,23 +54,26 @@ export const BallotDesign = () => {
 
       <Errors {...{ error }} />
 
-      <ModeControls
-        {...{
-          election_id,
-          selected,
-          setDesign: setDesignIfNotFinalized,
-          setSelected,
-          showUpload: !ballot_design_finalized,
-        }}
-      />
+      <ModeControls {...{ selected, setSelected }} />
       <div className="relative flex w-full top-[3px]">
-        {selected !== 1 && <Wizard {...{ design, setDesign: setDesignIfNotFinalized }} />}
-        {selected === 2 && <div className="w-5" /> /* spacer */}
-        {selected !== 0 && (
-          <NoSsr>
-            <JsonEditor {...{ design, setDesign: setDesignIfNotFinalized }} />
-          </NoSsr>
+        {selected === 3 && (
+          <div className="hidden sm:block flex-1 w-full">
+            <UploadBallotPanel
+              disabled={ballot_design_finalized}
+              election_id={election_id}
+              setDesign={setDesignIfNotFinalized}
+            />
+          </div>
         )}
+        <div className={`flex w-full ${selected === 3 ? 'sm:hidden' : ''}`}>
+          {selected !== 1 && <Wizard {...{ design, setDesign: setDesignIfNotFinalized }} />}
+          {selected === 2 && <div className="w-5" /> /* spacer */}
+          {selected !== 0 && (
+            <NoSsr>
+              <JsonEditor {...{ design, setDesign: setDesignIfNotFinalized }} />
+            </NoSsr>
+          )}
+        </div>
       </div>
 
       {!ballot_design_finalized && (
