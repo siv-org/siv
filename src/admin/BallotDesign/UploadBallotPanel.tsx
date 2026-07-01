@@ -1,5 +1,5 @@
 import { InboxOutlined } from '@ant-design/icons'
-import { useRef, useState } from 'react'
+import { ReactNode, useRef, useState } from 'react'
 
 import { Spinner } from '../Spinner'
 
@@ -15,7 +15,7 @@ export const UploadBallotPanel = ({
   const inputRef = useRef<HTMLInputElement>(null)
   const [uploading, setUploading] = useState(false)
   const [dragOver, setDragOver] = useState(false)
-  const [message, setMessage] = useState<null | { text: string; type: 'error' | 'success' }>(null)
+  const [message, setMessage] = useState<null | { content: ReactNode; type: 'error' | 'success' }>(null)
 
   const handleFile = async (file: File) => {
     if (disabled || !election_id) return
@@ -46,19 +46,32 @@ export const UploadBallotPanel = ({
     setUploading(false)
     if (inputRef.current) inputRef.current.value = ''
 
-    if (!response.ok) return setMessage({ text: json.error || 'Upload failed', type: 'error' })
+    if (!response.ok) return setMessage({ content: json.error || 'Upload failed', type: 'error' })
 
     if (json.format === 'siv_json') {
       const text = await file.text()
       if (confirm('This looks like SIV JSON. Load it into the editor?')) {
         setDesign(JSON.stringify(JSON.parse(text), null, 2))
-        return setMessage({ text: 'Loaded into editor.', type: 'success' })
+        return setMessage({ content: 'Loaded into editor.', type: 'success' })
       }
-      return setMessage({ text: 'File received — saved for our team.', type: 'success' })
+      return setMessage({ content: 'File received — saved for our team.', type: 'success' })
     }
 
     setMessage({
-      text: `Thanks — we received ${file.name}. We'll review it and follow up about your ballot design.`,
+      content: (
+        <>
+          <p className="mt-0 mb-2">
+            Thanks, we received {file.name}. We&apos;ll review it and let you know when it&apos;s ready to be used.
+          </p>
+          <p className="mt-0 mb-0">
+            Meanwhile, if you have any questions, feel free to contact us at{' '}
+            <a className="underline" href="mailto:elections@siv.org">
+              elections@siv.org
+            </a>
+            .
+          </p>
+        </>
+      ),
       type: 'success',
     })
   }
@@ -109,9 +122,9 @@ export const UploadBallotPanel = ({
         </div>
 
         {message && (
-          <p className={`mt-4 mb-0 text-sm ${message.type === 'error' ? 'text-red-700' : 'text-green-800'}`}>
-            {message.text}
-          </p>
+          <div className={`mt-4 text-sm ${message.type === 'error' ? 'text-red-700' : 'text-green-800'}`}>
+            {message.content}
+          </div>
         )}
       </div>
 
