@@ -68,7 +68,7 @@ export const UploadBallotPanel = ({
       <div className="w-full">
         <h3 className="m-0 text-base font-semibold">Upload Custom Ballot</h3>
         <p className="mt-2 mb-0 leading-relaxed text-gray-600">
-          Have an existing ballot design? Share your file &amp; we&apos;ll work on integrating it into SIV.
+          Have a specific ballot design? Share your file &amp; we&apos;ll work on integrating it into SIV.
         </p>
 
         <div
