@@ -58,7 +58,7 @@ export const UploadBallotDesignButton = ({
   }
 
   return (
-    <label className={`${tabClassName} ${uploading ? 'opacity-50 pointer-events-none' : ''}`}>
+    <label className={`${tabClassName} hidden sm:inline ${uploading ? 'opacity-50 pointer-events-none' : ''}`}>
       <input
         className="hidden"
         onChange={(e) => {
