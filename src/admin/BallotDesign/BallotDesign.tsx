@@ -11,6 +11,7 @@ import { FinalizeBallotDesignButton } from './FinalizeBallotDesignButton'
 import { JsonEditor } from './JsonEditor'
 import { ModeControls } from './ModeControls'
 import { TipToRunPracticeVote } from './TipToRunPracticeVote'
+import { UploadBallotDesignButton } from './UploadBallotDesignButton'
 import { Wizard } from './Wizard'
 
 export const BallotDesign = () => {
@@ -42,6 +43,9 @@ export const BallotDesign = () => {
         Ballot Design
         <span className="ml-3">
           <PreviewButton election_id={election_id} />
+          {!ballot_design_finalized && (
+            <UploadBallotDesignButton election_id={election_id} setDesign={setDesignIfNotFinalized} />
+          )}
         </span>
       </h2>
 
@@ -49,6 +53,9 @@ export const BallotDesign = () => {
 
       <div className="mt-3 sm:hidden">
         <PreviewButton election_id={election_id} />
+        {!ballot_design_finalized && (
+          <UploadBallotDesignButton election_id={election_id} setDesign={setDesignIfNotFinalized} />
+        )}
       </div>
 
       <Errors {...{ error }} />
