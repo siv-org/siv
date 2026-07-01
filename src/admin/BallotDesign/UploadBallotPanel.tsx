@@ -61,10 +61,10 @@ export const UploadBallotPanel = ({
       content: (
         <>
           <p className="mt-0 mb-2">
-            Thanks, we received {file.name}. We&apos;ll review it and let you know when it&apos;s ready to be used.
+            Thanks, <i>{file.name} </i> uploaded successfully. We&apos;ll let you know when it&apos;s ready to be used.
           </p>
           <p className="mt-0 mb-0">
-            Meanwhile, if you have any questions, feel free to contact us at{' '}
+            If you have any questions, contact us at{' '}
             <a className="underline" href="mailto:elections@siv.org">
               elections@siv.org
             </a>
@@ -116,7 +116,7 @@ export const UploadBallotPanel = ({
           ) : (
             <>
               <InboxOutlined className="text-3xl text-gray-400" />
-              <span className="mt-3 text-sm font-medium">Click or drag your file here</span>
+              <span className="mt-3 text-sm font-medium">Click here or drag & drop your file</span>
             </>
           )}
         </div>
