@@ -60,9 +60,10 @@ export const UploadBallotPanel = ({
     setMessage({
       content: (
         <>
-          <p className="mt-0 mb-2">
-            Thanks, <i>{file.name} </i> uploaded successfully. We&apos;ll let you know when it&apos;s ready to be used.
+          <p className="m-0">
+            Thanks, <i>{file.name} </i> uploaded successfully.
           </p>
+          <p className="mt-0 mb-2">We&apos;ll let you know when it&apos;s ready to be used.</p>
           <p className="mt-0 mb-0">
             If you have any questions, contact us at{' '}
             <a className="underline" href="mailto:elections@siv.org">
@@ -79,9 +80,9 @@ export const UploadBallotPanel = ({
   return (
     <div className="flex-1 p-5 text-gray-700 bg-white border border-gray-300 border-solid sm:p-8">
       <div className="w-full">
-        <h3 className="m-0 text-base font-semibold">Upload Custom Ballot</h3>
+        <h3 className="m-0 text-base font-semibold">Have a custom ballot design?</h3>
         <p className="mt-2 mb-0 leading-relaxed text-gray-600">
-          Have a specific ballot design? Share your file &amp; we&apos;ll work on integrating it into SIV.
+          Upload your file &amp; we&apos;ll work on integrating it into SIV.
         </p>
 
         <div
