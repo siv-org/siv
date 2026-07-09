@@ -5,8 +5,8 @@ import { RefObject, useEffect, useRef, useState } from 'react'
 import { OnClickButton } from 'src/_shared/Button'
 import { api } from 'src/api-helper'
 
-const extraAuthInfo = ['1764273267967', '1764288582801', '1778654905486', '1778786340160']
-export const optionalEmail = ['1764273267967', '1764288582801', '1778654905486', '1778786340160']
+const extraAuthInfo = ['1764273267967', '1764288582801', '1778654905486', '1778786340160', '1783637746011']
+export const optionalEmail = ['1764273267967', '1764288582801', '1778654905486', '1778786340160', '1783637746011']
 
 export const VoterAuthInfoForm = () => {
   const [emailError, setEmailError] = useState('')
