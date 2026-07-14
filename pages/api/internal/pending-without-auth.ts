@@ -45,12 +45,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 function formatDevice(userAgent: string | undefined) {
   if (!userAgent) return null
   const ua = UAParser(userAgent)
-  const device = `${ua.browser.name || '?'} ${ua.browser.version || ''} on ${ua.os.name || '?'} ${
-    ua.os.version || ''
-  }`.trim()
-  // Facebook / Instagram in-app browsers are easy to miss otherwise
-  if (/FBAN|FBAV|FB_IAB|Instagram/i.test(userAgent)) return `${device}`
-  return device
+  return `${ua.browser.name || '?'} ${ua.browser.version || ''} on ${ua.os.name || '?'} ${ua.os.version || ''}`.trim()
 }
 
 function isLocalhostRequest(req: NextApiRequest): boolean {
