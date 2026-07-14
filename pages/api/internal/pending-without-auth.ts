@@ -31,7 +31,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const withoutAuth = pendingSnap.docs
     .filter((d) => !d.data()?.auth_added_at)
     .map((d) => summarizePending(d.id, d.data()))
-    .sort((a, b) => String(a.created_at || '').localeCompare(String(b.created_at || '')))
+    .sort((a, b) => String(a._submitted_at || '').localeCompare(String(b._submitted_at || '')))
 
   return res.status(200).json({
     election_id,
@@ -63,7 +63,7 @@ function summarizePending(doc_id: string, data: DocumentData | undefined) {
   const headers = data?.headers as Record<string, string> | undefined
   const rawUa = headers?.['user-agent']
   return {
-    created_at: data?.created_at?.toDate?.()?.toISOString?.() || data?.created_at || null,
+    _submitted_at: data?.created_at?.toDate?.()?.toLocaleString?.() || data?.created_at || null,
     device: formatDevice(rawUa),
     ip: headers?.['x-real-ip'] || headers?.['x-forwarded-for'] || null,
     link_auth: data?.link_auth || doc_id,
