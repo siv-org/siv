@@ -62,9 +62,13 @@ function isLocalhostRequest(req: NextApiRequest): boolean {
 function summarizePending(doc_id: string, data: DocumentData | undefined) {
   const headers = data?.headers as Record<string, string> | undefined
   const rawUa = headers?.['user-agent']
+  const geoHeaders = ['x-vercel-ip-city', 'x-vercel-ip-country-region', 'x-vercel-ip-country']
+  const location = geoHeaders.map((header) => data?.headers[header]?.toString().replaceAll('%20', ' ')).join(', ')
+
   return {
     _submitted_at: data?.created_at?.toDate?.()?.toLocaleString?.() || data?.created_at || null,
     device: formatDevice(rawUa),
+    geolocation: location,
     ip: headers?.['x-real-ip'] || headers?.['x-forwarded-for'] || null,
     link_auth: data?.link_auth || doc_id,
   }
