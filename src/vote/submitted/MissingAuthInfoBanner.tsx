@@ -6,6 +6,9 @@ import { State } from '../vote-state'
 
 type LookupResult = { link_auth: string; needs_auth: boolean }
 
+/** Elections that may use MissingAuthInfoBanner / lookup-link-auth (temporary Jul 2026). */
+export const LINK_AUTH_RECOVERY_ELECTIONS = new Set(['1783637746011', '1783994820958']) // CCN + test
+
 export function MissingAuthInfoBanner({
   auth,
   election_id,
@@ -24,6 +27,7 @@ export function MissingAuthInfoBanner({
 
   useEffect(() => {
     if (auth !== 'link' || state.auth_added_at) return
+    if (!LINK_AUTH_RECOVERY_ELECTIONS.has(election_id)) return
 
     const knownLinkAuth = (typeof link_auth_query === 'string' && link_auth_query) || state.link_auth || null
 
@@ -78,6 +82,7 @@ export function MissingAuthInfoBanner({
     }
   }, [auth, election_id, link_auth_query, state.auth_added_at, state.encrypted, state.link_auth])
 
+  if (!LINK_AUTH_RECOVERY_ELECTIONS.has(election_id)) return null
   if (auth !== 'link' || state.auth_added_at || checking) return null
   if (!showCta && !error) return null
 

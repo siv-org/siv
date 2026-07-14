@@ -3,12 +3,13 @@
 import { firebase } from 'api/_services'
 import { isEqual } from 'lodash-es'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { LINK_AUTH_RECOVERY_ELECTIONS } from 'src/vote/submitted/MissingAuthInfoBanner'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { election_id } = req.query as { election_id: string }
   // Whitelisted elections only — encrypted votes are public on the status page.
-  const ALLOWED_ELECTIONS = new Set(['1783637746011', '1783994820958']) // CCN + test
-  if (!ALLOWED_ELECTIONS.has(election_id)) return res.status(403).json({ error: 'Not available for this election' })
+  if (!LINK_AUTH_RECOVERY_ELECTIONS.has(election_id))
+    return res.status(403).json({ error: 'Not available for this election' })
 
   // Validate request body
   const { encrypted_vote, link_auth } = req.body || {}
