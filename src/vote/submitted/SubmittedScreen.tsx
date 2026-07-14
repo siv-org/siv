@@ -9,6 +9,7 @@ import { State } from '../vote-state'
 import { DetailedEncryptionReceipt } from './DetailedEncryptionReceipt'
 import { EncryptedVote } from './EncryptedVote'
 import { InvalidatedVoteMessage } from './InvalidatedVoteMessage'
+import { MissingAuthInfoBanner } from './MissingAuthInfoBanner'
 import { UnlockedVote } from './UnlockedVote'
 import { UnverifiedEmailModal } from './UnverifiedEmailModal'
 
@@ -40,6 +41,7 @@ export function SubmittedScreen({
     <NoSsr>
       <UnverifiedEmailModal />
       <InvalidatedVoteMessage />
+      <MissingAuthInfoBanner {...{ auth, election_id, state }} />
 
       {!disabledLinkToStatusPage.includes(election_id) && (
         <Link
