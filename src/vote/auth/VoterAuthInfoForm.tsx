@@ -107,6 +107,17 @@ export const VoterAuthInfoForm = () => {
           // Store the email address locally so we can remind them later to check it
           if (email) localStorage.setItem(`registration-${link_auth}`, email)
 
+          // Seed auth_added_at for a future incomplete-voter /auth bounce (no redirect yet)
+          try {
+            const voteKey = `voter-${election_id}-link`
+            const voteState = JSON.parse(localStorage.getItem(voteKey) || '{}')
+
+            // Manually instead of dispatch(), since we don't have access to the dispatch function here
+            localStorage.setItem(voteKey, JSON.stringify({ ...voteState, auth_added_at: new Date().toISOString() }))
+          } catch {
+            // ignore
+          }
+
           // Redirect back to submission screen
           router.push(`${window.location.origin}/election/${election_id}/vote?auth=link&link_auth=${link_auth}`)
         }}

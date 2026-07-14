@@ -8,6 +8,7 @@ import { generateTrackingNum } from './tracking-num'
 import { useLocalStorageReducer } from './useLocalStorage'
 
 export type State = {
+  auth_added_at?: string
   ballot_design?: Item[]
   ballot_design_finalized?: boolean
   custom_invitation_text?: string
