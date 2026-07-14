@@ -1,4 +1,6 @@
 import Head from 'next/head'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 
 import { GlobalCSS } from '../GlobalCSS'
 import { CustomAuthFlow, hasCustomAuthFlow } from './auth/11choosesAuth/CustomAuthFlow'
@@ -15,8 +17,27 @@ import { YourAuthToken } from './YourAuthToken'
 export const AuthenticatedContent = ({ auth, election_id }: { auth: string; election_id: string }): JSX.Element => {
   // Initialize local vote state on client
   const [state, dispatch] = useVoteState(`voter-${election_id}-${auth}`)
+  const router = useRouter()
+  const link_auth_query = router.query.link_auth
 
   storeElectionInfo(dispatch, election_id)
+
+  // Keep link_auth in localStorage and restore it on the URL for subsequent visits
+  useEffect(() => {
+    if (auth !== 'link' || !router.isReady) return
+
+    if (typeof link_auth_query === 'string') {
+      if (link_auth_query !== state.link_auth) dispatch({ link_auth: link_auth_query })
+      return
+    }
+
+    if (!state.link_auth) return
+
+    const [path, hash = ''] = router.asPath.split('#')
+    const url = new URL(path, window.location.origin)
+    url.searchParams.set('link_auth', state.link_auth)
+    router.replace(url.pathname + url.search + (hash ? `#${hash}` : ''))
+  }, [auth, dispatch, link_auth_query, router, state.link_auth])
 
   return (
     <>

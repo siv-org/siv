@@ -24,7 +24,8 @@ export function SubmittedScreen({
   state: State & { submitted_at: Date }
 }): JSX.Element {
   const { link_auth } = useRouter().query
-  const malwareCheckAuth = auth === 'link' && typeof link_auth === 'string' ? link_auth : auth
+  const malwareCheckAuth =
+    auth === 'link' ? (typeof link_auth === 'string' && link_auth) || state.link_auth || auth : auth
   const [showEncryptionDetails, toggleEncryptionDetails] = useReducer((state) => !state, false)
 
   // Widen the page for the tables
