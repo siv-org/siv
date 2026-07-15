@@ -161,10 +161,10 @@ function rowFromPending(doc_id: string, data: DocumentData | undefined): Row {
 
   return {
     additional_auth_info: data?.additionalAuthInfo ? JSON.stringify(data.additionalAuthInfo) : '',
-    auth_added_at: authAdded?.toISOString() || '',
+    auth_added_at: authAdded?.toLocaleString() || '',
     device: formatDevice(headers?.['user-agent']),
     email: data?.email || '',
-    email_marked_invalid_at: toDate(data?.email_marked_invalid_at)?.toISOString() || '',
+    email_marked_invalid_at: toDate(data?.email_marked_invalid_at)?.toLocaleString() || '',
     first_name: data?.first_name || '',
     geolocation: geoHeaders.map((h) => headers?.[h]?.toString().replaceAll('%20', ' ') || '').join(', '),
     ip: headers?.['x-real-ip'] || headers?.['x-forwarded-for'] || '',
@@ -172,8 +172,8 @@ function rowFromPending(doc_id: string, data: DocumentData | undefined): Row {
     last_name: data?.last_name || '',
     link_auth: data?.link_auth || doc_id,
     seconds_to_auth,
-    submitted_at: submitted?.toISOString() || '',
-    verified_email_at: toDate(data?.verified_email_at)?.toISOString() || '',
+    submitted_at: submitted?.toLocaleString() || '',
+    verified_email_at: toDate(data?.verified_email_at)?.toLocaleString() || '',
   }
 }
 
