@@ -3,7 +3,7 @@
 import { firebase } from 'api/_services'
 import { isEqual } from 'lodash-es'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { LINK_AUTH_RECOVERY_ELECTIONS } from 'src/vote/submitted/MissingAuthInfoBanner'
+import { LINK_AUTH_RECOVERY_ELECTIONS } from 'src/vote/submitted/decideMissingAuth'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { election_id } = req.query as { election_id: string }
