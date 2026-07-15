@@ -28,11 +28,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       )
       return res.status(404).json({ error: 'Vote not found' })
     }
-    const needs_auth = !pending.data()?.auth_added_at
-    await pushover(
-      'lookup-link-auth: found',
-      `election: ${election_id}\nvia: link_auth\nlink_auth: ${link_auth}\nneeds_auth: ${needs_auth}\nIP: ${ip}`,
-    )
+    const data = pending.data()
+    const needs_auth = !data?.auth_added_at
+    if (!(needs_auth && isFreshPending(data)))
+      await pushover(
+        'lookup-link-auth: found',
+        `election: ${election_id}\nvia: link_auth\nlink_auth: ${link_auth}\nneeds_auth: ${needs_auth}\nIP: ${ip}`,
+      )
     return res.status(200).json({ link_auth, needs_auth })
   }
 
@@ -40,18 +42,26 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const pendingSnap = await electionDoc.collection('votes-pending').get()
   const match = pendingSnap.docs.find((d) => isEqual(d.data()?.encrypted_vote, encrypted_vote))
   if (!match) {
-    await pushover(
-      'lookup-link-auth: miss',
-      `election: ${election_id}\nvia: ciphertext\nIP: ${ip}`,
-    )
+    await pushover('lookup-link-auth: miss', `election: ${election_id}\nvia: ciphertext\nIP: ${ip}`)
     return res.status(404).json({ error: 'Vote not found' })
   }
 
-  const resolved = match.data()?.link_auth || match.id
-  const needs_auth = !match.data()?.auth_added_at
-  await pushover(
-    'lookup-link-auth: found',
-    `election: ${election_id}\nvia: ciphertext\nlink_auth: ${resolved}\nneeds_auth: ${needs_auth}\nIP: ${ip}`,
-  )
+  const data = match.data()
+  const resolved = data?.link_auth || match.id
+  const needs_auth = !data?.auth_added_at
+  if (!(needs_auth && isFreshPending(data)))
+    await pushover(
+      'lookup-link-auth: found',
+      `election: ${election_id}\nvia: ciphertext\nlink_auth: ${resolved}\nneeds_auth: ${needs_auth}\nIP: ${ip}`,
+    )
   return res.status(200).json({ link_auth: resolved, needs_auth })
+}
+
+const QUIET_MID_FLOW_MS = 10_000 // 10 seconds
+/** Skip pushover notification when needs_auth=true and pending is very fresh
+ * (aka flash before switching to auth screen). */
+function isFreshPending(data: undefined | { created_at?: { toDate?: () => Date } }) {
+  const created = data?.created_at?.toDate?.()
+  if (!created) return false
+  return Date.now() - created.getTime() < QUIET_MID_FLOW_MS
 }
