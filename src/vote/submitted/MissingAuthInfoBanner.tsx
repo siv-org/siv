@@ -15,12 +15,12 @@ export function MissingAuthInfoBanner({
   state: State & { submitted_at: Date }
 }) {
   const router = useRouter()
-  const link_auth_query = router.query.link_auth
+  const knownLinkAuth =
+    (typeof router.query.link_auth === 'string' && router.query.link_auth) || state.link_auth || null
   const [outcome, setOutcome] = useState<MissingAuthDecision>({ action: 'skip' })
   const [checking, setChecking] = useState(false)
 
   useEffect(() => {
-    const knownLinkAuth = (typeof link_auth_query === 'string' && link_auth_query) || state.link_auth || null
     const base = {
       auth,
       auth_added_at: state.auth_added_at,
@@ -69,7 +69,7 @@ export function MissingAuthInfoBanner({
     return () => {
       cancelled = true
     }
-  }, [auth, election_id, link_auth_query, state.auth_added_at, state.encrypted, state.link_auth])
+  }, [auth, election_id, knownLinkAuth, state.auth_added_at, state.encrypted])
 
   if (!LINK_AUTH_RECOVERY_ELECTIONS.has(election_id)) return null
   if (checking || outcome.action === 'skip' || outcome.action === 'fetch' || outcome.action === 'mark_complete')
