@@ -1,6 +1,8 @@
+import { pushover } from 'api/_services'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import { firebase } from '../../_services'
+import { filterToBallotColumns, parseBallotDesign } from './filterToBallotColumns'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { election_id } = req.query
@@ -18,7 +20,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Is election_id in DB?
   if (!election.exists) return res.status(400).end('Unknown Election ID.')
 
-  res.status(200).json(election.data()?.decrypted || [])
+  const data = election.data()
+  const ballot_design = parseBallotDesign(data?.ballot_design)
+  if (!ballot_design) await pushover(`/decrypted-votes: Missing ballot design`, `election: ${election_id}`)
+
+  const filtered = filterToBallotColumns(data?.decrypted || [], ballot_design)
+
+  res.status(200).json(filtered)
 }
 
 // To begin decrypting in batches, without leaking results early
