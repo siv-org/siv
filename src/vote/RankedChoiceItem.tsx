@@ -222,7 +222,7 @@ const OneRow = forwardRef<
 
       {/* On large screens, to the side */}
       {new Array(rankings_allowed).fill(0).map((_, index) => (
-        <td className="hidden ml-2 sm:table-cell" key={index}>
+        <td className="hidden text-center sm:table-cell" key={index}>
           <OneCircle {...{ index }} />
         </td>
       ))}
