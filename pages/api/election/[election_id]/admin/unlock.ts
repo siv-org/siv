@@ -136,7 +136,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     )
     elapsed('decrypt parallel')
 
-    const decrypteds_by_tracking = recombine_decrypteds(decrypted_and_split)
+    const decrypteds_by_tracking = await recombine_decrypteds(decrypted_and_split, election_id)
 
     // Store decrypteds as an array
     const decrypted = Object.values(decrypteds_by_tracking)
@@ -195,11 +195,17 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 }
 
 /** Recombine the columns back together via tracking numbers */
-export const recombine_decrypteds = (decrypted_and_split: Record<string, string[]>) => {
+export const recombine_decrypteds = async (decrypted_and_split: Record<string, string[]>, election_id?: string) => {
   type Recombined = Record<string, Record<string, string>>
+  const undecryptable: Record<string, number> = {}
   const decrypteds_by_tracking = Object.keys(decrypted_and_split).reduce((acc: Recombined, key) => {
     decrypted_and_split[key].forEach((value) => {
       const [unpadded_tracking, vote] = value.split(':')
+
+      // A well-formed plaintext is always `${tracking}:${vote}`. No ':' (vote === undefined)
+      // means this ciphertext decrypted to garbage (not encrypted to this election's key).
+      // Skip, so one bad ballot can't block the whole tally, but log the issue.
+      if (vote === undefined) return (undecryptable[key] = (undecryptable[key] || 0) + 1)
 
       const tracking = unpadded_tracking.padStart(14, '0')
 
@@ -215,6 +221,15 @@ export const recombine_decrypteds = (decrypted_and_split: Record<string, string[
     })
     return acc
   }, {})
+
+  const numUndecryptable = Object.values(undecryptable).reduce((sum, n) => sum + n, 0)
+  if (numUndecryptable) {
+    console.error(`⚠️ Skipped ${numUndecryptable} undecryptable ciphertext(s) by column:`, undecryptable)
+    await pushover(
+      `⚠️ ${numUndecryptable} undecryptable ballots skipped during unlock`,
+      `election: ${election_id || 'unknown'}\nby column: ${JSON.stringify(undecryptable)}`,
+    ).catch((e) => console.error('Failed to pushover undecryptable-ballots alert', e))
+  }
 
   return decrypteds_by_tracking
 }

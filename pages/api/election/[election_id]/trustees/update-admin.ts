@@ -211,7 +211,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         }) as Record<string, string[]>
 
         // 3. Finally we recombine the separated columns back together via tracking numbers
-        const decrypteds_by_tracking = recombine_decrypteds(decrypted_and_split)
+        const decrypteds_by_tracking = await recombine_decrypteds(decrypted_and_split, election_id)
 
         // Store decrypteds as an array
         const decrypted = Object.values(decrypteds_by_tracking)
