@@ -2,7 +2,7 @@ import { firebase } from 'api/_services'
 import { pusher } from 'api/pusher'
 import bluebird from 'bluebird'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { pointToString, RP } from 'src/crypto/curve'
+import { RP, safePointToString } from 'src/crypto/curve'
 import { destringifyPartial, stringifyPartial } from 'src/crypto/stringify-partials'
 import { CipherStrings } from 'src/crypto/stringify-shuffle'
 import {
@@ -206,7 +206,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
             // 2. Then we can unlock each messages
             const unlocked = unlock_message_with_shared_secret(shared_secret, RP.fromHex(encrypted))
-            return pointToString(unlocked)
+            return safePointToString(unlocked)
           })
         }) as Record<string, string[]>
 

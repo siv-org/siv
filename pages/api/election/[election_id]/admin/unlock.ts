@@ -202,10 +202,12 @@ export const recombine_decrypteds = async (decrypted_and_split: Record<string, s
     decrypted_and_split[key].forEach((value) => {
       const [unpadded_tracking, vote] = value.split(':')
 
-      // A well-formed plaintext is always `${tracking}:${vote}`. No ':' (vote === undefined)
-      // means this ciphertext decrypted to garbage (not encrypted to this election's key).
-      // Skip, so one bad ballot can't block the whole tally, but log the issue.
-      if (vote === undefined) return (undecryptable[key] = (undecryptable[key] || 0) + 1)
+      // A well-formed plaintext is always `${tracking}:${vote}`.
+      // No ':' (vote === undefined), or a non-tracking-shaped (digits&dashes only) left half
+      // means this ciphertext decrypted to garbage (eg. encrypted to wrong key).
+      // Skip, so one bad ballot doesn't block the whole tally, but log the issue.
+      if (vote === undefined || !/^[\d-]+$/.test(unpadded_tracking))
+        return (undecryptable[key] = (undecryptable[key] || 0) + 1)
 
       const tracking = unpadded_tracking.padStart(14, '0')
 
