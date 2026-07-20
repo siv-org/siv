@@ -23,7 +23,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (error) {
     console.error(error)
     await pushover('mailgun-deliveries webhook error', JSON.stringify(error))
-    return res.status(400).send({ error })
+    return res.status(500).send({ error })
   }
 
   // Notify any pusher subscriptions listening for this tag
