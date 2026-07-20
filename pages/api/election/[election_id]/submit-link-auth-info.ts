@@ -19,7 +19,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Validate email
   if (email && !validateEmail(email) && !optionalEmail.includes(election_id))
-    return res.status(400).json({ error: 'Invalid email address' })
+    return res.status(422).json({ error: 'Invalid email address' })
 
   // Does this election allow registrations?
   const election = (await loadElection).data() || {}
@@ -31,7 +31,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Don't allow submitting auth info multiple times
   if ({ ...(await pendingVote).data() }.auth_added_at)
-    return res.status(400).json({ error: 'Auth info already submitted' })
+    return res.status(409).json({ error: 'Auth info already submitted' })
 
   await Promise.all([
     // store info & email verification code
