@@ -52,6 +52,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     email &&
       sendEmail({
         from: 'SIV',
+        preheader: 'Confirm whether you submitted a vote.',
         recipient: email,
         subject: `Verify your email for ${election.election_title}`,
         text: `<h2 style="margin: 0;">Verify your email address</h2>
