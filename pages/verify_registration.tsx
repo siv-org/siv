@@ -1,7 +1,9 @@
+import { CircleCheck } from 'lucide-react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { api } from 'src/api-helper'
+import { TailwindPreflight } from 'src/TailwindPreflight'
 
 const VerifyRegistrationPage = () => {
   const { code, election_id, email, invalid, link_auth } = useRouter().query
@@ -43,28 +45,34 @@ const VerifyRegistrationPage = () => {
       </Head>
 
       <section className="px-4 py-12">
-        <div className="p-6 mx-auto max-w-lg bg-white rounded-xl border border-gray-200 shadow-sm">
-          <p className="m-0 text-2xl text-center text-black/70">
-            {isSuccess ? (
-              <>
-                <span className="relative mr-3 top-0.5">✅</span>
-                {!invalid ? (
-                  <>
-                    Your email <span className="mx-1 italic text-black">{email}</span> has been successfully verified.
-                  </>
-                ) : (
-                  <>
-                    The vote was successfully marked invalid.
-                    <br />
-                    Thank you
-                  </>
-                )}
-              </>
-            ) : (
-              error
-            )}
-          </p>
+        <div
+          className={`p-6 mx-auto max-w-lg rounded-xl border shadow-sm ${
+            isSuccess ? 'text-center bg-green-50/50 border-green-200' : 'bg-white border-gray-200'
+          }`}
+        >
+          {isSuccess ? (
+            <>
+              <CircleCheck aria-hidden className="mx-auto mb-4 text-green-600" size={40} />
+              {!invalid ? (
+                <>
+                  <h1 className="m-0 text-2xl font-semibold text-gray-900">Email verified</h1>
+                  <p className="mt-2 mb-0 text-base text-black/70">
+                    <strong className="break-words text-gray-900">{email}</strong> has been successfully verified.
+                  </p>
+                </>
+              ) : (
+                <>
+                  <h1 className="m-0 text-2xl font-semibold text-gray-900">Vote marked invalid</h1>
+                  <p className="mt-2 mb-0 text-base text-black/70">Thanks for letting us know.</p>
+                </>
+              )}
+              <p className="mt-4 mb-0 text-sm text-black/50">You can close this window.</p>
+            </>
+          ) : (
+            <p className="m-0 text-2xl text-center text-black/70">{error}</p>
+          )}
         </div>
+        <TailwindPreflight />
       </section>
     </>
   )
