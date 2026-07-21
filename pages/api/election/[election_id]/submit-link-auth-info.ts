@@ -67,7 +67,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       If this was you, please confirm:
 
       ${button(
-        `${req.headers.origin}/verify_registration?email=${email}&code=${verification_code}&election_id=${election_id}&link_auth=${link_auth}`,
+        `${req.headers.origin}/verify_registration?email=${encodeURIComponent(email)}&code=${verification_code}&election_id=${election_id}&link_auth=${link_auth}`,
         'Confirm this was me',
       )}
 
