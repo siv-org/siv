@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { api } from 'src/api-helper'
@@ -36,26 +37,36 @@ const VerifyRegistrationPage = () => {
   }, [link_auth, code, election_id])
 
   return (
-    <p className="px-6 text-2xl text-center text-black/70">
-      {isSuccess ? (
-        <>
-          <span className="relative mr-3 top-0.5">✅</span>
-          {!invalid ? (
-            <>
-              Your email <span className="mx-1 italic text-black">{email}</span> has been successfully verified.
-            </>
-          ) : (
-            <>
-              The vote was successfully marked invalid.
-              <br />
-              Thank you
-            </>
-          )}
-        </>
-      ) : (
-        error
-      )}
-    </p>
+    <>
+      <Head>
+        <title>Verify email | SIV</title>
+      </Head>
+
+      <section className="px-4 py-12">
+        <div className="p-6 mx-auto max-w-lg bg-white rounded-xl border border-gray-200 shadow-sm">
+          <p className="m-0 text-2xl text-center text-black/70">
+            {isSuccess ? (
+              <>
+                <span className="relative mr-3 top-0.5">✅</span>
+                {!invalid ? (
+                  <>
+                    Your email <span className="mx-1 italic text-black">{email}</span> has been successfully verified.
+                  </>
+                ) : (
+                  <>
+                    The vote was successfully marked invalid.
+                    <br />
+                    Thank you
+                  </>
+                )}
+              </>
+            ) : (
+              error
+            )}
+          </p>
+        </div>
+      </section>
+    </>
   )
 }
 
