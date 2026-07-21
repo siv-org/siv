@@ -2,10 +2,10 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { api } from 'src/api-helper'
 
-import { optionalEmail } from '../auth/VoterAuthInfoForm'
+// import { optionalEmail } from '../auth/VoterAuthInfoForm'
 
 export const UnverifiedEmailModal = () => {
-  const [isModalOpen, setModalOpen] = useState(false)
+  // const [isModalOpen, setModalOpen] = useState(false)
   const [email, setEmail] = useState('')
   const { election_id, link_auth } = useRouter().query as { election_id?: string; link_auth?: string }
 
@@ -18,7 +18,7 @@ export const UnverifiedEmailModal = () => {
     // Show warning if unverified
     const status = await response.text()
     if (status == 'Unverified') {
-      if (!optionalEmail.includes(election_id || '')) setModalOpen(true)
+      // if (!optionalEmail.includes(election_id || '')) setModalOpen(true)
       const storedEmail = localStorage.getItem(`registration-${link_auth}`)
       if (storedEmail) setEmail(storedEmail)
     }
@@ -37,7 +37,8 @@ export const UnverifiedEmailModal = () => {
       )}
 
       {/* Modal */}
-      <div
+      {/* Commented out for now, very jarring. July 2026. Can decide later whether to restore & improve, or just delete all this no longer used code. */}
+      {/* <div
         className={`absolute inset-0  transition-opacity duration-500 ease-in-out bg-gray-900/60 ${
           isModalOpen ? 'z-20 opacity-100' : 'opacity-0 -z-10'
         }`}
@@ -49,7 +50,7 @@ export const UnverifiedEmailModal = () => {
             }`}
           >
             <div className="flex justify-end">
-              {/* Close Button */}
+              {/* Close Button * /}
               <a
                 className="text-gray-500 bg-transparent shadow-none cursor-pointer hover:text-gray-700"
                 onClick={() => setModalOpen(false)}
@@ -66,11 +67,11 @@ export const UnverifiedEmailModal = () => {
               </a>
             </div>
 
-            {/* Message Box */}
+            {/* Message Box * /}
             <p className="p-4 text-lg text-center">A Verification Email has been sent to {email}</p>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   )
 }
