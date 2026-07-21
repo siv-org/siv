@@ -47,7 +47,7 @@ const VerifyRegistrationPage = () => {
       <section className="px-4 py-12">
         <div
           className={`p-6 mx-auto max-w-lg rounded-xl border shadow-sm ${
-            isSuccess ? 'text-center bg-green-50/50 border-green-200' : 'bg-white border-gray-200'
+            isSuccess ? 'text-center border-green-200 bg-green-50/50' : 'bg-white border-gray-200'
           }`}
         >
           {isSuccess ? (
@@ -57,7 +57,7 @@ const VerifyRegistrationPage = () => {
                 <>
                   <h1 className="m-0 text-2xl font-semibold text-gray-900">Email verified</h1>
                   <p className="mt-2 mb-0 text-base text-black/70">
-                    <strong className="break-words text-gray-900">{email}</strong> has been successfully verified.
+                    <strong className="text-gray-900 break-words">{email}</strong> has been successfully verified.
                   </p>
                 </>
               ) : (
