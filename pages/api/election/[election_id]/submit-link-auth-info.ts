@@ -3,6 +3,7 @@ import { button, generateEmailLoginCode } from 'api/admin-login'
 import { pusher } from 'api/pusher'
 import { validate as validateEmail } from 'email-validator'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { escapeHtml } from 'src/_shared/escapeHtml'
 import { optionalEmail } from 'src/vote/auth/VoterAuthInfoForm'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -57,12 +58,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         subject: `Verify your email for ${election.election_title}`,
         text: `<h2 style="margin: 0;">Verify your email address</h2>
       Someone submitted a vote in the Election <b><em>${
-        election.election_title
+        escapeHtml(election.election_title)
       }</em></b> using the following information:
 
-      <b>First Name:</b> ${first_name}
-      <b>Last Name:</b> ${last_name}
-      <b>Email:</b> ${email}
+      <b>First Name:</b> ${escapeHtml(first_name)}
+      <b>Last Name:</b> ${escapeHtml(last_name)}
+      <b>Email:</b> ${escapeHtml(email)}
 
       If this was you, please confirm:
 

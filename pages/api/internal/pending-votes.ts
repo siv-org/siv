@@ -8,6 +8,7 @@ import type { DocumentData } from 'firebase-admin/firestore'
 
 import { firebase } from 'api/_services'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { escapeHtml } from 'src/_shared/escapeHtml'
 import UAParser from 'ua-parser-js'
 
 const { INTERNAL_VOTER_LOOKUP_PASS } = process.env
@@ -71,14 +72,6 @@ function csvEscape(value: boolean | null | number | string) {
   const s = String(value)
   if (/[",\n\r]/.test(s)) return `"${s.replaceAll('"', '""')}"`
   return s
-}
-
-function escapeHtml(value: boolean | null | number | string) {
-  return String(value ?? '')
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
 }
 
 function formatDevice(userAgent: string | undefined) {
