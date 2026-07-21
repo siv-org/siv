@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { api } from 'src/api-helper'
 
 import { State } from '../vote-state'
-import { decideMissingAuth, LINK_AUTH_RECOVERY_ELECTIONS, type MissingAuthDecision } from './decideMissingAuth'
+import { decideMissingAuth, type MissingAuthDecision } from './decideMissingAuth'
 
 export function MissingAuthInfoBanner({
   auth,
@@ -71,7 +71,6 @@ export function MissingAuthInfoBanner({
     }
   }, [auth, election_id, knownLinkAuth, state.auth_added_at, state.encrypted])
 
-  if (!LINK_AUTH_RECOVERY_ELECTIONS.has(election_id)) return null
   if (checking || outcome.action === 'skip' || outcome.action === 'fetch' || outcome.action === 'mark_complete')
     return null
 

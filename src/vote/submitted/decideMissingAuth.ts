@@ -1,5 +1,5 @@
-/** Elections that may use MissingAuthInfoBanner / lookup-link-auth (temporary Jul 2026). */
-export const LINK_AUTH_RECOVERY_ELECTIONS = new Set(['1783637746011', '1783994820958']) // CCN + test
+/** Elections allowed to recover link_auth by scanning for matching ciphertext. (temporary, July 2026) */
+export const LINK_AUTH_CIPHERTEXT_RECOVERY_ELECTIONS = new Set(['1783637746011', '1783994820958']) // CCN + test
 
 export type LookupResult = { link_auth: string; needs_auth: boolean }
 
@@ -34,14 +34,14 @@ export function decideMissingAuth({
   lookup,
 }: DecideInput): MissingAuthDecision {
   if (auth !== 'link' || auth_added_at) return { action: 'skip' }
-  if (!LINK_AUTH_RECOVERY_ELECTIONS.has(election_id)) return { action: 'skip' }
 
   const hasEncrypted = !!encrypted && Object.keys(encrypted).length > 0
 
   // Still need a server round-trip
   if (!lookup) {
     if (knownLinkAuth) return { action: 'fetch', body: { link_auth: knownLinkAuth } }
-    if (hasEncrypted) return { action: 'fetch', body: { encrypted_vote: encrypted } }
+    if (hasEncrypted && LINK_AUTH_CIPHERTEXT_RECOVERY_ELECTIONS.has(election_id))
+      return { action: 'fetch', body: { encrypted_vote: encrypted } }
     return { action: 'skip' }
   }
 

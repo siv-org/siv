@@ -1,13 +1,13 @@
 import { describe, expect, test } from 'bun:test'
 
-import { decideMissingAuth, LINK_AUTH_RECOVERY_ELECTIONS } from './decideMissingAuth'
+import { decideMissingAuth, LINK_AUTH_CIPHERTEXT_RECOVERY_ELECTIONS } from './decideMissingAuth'
 
-const CCN = [...LINK_AUTH_RECOVERY_ELECTIONS][0]
+const CCN = [...LINK_AUTH_CIPHERTEXT_RECOVERY_ELECTIONS][0]
 const OTHER = '0000000000000'
 const encrypted = { vote: { encrypted: 'aa', lock: 'bb' } }
 
 describe('decideMissingAuth cohorts', () => {
-  test('e — non-whitelisted election: skip, never fetch', () => {
+  test('non-whitelisted election: fetch by known link_auth, but never by ciphertext', () => {
     expect(
       decideMissingAuth({
         auth: 'link',
@@ -16,6 +16,25 @@ describe('decideMissingAuth cohorts', () => {
         knownLinkAuth: null,
       }),
     ).toEqual({ action: 'skip' })
+
+    expect(
+      decideMissingAuth({
+        auth: 'link',
+        election_id: OTHER,
+        encrypted,
+        knownLinkAuth: 'eeeeeeeeee',
+      }),
+    ).toEqual({ action: 'fetch', body: { link_auth: 'eeeeeeeeee' } })
+
+    expect(
+      decideMissingAuth({
+        auth: 'link',
+        election_id: OTHER,
+        encrypted,
+        knownLinkAuth: 'eeeeeeeeee',
+        lookup: { ok: true, result: { link_auth: 'eeeeeeeeee', needs_auth: true } },
+      }),
+    ).toEqual({ action: 'cta', link_auth: 'eeeeeeeeee' })
   })
 
   test('already has auth_added_at / not link: skip', () => {

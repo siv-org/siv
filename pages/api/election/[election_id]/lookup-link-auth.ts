@@ -3,13 +3,10 @@
 import { firebase, pushover } from 'api/_services'
 import { isEqual } from 'lodash-es'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { LINK_AUTH_RECOVERY_ELECTIONS } from 'src/vote/submitted/decideMissingAuth'
+import { LINK_AUTH_CIPHERTEXT_RECOVERY_ELECTIONS } from 'src/vote/submitted/decideMissingAuth'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { election_id } = req.query as { election_id: string }
-  // Whitelisted elections only — encrypted votes are public on the status page.
-  if (!LINK_AUTH_RECOVERY_ELECTIONS.has(election_id))
-    return res.status(403).json({ error: 'Not available for this election' })
 
   // Validate request body
   const { encrypted_vote, link_auth } = req.body || {}
@@ -39,6 +36,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   // Otherwise, use encrypted vote to look it up
+
+  // but only for whitelisted elections, since encrypted votes are public on the status page.
+  if (!LINK_AUTH_CIPHERTEXT_RECOVERY_ELECTIONS.has(election_id)) {
+    await pushover('lookup-link-auth: ciphertext lookup not available', `election: ${election_id}\nIP: ${ip}`)
+    return res.status(403).json({ error: 'Ciphertext lookup not available for this election' })
+  }
+
   const pendingSnap = await electionDoc.collection('votes-pending').get()
   const match = pendingSnap.docs.find((d) => isEqual(d.data()?.encrypted_vote, encrypted_vote))
   if (!match) {
