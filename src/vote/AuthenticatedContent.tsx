@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 
 import { GlobalCSS } from '../GlobalCSS'
 import { CustomAuthFlow, hasCustomAuthFlow } from './auth/11choosesAuth/CustomAuthFlow'
@@ -19,6 +19,7 @@ export const AuthenticatedContent = ({ auth, election_id }: { auth: string; elec
   const [state, dispatch] = useVoteState(`voter-${election_id}-${auth}`)
   const router = useRouter()
   const link_auth_query = router.query.link_auth
+  const wasAlreadySubmittedOnPageLoad = useRef(!!state.submitted_at && !!state.link_auth).current
 
   storeElectionInfo(dispatch, election_id)
 
@@ -32,12 +33,13 @@ export const AuthenticatedContent = ({ auth, election_id }: { auth: string; elec
     }
 
     if (!state.link_auth) return
+    if (!wasAlreadySubmittedOnPageLoad) return // Restore only on revisit, not during original submission.
 
     const [path, hash = ''] = router.asPath.split('#')
     const url = new URL(path, window.location.origin)
     url.searchParams.set('link_auth', state.link_auth)
     router.replace(url.pathname + url.search + (hash ? `#${hash}` : ''))
-  }, [auth, dispatch, link_auth_query, router, state.link_auth])
+  }, [auth, dispatch, link_auth_query, router, state.link_auth, wasAlreadySubmittedOnPageLoad])
 
   return (
     <>
