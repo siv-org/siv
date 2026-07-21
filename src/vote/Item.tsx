@@ -141,7 +141,7 @@ export const WideBallotTable = ({
   children: React.ReactNode
   className?: string
 }) => (
-  <div className="-mx-2 max-w-full overflow-x-auto overflow-y-hidden px-2 sm:mx-0 sm:overflow-visible sm:px-0">
+  <div className="overflow-x-auto overflow-y-hidden px-2 -mx-2 max-w-full sm:mx-0 sm:overflow-visible sm:px-0">
     <table className={`w-max min-w-full sm:w-full ${className}`}>{children}</table>
   </div>
 )
