@@ -53,16 +53,17 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       sendEmail({
         from: 'SIV',
         recipient: email,
-        subject: `Voter Email Verification: ${email}`,
-        text: `A vote was just cast in the Election <b><em>${
-          election.election_title
-        }</em></b>, with the name and email given:
+        subject: `Verify your email for ${election.election_title}`,
+        text: `<h2 style="margin: 0;">Verify your email address</h2>
+      Someone submitted a vote in the Election <b><em>${
+        election.election_title
+      }</em></b> using the following information:
 
       <b>First Name:</b> ${first_name}
       <b>Last Name:</b> ${last_name}
       <b>Email:</b> ${email}
 
-      If this WAS you, please click here to verify your email address:
+      If this was you, please confirm:
 
       ${button(
         `${req.headers.origin}/verify_registration?email=${email}&code=${verification_code}&election_id=${election_id}&link_auth=${link_auth}`,
@@ -70,10 +71,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       )}
 
       <em style="font-size:11px; opacity: 0.6;">
-      If this was NOT you, click here:
-      <a href="${
+      Didn't submit this vote? <a href="${
         req.headers.origin
-      }/verify_registration?code=${verification_code}&election_id=${election_id}&link_auth=${link_auth}&invalid=true">This was NOT me, that vote should be marked invalid</a></em>`,
+      }/verify_registration?code=${verification_code}&election_id=${election_id}&link_auth=${link_auth}&invalid=true">Mark it as invalid.</a></em>`,
       }),
 
     // Trigger admin's dashboard update
