@@ -1,3 +1,4 @@
+import { Mail } from 'lucide-react'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { api } from 'src/api-helper'
@@ -31,9 +32,19 @@ export const UnverifiedEmailModal = () => {
   return (
     <div>
       {email && (
-        <p className="inline-block p-2 w-auto font-medium border-2 border-yellow-400 border-dashed">
-          ⚠️ A verification email was sent to {email}
-        </p>
+        <div
+          className="flex gap-3 items-start px-4 py-3 mb-8 w-full text-left bg-amber-50 rounded-lg border border-amber-300 border-solid text-amber-950"
+          role="status"
+        >
+          <Mail aria-hidden className="mt-0.5 shrink-0 text-amber-700" size={22} />
+          <div>
+            <p className="m-0 font-semibold">Check your email to verify your address</p>
+            <p className="mt-1 mb-0 text-sm">
+              We sent a verification link to <strong className="break-words">{email}</strong>.<br />
+              Click it to confirm this address is yours.
+            </p>
+          </div>
+        </div>
       )}
 
       {/* Modal */}
