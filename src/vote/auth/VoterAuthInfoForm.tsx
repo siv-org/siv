@@ -5,8 +5,8 @@ import { RefObject, useEffect, useRef, useState } from 'react'
 import { OnClickButton } from 'src/_shared/Button'
 import { api } from 'src/api-helper'
 
-const extraAuthInfo = ['1764273267967', '1764288582801', '1778654905486', '1778786340160']
-export const optionalEmail = ['1764273267967', '1764288582801', '1778654905486', '1778786340160']
+const extraAuthInfo = ['1764273267967', '1764288582801', '1778654905486', '1778786340160', '1783637746011']
+export const optionalEmail = ['1764273267967', '1764288582801', '1778654905486', '1778786340160', '1783637746011']
 
 export const VoterAuthInfoForm = () => {
   const [emailError, setEmailError] = useState('')
@@ -106,6 +106,17 @@ export const VoterAuthInfoForm = () => {
 
           // Store the email address locally so we can remind them later to check it
           if (email) localStorage.setItem(`registration-${link_auth}`, email)
+
+          // Seed auth_added_at for a future incomplete-voter /auth bounce (no redirect yet)
+          try {
+            const voteKey = `voter-${election_id}-link`
+            const voteState = JSON.parse(localStorage.getItem(voteKey) || '{}')
+
+            // Manually instead of dispatch(), since we don't have access to the dispatch function here
+            localStorage.setItem(voteKey, JSON.stringify({ ...voteState, auth_added_at: new Date().toISOString() }))
+          } catch {
+            // ignore
+          }
 
           // Redirect back to submission screen
           router.push(`${window.location.origin}/election/${election_id}/vote?auth=link&link_auth=${link_auth}`)

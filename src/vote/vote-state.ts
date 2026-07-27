@@ -8,6 +8,7 @@ import { generateTrackingNum } from './tracking-num'
 import { useLocalStorageReducer } from './useLocalStorage'
 
 export type State = {
+  auth_added_at?: string
   ballot_design?: Item[]
   ballot_design_finalized?: boolean
   custom_invitation_text?: string
@@ -17,6 +18,7 @@ export type State = {
   encrypted: Record<string, CipherStrings>
   esignature_requested?: boolean
   last_modified_at?: Date
+  link_auth?: string
   plaintext: Map
   privacy_protectors_statements?: string
   public_key?: string
@@ -31,7 +33,7 @@ type Map = Record<string, string>
 function reducer(prev: State, payload: Map) {
   // Special handler for other state updates
   // that don't require encryption
-  if (payload.ballot_design || payload.submitted_at || payload.esigned_at) {
+  if (payload.ballot_design || payload.submitted_at || payload.esigned_at || payload.link_auth) {
     return { ...prev, ...payload }
   }
 

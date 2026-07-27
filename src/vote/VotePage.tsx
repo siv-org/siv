@@ -27,7 +27,7 @@ export const VotePage = ({
           {election_id &&
             (auth ? (
               <NoSsr>
-                <AuthenticatedContent {...{ auth, election_id }} />
+                <AuthenticatedContent key={`${election_id}-${auth}`} {...{ auth, election_id }} />
               </NoSsr>
             ) : (
               <NoAuthTokenScreen />

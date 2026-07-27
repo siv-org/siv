@@ -71,7 +71,7 @@ export const ScoreItem = ({
 
                 {/* And one column for each ranking option */}
                 {scoreOptions.map((score) => (
-                  <td className="ml-2" key={score}>
+                  <td className="text-center" key={score}>
                     <input
                       checked={state.plaintext[`${id}_${val}`] === `${score}`}
                       className="w-7 h-7 bg-white border-gray-300 border-solid rounded-full appearance-none cursor-pointer hover:bg-blue-100 checked:!bg-[#002868] border-2 checked:border-white/30"

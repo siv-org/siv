@@ -79,7 +79,7 @@ const LoadedParams = ({ auth, election_id }: { auth: string; election_id: string
   const attempt = useKeygenAttempt(election_id)
   if (!attempt) return <p>Loading keygen_attempt #</p>
 
-  return <LoadedAttemptNumber {...{ attempt, auth, election_id }} />
+  return <LoadedAttemptNumber key={`${election_id}-${auth}-${attempt}`} {...{ attempt, auth, election_id }} />
 }
 
 const LoadedAttemptNumber = ({

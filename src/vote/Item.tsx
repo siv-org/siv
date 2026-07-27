@@ -141,7 +141,7 @@ export const WideBallotTable = ({
   children: React.ReactNode
   className?: string
 }) => (
-  <div className="-mx-2 max-w-full overflow-x-auto overflow-y-hidden px-2 sm:mx-0 sm:overflow-visible sm:px-0">
+  <div className="overflow-x-auto overflow-y-hidden px-2 -mx-2 max-w-full sm:mx-0 sm:overflow-visible sm:px-0">
     <table className={`w-max min-w-full sm:w-full ${className}`}>{children}</table>
   </div>
 )
@@ -158,7 +158,7 @@ export const TitleDescriptionQuestion = ({
   <>
     <Linkify>
       {title && <p className="title sm:px-[13px] py-[5px] mb-2.5">{title}</p>}
-      {description && <p className="whitespace-pre-wrap sm:m-[13px] mb-0">{description}</p>}
+      {description && <p className="whitespace-pre-wrap sm:m-[13px]">{description}</p>}
       {question && <p className="whitespace-pre-wrap sm:m-[13px]">{question}</p>}
     </Linkify>
     <style jsx>{`

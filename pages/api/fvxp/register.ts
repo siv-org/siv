@@ -9,7 +9,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 export default allowCors(async (req: NextApiRequest, res: NextApiResponse) => {
   const { email } = req.body
-  if (!email || typeof email !== 'string') res.status(400).json({ error: '`email` is required' })
+  if (!email || typeof email !== 'string') return res.status(400).json({ error: '`email` is required' })
 
   const headers = ['x-vercel-ip-city', 'x-vercel-ip-country-region', 'x-vercel-ip-country']
   const location = headers.map((header) => req.headers[header]?.toString().replaceAll('%20', ' ')).join(', ')
@@ -32,12 +32,12 @@ export default allowCors(async (req: NextApiRequest, res: NextApiResponse) => {
           created_at: new Date(),
           email,
           geoip: {
-            city: req.headers['x-vercel-ip-city'],
-            country: req.headers['x-vercel-ip-country'],
-            region: req.headers['x-vercel-ip-country-region'],
+            city: req.headers['x-vercel-ip-city'] || '',
+            country: req.headers['x-vercel-ip-country'] || '',
+            region: req.headers['x-vercel-ip-country-region'] || '',
           },
-          ip: req.headers['x-real-ip'],
-          user_agent: req.headers['user-agent'],
+          ip: req.headers['x-real-ip'] || '',
+          user_agent: req.headers['user-agent'] || '',
         }),
       },
       { merge: true },

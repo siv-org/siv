@@ -9,10 +9,11 @@ import { State } from '../vote-state'
 import { DetailedEncryptionReceipt } from './DetailedEncryptionReceipt'
 import { EncryptedVote } from './EncryptedVote'
 import { InvalidatedVoteMessage } from './InvalidatedVoteMessage'
+import { MissingAuthInfoBanner } from './MissingAuthInfoBanner'
 import { UnlockedVote } from './UnlockedVote'
 import { UnverifiedEmailModal } from './UnverifiedEmailModal'
 
-const disabledLinkToStatusPage = ['1764273267967', '1764288582801', '1778654905486', '1778786340160']
+const disabledLinkToStatusPage = ['1764273267967', '1764288582801', '1778654905486', '1778786340160', '1783637746011']
 
 export function SubmittedScreen({
   auth,
@@ -24,7 +25,8 @@ export function SubmittedScreen({
   state: State & { submitted_at: Date }
 }): JSX.Element {
   const { link_auth } = useRouter().query
-  const malwareCheckAuth = auth === 'link' && typeof link_auth === 'string' ? link_auth : auth
+  const malwareCheckAuth =
+    auth === 'link' ? (typeof link_auth === 'string' && link_auth) || state.link_auth || auth : auth
   const [showEncryptionDetails, toggleEncryptionDetails] = useReducer((state) => !state, false)
 
   // Widen the page for the tables
@@ -39,6 +41,7 @@ export function SubmittedScreen({
     <NoSsr>
       <UnverifiedEmailModal />
       <InvalidatedVoteMessage />
+      <MissingAuthInfoBanner {...{ auth, election_id, state }} />
 
       {!disabledLinkToStatusPage.includes(election_id) && (
         <Link

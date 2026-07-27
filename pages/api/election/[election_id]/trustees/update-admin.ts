@@ -2,7 +2,7 @@ import { firebase } from 'api/_services'
 import { pusher } from 'api/pusher'
 import bluebird from 'bluebird'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { pointToString, RP } from 'src/crypto/curve'
+import { RP, safePointToString } from 'src/crypto/curve'
 import { destringifyPartial, stringifyPartial } from 'src/crypto/stringify-partials'
 import { CipherStrings } from 'src/crypto/stringify-shuffle'
 import {
@@ -206,12 +206,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
             // 2. Then we can unlock each messages
             const unlocked = unlock_message_with_shared_secret(shared_secret, RP.fromHex(encrypted))
-            return pointToString(unlocked)
+            return safePointToString(unlocked)
           })
         }) as Record<string, string[]>
 
         // 3. Finally we recombine the separated columns back together via tracking numbers
-        const decrypteds_by_tracking = recombine_decrypteds(decrypted_and_split)
+        const decrypteds_by_tracking = await recombine_decrypteds(decrypted_and_split, election_id)
 
         // Store decrypteds as an array
         const decrypted = Object.values(decrypteds_by_tracking)

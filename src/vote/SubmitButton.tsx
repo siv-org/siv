@@ -60,9 +60,10 @@ export const SubmitButton = ({
         return setExpectedColumns(null)
       }
 
-      // If auth is `link`, redirect to /auth page
+      // If auth is `link`, persist link_auth then redirect to /auth page
       if (auth === 'link') {
         const { link_auth, visit_to_add_auth } = await response.json()
+        dispatch({ link_auth })
         if (embed) {
           // console.log('SIV submit button', link_auth, embed)
           window.parent.postMessage({ link_auth }, embed)

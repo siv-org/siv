@@ -61,6 +61,15 @@ function extract(point: RP): Uint8Array {
 /** Extract string data from a Ristretto255 point */
 export const pointToString = (point: RP): string => new TextDecoder().decode(extract(point))
 
+/** Wrap pointToString in try/catch, returning '' on failure. */
+export const safePointToString = (point: RP): string => {
+  try {
+    return pointToString(point)
+  } catch {
+    return ''
+  }
+}
+
 /** Give a cryptographically random bigint less than Curve25519's l */
 export const random_bigint = (): bigint => pick_random_bigint(CURVE.l)
 

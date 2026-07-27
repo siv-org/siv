@@ -9,9 +9,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const json = req.body
   const eventData = json['event-data']
   if (!eventData) {
-    console.error('Missing event data. req.body:', req.body)
-    console.error('req.headers:', req.headers)
-    return res.status(400).json({ error: 'Missing event data.' })
+    console.warn('Missing event data. req.body:', req.body)
+    console.warn('req.headers:', req.headers)
+    return res.status(406).json({ error: 'Missing event data.' })
   }
   const { message, recipient, tags } = eventData
 
@@ -22,7 +22,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (error) {
     console.error(error)
     await pushover('mailgun-opens webhook error', JSON.stringify(error))
-    return res.status(400).send({ error })
+    return res.status(500).send({ error })
   }
 
   // console.log({ data })

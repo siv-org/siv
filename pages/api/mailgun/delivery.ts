@@ -10,9 +10,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const json = req.body
   const eventData = json['event-data']
   if (!eventData) {
-    // console.warn('Missing event data. req.body:', req.body)
-    // console.warn('req.headers:', req.headers)
-    return res.status(400).json({ error: 'Missing event data.' })
+    console.warn('Missing event data. req.body:', req.body)
+    console.warn('req.headers:', req.headers)
+    return res.status(406).json({ error: 'Missing event data.' })
   }
   const { message, tags } = eventData
   const { headers } = message
@@ -23,7 +23,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (error) {
     console.error(error)
     await pushover('mailgun-deliveries webhook error', JSON.stringify(error))
-    return res.status(400).send({ error })
+    return res.status(500).send({ error })
   }
 
   // Notify any pusher subscriptions listening for this tag

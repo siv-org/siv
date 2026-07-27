@@ -92,10 +92,14 @@ export async function addVotersToElection(new_voters: NewVoter[], election_id: s
       // Increment electionDoc's num_voters cached tally
       .concat(
         electionDoc.update({
-          new_voters_raw: firestore.FieldValue.arrayUnion({
-            new_voters_raw,
-            timestamp: new Date(),
-          }),
+          ...(new_voters_raw !== undefined
+            ? {
+                new_voters_raw: firestore.FieldValue.arrayUnion({
+                  new_voters_raw,
+                  timestamp: new Date(),
+                }),
+              }
+            : {}),
           num_voters: firestore.FieldValue.increment(unique_new_emails.length),
         }),
       ),
