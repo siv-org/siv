@@ -29,6 +29,13 @@ export const RESOURCES: Resource[] = [
     title: 'SIV in One Poster',
   },
   {
+    category: 'In Practice',
+    description: 'Real votes run with SIV — from party conventions to the largest digital election in US history.',
+    href: 'https://siv.org/case-studies',
+    icon: Vote,
+    title: 'Case Studies',
+  },
+  {
     category: 'Reference',
     description:
       'Answers to common questions about digital voting, security, privacy, and how SIV compares to traditional methods.',
@@ -73,12 +80,5 @@ export const RESOURCES: Resource[] = [
     href: 'https://hack.siv.org/reports/2024defcon',
     icon: ShieldCheck,
     title: 'Hack SIV Challenge: Results',
-  },
-  {
-    category: 'In Practice',
-    description: 'Real elections run with SIV — from party conventions to the largest digital election in US history.',
-    href: 'https://siv.org/case-studies',
-    icon: Vote,
-    title: 'Case Studies',
   },
 ]
