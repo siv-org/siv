@@ -13,17 +13,20 @@ const {
 } = process.env
 
 // Init firebase (only once)
-export const firebase = !Firebase.apps.length
-  ? Firebase.initializeApp({
-      credential: Firebase.credential.cert({
-        clientEmail: FIREBASE_CLIENT_EMAIL,
-        privateKey: FIREBASE_PRIVATE_KEY,
-        projectId: FIREBASE_PROJECT_ID,
-      }),
-      databaseURL: FIREBASE_DATABASE_URL || 'https://siv-demo.firebaseio.com',
-      storageBucket: `${FIREBASE_PROJECT_ID || 'siv-demo'}.appspot.com`,
-    })
-  : Firebase.app()
+if (!Firebase.apps.length) {
+  Firebase.initializeApp({
+    credential: Firebase.credential.cert({
+      clientEmail: FIREBASE_CLIENT_EMAIL,
+      privateKey: FIREBASE_PRIVATE_KEY,
+      projectId: FIREBASE_PROJECT_ID,
+    }),
+    databaseURL: FIREBASE_DATABASE_URL || 'https://siv-demo.firebaseio.com',
+    storageBucket: `${FIREBASE_PROJECT_ID || 'siv-demo'}.appspot.com`,
+  })
+  // Skip nested undefined instead of throwing on writes
+  Firebase.firestore().settings({ ignoreUndefinedProperties: true })
+}
+export const firebase = Firebase.app()
 
 const firebaseStorageBucketName = () =>
   process.env.FIREBASE_STORAGE_BUCKET || `${process.env.FIREBASE_PROJECT_ID || 'siv-demo'}.appspot.com`
