@@ -30,7 +30,8 @@ export const RESOURCES: Resource[] = [
   },
   {
     category: 'In Practice',
-    description: 'Real votes run with SIV — from party conventions to the largest digital election in US history.',
+    description:
+      'Public write-ups about some of the highest-stakes votes run with SIV, plus testimonials from voters and administrators.',
     href: 'https://siv.org/case-studies',
     icon: Vote,
     title: 'Case Studies',
