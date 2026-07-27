@@ -1,6 +1,15 @@
 import type { ElementType } from 'react'
 
-import { Atom, Blocks, BookOpen, FileText, MessageCircleQuestionMark, Presentation, ShieldCheck } from 'lucide-react'
+import {
+  Atom,
+  Blocks,
+  BookOpen,
+  FileText,
+  MessageCircleQuestionMark,
+  Presentation,
+  ShieldCheck,
+  Vote,
+} from 'lucide-react'
 
 export type Resource = {
   category: string
@@ -18,6 +27,14 @@ export const RESOURCES: Resource[] = [
     href: 'https://blog.siv.org/2025/11/siv-in-one-poster',
     icon: Presentation,
     title: 'SIV in One Poster',
+  },
+  {
+    category: 'In Practice',
+    description:
+      'Public write-ups about some of the highest-stakes votes run with SIV, plus testimonials from voters and administrators.',
+    href: '/case-studies',
+    icon: Vote,
+    title: 'Case Studies',
   },
   {
     category: 'Reference',
