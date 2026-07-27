@@ -32,7 +32,7 @@ export const RESOURCES: Resource[] = [
     category: 'In Practice',
     description:
       'Public write-ups about some of the highest-stakes votes run with SIV, plus testimonials from voters and administrators.',
-    href: 'https://siv.org/case-studies',
+    href: '/case-studies',
     icon: Vote,
     title: 'Case Studies',
   },
