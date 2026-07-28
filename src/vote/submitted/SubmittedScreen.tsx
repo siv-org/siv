@@ -1,11 +1,12 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useEffect, useReducer } from 'react'
+import { Dispatch, useEffect, useReducer } from 'react'
 import { NoSsr } from 'src/_shared/NoSsr'
 
 import { MalwareCheck } from '../../malware-check/InitMalwareCheck'
 import { generateColumnNames } from '../generateColumnNames'
 import { State } from '../vote-state'
+import { CustomizeVerificationNumber } from './CustomizeVerificationNumber'
 import { DetailedEncryptionReceipt } from './DetailedEncryptionReceipt'
 import { EncryptedVote } from './EncryptedVote'
 import { InvalidatedVoteMessage } from './InvalidatedVoteMessage'
@@ -17,10 +18,12 @@ const disabledLinkToStatusPage = ['1764273267967', '1764288582801', '17786549054
 
 export function SubmittedScreen({
   auth,
+  dispatch,
   election_id,
   state,
 }: {
   auth: string
+  dispatch: Dispatch<Record<string, string>>
   election_id: string
   state: State & { submitted_at: Date }
 }): JSX.Element {
@@ -65,6 +68,7 @@ export function SubmittedScreen({
       </p>
 
       <UnlockedVote {...{ columns, state }} />
+      <CustomizeVerificationNumber {...{ dispatch, state }} />
 
       <p className="text-xs opacity-60">
         This secret <em>Verification #</em> is a random number, generated and encrypted on your own device.

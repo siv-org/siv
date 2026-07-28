@@ -26,11 +26,47 @@ export type State = {
   submission_confirmation?: string
   submitted_at?: Date
   tracking?: string
+  tracking_customized_at?: string
 }
 type Map = Record<string, string>
 
+function encryptSelections(plaintext: Map, tracking: string, public_key: string) {
+  // Initialize empty dicts for intermediary steps
+  const randomizer: Map = {}
+  const encoded: Map = {}
+
+  // For each key in plaintext
+  const encrypted = mapValues(plaintext, (value, key) => {
+    // Encode the string into an element of our Prime Order Group
+    encoded[key] = stringToPoint(`${tracking}:${value}`).toHex()
+
+    // Generate & store a randomizer
+    const random = random_bigint()
+    randomizer[key] = String(random)
+
+    // Encrypt the encoded value w/ its randomizer
+    const cipher = encrypt(RP.fromHex(public_key), random, RP.fromHex(encoded[key]))
+
+    // Store the encrypted cipher as strings
+    return mapValues(cipher, String)
+  })
+  return { encoded, encrypted, randomizer }
+}
+
 /** Core state logic */
 function reducer(prev: State, payload: Map) {
+  // Customize verification #: re-encrypt selections under the new tracking
+  if (payload.tracking && payload.tracking !== prev.tracking) {
+    if (!prev.public_key || !Object.keys(prev.plaintext || {}).length) return prev
+    return {
+      ...prev,
+      ...encryptSelections(prev.plaintext, payload.tracking, prev.public_key),
+      last_modified_at: new Date(),
+      tracking: payload.tracking,
+      tracking_customized_at: new Date().toISOString(),
+    }
+  }
+
   // Special handler for other state updates
   // that don't require encryption
   if (payload.ballot_design || payload.submitted_at || payload.esigned_at || payload.link_auth) {
@@ -54,30 +90,11 @@ function reducer(prev: State, payload: Map) {
   if (Object.keys(newState.plaintext) && !prev.public_key) return prev
 
   // Generate Verification number if needed
-  if (!prev.tracking) newState.tracking = generateTrackingNum()
 
-  // Initialize empty dicts for intermediary steps
-  const randomizer: Map = {}
-  const encoded: Map = {}
+  if (!newState.tracking) newState.tracking = generateTrackingNum()
 
-  // For each key in plaintext
-  const encrypted = mapValues(newState.plaintext, (value, key) => {
-    // Encode the string into an element of our Prime Order Group
-    encoded[key] = stringToPoint(`${newState.tracking}:${value}`).toHex()
-
-    // Generate & store a randomizer
-    const random = random_bigint()
-    randomizer[key] = String(random)
-
-    // Encrypt the encoded value w/ its randomizer
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const cipher = encrypt(RP.fromHex(prev.public_key!), random, RP.fromHex(encoded[key]))
-
-    // Store the encrypted cipher as strings
-    return mapValues(cipher, String)
-  })
-
-  return merge(newState, { encoded, encrypted, randomizer })
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  return merge(newState, encryptSelections(newState.plaintext, newState.tracking, prev.public_key!))
 }
 
 const initState = {

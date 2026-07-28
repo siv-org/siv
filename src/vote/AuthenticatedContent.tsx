@@ -54,7 +54,7 @@ export const AuthenticatedContent = ({ auth, election_id }: { auth: string; elec
               <title key="title">SIV: Vote Submitted</title>
             </Head>
             <h1>Vote Submitted.</h1>
-            <SubmittedScreen {...{ auth, election_id, state }} />
+            <SubmittedScreen {...{ auth, dispatch, election_id, state }} />
           </>
         )
       ) : (
