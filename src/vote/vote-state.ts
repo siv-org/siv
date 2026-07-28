@@ -30,31 +30,8 @@ export type State = {
 }
 type Map = Record<string, string>
 
-function encryptSelections(plaintext: Map, tracking: string, public_key: string) {
-  // Initialize empty dicts for intermediary steps
-  const randomizer: Map = {}
-  const encoded: Map = {}
-
-  // For each key in plaintext
-  const encrypted = mapValues(plaintext, (value, key) => {
-    // Encode the string into an element of our Prime Order Group
-    encoded[key] = stringToPoint(`${tracking}:${value}`).toHex()
-
-    // Generate & store a randomizer
-    const random = random_bigint()
-    randomizer[key] = String(random)
-
-    // Encrypt the encoded value w/ its randomizer
-    const cipher = encrypt(RP.fromHex(public_key), random, RP.fromHex(encoded[key]))
-
-    // Store the encrypted cipher as strings
-    return mapValues(cipher, String)
-  })
-  return { encoded, encrypted, randomizer }
-}
-
 /** Core state logic */
-function reducer(prev: State, payload: Map) {
+export function reducer(prev: State, payload: Map) {
   // Customize verification #: re-encrypt selections under the new tracking
   if (payload.tracking && payload.tracking !== prev.tracking) {
     if (!prev.public_key || !Object.keys(prev.plaintext || {}).length) return prev
@@ -90,11 +67,33 @@ function reducer(prev: State, payload: Map) {
   if (Object.keys(newState.plaintext) && !prev.public_key) return prev
 
   // Generate Verification number if needed
-
   if (!newState.tracking) newState.tracking = generateTrackingNum()
 
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   return merge(newState, encryptSelections(newState.plaintext, newState.tracking, prev.public_key!))
+}
+
+function encryptSelections(plaintext: Map, tracking: string, public_key: string) {
+  // Initialize empty dicts for intermediary steps
+  const randomizer: Map = {}
+  const encoded: Map = {}
+
+  // For each key in plaintext
+  const encrypted = mapValues(plaintext, (value, key) => {
+    // Encode the string into an element of our Prime Order Group
+    encoded[key] = stringToPoint(`${tracking}:${value}`).toHex()
+
+    // Generate & store a randomizer
+    const random = random_bigint()
+    randomizer[key] = String(random)
+
+    // Encrypt the encoded value w/ its randomizer
+    const cipher = encrypt(RP.fromHex(public_key), random, RP.fromHex(encoded[key]))
+
+    // Store the encrypted cipher as strings
+    return mapValues(cipher, String)
+  })
+  return { encoded, encrypted, randomizer }
 }
 
 const initState = {
