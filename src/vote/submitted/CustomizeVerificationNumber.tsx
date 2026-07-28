@@ -63,7 +63,7 @@ export function CustomizeVerificationNumber({
   }
 
   return (
-    <div className={`mt-3 ${h26fonts}`}>
+    <div className={`mt-0.5 ${h26fonts}`}>
       {step === 'closed' && (
         <button
           className="group inline-flex items-center gap-1.5 border-0 bg-transparent p-0 font-sans text-[0.78rem] text-h26-green cursor-pointer transition-colors duration-200 hover:text-h26-greenHover"
@@ -71,14 +71,14 @@ export function CustomizeVerificationNumber({
           type="button"
         >
           <PenLine className="size-3.5 opacity-80 transition-transform duration-200 group-hover:-rotate-6" strokeWidth={1.75} />
-          Customize your Number
+          Customize
         </button>
       )}
 
       {step === 'done' && (
         <div className="inline-flex items-center gap-1.5 text-[0.78rem] text-h26-green animate-[fadeInUp_0.5s_ease-out_both]">
           <Check className="size-3.5" strokeWidth={2} />
-          <span className="font-medium">Number customized</span>
+          <span className="font-medium">Customized</span>
         </div>
       )}
 
@@ -94,7 +94,7 @@ export function CustomizeVerificationNumber({
         >
           <span className="font-mono26 text-[0.58rem] uppercase tracking-[0.2em] text-h26-green">Optional</span>
           <h4 className="mt-1.5 mb-0 font-serif26 text-[1.05rem] font-normal tracking-tight text-h26-text">
-            Customize your Number
+            Customize
           </h4>
 
           {step === 'write-down' && (
