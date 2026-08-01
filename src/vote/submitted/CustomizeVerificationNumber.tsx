@@ -44,7 +44,7 @@ export function CustomizeVerificationNumber({
   }
 
   return (
-    <div className={`mt-1 w-full max-w-full min-w-0 ${h26fonts}`}>
+    <div className={`mt-1 w-full min-w-0 max-w-full ${h26fonts}`}>
       {step === 'closed' && (
         <button
           className="group inline-flex items-center gap-1.5 border-0 bg-transparent p-0 font-sans text-[0.85rem] text-h26-green cursor-pointer transition-colors duration-200 hover:text-h26-greenHover"
@@ -89,7 +89,7 @@ export function CustomizeVerificationNumber({
               <p className="mt-6 mb-0 text-center font-mono26 text-[1.25rem] tracking-[0.06em] text-h26-text tabular-nums sm:text-[1.6rem] sm:tracking-[0.1em] md:text-[1.75rem]">
                 {device}
               </p>
-              <div className="mt-7 flex flex-wrap items-center gap-4">
+              <div className="flex flex-wrap gap-4 items-center mt-7">
                 <button
                   className="inline-flex items-center rounded-full border-0 bg-h26-green px-6 py-3 font-sans text-[0.9rem] font-medium text-white cursor-pointer shadow-h26-cta transition-all duration-300 hover:-translate-y-0.5 hover:bg-h26-greenHover hover:shadow-h26-cta-hover"
                   onClick={() => setStep('digits')}
@@ -140,19 +140,23 @@ export function CustomizeVerificationNumber({
 
                   <span className="pr-2 text-[0.85rem] text-h26-muted sm:pr-0 sm:text-[0.95rem]">Result</span>
                   <span
-                    className={`min-w-0 font-mono26 text-[1.05rem] tracking-[0.04em] tabular-nums text-right sm:text-[1.35rem] sm:tracking-[0.08em] ${preview ? 'font-medium text-h26-text' : 'text-h26-text'}`}
+                    className={`min-w-0 font-mono26 text-[1.05rem] tracking-[0.04em] tabular-nums text-right sm:text-[1.35rem] sm:tracking-[0.08em] ${
+                      preview ? 'font-medium text-h26-text' : 'text-h26-text'
+                    }`}
                   >
                     {r1}-{r2}-
                   </span>
                   <span
-                    className={`font-mono26 text-[1.05rem] tracking-[0.04em] tabular-nums text-center sm:text-[1.35rem] sm:tracking-[0.08em] ${preview ? 'font-medium text-h26-text' : 'text-h26-text'}`}
+                    className={`font-mono26 text-[1.05rem] tracking-[0.04em] tabular-nums text-center sm:text-[1.35rem] sm:tracking-[0.08em] ${
+                      preview ? 'font-medium text-h26-text' : 'text-h26-text'
+                    }`}
                   >
                     {r3}
                   </span>
                 </div>
               </div>
 
-              <div className="mt-6 flex flex-wrap items-center gap-4">
+              <div className="flex flex-wrap gap-4 items-center mt-6">
                 <button
                   className="inline-flex items-center rounded-full border-0 bg-h26-green px-6 py-3 font-sans text-[0.9rem] font-medium text-white cursor-pointer shadow-h26-cta transition-all duration-300 enabled:hover:-translate-y-0.5 enabled:hover:bg-h26-greenHover enabled:hover:shadow-h26-cta-hover disabled:cursor-not-allowed disabled:opacity-40"
                   disabled={!preview}
