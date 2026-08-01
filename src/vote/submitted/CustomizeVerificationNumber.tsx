@@ -9,12 +9,18 @@ type Step = 'closed' | 'digits' | 'done' | 'write-down'
 
 export function CustomizeVerificationNumber({
   dispatch,
+  onCancel,
+  startOpen = false,
   state,
 }: {
   dispatch: Dispatch<Record<string, string>>
+  onCancel?: () => void
+  startOpen?: boolean
   state: State
 }) {
-  const [step, setStep] = useState<Step>(state.tracking_customized_at ? 'done' : 'closed')
+  const [step, setStep] = useState<Step>(
+    state.tracking_customized_at ? 'done' : startOpen ? 'write-down' : 'closed',
+  )
   const [digits, setDigits] = useState('')
   const [deviceSnapshot, setDeviceSnapshot] = useState(state.tracking || '')
   const inputRef = useRef<HTMLInputElement>(null)
@@ -45,7 +51,7 @@ export function CustomizeVerificationNumber({
 
   return (
     <div className={`mt-1 w-full min-w-0 max-w-full ${h26fonts}`}>
-      {step === 'closed' && (
+      {step === 'closed' && !startOpen && (
         <button
           className="group inline-flex items-center gap-1.5 border-0 bg-transparent p-0 font-sans text-[0.85rem] text-h26-green cursor-pointer transition-colors duration-200 hover:text-h26-greenHover"
           onClick={open}
@@ -99,7 +105,7 @@ export function CustomizeVerificationNumber({
                 </button>
                 <button
                   className="border-0 bg-transparent p-0 font-sans text-[0.9rem] text-h26-muted cursor-pointer hover:text-h26-textSecondary"
-                  onClick={() => setStep('closed')}
+                  onClick={() => (onCancel ? onCancel() : setStep('closed'))}
                   type="button"
                 >
                   Cancel
