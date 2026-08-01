@@ -7,6 +7,16 @@ import { Item } from './storeElectionInfo'
 import { generateTrackingNum } from './tracking-num'
 import { useLocalStorageReducer } from './useLocalStorage'
 
+export type PreviousSubmission = {
+  encoded: Map
+  encrypted: Record<string, CipherStrings>
+  plaintext: Map
+  randomizer: Map
+  replaced_at: string
+  submitted_at?: Date | string
+  tracking: string
+}
+
 export type State = {
   auth_added_at?: string
   ballot_design?: Item[]
@@ -20,27 +30,41 @@ export type State = {
   last_modified_at?: Date
   link_auth?: string
   plaintext: Map
+  previous_submissions?: PreviousSubmission[]
   privacy_protectors_statements?: string
   public_key?: string
   randomizer: Map
   submission_confirmation?: string
   submitted_at?: Date
   tracking?: string
-  tracking_customized_at?: string
 }
 type Map = Record<string, string>
 
 /** Core state logic */
 export function reducer(prev: State, payload: Map) {
-  // Customize verification #: re-encrypt selections under the new tracking
+  // Customize verification #: re-encrypt under the new tracking, & archive prior
   if (payload.tracking && payload.tracking !== prev.tracking) {
-    if (!prev.public_key || !Object.keys(prev.plaintext || {}).length) return prev
+    if (!prev.public_key) return fail(prev, 'prev.public_key')
+    if (!prev.tracking) return fail(prev, 'prev.tracking')
+    if (!prev.plaintext || !Object.keys(prev.plaintext).length) return fail(prev, 'prev.plaintext')
+
     return {
       ...prev,
       ...encryptSelections(prev.plaintext, payload.tracking, prev.public_key),
       last_modified_at: new Date(),
+      previous_submissions: [
+        ...(prev.previous_submissions || []),
+        {
+          encoded: prev.encoded,
+          encrypted: prev.encrypted,
+          plaintext: prev.plaintext,
+          randomizer: prev.randomizer,
+          replaced_at: new Date().toISOString(),
+          tracking: prev.tracking,
+          ...(prev.submitted_at && { submitted_at: prev.submitted_at }),
+        },
+      ],
       tracking: payload.tracking,
-      tracking_customized_at: new Date().toISOString(),
     }
   }
 
@@ -94,6 +118,15 @@ function encryptSelections(plaintext: Map, tracking: string, public_key: string)
     return mapValues(cipher, String)
   })
   return { encoded, encrypted, randomizer }
+}
+
+function fail(prev: State, item: string) {
+  if (process.env.NODE_ENV !== 'test') {
+    const msg = `Error: ${item} missing`
+    console.error(msg, prev)
+    alert(msg)
+  }
+  return prev
 }
 
 const initState = {

@@ -18,7 +18,9 @@ export function CustomizeVerificationNumber({
   startOpen?: boolean
   state: State
 }) {
-  const [step, setStep] = useState<Step>(state.tracking_customized_at ? 'done' : startOpen ? 'write-down' : 'closed')
+  const [step, setStep] = useState<Step>(
+    state.previous_submissions?.length ? 'done' : startOpen ? 'write-down' : 'closed',
+  )
   const [digits, setDigits] = useState('')
   const [deviceSnapshot, setDeviceSnapshot] = useState(state.tracking || '')
   const inputRef = useRef<HTMLInputElement>(null)
