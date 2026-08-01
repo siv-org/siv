@@ -71,7 +71,7 @@ describe('vote-state reducer', () => {
     const voted = reducer({ ...blank(), public_key: pub, tracking: '1111-1111-1111' }, { mayor: 'Alice' })
     const submitted = reducer(voted, { submitted_at: '2026-01-01' })
 
-    expect(submitted.submitted_at).toBe(new Date('2026-01-01'))
+    expect(String(submitted.submitted_at)).toBe('2026-01-01')
     expect(submitted.encrypted).toEqual(voted.encrypted)
   })
 })
