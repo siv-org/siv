@@ -56,6 +56,8 @@ describe('vote-state reducer', () => {
       tracking: firstVerif,
     })
     expect(archived.replaced_at).toBeTruthy()
+    expect(archived).not.toHaveProperty('public_key')
+    expect(archived).not.toHaveProperty('previous_submissions')
     expect(second.randomizer.mayor).not.toBe(first.randomizer.mayor)
 
     // Third strengthen stacks; first archive stays intact

@@ -1,4 +1,4 @@
-import { mapValues, merge } from 'lodash-es'
+import { mapValues, merge, pick } from 'lodash-es'
 import { random_bigint, RP, stringToPoint } from 'src/crypto/curve'
 import { CipherStrings } from 'src/crypto/stringify-shuffle'
 
@@ -7,38 +7,32 @@ import { Item } from './storeElectionInfo'
 import { generateTrackingNum } from './tracking-num'
 import { useLocalStorageReducer } from './useLocalStorage'
 
-export type PreviousSubmission = {
-  encoded: Map
-  encrypted: Record<string, CipherStrings>
-  plaintext: Map
-  randomizer: Map
-  replaced_at: string
-  submitted_at?: Date | string
-  tracking: string
-}
-
-export type State = {
+export type State = VoteData & {
   auth_added_at?: string
   ballot_design?: Item[]
   ballot_design_finalized?: boolean
   custom_invitation_text?: string
   election_manager?: string
   election_title?: string
-  encoded: Map
-  encrypted: Record<string, CipherStrings>
   esignature_requested?: boolean
   last_modified_at?: Date
   link_auth?: string
-  plaintext: Map
   previous_submissions?: PreviousSubmission[]
   privacy_protectors_statements?: string
   public_key?: string
-  randomizer: Map
   submission_confirmation?: string
+}
+
+type Map = Record<string, string>
+type PreviousSubmission = VoteData & { replaced_at: string }
+type VoteData = {
+  encoded: Map
+  encrypted: Record<string, CipherStrings>
+  plaintext: Map
+  randomizer: Map
   submitted_at?: Date
   tracking?: string
 }
-type Map = Record<string, string>
 
 /** Core state logic */
 export function reducer(prev: State, payload: Map) {
@@ -55,13 +49,8 @@ export function reducer(prev: State, payload: Map) {
       previous_submissions: [
         ...(prev.previous_submissions || []),
         {
-          encoded: prev.encoded,
-          encrypted: prev.encrypted,
-          plaintext: prev.plaintext,
-          randomizer: prev.randomizer,
+          ...pick(prev, ['encoded', 'encrypted', 'plaintext', 'randomizer', 'submitted_at', 'tracking']),
           replaced_at: new Date().toISOString(),
-          tracking: prev.tracking,
-          ...(prev.submitted_at && { submitted_at: prev.submitted_at }),
         },
       ],
       tracking: payload.tracking,
