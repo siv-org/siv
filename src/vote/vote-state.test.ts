@@ -108,4 +108,16 @@ describe('vote-state reducer', () => {
     expect(String(submitted.submitted_at)).toBe('2026-01-01')
     expect(submitted.encrypted).toEqual(voted.encrypted)
   })
+
+  test('replacement keypair can be stored without re-encrypting', () => {
+    const voted = reducer({ ...blank(), public_key: pub, tracking: '1111-1111-1111' }, { mayor: 'Alice' })
+    const withKeys = reducer(voted, {
+      replacement_privkey: 'a'.repeat(64),
+      replacement_pubkey: 'b'.repeat(64),
+    })
+
+    expect(withKeys.replacement_privkey).toBe('a'.repeat(64))
+    expect(withKeys.replacement_pubkey).toBe('b'.repeat(64))
+    expect(withKeys.encrypted).toEqual(voted.encrypted)
+  })
 })

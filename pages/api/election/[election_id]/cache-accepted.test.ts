@@ -37,7 +37,12 @@ const helpers = {
   submitTestVote: async (electionId: string, auth: string, encryptedVote: Record<string, unknown> = {}) => {
     // Helper to submit a vote via the API
     return fetch(`${API_BASE}/submit-vote`, {
-      body: JSON.stringify({ auth, election_id: electionId, encrypted_vote: JSON.stringify(encryptedVote) }),
+      body: JSON.stringify({
+        auth,
+        election_id: electionId,
+        encrypted_vote: JSON.stringify(encryptedVote),
+        replacement_pubkey: 'a'.repeat(64),
+      }),
       headers: { 'Content-Type': 'application/json' },
       method: 'POST',
     })

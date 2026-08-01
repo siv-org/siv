@@ -20,6 +20,8 @@ export type State = VoteData & {
   previous_submissions?: (VoteData & { replaced_at: string })[]
   privacy_protectors_statements?: string
   public_key?: string
+  replacement_privkey?: string
+  replacement_pubkey?: string
   submission_confirmation?: string
 }
 
@@ -35,7 +37,8 @@ type VoteData = {
 
 /** Core state logic */
 export function reducer(prev: State, payload: Map) {
-  // Customize verification #: re-encrypt under the new tracking, & archive prior
+  // Special handler for customizing verification number.
+  // Re-encrypt under the new tracking, & archive prior
   if (payload.tracking && payload.tracking !== prev.tracking) {
     if (!prev.public_key) return fail(prev, 'prev.public_key')
     if (!prev.tracking) return fail(prev, 'prev.tracking')
@@ -58,7 +61,14 @@ export function reducer(prev: State, payload: Map) {
 
   // Special handler for other state updates
   // that don't require encryption
-  if (payload.ballot_design || payload.submitted_at || payload.esigned_at || payload.link_auth) {
+  if (
+    payload.ballot_design ||
+    payload.submitted_at ||
+    payload.esigned_at ||
+    payload.link_auth ||
+    payload.replacement_privkey ||
+    payload.replacement_pubkey
+  ) {
     return { ...prev, ...payload }
   }
 

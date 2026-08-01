@@ -2,6 +2,7 @@ import { validate as validateEmail } from 'email-validator'
 import { firestore } from 'firebase-admin'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { generateAuthToken } from 'src/crypto/generate-auth-tokens'
+import { is64HexChars } from 'src/crypto/replacement-key'
 import { CipherStrings } from 'src/crypto/stringify-shuffle'
 import { EncryptedVote } from 'src/status/AcceptedVotes'
 
@@ -11,12 +12,15 @@ import { pusher } from './pusher'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const payload = req.method === 'POST' ? req.body : req.query
-  const { auth, election_id, embed = '' } = payload
+  const { auth, election_id, embed = '', replacement_pubkey } = payload
   if (!election_id) return res.status(400).json({ error: 'Missing Election ID' })
   if (embed) await pushover('Submitted Vote w/ embed', `election: ${election_id}\nembed: ${embed}\nauth: ${auth}`)
 
   let { encrypted_vote } = payload
   if (typeof encrypted_vote === 'string') encrypted_vote = JSON.parse(encrypted_vote)
+
+  if (!is64HexChars(replacement_pubkey))
+    return res.status(400).json({ error: 'Missing or malformed replacement_pubkey' })
 
   // return res.status(200).json({ auth, election_id, encrypted_vote })
 
@@ -43,6 +47,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           headers: req.headers,
           link_auth,
           rejection: message,
+          replacement_pubkey,
         }),
         pushover('Link submission when closed', `election: ${election_id}\nauth: ${auth}\nmessage: ${message}`),
       ])
@@ -58,6 +63,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         encrypted_vote,
         headers: req.headers,
         link_auth,
+        replacement_pubkey,
       }),
       // 2b. Update election's cached tally of num_votes
       electionDoc.update({
@@ -93,6 +99,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           encrypted_vote,
           headers: req.headers,
           rejection: message,
+          replacement_pubkey,
         }),
         pushover('SIV submission: Bad Auth Token', `election: ${election_id}\nauth: ${auth}\nmessage: ${message}`),
       ])
@@ -109,9 +116,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   await Promise.all([
     // 2a. Store the encrypted vote in db
-    electionDoc
-      .collection('votes')
-      .add({ auth, created_at: firestore.FieldValue.serverTimestamp(), encrypted_vote, headers: req.headers }),
+    electionDoc.collection('votes').add({
+      auth,
+      created_at: firestore.FieldValue.serverTimestamp(),
+      encrypted_vote,
+      headers: req.headers,
+      replacement_pubkey,
+    }),
     // 2b. Update elections cached tally of num_votes
     electionDoc.update({ num_votes: firestore.FieldValue.increment(1) }),
   ])
