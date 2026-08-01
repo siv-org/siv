@@ -92,20 +92,20 @@ export function CustomizeVerificationNumber({
               <p className="mt-6 mb-0 text-center font-mono26 text-[1.25rem] tracking-[0.06em] text-h26-text tabular-nums sm:text-[1.6rem] sm:tracking-[0.1em] md:text-[1.75rem]">
                 {device}
               </p>
-              <div className="flex flex-wrap gap-4 items-center mt-7">
-                <button
-                  className="inline-flex items-center rounded-full border-0 bg-h26-green px-6 py-3 font-sans text-[0.9rem] font-medium text-white cursor-pointer shadow-h26-cta transition-all duration-300 hover:-translate-y-0.5 hover:bg-h26-greenHover hover:shadow-h26-cta-hover"
-                  onClick={() => setStep('digits')}
-                  type="button"
-                >
-                  I wrote it down
-                </button>
+              <div className="flex flex-wrap gap-4 justify-end items-center mt-7">
                 <button
                   className="border-0 bg-transparent p-0 font-sans text-[0.9rem] text-h26-muted cursor-pointer hover:text-h26-textSecondary"
                   onClick={() => (onCancel ? onCancel() : setStep('closed'))}
                   type="button"
                 >
                   Cancel
+                </button>
+                <button
+                  className="inline-flex items-center rounded-full border-0 bg-h26-green px-6 py-3 font-sans text-[0.9rem] font-medium text-white cursor-pointer shadow-h26-cta transition-all duration-300 hover:-translate-y-0.5 hover:bg-h26-greenHover hover:shadow-h26-cta-hover"
+                  onClick={() => setStep('digits')}
+                  type="button"
+                >
+                  I wrote it down
                 </button>
               </div>
             </div>
@@ -159,7 +159,14 @@ export function CustomizeVerificationNumber({
                 </div>
               </div>
 
-              <div className="flex flex-wrap gap-4 items-center mt-6">
+              <div className="flex flex-wrap gap-4 justify-end items-center mt-6">
+                <button
+                  className="border-0 bg-transparent p-0 font-sans text-[0.9rem] text-h26-muted cursor-pointer hover:text-h26-textSecondary"
+                  onClick={() => setStep('write-down')}
+                  type="button"
+                >
+                  Back
+                </button>
                 <button
                   className="inline-flex items-center rounded-full border-0 bg-h26-green px-6 py-3 font-sans text-[0.9rem] font-medium text-white cursor-pointer shadow-h26-cta transition-all duration-300 enabled:hover:-translate-y-0.5 enabled:hover:bg-h26-greenHover enabled:hover:shadow-h26-cta-hover disabled:cursor-not-allowed disabled:opacity-40"
                   disabled={!preview}
@@ -167,13 +174,6 @@ export function CustomizeVerificationNumber({
                   type="button"
                 >
                   Apply
-                </button>
-                <button
-                  className="border-0 bg-transparent p-0 font-sans text-[0.9rem] text-h26-muted cursor-pointer hover:text-h26-textSecondary"
-                  onClick={() => setStep('write-down')}
-                  type="button"
-                >
-                  Back
                 </button>
               </div>
             </div>
