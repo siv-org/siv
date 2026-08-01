@@ -66,7 +66,7 @@ export function CustomizeVerificationNumber({
       {step === 'done' && (
         <div className="inline-flex items-center gap-1.5 text-[0.85rem] text-h26-green animate-[fadeInUp_0.5s_ease-out_both]">
           <Check className="size-3.5" strokeWidth={2} />
-          <span className="font-medium">Customized</span>
+          <span className="font-medium">Your Verification Number is updated</span>
         </div>
       )}
 
