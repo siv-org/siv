@@ -51,8 +51,11 @@ export function CustomizeVerificationNumber({
           onClick={open}
           type="button"
         >
-          <PenLine className="size-3.5 opacity-80 transition-transform duration-200 group-hover:-rotate-6" strokeWidth={1.75} />
-          Customize
+          <PenLine
+            className="size-3.5 opacity-80 transition-transform duration-200 group-hover:-rotate-6"
+            strokeWidth={1.75}
+          />
+          Customize your Verification Number
         </button>
       )}
 
