@@ -6,7 +6,6 @@ import { NoSsr } from 'src/_shared/NoSsr'
 import { MalwareCheck } from '../../malware-check/InitMalwareCheck'
 import { generateColumnNames } from '../generateColumnNames'
 import { State } from '../vote-state'
-import { CustomizeVerificationNumber } from './CustomizeVerificationNumber'
 import { DetailedEncryptionReceipt } from './DetailedEncryptionReceipt'
 import { EncryptedVote } from './EncryptedVote'
 import { InvalidatedVoteMessage } from './InvalidatedVoteMessage'
@@ -68,7 +67,6 @@ export function SubmittedScreen({
       </p>
 
       <UnlockedVote {...{ columns, state }} />
-      <CustomizeVerificationNumber {...{ dispatch, state }} />
 
       <p className="text-xs opacity-60">
         This secret <em>Verification #</em> is a random number, generated and encrypted on your own device.
@@ -76,7 +74,7 @@ export function SubmittedScreen({
         No one else can possibly know it.
       </p>
 
-      <MalwareCheck auth={malwareCheckAuth} {...{ election_id, state }} />
+      <MalwareCheck auth={malwareCheckAuth} {...{ dispatch, election_id, state }} />
 
       {/* Encryption */}
       <h3 className="mt-16">How your vote was submitted:</h3>
