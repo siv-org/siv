@@ -7,10 +7,11 @@ import { CipherStrings } from 'src/crypto/stringify-shuffle'
 import { EncryptedVote } from 'src/status/AcceptedVotes'
 
 import { firebase, pushover, sendEmail } from './_services'
+import { withApiErrorLogs } from './_with-api-error-logs'
 import { validateAuthToken } from './check-auth-token'
 import { pusher } from './pusher'
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+export default withApiErrorLogs(async (req: NextApiRequest, res: NextApiResponse) => {
   const payload = req.method === 'POST' ? req.body : req.query
   const { auth, election_id, embed = '', replacement_pubkey } = payload
   if (!election_id) return res.status(400).json({ error: 'Missing Election ID' })
@@ -163,7 +164,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   await Promise.all(promises)
 
   res.status(200).send('Success.')
-}
+})
 
 const buildSubmissionReceipt = (auth: string, encrypted_vote: Record<string, CipherStrings>) =>
   Buffer.from(`
