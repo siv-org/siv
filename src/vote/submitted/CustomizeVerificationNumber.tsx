@@ -82,7 +82,6 @@ export function CustomizeVerificationNumber({
             'animate-[fadeInUp_0.45s_ease-out_both]',
           ].join(' ')}
         >
-          <span className="font-mono26 text-[0.65rem] uppercase tracking-[0.2em] text-h26-green">Optional</span>
           <h4 className="mt-2 mb-0 font-serif26 text-[1.35rem] font-normal tracking-tight text-h26-text md:text-[1.5rem]">
             Customize
           </h4>
