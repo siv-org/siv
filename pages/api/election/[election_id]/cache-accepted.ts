@@ -5,6 +5,7 @@ import { firestore } from 'firebase-admin'
 import { CipherStrings } from 'src/crypto/stringify-shuffle'
 
 import { firebase, pushover } from '../../_services'
+import { isPackedByCursor, type TimestampLike } from './is-packed-by-cursor'
 
 type EncryptedVote = Record<string, CipherStrings>
 type PendingVoteSummary = EncryptedVote & { auth: 'pending'; link_auth?: string }
@@ -16,6 +17,7 @@ type RootMeta = {
   observedVotes: number
   packedPending: number
   packedVotes: number
+  revision?: number
   updatedAt: firestore.Timestamp
 }
 type VoteSummary = EncryptedVote & { auth: string }
@@ -92,6 +94,7 @@ const makeEtag = ({
     root.lastPackedDocId ?? '',
     observedVotes,
     observedPending,
+    root.revision ?? 0,
   ].join('|')
 
   return createHash('sha1').update(seed).digest('hex').slice(0, 12)
@@ -122,6 +125,7 @@ const getOrInitRoot = async (rootRef: firestore.DocumentReference) => {
     observedVotes: 0,
     packedPending: 0,
     packedVotes: 0,
+    revision: 0,
     updatedAt: firestore.Timestamp.fromMillis(Date.now() - PACK_THROTTLE_MS), // so first request can pack immediately
   }
 
@@ -296,6 +300,127 @@ const maybePackNewVotes = async (args: {
   } finally {
     await releaseLease(db, leaseRef, lease.owner)
   }
+}
+
+/**
+ * After an in-place ciphertext replace (e.g. strengthen), keep /cache-accepted fresh:
+ * - If the vote is still in the packer's tail → no-op (live query already sees the update).
+ * - If packed → patch that page entry and bump root.revision (ETag).
+ * - If lease busy or page entry missing → full cache reset (correctness over cost).
+ */
+export async function invalidateCachedVote(
+  electionDoc: firestore.DocumentReference,
+  {
+    auth,
+    created_at,
+    encrypted_vote,
+    pending = false,
+    vote_doc_id,
+  }: {
+    auth: string
+    created_at?: TimestampLike
+    encrypted_vote: EncryptedVote
+    pending?: boolean
+    vote_doc_id: string
+  },
+): Promise<'patched' | 'reset' | 'skipped'> {
+  const rootRef = electionDoc.collection('votes-cached').doc('root')
+  const pagesCol = rootRef.collection('pages')
+  const leaseRef = electionDoc.collection('votes-cached').doc('lease')
+  const db = electionDoc.firestore
+
+  // No cache yet — nothing to invalidate
+  const rootSnap = await rootRef.get()
+  if (!rootSnap.exists) return 'skipped'
+  const root = rootSnap.data() as RootMeta
+
+  // Still in packer's tail — live query already sees the update
+  if (!isPackedByCursor(created_at, vote_doc_id, root.lastPackedCreatedAt, root.lastPackedDocId)) return 'skipped'
+
+  // Hold pack lease so we don't race a packer rewriting pages
+  const lease = await tryAcquireLease(db, leaseRef, LEASE_TTL_MS)
+  if (!lease.ok || !lease.owner) {
+    await resetVotesCache(electionDoc)
+    return 'reset'
+  }
+
+  let didReset = false
+  try {
+    // Find the packed entry and swap in the new ciphertext
+    const snap = await pagesCol.orderBy(firestore.FieldPath.documentId()).get()
+    let found = false
+
+    for (const page of snap.docs) {
+      const data = (page.data() as { pendingVotes?: PendingVoteSummary[]; votes?: VoteSummary[] }) || {}
+      const votes = data.votes ?? []
+      const pendingVotes = data.pendingVotes ?? []
+      let changed = false
+
+      // Search accepted_votes for match on auth
+      const nextVotes = votes.map((v) => {
+        if (pending || v.auth !== auth) return v
+        changed = true
+        found = true
+        return { auth: v.auth, ...encrypted_vote } as VoteSummary
+      })
+      // Search pending_votes for match on link_auth
+      const nextPending = pendingVotes.map((pv) => {
+        if (!pending || pv.link_auth !== auth) return pv
+        changed = true
+        found = true
+        return { auth: 'pending' as const, ...encrypted_vote, link_auth: pv.link_auth }
+      })
+
+      // No matches found, continue onto next page
+      if (!changed) continue
+
+      // Rewrite just this page
+      await page.ref.set({
+        bytesApprox: approxBytes({ pendingVotes: nextPending, votes: nextVotes }),
+        pendingVotes: nextPending,
+        votes: nextVotes,
+      })
+      break // Auth should appear once, so stop scanning
+    }
+
+    // Cursor said packed, but entry missing — fall back to full rebuild
+    if (!found) {
+      await resetVotesCache(electionDoc)
+      didReset = true
+      return 'reset'
+    }
+
+    // Bump revision so ETag / CDN clients don't keep the old body
+    await rootRef.set({ revision: (root.revision ?? 0) + 1 }, { merge: true })
+    return 'patched'
+  } finally {
+    if (!didReset) await releaseLease(db, leaseRef, lease.owner)
+  }
+}
+
+/** Wipe packed pages so the next /cache-accepted rebuilds from live votes. */
+async function resetVotesCache(electionDoc: firestore.DocumentReference) {
+  const rootRef = electionDoc.collection('votes-cached').doc('root')
+  const pages = await rootRef.collection('pages').listDocuments()
+  await Promise.all([
+    ...pages.map((page) => page.delete()),
+    rootRef.set({
+      currentPageNum: 1,
+      lastPackedCreatedAt: null,
+      lastPackedDocId: null,
+      observedPending: 0,
+      observedVotes: 0,
+      packedPending: 0,
+      packedVotes: 0,
+      revision: 0,
+      updatedAt: firestore.Timestamp.fromMillis(Date.now() - PACK_THROTTLE_MS),
+    } satisfies RootMeta),
+    electionDoc
+      .collection('votes-cached')
+      .doc('lease')
+      .delete()
+      .catch(() => undefined),
+  ])
 }
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -534,8 +659,14 @@ Packing strategy (best-effort):
 - Lease is a single doc with TTL; acquisition is transactional.
 
 ETag:
-- ETag is derived from (cursor + observed counters) so it matches the representation we serve.
+- ETag is derived from (cursor + observed counters + revision) so it matches the representation we serve.
 - Important: ETag must change if response body would change, even if root didn’t pack yet.
+- revision bumps when a packed vote is patched in place (see invalidateCachedVote).
+
+In-place ciphertext updates (strengthen / later selection replace):
+- Packing is append-only by cursor; updating a vote doc does not re-pack it.
+- invalidateCachedVote: skip if still in tail; else patch the page entry + bump revision;
+  full reset only if lease busy or the packed entry is missing.
 
 Important invariants:
 - Cursor ordering is (created_at ASC, docId ASC) for both votes collections.

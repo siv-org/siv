@@ -1,5 +1,7 @@
 import { Check, PenLine } from 'lucide-react'
 import { Dispatch, useEffect, useRef, useState } from 'react'
+import { api } from 'src/api-helper'
+import { encodeReplacementPayload, signReplacement } from 'src/crypto/replacement-key'
 import { h26fonts } from 'src/homepage2026/fonts'
 
 import { strengthenTracking } from '../strengthen-tracking'
@@ -8,12 +10,16 @@ import { State } from '../vote-state'
 type Step = 'closed' | 'digits' | 'done' | 'write-down'
 
 export function CustomizeVerificationNumber({
+  auth,
   dispatch,
+  election_id,
   onCancel,
   startOpen = false,
   state,
 }: {
+  auth: string
   dispatch: Dispatch<Record<string, string>>
+  election_id: string
   onCancel?: () => void
   startOpen?: boolean
   state: State
@@ -23,11 +29,46 @@ export function CustomizeVerificationNumber({
   )
   const [digits, setDigits] = useState('')
   const [deviceSnapshot, setDeviceSnapshot] = useState(state.tracking || '')
+  const [submitting, setSubmitting] = useState(false)
+  const [error, setError] = useState('')
+  const pendingTracking = useRef<null | string>(null)
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     if (step === 'digits') inputRef.current?.focus()
   }, [step])
+
+  // After local re-encrypt, sign & POST the new ciphertext
+  useEffect(() => {
+    if (!pendingTracking.current || state.tracking !== pendingTracking.current) return
+    const privkey = state.replacement_privkey
+    if (!privkey || !Object.keys(state.encrypted).length) return
+
+    pendingTracking.current = null
+    ;(async () => {
+      try {
+        const message = encodeReplacementPayload({ auth, election_id, encrypted_vote: state.encrypted })
+        const signature = await signReplacement(privkey, message)
+        const response = await api('strengthened-vote', {
+          auth,
+          election_id,
+          encrypted_vote: state.encrypted,
+          signature,
+        })
+        if (response.status !== 200) {
+          const body = (await response.json()) as { error?: string }
+          setError(body.error || 'Failed to submit strengthened vote')
+          setSubmitting(false)
+          return
+        }
+        setStep('done')
+      } catch (e) {
+        setError(e instanceof Error ? e.message : String(e))
+      } finally {
+        setSubmitting(false)
+      }
+    })()
+  }, [auth, election_id, state.encrypted, state.replacement_privkey, state.tracking])
 
   if (!state.tracking) return null
 
@@ -40,13 +81,18 @@ export function CustomizeVerificationNumber({
     if (!state.tracking) return
     setDeviceSnapshot(state.tracking)
     setDigits('')
+    setError('')
     setStep('write-down')
   }
 
   const apply = () => {
-    if (!preview) return
+    if (!preview || submitting) return
+    if (!state.replacement_privkey) return setError('Missing replacement key on this device')
+
+    setError('')
+    setSubmitting(true)
+    pendingTracking.current = preview
     dispatch({ tracking: preview })
-    setStep('done')
   }
 
   return (
@@ -171,13 +217,14 @@ export function CustomizeVerificationNumber({
                 </button>
                 <button
                   className="inline-flex items-center rounded-full border-0 bg-h26-green px-6 py-3 font-sans text-[0.9rem] font-medium text-white cursor-pointer shadow-h26-cta transition-all duration-300 enabled:hover:-translate-y-0.5 enabled:hover:bg-h26-greenHover enabled:hover:shadow-h26-cta-hover disabled:cursor-not-allowed disabled:opacity-40"
-                  disabled={!preview}
+                  disabled={!preview || submitting}
                   onClick={apply}
                   type="button"
                 >
-                  Apply
+                  {submitting ? 'Submitting…' : 'Apply'}
                 </button>
               </div>
+              {error && <p className="mt-3 mb-0 text-sm text-red-600">{error}</p>}
             </div>
           )}
         </div>

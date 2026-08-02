@@ -1,6 +1,27 @@
-import { getPublicKey, utils } from '@noble/ed25519'
+import { getPublicKey, sign, utils, verify } from '@noble/ed25519'
+import { CipherStrings } from 'src/crypto/stringify-shuffle'
 
-import { bytesToHex } from './bytes-to-hex'
+import { bytesToHex, hexToBytes } from './bytes-to-hex'
+
+/** Canonical bytes the client signs and the server verifies for a vote replace. */
+export function encodeReplacementPayload({
+  auth,
+  election_id,
+  encrypted_vote,
+}: {
+  auth: string
+  election_id: string
+  encrypted_vote: Record<string, CipherStrings>
+}) {
+  const sorted = Object.keys(encrypted_vote)
+    .sort()
+    .reduce((acc, key) => {
+      const { encrypted, lock } = encrypted_vote[key]
+      acc[key] = { encrypted, lock }
+      return acc
+    }, {} as Record<string, CipherStrings>)
+  return new TextEncoder().encode(JSON.stringify({ auth, election_id, encrypted_vote: sorted }))
+}
 
 /** ed25519 keypair for authorizing later vote replacements (strengthen / selection update). */
 export async function generateReplacementKeypair() {
@@ -12,7 +33,20 @@ export async function generateReplacementKeypair() {
   }
 }
 
-/** 32-byte ed25519 public key as lowercase hex. */
+/** 32-byte ed25519 key material as lowercase hex. */
 export function is64HexChars(value: unknown): value is string {
   return typeof value === 'string' && /^[0-9a-f]{64}$/.test(value)
+}
+
+/** 64-byte ed25519 signature as lowercase hex. */
+export function is128HexChars(value: unknown): value is string {
+  return typeof value === 'string' && /^[0-9a-f]{128}$/.test(value)
+}
+
+export async function signReplacement(privkeyHex: string, message: Uint8Array) {
+  return bytesToHex(await sign(message, hexToBytes(privkeyHex)))
+}
+
+export async function verifyReplacement(pubkeyHex: string, signatureHex: string, message: Uint8Array) {
+  return verify(hexToBytes(signatureHex), message, hexToBytes(pubkeyHex))
 }
