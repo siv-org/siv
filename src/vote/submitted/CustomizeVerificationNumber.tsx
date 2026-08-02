@@ -129,7 +129,19 @@ export function CustomizeVerificationNumber({
           ].join(' ')}
         >
           <h4 className="mt-2 mb-0 font-serif26 text-[1.35rem] font-normal tracking-tight text-h26-text md:text-[1.5rem]">
-            Customize
+            Customize{' '}
+            <span className="font-sans text-[0.8rem] font-normal text-h26-muted">
+              (
+              <a
+                className="no-underline text-h26-muted hover:text-blue-600/50"
+                href="https://docs.siv.org/research-in-progress/strengthened-verif-nums"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                why?
+              </a>
+              )
+            </span>
           </h4>
 
           {step === 'write-down' && (
