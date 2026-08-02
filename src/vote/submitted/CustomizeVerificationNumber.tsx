@@ -3,6 +3,7 @@ import { Dispatch, useEffect, useRef, useState } from 'react'
 import { api } from 'src/api-helper'
 import { encodeReplacementPayload, signReplacement } from 'src/crypto/replacement-key'
 import { h26fonts } from 'src/homepage2026/fonts'
+import { useElectionInfo } from 'src/status/use-election-info'
 
 import { strengthenTracking } from '../strengthen-tracking'
 import { State } from '../vote-state'
@@ -33,6 +34,14 @@ export function CustomizeVerificationNumber({
   const [error, setError] = useState('')
   const pendingTracking = useRef<null | string>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+
+  // Show caveat only if last strengthen is newer than the unlocked snapshot
+  const { last_decrypted_at } = useElectionInfo()
+  const lastStrengthenedAt = state.previous_submissions?.at(-1)?.replaced_at
+  const awaitingReunlock =
+    !!last_decrypted_at &&
+    !!lastStrengthenedAt &&
+    new Date(lastStrengthenedAt).getTime() > new Date(last_decrypted_at).getTime()
 
   useEffect(() => {
     if (step === 'digits') inputRef.current?.focus()
@@ -112,9 +121,17 @@ export function CustomizeVerificationNumber({
       )}
 
       {step === 'done' && (
-        <div className="inline-flex items-center gap-1.5 text-[0.85rem] text-h26-green animate-[fadeInUp_0.5s_ease-out_both]">
-          <Check className="size-3.5" strokeWidth={2} />
-          <span className="font-medium">Your Verification Number is updated</span>
+        <div className="animate-[fadeInUp_0.5s_ease-out_both]">
+          <div className="inline-flex items-center gap-1.5 text-[0.85rem] text-h26-green">
+            <Check className="size-3.5" strokeWidth={2} />
+            <span className="font-medium">Your Verification Number is updated</span>
+          </div>
+          {awaitingReunlock && (
+            <p className="mt-1.5 max-w-md text-[0.75rem] leading-snug text-h26-muted">
+              Your new number won&apos;t be visible in the published results until the administrator shuffles &amp;
+              unlocks votes again.
+            </p>
+          )}
         </div>
       )}
 
