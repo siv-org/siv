@@ -94,6 +94,19 @@ export function CustomizeVerificationNumber({
     setStep('write-down')
   }
 
+  const close = () => {
+    if (onCancel) return onCancel()
+    setStep(state.previous_submissions?.length ? 'done' : 'closed')
+  }
+
+  const [prefixA = '', prefixB = ''] = (state.tracking || '').split('-')
+  const trackingPrefix = `${prefixA}-${prefixB}-`
+  const previousLast4s = (state.previous_submissions || [])
+    .map((s) => s.tracking?.split('-')[2] || s.tracking?.slice(-4))
+    .filter((t): t is string => !!t)
+    .reverse()
+  const monoTracking = 'font-mono26 text-[0.95rem] tracking-[0.06em] tabular-nums'
+
   const apply = () => {
     if (!preview || submitting) return
     if (!state.replacement_privkey) return setError('Missing replacement key on this device')
@@ -132,6 +145,43 @@ export function CustomizeVerificationNumber({
               unlocks votes again.
             </p>
           )}
+
+          {/* Show current verif, and history of previous */}
+          <div className="mt-3 max-w-md">
+            <p className="m-0 text-[0.7rem] font-medium uppercase tracking-wide text-h26-muted">Current</p>
+            <p className={`mt-0.5 mb-0 ${monoTracking} text-h26-text`}>{state.tracking}</p>
+            {previousLast4s.length > 0 && (
+              <ul className="m-0 mt-0.5 list-none p-0">
+                {previousLast4s.map((last4, i) => (
+                  <li className={`flex items-baseline ${monoTracking} text-h26-muted`} key={`${last4}-${i}`}>
+                    <span className="relative">
+                      <span aria-hidden className="invisible select-none">
+                        {trackingPrefix}
+                      </span>
+                      {i === 0 && (
+                        <span className="absolute inset-0 flex items-center justify-end pr-1 font-sans text-[0.7rem] font-normal tracking-normal">
+                          was:
+                        </span>
+                      )}
+                    </span>
+                    {last4}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+
+          <button
+            className="group mt-3 inline-flex items-center gap-1.5 border-0 bg-transparent p-0 font-sans text-[0.85rem] text-h26-green cursor-pointer transition-colors duration-200 hover:text-h26-greenHover"
+            onClick={open}
+            type="button"
+          >
+            <PenLine
+              className="size-3.5 opacity-80 transition-transform duration-200 group-hover:-rotate-6"
+              strokeWidth={1.75}
+            />
+            Customize again
+          </button>
         </div>
       )}
 
@@ -172,7 +222,7 @@ export function CustomizeVerificationNumber({
               <div className="flex flex-wrap gap-4 justify-end items-center mt-7">
                 <button
                   className="border-0 bg-transparent p-0 font-sans text-[0.9rem] text-h26-muted cursor-pointer hover:text-h26-textSecondary"
-                  onClick={() => (onCancel ? onCancel() : setStep('closed'))}
+                  onClick={close}
                   type="button"
                 >
                   Cancel
