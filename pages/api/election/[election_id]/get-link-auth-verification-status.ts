@@ -6,7 +6,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { link_auth } = req.body
 
   const electionDoc = firebase.firestore().collection('elections').doc(election_id)
-  const vote = await electionDoc.collection('votes-pending').doc(link_auth).get()
+
+  // Lookup vote
+  let vote = await electionDoc.collection('votes-pending').doc(link_auth).get()
+  // Pending vote may have been approved
+  if (!vote.exists) vote = await electionDoc.collection('votes').doc(link_auth).get()
 
   // Is there a vote w/ this link_auth token?
   if (!vote.exists) return res.status(200).send('Unverified')
