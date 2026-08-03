@@ -258,6 +258,7 @@ export function CustomizeVerificationNumber({
                   <span className="pr-2 text-[0.85rem] text-h26-muted sm:pr-0 sm:text-[0.95rem]">You add</span>
                   <span />
                   <input
+                    autoComplete="off"
                     className="box-border h-11 w-full rounded-lg border border-black/10 bg-white font-mono26 text-[1.05rem] tracking-[0.08em] text-center text-h26-text tabular-nums outline-none transition-shadow focus:border-h26-green/45 focus:shadow-[0_0_0_4px_rgba(26,107,74,0.12)] sm:h-12 sm:text-[1.35rem] sm:tracking-[0.12em]"
                     inputMode="numeric"
                     maxLength={4}
