@@ -4,6 +4,7 @@ import { useStored } from '../useStored'
 import { InvalidVotersTable } from './InvalidVotersTable'
 import { NumVotedRow } from './NumVotedRow'
 import { getStatus } from './Signature'
+import { StrengthenedCounts } from './StrengthenedCounts'
 import { TopBarButtons } from './TopBarButtons'
 import { UnlockedStatus } from './UnlockedStatus'
 import { use_latest_mailgun_events } from './use-latest-mailgun-events'
@@ -39,6 +40,7 @@ export const ExistingVoters = () => {
       {/* Group around Accepted Voters table */}
       <div className="pt-3 pb-1 pl-4 mt-8 -ml-4 rounded shadow-md bg-blue-200/40">
         <UnlockedStatus />
+        <StrengthenedCounts />
         <div className="pr-4">
           <TopBarButtons
             {...{

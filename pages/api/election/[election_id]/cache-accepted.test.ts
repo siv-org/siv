@@ -1,4 +1,6 @@
 import { describe, expect, test } from 'bun:test'
+import { encodeReplacementPayload, generateReplacementKeypair, signReplacement } from 'src/crypto/replacement-key'
+import { CipherStrings } from 'src/crypto/stringify-shuffle'
 
 const API_BASE = 'http://localhost:3000/api'
 
@@ -34,10 +36,40 @@ const helpers = {
     const body = await response.json()
     return { body, status: response.status }
   },
-  submitTestVote: async (electionId: string, auth: string, encryptedVote: Record<string, unknown> = {}) => {
+  strengthenTestVote: async ({
+    auth,
+    electionId,
+    encryptedVote,
+    privkey,
+  }: {
+    auth: string
+    electionId: string
+    encryptedVote: Record<string, CipherStrings>
+    privkey: string
+  }) => {
+    const message = encodeReplacementPayload({ auth, election_id: electionId, encrypted_vote: encryptedVote })
+    const signature = await signReplacement(privkey, message)
+    const response = await fetch(`${API_BASE}/strengthened-vote`, {
+      body: JSON.stringify({ auth, election_id: electionId, encrypted_vote: encryptedVote, signature }),
+      headers: { 'Content-Type': 'application/json' },
+      method: 'POST',
+    })
+    return { body: await response.json(), status: response.status }
+  },
+  submitTestVote: async (
+    electionId: string,
+    auth: string,
+    encryptedVote: Record<string, unknown> = {},
+    replacement_pubkey = 'a'.repeat(64),
+  ) => {
     // Helper to submit a vote via the API
     return fetch(`${API_BASE}/submit-vote`, {
-      body: JSON.stringify({ auth, election_id: electionId, encrypted_vote: JSON.stringify(encryptedVote) }),
+      body: JSON.stringify({
+        auth,
+        election_id: electionId,
+        encrypted_vote: JSON.stringify(encryptedVote),
+        replacement_pubkey,
+      }),
       headers: { 'Content-Type': 'application/json' },
       method: 'POST',
     })
@@ -160,6 +192,48 @@ test('Voting During Packing - vote not lost', async () => {
     // Verify vote counts are correct
     const stats = readBody?._stats
     expect(stats).toBeDefined()
+  } finally {
+    await helpers.cleanupTestElection(electionId)
+  }
+}, 15_000)
+
+// Test 3: Strengthened vote updates packed cache (invalidateCachedVote)
+test('Strengthened vote - packed ciphertext is replaced in cache-accepted', async () => {
+  const electionId = `test-strengthen-cache-${Date.now()}`
+  const auth = 'c1d2e3f4a5'
+  const original = { mayor: { encrypted: 'old_enc', lock: 'old_lock' } }
+  const strengthened = { mayor: { encrypted: 'new_enc', lock: 'new_lock' } }
+
+  try {
+    expect((await helpers.createTestElection(electionId)).status).toBe(201)
+    expect((await helpers.createTestVoters(electionId, [{ auth_token: auth }])).status).toBe(201)
+
+    const { replacement_privkey, replacement_pubkey } = await generateReplacementKeypair()
+    expect((await helpers.submitTestVote(electionId, auth, original, replacement_pubkey)).status).toBe(200)
+
+    // Pack so the vote is no longer only in the live tail
+    const packed = await helpers.callCacheAccepted(electionId)
+    expect(packed.status).toBe(200)
+    const packedBody = packed.body as {
+      results: Array<{ auth: string; mayor?: CipherStrings }>
+    }
+    const before = packedBody.results.find((r) => r.auth === auth)
+    expect(before?.mayor).toEqual(original.mayor)
+
+    const strengthen = await helpers.strengthenTestVote({
+      auth,
+      electionId,
+      encryptedVote: strengthened,
+      privkey: replacement_privkey,
+    })
+    expect(strengthen.status).toBe(200)
+
+    const after = await helpers.callCacheAccepted(electionId)
+    expect(after.status).toBe(200)
+    const afterBody = after.body as { results: Array<{ auth: string; mayor?: CipherStrings }> }
+    const vote = afterBody.results.find((r) => r.auth === auth)
+    expect(vote?.mayor).toEqual(strengthened.mayor)
+    expect(afterBody.results).toHaveLength(1)
   } finally {
     await helpers.cleanupTestElection(electionId)
   }

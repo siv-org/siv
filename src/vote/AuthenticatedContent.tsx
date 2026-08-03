@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useEffect, useRef } from 'react'
+import { generateReplacementKeypair } from 'src/crypto/replacement-key'
 
 import { GlobalCSS } from '../GlobalCSS'
 import { CustomAuthFlow, hasCustomAuthFlow } from './auth/11choosesAuth/CustomAuthFlow'
@@ -22,6 +23,13 @@ export const AuthenticatedContent = ({ auth, election_id }: { auth: string; elec
   const wasAlreadySubmittedOnPageLoad = useRef(!!state.submitted_at && !!state.link_auth).current
 
   storeElectionInfo(dispatch, election_id)
+
+  // Generate replacement keypair on load
+  useEffect(() => {
+    if (state.replacement_privkey && state.replacement_pubkey) return
+    if (state.submitted_at) return // don't invent a new keypair after submit — it wouldn't match the server
+    generateReplacementKeypair().then(dispatch)
+  }, [dispatch, state.replacement_privkey, state.replacement_pubkey, state.submitted_at])
 
   // Keep link_auth in localStorage and restore it on the URL for subsequent visits
   useEffect(() => {
@@ -54,7 +62,7 @@ export const AuthenticatedContent = ({ auth, election_id }: { auth: string; elec
               <title key="title">SIV: Vote Submitted</title>
             </Head>
             <h1>Vote Submitted.</h1>
-            <SubmittedScreen {...{ auth, election_id, state }} />
+            <SubmittedScreen {...{ auth, dispatch, election_id, state }} />
           </>
         )
       ) : (

@@ -14,7 +14,10 @@ export type AdminData = {
   election_manager?: string
   election_title?: string
   esignature_requested?: boolean
+  last_decrypted_at?: string
   notified_unlocked?: number
+  num_strengthened_since_unlock?: number
+  num_strengthened_votes?: number
   pending_votes?: PendingVote[]
   public_whos_voted_snapshot?: Array<{ display_name?: string; has_voted: boolean }>
   stop_accepting_votes?: boolean
@@ -97,6 +100,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     election_manager,
     election_title,
     esignature_requested,
+    last_decrypted_at,
     notified_unlocked,
     public_whos_voted_snapshot,
     stop_accepting_votes,
@@ -112,6 +116,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     election_manager?: string
     election_title?: string
     esignature_requested?: boolean
+    last_decrypted_at?: { _seconds: number }
     notified_unlocked?: number
     public_whos_voted_snapshot?: Array<{ display_name?: string; has_voted: boolean }>
     stop_accepting_votes?: boolean
@@ -150,10 +155,22 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }, [])
 
   // Gather who's voted already
-  const votesByAuth: Record<string, [boolean, string?]> = (await loadVotes).docs.reduce((acc, doc) => {
+  const voteDocs = (await loadVotes).docs
+  const votesByAuth: Record<string, [boolean, string?]> = voteDocs.reduce((acc, doc) => {
     const data = doc.data()
     return { ...acc, [data.auth]: [true, data.esignature] }
   }, {})
+
+  // Strengthened counts from vote docs (accepted + pending)
+  const lastUnlockMs = last_decrypted_at ? last_decrypted_at._seconds * 1000 : 0
+  const strengthenedAts = [
+    ...voteDocs.map((d) => d.data().strengthened_at),
+    ...(await loadPendingVotes).docs.map((d) => d.data().strengthened_at),
+  ]
+    .map((t) => t?.toMillis?.() ?? (t instanceof Date ? t.getTime() : 0))
+    .filter((ms) => ms > 0)
+  const num_strengthened_votes = strengthenedAts.length
+  const num_strengthened_since_unlock = lastUnlockMs ? strengthenedAts.filter((ms) => ms > lastUnlockMs).length : 0
 
   // Gather whose votes were invalidated
   const invalidatedVotesByAuth: Record<string, boolean> = {}
@@ -246,7 +263,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     election_manager,
     election_title,
     esignature_requested,
+    last_decrypted_at: last_decrypted_at ? new Date(last_decrypted_at._seconds * 1000).toISOString() : undefined,
     notified_unlocked,
+    num_strengthened_since_unlock,
+    num_strengthened_votes,
     pending_votes,
     public_whos_voted_snapshot,
     stop_accepting_votes,

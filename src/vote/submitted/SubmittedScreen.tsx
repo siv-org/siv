@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useEffect, useReducer } from 'react'
+import { Dispatch, useEffect, useReducer } from 'react'
 import { NoSsr } from 'src/_shared/NoSsr'
 
 import { MalwareCheck } from '../../malware-check/InitMalwareCheck'
@@ -17,10 +17,12 @@ const disabledLinkToStatusPage = ['1764273267967', '1764288582801', '17786549054
 
 export function SubmittedScreen({
   auth,
+  dispatch,
   election_id,
   state,
 }: {
   auth: string
+  dispatch: Dispatch<Record<string, string>>
   election_id: string
   state: State & { submitted_at: Date }
 }): JSX.Element {
@@ -72,7 +74,7 @@ export function SubmittedScreen({
         No one else can possibly know it.
       </p>
 
-      <MalwareCheck auth={malwareCheckAuth} {...{ election_id, state }} />
+      <MalwareCheck auth={malwareCheckAuth} {...{ dispatch, election_id, state }} />
 
       {/* Encryption */}
       <h3 className="mt-16">How your vote was submitted:</h3>

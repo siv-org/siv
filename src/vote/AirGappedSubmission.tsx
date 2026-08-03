@@ -35,7 +35,7 @@ export const AirGappedSubmission = ({
 
   const submission_url = `/api/submit-vote?auth=${auth}&election_id=${election_id}&encrypted_vote=${JSON.stringify(
     sortedKeys(state.encrypted),
-  )}`
+  )}&replacement_pubkey=${state.replacement_pubkey || ''}`
 
   return (
     <div className="px-3 py-2 mt-3 rounded-lg shadow-lg bg-yellow-200/50">

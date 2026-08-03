@@ -33,6 +33,7 @@ export const SubmitButton = ({
     // Check if all expected columns exist in state.encrypted
     const allPresent = expectedColumns.every((columnId) => state.encrypted[columnId])
     if (!allPresent) return
+    if (!state.replacement_pubkey) return
     ;(async () => {
       // All columns are present, submit now
       const response = await api('submit-vote', {
@@ -40,6 +41,7 @@ export const SubmitButton = ({
         election_id,
         embed,
         encrypted_vote: state.encrypted,
+        replacement_pubkey: state.replacement_pubkey,
       })
 
       // Stop if there was an error
@@ -79,7 +81,7 @@ export const SubmitButton = ({
       // Scroll page to top
       window.scrollTo(0, 0)
     })()
-  }, [expectedColumns, state.encrypted, auth, election_id, embed, dispatch])
+  }, [expectedColumns, state.encrypted, state.replacement_pubkey, auth, election_id, embed, dispatch])
 
   return (
     <>
@@ -90,6 +92,7 @@ export const SubmitButton = ({
           disabled={
             !state.ballot_design_finalized ||
             !state.public_key ||
+            !state.replacement_pubkey ||
             Object.values(state.plaintext).filter((v) => v !== 'BLANK').length === 0 ||
             buttonText !== 'Submit'
           }
