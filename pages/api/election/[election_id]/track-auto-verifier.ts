@@ -15,9 +15,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const headers = ['x-vercel-ip-city', 'x-vercel-ip-country-region', 'x-vercel-ip-country']
     const location = headers.map((header) => req.headers[header]?.toString().replaceAll('%20', ' ')).join(', ')
 
+    const election = await firebase.firestore().collection('elections').doc(election_id).get()
+
     await pushover(
       'AutoVerifier FAIL',
-      `auth_token: ${auth_token}\nelection_id: ${election_id}\n${location} (${req.headers['x-real-ip']})`,
+      `auth_token: ${auth_token}\nelection_id: ${election_id}\ntitle: ${election.data()?.title}\n${location} (${
+        req.headers['x-real-ip']
+      })`,
     )
   }
 
@@ -45,5 +49,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   //   console.log('AutoVerifier: verif_found', verif_found, auth_token)
 
-  res.status(200).send('Success.')
+  return res.status(200).send('Success.')
 }
