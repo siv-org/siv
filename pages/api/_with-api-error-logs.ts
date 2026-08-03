@@ -8,8 +8,12 @@ export function withApiErrorLogs(handler: NextApiHandler): NextApiHandler {
     const origSend = res.send.bind(res)
     const origEnd = res.end.bind(res)
 
+    let logged = false
     const logIfError = (body?: unknown) => {
-      if (res.statusCode >= 400) console.error(path, res.statusCode, body ?? '')
+      if (res.statusCode < 400) return
+      if (logged) return // only log the outermost call once
+      logged = true // otherwise json() calls send() then end()— triple log
+      console.error(path, res.statusCode, body ?? '')
     }
 
     res.json = (body) => {
