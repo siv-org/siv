@@ -25,14 +25,14 @@ export const AutoVerifier = () => {
 
     // Confirm the users' stored Verification Number is present in the election's decrypted votes.
     submittedVotes.forEach((vote) => {
-      const auth_token = vote.storage_key.split('-')[2]
+      let auth_token = vote.storage_key.split('-')[2]
+      // Link votes store under `voter-{id}-link`; real id lives on vote.link_auth
       if (auth_token === 'link') {
-        // Todo: Handle link auth votes
-        console.log(vote)
+        if (!vote.link_auth) return
+        auth_token = vote.link_auth
       }
 
       const expected = vote.tracking
-
       const verif_found = decryptedVotes.some((v) => v.tracking === expected)
 
       // console.log('AutoVerifier: verif_found', verif_found, auth_token, expected)

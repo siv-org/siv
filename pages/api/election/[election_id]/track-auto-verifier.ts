@@ -25,29 +25,20 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     )
   }
 
-  if (auth_token === 'link') {
-    // TODO: Handle link auth votes
-    return res.status(200).send("AutoVerifier doesn't support auth=link yet")
+  const electionDoc = firebase.firestore().collection('elections').doc(election_id)
+  const auto_verifier = firestore.FieldValue.arrayUnion({ timestamp: new Date(), verif_found })
+
+  // Approved voters (incl. approved link votes, where auth_token === former link_auth)
+  const [voterDoc] = (await electionDoc.collection('voters').where('auth_token', '==', auth_token).get()).docs
+  if (voterDoc?.exists) {
+    await voterDoc.ref.update({ auto_verifier })
+    return res.status(200).send('Success.')
   }
 
-  // Get the voter doc
-  const [voterDoc] = (
-    await firebase
-      .firestore()
-      .collection('elections')
-      .doc(election_id)
-      .collection('voters')
-      .where('auth_token', '==', auth_token)
-      .get()
-  ).docs
-  if (!voterDoc?.exists) return res.status(401).send('Voter not found')
+  // Link votes still awaiting approval live in votes-pending/{link_auth}
+  const pendingDoc = await electionDoc.collection('votes-pending').doc(auth_token).get()
+  if (!pendingDoc.exists) return res.status(401).send('Voter not found')
 
-  // Update the voter doc with the auto-verifier result
-  await voterDoc.ref.update({
-    auto_verifier: firestore.FieldValue.arrayUnion({ timestamp: new Date(), verif_found }),
-  })
-
-  //   console.log('AutoVerifier: verif_found', verif_found, auth_token)
-
+  await pendingDoc.ref.update({ auto_verifier })
   return res.status(200).send('Success.')
 }
