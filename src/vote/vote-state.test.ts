@@ -120,4 +120,42 @@ describe('vote-state reducer', () => {
     expect(withKeys.replacement_pubkey).toBe('b'.repeat(64))
     expect(withKeys.encrypted).toEqual(voted.encrypted)
   })
+
+  test('customizing re-encrypts every contest under the new tracking', () => {
+    let state = reducer({ ...blank(), public_key: pub, tracking: '1111-1111-1111' }, { mayor: 'Alice' }) // 1st contest
+    state = reducer(state, { prop: 'Yes' }) // add 2nd contest
+    const customized = reducer(state, { tracking: '1111-1111-2345' }) // customize tracking
+
+    // Both contests should be there, with updated tracking
+    expect(customized.plaintext).toEqual({ mayor: 'Alice', prop: 'Yes' })
+    expect(decryptSelection(customized, 'mayor')).toBe('1111-1111-2345:Alice')
+    expect(decryptSelection(customized, 'prop')).toBe('1111-1111-2345:Yes')
+  })
+
+  test('customizing archives submitted_at on the prior snapshot', () => {
+    const voted = reducer({ ...blank(), public_key: pub, tracking: '1111-1111-1111' }, { mayor: 'Alice' }) // test selection
+    const submitted = reducer(voted, { submitted_at: '2026-01-01' }) // "submit vote"
+    const customized = reducer(submitted, { tracking: '1111-1111-2345' }) // customize tracking
+
+    // Expect the prior snapshot to be archived, with the submitted_at timestamp
+    expect(customized.previous_submissions?.[0]).toMatchObject({
+      submitted_at: '2026-01-01',
+      tracking: '1111-1111-1111',
+    })
+  })
+
+  test('tracking customize is a no-op without a prior tracking number', () => {
+    const withPlaintext = { ...blank(), plaintext: { mayor: 'Alice' }, public_key: pub }
+    expect(reducer(withPlaintext, { tracking: '1111-1111-2345' })).toEqual(withPlaintext)
+  })
+
+  test('changing a selection after customize encrypts under the current tracking', () => {
+    const voted = reducer({ ...blank(), public_key: pub, tracking: '1111-1111-1111' }, { mayor: 'Alice' })
+    const customized = reducer(voted, { tracking: '1111-1111-2345' })
+    const changed = reducer(customized, { mayor: 'Bob' })
+
+    expect(changed.tracking).toBe('1111-1111-2345')
+    expect(decryptSelection(changed, 'mayor')).toBe('1111-1111-2345:Bob')
+    expect(changed.previous_submissions).toEqual(customized.previous_submissions)
+  })
 })
