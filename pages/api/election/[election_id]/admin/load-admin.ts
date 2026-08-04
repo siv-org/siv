@@ -10,6 +10,7 @@ export type AdminData = {
   ballot_design_finalized?: boolean
   custom_email_headerbar?: string
   custom_invitation_text?: string
+  election_homepage?: string
   election_id?: string
   election_manager?: string
   election_title?: string
@@ -97,6 +98,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     ballot_design_finalized,
     custom_email_headerbar,
     custom_invitation_text,
+    election_homepage,
     election_manager,
     election_title,
     esignature_requested,
@@ -113,6 +115,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     ballot_design_finalized?: boolean
     custom_email_headerbar?: string
     custom_invitation_text?: string
+    election_homepage?: string
     election_manager?: string
     election_title?: string
     esignature_requested?: boolean
@@ -259,6 +262,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     ballot_design_finalized,
     custom_email_headerbar,
     custom_invitation_text,
+    election_homepage,
     election_id,
     election_manager,
     election_title,
