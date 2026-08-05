@@ -13,11 +13,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (pass !== RECENT_ELECTIONS_PASSWORD) return res.status(401).send('Unauthorized')
 
   // Get recent elections
-  const thirtyDays = 1000 * 60 * 60 * 24 * 30
+  const oneDay = 1000 * 60 * 60 * 24
+  const numDays = Number(req.query.days) || 30
+
   const electionsDocs = firebase
     .firestore()
     .collection('elections')
-    .where('created_at', '>', new Date(Date.now() - thirtyDays))
+    .where('created_at', '>', new Date(Date.now() - oneDay * numDays))
     .get()
 
   // Format elections list
@@ -46,7 +48,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   )
 
   res.status(200).json({
-    elections_created_last_30_days: {
+    [`elections_created_last_${numDays}_days`]: {
       _total: elections.length,
       ...formatted,
     },
