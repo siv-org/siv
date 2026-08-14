@@ -23,6 +23,14 @@ const commonConfig = {
   plugins: { react: reactPlugin },
   rules: {
     ...reactPlugin.configs.flat.recommended.rules,
+    'no-restricted-syntax': [
+      'error',
+      {
+        // `undefined === undefined`, so a missing stored token can "match" without additional check
+        message: 'Do not compare `.auth_token` with ===/!==; missing values compare equal.',
+        selector: "BinaryExpression[operator=/^[!=]==$/] > MemberExpression[property.name='auth_token']",
+      },
+    ],
     'no-unreachable': 'warn',
     'react/no-unknown-property': [2, { ignore: ['jsx', 'global'] }], // styled-jsx
   },
