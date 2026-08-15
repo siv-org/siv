@@ -42,6 +42,7 @@ export async function checkJwt(
     console.error('caught error verifying jwt', e)
     await pushover(
       'Invalid JWT signature',
+      // eslint-disable-next-line siv/no-req-headers-host -- logging the caller
       `${req.headers.origin} ${req.url}\n${JSON.stringify(jwt.decode(cookie))}\n${cookie}`,
     )
     return { res: res.status(401).send({ error: 'Invalid JWT' }), valid: false }

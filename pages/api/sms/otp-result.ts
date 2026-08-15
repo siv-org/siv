@@ -37,6 +37,7 @@ const isAllowedDomain = (origin: string) =>
 
 function setCORSForAllowedDomains(fn: NextApiHandler) {
   return async (req: NextApiRequest, res: NextApiResponse) => {
+    // eslint-disable-next-line siv/no-req-headers-host -- CORS: this is the caller's Origin, not a URL we build
     const origin = req.headers.origin
 
     // Block non-allowed domains

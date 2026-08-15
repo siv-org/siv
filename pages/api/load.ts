@@ -23,6 +23,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { headers } = req
   const { hash, height, width } = req.body
 
+  // eslint-disable-next-line siv/no-req-headers-host -- analytics
   const domain = headers.origin || ''
   const page_url = headers.referer?.slice(domain.length)
   const ip = headers['x-forwarded-for']

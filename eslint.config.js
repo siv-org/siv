@@ -72,11 +72,13 @@ function sivPlugin() {
           return {
             MemberExpression(node) {
               const prop = node.computed ? node.property.value : node.property.name
-              if (prop !== 'host') return
+              if (!['host', 'origin'].includes(prop)) return
               const obj = node.object.type === 'ChainExpression' ? node.object.expression : node.object
-              if (obj.type !== 'MemberExpression' || obj.property.name !== 'headers') return
+              const fromReqHeaders = obj.type === 'MemberExpression' && obj.property.name === 'headers'
+              const fromHeadersVar = obj.type === 'Identifier' && obj.name === 'headers'
+              if (!fromReqHeaders && !fromHeadersVar) return
               context.report({
-                message: "Don't trust req.headers.host, can be spoofed. Prefer safeOrigin(req)",
+                message: "Don't trust spoofable req.headers.host/origin. Prefer safeOrigin(req)",
                 node,
               })
             },
