@@ -27,7 +27,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   // Notify siv senders of permanent fails
-  if (from.includes('@siv.org')) {
+  if (from.endsWith('@siv.org')) {
     await sendEmail({
       recipient: from,
       subject: `Failure: ${to}`,
