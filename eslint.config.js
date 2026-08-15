@@ -20,12 +20,13 @@ const commonConfig = {
     },
     sourceType: 'module',
   },
-  plugins: { react: reactPlugin },
+  plugins: { react: reactPlugin, siv: sivPlugin() },
   rules: {
     ...reactPlugin.configs.flat.recommended.rules,
     'no-restricted-syntax': ['error', ...secretsMatchSelectors()],
     'no-unreachable': 'warn',
     'react/no-unknown-property': [2, { ignore: ['jsx', 'global'] }], // styled-jsx
+    'siv/no-req-headers-host': 'warn',
   },
   settings: { react: { version: 'detect' } },
 }
@@ -61,4 +62,28 @@ function secretsMatchSelectors() {
     `${eq}[right.type!='Literal'] > MemberExpression.left[property.name='auth']`,
     `${eq}[left.type!='Literal'] > MemberExpression.right[property.name='auth']`,
   ].map((selector) => ({ message: "Don't directly compare secret fields with ===/!==. Use secretsMatch()", selector }))
+}
+
+function sivPlugin() {
+  return {
+    rules: {
+      'no-req-headers-host': {
+        create(context) {
+          return {
+            MemberExpression(node) {
+              const prop = node.computed ? node.property.value : node.property.name
+              if (prop !== 'host') return
+              const obj = node.object.type === 'ChainExpression' ? node.object.expression : node.object
+              if (obj.type !== 'MemberExpression' || obj.property.name !== 'headers') return
+              context.report({
+                message: "Don't trust req.headers.host, can be spoofed. Prefer safeOrigin(req)",
+                node,
+              })
+            },
+          }
+        },
+        meta: { docs: {}, schema: [], type: 'problem' },
+      },
+    },
+  }
 }

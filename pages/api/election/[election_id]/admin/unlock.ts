@@ -118,7 +118,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     elapsed('fastShuffle')
 
     // Decrypt votes
-    const origin = safeOrigin(req.headers.host)
+    const origin = safeOrigin(req)
     if (typeof origin !== 'string') return res.status(500).json(origin)
     const decrypted_and_split = await bluebird.props(
       mapValues(shuffled, async (list) => {

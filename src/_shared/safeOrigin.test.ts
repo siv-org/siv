@@ -1,6 +1,10 @@
+import type { NextApiRequest } from 'next'
+
 import { expect, test } from 'bun:test'
 
 import { safeOrigin } from './safeOrigin'
+
+const req = (host?: string) => ({ headers: { host } } as NextApiRequest)
 
 test('uses VERCEL_URL when the host looks like ours', () => {
   expect(safeOrigin(undefined, { VERCEL_URL: 'siv-git-main-sivteam.vercel.app' })).toBe(
@@ -22,13 +26,13 @@ test('refuses unexpected VERCEL_URL', () => {
 })
 
 test('fallback to localhost for local dev', () => {
-  expect(safeOrigin('localhost:3001', { PORT: '3001' })).toBe('http://localhost:3001')
-  expect(safeOrigin('localhost:3000', {})).toBe('http://localhost:3000')
-  expect(safeOrigin('127.0.0.1', {})).toBe('http://localhost:3000')
+  expect(safeOrigin(req('localhost:3001'), { PORT: '3001' })).toBe('http://localhost:3001')
+  expect(safeOrigin(req('localhost:3000'), {})).toBe('http://localhost:3000')
+  expect(safeOrigin(req('127.0.0.1'), {})).toBe('http://localhost:3000')
 })
 
 test('refuses localhost origin when Host is not loopback', () => {
-  expect(safeOrigin('siv-main-sivteam.vercel.app', {})).toMatchObject({
+  expect(safeOrigin(req('siv-main-sivteam.vercel.app'), {})).toMatchObject({
     error: expect.stringMatching(/VERCEL_URL is unset/),
   })
 })

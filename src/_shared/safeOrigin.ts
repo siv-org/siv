@@ -1,3 +1,5 @@
+import type { NextApiRequest } from 'next'
+
 /**
  * Canonical site origin for server-built URLs (emails, unlock fan-out).
  *
@@ -13,7 +15,7 @@
 type OriginEnv = { PORT?: string; VERCEL_URL?: string }
 
 /** Use VERCEL_URL instead of trusting `req.headers.host`, which can be spoofed */
-export function safeOrigin(requestHost?: string, env?: OriginEnv): string | { error: string } {
+export function safeOrigin(req?: NextApiRequest, env?: OriginEnv): string | { error: string } {
   const { PORT, VERCEL_URL } = env ?? process.env
 
   if (VERCEL_URL) {
@@ -24,6 +26,8 @@ export function safeOrigin(requestHost?: string, env?: OriginEnv): string | { er
     return `https://${host}`
   }
 
+  // eslint-disable-next-line siv/no-req-headers-host -- mismatch alarm only; not used as the origin
+  const requestHost = typeof req?.headers?.host === 'string' ? req.headers.host : req?.headers?.host?.[0]
   if (!isLoopbackHost(requestHost)) return { error: `VERCEL_URL is unset but request Host is '${requestHost}'` }
 
   return `http://localhost:${PORT || '3000'}`
