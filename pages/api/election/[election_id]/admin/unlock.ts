@@ -1,6 +1,7 @@
 import bluebird from 'bluebird'
 import { mapValues } from 'lodash-es'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { safeSameOrigin } from 'src/_shared/safeSameOrigin'
 import { getStatus } from 'src/admin/Voters/Signature'
 import { RP } from 'src/crypto/curve'
 import { fastShuffle, shuffleWithoutProof, shuffleWithProof } from 'src/crypto/shuffle'
@@ -117,13 +118,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     elapsed('fastShuffle')
 
     // Decrypt votes
+    const origin = safeSameOrigin(req.headers.host)
+    if (typeof origin !== 'string') return res.status(500).json(origin)
     const decrypted_and_split = await bluebird.props(
       mapValues(shuffled, async (list) => {
         // Decrypt each column in parallel
-        const apiUrl = req.headers.host
-        const protocol = apiUrl?.startsWith('localhost') ? 'http://' : 'https://'
-
-        const response = await fetch(`${protocol}${apiUrl}/api/election/${election_id}/admin/decrypt-column`, {
+        const response = await fetch(`${origin}/api/election/${election_id}/admin/decrypt-column`, {
           body: JSON.stringify({ column: list.map((cipher) => mapValues(cipher, String)), decryption_key }),
           headers: { 'Content-Type': 'application/json' },
           method: 'POST',
