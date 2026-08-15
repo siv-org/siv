@@ -3,6 +3,7 @@ import { pick } from 'lodash-es'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { firebase } from 'pages/api/_services'
 import { pusher } from 'pages/api/pusher'
+import { secretsMatch } from 'src/_shared/secretsMatch'
 import { Trustee } from 'src/trustee/trustee-state'
 
 const { ADMIN_EMAIL } = process.env
@@ -37,7 +38,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const trustee = { ...(await loadTrustee).data() }
 
   // Authenticate by checking if auth token matches
-  if (trustee.auth_token !== auth) return res.status(401).json({ error: 'Bad auth token' })
+  if (!secretsMatch(trustee.auth_token, auth)) return res.status(401).json({ error: 'Bad auth token' })
 
   const all_trustee_initial_fields = ['auth_token', 'index', 'email', 'name', 'mailgun_events', 'email_edits']
 

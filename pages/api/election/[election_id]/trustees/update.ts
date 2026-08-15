@@ -1,5 +1,6 @@
 import { sumBy } from 'lodash-es'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { secretsMatch } from 'src/_shared/secretsMatch'
 import { random_bigint, RP } from 'src/crypto/curve'
 import { keygenDecrypt, keygenEncrypt } from 'src/crypto/keygen-encrypt'
 import { CipherStrings } from 'src/crypto/stringify-shuffle'
@@ -49,7 +50,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const trustee = { ...(await loadTrustee).data() }
 
   // Authenticate by checking if auth token matches
-  if (trustee.auth_token !== auth) return res.status(401).send('Bad auth token')
+  if (!secretsMatch(trustee.auth_token, auth)) return res.status(401).send('Bad auth token')
 
   // Remove email & auth from body obj
   delete body.email

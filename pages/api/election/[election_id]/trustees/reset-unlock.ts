@@ -1,5 +1,6 @@
 import { firestore } from 'firebase-admin'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { secretsMatch } from 'src/_shared/secretsMatch'
 
 import { Trustee } from '../../../../../src/trustee/trustee-state'
 import { firebase } from '../../../_services'
@@ -35,7 +36,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const trustee = { ...(await loadTrustee).data() }
 
   // Authenticate by checking if auth token matches
-  if (trustee.auth_token !== auth) return res.status(401).json({ error: 'Bad auth token' })
+  if (!secretsMatch(trustee.auth_token, auth)) return res.status(401).json({ error: 'Bad auth token' })
 
   // Delete election decrypted
   const reset_decrypted = electionDoc.update({

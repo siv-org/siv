@@ -1,6 +1,7 @@
 import { pick } from 'lodash-es'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { firebase } from 'pages/api/_services'
+import { secretsMatch } from 'src/_shared/secretsMatch'
 import { Trustee } from 'src/trustee/trustee-state'
 
 import { transform_email_keys } from './commafy'
@@ -28,7 +29,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const prepTrustees = (await loadTrustees).docs.map(async (doc) => {
     const data = { ...doc.data() }
     // Add you: true if requester's own document
-    if (data.auth_token === auth) data.you = true
+    if (secretsMatch(data.auth_token, auth)) data.you = true
 
     // Fields to keep
     const public_fields = [

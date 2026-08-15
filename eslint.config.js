@@ -27,7 +27,7 @@ const commonConfig = {
       'error',
       {
         // `undefined === undefined`, so a missing stored token can "match" without additional check
-        message: 'Do not compare `.auth_token` with ===/!==; missing values compare equal.',
+        message: "Don't directly compare `.auth_token` with ===/!==. Use secretsMatch()",
         selector: "BinaryExpression[operator=/^[!=]==$/] > MemberExpression[property.name='auth_token']",
       },
     ],
