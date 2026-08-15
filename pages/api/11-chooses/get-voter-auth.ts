@@ -1,5 +1,6 @@
 import { firebase, pushover } from 'api/_services'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { secretsMatch } from 'src/_shared/secretsMatch'
 import { election_ids_for_11chooses, VoterInfo } from 'src/vote/auth/11choosesAuth/CustomAuthFlow'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -7,7 +8,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (typeof auth_token !== 'string') return res.status(400).json({ error: 'auth_token is required' })
   if (typeof election_id !== 'string') return res.status(400).json({ error: 'election_id is required' })
   if (!election_ids_for_11chooses.includes(election_id)) return res.status(400).json({ error: 'Invalid election_id' })
-  if (auth_token === 'link') return res.status(400).json({ error: 'Looking up auth=link not supported' })
+  if (secretsMatch(auth_token, 'link')) return res.status(400).json({ error: 'Looking up auth=link not supported' })
 
   // Lookup voter by auth_token
   const electionDoc = firebase.firestore().collection('elections').doc(election_id)

@@ -2,6 +2,7 @@ import { firebase, pushover } from 'api/_services'
 import { getCallerIdResults } from 'api/sms/lookup-test'
 import { firestore } from 'firebase-admin'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { secretsMatch } from 'src/_shared/secretsMatch'
 import { election_ids_for_11chooses } from 'src/vote/auth/11choosesAuth/CustomAuthFlow'
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
@@ -18,7 +19,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
   const otp = (await firebase.firestore().collection('sms-otp').doc(lookupNum).get()).data()
   if (!otp) return res.status(400).json({ error: 'otp not found' })
   //   console.log('otp', otp)
-  if (!otp.passed.some((p: { link_auth: string }) => p.link_auth === link_auth))
+  if (!otp.passed.some((p: { link_auth: string }) => secretsMatch(p.link_auth, link_auth)))
     return res.status(400).json({ error: 'link_auth does not match otp' })
 
   const results = await getCallerIdResults(lookupNum)

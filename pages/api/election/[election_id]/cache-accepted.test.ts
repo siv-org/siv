@@ -1,4 +1,5 @@
 import { describe, expect, test } from 'bun:test'
+import { secretsMatch } from 'src/_shared/secretsMatch'
 import { encodeReplacementPayload, generateReplacementKeypair, signReplacement } from 'src/crypto/replacement-key'
 import { CipherStrings } from 'src/crypto/stringify-shuffle'
 
@@ -217,7 +218,7 @@ test('Strengthened vote - packed ciphertext is replaced in cache-accepted', asyn
     const packedBody = packed.body as {
       results: Array<{ auth: string; mayor?: CipherStrings }>
     }
-    const before = packedBody.results.find((r) => r.auth === auth)
+    const before = packedBody.results.find((r) => secretsMatch(r.auth, auth))
     expect(before?.mayor).toEqual(original.mayor)
 
     const strengthen = await helpers.strengthenTestVote({
@@ -231,7 +232,7 @@ test('Strengthened vote - packed ciphertext is replaced in cache-accepted', asyn
     const after = await helpers.callCacheAccepted(electionId)
     expect(after.status).toBe(200)
     const afterBody = after.body as { results: Array<{ auth: string; mayor?: CipherStrings }> }
-    const vote = afterBody.results.find((r) => r.auth === auth)
+    const vote = afterBody.results.find((r) => secretsMatch(r.auth, auth))
     expect(vote?.mayor).toEqual(strengthened.mayor)
     expect(afterBody.results).toHaveLength(1)
   } finally {

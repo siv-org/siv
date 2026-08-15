@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
+import { secretsMatch } from 'src/_shared/secretsMatch'
 import { api } from 'src/api-helper'
 
 import { useDecryptedVotes } from './use-decrypted-votes'
@@ -27,7 +28,7 @@ export const AutoVerifier = () => {
     submittedVotes.forEach((vote) => {
       let auth_token = vote.storage_key.split('-')[2]
       // Link votes store under `voter-{id}-link`; real id lives on vote.link_auth
-      if (auth_token === 'link') {
+      if (secretsMatch(auth_token, 'link')) {
         if (!vote.link_auth) return
         auth_token = vote.link_auth
       }

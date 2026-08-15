@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 
 import { createHash, randomUUID } from 'crypto'
 import { firestore } from 'firebase-admin'
+import { secretsMatch } from 'src/_shared/secretsMatch'
 import { CipherStrings } from 'src/crypto/stringify-shuffle'
 
 import { firebase, pushover } from '../../_services'
@@ -358,14 +359,14 @@ export async function invalidateCachedVote(
 
       // Search accepted_votes for match on auth
       const nextVotes = votes.map((v) => {
-        if (pending || v.auth !== auth) return v
+        if (pending || !secretsMatch(v.auth, auth)) return v
         changed = true
         found = true
         return { auth: v.auth, ...encrypted_vote } as VoteSummary
       })
       // Search pending_votes for match on link_auth
       const nextPending = pendingVotes.map((pv) => {
-        if (!pending || pv.link_auth !== auth) return pv
+        if (!pending || !secretsMatch(pv.link_auth, auth)) return pv
         changed = true
         found = true
         return { auth: 'pending' as const, ...encrypted_vote, link_auth: pv.link_auth }

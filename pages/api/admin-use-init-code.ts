@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
+import { secretsMatch } from 'src/_shared/secretsMatch'
 
 import { firebase, pushover } from './_services'
 import { setJWT } from './admin-check-login-code'
@@ -21,7 +22,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (!init_login_code) return res.status(206).json({ message: 'Approved, but need to verify email' })
 
   // Incorrect code?
-  if (init_login_code !== code) {
+  if (!secretsMatch(init_login_code, code)) {
     await pushover('Invalid admin-use-init-code', JSON.stringify({ code, email }))
     return res.status(401).json({ message: 'Incorrect code' })
   }

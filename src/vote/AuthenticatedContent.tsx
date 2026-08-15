@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useEffect, useRef } from 'react'
+import { secretsMatch } from 'src/_shared/secretsMatch'
 import { generateReplacementKeypair } from 'src/crypto/replacement-key'
 
 import { GlobalCSS } from '../GlobalCSS'
@@ -36,7 +37,7 @@ export const AuthenticatedContent = ({ auth, election_id }: { auth: string; elec
     if (auth !== 'link' || !router.isReady) return
 
     if (typeof link_auth_query === 'string') {
-      if (link_auth_query !== state.link_auth) dispatch({ link_auth: link_auth_query })
+      if (!secretsMatch(link_auth_query, state.link_auth)) dispatch({ link_auth: link_auth_query })
       return
     }
 

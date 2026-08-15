@@ -1,6 +1,7 @@
 import { firebase, pushover } from 'api/_services'
 import { firestore } from 'firebase-admin'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { secretsMatch } from 'src/_shared/secretsMatch'
 import { election_ids_for_11chooses } from 'src/vote/auth/11choosesAuth/CustomAuthFlow'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -17,7 +18,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   let voterDoc: firestore.DocumentSnapshot<firestore.DocumentData> | null = null
 
   // Provisional ballots store their votes a bit differently
-  if (auth_token === 'provisional') {
+  if (secretsMatch(auth_token, 'provisional')) {
     // Error if missing link_auth
     if (!link_auth) {
       await pushover('11c/submit-email: link_auth missing', JSON.stringify({ email, link_auth }))

@@ -1,6 +1,7 @@
 import { firebase, pushover } from 'api/_services'
 import { pusher } from 'api/pusher'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { secretsMatch } from 'src/_shared/secretsMatch'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { code, election_id, email, invalid, link_auth } = req.body
@@ -26,7 +27,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   // Check if the verification code is good
-  if (voteDoc.data()?.verification_code !== code) {
+  if (!secretsMatch(voteDoc.data()?.verification_code, code)) {
     await pushover(
       'Verify link-auth email, bad code',
       `Email:${email}\n\nInput code: ${code}\nDB code: ${

@@ -23,14 +23,7 @@ const commonConfig = {
   plugins: { react: reactPlugin },
   rules: {
     ...reactPlugin.configs.flat.recommended.rules,
-    'no-restricted-syntax': [
-      'error',
-      {
-        // `undefined === undefined`, so a missing stored token can "match" without additional check
-        message: "Don't directly compare `.auth_token` with ===/!==. Use secretsMatch()",
-        selector: "BinaryExpression[operator=/^[!=]==$/] > MemberExpression[property.name='auth_token']",
-      },
-    ],
+    'no-restricted-syntax': ['error', ...secretsMatchSelectors()],
     'no-unreachable': 'warn',
     'react/no-unknown-property': [2, { ignore: ['jsx', 'global'] }], // styled-jsx
   },
@@ -51,3 +44,21 @@ module.exports = [
     rules: { ...tseslint.plugin.configs.strict.rules },
   }),
 ]
+
+function secretsMatchSelectors() {
+  // Ban `stored === provided` on secrets, because `undefined === undefined`,
+  // so we need extra checks. `secretsMatch(stored, provided)` is safer.
+
+  const eq = 'BinaryExpression[operator=/^[!=]==$/]'
+  const fields = 'auth_token|login_code|init_login_code|verification_code|link_auth'
+  const field = `[property.name=/^(${fields})$/]`
+  return [
+    `${eq} > MemberExpression${field}`,
+    `${eq} > Identifier[name=/^(${fields})$/]`,
+    `${eq} ChainExpression > MemberExpression${field}`,
+
+    // Only error when auth is compared against a variable, not a string literal
+    `${eq}[right.type!='Literal'] > MemberExpression.left[property.name='auth']`,
+    `${eq}[left.type!='Literal'] > MemberExpression.right[property.name='auth']`,
+  ].map((selector) => ({ message: "Don't directly compare secret fields with ===/!==. Use secretsMatch()", selector }))
+}
