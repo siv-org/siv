@@ -35,7 +35,7 @@ function isSupabaseJwtValidSIVEmail(jwt?: string | string[]): boolean {
     const jwt_payload = verify(jwt, SUPABASE_JWT_SECRET) as { email: string }
 
     // Is for a @siv.org user
-    if (!jwt_payload?.email?.includes('@siv.org')) return false
+    if (!jwt_payload?.email?.endsWith('@siv.org')) return false
   } catch (e) {
     console.error('caught error decoding jwt', e)
     return false
