@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
+import { safeOrigin } from 'src/_shared/safeOrigin'
 
 import { firebase } from '../../../_services'
 import { buildSubject, send_invitation_email } from '../../../invite-voters'
@@ -10,6 +11,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Confirm they're a valid admin that created this election
   const jwt = await checkJwtOwnsElection(req, res, election_id)
   if (!jwt.valid) return
+
+  const origin = safeOrigin(req)
+  if (typeof origin !== 'string') return res.status(500).json(origin)
 
   try {
     // Lookup election title and custom invitation text
@@ -28,7 +32,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     // Create a test auth token (10 characters, hex)
     const testAuthToken = '1a2b3c4d5e'
-    const testLink = `${req.headers.origin}/election/${election_id}/vote?auth=${testAuthToken}`
+    const testLink = `${origin}/election/${election_id}/vote?auth=${testAuthToken}`
 
     // Send test invitation email to the admin
     const result = await send_invitation_email({

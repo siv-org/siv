@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
+import { safeOrigin } from 'src/_shared/safeOrigin'
 
 import { firebase } from './_services'
 
@@ -6,7 +7,8 @@ const suspensionEnabled = false
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   // This endpoint is not meant to be accessible anywhere other than locally
-  if (!suspensionEnabled || req.headers.host !== 'localhost:3000') return res.status(404).send('Not found')
+  const origin = safeOrigin(req)
+  if (!suspensionEnabled || origin !== 'http://localhost:3000') return res.status(404).send('Not found')
 
   // Will need to URL encode these fields, using a tool like https://www.urlencoder.io
   const { id, suspended_for } = req.query

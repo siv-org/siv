@@ -1,5 +1,6 @@
 import { validate as validateEmail } from 'email-validator'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { safeOrigin } from 'src/_shared/safeOrigin'
 import { generateAuthToken } from 'src/crypto/generate-auth-tokens'
 
 import { firebase } from '../../../_services'
@@ -15,6 +16,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Confirm they're a valid admin that created this election
   const jwt = await checkJwtOwnsElection(req, res, election_id)
   if (!jwt.valid) return
+
+  const origin = safeOrigin(req)
+  if (typeof origin !== 'string') return res.status(500).json(origin)
 
   const { election_manager, election_title } = jwt
 
@@ -56,7 +60,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   ])
 
   // Send trustee invite email to new_email
-  const link = `${req.headers.origin}/election/${election_id}/observer?auth=${new_auth_token}`
+  const link = `${origin}/election/${election_id}/observer?auth=${new_auth_token}`
   await sendTrusteeInvite({
     election_id,
     election_manager,

@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
+import { safeOrigin } from 'src/_shared/safeOrigin'
 import throat from 'throat'
 
 import { firebase } from '../../../_services'
@@ -14,6 +15,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Confirm they're a valid admin that created this election
   const jwt = await checkJwtOwnsElection(req, res, election_id)
   if (!jwt.valid) return
+
+  const origin = safeOrigin(req)
+  if (typeof origin !== 'string') return res.status(500).json(origin)
 
   // Lookup election title and custom invitation text
   const electionDoc = firebase.firestore().collection('elections').doc(election_id)
@@ -36,7 +40,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         if (!voter.exists) return { error: `Can't find voter ${email}` }
         const { auth_token, invite_queued } = { ...voter.data() } as { auth_token: string; invite_queued?: QueueLog[] }
 
-        const link = `${req.headers.origin}/election/${election_id}/vote?auth=${auth_token}`
+        const link = `${origin}/election/${election_id}/vote?auth=${auth_token}`
         // const link = `https://siv.org/election/${election_id}/vote?auth=${auth_token}`
 
         return send_invitation_email({

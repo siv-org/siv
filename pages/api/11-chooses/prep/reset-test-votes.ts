@@ -1,5 +1,6 @@
 import { firebase } from 'api/_services'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { safeOrigin } from 'src/_shared/safeOrigin'
 import { election_ids_for_11chooses } from 'src/vote/auth/11choosesAuth/CustomAuthFlow'
 
 const { RECENT_ELECTIONS_PASSWORD } = process.env
@@ -9,7 +10,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (!RECENT_ELECTIONS_PASSWORD) return res.status(401).send('Server missing process.env.RECENT_ELECTIONS_PASSWORD')
   if (req.query.pass !== RECENT_ELECTIONS_PASSWORD) return res.status(401).send('Unauthorized')
 
-  if (!req.headers.host?.startsWith('localhost:300')) return res.status(405).json({ error: 'For localhost only' })
+  const origin = safeOrigin(req)
+  if (typeof origin !== 'string' || !origin.startsWith('http://localhost:300'))
+    return res.status(405).json({ error: 'For localhost only' })
 
   const { election_id } = req.query
   if (typeof election_id !== 'string') return res.status(400).json({ error: 'election_id is required' })

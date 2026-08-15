@@ -1,6 +1,7 @@
 import { firebase } from 'api/_services'
 import { firestore } from 'firebase-admin'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { safeOrigin } from 'src/_shared/safeOrigin'
 import { election_ids_for_11chooses } from 'src/vote/auth/11choosesAuth/CustomAuthFlow'
 
 /* For each record (~62k): {
@@ -62,7 +63,9 @@ export const voterFileToUploadFormat = (v: (typeof sample_voters)[number], index
 // console.log(sample_voters.map(voterFileToUploadFormat))
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  if (!req.headers.host?.startsWith('localhost:300')) return res.status(405).json({ error: 'For localhost only' })
+  const origin = safeOrigin(req)
+  if (typeof origin !== 'string' || !origin.startsWith('http://localhost:300'))
+    return res.status(405).json({ error: 'For localhost only' })
 
   const { election_id } = req.query
   if (typeof election_id !== 'string') return res.status(400).json({ error: 'election_id is required' })

@@ -1,6 +1,7 @@
 import { validate } from 'email-validator'
 import { firestore } from 'firebase-admin'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { safeOrigin } from 'src/_shared/safeOrigin'
 import { pick_random_bigint } from 'src/crypto/pick-random-bigint'
 
 import { firebase, sendEmail } from './_services'
@@ -33,7 +34,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const login_code = generateEmailLoginCode()
   adminDoc.collection('logins').doc(new Date().toISOString()).set({ created_at: new Date(), login_code })
 
-  const link = `${req.headers.origin}/admin?email=${email}&code=${login_code}`
+  const origin = safeOrigin(req)
+  if (typeof origin !== 'string') return res.status(500).json(origin)
+
+  const link = `${origin}/admin?email=${email}&code=${login_code}`
   await sendEmail({
     from: 'SIV',
     recipient: email,

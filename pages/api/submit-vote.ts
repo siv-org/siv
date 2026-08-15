@@ -1,6 +1,7 @@
 import { validate as validateEmail } from 'email-validator'
 import { firestore } from 'firebase-admin'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { safeOrigin } from 'src/_shared/safeOrigin'
 import { generateAuthToken } from 'src/crypto/generate-auth-tokens'
 import { is64HexChars } from 'src/crypto/replacement-key'
 import { CipherStrings } from 'src/crypto/stringify-shuffle'
@@ -22,6 +23,9 @@ export default withApiErrorLogs(async (req: NextApiRequest, res: NextApiResponse
 
   if (!is64HexChars(replacement_pubkey))
     return res.status(400).json({ error: 'Missing or malformed replacement_pubkey' })
+
+  const origin = safeOrigin(req)
+  if (typeof origin !== 'string') return res.status(500).json(origin)
 
   // return res.status(200).json({ auth, election_id, encrypted_vote })
 
@@ -78,9 +82,7 @@ export default withApiErrorLogs(async (req: NextApiRequest, res: NextApiResponse
     ])
 
     // Link to the auth url, particularly for AirgappedVoters
-    const host = req.headers.host
-    const protocol = host?.startsWith('localhost') ? 'http://' : 'https://'
-    const visit_to_add_auth = `${protocol}${host}/election/${election_id}/auth?link=${link_auth}`
+    const visit_to_add_auth = `${origin}/election/${election_id}/auth?link=${link_auth}`
 
     return res.status(200).json({
       link_auth,
@@ -134,7 +136,7 @@ export default withApiErrorLogs(async (req: NextApiRequest, res: NextApiResponse
 
   // Skip if email isn't valid (e.g. used QR invitations)
   if (validateEmail(email)) {
-    const link = `${req.headers.origin || req.headers.host}/election/${election_id}`
+    const link = `${origin}/election/${election_id}`
     const { election_manager } = (await election).data() as {
       election_manager?: string
       election_title?: string

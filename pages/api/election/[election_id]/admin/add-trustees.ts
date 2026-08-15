@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
+import { safeOrigin } from 'src/_shared/safeOrigin'
 import { Trustee } from 'src/admin/PrivacyPage/SetPrivacyProtectors'
 import { generateAuthToken } from 'src/crypto/generate-auth-tokens'
 import { generate_key_pair } from 'src/crypto/generate-key-pair'
@@ -27,6 +28,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Confirm they're a valid admin that created this election
   const jwt = await checkJwtOwnsElection(req, res, election_id)
   if (!jwt.valid) return
+
+  const origin = safeOrigin(req)
+  if (typeof origin !== 'string') return res.status(500).json(origin)
 
   const { trustees } = req.body as { trustees: Trustee[] }
   const { election_manager, election_title } = jwt
@@ -88,7 +92,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       trustees.map(({ email, name }: Trustee, index: number) => {
         if (email === ADMIN_EMAIL) return
 
-        const link = `${req.headers.origin}/election/${election_id}/observer?auth=${auth_tokens[index]}`
+        const link = `${origin}/election/${election_id}/observer?auth=${auth_tokens[index]}`
 
         return sendTrusteeInvite({ election_id, election_manager, election_title, email, link, name })
       }),

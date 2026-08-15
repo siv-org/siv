@@ -1,5 +1,6 @@
 import { validate as validateEmail } from 'email-validator'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { safeOrigin } from 'src/_shared/safeOrigin'
 
 import { firebase, pushover, sendEmail } from './_services'
 import { generateEmailLoginCode } from './admin-login'
@@ -64,6 +65,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       .catch(() => {}),
   ])
 
+  const origin = safeOrigin(req)
+  if (typeof origin !== 'string') return res.status(500).json(origin)
+
   const blank = (s: string) => (s ? s : '—')
   // Send message w/ Approval Link
   const message = `New SIV Admin Application
@@ -83,9 +87,9 @@ Election date: ${blank(election_date)}
 Election number of voters: ${blank(election_num_voters)}`
 }
 
-Link to approve: ${req.headers.origin}/approve-admin?id=${doc_id}
+Link to approve: ${origin}/approve-admin?id=${doc_id}
 
-Approve & skip email verification: ${req.headers.origin}/approve-admin?id=${doc_id}&skip_init_email_validation=true
+Approve & skip email verification: ${origin}/approve-admin?id=${doc_id}&skip_init_email_validation=true
 (The device that submitted the admin application will be logged in)`
 
   await Promise.all([

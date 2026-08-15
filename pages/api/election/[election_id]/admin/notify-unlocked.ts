@@ -1,6 +1,7 @@
 import bluebird from 'bluebird'
 import { validate } from 'email-validator'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { safeOrigin } from 'src/_shared/safeOrigin'
 
 import { firebase, sendEmail } from '../../../_services'
 import { checkJwtOwnsElection } from '../../../validate-admin-jwt'
@@ -24,6 +25,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Confirm they're a valid admin that created this election
   const jwt = await checkJwtOwnsElection(req, res, election_id)
   if (!jwt.valid) return
+
+  const origin = safeOrigin(req)
+  if (typeof origin !== 'string') return res.status(500).json(origin)
 
   // Is election_id in DB?
   const electionDoc = await loadElection
@@ -70,7 +74,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           text: `<h2 style="margin: 0">Election Results Posted</h2>
           ${voters.length} vote${voters.length !== 1 ? 's' : ''} for "${election_title}" ha${
             voters.length !== 1 ? 've' : 's'
-          } been unlocked: ${req.headers.origin}/election/${election_id}
+          } been unlocked: ${origin}/election/${election_id}
           `,
         }).then(() => {
           // Wait a second after sending to not overload Mailgun

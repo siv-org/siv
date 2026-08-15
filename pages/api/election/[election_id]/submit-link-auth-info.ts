@@ -4,6 +4,7 @@ import { pusher } from 'api/pusher'
 import { validate as validateEmail } from 'email-validator'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { escapeHtml } from 'src/_shared/escapeHtml'
+import { safeOrigin } from 'src/_shared/safeOrigin'
 import { optionalEmail } from 'src/vote/auth/VoterAuthInfoForm'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -26,6 +27,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const election = (await loadElection).data() || {}
   if (!election.voter_applications_allowed)
     return res.status(401).json({ error: 'This election disabled Voter Applications' })
+
+  const origin = safeOrigin(req)
+  if (typeof origin !== 'string') return res.status(500).json(origin)
 
   // Server assigns them a Email-Verification code
   const verification_code = generateEmailLoginCode()
@@ -68,13 +72,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       If this was you, please confirm:
 
       ${button(
-        `${req.headers.origin}/verify_registration?email=${encodeURIComponent(email)}&code=${verification_code}&election_id=${election_id}&link_auth=${link_auth}`,
+        `${origin}/verify_registration?email=${encodeURIComponent(email)}&code=${verification_code}&election_id=${election_id}&link_auth=${link_auth}`,
         'Confirm this was me',
       )}
 
       <em style="font-size:11px; opacity: 0.6;">
       Didn't submit this vote? <a href="${
-        req.headers.origin
+        origin
       }/verify_registration?code=${verification_code}&election_id=${election_id}&link_auth=${link_auth}&invalid=true">Mark it as invalid.</a></em>`,
       }),
 
