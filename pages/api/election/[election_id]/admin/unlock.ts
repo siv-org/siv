@@ -1,7 +1,7 @@
 import bluebird from 'bluebird'
 import { mapValues } from 'lodash-es'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { safeSameOrigin } from 'src/_shared/safeSameOrigin'
+import { safeOrigin } from 'src/_shared/safeOrigin'
 import { getStatus } from 'src/admin/Voters/Signature'
 import { RP } from 'src/crypto/curve'
 import { fastShuffle, shuffleWithoutProof, shuffleWithProof } from 'src/crypto/shuffle'
@@ -118,7 +118,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     elapsed('fastShuffle')
 
     // Decrypt votes
-    const origin = safeSameOrigin(req.headers.host)
+    const origin = safeOrigin(req.headers.host)
     if (typeof origin !== 'string') return res.status(500).json(origin)
     const decrypted_and_split = await bluebird.props(
       mapValues(shuffled, async (list) => {
