@@ -6,17 +6,21 @@ import type { NextApiRequest } from 'next'
  * Do not use `req.headers.host` or `Origin` as the URL. A client can send
  * `Host: attacker.example.com` to put secrets in links or POST them off-box.
  *
- * On Vercel, `VERCEL_URL` is this deployment (System Environment Variables
+ * On Vercel preview, `VERCEL_URL` is this deployment (System Environment Variables
  * must be enabled). We still validate it instead of falling back to Host.
+ *
+ * In production, we hardcode siv.org (VERCEL_URL is a per-commit `*.vercel.app` host, not the public site).
  *
  * `requestHost` is only a mismatch alarm: if env looks like local but Host is
  * not loopback, refuse. Poisoned Host cannot become the origin.
  */
-type OriginEnv = { PORT?: string; VERCEL_URL?: string }
+type OriginEnv = { PORT?: string; VERCEL_ENV?: string; VERCEL_URL?: string }
 
-/** Use VERCEL_URL instead of trusting `req.headers.host`, which can be spoofed */
+/** Don’t trust `req.headers.host`, which can be spoofed. Production is `siv.org`, preview is `VERCEL_URL`. */
 export function safeOrigin(req?: NextApiRequest, env?: OriginEnv): string | { error: string } {
-  const { PORT, VERCEL_URL } = env ?? process.env
+  const { PORT, VERCEL_ENV, VERCEL_URL } = env ?? process.env
+
+  if (VERCEL_ENV === 'production') return 'https://siv.org'
 
   if (VERCEL_URL) {
     const host = parseHostname(VERCEL_URL)

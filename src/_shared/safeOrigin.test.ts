@@ -6,6 +6,12 @@ import { safeOrigin } from './safeOrigin'
 
 const req = (host?: string) => ({ headers: { host } } as NextApiRequest)
 
+test('uses siv.org in production, not the per-commit VERCEL_URL', () => {
+  expect(safeOrigin(undefined, { VERCEL_ENV: 'production', VERCEL_URL: 'siv-3s8pavoyj-sivteam.vercel.app' })).toBe(
+    'https://siv.org',
+  )
+})
+
 test('uses VERCEL_URL when the host looks like ours', () => {
   expect(safeOrigin(undefined, { VERCEL_URL: 'siv-git-main-sivteam.vercel.app' })).toBe(
     'https://siv-git-main-sivteam.vercel.app',
