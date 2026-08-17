@@ -117,18 +117,50 @@ export default withApiErrorLogs(async (req: NextApiRequest, res: NextApiResponse
   const voter = electionDoc.collection('voters').where('auth_token', '==', auth).get()
   const election = electionDoc.get()
 
-  await Promise.all([
-    // 2a. Store the encrypted vote in db
-    electionDoc.collection('votes').add({
+  // 2a. Store the encrypted vote in db
+  try {
+    // create() enforces uniqueness, to prevent a TOCTOU race-condition
+    await electionDoc.collection('votes').doc(auth).create({
       auth,
       created_at: firestore.FieldValue.serverTimestamp(),
       encrypted_vote,
       headers: req.headers,
       replacement_pubkey,
-    }),
-    // 2b. Update elections cached tally of num_votes
-    electionDoc.update({ num_votes: firestore.FieldValue.increment(1) }),
-  ])
+    })
+  } catch (error) {
+    // Doc present → lost the race / already voted. Absent → write failed (network, etc.).
+    // Either way, keep a votes-rejected trail.
+    const isDocAlreadyPresent = await electionDoc
+      .collection('votes')
+      .doc(auth)
+      .get()
+      .then((d) => d.exists)
+      .catch(() => false)
+    const rejection = isDocAlreadyPresent
+      ? 'Vote already recorded.'
+      : `Vote write failed: ${error instanceof Error ? error.message : String(error)}`
+
+    await Promise.all([
+      electionDoc.collection('votes-rejected').add({
+        auth,
+        created_at: firestore.FieldValue.serverTimestamp(),
+        encrypted_vote,
+        headers: req.headers,
+        rejection,
+        replacement_pubkey,
+      }),
+      pushover(
+        `SIV submission: ${isDocAlreadyPresent ? 'duplicate auth (race on create)' : 'vote write failed'}`,
+        `election: ${election_id}\nauth: ${auth}\n${rejection}`,
+      ),
+    ]).catch(() => {}) // logging shouldn't block the client response
+
+    if (isDocAlreadyPresent) return res.status(400).json({ error: 'Vote already recorded.' })
+    return res.status(500).json({ error: 'Vote submission failed. Please try again.' })
+  }
+
+  // 2b. Update election's cached tally of num_votes (only after create succeeds)
+  await electionDoc.update({ num_votes: firestore.FieldValue.increment(1) })
 
   // 3. Email the voter their submission receipt
   const { email } = (await voter).docs[0].data()
@@ -165,7 +197,7 @@ export default withApiErrorLogs(async (req: NextApiRequest, res: NextApiResponse
 
   await Promise.all(promises)
 
-  res.status(200).send('Success.')
+  return res.status(200).send('Success.')
 })
 
 const buildSubmissionReceipt = (auth: string, encrypted_vote: Record<string, CipherStrings>) =>
