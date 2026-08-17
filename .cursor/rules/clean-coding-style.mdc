@@ -60,9 +60,10 @@ alwaysApply: true
 
 ### Comments
 
-- Avoid comments that simply restate what each line of code does
+- Avoid **new** comments that simply restate what each line of code does
 - Prefer comments that explain intent, trade-offs, constraints, or layout/section structure
 - Short JSX block comments that mark logical sections (e.g. `{/* Title */}`, `{/* Description */}`) are acceptable when they make it easier to scan or safely collapse regions in large components
+- **Never delete or drop existing comments** while editing. Move them with the code; update wording if needed. Numbered steps (`// 2a.`, `// 2b.`) are intentional — preserve them.
 
 ## Anti-Patterns to Avoid
 
