@@ -29,23 +29,25 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Delete their applied-admin doc
   await firebase.firestore().collection('applied-admins').doc(id).delete()
 
-  // Notify CreatedAccountWaiting frontend if it's still open
-  pusher.trigger(`admin-${data.email}`, 'approved', '')
+  await Promise.all([
+    // Notify CreatedAccountWaiting frontend if it's still open
+    pusher.trigger(`admin-${data.email}`, 'approved', ''),
 
-  // Send them an email with their login instructions
-  sendEmail({
-    bcc: 'admin@siv.org',
-    from: 'David Ernst',
-    fromEmail: 'david@siv.org',
-    recipient: data.email,
-    subject: 'SIV Account Approved',
-    text: `<h2 style="margin-bottom: 0;">SIV Account Approved</h2>
+    // Send them an email with their login instructions
+    sendEmail({
+      bcc: 'admin@siv.org',
+      from: 'David Ernst',
+      fromEmail: 'david@siv.org',
+      recipient: data.email,
+      subject: 'SIV Account Approved',
+      text: `<h2 style="margin-bottom: 0;">SIV Account Approved</h2>
 Congratulations, you now have the ability to create SIV elections.
 
 You can login anytime at <b><a href="http://siv.org/login">siv.org/login</a></b>`,
-  })
+    }),
+  ])
 
   // If they still have the Waiting Page open, show that they've been approved
 
-  res.status(200).send('Success')
+  return res.status(200).send('Success')
 }
