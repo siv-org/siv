@@ -1,3 +1,4 @@
+import { firestore } from 'firebase-admin'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { secretsMatch } from 'src/_shared/secretsMatch'
 
@@ -18,10 +19,21 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Not approved?
   if (!admin.exists) return res.status(204).json({ message: 'Not an approved admin' })
 
-  const { init_login_code, name } = { ...admin.data() } as { init_login_code?: string; name?: string }
+  const { approved_at, init_login_code, name } = { ...admin.data() } as {
+    approved_at?: { toDate: () => Date }
+    init_login_code?: string
+    name?: string
+  }
 
   // Don't have init_login_code?
   if (!init_login_code) return res.status(206).json({ message: 'Approved, but need to verify email' })
+
+  // Same 60 min window as /admin-check-login-code
+  const minutes_since = approved_at ? (Date.now() - Number(approved_at.toDate())) / 60_000 : Infinity
+  if (minutes_since > 60) {
+    await adminDoc.update({ init_login_code: firestore.FieldValue.delete() })
+    return res.status(412).json({ error: 'Expired login code' })
+  }
 
   // Incorrect code?
   if (!secretsMatch(init_login_code, code)) {
@@ -30,6 +42,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   // Success
+  await adminDoc.update({ init_login_code: firestore.FieldValue.delete() }) // single-use only
   setJWT({ email, name, req, res })
 
   return res.status(200).send({ message: 'Success! Setting jwt cookie.' })
