@@ -5,9 +5,11 @@ import { firebase, pushover } from './_services'
 import { setJWT } from './admin-check-login-code'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { code, email } = req.body
+  const { code } = req.body
+  let { email } = req.body
 
   if (!code || !email) return res.status(400).json({ error: 'Missing required params' })
+  email = email.toLowerCase()
 
   // Look up admin in DB
   const adminDoc = firebase.firestore().collection('admins').doc(email)
