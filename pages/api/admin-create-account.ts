@@ -1,3 +1,4 @@
+import { randomBytes } from 'crypto'
 import { validate as validateEmail } from 'email-validator'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { safeOrigin } from 'src/_shared/safeOrigin'
@@ -41,7 +42,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const init_login_code = generateEmailLoginCode()
 
   // Store their application in the DB
-  const doc_id = new Date().toISOString() + '-' + String(Math.random()).slice(2, 7)
+  const doc_id = `${new Date().toISOString().slice(0, 10).replaceAll('-', '')}-${randomBytes(5).toString('hex')}` // 40-bits search space
   await Promise.all([
     firebase.firestore().collection('applied-admins').doc(doc_id).create({
       application_intent: body.application_intent,
