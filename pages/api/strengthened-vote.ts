@@ -1,7 +1,7 @@
 import { firestore } from 'firebase-admin'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { encodeReplacementPayload, is64HexChars, is128HexChars, verifyReplacement } from 'src/crypto/replacement-key'
 import { CipherStrings } from 'src/crypto/stringify-shuffle'
+import { encodeReplacementPayload, is64HexChars, is128HexChars, verifyReplacement } from 'src/crypto/voter-key'
 
 import { firebase } from './_services'
 import { withApiErrorLogs } from './_with-api-error-logs'
@@ -29,12 +29,12 @@ export default withApiErrorLogs(async (req: NextApiRequest, res: NextApiResponse
     voteSnap = await electionDoc.collection('votes-pending').where('link_auth', '==', auth).limit(1).get()
   if (voteSnap.empty) return res.status(404).json({ error: 'No vote found for this auth' })
 
-  // Require device replacement pubkey from original submit
+  // Require device's voter_pubkey from original submit
   const voteDoc = voteSnap.docs[0]
   const vote = voteDoc.data()
-  const { replacement_pubkey } = vote
-  if (!is64HexChars(replacement_pubkey))
-    return res.status(400).json({ error: 'Vote has no replacement_pubkey; cannot authorize replace' })
+  const voter_pubkey = vote.voter_pubkey || vote.replacement_pubkey // safe to drop replacement_pubkey after 2026-09-29
+  if (!is64HexChars(voter_pubkey))
+    return res.status(400).json({ error: 'Vote has no voter_pubkey; cannot authorize replace' })
 
   // Verify signature over the new encrypted_vote
   const message = encodeReplacementPayload({
@@ -42,7 +42,7 @@ export default withApiErrorLogs(async (req: NextApiRequest, res: NextApiResponse
     election_id,
     encrypted_vote: encrypted_vote as Record<string, CipherStrings>,
   })
-  if (!(await verifyReplacement(replacement_pubkey, signature, message)))
+  if (!(await verifyReplacement(voter_pubkey, signature, message)))
     return res.status(401).json({ error: 'Invalid replacement signature' })
 
   // Archive prior ciphertext, swap in the new one, keep votes cache fresh

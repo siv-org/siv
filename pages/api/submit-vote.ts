@@ -3,8 +3,8 @@ import { firestore } from 'firebase-admin'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { safeOrigin } from 'src/_shared/safeOrigin'
 import { generateAuthToken } from 'src/crypto/generate-auth-tokens'
-import { is64HexChars } from 'src/crypto/replacement-key'
 import { CipherStrings } from 'src/crypto/stringify-shuffle'
+import { is64HexChars } from 'src/crypto/voter-key'
 import { EncryptedVote } from 'src/status/AcceptedVotes'
 
 import { firebase, pushover, sendEmail } from './_services'
@@ -14,15 +14,14 @@ import { pusher } from './pusher'
 
 export default withApiErrorLogs(async (req: NextApiRequest, res: NextApiResponse) => {
   const payload = req.method === 'POST' ? req.body : req.query
-  const { auth, election_id, embed = '', replacement_pubkey } = payload
+  const { auth, election_id, embed = '', voter_pubkey } = payload
   if (!election_id) return res.status(400).json({ error: 'Missing Election ID' })
   if (embed) await pushover('Submitted Vote w/ embed', `election: ${election_id}\nembed: ${embed}\nauth: ${auth}`)
 
   let { encrypted_vote } = payload
   if (typeof encrypted_vote === 'string') encrypted_vote = JSON.parse(encrypted_vote)
 
-  if (!is64HexChars(replacement_pubkey))
-    return res.status(400).json({ error: 'Missing or malformed replacement_pubkey' })
+  if (!is64HexChars(voter_pubkey)) return res.status(400).json({ error: 'Missing or malformed voter_pubkey' })
 
   const origin = safeOrigin(req)
   if (typeof origin !== 'string') return res.status(500).json(origin)
@@ -52,7 +51,7 @@ export default withApiErrorLogs(async (req: NextApiRequest, res: NextApiResponse
           headers: req.headers,
           link_auth,
           rejection: message,
-          replacement_pubkey,
+          voter_pubkey,
         }),
         pushover('Link submission when closed', `election: ${election_id}\nauth: ${auth}\nmessage: ${message}`),
       ])
@@ -68,7 +67,7 @@ export default withApiErrorLogs(async (req: NextApiRequest, res: NextApiResponse
         encrypted_vote,
         headers: req.headers,
         link_auth,
-        replacement_pubkey,
+        voter_pubkey,
       }),
       // 2b. Update election's cached tally of num_votes
       electionDoc.update({
@@ -102,7 +101,7 @@ export default withApiErrorLogs(async (req: NextApiRequest, res: NextApiResponse
           encrypted_vote,
           headers: req.headers,
           rejection: message,
-          replacement_pubkey,
+          voter_pubkey,
         }),
         pushover('SIV submission: Bad Auth Token', `election: ${election_id}\nauth: ${auth}\nmessage: ${message}`),
       ])
@@ -125,7 +124,7 @@ export default withApiErrorLogs(async (req: NextApiRequest, res: NextApiResponse
       created_at: firestore.FieldValue.serverTimestamp(),
       encrypted_vote,
       headers: req.headers,
-      replacement_pubkey,
+      voter_pubkey,
     })
   } catch (error) {
     // Doc present → lost the race / already voted. Absent → write failed (network, etc.).
@@ -147,7 +146,7 @@ export default withApiErrorLogs(async (req: NextApiRequest, res: NextApiResponse
         encrypted_vote,
         headers: req.headers,
         rejection,
-        replacement_pubkey,
+        voter_pubkey,
       }),
       pushover(
         `SIV submission: ${isDocAlreadyPresent ? 'duplicate auth (race on create)' : 'vote write failed'}`,

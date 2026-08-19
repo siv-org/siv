@@ -4,20 +4,20 @@ import { describe, expect, test } from 'bun:test'
 import { bytesToHex, hexToBytes } from './bytes-to-hex'
 import {
   encodeReplacementPayload,
-  generateReplacementKeypair,
+  generateVoterKeypair,
   is64HexChars,
   is128HexChars,
   signReplacement,
   verifyReplacement,
-} from './replacement-key'
+} from './voter-key'
 
-describe('generateReplacementKeypair', () => {
+describe('generateVoterKeypair', () => {
   test('returns 32-byte hex keys that match', async () => {
-    const { replacement_privkey, replacement_pubkey } = await generateReplacementKeypair()
+    const { voter_privkey, voter_pubkey } = await generateVoterKeypair()
 
-    expect(is64HexChars(replacement_privkey)).toBe(true)
-    expect(is64HexChars(replacement_pubkey)).toBe(true)
-    expect(replacement_pubkey).toBe(bytesToHex(await getPublicKey(hexToBytes(replacement_privkey))))
+    expect(is64HexChars(voter_privkey)).toBe(true)
+    expect(is64HexChars(voter_pubkey)).toBe(true)
+    expect(voter_pubkey).toBe(bytesToHex(await getPublicKey(hexToBytes(voter_privkey))))
   })
 
   test('is64HexChars rejects bad values', () => {
@@ -29,14 +29,14 @@ describe('generateReplacementKeypair', () => {
 })
 
 describe('signReplacement / verifyReplacement', async () => {
-  const { replacement_privkey, replacement_pubkey } = await generateReplacementKeypair()
+  const { voter_privkey, voter_pubkey } = await generateVoterKeypair()
   const encrypted_vote = { mayor: { encrypted: 'aa', lock: 'bb' }, prop: { encrypted: 'cc', lock: 'dd' } }
   const message = encodeReplacementPayload({ auth: 'abcd123456', election_id: 'e1', encrypted_vote })
-  const signature = await signReplacement(replacement_privkey, message)
+  const signature = await signReplacement(voter_privkey, message)
 
   test('valid signature verifies', async () => {
     expect(is128HexChars(signature)).toBe(true)
-    expect(await verifyReplacement(replacement_pubkey, signature, message)).toBe(true)
+    expect(await verifyReplacement(voter_pubkey, signature, message)).toBe(true)
   })
 
   test('encodeReplacementPayload produces canonical bytes, no matter object order', () => {
@@ -65,6 +65,6 @@ describe('signReplacement / verifyReplacement', async () => {
       election_id: 'e1',
       encrypted_vote: { ...encrypted_vote, mayor: { encrypted: 'zz', lock: 'bb' } },
     })
-    expect(await verifyReplacement(replacement_pubkey, signature, tampered)).toBe(false)
+    expect(await verifyReplacement(voter_pubkey, signature, tampered)).toBe(false)
   })
 })

@@ -23,14 +23,11 @@ export function encodeReplacementPayload({
   return new TextEncoder().encode(JSON.stringify({ auth, election_id, encrypted_vote: sorted }))
 }
 
-/** ed25519 keypair for authorizing later vote replacements (strengthen / selection update). */
-export async function generateReplacementKeypair() {
+/** ed25519 keypair for authorizing later updates */
+export async function generateVoterKeypair() {
   const privateKey = utils.randomPrivateKey()
   const publicKey = await getPublicKey(privateKey)
-  return {
-    replacement_privkey: bytesToHex(privateKey),
-    replacement_pubkey: bytesToHex(publicKey),
-  }
+  return { voter_privkey: bytesToHex(privateKey), voter_pubkey: bytesToHex(publicKey) }
 }
 
 /** 32-byte ed25519 key material as lowercase hex. */

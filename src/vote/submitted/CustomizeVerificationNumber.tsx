@@ -1,7 +1,7 @@
 import { Check, PenLine } from 'lucide-react'
 import { Dispatch, useEffect, useRef, useState } from 'react'
 import { api } from 'src/api-helper'
-import { encodeReplacementPayload, signReplacement } from 'src/crypto/replacement-key'
+import { encodeReplacementPayload, signReplacement } from 'src/crypto/voter-key'
 import { h26fonts } from 'src/homepage2026/fonts'
 import { useElectionInfo } from 'src/status/use-election-info'
 
@@ -50,7 +50,7 @@ export function CustomizeVerificationNumber({
   // After local re-encrypt, sign & POST the new ciphertext
   useEffect(() => {
     if (!pendingTracking.current || state.tracking !== pendingTracking.current) return
-    const privkey = state.replacement_privkey
+    const privkey = state.voter_privkey || state.replacement_privkey // safe to drop replacement_* after 2026-09-29
     if (!privkey || !Object.keys(state.encrypted).length) return
 
     pendingTracking.current = null
@@ -77,7 +77,7 @@ export function CustomizeVerificationNumber({
         setSubmitting(false)
       }
     })()
-  }, [auth, election_id, state.encrypted, state.replacement_privkey, state.tracking])
+  }, [auth, election_id, state.encrypted, state.voter_privkey, state.replacement_privkey, state.tracking])
 
   if (!state.tracking) return null
 
@@ -109,7 +109,7 @@ export function CustomizeVerificationNumber({
 
   const apply = () => {
     if (!preview || submitting) return
-    if (!state.replacement_privkey) return setError('Missing replacement key on this device')
+    if (!(state.voter_privkey || state.replacement_privkey)) return setError('Missing voter key on this device')
 
     setError('')
     setSubmitting(true)

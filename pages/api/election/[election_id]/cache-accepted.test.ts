@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'bun:test'
 import { secretsMatch } from 'src/_shared/secretsMatch'
-import { encodeReplacementPayload, generateReplacementKeypair, signReplacement } from 'src/crypto/replacement-key'
 import { CipherStrings } from 'src/crypto/stringify-shuffle'
+import { encodeReplacementPayload, generateVoterKeypair, signReplacement } from 'src/crypto/voter-key'
 
 const API_BASE = 'http://localhost:3000/api'
 
@@ -61,7 +61,7 @@ const helpers = {
     electionId: string,
     auth: string,
     encryptedVote: Record<string, unknown> = {},
-    replacement_pubkey = 'a'.repeat(64),
+    voter_pubkey = 'a'.repeat(64),
   ) => {
     // Helper to submit a vote via the API
     return fetch(`${API_BASE}/submit-vote`, {
@@ -69,7 +69,7 @@ const helpers = {
         auth,
         election_id: electionId,
         encrypted_vote: JSON.stringify(encryptedVote),
-        replacement_pubkey,
+        voter_pubkey,
       }),
       headers: { 'Content-Type': 'application/json' },
       method: 'POST',
@@ -209,8 +209,8 @@ test('Strengthened vote - packed ciphertext is replaced in cache-accepted', asyn
     expect((await helpers.createTestElection(electionId)).status).toBe(201)
     expect((await helpers.createTestVoters(electionId, [{ auth_token: auth }])).status).toBe(201)
 
-    const { replacement_privkey, replacement_pubkey } = await generateReplacementKeypair()
-    expect((await helpers.submitTestVote(electionId, auth, original, replacement_pubkey)).status).toBe(200)
+    const { voter_privkey, voter_pubkey } = await generateVoterKeypair()
+    expect((await helpers.submitTestVote(electionId, auth, original, voter_pubkey)).status).toBe(200)
 
     // Pack so the vote is no longer only in the live tail
     const packed = await helpers.callCacheAccepted(electionId)
@@ -225,7 +225,7 @@ test('Strengthened vote - packed ciphertext is replaced in cache-accepted', asyn
       auth,
       electionId,
       encryptedVote: strengthened,
-      privkey: replacement_privkey,
+      privkey: voter_privkey,
     })
     expect(strengthen.status).toBe(200)
 

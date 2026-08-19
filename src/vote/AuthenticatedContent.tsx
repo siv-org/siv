@@ -2,7 +2,7 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useEffect, useRef } from 'react'
 import { secretsMatch } from 'src/_shared/secretsMatch'
-import { generateReplacementKeypair } from 'src/crypto/replacement-key'
+import { generateVoterKeypair } from 'src/crypto/voter-key'
 
 import { GlobalCSS } from '../GlobalCSS'
 import { CustomAuthFlow, hasCustomAuthFlow } from './auth/11choosesAuth/CustomAuthFlow'
@@ -25,12 +25,20 @@ export const AuthenticatedContent = ({ auth, election_id }: { auth: string; elec
 
   storeElectionInfo(dispatch, election_id)
 
-  // Generate replacement keypair on load
+  // Generate voter keypair on load
   useEffect(() => {
-    if (state.replacement_privkey && state.replacement_pubkey) return
+    if (state.voter_privkey && state.voter_pubkey) return
+    if (state.replacement_privkey && state.replacement_pubkey) return // pre-rename localStorage; drop after 2026-09-29
     if (state.submitted_at) return // don't invent a new keypair after submit — it wouldn't match the server
-    generateReplacementKeypair().then(dispatch)
-  }, [dispatch, state.replacement_privkey, state.replacement_pubkey, state.submitted_at])
+    generateVoterKeypair().then(dispatch)
+  }, [
+    dispatch,
+    state.voter_privkey,
+    state.voter_pubkey,
+    state.replacement_privkey,
+    state.replacement_pubkey,
+    state.submitted_at,
+  ])
 
   // Keep link_auth in localStorage and restore it on the URL for subsequent visits
   useEffect(() => {

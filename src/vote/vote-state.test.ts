@@ -109,15 +109,15 @@ describe('vote-state reducer', () => {
     expect(submitted.encrypted).toEqual(voted.encrypted)
   })
 
-  test('replacement keypair can be stored without re-encrypting', () => {
+  test('voter keypair can be stored without re-encrypting', () => {
     const voted = reducer({ ...blank(), public_key: pub, tracking: '1111-1111-1111' }, { mayor: 'Alice' })
     const withKeys = reducer(voted, {
-      replacement_privkey: 'a'.repeat(64),
-      replacement_pubkey: 'b'.repeat(64),
+      voter_privkey: 'a'.repeat(64),
+      voter_pubkey: 'b'.repeat(64),
     })
 
-    expect(withKeys.replacement_privkey).toBe('a'.repeat(64))
-    expect(withKeys.replacement_pubkey).toBe('b'.repeat(64))
+    expect(withKeys.voter_privkey).toBe('a'.repeat(64))
+    expect(withKeys.voter_pubkey).toBe('b'.repeat(64))
     expect(withKeys.encrypted).toEqual(voted.encrypted)
   })
 

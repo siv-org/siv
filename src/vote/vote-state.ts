@@ -20,9 +20,12 @@ export type State = VoteData & {
   previous_submissions?: (VoteData & { replaced_at: string })[]
   privacy_protectors_statements?: string
   public_key?: string
+  // replacement_pub/privkey renamed to voter_pub/privkey. Safe to delete after 2026-09-29
   replacement_privkey?: string
   replacement_pubkey?: string
   submission_confirmation?: string
+  voter_privkey?: string
+  voter_pubkey?: string
 }
 
 type Map = Record<string, string>
@@ -66,8 +69,8 @@ export function reducer(prev: State, payload: Map) {
     payload.submitted_at ||
     payload.esigned_at ||
     payload.link_auth ||
-    payload.replacement_privkey ||
-    payload.replacement_pubkey
+    payload.voter_privkey ||
+    payload.voter_pubkey
   ) {
     return { ...prev, ...payload }
   }
