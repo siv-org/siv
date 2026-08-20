@@ -3,10 +3,12 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { Dispatch, useRef, useState } from 'react'
 import SignaturePad from 'react-signature-pad-wrapper'
+import { encodeEsignaturePayload, signReplacement } from 'src/crypto/voter-key'
 
 import { OnClickButton } from '../../_shared/Button'
 import { api } from '../../api-helper'
 import { GlobalCSS } from '../../GlobalCSS'
+import { State } from '../vote-state'
 
 type Pad = {
   clear: () => void
@@ -17,14 +19,17 @@ export const ESignScreen = ({
   auth,
   dispatch,
   election_id,
+  state,
 }: {
   auth?: string
   dispatch: Dispatch<Record<string, string>>
   election_id?: string
+  state: State
 }): JSX.Element => {
   const signaturePad = useRef<Pad>(null)
   const [buttonText, setButtonText] = useState('Submit')
   const router = useRouter()
+  const privkey = state.voter_privkey
 
   return (
     <>
@@ -44,13 +49,17 @@ export const ESignScreen = ({
             Clear
           </OnClickButton>
           <OnClickButton
+            disabled={!privkey}
             onClick={async () => {
               setButtonText('Submitting...')
               const esignature = signaturePad.current?.toDataURL()
               // console.log('esignature:', esignature)
 
               if (auth === 'link') auth = router.query.link_auth as string | undefined
-              const response = await api('submit-esignature', { auth, election_id, esignature })
+              if (!auth || !election_id || !esignature || !privkey) return setButtonText('Error')
+
+              const signature = await signReplacement(privkey, encodeEsignaturePayload({ auth, election_id, esignature }))
+              const response = await api('submit-esignature', { auth, election_id, esignature, signature })
               if (response.status === 200) {
                 dispatch({ esigned_at: new Date().toString() })
               } else {

@@ -3,6 +3,7 @@ import { describe, expect, test } from 'bun:test'
 
 import { bytesToHex, hexToBytes } from './bytes-to-hex'
 import {
+  encodeEsignaturePayload,
   encodeReplacementPayload,
   generateVoterKeypair,
   is64HexChars,
@@ -66,5 +67,26 @@ describe('signReplacement / verifyReplacement', async () => {
       encrypted_vote: { ...encrypted_vote, mayor: { encrypted: 'zz', lock: 'bb' } },
     })
     expect(await verifyReplacement(voter_pubkey, signature, tampered)).toBe(false)
+  })
+})
+
+describe('encodeEsignaturePayload', async () => {
+  const { voter_privkey, voter_pubkey } = await generateVoterKeypair()
+  const esignature = 'data:image/png;base64,abc'
+  const message = encodeEsignaturePayload({ auth: 'abcd123456', election_id: 'e1', esignature })
+  const signature = await signReplacement(voter_privkey, message)
+
+  test('valid signature verifies', async () => {
+    expect(await verifyReplacement(voter_pubkey, signature, message)).toBe(true)
+  })
+
+  test('tampered esignature does not verify', async () => {
+    expect(
+      await verifyReplacement(
+        voter_pubkey,
+        signature,
+        encodeEsignaturePayload({ auth: 'abcd123456', election_id: 'e1', esignature: 'other' }),
+      ),
+    ).toBe(false)
   })
 })

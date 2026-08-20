@@ -3,6 +3,19 @@ import { CipherStrings } from 'src/crypto/stringify-shuffle'
 
 import { bytesToHex, hexToBytes } from './bytes-to-hex'
 
+/** Canonical bytes the client signs and the server verifies for an esignature submit. */
+export function encodeEsignaturePayload({
+  auth,
+  election_id,
+  esignature,
+}: {
+  auth: string
+  election_id: string
+  esignature: string
+}) {
+  return new TextEncoder().encode(JSON.stringify({ auth, election_id, esignature }))
+}
+
 /** Canonical bytes the client signs and the server verifies for a vote replace. */
 export function encodeReplacementPayload({
   auth,
