@@ -42,7 +42,7 @@ export function SubmittedScreen({
   return (
     <NoSsr>
       <UnverifiedEmailModal />
-      <InvalidatedVoteMessage />
+      <InvalidatedVoteMessage {...{ state }} />
       <MissingAuthInfoBanner {...{ auth, election_id, state }} />
 
       {!disabledLinkToStatusPage.includes(election_id) && (

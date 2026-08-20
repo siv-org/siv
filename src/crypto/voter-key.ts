@@ -16,6 +16,19 @@ export function encodeEsignaturePayload({
   return new TextEncoder().encode(JSON.stringify({ auth, election_id, esignature }))
 }
 
+/** Canonical bytes the client signs and the server verifies for an invalidation response. */
+export function encodeInvalidationResponsePayload({
+  auth,
+  election_id,
+  message,
+}: {
+  auth: string
+  election_id: string
+  message: string
+}) {
+  return new TextEncoder().encode(JSON.stringify({ auth, election_id, message }))
+}
+
 /** Canonical bytes the client signs and the server verifies for a vote replace. */
 export function encodeReplacementPayload({
   auth,

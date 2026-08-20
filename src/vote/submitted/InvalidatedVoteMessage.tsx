@@ -1,14 +1,18 @@
 import { useRouter } from 'next/router'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { api } from 'src/api-helper'
+import { encodeInvalidationResponsePayload, signReplacement } from 'src/crypto/voter-key'
 
-export const InvalidatedVoteMessage = () => {
+import { State } from '../vote-state'
+
+export const InvalidatedVoteMessage = ({ state }: { state: State }) => {
   const [message, setMessage] = useState('')
   const [wasVoteInvalidated, setWasVoteInvalidated] = useState(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitSuccessful, setIsSubmitSuccessful] = useState(false)
   const router = useRouter()
   const { auth, election_id } = router.query
+  const privkey = state.voter_privkey
 
   useEffect(() => {
     api(`/election/${election_id}/was-vote-invalidated?auth=${auth}`)
@@ -24,7 +28,7 @@ export const InvalidatedVoteMessage = () => {
       <p>If you believe this was in error, you can write a message to the Election Administrator:</p>
       <hr />
       <textarea
-        className="w-full h-16 p-1"
+        className="p-1 w-full h-16"
         disabled={isSubmitSuccessful}
         onChange={(e) => setMessage(e.target.value)}
         placeholder="Write your message here..."
@@ -32,10 +36,18 @@ export const InvalidatedVoteMessage = () => {
       />
       <br />
       <button
-        disabled={isSubmitting || isSubmitSuccessful}
+        disabled={isSubmitting || isSubmitSuccessful || !privkey}
         onClick={async () => {
+          if (typeof auth !== 'string' || typeof election_id !== 'string' || !privkey) return
           setIsSubmitting(true)
-          const response = await api(`/election/${election_id}/submit-invalidation-response`, { auth, message })
+          const response = await api(`/election/${election_id}/submit-invalidation-response`, {
+            auth,
+            message,
+            signature: await signReplacement(
+              privkey,
+              encodeInvalidationResponsePayload({ auth, election_id, message }),
+            ),
+          })
 
           if (!response.ok) return alert(`Error sending (status ${response.status})`)
 

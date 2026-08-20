@@ -4,6 +4,7 @@ import { describe, expect, test } from 'bun:test'
 import { bytesToHex, hexToBytes } from './bytes-to-hex'
 import {
   encodeEsignaturePayload,
+  encodeInvalidationResponsePayload,
   encodeReplacementPayload,
   generateVoterKeypair,
   is64HexChars,
@@ -86,6 +87,30 @@ describe('encodeEsignaturePayload', async () => {
         voter_pubkey,
         signature,
         encodeEsignaturePayload({ auth: 'abcd123456', election_id: 'e1', esignature: 'other' }),
+      ),
+    ).toBe(false)
+  })
+})
+
+describe('encodeInvalidationResponsePayload', async () => {
+  const { voter_privkey, voter_pubkey } = await generateVoterKeypair()
+  const message = encodeInvalidationResponsePayload({
+    auth: 'abcd123456',
+    election_id: 'e1',
+    message: 'please recount',
+  })
+  const signature = await signReplacement(voter_privkey, message)
+
+  test('valid signature verifies', async () => {
+    expect(await verifyReplacement(voter_pubkey, signature, message)).toBe(true)
+  })
+
+  test('tampered message does not verify', async () => {
+    expect(
+      await verifyReplacement(
+        voter_pubkey,
+        signature,
+        encodeInvalidationResponsePayload({ auth: 'abcd123456', election_id: 'e1', message: 'other' }),
       ),
     ).toBe(false)
   })
