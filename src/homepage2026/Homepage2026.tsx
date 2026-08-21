@@ -23,7 +23,7 @@ export function Homepage2026() {
 
   return (
     <div className={`overflow-x-hidden min-h-screen antialiased bg-h26-bg text-h26-text ${h26fonts}`}>
-      <Head title="Digital Democracy" />
+      <Head title="Safe & Smart Digital Voting" />
       <div className="relative z-10">
         <Nav />
         <Hero />
