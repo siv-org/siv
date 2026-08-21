@@ -3,7 +3,7 @@ import _Head from 'next/head'
 export const Head = ({
   children = <></>,
   description,
-  image_preview_url = `https://siv.org/preview.png`,
+  image_preview_url = `https://siv.org/preview.jpg`,
   title,
 }: {
   children?: JSX.Element
