@@ -48,7 +48,8 @@ export function Nav() {
             </Link>
           ) : (
             // Login button — outlined on login page so it's less prominent
-            <Link
+            // Full document request so proxy.ts can redirect when siv-jwt is set
+            <a
               className={`rounded-full px-[18px] py-1.5 text-sm font-medium no-underline transition-all duration-200 border-2 ${
                 isLoginPage
                   ? 'border-h26-green bg-white text-h26-green hover:bg-h26-green/5'
@@ -58,7 +59,7 @@ export function Nav() {
               key={text}
             >
               {text}
-            </Link>
+            </a>
           ),
         )}
       </div>

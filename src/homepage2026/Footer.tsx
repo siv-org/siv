@@ -53,16 +53,19 @@ export function Footer() {
               <div key={group}>
                 <p className="mb-3 font-mono26 text-[0.65rem] uppercase tracking-[0.2em] text-h26-muted">{group}</p>
                 <ul className="grid gap-2 pl-0 list-none">
-                  {links.map(({ text, url }) => (
-                    <li key={text}>
-                      <Link
-                        className="text-[0.82rem] text-h26-textSecondary no-underline transition-colors hover:text-h26-text"
-                        href={url}
-                      >
-                        {text}
-                      </Link>
-                    </li>
-                  ))}
+                  {links.map(({ text, url }) => {
+                    const LinkComponent = url === '/login' ? 'a' : Link // No client-side transition for /login, so proxy.ts middleware can redirect to /admin when already logged in
+                    return (
+                      <li key={text}>
+                        <LinkComponent
+                          className="text-[0.82rem] text-h26-textSecondary no-underline transition-colors hover:text-h26-text"
+                          href={url}
+                        >
+                          {text}
+                        </LinkComponent>
+                      </li>
+                    )
+                  })}
                 </ul>
               </div>
             ))}
