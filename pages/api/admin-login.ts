@@ -5,8 +5,9 @@ import { safeOrigin } from 'src/_shared/safeOrigin'
 import { pick_random_bigint } from 'src/crypto/pick-random-bigint'
 
 import { firebase, sendEmail } from './_services'
+import { withApiErrorLogs } from './_with-api-error-logs'
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+export default withApiErrorLogs(async (req: NextApiRequest, res: NextApiResponse) => {
   let { email }: { email: string } = req.body
 
   // Confirm they sent a valid email address
@@ -51,8 +52,8 @@ ${button(link, 'Or Click Here to Login Directly')}
 <em style="font-size:10px; opacity: 0.6;">If you did not authorize this request, press reply to let us know.</em>`,
   })
 
-  res.status(200).send('Success')
-}
+  return res.status(200).send('Success')
+})
 
 /** Pick a cryptographically-secure random number
  * greater than 100,000
