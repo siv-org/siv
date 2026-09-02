@@ -3,15 +3,16 @@ import { exampleAuthToken } from 'src/vote/EnterAuthToken'
 import { format } from 'timeago.js'
 
 import { firebase, pushover } from './_services'
+import { withApiErrorLogs } from './_with-api-error-logs'
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+export default withApiErrorLogs(async (req: NextApiRequest, res: NextApiResponse) => {
   const { auth, election_id } = req.body
 
   await validateAuthToken(auth, election_id, {
     fail: (message) => res.status(400).send(message),
     pass: (message) => res.status(200).send(message),
   })
-}
+})
 
 type Response = (message: string) => void
 
