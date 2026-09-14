@@ -19,8 +19,16 @@ const SEVERITY: Record<Severity, { color: string; label: string }> = {
 }
 
 const BOUNTIES: { amount: string; meaning: string; sev: Severity }[] = [
-  { amount: '$10,000', meaning: 'Undetectably changes the outcome or breaks vote secrecy at scale.', sev: 'critical' },
-  { amount: '$2,500', meaning: 'Changes or blocks votes, but is caught during a post-election audit.', sev: 'high' },
+  {
+    amount: '$1,000',
+    meaning: 'Undetectably compromise the integrity or vote-confidentiality of an election at scale.',
+    sev: 'critical',
+  },
+  {
+    amount: '$700',
+    meaning: 'Compromise the integrity or vote-confidentiality, but is caught during a post-election audit.',
+    sev: 'high',
+  },
   {
     amount: '$500',
     meaning: 'Caught before the voting period ends, or affects a limited set of voters.',
@@ -28,10 +36,14 @@ const BOUNTIES: { amount: string; meaning: string; sev: Severity }[] = [
   },
   {
     amount: '$100',
-    meaning: 'Caught at time of voting by system alerts, or degrades the experience without affecting results.',
+    meaning: 'Caught at time of voting by system alerts, or during vote de-duplication process.',
     sev: 'low',
   },
-  { amount: '$25', meaning: 'Cosmetic errors, unclear docs, typos.', sev: 'info' },
+  {
+    amount: '$10',
+    meaning: 'Cosmetic errors, typos, or other minor issues that do not affect the security of an election.',
+    sev: 'info',
+  },
 ]
 
 const THREATS: { heading: string; note?: string; rows: { sev: Severity; text: string }[] }[] = [
@@ -320,8 +332,9 @@ export function BugBountyPage({ activeFor, lastUpdated }: { activeFor: string; l
           </table>
         </div>
         <p className="mb-14 text-[0.82rem] text-h26-muted">
-          A bug&apos;s severity is set by the worst outcome it enables in the threat model below, not by how clever the
-          technique is.
+          We&apos;re a small, efficient team, structured as a Public Benefit Corporation. If you share our excitement
+          for safe information-age democracy, and would like to contribute to the bounty pool, 100% of which goes to
+          security researchers, we&apos;d love to hear from you at patron@siv.org.
         </p>
 
         {/* Assumptions */}
