@@ -472,8 +472,8 @@ export function BugBountyPage({ activeFor, lastUpdated }: { activeFor: string; l
             Testing must not affect real voters, real elections, or other people&apos;s data. Use the public test
             environment.
           </li>
-          <li>Classifications, amounts, and conditions may change without notice.</li>
-          <li>SIV has sole discretion to decide whether a report qualifies and at which severity.</li>
+          <li>Classifications, amounts, and conditions may change.</li>
+          <li>The SIV team has sole discretion to decide whether a report qualifies and at which severity.</li>
         </ol>
       </main>
 
