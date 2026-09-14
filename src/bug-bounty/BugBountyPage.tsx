@@ -191,10 +191,10 @@ export function BugBountyPage() {
       <section className="px-7 pt-[120px] pb-8 md:pt-[150px] md:pb-10 mx-auto max-w-[760px] animate-[fadeInUp_0.8s_ease_both]">
         <p className="font-mono26 mb-4 flex items-center gap-2 text-xs uppercase tracking-[0.15em] text-h26-muted mt-5">
           <Bug size={16} />
-          Security
+          SIV Security
         </p>
-        <h1 className="font-serif26 text-[clamp(2rem,5vw,3.5rem)] font-normal leading-[1.15] tracking-tight mt-8 mb-3">
-          SIV Bug Bounty
+        <h1 className="font-serif26 text-[clamp(1.2rem,3.6vw,2rem)] font-normal leading-[1.15] tracking-tight mt-8 mb-3 whitespace-nowrap">
+          Continuous Disclosure Program
         </h1>
         <p className="text-[0.92rem] leading-[1.7] text-h26-textSecondary">
           National Election Threat Model (US President)
