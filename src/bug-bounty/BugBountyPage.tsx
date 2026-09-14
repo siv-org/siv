@@ -341,7 +341,7 @@ export function BugBountyPage({ activeFor, lastUpdated }: { activeFor: string; l
         {/* Assumptions */}
         <h2 className="font-serif26 text-[clamp(1.35rem,3vw,1.75rem)] tracking-tight mb-4">Assumptions</h2>
         <p className="mb-3 text-h26-textSecondary">
-          The threat model assumes the following about how a national election would be run on SIV:
+          The threat model assumes the following about how a national election using SIV:
         </p>
         <ol className="pl-5 mb-14 space-y-2 list-decimal text-h26-textSecondary">
           <li>The election administrator is a central authority responsible for the voter roll.</li>
