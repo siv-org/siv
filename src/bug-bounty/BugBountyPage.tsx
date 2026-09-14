@@ -175,7 +175,7 @@ const card = 'rounded-[18px] border border-h26-border bg-white/70 overflow-hidde
 const table = 'w-full text-left text-[0.88rem] leading-[1.5]'
 const rowBorder = 'border-b border-h26-border last:border-0'
 
-export function BugBountyPage({ lastUpdated }: { lastUpdated: string }) {
+export function BugBountyPage({ activeFor, lastUpdated }: { activeFor: string; lastUpdated: string }) {
   useAnalytics()
 
   return (
@@ -197,7 +197,7 @@ export function BugBountyPage({ lastUpdated }: { lastUpdated: string }) {
           Continuous Disclosure Program
         </h1>
         <p className="text-[0.92rem] leading-[1.7] text-h26-textSecondary">
-          Last updated {lastUpdated}
+          Active for {activeFor}. Last updated {lastUpdated}.
         </p>
       </section>
 
