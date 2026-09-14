@@ -357,7 +357,8 @@ export function BugBountyPage({ activeFor, lastUpdated }: { activeFor: string; l
         {/* Out of scope */}
         <h2 className="font-serif26 text-[clamp(1.35rem,3vw,1.75rem)] tracking-tight mb-4">Out of scope</h2>
         <p className="mb-3 text-h26-textSecondary">
-          We are not defending against these, and reports about them do not qualify:
+          We currently don&apos;t claim to have strong solutions against the following, and reports about them do not
+          qualify:{' '}
         </p>
         <ul className="pl-5 mb-14 space-y-2 list-disc text-h26-textSecondary">
           <li>
@@ -371,6 +372,10 @@ export function BugBountyPage({ activeFor, lastUpdated }: { activeFor: string; l
           <li>
             <strong className="font-medium text-h26-text">{'Phishing attacks '}</strong>
             against voters.
+          </li>
+          <li>
+            <strong className="font-medium text-h26-text">{'Denial of Service '}</strong>
+            attacks against the server.
           </li>
         </ul>
 
