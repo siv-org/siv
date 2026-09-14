@@ -213,6 +213,7 @@ function SevLabel({ sev }: { sev: Severity }) {
 const card = 'rounded-[18px] border border-h26-border bg-white/70 overflow-hidden'
 const table = 'w-full text-left text-[0.88rem] leading-[1.5]'
 const rowBorder = 'border-b border-h26-border last:border-0'
+const SHOW_IN_SCOPE = false
 
 export function BugBountyPage({ activeFor, lastUpdated }: { activeFor: string; lastUpdated: string }) {
   useAnalytics()
@@ -379,35 +380,39 @@ export function BugBountyPage({ activeFor, lastUpdated }: { activeFor: string; l
           </li>
         </ul>
 
-        {/* In scope */}
-        <h2 className="font-serif26 text-[clamp(1.35rem,3vw,1.75rem)] tracking-tight mb-3">In scope</h2>
-        <p className="mb-10 text-h26-textSecondary">
-          Every row below is a bad outcome we are defending against. Find a way to cause one, and the bounty is the
-          row&apos;s severity.
-        </p>
+        {/* In scope (temporarily hidden) */}
+        {SHOW_IN_SCOPE && (
+          <>
+            <h2 className="font-serif26 text-[clamp(1.35rem,3vw,1.75rem)] tracking-tight mb-3">In scope</h2>
+            <p className="mb-10 text-h26-textSecondary">
+              Every row below is a bad outcome we are defending against. Find a way to cause one, and the bounty is the
+              row&apos;s severity.
+            </p>
 
-        {THREATS.map(({ heading, note, rows }) => (
-          <div className="mb-10" key={heading}>
-            <h3 className="font-serif26 text-[1.08rem] tracking-tight mb-3">{heading}</h3>
-            {note && <p className="mb-3 text-[0.82rem] text-h26-muted">{note}</p>}
-            <div className={card}>
-              <table className={table}>
-                <tbody>
-                  {rows.map(({ sev, text }) => (
-                    <tr className={rowBorder} key={text}>
-                      <td className="px-3 py-3 sm:px-5 sm:py-3.5 align-top w-[6.5rem] sm:w-[7.5rem]">
-                        <SevLabel sev={sev} />
-                      </td>
-                      <td className="px-3 py-3 pr-4 sm:px-5 sm:py-3.5 sm:pr-6 align-top text-h26-textSecondary">
-                        {text}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        ))}
+            {THREATS.map(({ heading, note, rows }) => (
+              <div className="mb-10" key={heading}>
+                <h3 className="font-serif26 text-[1.08rem] tracking-tight mb-3">{heading}</h3>
+                {note && <p className="mb-3 text-[0.82rem] text-h26-muted">{note}</p>}
+                <div className={card}>
+                  <table className={table}>
+                    <tbody>
+                      {rows.map(({ sev, text }) => (
+                        <tr className={rowBorder} key={text}>
+                          <td className="px-3 py-3 sm:px-5 sm:py-3.5 align-top w-[6.5rem] sm:w-[7.5rem]">
+                            <SevLabel sev={sev} />
+                          </td>
+                          <td className="px-3 py-3 pr-4 sm:px-5 sm:py-3.5 sm:pr-6 align-top text-h26-textSecondary">
+                            {text}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            ))}
+          </>
+        )}
 
         {/* Reporting */}
         <div
