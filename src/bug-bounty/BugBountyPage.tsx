@@ -1,4 +1,4 @@
-import { Bug, Mail } from 'lucide-react'
+import { Bug, ChevronRight, Mail } from 'lucide-react'
 import Link from 'next/link'
 import { Head } from 'src/Head'
 import { TailwindPreflight } from 'src/TailwindPreflight'
@@ -161,6 +161,33 @@ const THREATS: { heading: string; note?: string; rows: { sev: Severity; text: st
   },
 ]
 
+const LAYERS: { body: string[]; numeral: string; question: string }[] = [
+  {
+    body: [
+      'For decades, many have proposed ways to vote online. Some sacrifice privacy for verifiability. Others maintain strong privacy and verifiability but set aside coercion and vote selling.',
+      'We have been working to answer the hardest challenges the academic community has raised over the years, and achieve one person/one vote, end-to-end verifiable results, while maintaining vote contents private.',
+      'We therefore invite all democracy stakeholders (e.g., election administrators, democracy innovators, security engineers) to review our threat model and report weaknesses in how we think about the threats.',
+    ],
+    numeral: 'I',
+    question: 'Do we agree on the threat model itself?',
+  },
+  {
+    body: [
+      'At this stage, we value vulnerabilities in the SIV protocol most. If the protocol has critical flaws, it does not matter how well we implement it in code.',
+    ],
+    numeral: 'II',
+    question: 'Do we agree the SIV protocol addresses the threat model?',
+  },
+  {
+    body: [
+      'SIV is being used to elect State Senators, members of Congress, party leaders, government leaders, board members, and to decide multi-million-dollar questions.',
+      'We care greatly about vulnerabilities in how we wrote the program. We also greatly value when you see solutions to the weaknesses identified. To that end, the SIV source code is public.',
+    ],
+    numeral: 'III',
+    question: 'Do we agree the codebase implements the protocol well?',
+  },
+]
+
 function SevLabel({ sev }: { sev: Severity }) {
   const { color, label } = SEVERITY[sev]
   return (
@@ -203,18 +230,57 @@ export function BugBountyPage({ activeFor, lastUpdated }: { activeFor: string; l
 
       <main className="px-7 pb-20 md:pb-28 mx-auto max-w-[760px] text-[0.92rem] leading-[1.7] text-h26-text">
         <p className="mb-4 animate-[fadeInUp_0.8s_0.1s_ease_both]">
-          SIV can be used in many types of elections, but it was built to serve as an additional voting option in the
-          most adversarial environments. So, to hold ourselves to the highest standard, this disclosure program&apos;s
-          threat model is a national election (e.g., the US presidential election), where adversaries are nation-states
-          willing to spend military-sized budgets for any available advantage—alongside party insiders, election
-          officials and administrators, software and hardware providers, the SIV team itself, voters themselves,
-          artificial general intelligence agents, and anyone with a computer and hacking skills.
+          SIV can be used in many types of elections, but at its core, SIV was built to serve as an additional voting
+          option in the most adversarial environments, with the ultimate goal of enabling better high-scale digital
+          democracy. So, to hold ourselves to the highest standard, this disclosure program&apos;s threat model is a
+          national election (e.g., the US presidential election), where adversaries are nation-states willing to spend
+          military-sized budgets for any available advantage; alongside party insiders, election officials, software and
+          hardware providers, the SIV team itself, voters themselves, artificial general intelligence agents, and anyone
+          with a computer and hacking skills.
         </p>
-        <p className="mb-12 text-h26-textSecondary animate-[fadeInUp_0.8s_0.15s_ease_both]">
-          The rewards below follow the threat model. Each threat is rated by how bad the outcome is for a national
-          election, and that rating sets the bounty. The single question we care about most:{' '}
+        <p className="mb-8 animate-[fadeInUp_0.8s_0.15s_ease_both]">
+          Here is how we think about structuring the Continuous Disclosure Program:
+        </p>
+
+        {/* Three questions we want answered */}
+        <div className="mb-10 animate-[fadeInUp_0.8s_0.2s_ease_both]">
+          {LAYERS.map(({ body, numeral, question }) => (
+            <details className="border-t group border-h26-border last:border-b" key={numeral}>
+              <summary className="flex items-center gap-2 py-4 cursor-pointer list-none font-serif26 text-[1.05rem] tracking-tight">
+                <ChevronRight
+                  aria-hidden
+                  className="transition-transform size-4 shrink-0 text-h26-muted group-open:rotate-90"
+                />
+                <span>
+                  {numeral}. {question}
+                </span>
+              </summary>
+              <div className="pb-5 pl-5">
+                {body.map((paragraph) => (
+                  <p className="mb-2.5 last:mb-0 text-h26-textSecondary" key={paragraph}>
+                    {paragraph}
+                  </p>
+                ))}
+              </div>
+            </details>
+          ))}
+        </div>
+
+        {/* Guiding principle */}
+        <p className="mb-3 animate-[fadeInUp_0.8s_0.25s_ease_both]">
+          Overall, one principle guided how we think about and build for high scale digital democracy: we do not assume
+          systems will not be broken into. With enough resources, anything can be broken into. We do follow the highest
+          security practices, while also balancing security with usability. But above all, we design for evidence, for
+          zero trust: if something goes bad, everyone, especially voters, can personally check whether their votes and
+          the election results were changed. Tamper evident. Then, be able to remediate each compromised vote, instead
+          of having to invalidate the entire election.
+        </p>
+
+        <p className="mb-12 text-h26-textSecondary animate-[fadeInUp_0.8s_0.3s_ease_both]">
           <strong className="font-medium text-h26-text">
-            can a voter&apos;s intent be changed, dropped, or fabricated without anyone noticing?
+            So the question we value most: can results be changed, dropped, or fabricated without anyone noticing? Can
+            you compromise integrity, availability, or vote confidentiality without anyone noticing — especially the
+            voters?
           </strong>
         </p>
 
