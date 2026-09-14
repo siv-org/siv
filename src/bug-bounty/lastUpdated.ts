@@ -1,0 +1,32 @@
+import { execFileSync } from 'child_process'
+import { statSync } from 'fs'
+import { GetStaticProps } from 'next'
+import { join } from 'path'
+
+const FILE = 'src/bug-bounty/BugBountyPage.tsx'
+
+export function formatLastUpdated(isoDate: string) {
+  const [y, m, d] = isoDate.slice(0, 10).split('-').map(Number)
+  return new Date(Date.UTC(y, m - 1, d)).toLocaleDateString('en-US', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    timeZone: 'UTC',
+  })
+}
+
+function localIsoDate(d: Date) {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+}
+
+export function lastUpdatedIso(file = FILE) {
+  const committed = execFileSync('git', ['log', '-1', '--format=%cI', '--', file], { encoding: 'utf8' }).trim()
+  const dirty = execFileSync('git', ['status', '--porcelain', '--', file], { encoding: 'utf8' }).trim()
+  if (!dirty) return committed
+  return localIsoDate(statSync(join(process.cwd(), file)).mtime)
+}
+
+export const getStaticProps: GetStaticProps<{ lastUpdated: string }> = async () => ({
+  props: { lastUpdated: formatLastUpdated(lastUpdatedIso()) },
+})
