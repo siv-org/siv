@@ -9,7 +9,6 @@ const PROGRAM_START = '2026-08-14'
 export function formatLastUpdated(isoDate: string) {
   const [y, m, d] = isoDate.slice(0, 10).split('-').map(Number)
   return new Date(Date.UTC(y, m - 1, d)).toLocaleDateString('en-US', {
-    weekday: 'long',
     year: 'numeric',
     month: 'long',
     day: 'numeric',
