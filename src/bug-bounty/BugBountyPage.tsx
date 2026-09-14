@@ -203,9 +203,12 @@ export function BugBountyPage({ activeFor, lastUpdated }: { activeFor: string; l
 
       <main className="px-7 pb-20 md:pb-28 mx-auto max-w-[760px] text-[0.92rem] leading-[1.7] text-h26-text">
         <p className="mb-4 animate-[fadeInUp_0.8s_0.1s_ease_both]">
-          Given enough eyeballs, all bugs are shallow. SIV&apos;s source is public so that anyone can read it — but a
-          public codebase only helps if people actually look. This bounty program pays people who find real problems,
-          and it says up front which problems matter most.
+          SIV can be used in many types of elections, but it was built to serve as an additional voting option in the
+          most adversarial environments. So, to hold ourselves to the highest standard, this disclosure program&apos;s
+          threat model is a national election (e.g., the US presidential election), where adversaries are nation-states
+          willing to spend military-sized budgets for any available advantage—alongside party insiders, election
+          officials and administrators, software and hardware providers, the SIV team itself, voters themselves,
+          artificial general intelligence agents, and anyone with a computer and hacking skills.
         </p>
         <p className="mb-12 text-h26-textSecondary animate-[fadeInUp_0.8s_0.15s_ease_both]">
           The rewards below follow the threat model. Each threat is rated by how bad the outcome is for a national
