@@ -8,7 +8,7 @@ import { h26fonts } from '../homepage2026/fonts'
 import { Footer } from '../homepage2026/Footer'
 import { Nav } from '../homepage2026/Nav'
 
-type Severity = 'critical' | 'high' | 'medium' | 'low' | 'info'
+type Severity = 'critical' | 'high' | 'info' | 'low' | 'medium'
 
 const SEVERITY: Record<Severity, { color: string; label: string }> = {
   critical: { color: '#9b1c1c', label: 'Critical' },
@@ -164,7 +164,7 @@ const THREATS: { heading: string; note?: string; rows: { sev: Severity; text: st
 function SevLabel({ sev }: { sev: Severity }) {
   const { color, label } = SEVERITY[sev]
   return (
-    <span className="inline-flex items-center gap-2 whitespace-nowrap">
+    <span className="inline-flex gap-2 items-center whitespace-nowrap">
       <span className="size-[0.55em] rounded-full shrink-0" style={{ background: color }} />
       <span className="font-mono26 text-[0.68rem] uppercase tracking-[0.12em]">{label}</span>
     </span>
@@ -217,7 +217,7 @@ export function BugBountyPage() {
 
         {/* Bounties */}
         <h2 className="font-serif26 text-[clamp(1.35rem,3vw,1.75rem)] tracking-tight mb-5">Bounties</h2>
-        <div className={`${card} mb-3 sm:hidden divide-y divide-h26-border`}>
+        <div className={`mb-3 divide-y ${card} sm:hidden divide-h26-border`}>
           {BOUNTIES.map(({ amount, meaning, sev }) => (
             <div className="px-4 py-3.5" key={sev}>
               <div className="flex items-center justify-between gap-3 mb-1.5">
@@ -228,7 +228,7 @@ export function BugBountyPage() {
             </div>
           ))}
         </div>
-        <div className={`${card} mb-3 hidden sm:block`}>
+        <div className={`hidden mb-3 ${card} sm:block`}>
           <table className={table}>
             <thead>
               <tr className="border-b border-h26-text/20">
@@ -260,7 +260,7 @@ export function BugBountyPage() {
         <p className="mb-3 text-h26-textSecondary">
           The threat model assumes the following about how a national election would be run on SIV:
         </p>
-        <ol className="mb-14 list-decimal pl-5 space-y-2 text-h26-textSecondary">
+        <ol className="pl-5 mb-14 space-y-2 list-decimal text-h26-textSecondary">
           <li>The election administrator is a central authority responsible for the voter roll.</li>
           <li>
             Voters receive their invitation to vote by postal mail. It contains a unique, single-use Auth Code the voter
@@ -277,7 +277,7 @@ export function BugBountyPage() {
         <p className="mb-3 text-h26-textSecondary">
           We are not defending against these, and reports about them do not qualify:
         </p>
-        <ul className="mb-14 list-disc pl-5 space-y-2 text-h26-textSecondary">
+        <ul className="pl-5 mb-14 space-y-2 list-disc text-h26-textSecondary">
           <li>
             <strong className="font-medium text-h26-text">{"Spyware on the voter's device "}</strong>
             that learns how the person votes.
@@ -331,7 +331,7 @@ export function BugBountyPage() {
           <p className="mb-4 text-h26-textSecondary">
             Email{' '}
             <a
-              className="font-medium text-h26-text underline decoration-h26-border underline-offset-2 hover:decoration-h26-text"
+              className="font-medium underline text-h26-text decoration-h26-border underline-offset-2 hover:decoration-h26-text"
               href="mailto:security@siv.org"
             >
               security@siv.org
@@ -340,7 +340,7 @@ export function BugBountyPage() {
             in the subject line. Include how to reproduce it and which threat above it maps to. If it&apos;s not a
             security flaw, a{' '}
             <a
-              className="font-medium text-h26-text underline decoration-h26-border underline-offset-2 hover:decoration-h26-text"
+              className="font-medium underline text-h26-text decoration-h26-border underline-offset-2 hover:decoration-h26-text"
               href="https://github.com/siv-org/siv/issues"
               rel="noreferrer"
               target="_blank"
