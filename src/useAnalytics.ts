@@ -23,8 +23,7 @@ const startSession = () => {
 export const useAnalytics = () => {
   useEffect(() => {
     if (!isBrowser()) return
-    const { hostname } = window.location
-    if (hostname === 'localhost' || hostname.startsWith('192.168.')) return
+    if (/^localhost$|^192\.168\./.test(window.location.hostname)) return
 
     startSession()
   }, [])
