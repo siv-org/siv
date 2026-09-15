@@ -23,7 +23,8 @@ const startSession = () => {
 export const useAnalytics = () => {
   useEffect(() => {
     if (!isBrowser()) return
-    if (window.location.href.startsWith('http://192.168')) return
+    const { hostname } = window.location
+    if (hostname === 'localhost' || hostname.startsWith('192.168.')) return
 
     startSession()
   }, [])
