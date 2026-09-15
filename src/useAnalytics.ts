@@ -23,7 +23,7 @@ const startSession = () => {
 export const useAnalytics = () => {
   useEffect(() => {
     if (!isBrowser()) return
-    if (/^localhost$|^192\.168\./.test(window.location.hostname)) return
+    if (/^localhost$|^127\.0\.0\.1$|^192\.168\./.test(window.location.hostname)) return
 
     startSession()
   }, [])
