@@ -3,15 +3,17 @@ import _Head from 'next/head'
 export const Head = ({
   children = <></>,
   description,
+  dropPrefix = false,
   image_preview_url = `https://siv.org/preview.jpg`,
   title,
 }: {
   children?: JSX.Element
   description?: string
+  dropPrefix?: boolean
   image_preview_url?: string
   title: string
 }) => {
-  const full_title = `SIV: ` + title
+  const full_title = dropPrefix ? title : `SIV: ` + title
 
   return (
     <_Head>
