@@ -33,7 +33,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     election_title: jwt.election_title,
     format: detectFormat,
     name: 'ballot-design-uploads',
-    notification_title: 'Ballot design upload',
+    notification_title: `${jwt.election_manager} uploaded ballot design`,
     req,
     res,
     uploaded_by: jwt.email,

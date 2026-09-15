@@ -20,7 +20,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     election_title: jwt.election_title,
     format: (_, filename) => fileExtension(filename),
     name: 'voter-roll-uploads',
-    notification_title: 'Voter roll upload',
+    notification_title: `${jwt.election_manager} uploaded voter roll`,
     req,
     res,
     uploaded_by: jwt.email,
