@@ -2,7 +2,9 @@ import { UploadOutlined } from '@ant-design/icons'
 import { useState } from 'react'
 
 import { api } from '../../api-helper'
+import { useUser } from '../auth'
 import { SaveButton } from '../SaveButton'
+import { useHashedEmailAccess } from '../useHashedEmailAccess'
 import { revalidate, useStored } from '../useStored'
 import { AddVoterTextarea } from './AddVotersTextarea'
 import { CustomEmailHeaderbar } from './CustomEmailHeaderbar'
@@ -22,6 +24,8 @@ export const AddVoters = () => {
   const [removedDuplicates, setRemovedDuplicates] = useState<string[]>([])
   const [showUpload, setShowUpload] = useState(false)
   const { election_id } = useStored()
+  const { user } = useUser()
+  const uploadVoterRollAllowed = useHashedEmailAccess(user?.email, voterRollUploadAllowlist)
 
   return (
     <div className="max-w-[50rem]">
@@ -33,14 +37,18 @@ export const AddVoters = () => {
       {/* Row for Upload & Save */}
       <div className="flex gap-3 justify-between items-center min-h-[74px]">
         {/* Upload button */}
-        <button
-          className="inline-flex gap-1.5 items-center px-3 py-1 relative bottom-2 text-sm font-medium text-gray-600 bg-gray-50 border border-gray-200 border-solid rounded-md cursor-pointer transition-colors hover:text-gray-900 hover:bg-gray-100"
-          onClick={() => setShowUpload((v) => !v)}
-          type="button"
-        >
-          <UploadOutlined />
-          {showUpload ? 'Hide upload' : 'Or upload'}
-        </button>
+        {!uploadVoterRollAllowed ? (
+          <div /> // Blank, to keep Save btn on right
+        ) : (
+          <button
+            className="inline-flex gap-1.5 items-center px-3 py-1 relative bottom-2 text-sm font-medium text-gray-600 bg-gray-50 border border-gray-200 border-solid rounded-md cursor-pointer transition-colors hover:text-gray-900 hover:bg-gray-100"
+            onClick={() => setShowUpload((v) => !v)}
+            type="button"
+          >
+            <UploadOutlined />
+            {showUpload ? 'Hide upload' : 'Or upload'}
+          </button>
+        )}
 
         {/* Save button, if voters added */}
         {new_voters !== '' && (
@@ -83,4 +91,13 @@ export const AddVoters = () => {
       <ExistingVoters />
     </div>
   )
+}
+
+// import { printEmailHashes } from '../useHashedEmailAccess'
+// void printEmailHashes(['example@test.com'])
+const voterRollUploadAllowlist: Record<string, string> = {
+  '378b22ada9f31e7': 'cd1@g',
+  '1471fccb124bbf4': 's@A',
+  cb547b8468a4642: 'D@s',
+  d12bc8d54668685: 'A@s',
 }

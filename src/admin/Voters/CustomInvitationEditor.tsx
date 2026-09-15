@@ -1,10 +1,9 @@
 import { LinkOutlined, OrderedListOutlined, UnorderedListOutlined } from '@ant-design/icons'
 import { useEffect, useRef, useState } from 'react'
 import { api } from 'src/api-helper'
-import { bytesToHex } from 'src/crypto/bytes-to-hex'
-import { sha256 } from 'src/crypto/sha256'
 
 import { useUser } from '../auth'
+import { useHashedEmailAccess } from '../useHashedEmailAccess'
 import { useStored } from '../useStored'
 
 const ToolbarButton = ({
@@ -99,7 +98,7 @@ export const CustomInvitationEditor = () => {
     }, 0)
   }
 
-  const hasFeatureAccess = useFeatureAccess(user?.email)
+  const hasFeatureAccess = useHashedEmailAccess(user?.email, customInvitationAllowlist)
   if (!hasFeatureAccess) return null
 
   return (
@@ -211,23 +210,7 @@ export const CustomInvitationEditor = () => {
   )
 }
 
-function useFeatureAccess(email: string) {
-  const [hasAccess, setHasAccess] = useState(false)
-
-  useEffect(() => {
-    async function checkAccess() {
-      if (!email) return
-      const hash = bytesToHex(new Uint8Array(await sha256(email + 'saltedsdjfksj'))).slice(0, 15)
-      // alert('hash: ' + hash)
-      if (hash in allowedUsers) return setHasAccess(true)
-    }
-    checkAccess()
-  }, [email])
-
-  return hasAccess
-}
-
-const allowedUsers = {
+const customInvitationAllowlist = {
   '1471fccb124bbf4': 's@A',
   '8044b24d7e96606': 'EHZ',
   // cb547b8468a4642: 'D@s',
