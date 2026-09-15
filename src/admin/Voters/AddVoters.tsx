@@ -30,7 +30,7 @@ export const AddVoters = () => {
       <AddVoterTextarea state={new_voters} update={set_new_voters} />
 
       <button
-        className="inline-flex gap-1.5 items-center mt-2 px-3 py-1 text-sm font-medium text-gray-600 bg-gray-50 border border-gray-200 border-solid rounded-full cursor-pointer transition-colors hover:text-gray-900 hover:bg-gray-100"
+        className="inline-flex gap-1.5 items-center mt-2 px-3 py-1 text-sm font-medium text-gray-600 bg-gray-50 border border-gray-200 border-solid rounded-md cursor-pointer transition-colors hover:text-gray-900 hover:bg-gray-100"
         onClick={() => setShowUpload((v) => !v)}
         type="button"
       >
