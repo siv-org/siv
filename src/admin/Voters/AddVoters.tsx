@@ -15,6 +15,7 @@ import { RequestEsignatures } from './RequestEsignatures'
 import { StopAcceptingVotes } from './StopAcceptingVotes'
 import { ToggleShareableLink } from './ToggleShareableLink'
 import { UploadVoterRollPanel } from './UploadVoterRollPanel'
+import { VoterRollUploadsTable } from './VoterRollUploadsTable'
 
 export const AddVoters = () => {
   const [new_voters, set_new_voters] = useState('')
@@ -66,6 +67,8 @@ export const AddVoters = () => {
           <UploadVoterRollPanel election_id={election_id} />
         </div>
       )}
+
+      <VoterRollUploadsTable />
 
       {/* Show message if duplicates were removed */}
       <DuplicatesNotAdded {...{ removedDuplicates, setRemovedDuplicates }} />
