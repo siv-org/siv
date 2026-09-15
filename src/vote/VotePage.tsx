@@ -9,8 +9,10 @@ import { NoAuthTokenScreen } from './NoAuthTokenScreen'
 const baseUrl = 'https://siv.org'
 
 export const VotePage = ({
+  election_title,
   query: { auth, election_id },
 }: {
+  election_title?: null | string
   query: { auth?: string; election_id: string }
 }): JSX.Element => {
   return (
@@ -18,8 +20,9 @@ export const VotePage = ({
       {/* Ballot-specific meta tags for link previews */}
       <Head
         description="Private verifiable voting"
+        dropPrefix
         image_preview_url={`${baseUrl}/api/election/${election_id}/og-image`}
-        title="Cast Your Vote"
+        title={election_title ? `Cast Your Vote: ${election_title}` : 'Cast Your Vote'}
       />
 
       <main>
