@@ -1,5 +1,5 @@
 import { UploadOutlined } from '@ant-design/icons'
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 import { api } from '../../api-helper'
 import { SaveButton } from '../SaveButton'
@@ -29,43 +29,46 @@ export const AddVoters = () => {
       <h4>Add new voters by email address:</h4>
       <AddVoterTextarea state={new_voters} update={set_new_voters} />
 
-      <button
-        className="inline-flex gap-1.5 items-center mt-2 px-3 py-1 text-sm font-medium text-gray-600 bg-gray-50 border border-gray-200 border-solid rounded-md cursor-pointer transition-colors hover:text-gray-900 hover:bg-gray-100"
-        onClick={() => setShowUpload((v) => !v)}
-        type="button"
-      >
-        <UploadOutlined />
-        {showUpload ? 'Hide upload' : 'Or upload'}
-      </button>
+      {/* Row for Upload & Save */}
+      <div className="flex gap-3 justify-between items-center min-h-[74px]">
+        {/* Upload button */}
+        <button
+          className="inline-flex gap-1.5 items-center px-3 py-1 relative bottom-2 text-sm font-medium text-gray-600 bg-gray-50 border border-gray-200 border-solid rounded-md cursor-pointer transition-colors hover:text-gray-900 hover:bg-gray-100"
+          onClick={() => setShowUpload((v) => !v)}
+          type="button"
+        >
+          <UploadOutlined />
+          {showUpload ? 'Hide upload' : 'Or upload'}
+        </button>
 
+        {/* Save button, if voters added */}
+        {new_voters !== '' && (
+          <SaveButton
+            onPress={async () => {
+              const response = await api(`election/${election_id}/admin/add-voters`, { new_voters })
+
+              if (response.status === 201) {
+                const data = await response.json()
+                setRemovedDuplicates(data.all_duplicates)
+                revalidate(election_id)
+                set_new_voters('')
+              } else {
+                throw await response.json()
+              }
+            }}
+          />
+        )}
+      </div>
+
+      {/* Upload panel */}
       {showUpload && (
-        <div className="mt-3 mb-2">
+        <div className="-mt-3 mb-4">
           <UploadVoterRollPanel election_id={election_id} />
         </div>
       )}
 
       {/* Show message if duplicates were removed */}
       <DuplicatesNotAdded {...{ removedDuplicates, setRemovedDuplicates }} />
-
-      {/* Show save button if there are new voters to add */}
-      {new_voters === '' ? (
-        <div style={{ height: 74 }} />
-      ) : (
-        <SaveButton
-          onPress={async () => {
-            const response = await api(`election/${election_id}/admin/add-voters`, { new_voters })
-
-            if (response.status === 201) {
-              const data = await response.json()
-              setRemovedDuplicates(data.all_duplicates)
-              revalidate(election_id)
-              set_new_voters('')
-            } else {
-              throw await response.json()
-            }
-          }}
-        />
-      )}
 
       <CustomEmailHeaderbar />
       <CustomInvitationEditor />
