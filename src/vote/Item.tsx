@@ -61,9 +61,8 @@ export const Item = ({
                 onChange={(event) => {
                   setError(' ')
                   // Check for too many characters
-                  if (event.target.value.length > max_string_length) {
-                    return setError('Too many characters')
-                  }
+                  if (event.target.value.length > max_string_length) return setError('Too many characters')
+
                   // Check for invalid characters
                   try {
                     new TextEncoder().encode(event.target.value)

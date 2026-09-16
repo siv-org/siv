@@ -57,9 +57,7 @@ function saveScrollPosition({ dispatch, state }: ReturnType<typeof useScrollCont
       // For sidebar, count when it passes midpoint.
       // For topbar, when it crosses top.
       const adjustment = innerWidth < 1030 ? 0 : innerHeight / 2
-      if (scrollPos + adjustment >= Number(yOffset)) {
-        current = step
-      }
+      if (scrollPos + adjustment >= Number(yOffset)) current = step
     }
 
     if (current !== state.current) {

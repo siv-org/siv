@@ -62,9 +62,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     if (index === 0) return true
 
     const num_shuffled = shuffled[first_col]?.shuffled?.length || 0
-    if (num_shuffled < num_admin_shuffled) {
-      waiting_on = trustees[index].email
-    }
+    if (num_shuffled < num_admin_shuffled) waiting_on = trustees[index].email
     return !waiting_on // Break out of loop when we find one
   })
   if (waiting_on) return res.status(206).send(waiting_on)
@@ -85,9 +83,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     if (index === 0) return true
 
     const num_decrypted = partials[first_col]?.partials?.length || 0
-    if (num_decrypted < num_admin_shuffled) {
-      waiting_on = trustees[index].email
-    }
+    if (num_decrypted < num_admin_shuffled) waiting_on = trustees[index].email
     return !waiting_on // Break out of loop when we find one
   })
 

@@ -62,9 +62,7 @@ function reducer(prev: State, payload: Record<string, unknown>) {
 
   // Print state changes to console
   const stateDiff = diff(prev, newState)
-  if (Object.keys(stateDiff).length) {
-    console.log('📝 State updated', stateDiff, newState)
-  }
+  if (Object.keys(stateDiff).length) console.log('📝 State updated', stateDiff, newState)
 
   return newState
 }

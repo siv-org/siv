@@ -11,9 +11,7 @@ export function transform_email_keys(data: Record<string, object>, direction: 'c
   // Go through all fields
   return mapValues(data, (field, fieldName) => {
     // Only modify our whitelisted `is_commafy_field`s
-    if (!is_commafy_field(fieldName)) {
-      return field
-    }
+    if (!is_commafy_field(fieldName)) return field
     return mapKeys(field as Record<string, string>, (_, key) => transform(key))
   })
 }

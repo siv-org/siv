@@ -15,9 +15,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   // Add comma separators to amount if it's a number
-  if (fields.amount === String(+fields.amount)) {
-    fields.amount = (+fields.amount).toLocaleString()
-  }
+  if (fields.amount === String(+fields.amount)) fields.amount = (+fields.amount).toLocaleString()
 
   // Store submission in Firestore
   await firebase

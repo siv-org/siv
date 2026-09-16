@@ -14,17 +14,20 @@ import { Totals } from './Totals'
 import { useElectionInfo } from './use-election-info'
 import { WhosVoted } from './WhosVoted'
 
-export const ElectionStatusPage = (): JSX.Element => {
+export const ElectionStatusPage = ({
+  election_title,
+}: {
+  election_title?: null | string
+} = {}): JSX.Element => {
   const { election_id, hide_tallies } = useRouter().query as { election_id: string; hide_tallies?: string }
-  const { ballot_design, election_homepage, election_title, esignature_requested, has_decrypted_votes } =
-    useElectionInfo()
+  const { ballot_design, election_homepage, esignature_requested, has_decrypted_votes } = useElectionInfo()
   const [show_encrypteds, toggle_encrypteds] = useReducer((state) => !state, false)
 
   if (debug) return <OnlyMixnet />
 
   return (
     <>
-      <Head title="Election Status" />
+      <Head dropPrefix title={election_title ? `Election Status: ${election_title}` : 'Election Status'} />
 
       <main>
         <div>

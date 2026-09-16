@@ -44,9 +44,7 @@ export const range = (start: number, end?: number) => {
 /** Build a new object excluding the omitted props */
 export const omit = (obj: Obj, props: string[]) =>
   Object.keys(obj).reduce((acc: Obj, key: string) => {
-    if (!props.includes(key)) {
-      acc[key] = obj[key]
-    }
+    if (!props.includes(key)) acc[key] = obj[key]
     return acc
   }, {})
 

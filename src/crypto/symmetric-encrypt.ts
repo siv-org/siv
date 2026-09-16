@@ -14,9 +14,7 @@ export async function decryptSymmetric(key: CryptoKey, ciphertext: string): Prom
   // Convert base64url to base64
   let base64 = ciphertext.replace(/-/g, '+').replace(/_/g, '/')
   const padding = base64.length % 4
-  if (padding) {
-    base64 += '='.repeat(4 - padding)
-  }
+  if (padding) base64 += '='.repeat(4 - padding)
 
   // Decode base64 to bytes
   const cipherBytes =

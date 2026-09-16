@@ -149,9 +149,7 @@ export const VotesToShuffle = ({
     // If party before us has shuffled more than us,
     // AND their previous shuffle includes a valid ZK Proof,
     // THEN: we should shuffle the list they provided.
-    if (num_prev_shuffled > num_we_shuffled && prev_proofs_all_passed) {
-      shuffleFromPrevious()
-    }
+    if (num_prev_shuffled > num_we_shuffled && prev_proofs_all_passed) shuffleFromPrevious()
   }, [prev_proofs_all_passed])
 
   // Update final_shuffle_verifies for VotesToDecrypt

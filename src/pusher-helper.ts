@@ -31,7 +31,8 @@ export const useData = (key: string, pusherChannel?: [string | undefined, string
     }
   }, [channelName, eventName])
 
-  const cacheKey = key.includes('undefined') ? null : `${window.location.origin}/api/${key}`
+  const cacheKey =
+    typeof window === 'undefined' || key.includes('undefined') ? null : `${window.location.origin}/api/${key}`
 
   return useSWR(cacheKey, (url: string) =>
     fetch(url).then(async (r) => {

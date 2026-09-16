@@ -47,9 +47,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           if (to === 'election@siv.org') return
           const trusteeDoc = electionDoc.collection('trustees').doc(to)
           // Confirm trusteeDoc exists
-          if (!(await trusteeDoc.get()).exists) {
-            return console.log(`No trustee doc for ${to}`)
-          }
+          if (!(await trusteeDoc.get()).exists) return console.log(`No trustee doc for ${to}`)
 
           num_events++
           // Store new items on trustees' docs

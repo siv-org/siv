@@ -34,8 +34,6 @@ export function usePusher(election_id?: string) {
 
   // Subscribe when we get election_id
   useEffect(() => {
-    if (election_id) {
-      return subscribe()
-    }
+    if (election_id) return subscribe()
   }, [election_id])
 }

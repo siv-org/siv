@@ -87,9 +87,7 @@ log_step('Each trustee calculates shares to send to others')
 trustees.forEach(({ name, private_coefficients }) => {
   trustees.forEach((_, toIndex) => {
     // Initialize empty object if needed
-    if (!trustees[toIndex].secrets_from) {
-      trustees[toIndex].secrets_from = {}
-    }
+    if (!trustees[toIndex].secrets_from) trustees[toIndex].secrets_from = {}
 
     trustees[toIndex].secrets_from[name] = evaluate_private_polynomial(toIndex + 1, private_coefficients)
   })
@@ -105,9 +103,7 @@ log_step('Each trustee can verify their received shares')
 trustees.forEach(({ secrets_from }, jIndex) => {
   trustees.forEach(({ broadcast, name }) => {
     // Initialize empty object if needed
-    if (!trustees[jIndex].verified) {
-      trustees[jIndex].verified = {}
-    }
+    if (!trustees[jIndex].verified) trustees[jIndex].verified = {}
 
     trustees[jIndex].verified[name] = is_received_share_valid(
       secrets_from[name],

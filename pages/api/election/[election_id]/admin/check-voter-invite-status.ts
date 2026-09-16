@@ -48,9 +48,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
           const voterDoc = electionDoc.collection('voters').doc(to)
           // Confirm voterDoc exists
-          if (!(await voterDoc.get()).exists) {
-            return console.log(`No voter doc for ${to}`)
-          }
+          if (!(await voterDoc.get()).exists) return console.log(`No voter doc for ${to}`)
 
           num_events++
           // Store new items on voters' docs

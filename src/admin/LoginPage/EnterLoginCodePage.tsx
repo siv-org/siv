@@ -85,9 +85,7 @@ export const EnterLoginCodePage = () => {
                   if (/^\d{0,6}$/.test(next)) {
                     setLoginCode(next)
                     setError('')
-                  } else if (next.length > 0) {
-                    setError('Login codes are 6 digit numbers')
-                  }
+                  } else if (next.length > 0) setError('Login codes are 6 digit numbers')
                 }}
                 onKeyDown={(e) => e.key === 'Enter' && submitRef.current?.click()}
                 placeholder="123456"

@@ -55,9 +55,7 @@ export const InvalidateVotersButton = ({
             .join('\n')}`
         }
 
-        if (votersWhoVoted.length > 0 && votersWhoDidNotVote.length > 0) {
-          message += '\n\n————————————\n\n'
-        }
+        if (votersWhoVoted.length > 0 && votersWhoDidNotVote.length > 0) message += '\n\n————————————\n\n'
 
         if (votersWhoDidNotVote.length > 0) {
           message += `Are you sure you want to invalidate ${

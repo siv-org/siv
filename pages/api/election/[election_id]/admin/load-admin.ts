@@ -24,6 +24,7 @@ export type AdminData = {
   threshold_public_key?: string
   trustees?: Trustee[]
   voter_applications_allowed?: boolean
+  voter_roll_uploads?: { filename: string; uploaded_at: string }[]
   voters?: Voter[]
 }
 
@@ -87,6 +88,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const loadVotes = election.collection('votes').get()
   const loadPendingVotes = election.collection('votes-pending').get()
   const loadInvalidatedVotes = election.collection('invalidated_votes').get()
+  const loadVoterRollUploads = election.collection('voter-roll-uploads').orderBy('uploaded_at', 'desc').get()
 
   // Is election_id in DB?
   const electionDoc = await loadElection
@@ -254,6 +256,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     }
   })
 
+  const voter_roll_uploads = (await loadVoterRollUploads).docs.map((doc) => {
+    const { filename, uploaded_at } = doc.data() as { filename: string; uploaded_at: { _seconds: number } }
+    return { filename, uploaded_at: new Date(uploaded_at._seconds * 1000).toISOString() }
+  })
+
   return res.status(200).send({
     ballot_design,
     ballot_design_finalized,
@@ -273,6 +280,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     threshold_public_key,
     trustees,
     voter_applications_allowed,
+    voter_roll_uploads,
     voters,
   } as AdminData)
 }

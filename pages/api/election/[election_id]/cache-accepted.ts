@@ -31,6 +31,18 @@ const MAX_PAGE_BYTES = 850 * KB
 
 const approxBytes = (v: unknown) => Buffer.byteLength(JSON.stringify(v), 'utf8')
 
+/** How many items share a key already seen in `items` (not unique count — excess copies). */
+const countDupes = <T>(items: T[], keyOf: (item: T) => string) => {
+  const seen = new Set<string>()
+  let dupesSeen = 0
+  for (const item of items) {
+    const key = keyOf(item)
+    if (seen.has(key)) dupesSeen++
+    else seen.add(key)
+  }
+  return dupesSeen
+}
+
 const setCachingHeaders = (res: NextApiResponse, etag: string) => {
   res.setHeader('ETag', etag)
   res.setHeader('Cache-Control', 'public, max-age=0')
@@ -562,37 +574,37 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     })
   }
 
-  // 8.5) Deduplicate votes within same set
-  // eg duplicates from concurrent packing — lease is only best effort
+  // 8.5) Strip duplicate auths (e.g. cache+fresh overlaps during pack races — expected occasionally)
   const seenAuths = new Set<string>()
-  let dupeVotesCount = 0
   votes = votes.filter((v) => {
-    if (seenAuths.has(v.auth)) {
-      dupeVotesCount++
-      return false
-    }
+    if (seenAuths.has(v.auth)) return false
     seenAuths.add(v.auth)
     return true
   })
   const seenPendingAuths = new Set<string>()
-  let dupePendingVotesCount = 0
   pendingVotes = pendingVotes.filter((pv) => {
     // For pending votes, use link_auth if available, otherwise use 'pending' as a fallback
     const key = pv.link_auth as unknown as string
-    if (seenPendingAuths.has(key)) {
-      dupePendingVotesCount++
-      return false
-    }
+    if (seenPendingAuths.has(key)) return false
     seenPendingAuths.add(key)
     return true
   })
-  if (dupeVotesCount > 0 || dupePendingVotesCount > 0) {
-    if (!election_id.startsWith('test-'))
-      await pushover(
-        'cache-accepted deduplication:',
-        `[${election_id}] dupeVotes: ${dupeVotesCount} dupePendingVotes: ${dupePendingVotesCount}`,
+
+  // But do still alert if same auth appears twice within the packed cache or within the live tail (durable / double-ballot dirt).
+  // Not on cache+fresh overlap — that's an occasionally expected race.
+  if (!election_id.startsWith('test-'))
+    await Promise.all(
+      (
+        [
+          ['packedVotes', countDupes(cached.votes, (v) => v.auth)],
+          ['packedPending', countDupes(cached.pendingVotes, (pv) => pv.link_auth as unknown as string)],
+          ['freshVotes', countDupes(freshVotes, (v) => v.auth)],
+          ['freshPending', countDupes(freshPendingVotes, (pv) => pv.link_auth as unknown as string)],
+        ] as const
       )
-  }
+        .filter(([, n]) => n > 0)
+        .map(([label, n]) => pushover('cache-accepted auth dupe:', `[${election_id}] ${label}: ${n}`)),
+    )
 
   // 9) Strip out pendings' link_auth before serving
   const cleanedPending = deduplicatedPending.map((pv) => {
