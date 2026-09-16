@@ -5,11 +5,13 @@ const globals = require('globals')
 const { merge } = require('lodash')
 const tseslint = require('typescript-eslint')
 
+const { sivPlugin } = require('./eslint-rules')
+
 // Common configuration shared between JS and TS files
 const commonConfig = {
   files: ['**/*.js'],
   languageOptions: {
-    ecmaVersion: 2018,
+    ecmaVersion: 2022,
     globals: {
       ...globals.browser,
       ...globals.es2021,
@@ -42,8 +44,14 @@ module.exports = [
     files: ['**/*.{ts,tsx}'],
     languageOptions: { parser: tseslint.parser, parserOptions: { projectService: true } },
     plugins: { '@typescript-eslint': tseslint.plugin },
-    rules: { ...tseslint.plugin.configs.strict.rules },
+    rules: {
+      ...tseslint.plugin.configs.strict.rules,
+      'siv/prefer-compact-if-return': 'error',
+    },
   }),
+
+  // Next.js API routes — default-exported (req, res) handlers only
+  { files: ['pages/api/**/*.ts'], rules: { 'siv/return-res-response': 'error' } },
 ]
 
 function secretsMatchSelectors() {
@@ -62,30 +70,4 @@ function secretsMatchSelectors() {
     `${eq}[right.type!='Literal'] > MemberExpression.left[property.name='auth']`,
     `${eq}[left.type!='Literal'] > MemberExpression.right[property.name='auth']`,
   ].map((selector) => ({ message: "Don't directly compare secret fields with ===/!==. Use secretsMatch()", selector }))
-}
-
-function sivPlugin() {
-  return {
-    rules: {
-      'no-req-headers-host': {
-        create(context) {
-          return {
-            MemberExpression(node) {
-              const prop = node.computed ? node.property.value : node.property.name
-              if (!['host', 'origin'].includes(prop)) return
-              const obj = node.object.type === 'ChainExpression' ? node.object.expression : node.object
-              const fromReqHeaders = obj.type === 'MemberExpression' && obj.property.name === 'headers'
-              const fromHeadersVar = obj.type === 'Identifier' && obj.name === 'headers'
-              if (!fromReqHeaders && !fromHeadersVar) return
-              context.report({
-                message: "Don't trust spoofable req.headers.host/origin. Prefer safeOrigin(req)",
-                node,
-              })
-            },
-          }
-        },
-        meta: { docs: {}, schema: [], type: 'problem' },
-      },
-    },
-  }
 }
