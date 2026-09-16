@@ -1,9 +1,7 @@
-import { NextApiRequest, NextApiResponse } from 'next'
-
-type NextApiRoute = (req: NextApiRequest, res: NextApiResponse) => Promise<void> | void
+import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next'
 
 // Wrap another route handler with CORS headers
-export const allowCors = (fn: NextApiRoute) => async (req: NextApiRequest, res: NextApiResponse) => {
+export const allowCors = (fn: NextApiHandler) => async (req: NextApiRequest, res: NextApiResponse) => {
   res.setHeader('Access-Control-Allow-Credentials', true as unknown as string)
   res.setHeader('Access-Control-Allow-Origin', '*')
   // another common pattern
