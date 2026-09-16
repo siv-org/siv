@@ -11,7 +11,7 @@
  * Good:
  *   if (!data) return res.status(404).json({ opens: {} })
  */
-const PRINT_WIDTH = 120
+const PRINT_WIDTH = require('../package.json').prettier.printWidth
 
 /** @type {import('eslint').Rule.RuleModule} */
 module.exports = {
