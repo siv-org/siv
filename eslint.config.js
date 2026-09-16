@@ -25,10 +25,10 @@ const commonConfig = {
   plugins: { react: reactPlugin, siv: sivPlugin() },
   rules: {
     ...reactPlugin.configs.flat.recommended.rules,
-    'no-restricted-syntax': ['error', ...secretsMatchSelectors()],
     'no-unreachable': 'warn',
     'react/no-unknown-property': [2, { ignore: ['jsx', 'global'] }], // styled-jsx
     'siv/no-req-headers-host': 'warn',
+    'siv/secrets-match': 'error',
   },
   settings: { react: { version: 'detect' } },
 }
@@ -53,21 +53,3 @@ module.exports = [
   // Next.js API routes — default-exported (req, res) handlers only
   { files: ['pages/api/**/*.ts'], rules: { 'siv/return-res-response': 'error' } },
 ]
-
-function secretsMatchSelectors() {
-  // Ban `stored === provided` on secrets, because `undefined === undefined`,
-  // so we need extra checks. `secretsMatch(stored, provided)` is safer.
-
-  const eq = 'BinaryExpression[operator=/^[!=]==$/]'
-  const fields = 'auth_token|login_code|init_login_code|verification_code|link_auth'
-  const field = `[property.name=/^(${fields})$/]`
-  return [
-    `${eq} > MemberExpression${field}`,
-    `${eq} > Identifier[name=/^(${fields})$/]`,
-    `${eq} ChainExpression > MemberExpression${field}`,
-
-    // Only error when auth is compared against a variable, not a string literal
-    `${eq}[right.type!='Literal'] > MemberExpression.left[property.name='auth']`,
-    `${eq}[left.type!='Literal'] > MemberExpression.right[property.name='auth']`,
-  ].map((selector) => ({ message: "Don't directly compare secret fields with ===/!==. Use secretsMatch()", selector }))
-}
