@@ -8,9 +8,7 @@
  */
 export function diff(obj1: Record<string, unknown>, obj2: Record<string, unknown>) {
   // Make sure an object to compare is provided
-  if (!obj2 || Object.prototype.toString.call(obj2) !== '[object Object]') {
-    return obj1
-  }
+  if (!obj2 || Object.prototype.toString.call(obj2) !== '[object Object]') return obj1
 
   //
   // Variables
@@ -68,17 +66,13 @@ export function diff(obj1: Record<string, unknown>, obj2: Record<string, unknown
     // If an object, compare recursively
     if (type1 === '[object Object]') {
       const objDiff = diff(item1 as Record<string, unknown>, item2 as Record<string, unknown>)
-      if (Object.keys(objDiff).length > 0) {
-        diffs[key] = objDiff
-      }
+      if (Object.keys(objDiff).length > 0) diffs[key] = objDiff
       return
     }
 
     // If an array, compare
     if (type1 === '[object Array]') {
-      if (!arraysMatch(item1 as unknown[], item2 as unknown[])) {
-        diffs[key] = item2
-      }
+      if (!arraysMatch(item1 as unknown[], item2 as unknown[])) diffs[key] = item2
       return
     }
 
@@ -86,13 +80,9 @@ export function diff(obj1: Record<string, unknown>, obj2: Record<string, unknown
     // Otherwise, just compare
     if (type1 === '[object Function]') {
       // @ts-expect-error bc we do know it's a function
-      if (item1.toString() !== item2.toString()) {
-        diffs[key] = item2
-      }
+      if (item1.toString() !== item2.toString()) diffs[key] = item2
     } else {
-      if (item1 !== item2) {
-        diffs[key] = item2
-      }
+      if (item1 !== item2) diffs[key] = item2
     }
   }
 
@@ -103,18 +93,14 @@ export function diff(obj1: Record<string, unknown>, obj2: Record<string, unknown
   // Loop through the first object
   for (key in obj1) {
     // eslint-disable-next-line no-prototype-builtins
-    if (obj1.hasOwnProperty(key)) {
-      compare(obj1[key], obj2[key], key)
-    }
+    if (obj1.hasOwnProperty(key)) compare(obj1[key], obj2[key], key)
   }
 
   // Loop through the second object and find missing items
   for (key in obj2) {
     // eslint-disable-next-line no-prototype-builtins
     if (obj2.hasOwnProperty(key)) {
-      if (!obj1[key] && obj1[key] !== obj2[key]) {
-        diffs[key] = obj2[key]
-      }
+      if (!obj1[key] && obj1[key] !== obj2[key]) diffs[key] = obj2[key]
     }
   }
 

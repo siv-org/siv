@@ -8,9 +8,7 @@ export const moduloLambda = (index: number, points: bigint[][], modulo: bigint, 
 
   return points.reduce((memo, point, currentIndex) => {
     // Skip index
-    if (index === currentIndex) {
-      return memo
-    }
+    if (index === currentIndex) return memo
     const j = point[0]
     log({ j })
 

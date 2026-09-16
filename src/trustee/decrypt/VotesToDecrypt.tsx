@@ -142,9 +142,7 @@ export const VotesToDecrypt = ({
     // If the last trustee has shuffled more than we've decrypted,
     // AND provided valid ZK Proof,
     // we should decrypt their final shuffled list.
-    if (num_last_shuffled > num_we_decrypted && final_shuffle_verifies) {
-      partialDecryptFinalShuffle()
-    }
+    if (num_last_shuffled > num_we_decrypted && final_shuffle_verifies) partialDecryptFinalShuffle()
   }, [final_shuffle_verifies])
 
   return (

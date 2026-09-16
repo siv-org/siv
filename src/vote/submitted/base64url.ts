@@ -14,9 +14,7 @@ export function base64URLToBigint(encoded: string): bigint {
   // Add padding back if needed
   let base64 = encoded.replace(/-/g, '+').replace(/_/g, '/')
   const padding = base64.length % 4
-  if (padding) {
-    base64 += '='.repeat(4 - padding)
-  }
+  if (padding) base64 += '='.repeat(4 - padding)
 
   // Decode from base64 to bytes
   const bytes =

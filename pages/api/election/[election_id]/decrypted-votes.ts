@@ -26,7 +26,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   const filtered = filterToBallotColumns(data?.decrypted || [], ballot_design)
 
-  res.status(200).json(filtered)
+  return res.status(200).json(filtered)
 }
 
 // To begin decrypting in batches, without leaking results early

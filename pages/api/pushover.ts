@@ -7,5 +7,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   await pushover(title, message)
 
-  res.status(200).end('Success.')
+  return res.status(200).end('Success.')
 }

@@ -91,5 +91,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   const billing_stats: BillingStats = { credits_on_hold, credits_remaining, credits_used, history, num_total_elections }
 
-  res.status(200).send(billing_stats)
+  return res.status(200).send(billing_stats)
 }

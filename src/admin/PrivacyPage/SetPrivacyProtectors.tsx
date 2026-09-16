@@ -57,9 +57,7 @@ export const SetPrivacyProtectors = () => {
                   set_new_trustees(update)
                 }}
                 onKeyDown={(event) => {
-                  if (event.key === 'Enter') {
-                    document.getElementById(`name-input-${i}`)?.focus()
-                  }
+                  if (event.key === 'Enter') document.getElementById(`name-input-${i}`)?.focus()
                 }}
                 size="small"
                 style={{ marginBottom: 5, marginRight: 15, width: 220 }}
@@ -76,9 +74,7 @@ export const SetPrivacyProtectors = () => {
                   set_new_trustees(update)
                 }}
                 onKeyDown={(event) => {
-                  if (event.key === 'Enter') {
-                    document.getElementById('add-another')?.click()
-                  }
+                  if (event.key === 'Enter') document.getElementById('add-another')?.click()
                 }}
                 size="small"
                 style={{ width: 220 }}

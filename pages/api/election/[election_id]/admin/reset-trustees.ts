@@ -18,5 +18,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // TODO: fix me?
   await Promise.all((await electionDoc.collection('trustees').get()).docs.map((doc) => doc /*.delete */))
 
-  res.status(204).send('Reset success')
+  return res.status(204).send('Reset success')
 }

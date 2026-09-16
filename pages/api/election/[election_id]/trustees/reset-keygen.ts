@@ -96,5 +96,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Notify all participants to reset
   await pusher.trigger(`keygen-${election_id}`, 'reset-keygen', `${email} trigged reset`)
 
-  res.status(204).end()
+  return res.status(204).end()
 }

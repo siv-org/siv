@@ -19,5 +19,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     await firebase.firestore().collection('conventions').where('creator', '==', jwt.email).get()
   ).docs.reduce((acc: Convention[], doc) => [{ id: doc.id, ...doc.data() } as Convention, ...acc], [])
 
-  res.status(200).send({ conventions })
+  return res.status(200).send({ conventions })
 }

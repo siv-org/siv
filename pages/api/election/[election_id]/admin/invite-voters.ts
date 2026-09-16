@@ -68,5 +68,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     throw res.status(400).json({ error: error.message || JSON.stringify(error) })
   })
 
-  res.status(201).json({ message: 'Done' })
+  return res.status(201).json({ message: 'Done' })
 }

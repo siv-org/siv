@@ -4,9 +4,7 @@ import { ImageLine, Line as LineObj, ReactLine, Subsection } from './steps'
 // Converts our text lines into formatted html
 export const Line = (line: LineObj, lineIndex: number) => {
   // Special handling for breaks
-  if (line === '') {
-    return <br key={lineIndex} />
-  }
+  if (line === '') return <br key={lineIndex} />
 
   const type = Object.keys(line)[0]
 
@@ -44,9 +42,7 @@ export const Line = (line: LineObj, lineIndex: number) => {
   const text = Object.values(line)[0] as string
 
   // Special handling to embed html
-  if (type === 'html') {
-    return <div dangerouslySetInnerHTML={{ __html: text }} key={lineIndex} />
-  }
+  if (type === 'html') return <div dangerouslySetInnerHTML={{ __html: text }} key={lineIndex} />
 
   return (
     <p className={styles[type]} key={lineIndex}>

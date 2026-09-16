@@ -24,5 +24,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     return memo
   }, {})
 
-  res.status(200).json(deliveries as VoterInvites)
+  return res.status(200).json(deliveries as VoterInvites)
 }

@@ -114,9 +114,7 @@ const OneRow = forwardRef<
           } else {
             // Remove candidate from any existing position
             for (let i = 1; i <= rankings_allowed; i++) {
-              if (state.plaintext[`${id}_${i}`] === val) {
-                update[`${id}_${i}`] = 'BLANK'
-              }
+              if (state.plaintext[`${id}_${i}`] === val) update[`${id}_${i}`] = 'BLANK'
             }
 
             // Place candidate at target rank, shifting others if needed
@@ -125,9 +123,7 @@ const OneRow = forwardRef<
               // Shift down rankings at and below target rank
               for (let i = rankings_allowed; i > targetRank; i--) {
                 const prevValue = state.plaintext[`${id}_${i - 1}`] || 'BLANK'
-                if (prevValue !== 'BLANK') {
-                  update[`${id}_${i}`] = prevValue
-                }
+                if (prevValue !== 'BLANK') update[`${id}_${i}`] = prevValue
               }
             }
             update[`${id}_${targetRank}`] = val || 'BLANK'
@@ -136,9 +132,7 @@ const OneRow = forwardRef<
             const seenCandidates = new Set<string>()
             for (let i = 1; i <= rankings_allowed; i++) {
               const key = `${id}_${i}`
-              if (!(key in update)) {
-                update[key] = state.plaintext[key] || 'BLANK'
-              }
+              if (!(key in update)) update[key] = state.plaintext[key] || 'BLANK'
 
               const candidate = update[key]
               if (candidate && candidate !== 'BLANK') {
@@ -177,9 +171,7 @@ const OneRow = forwardRef<
                 // When write-in changes, unset any matching selections
                 const update: Record<string, string> = {}
                 for (let i = 1; i <= rankings_allowed; i++) {
-                  if (state.plaintext[`${id}_${i}`] === writeIn) {
-                    update[`${id}_${i}`] = 'BLANK'
-                  }
+                  if (state.plaintext[`${id}_${i}`] === writeIn) update[`${id}_${i}`] = 'BLANK'
                 }
                 dispatch(update)
 

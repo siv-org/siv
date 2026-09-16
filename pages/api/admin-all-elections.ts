@@ -41,5 +41,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     }))
     .sort((a, b) => (b.created_at?._seconds || 0) - (a.created_at?._seconds || 0)) as Election[]
 
-  res.status(200).send({ elections } satisfies AdminAllElectionsResponse)
+  return res.status(200).send({ elections } satisfies AdminAllElectionsResponse)
 }

@@ -16,5 +16,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     custom_invitation_text,
   })
 
-  res.status(200).json({ message: 'Custom invitation text updated' })
+  return res.status(200).json({ message: 'Custom invitation text updated' })
 }

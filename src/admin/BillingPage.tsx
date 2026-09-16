@@ -18,9 +18,7 @@ export const BillingPage = (): JSX.Element => {
 
   if (loading || loggedOut) return <p style={{ fontSize: 21, padding: '1rem' }}>Loading...</p>
 
-  if (!data) {
-    return <>Loading...</>
-  }
+  if (!data) return <>Loading...</>
 
   const { credits_on_hold, credits_remaining, credits_used, history, num_total_elections } = data as BillingStats
 

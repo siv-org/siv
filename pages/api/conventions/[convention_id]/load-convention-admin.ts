@@ -11,5 +11,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const jwt = await checkJwtOwnsConvention(req, res, convention_id)
   if (!jwt.valid) return
 
-  res.status(200).send({ ...jwt })
+  return res.status(200).send({ ...jwt })
 }

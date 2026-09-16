@@ -27,5 +27,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Delete the election
   await doc.delete()
 
-  res.status(201).json({ message: 'success' })
+  return res.status(201).json({ message: 'success' })
 }

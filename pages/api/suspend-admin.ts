@@ -35,5 +35,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Delete their admin doc
   await firebase.firestore().collection('admins').doc(id).delete()
 
-  res.status(200).send(`Successfully suspended ${id}`)
+  return res.status(200).send(`Successfully suspended ${id}`)
 }

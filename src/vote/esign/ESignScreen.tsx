@@ -58,7 +58,10 @@ export const ESignScreen = ({
               if (auth === 'link') auth = router.query.link_auth as string | undefined
               if (!auth || !election_id || !esignature || !privkey) return setButtonText('Error')
 
-              const signature = await signReplacement(privkey, encodeEsignaturePayload({ auth, election_id, esignature }))
+              const signature = await signReplacement(
+                privkey,
+                encodeEsignaturePayload({ auth, election_id, esignature }),
+              )
               const response = await api('submit-esignature', { auth, election_id, esignature, signature })
               if (response.status === 200) {
                 dispatch({ esigned_at: new Date().toString() })
