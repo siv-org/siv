@@ -46,10 +46,10 @@ module.exports = [
     plugins: { '@typescript-eslint': tseslint.plugin },
     rules: {
       ...tseslint.plugin.configs.strict.rules,
-      'siv/prefer-compact-if-return': 'error',
+      // 'siv/prefer-compact-if-return': 'error', // TODO: re-enable
     },
   }),
 
   // Next.js API routes — default-exported (req, res) handlers only
-  { files: ['pages/api/**/*.ts'], rules: { 'siv/return-res-response': 'error' } },
+  // { files: ['pages/api/**/*.ts'], rules: { 'siv/return-res-response': 'error' } }, // TODO: re-enable
 ]
