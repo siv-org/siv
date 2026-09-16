@@ -1,14 +1,15 @@
-/**
- * Don't trust spoofable `req.headers.host` / `req.headers.origin`.
- *
- * Clients can set these to arbitrary values. Use `safeOrigin(req)` for the real request origin.
- *
- * Bad:
- *   if (req.headers.host !== 'siv.org') return res.status(403).json({ error: 'Forbidden' })
- *
- * Good:
- *   if (safeOrigin(req) !== 'https://siv.org') return res.status(403).json({ error: 'Forbidden' })
- */
+/*
+Don't trust spoofable `req.headers.host` / `req.headers.origin`.
+
+Clients can set these to arbitrary values. Use `safeOrigin(req)` for the real request origin.
+
+Bad:
+  if (req.headers.origin !== 'https://siv.org') return forbid()
+
+Good:
+  if (safeOrigin(req) !== 'https://siv.org') return forbid()
+*/
+
 /** @type {import('eslint').Rule.RuleModule} */
 module.exports = {
   create(context) {

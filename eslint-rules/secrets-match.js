@@ -1,17 +1,15 @@
-/**
- * Ban direct `===` / `!==` on secret fields — `undefined === undefined` is true,
- * so missing values can incorrectly match. Use `secretsMatch(stored, provided)`.
- *
- * Bad:
- *   if (voter.auth_token === auth) return res.status(200).json({ ok: true })
- *   if (auth_token !== provided) return res.status(401).json({ error: 'Unauthorized' })
- *
- * Good:
- *   if (secretsMatch(voter.auth_token, auth)) return res.status(200).json({ ok: true })
- *   if (!secretsMatch(auth_token, provided)) return res.status(401).json({ error: 'Unauthorized' })
- *
- * `auth` is only flagged when compared to a variable (not a string literal like `'link'`).
- */
+/*
+Ban direct `===` / `!==` on secret fields — `undefined === undefined` is true,
+so missing values can incorrectly match. Use `secretsMatch(stored, provided)`.
+
+Bad:
+  if (auth_token === provided) return allow()
+
+Good:
+  if (secretsMatch(auth_token, provided)) return allow()
+
+`auth` is only flagged when compared to a variable (not a string literal like `'link'`).
+*/
 
 const SECRET_FIELDS = new Set(['auth_token', 'init_login_code', 'link_auth', 'login_code', 'verification_code'])
 

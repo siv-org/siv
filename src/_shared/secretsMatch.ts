@@ -4,3 +4,5 @@ export function secretsMatch(stored: unknown, provided: unknown) {
   if (typeof provided !== 'string' || !provided) return false
   return stored === provided
 }
+
+// Auto enforced by eslint-rules/secrets-match.js
