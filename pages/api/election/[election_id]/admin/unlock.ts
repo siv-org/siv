@@ -215,9 +215,7 @@ export const recombine_decrypteds = async (decrypted_and_split: Record<string, s
       if (vote === 'BLANK') return
 
       // Create vote obj if needed
-      if (!acc[tracking]) {
-        acc[tracking] = { tracking }
-      }
+      if (!acc[tracking]) acc[tracking] = { tracking }
 
       acc[tracking] = { ...acc[tracking], [key]: vote }
     })

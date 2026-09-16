@@ -35,9 +35,7 @@ export const Animation = ({ observers, protocolPage }: { observers: string[]; pr
 
   // If on /protocol, auto-loop forever
   useEffect(() => {
-    if (protocolPage && step === initUnlockingStep) {
-      setTimeout(startInterval, 1 * 1000)
-    }
+    if (protocolPage && step === initUnlockingStep) setTimeout(startInterval, 1 * 1000)
   }, [step])
 
   return (

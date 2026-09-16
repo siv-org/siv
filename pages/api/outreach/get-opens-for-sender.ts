@@ -12,9 +12,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   const { data } = await supabase.from('mailgun-opens').select('*').eq('messageId', messageId.replace(/ /g, '+'))
 
-  if (!data) {
-    return res.status(404).json({ opens: {} })
-  }
+  if (!data) return res.status(404).json({ opens: {} })
 
   const opens = data.reduce((acc, { created_at, recipient }) => {
     acc[recipient] = acc[recipient] || []

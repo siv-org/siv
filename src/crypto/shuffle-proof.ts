@@ -219,12 +219,8 @@ async function generate_simple_shuffle_proof(xs: bigint[], ys: bigint[], gamma: 
 
   const Thetas = thetas.map((theta, i) => {
     if (i === 0) return G.multiply(mod(-theta * y_hats[0]))
-    if (i < k) {
-      return G.multiply(mod(thetas[i - 1] * x_hats[i] - theta * y_hats[i]))
-    }
-    if (i < 2 * k - 1) {
-      return G.multiply(mod(gamma * thetas[i - 1] - theta))
-    }
+    if (i < k) return G.multiply(mod(thetas[i - 1] * x_hats[i] - theta * y_hats[i]))
+    if (i < 2 * k - 1) return G.multiply(mod(gamma * thetas[i - 1] - theta))
     throw new Error('count mismatch')
   })
   Thetas.push(G.multiply(mod(gamma * thetas[2 * k - 2])))
