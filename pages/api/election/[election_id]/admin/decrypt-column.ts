@@ -12,5 +12,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     safePointToString(decrypt(BigInt(decryption_key), mapValues(cipher, RP.fromHex))),
   )
 
-  res.status(200).json({ decryptedColumn })
+  return res.status(200).json({ decryptedColumn })
 }

@@ -32,5 +32,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     { merge: true },
   )
 
-  res.status(200).json({ ok: true })
+  return res.status(200).json({ ok: true })
 }

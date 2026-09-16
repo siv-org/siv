@@ -13,5 +13,5 @@ export const pusher = new Pusher({
 })
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  res.status(200).end('Success.')
+  return res.status(200).end('Success.')
 }

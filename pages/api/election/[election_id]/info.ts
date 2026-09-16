@@ -94,5 +94,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   // Return public election fields
-  res.status(200).json(info)
+  return res.status(200).json(info)
 }

@@ -18,5 +18,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   await pushover('mailgun-spam-complaints', JSON.stringify(error))
 
-  res.status(200).send('Success')
+  return res.status(200).send('Success')
 }

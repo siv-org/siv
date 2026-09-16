@@ -1,20 +1,19 @@
 /**
  * Require `return` on `res.status(...).json|send|text|end(...)` inside Next.js API handlers.
  *
+ * On Vercel, the function freezes after a response is sent — later code never runs.
+ * Locally it keeps going, so missing `return`s can cause sneaky prod unreachable-code bugs, that worked fine in localdev.
+ *
  * Scoped to default-exported handlers with signature
  * `(req: NextApiRequest, res: NextApiResponse)` — helpers like `_admin-file-upload.ts` and
  * `_cors.ts`'s `allowCors` wrapper is skipped; only the default-exported handler is checked.
  *
  * Bad:
- *   if (!election_id) {
- *     res.status(400).json({ error: 'Missing election_id' })
- *     return
- *   }
- *   res.status(200).json({ ok: true })
+ *   if (!election_id) res.status(400).json({ error: 'Missing election_id' })
+ *   // ...more logic that runs locally, but not in prod
  *
  * Good:
  *   if (!election_id) return res.status(400).json({ error: 'Missing election_id' })
- *   return res.status(200).json({ ok: true })
  */
 const {
   getEnclosingFunction,
@@ -56,7 +55,7 @@ module.exports = {
           },
           message: bareReturnAfter
             ? 'Return the response call directly instead of a separate bare return.'
-            : 'Return the response call so the handler stops and callers see the response.',
+            : 'Vercel kills endpoints after a response, localdev does not. Return it to avoid hard-to-find unreached-code bugs.',
           node,
         })
       },

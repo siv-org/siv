@@ -23,5 +23,5 @@ export const allowCors = (fn: NextApiRoute) => async (req: NextApiRequest, res: 
 // Example route
 export default allowCors((req: NextApiRequest, res: NextApiResponse) => {
   const d = new Date()
-  res.end(d.toString())
+  return res.end(d.toString())
 })

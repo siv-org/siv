@@ -144,7 +144,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   await Promise.all(promises)
 
   // Finally, send http success back to frontend
-  res.status(201).json({ election_id })
+  return res.status(201).json({ election_id })
 }
 
 export const sendTrusteeInvite = ({

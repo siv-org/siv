@@ -55,7 +55,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   const response: TrusteesLatest = { t, trustees }
 
-  res.status(200).json(response)
+  return res.status(200).json(response)
 }
 
 const sortObject = (obj: Record<string, unknown>) =>

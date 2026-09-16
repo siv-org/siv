@@ -31,5 +31,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   const qrs = qrDocs.docs.map((d) => d.data())
 
-  res.status(200).send({ convention_title: jwt.convention_title, qrs } as ConventionSet)
+  return res.status(200).send({ convention_title: jwt.convention_title, qrs } as ConventionSet)
 }

@@ -51,5 +51,5 @@ module.exports = [
   }),
 
   // Next.js API routes — default-exported (req, res) handlers only
-  // { files: ['pages/api/**/*.ts'], rules: { 'siv/return-res-response': 'error' } }, // TODO: re-enable
+  { files: ['pages/api/**/*.ts'], rules: { 'siv/return-res-response': 'error' } },
 ]

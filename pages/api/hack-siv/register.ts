@@ -9,7 +9,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 export default allowCors(async (req: NextApiRequest, res: NextApiResponse) => {
   const { email } = req.body
-  if (!email || typeof email !== 'string') res.status(400).json({ error: '`email` is required' })
+  if (!email || typeof email !== 'string') return res.status(400).json({ error: '`email` is required' })
 
   // Validate that it is a valid email
   if (!validate(email)) {

@@ -61,7 +61,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const count = napEntries.length - _malformed_link_auths
 
   /* eslint-disable perfectionist/sort-objects */
-  res.status(200).json({
+  return res.status(200).json({
     // napEntries,
     nap_auth_stats: {
       'total submitted votes': num_votes,

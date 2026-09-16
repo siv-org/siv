@@ -47,7 +47,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     elections.map((e, i) => `${i + 1}. ${e.created} [${e.id}] ${e.election_title}  [${e.stats}]`),
   )
 
-  res.status(200).json({
+  return res.status(200).json({
     [`elections_created_last_${numDays}_days`]: {
       _total: elections.length,
       ...formatted,
