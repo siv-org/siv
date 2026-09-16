@@ -46,7 +46,7 @@ module.exports = [
     plugins: { '@typescript-eslint': tseslint.plugin },
     rules: {
       ...tseslint.plugin.configs.strict.rules,
-      // 'siv/prefer-compact-if-return': 'error', // TODO: re-enable
+      'siv/prefer-compact-if-return': 'warn',
     },
   }),
 

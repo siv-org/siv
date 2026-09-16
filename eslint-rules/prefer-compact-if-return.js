@@ -1,6 +1,8 @@
 /**
  * Prefer `if (cond) return x` over `if (cond) { return x }` when the one-liner fits printWidth.
  *
+ * Skips `if/else` — the autofix replaces the whole statement and would drop the else branch.
+ *
  * Bad (when it fits on one line):
  *   if (!data) {
  *     return res.status(404).json({ opens: {} })
@@ -18,6 +20,9 @@ module.exports = {
 
     return {
       IfStatement(node) {
+        // Don't touch if/else — replacing the whole node would drop the else branch
+        if (node.alternate) return
+
         const { consequent } = node
         if (consequent.type !== 'BlockStatement') return
         if (consequent.body.length !== 1) return
