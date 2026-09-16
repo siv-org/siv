@@ -1,16 +1,29 @@
-/**
- * Prefer `if (cond) return x` over `if (cond) { return x }` when the one-liner fits printWidth.
- *
- * Skips `if/else` — the autofix replaces the whole statement and would drop the else branch.
- *
- * Bad (when it fits on one line):
- *   if (!data) {
- *     return res.status(404).json({ opens: {} })
- *   }
- *
- * Good:
- *   if (!data) return res.status(404).json({ opens: {} })
- */
+/* 
+Prefer `if (cond) return x` over `if (cond) { return x }` when the one-liner fits printWidth.
+
+(Skips `if/else` — the autofix replaces the whole statement and would drop the else branch.)
+
+Bad (when it fits on one line):
+
+  if (condition1) {
+    logic1()
+  }
+  if (condition2) {
+    logic2()
+  }
+  if (condition3) {
+    logic3()
+  }
+
+
+Good:
+
+  if (condition1) logic1()
+  if (condition2) logic2()
+  if (condition3) logic3()
+
+*/
+
 const PRINT_WIDTH = require('../package.json').prettier.printWidth
 
 /** @type {import('eslint').Rule.RuleModule} */
