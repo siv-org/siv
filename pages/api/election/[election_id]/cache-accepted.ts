@@ -562,35 +562,41 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     })
   }
 
-  // 8.5) Deduplicate votes within same set
-  // eg duplicates from concurrent packing — lease is only best effort
+  // 8.5) Strip duplicate auths (e.g. cache+fresh overlaps during pack races — expected occasionally)
   const seenAuths = new Set<string>()
-  let dupeVotesCount = 0
   votes = votes.filter((v) => {
-    if (seenAuths.has(v.auth)) {
-      dupeVotesCount++
-      return false
-    }
+    if (seenAuths.has(v.auth)) return false
     seenAuths.add(v.auth)
     return true
   })
   const seenPendingAuths = new Set<string>()
-  let dupePendingVotesCount = 0
   pendingVotes = pendingVotes.filter((pv) => {
     // For pending votes, use link_auth if available, otherwise use 'pending' as a fallback
     const key = pv.link_auth as unknown as string
-    if (seenPendingAuths.has(key)) {
-      dupePendingVotesCount++
-      return false
-    }
+    if (seenPendingAuths.has(key)) return false
     seenPendingAuths.add(key)
     return true
   })
-  if (dupeVotesCount > 0 || dupePendingVotesCount > 0) {
+
+  // Do still alert if packed pages themselves contain duplicate auths: i.e. durable dirt.
+  const packedAuths = new Set<string>()
+  let packedDupeVotes = 0
+  for (const v of cached.votes) {
+    if (packedAuths.has(v.auth)) packedDupeVotes++
+    else packedAuths.add(v.auth)
+  }
+  const packedPendingAuths = new Set<string>()
+  let packedDupePending = 0
+  for (const pv of cached.pendingVotes) {
+    const key = pv.link_auth as unknown as string
+    if (packedPendingAuths.has(key)) packedDupePending++
+    else packedPendingAuths.add(key)
+  }
+  if (packedDupeVotes > 0 || packedDupePending > 0) {
     if (!election_id.startsWith('test-'))
       await pushover(
-        'cache-accepted deduplication:',
-        `[${election_id}] dupeVotes: ${dupeVotesCount} dupePendingVotes: ${dupePendingVotesCount}`,
+        'cache-accepted packed-page dupes:',
+        `[${election_id}] dupeVotes: ${packedDupeVotes} dupePendingVotes: ${packedDupePending}`,
       )
   }
 
