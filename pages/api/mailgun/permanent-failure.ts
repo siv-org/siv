@@ -15,8 +15,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(406).json({ error: 'Missing event data.' })
   }
   const { message } = eventData
-  const { headers } = message
-  const { from, subject, to } = headers
+  const { from, subject, to } = message?.headers || {}
 
   const { error } = await supabase.from('mailgun-permanent-failures').insert([{ from, json: req.body, subject, to }])
 
@@ -27,7 +26,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   // Notify siv senders of permanent fails
-  if (from.endsWith('@siv.org') || from.endsWith('@siv.org>')) {
+  if (from?.endsWith('@siv.org') || from?.endsWith('@siv.org>')) {
     await sendEmail({
       recipient: from,
       subject: `Failure: ${to}`,
