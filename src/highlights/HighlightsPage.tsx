@@ -20,7 +20,7 @@ export function HighlightsPage() {
     <div className={`overflow-x-hidden min-h-screen antialiased bg-h26-bg text-h26-text ${h26fonts}`}>
       <Head
         description="How digital voting complements mail and in-person, with cost, time, and auditability benefits."
-        title="Highlights"
+        title="SIV Highlights"
       />
 
       <Nav />
