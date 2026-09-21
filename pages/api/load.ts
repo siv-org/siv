@@ -10,7 +10,7 @@ On page load, store:
     - [x] Do they have a #hash in the url?
     - [x] How long did they stay on page? -- in api/unload
     - [x] What is their screen size?
-    - [ ] What page referred them?
+    - [x] What page referred them? -- body.referrer (document.referrer)
 */
 
 import { NextApiRequest, NextApiResponse } from 'next'
@@ -21,7 +21,7 @@ import { supabase } from './_supabase'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { headers } = req
-  const { hash, height, width } = req.body
+  const { hash, height, referrer, width } = req.body
 
   // eslint-disable-next-line siv/no-req-headers-host -- analytics
   const domain = headers.origin || ''
@@ -32,7 +32,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // return res.status(200).send('disabled insert for testing')
 
-  const entry = {
+  const entry: Record<string, unknown> = {
     browser_name: ua.browser.name,
     browser_ver: ua.browser.version,
     domain,
@@ -45,8 +45,15 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     page_url,
     width,
   }
+  if (referrer) entry.referrer = referrer
 
-  const { data, error } = await supabase.from('analytics').insert(entry)
+  let { data, error } = await supabase.from('analytics').insert(entry)
+
+  // ponytail: if `referrer` column isn't on the table yet, retry without it
+  if (error && referrer) {
+    delete entry.referrer
+    ;({ data, error } = await supabase.from('analytics').insert(entry))
+  }
 
   if (error) {
     await pushover('Error inserting analytics', JSON.stringify(error) + '\n\n' + JSON.stringify(entry))

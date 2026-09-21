@@ -7,6 +7,7 @@ const startSession = () => {
   api('load', {
     hash: window.location.hash,
     height: window.innerHeight,
+    referrer: document.referrer || undefined,
     width: window.innerWidth,
   }).then(async (res) => {
     if (res.status === 200) {
