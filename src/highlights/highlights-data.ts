@@ -48,8 +48,8 @@ export const SECTIONS: Section[] = [
     ],
     eyebrow: '3 · Cost',
     stats: [
-      { label: 'Paper ballot: add one question', value: '$120k+' },
-      { label: 'Digital: lower budget', value: '77%' },
+      { label: 'Cost/Question (paper)', value: '$120k+' },
+      { label: 'Budget Savings (digital)', value: '77%' },
     ],
     title: 'A fraction of the paper-based budget',
   },
