@@ -34,8 +34,9 @@ export const SECTIONS: Section[] = [
   },
   {
     body: [
-      'Utah 2025: the sitting Senator wanted Approval Voting, not “choose only one.” The county could only run single-choice: a worse method, at a higher price.',
+      'Utah 2025: State Senator wanted to use Approval Voting, not “choose only one.” The county could only run single-choice: a worse method, at a higher price.',
       'Digital can run spoiler-free methods, with guardrails so voters know how to mark the ballot and don’t spoil it.',
+      'The State Senate race ended up being conducted primarily digitally, using Approval Voting.',
     ],
     cite: 'https://blog.siv.org/2025/12/11chooses',
     eyebrow: '2 · Voting methods',
