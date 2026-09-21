@@ -27,7 +27,7 @@ export type Stat = { label: string; value: string }
 
 export const GROUPS: Group[] = [
   {
-    body: "It's much faster and easier, and it saves money. It streamlines the process.",
+    body: '',
     eyebrow: '1',
     sections: [
       {
@@ -55,7 +55,7 @@ export const GROUPS: Group[] = [
         title: 'A fraction of the paper-based budget',
       },
     ],
-    title: 'Faster, easier, and less expensive',
+    title: 'Faster, easier, and saves money',
   },
   {
     body: 'Voters want to vote from their devices, and the best officials want to meet them there.',
