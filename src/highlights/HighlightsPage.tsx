@@ -77,7 +77,7 @@ function SectionBlock({ section }: { section: Exclude<Section, { compare: true }
   return (
     <section className="scroll-mt-24 animate-[fadeInUp_0.8s_0.2s_ease_both]" id={sectionId(section)}>
       <p className="font-mono26 mb-3 text-xs uppercase tracking-[0.15em] text-h26-muted">{section.eyebrow}</p>
-      <h2 className="font-serif26 text-[1.55rem] md:text-[1.85rem] font-normal leading-snug tracking-tight mb-5">
+      <h2 className="font-serif26 text-[clamp(1.25rem,2.8vw,1.7rem)] font-normal leading-snug tracking-tight mb-5">
         {section.title}
       </h2>
 
