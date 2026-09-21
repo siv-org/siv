@@ -10,7 +10,7 @@ import { CompareSection } from '../homepage2026/compare/CompareSection'
 import { h26fonts } from '../homepage2026/fonts'
 import { Footer } from '../homepage2026/Footer'
 import { Nav } from '../homepage2026/Nav'
-import { type Section, SECTIONS } from './highlights-data'
+import { GROUPS, type Section, SECTIONS } from './highlights-data'
 
 export function HighlightsPage() {
   useAnalytics()
@@ -36,24 +36,38 @@ export function HighlightsPage() {
         </h1>
       </section>
 
-      <div className="pb-20 space-y-16 md:pb-28 md:space-y-20">
-        {SECTIONS.map((section) =>
-          'compare' in section ? (
-            <section className="scroll-mt-24" key={section.eyebrow}>
-              <p className="px-7 mx-auto max-w-[820px] font-mono26 mb-0 text-xs uppercase tracking-[0.15em] text-h26-muted">
-                {section.eyebrow}
-              </p>
-              {/* ponytail: homepage CompareSection has py-12/24; pull it up so this eyebrow sits close */}
-              <div className="-mt-9 sm:-mt-12 md:-mt-20">
-                <CompareSection />
-              </div>
-            </section>
-          ) : (
-            <div className="px-7 mx-auto max-w-[820px]" key={section.title}>
-              <SectionBlock section={section} />
-            </div>
-          ),
-        )}
+      <div className="pb-20 space-y-20 md:pb-28 md:space-y-28">
+        {GROUPS.map((group) => (
+          <div className="space-y-14 md:space-y-16" key={group.title}>
+            <header className="px-7 mx-auto max-w-[820px]">
+              <p className="font-mono26 mb-3 text-xs uppercase tracking-[0.15em] text-h26-muted">{group.eyebrow}</p>
+              <h2 className="font-serif26 text-[clamp(1.4rem,3vw,1.9rem)] font-normal leading-snug tracking-tight mb-0">
+                {group.title}
+              </h2>
+              {group.body && (
+                <p className="mt-4 max-w-[600px] text-[0.95rem] leading-[1.7] text-h26-textSecondary">{group.body}</p>
+              )}
+            </header>
+
+            {group.sections.map((section) =>
+              'compare' in section ? (
+                <section className="scroll-mt-24" id="compare" key={section.eyebrow}>
+                  <p className="px-7 mx-auto max-w-[820px] font-mono26 mb-0 text-xs uppercase tracking-[0.15em] text-h26-muted">
+                    {section.eyebrow}
+                  </p>
+                  {/* ponytail: homepage CompareSection has py-12/24; pull it up so this eyebrow sits close */}
+                  <div className="-mt-9 sm:-mt-12 md:-mt-20">
+                    <CompareSection />
+                  </div>
+                </section>
+              ) : (
+                <div className="px-7 mx-auto max-w-[820px]" key={section.title}>
+                  <SectionBlock section={section} />
+                </div>
+              ),
+            )}
+          </div>
+        ))}
       </div>
 
       {/* Back */}
@@ -77,9 +91,9 @@ function SectionBlock({ section }: { section: Exclude<Section, { compare: true }
   return (
     <section className="scroll-mt-24 animate-[fadeInUp_0.8s_0.2s_ease_both]" id={sectionId(section)}>
       <p className="font-mono26 mb-3 text-xs uppercase tracking-[0.15em] text-h26-muted">{section.eyebrow}</p>
-      <h2 className="font-serif26 text-[clamp(1.25rem,2.8vw,1.7rem)] font-normal leading-snug tracking-tight mb-5">
+      <h3 className="font-serif26 text-[clamp(1.15rem,2.4vw,1.45rem)] font-normal leading-snug tracking-tight mb-5">
         {section.title}
-      </h2>
+      </h3>
 
       {section.stats && (
         <div
