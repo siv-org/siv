@@ -96,7 +96,7 @@ function SectionBlock({ section }: { section: Exclude<Section, { compare: true }
         </div>
       )}
 
-      {section.body.length > 0 && (
+      {section.body && (
         <div className="space-y-4">
           {section.body.map((para) => (
             <p className="max-w-[600px] text-[0.9rem] leading-[1.7] text-h26-textSecondary" key={para}>
@@ -119,14 +119,14 @@ function SectionBlock({ section }: { section: Exclude<Section, { compare: true }
         </div>
       )}
 
-      {section.cite && section.citeHref && (
+      {section.cite && (
         <a
           className="mt-4 inline-block text-[0.78rem] text-h26-muted no-underline transition-colors hover:text-h26-text"
-          href={section.citeHref}
+          href={section.cite}
           rel="noreferrer"
           target="_blank"
         >
-          {section.cite} →
+          {section.cite.replace(/^https:\/\//, '')} →
         </a>
       )}
     </section>

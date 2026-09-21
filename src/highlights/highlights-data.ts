@@ -7,9 +7,8 @@ export type Section =
       eyebrow: string
     }
   | {
-      body: string[]
+      body?: string[]
       cite?: string
-      citeHref?: string
       example?: { body: string; title: string }
       eyebrow: string
       image?: { alt: string; src: string }
@@ -25,8 +24,7 @@ export const SECTIONS: Section[] = [
       'SIV is meant to complement other voting methods, not replace them. People who prefer in-person or mail-in voting should be able to still use these methods.',
       'SIV has been successfully deployed alongside mail and in-person voting. The latest example was a Utah State Senate race in 2025, with 70,000 eligible voters.',
     ],
-    cite: 'blog.siv.org/2025/12/11chooses',
-    citeHref: 'https://blog.siv.org/2025/12/11chooses',
+    cite: 'https://blog.siv.org/2025/12/11chooses',
     example: {
       body: 'The district was wide and rural, and many people could not take time off work. 98% of voters chose to vote digitally — only 1 in 50 chose in-person paper ballots.',
       title: 'Utah State Senate Race, December 2025',
@@ -40,8 +38,7 @@ export const SECTIONS: Section[] = [
       'The county option could not support the preferred method — Approval Voting — only single-choice. The election would have gotten a worse voting method, and paid more for it.',
       'Digitally, we can offer spoiler-free voting methods, with stronger guardrails so voters clearly understand how to vote and don’t spoil their ballot.',
     ],
-    cite: 'blog.siv.org/2025/12/11chooses',
-    citeHref: 'https://blog.siv.org/2025/12/11chooses',
+    cite: 'https://blog.siv.org/2025/12/11chooses',
     eyebrow: '2 · Voting methods',
     title: 'Offering smarter voting methods',
   },
@@ -60,8 +57,7 @@ export const SECTIONS: Section[] = [
     body: [
       'At the 2023 Utah GOP convention, with about 2,300 voters, the digital SIV tally finished in about 45 seconds. Paper took 20+ minutes and 10 staff — and produced an off-by-one human counting error.',
     ],
-    cite: 'blog.siv.org/2023/04/utah-gop-april-convention',
-    citeHref: 'https://blog.siv.org/2023/04/utah-gop-april-convention',
+    cite: 'https://blog.siv.org/2023/04/utah-gop-april-convention',
     eyebrow: '4 · Speed',
     stats: [
       { label: 'Digital tally', value: '~45 sec' },
@@ -86,9 +82,7 @@ export const SECTIONS: Section[] = [
     title: 'Auditability & public trust',
   },
   {
-    body: [],
-    cite: 'blog.siv.org/2025/11/siv-in-one-poster',
-    citeHref: 'https://blog.siv.org/2025/11/siv-in-one-poster',
+    cite: 'https://blog.siv.org/2025/11/siv-in-one-poster',
     eyebrow: '7 · SIV IN ONE POSTER',
     image: {
       alt: 'SIV Protocol Overview poster',
