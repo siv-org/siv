@@ -22,12 +22,12 @@ export const SECTIONS: Section[] = [
   {
     body: [
       'SIV is meant to complement other voting methods, not replace them. People who prefer in-person or mail-in voting should be able to still use these methods.',
-      'SIV has been successfully deployed alongside mail and in-person voting. The latest example was a Utah State Senate race in 2025, 70,000 eligible voters.',
+      'SIV has been successfully deployed alongside mail and in-person options:',
     ],
     cite: 'https://blog.siv.org/2025/12/11chooses',
     example: {
       body: 'Wide rural district, where many people could not take time off work. 98% voted digitally. 1 in 50 chose paper.',
-      title: 'Utah State Senate, December 2025',
+      title: 'Utah State Senate, 70,000 eligible voters, Dec 2025',
     },
     eyebrow: '1 · Alongside, not instead',
     title: 'An additional option, not a replacement',
