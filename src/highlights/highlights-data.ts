@@ -21,12 +21,12 @@ export type Stat = { label: string; value: string }
 export const SECTIONS: Section[] = [
   {
     body: [
-      'SIV is meant to complement other voting methods, not replace them. People who prefer in-person or mail-in voting should be able to still use these methods.',
-      'SIV has been successfully deployed alongside mail and in-person options:',
+      'SIV is meant to complement other voting methods, not replace them. People who prefer to vote in person or by mail should still be able to use those methods.',
+      'SIV has already been successfully deployed alongside mail and in-person options:',
     ],
     cite: 'https://blog.siv.org/2025/12/11chooses',
     example: {
-      body: 'Wide rural district, where many people could not take time off work. 98% voted digitally. 1 in 50 chose paper.',
+      body: 'Wide rural district, where many people could not take time off work. 98% voted digitally; 1 in 50 chose paper.',
       title: 'Utah State Senate, 70,000 eligible voters, Dec 2025',
     },
     eyebrow: '1 · Alongside, not instead',
@@ -34,34 +34,34 @@ export const SECTIONS: Section[] = [
   },
   {
     body: [
-      'Utah 2025: State Senator wanted to use Approval Voting, not “choose only one.” The county could only run single-choice: a worse method, at a higher price.',
-      'Digital can run spoiler-free methods, with guardrails so voters know how to mark the ballot and don’t spoil it.',
-      'The State Senate race ended up being conducted primarily digitally, using Approval Voting.',
+      'In Utah in 2025, a State Senator wanted to use Approval Voting rather than being limited to the "choosing-only-one" voting method. But the county could not offer other voting methods through its existing process.',
+      'Digital voting on the other hand can support spoiler-resistant voting methods, with strong guardrails that help voters understand how to mark their ballots correctly.',
+      'The State Senate race was ultimately conducted primarily digitally, using Approval Voting.',
     ],
     cite: 'https://blog.siv.org/2025/12/11chooses',
     eyebrow: '2 · Voting methods',
-    title: 'Offering smarter voting methods',
+    title: 'Easy to integrate more voting methods',
   },
   {
     body: [
-      'County quote to add one paper question to a State Senate special: $130k+. When officials chose to ran it primarily digitally: 77% less.',
+      'Adding a single question to the paper ballot for a State Senate special election required a $120k+ budget. Running the election primarily digitally required 77% less.',
     ],
     eyebrow: '3 · Cost',
     stats: [
-      { label: 'One question, paper vote', value: '$130k+' },
-      { label: 'Cost cut when digital', value: '77%' },
+      { label: 'Paper ballot: add one question', value: '$120k+' },
+      { label: 'Digital: lower budget', value: '77%' },
     ],
     title: 'A fraction of the paper-based budget',
   },
   {
     body: [
-      'Utah GOP 2023, about 2,300 voters: digital tallied in ~45 seconds. Paper took 20+ minutes plus 10 staff members— and a counting error.',
+      "In the Utah GOP's 2023 state leadership election, about 2,300 voters participated, with both paper and digital vote options. The digital results were tallied in ~45 seconds and everyone could recount the results & verify their vote was counted correctly. The paper process took 30+ minutes, required 10 staff members, involved a long line, and resulted in a counting error.",
     ],
     cite: 'https://blog.siv.org/2023/04/utah-gop-april-convention',
     eyebrow: '4 · Speed',
     stats: [
       { label: 'Digital tally', value: '~45 sec' },
-      { label: 'Paper tally', value: '20+ min' },
+      { label: 'Paper tally', value: '30+ min' },
       { label: 'Paper staff', value: '10' },
     ],
     title: 'Time savings',
@@ -72,11 +72,11 @@ export const SECTIONS: Section[] = [
   },
   {
     body: [
-      'With SIV, election officials can enable voters and auditors to personally verify the integrity of the vote.',
-      'Every name on the voter roll can be audited. Results can be verified end-to-end by auditors and voters alike, all while keeping every ballot private.',
-      'What makes SIV unique: voters and auditors don’t need to check cryptography / hashes to confirm the outcome. Voters can see their own vote in plain text and know it was recorded correctly.',
-      'If a problem does come up, it can be fixed ballot by ballot. There’s no need to throw out an entire election.',
-      'And because every check (the voter roll, ballot secrecy, and the integrity of the results) can happen after the polls close, verification doesn’t depend on catching problems in the moment, as many other systems do.',
+      'With SIV, election officials can enable voters and auditors to independently verify the integrity of an election.',
+      'The voter roll can be audited. Results can be verified end-to-end by auditors and voters, while keeping individual ballots private.',
+      "One distinctive SIV feature is that voters and auditors don't need to inspect cryptographic hashes to verify the outcome. This makes the verification process drastically easier to understand and perform.",
+      'If a problem does come up, it can be remediated ballot by ballot. There is no need to discard an entire election.',
+      "And because verification of the voter roll, ballot secrecy, and result integrity can all happen after the polls close, verification doesn't depend entirely on catching problems at the time of voting, as many other systems do.",
     ],
     eyebrow: '6 · Trust',
     title: 'Auditability & public trust',
