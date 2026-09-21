@@ -1,17 +1,21 @@
 import poster from './PosterHighlights.png'
 
-export type Section = {
-  body: string[]
-  cite?: string
-  citeHref?: string
-  /** Homepage CompareSection — not copy. */
-  compare?: true
-  example?: { body: string; title: string }
-  eyebrow: string
-  image?: { alt: string; src: string }
-  stats?: Stat[]
-  title: string
-}
+export type Section =
+  | {
+      /** Homepage CompareSection — not copy. */
+      compare: true
+      eyebrow: string
+    }
+  | {
+      body: string[]
+      cite?: string
+      citeHref?: string
+      example?: { body: string; title: string }
+      eyebrow: string
+      image?: { alt: string; src: string }
+      stats?: Stat[]
+      title: string
+    }
 
 export type Stat = { label: string; value: string }
 
@@ -67,10 +71,8 @@ export const SECTIONS: Section[] = [
     title: 'Time savings',
   },
   {
-    body: [],
     compare: true,
     eyebrow: '5 · Scoring SIV vs Mail vs In Person',
-    title: 'How SIV compares to mail & in-person voting',
   },
   {
     body: [

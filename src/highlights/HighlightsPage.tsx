@@ -38,7 +38,7 @@ export function HighlightsPage() {
 
       <div className="pb-20 space-y-16 md:pb-28 md:space-y-20">
         {SECTIONS.map((section) =>
-          section.compare ? (
+          'compare' in section ? (
             <section className="scroll-mt-24" key={section.eyebrow}>
               <p className="px-7 mx-auto max-w-[820px] font-mono26 mb-0 text-xs uppercase tracking-[0.15em] text-h26-muted">
                 {section.eyebrow}
@@ -73,7 +73,7 @@ export function HighlightsPage() {
   )
 }
 
-function SectionBlock({ section }: { section: Section }) {
+function SectionBlock({ section }: { section: Exclude<Section, { compare: true }> }) {
   return (
     <section className="scroll-mt-24 animate-[fadeInUp_0.8s_0.2s_ease_both]" id={sectionId(section)}>
       <p className="font-mono26 mb-3 text-xs uppercase tracking-[0.15em] text-h26-muted">{section.eyebrow}</p>
@@ -119,24 +119,21 @@ function SectionBlock({ section }: { section: Section }) {
         </div>
       )}
 
-      {section.cite &&
-        (section.citeHref ? (
-          <a
-            className="mt-4 inline-block text-[0.78rem] text-h26-muted no-underline transition-colors hover:text-h26-text"
-            href={section.citeHref}
-            rel="noreferrer"
-            target="_blank"
-          >
-            {section.cite} →
-          </a>
-        ) : (
-          <p className="mt-4 text-[0.78rem] text-h26-muted">{section.cite}</p>
-        ))}
+      {section.cite && section.citeHref && (
+        <a
+          className="mt-4 inline-block text-[0.78rem] text-h26-muted no-underline transition-colors hover:text-h26-text"
+          href={section.citeHref}
+          rel="noreferrer"
+          target="_blank"
+        >
+          {section.cite} →
+        </a>
+      )}
     </section>
   )
 }
 
-function sectionId(section: Section) {
+function sectionId(section: { title: string }) {
   return section.title
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
@@ -146,7 +143,7 @@ function sectionId(section: Section) {
 /** First time a section enters view → analytics row with that hash (reuse existing table). */
 function useSectionViews() {
   useEffect(() => {
-    const ids = SECTIONS.map((s) => (s.compare ? 'compare' : sectionId(s)))
+    const ids = SECTIONS.map((s) => ('compare' in s ? 'compare' : sectionId(s)))
     const seen = new Set<string>()
     const observer = new IntersectionObserver(
       (entries) => {
