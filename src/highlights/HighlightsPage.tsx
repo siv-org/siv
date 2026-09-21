@@ -107,9 +107,8 @@ function SectionBlock({ section }: { section: Section }) {
       )}
 
       {section.image && (
-        <div className="overflow-hidden relative mt-2 bg-white rounded-xl border shadow-sm border-h26-border">
+        <div className="overflow-hidden mt-2 bg-white rounded-xl border shadow-sm border-h26-border">
           <img alt={section.image.alt} className="block w-full" src={section.image.src} />
-          {section.image.cover && <div aria-hidden className="absolute bg-black" style={section.image.cover} />}
         </div>
       )}
 

@@ -8,12 +8,7 @@ export type Section = {
   compare?: true
   example?: { body: string; title: string }
   eyebrow: string
-  image?: {
-    alt: string
-    /** Cover a region of the image (percent of width/height). */
-    cover?: { height: string; left: string; top: string; width: string }
-    src: string
-  }
+  image?: { alt: string; src: string }
   stats?: Stat[]
   title: string
 }
