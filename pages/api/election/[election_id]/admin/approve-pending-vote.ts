@@ -1,5 +1,6 @@
 import { firebase, pushover } from 'api/_services'
 import { checkJwtOwnsElection } from 'api/validate-admin-jwt'
+import { firestore } from 'firebase-admin'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import { PendingVote } from './load-admin'
@@ -14,11 +15,27 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const jwt = await checkJwtOwnsElection(req, res, election_id)
   if (!jwt.valid) return
 
+  const electionDoc = firebase.firestore().collection('elections').doc(election_id)
+
+  await approvePendingVotes(electionDoc, votes_to_approve, (link_auth) =>
+    pushover(
+      `${jwt.election_manager} tried approving missing vote`,
+      `${link_auth}${jwt.election_title} (${election_id})\n\n${link_auth}`,
+    ),
+  )
+
+  return res.status(201).json({ message: 'Done' })
+}
+
+/** Move pending link-auth votes into `votes` + `voters`. Shared with the test helper. */
+export async function approvePendingVotes(
+  electionDoc: firestore.DocumentReference,
+  votes_to_approve: Pick<PendingVote, 'email' | 'first_name' | 'last_name' | 'link_auth'>[],
+  onMissing?: (link_auth: string) => unknown,
+) {
   //
   // Move them from 'votes-pending' to 'votes
   //
-  const electionDoc = firebase.firestore().collection('elections').doc(election_id)
-
   const amount = votes_to_approve.length
   let index = 0
   const intervalToReport = 10
@@ -26,11 +43,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   for (const vote of votes_to_approve) {
     const pendingVote = await electionDoc.collection('votes-pending').doc(vote.link_auth).get()
     if (!pendingVote.exists) {
-      await pushover(
-        `${jwt.election_manager} tried approving missing vote`,
-        `${vote.link_auth}${jwt.election_title} (${election_id})\n\n${vote.link_auth}`,
-      )
-      console.log(`Vote ${vote.link_auth} not found in 'votes-pending' collection (${election_id})`)
+      await onMissing?.(vote.link_auth)
+      console.log(`Vote ${vote.link_auth} not found in 'votes-pending' collection (${electionDoc.id})`)
       continue
     }
 
@@ -58,6 +72,4 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     // Report progress
     if (index % intervalToReport === 0) console.log(`${index}/${amount} - ${((index / amount) * 100).toFixed(0)}%`)
   }
-
-  return res.status(201).json({ message: 'Done' })
 }

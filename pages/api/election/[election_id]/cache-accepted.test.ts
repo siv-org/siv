@@ -6,6 +6,14 @@ import { encodeReplacementPayload, generateVoterKeypair, signReplacement } from 
 const API_BASE = 'http://localhost:3000/api'
 
 const helpers = {
+  approvePendingVotes: async (electionId: string, link_auths: string[]) => {
+    const response = await fetch(`${API_BASE}/test/approve-pending-votes`, {
+      body: JSON.stringify({ election_id: electionId, link_auths }),
+      headers: { 'Content-Type': 'application/json' },
+      method: 'POST',
+    })
+    return { body: await response.json(), status: response.status }
+  },
   callCacheAccepted: async (electionId: string, headers: Record<string, string> = {}) => {
     // Helper to call cache-accepted endpoint
     const response = await fetch(`${API_BASE}/election/${electionId}/cache-accepted`, { headers: { ...headers } })
@@ -240,15 +248,52 @@ test('Strengthened vote - packed ciphertext is replaced in cache-accepted', asyn
   }
 }, 15_000)
 
+// Test 4: Approving link-auth votes must show their auth tokens on the status page
+// Repro: pack pending → approve → cache-accepted still served auth:'pending' (stale pack + counters)
+test('Approve pending link-auth votes - cache-accepted shows assigned auth tokens', async () => {
+  const electionId = `test-approve-pending-cache-${Date.now()}`
+
+  try {
+    expect((await helpers.createTestElection(electionId)).status).toBe(201)
+
+    const submit1 = await helpers.submitTestVote(electionId, 'link', { test: 'link1' })
+    expect(submit1.status).toBe(200)
+    const { link_auth: linkAuth1 } = (await submit1.json()) as { link_auth: string }
+
+    const submit2 = await helpers.submitTestVote(electionId, 'link', { test: 'link2' })
+    expect(submit2.status).toBe(200)
+    const { link_auth: linkAuth2 } = (await submit2.json()) as { link_auth: string }
+
+    // Pack while still pending (mirrors opening election status before admin approves)
+    const before = await helpers.callCacheAccepted(electionId)
+    expect(before.status).toBe(200)
+    const beforeAuths = (before.body as { results: Array<{ auth: string }> }).results.map((r) => r.auth)
+    expect(beforeAuths).toEqual(['pending', 'pending'])
+
+    expect((await helpers.approvePendingVotes(electionId, [linkAuth1, linkAuth2])).status).toBe(201)
+
+    const after = await helpers.callCacheAccepted(electionId)
+    expect(after.status).toBe(200)
+    const afterAuths = (after.body as { results: Array<{ auth: string }> }).results.map((r) => r.auth)
+    expect(afterAuths).toHaveLength(2)
+    expect(afterAuths).toContain(linkAuth1)
+    expect(afterAuths).toContain(linkAuth2)
+    expect(afterAuths).not.toContain('pending')
+  } finally {
+    await helpers.cleanupTestElection(electionId)
+  }
+}, 15_000)
+
 // -- Placeholder future tests --
 // Given existing guards in the endpoint and manual coverage during development, there aren’t any remaining must-have tests.
 // These remaining ones are nice-to-haves — for performance/availability/edge-cases — rather than correctness/blockers.
 describe.skip('Future tests', () => {
   /*
   test.skip('Pending Vote Transition During Packing - verify deduplication works', () => {
-    // --- Test 3: Pending Vote Transition During Packing ---
+    // --- Pending Vote Transition During Packing ---
     // When a pending vote is approved (moved from `votes-pending` to `votes`) while packing is in progress,
     // deduplication should work correctly.
+    // (Distinct from the live "Approve pending link-auth" test above, which covers approve-after-pack.)
 
     // - Steps -
     // 1. Create election with pending votes
