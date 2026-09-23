@@ -411,8 +411,99 @@ export async function invalidateCachedVote(
   }
 }
 
+/**
+ * After approving link-auth votes (pending → accepted), keep /cache-accepted fresh:
+ * - Not packed yet → no-op (live tail + counter bump already see auth=link_auth).
+ * - Packed → move page entry from pendingVotes → votes and bump root counters/revision.
+ * - Lease busy or packed entry missing → full cache reset (correctness over cost).
+ */
+export async function promoteCachedPendingVotes(
+  electionDoc: firestore.DocumentReference,
+  items: { created_at?: TimestampLike; link_auth: string }[],
+): Promise<'patched' | 'reset' | 'skipped'> {
+  if (!items.length) return 'skipped'
+
+  const rootRef = electionDoc.collection('votes-cached').doc('root')
+  const pagesCol = rootRef.collection('pages')
+  const leaseRef = electionDoc.collection('votes-cached').doc('lease')
+  const db = electionDoc.firestore
+
+  const rootSnap = await rootRef.get()
+  if (!rootSnap.exists) return 'skipped'
+  const root = rootSnap.data() as RootMeta
+
+  const needPromote = items.filter(({ created_at, link_auth }) =>
+    isPackedByCursor(created_at, link_auth, root.lastPackedCreatedAt, root.lastPackedDocId),
+  )
+  if (!needPromote.length) return 'skipped'
+
+  const lease = await tryAcquireLease(db, leaseRef, LEASE_TTL_MS)
+  if (!lease.ok || !lease.owner) {
+    await resetVotesCache(electionDoc)
+    return 'reset'
+  }
+
+  let didReset = false
+  try {
+    const want = new Set(needPromote.map((i) => i.link_auth))
+    const found = new Set<string>()
+    const snap = await pagesCol.orderBy(firestore.FieldPath.documentId()).get()
+
+    for (const page of snap.docs) {
+      if (!want.size) break
+      const data = (page.data() as { pendingVotes?: PendingVoteSummary[]; votes?: VoteSummary[] }) || {}
+      const votes = data.votes ?? []
+      const pendingVotes = data.pendingVotes ?? []
+
+      const keptPending: PendingVoteSummary[] = []
+      const promoted: VoteSummary[] = []
+      for (const pv of pendingVotes) {
+        const linkAuth = typeof pv.link_auth === 'string' ? pv.link_auth : undefined
+        if (!linkAuth || !want.has(linkAuth)) {
+          keptPending.push(pv)
+          continue
+        }
+        const entry = { ...pv, auth: linkAuth } as VoteSummary & { link_auth?: string }
+        delete entry.link_auth
+        promoted.push(entry)
+        found.add(linkAuth)
+        want.delete(linkAuth)
+      }
+      if (!promoted.length) continue
+
+      const nextVotes = [...votes, ...promoted]
+      await page.ref.set({
+        bytesApprox: approxBytes({ pendingVotes: keptPending, votes: nextVotes }),
+        pendingVotes: keptPending,
+        votes: nextVotes,
+      })
+    }
+
+    if (found.size < needPromote.length) {
+      await resetVotesCache(electionDoc)
+      didReset = true
+      return 'reset'
+    }
+
+    const n = found.size
+    await rootRef.set(
+      {
+        observedPending: Math.max(0, (root.observedPending ?? 0) - n),
+        observedVotes: (root.observedVotes ?? 0) + n,
+        packedPending: Math.max(0, (root.packedPending ?? 0) - n),
+        packedVotes: (root.packedVotes ?? 0) + n,
+        revision: (root.revision ?? 0) + 1,
+      } satisfies Partial<RootMeta>,
+      { merge: true },
+    )
+    return 'patched'
+  } finally {
+    if (!didReset) await releaseLease(db, leaseRef, lease.owner)
+  }
+}
+
 /** Wipe packed pages so the next /cache-accepted rebuilds from live votes. */
-async function resetVotesCache(electionDoc: firestore.DocumentReference) {
+export async function resetVotesCache(electionDoc: firestore.DocumentReference) {
   const rootRef = electionDoc.collection('votes-cached').doc('root')
   const pages = await rootRef.collection('pages').listDocuments()
   await Promise.all([

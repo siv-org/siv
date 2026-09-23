@@ -3,6 +3,7 @@ import { checkJwtOwnsElection } from 'api/validate-admin-jwt'
 import { firestore } from 'firebase-admin'
 import { NextApiRequest, NextApiResponse } from 'next'
 
+import { promoteCachedPendingVotes } from '../cache-accepted'
 import { PendingVote } from './load-admin'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -39,6 +40,7 @@ export async function approvePendingVotes(
   const amount = votes_to_approve.length
   let index = 0
   const intervalToReport = 10
+  const promoted: { created_at?: firestore.Timestamp; link_auth: string }[] = []
 
   for (const vote of votes_to_approve) {
     const pendingVote = await electionDoc.collection('votes-pending').doc(vote.link_auth).get()
@@ -48,11 +50,13 @@ export async function approvePendingVotes(
       continue
     }
 
+    const pendingData = pendingVote.data() || {}
+
     // Copy vote to 'votes' collection
     await electionDoc
       .collection('votes')
       .doc(vote.link_auth)
-      .set({ ...pendingVote.data(), auth: vote.link_auth })
+      .set({ ...pendingData, auth: vote.link_auth })
 
     // Copy voter info to 'voters' collection
     const email = `${vote.first_name || 'no_firstname'}.${vote.last_name || 'no_lastname'}..${
@@ -67,9 +71,19 @@ export async function approvePendingVotes(
 
     // Delete from 'votes-pending' collection
     await electionDoc.collection('votes-pending').doc(vote.link_auth).delete()
+    promoted.push({ created_at: pendingData.created_at, link_auth: vote.link_auth })
     index++
 
     // Report progress
     if (index % intervalToReport === 0) console.log(`${index}/${amount} - ${((index / amount) * 100).toFixed(0)}%`)
   }
+
+  if (!index) return
+
+  // Counter + in-place pack promote (pending→accepted is not append-only; cursor would
+  // hide the accepted twin if we only bumped counters). Falls back to full reset if needed.
+  await Promise.all([
+    electionDoc.update({ num_pending_votes: firestore.FieldValue.increment(-index) }),
+    promoteCachedPendingVotes(electionDoc, promoted),
+  ])
 }
