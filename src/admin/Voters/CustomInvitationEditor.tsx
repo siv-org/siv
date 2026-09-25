@@ -211,6 +211,7 @@ export const CustomInvitationEditor = () => {
 }
 
 const customInvitationAllowlist = {
+  '378b22ada9f31e7': 'cd1@g',
   '1471fccb124bbf4': 's@A',
   '8044b24d7e96606': 'EHZ',
   // cb547b8468a4642: 'D@s',
