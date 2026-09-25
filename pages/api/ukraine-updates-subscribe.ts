@@ -5,10 +5,8 @@ import { allowCors } from './_cors'
 import { firebase, pushover } from './_services'
 
 export default allowCors(async (req: NextApiRequest, res: NextApiResponse) => {
-  const { email: untrimmed } = req.body
-  const email = untrimmed.trim()
-
   // Validate email
+  const email = String(req.body?.email || '').trim()
   if (!email) return res.status(400).json({ error: 'Email is required' })
   if (!validateEmail(email)) return res.status(400).json({ error: 'Invalid email' })
 
