@@ -5,20 +5,21 @@ import { encodeInvalidationResponsePayload, signReplacement } from 'src/crypto/v
 
 import { State } from '../vote-state'
 
-export const InvalidatedVoteMessage = ({ state }: { state: State }) => {
+export const InvalidatedVoteMessage = ({ auth, state }: { auth: string; state: State }) => {
   const [message, setMessage] = useState('')
   const [wasVoteInvalidated, setWasVoteInvalidated] = useState(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitSuccessful, setIsSubmitSuccessful] = useState(false)
   const router = useRouter()
-  const { auth, election_id } = router.query
+  const { election_id } = router.query
   const privkey = state.voter_privkey
 
   useEffect(() => {
+    if (!election_id) return
     api(`/election/${election_id}/was-vote-invalidated?auth=${auth}`)
       .then((response) => response.json())
       .then((data) => setWasVoteInvalidated(data))
-  }, [])
+  }, [election_id, auth])
 
   if (!wasVoteInvalidated) return null
 
@@ -38,7 +39,7 @@ export const InvalidatedVoteMessage = ({ state }: { state: State }) => {
       <button
         disabled={isSubmitting || isSubmitSuccessful || !privkey}
         onClick={async () => {
-          if (typeof auth !== 'string' || typeof election_id !== 'string' || !privkey) return
+          if (typeof election_id !== 'string' || !privkey) return
           setIsSubmitting(true)
           const response = await api(`/election/${election_id}/submit-invalidation-response`, {
             auth,

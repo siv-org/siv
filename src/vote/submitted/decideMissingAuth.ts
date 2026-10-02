@@ -1,7 +1,7 @@
 /** Elections allowed to recover link_auth by scanning for matching ciphertext. (temporary, July 2026) */
 export const LINK_AUTH_CIPHERTEXT_RECOVERY_ELECTIONS = new Set(['1783637746011', '1783994820958']) // CCN + test
 
-export type LookupResult = { link_auth: string; needs_auth: boolean }
+export type LookupResult = { invalidated?: boolean; link_auth: string; needs_auth: boolean }
 
 export type MissingAuthDecision =
   | { action: 'cta'; link_auth: string }
@@ -57,7 +57,8 @@ export function decideMissingAuth({
     }
   }
 
-  const { link_auth, needs_auth } = lookup.result
+  const { invalidated, link_auth, needs_auth } = lookup.result
+  if (invalidated) return { action: 'skip' }
   if (!needs_auth) return { action: 'mark_complete', link_auth }
   return { action: 'cta', link_auth }
 }

@@ -19,6 +19,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (typeof link_auth === 'string' && link_auth) {
     const pending = await electionDoc.collection('votes-pending').doc(link_auth).get()
     if (!pending.exists) {
+      // Wasn't in votes-pending — try invalidated & accepted.
+      const [invalidated, accepted] = await Promise.all([
+        electionDoc.collection('invalidated_votes').doc(link_auth).get(),
+        electionDoc.collection('votes').doc(link_auth).get(),
+      ])
+      if (invalidated.exists) return res.status(200).json({ invalidated: true, link_auth, needs_auth: false })
+      if (accepted.exists) return res.status(200).json({ link_auth, needs_auth: !accepted.data()?.auth_added_at })
+
+      // Still not found, notify admin.
       await pushover(
         'lookup-link-auth: miss',
         `election: ${election_id}\nvia: link_auth\nlink_auth: ${link_auth}\nIP: ${ip}`,

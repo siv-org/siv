@@ -27,8 +27,8 @@ export function SubmittedScreen({
   state: State & { submitted_at: Date }
 }): JSX.Element {
   const { link_auth } = useRouter().query
-  const malwareCheckAuth =
-    auth === 'link' ? (typeof link_auth === 'string' && link_auth) || state.link_auth || auth : auth
+  // For auth=link, the real token is in ?link_auth= or local vote state — not the literal "link"
+  const voteAuth = auth === 'link' ? (typeof link_auth === 'string' && link_auth) || state.link_auth || null : auth
   const [showEncryptionDetails, toggleEncryptionDetails] = useReducer((state) => !state, false)
 
   // Widen the page for the tables
@@ -42,7 +42,7 @@ export function SubmittedScreen({
   return (
     <NoSsr>
       <UnverifiedEmailModal />
-      <InvalidatedVoteMessage {...{ state }} />
+      {voteAuth && <InvalidatedVoteMessage auth={voteAuth} {...{ state }} />}
       <MissingAuthInfoBanner {...{ auth, election_id, state }} />
 
       {!disabledLinkToStatusPage.includes(election_id) && (
@@ -74,7 +74,7 @@ export function SubmittedScreen({
         No one else can possibly know it.
       </p>
 
-      <MalwareCheck auth={malwareCheckAuth} {...{ dispatch, election_id, state }} />
+      {voteAuth && <MalwareCheck auth={voteAuth} {...{ dispatch, election_id, state }} />}
 
       {/* Encryption */}
       <h3 className="mt-16">How your vote was submitted:</h3>

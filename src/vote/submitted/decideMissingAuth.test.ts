@@ -111,6 +111,18 @@ describe('decideMissingAuth cohorts', () => {
     ).toEqual({ action: 'cta', link_auth: 'cccccccccc' })
   })
 
+  test('invalidated vote: skip missing-auth banner', () => {
+    expect(
+      decideMissingAuth({
+        auth: 'link',
+        election_id: OTHER,
+        encrypted,
+        knownLinkAuth: 'fc1c25f644',
+        lookup: { ok: true, result: { invalidated: true, link_auth: 'fc1c25f644', needs_auth: false } },
+      }),
+    ).toEqual({ action: 'skip' })
+  })
+
   test('ciphertext recovery http/network failure: error; link_auth failure: silent skip', () => {
     expect(
       decideMissingAuth({
