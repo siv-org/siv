@@ -77,7 +77,7 @@ export const STEP_META: Record<DemoStep, { blurb: string; title: string; unlocks
   },
   intro: {
     blurb: 'A sandbox election you can play as a voter — then optionally attack.',
-    title: 'SIV, hands-on',
+    title: 'SIV',
   },
   invite: {
     blurb: 'Your election admin sent a one-time Auth Token. Only registered voters get one.',
