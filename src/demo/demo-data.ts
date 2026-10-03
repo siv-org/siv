@@ -76,7 +76,7 @@ export const STEP_META: Record<DemoStep, { blurb: string; title: string; unlocks
     unlocks: ['privacy'],
   },
   intro: {
-    blurb: 'A sandbox election you can play as a voter — then optionally attack.',
+    blurb: 'A sandbox election you can experience as a voter, then optionally attack it.',
     title: 'SIV',
   },
   invite: {
