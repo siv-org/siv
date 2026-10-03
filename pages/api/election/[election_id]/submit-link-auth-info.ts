@@ -1,7 +1,8 @@
-import { firebase, sendEmail } from 'api/_services'
+import { firebase, pushover, sendEmail } from 'api/_services'
 import { button, generateEmailLoginCode } from 'api/admin-login'
 import { pusher } from 'api/pusher'
 import { validate as validateEmail } from 'email-validator'
+import { firestore } from 'firebase-admin'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { escapeHtml } from 'src/_shared/escapeHtml'
 import { safeOrigin } from 'src/_shared/safeOrigin'
@@ -31,30 +32,72 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const origin = safeOrigin(req)
   if (typeof origin !== 'string') return res.status(500).json(origin)
 
-  // Server assigns them a Email-Verification code
-  const verification_code = generateEmailLoginCode()
+  const pendingSnap = await pendingVote
 
-  // Don't allow submitting auth info multiple times
-  if ({ ...(await pendingVote).data() }.auth_added_at)
-    return res.status(409).json({ error: 'Auth info already submitted' })
+  // Already approved / invalidated — don't allow further edits
+  if (!pendingSnap.exists) {
+    const [accepted, invalidated] = await Promise.all([
+      electionDoc.collection('votes').doc(link_auth).get(),
+      electionDoc.collection('invalidated_votes').doc(link_auth).get(),
+    ])
+    const where = accepted.exists ? 'votes' : invalidated.exists ? 'invalidated_votes' : null
+    await pushover(
+      'submit-link-auth-info: not pending',
+      `Election ID: ${election_id}\nlink_auth: ${link_auth}\nwhere: ${where || 'missing'}\n${JSON.stringify({
+        email,
+        first_name,
+        last_name,
+      })}`,
+    )
+    if (!where) return res.status(404).json({ error: 'Vote not found' })
+    return res.status(409).json({ error: 'Auth info can no longer be updated' })
+  }
+
+  const previous = pendingSnap.data() || {}
+  const isResubmit = !!previous.auth_added_at
+  const emailChanged = previous.email !== email
+
+  // If resubmit, notify admin
+  if (isResubmit)
+    await pushover(
+      'submit-link-auth-info: resubmit',
+      `Election ID: ${election_id}\nlink_auth: ${link_auth}\nprev email:${previous.email}\nnew email:${email}\nemail changed:${emailChanged}`,
+    )
+
+  // Server assigns a new verification code, when email is new/changed
+  const shouldSendEmail = !isResubmit || emailChanged
+  const verification_code = shouldSendEmail ? generateEmailLoginCode() : previous.verification_code
 
   await Promise.all([
     // store info & email verification code
-    electionDoc
-      .collection('votes-pending')
-      .doc(link_auth)
-      .update({
-        ...(hasAdditionalAuthInfo ? { additionalAuthInfo } : {}), // Only add additionalAuthInfo if non-empty
-        auth_added_at: new Date(),
-        email,
-        first_name,
-        is_email_verified: false,
-        last_name,
-        verification_code,
-      }),
+    pendingVoteDoc.update({
+      ...(hasAdditionalAuthInfo ? { additionalAuthInfo } : {}), // Only add additionalAuthInfo if non-empty
+      auth_added_at: new Date(),
+      email,
+      first_name,
+      is_email_verified: shouldSendEmail ? false : previous.is_email_verified || false,
+      last_name,
+      verification_code,
 
-    // Send verification email
+      // Resubmit: archive prior answers
+      ...(isResubmit
+        ? {
+            auth_info_submissions: firestore.FieldValue.arrayUnion({
+              additionalAuthInfo: previous.additionalAuthInfo || null,
+              at: previous.auth_added_at || null,
+              email: previous.email || null,
+              first_name: previous.first_name || null,
+              is_email_verified: previous.is_email_verified ?? null,
+              last_name: previous.last_name || null,
+              verification_code: previous.verification_code || null,
+            }),
+          }
+        : {}),
+    }),
+
+    // Send verification email if email new/changed
     email &&
+      shouldSendEmail &&
       sendEmail({
         from: 'SIV',
         preheader: 'Confirm whether you submitted a vote.',
