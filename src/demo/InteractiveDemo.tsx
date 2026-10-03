@@ -74,7 +74,7 @@ export function InteractiveDemo() {
   }, [s.unlocked])
 
   const start = () =>
-    setS((prev) =>
+    setS(
       go(
         {
           ...initState(),
@@ -120,8 +120,9 @@ export function InteractiveDemo() {
 
   const runUnlock = () => {
     setS((prev) => {
-      const choice = prev.overridden ? prev.honestChoice || prev.choice! : prev.choice!
-      const verification = prev.strengthened || prev.verification!
+      const choice = prev.overridden ? prev.honestChoice || prev.choice : prev.choice
+      const verification = prev.strengthened || prev.verification
+      if (!choice || !verification) return prev
       const unlocked = buildUnlocked(choice, verification, prev.overridden)
       return go({ ...prev, search: verification, unlocked }, 'unlock')
     })
@@ -206,13 +207,16 @@ export function InteractiveDemo() {
               {s.step === 'intro' && <Intro onStart={start} />}
               {s.step === 'invite' && <Invite auth={s.auth} onContinue={() => setS((prev) => go(prev, 'vote'))} />}
               {s.step === 'vote' && <Vote choice={s.choice} onPick={sealVote} />}
-              {s.step === 'encrypt' && (
-                <Encrypt
-                  choice={s.choice!}
-                  onContinue={() => setS((prev) => go(prev, 'submit'))}
-                  verification={s.verification!}
-                />
-              )}
+              {s.step === 'encrypt' &&
+                (s.choice && s.verification ? (
+                  <Encrypt
+                    choice={s.choice}
+                    onContinue={() => setS((prev) => go(prev, 'submit'))}
+                    verification={s.verification}
+                  />
+                ) : (
+                  <NeedVote onStart={start} />
+                ))}
               {s.step === 'submit' && (
                 <Submit
                   boardVotes={boardVotes}
@@ -259,13 +263,12 @@ export function InteractiveDemo() {
                 ))}
               {s.step === 'coercion' &&
                 (s.choice && s.verification ? (
-                  <Coercion
-                    activeVerification={activeVerification}
-                    buyerScreenshot={s.buyerScreenshot}
-                    choice={s.choice}
-                    coercedChoice={s.coercedChoice}
-                    honestChoice={s.honestChoice}
-                    onCastForBuyer={(coercedChoice) => {
+                <Coercion
+                  activeVerification={activeVerification}
+                  buyerScreenshot={s.buyerScreenshot}
+                  choice={s.choice}
+                  honestChoice={s.honestChoice}
+                  onCastForBuyer={(coercedChoice) => {
                       const verification = s.verification || generateTrackingNum()
                       setS((prev) => ({
                         ...prev,
@@ -441,7 +444,6 @@ function Coercion({
   activeVerification,
   buyerScreenshot,
   choice,
-  coercedChoice,
   honestChoice,
   onCastForBuyer,
   onOverride,
@@ -452,7 +454,6 @@ function Coercion({
   activeVerification: null | string
   buyerScreenshot: null | string
   choice: null | string
-  coercedChoice: null | string
   honestChoice: null | string
   onCastForBuyer: (c: string) => void
   onOverride: (honest: string) => void
