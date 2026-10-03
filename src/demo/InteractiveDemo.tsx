@@ -156,19 +156,18 @@ export function InteractiveDemo() {
 
   return (
     <NoSsr>
-      <div className="demo grid gap-6 lg:grid-cols-[220px_1fr] lg:gap-8">
-        {/* Main stage first on phone */}
-        <section className="order-1 min-w-0 lg:order-2">
-          {/* Mobile path scroller */}
-          <div className="overflow-x-auto px-1 -mx-1 mb-4 lg:hidden">
-            <ol className="flex w-max gap-1.5 pb-1">
+      <div className="demo">
+        {/* Path + restart — full width above both columns */}
+        <div className="mb-5 flex items-center gap-3 sm:mb-6">
+          <div className="-mx-1 min-w-0 flex-1 overflow-x-auto px-1">
+            <ol className="flex w-max gap-1.5">
               {pathSteps.map(([id, label]) => (
                 <li key={id}>
                   <button
                     className={`whitespace-nowrap rounded-full px-3 py-1.5 text-[0.72rem] transition-colors ${
                       s.step === id
                         ? 'bg-h26-green/15 font-medium text-h26-green'
-                        : 'bg-black/[0.04] text-h26-textSecondary'
+                        : 'bg-black/[0.04] text-h26-textSecondary hover:bg-black/[0.07] hover:text-h26-text'
                     }`}
                     onClick={() => setS((prev) => ({ ...prev, step: id }))}
                     type="button"
@@ -179,7 +178,18 @@ export function InteractiveDemo() {
               ))}
             </ol>
           </div>
+          <button
+            className="shrink-0 whitespace-nowrap text-[0.75rem] text-h26-muted underline-offset-2 hover:text-h26-text hover:underline"
+            onClick={restart}
+            type="button"
+          >
+            Restart
+          </button>
+        </div>
 
+        <div className="grid gap-6 lg:grid-cols-[220px_1fr] lg:gap-8">
+        {/* Main stage first on phone */}
+        <section className="order-1 min-w-0 lg:order-2">
           <header className="mb-5 sm:mb-6">
             <p className="font-mono26 mb-2 text-[10px] uppercase tracking-[0.16em] text-h26-muted">Interactive demo</p>
             <h1 className="font-serif26 text-[clamp(1.35rem,5vw,2.1rem)] font-normal tracking-tight text-h26-text">
@@ -364,36 +374,8 @@ export function InteractiveDemo() {
               )
             })}
           </ul>
-
-          <p className="font-mono26 mb-2 mt-6 hidden text-[10px] uppercase tracking-[0.16em] text-h26-muted lg:block">
-            Path
-          </p>
-          <ol className="hidden space-y-1 text-[0.75rem] text-h26-textSecondary lg:block">
-            {pathSteps.map(([id, label]) => (
-              <li key={id}>
-                <button
-                  className={`rounded px-1.5 py-0.5 transition-colors ${
-                    s.step === id
-                      ? 'bg-h26-green/15 font-medium text-h26-green'
-                      : 'hover:bg-black/5 hover:text-h26-text'
-                  }`}
-                  onClick={() => setS((prev) => ({ ...prev, step: id }))}
-                  type="button"
-                >
-                  {label}
-                </button>
-              </li>
-            ))}
-          </ol>
-
-          <button
-            className="mt-5 text-[0.75rem] text-h26-muted underline-offset-2 hover:text-h26-text hover:underline"
-            onClick={restart}
-            type="button"
-          >
-            Restart demo
-          </button>
         </aside>
+        </div>
       </div>
     </NoSsr>
   )
