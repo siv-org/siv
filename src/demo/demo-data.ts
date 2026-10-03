@@ -41,25 +41,40 @@ export const POSTER_PROPERTIES: PosterProperty[] = [
 export const CANDIDATES = ['Angela Alioto', 'London Breed', 'Mark Leno', 'Jane Kim'] as const
 
 export type DemoStep =
+  | 'audit'
+  | 'coercion'
+  | 'done'
+  | 'encrypt'
   | 'intro'
   | 'invite'
-  | 'vote'
-  | 'encrypt'
-  | 'submit'
   | 'malware'
   | 'strengthen'
-  | 'coercion'
+  | 'submit'
   | 'unlock'
   | 'verify'
-  | 'audit'
-  | 'done'
+  | 'vote'
 
 export const HAPPY_PATH: DemoStep[] = ['intro', 'invite', 'vote', 'encrypt', 'submit', 'unlock', 'verify', 'done']
 
-export const STEP_META: Record<
-  DemoStep,
-  { title: string; blurb: string; unlocks?: PosterProperty['id'][] }
-> = {
+export const STEP_META: Record<DemoStep, { blurb: string; title: string; unlocks?: PosterProperty['id'][] }> = {
+  audit: {
+    blurb: 'Every ciphertext traces to a registered token. Anyone can re-tally the unlocked votes.',
+    title: 'Auditor view',
+    unlocks: ['stuffing', 'open'],
+  },
+  coercion: {
+    blurb: 'Appear to comply with a buyer, then privately override at a polling station.',
+    title: 'Anti-coercion: private override',
+  },
+  done: {
+    blurb: 'You’ve walked the happy path and the hardcore defenses.',
+    title: 'That’s SIV',
+  },
+  encrypt: {
+    blurb: 'Your device seals the vote and generates a secret Verification # before anything leaves.',
+    title: 'Encrypt on-device',
+    unlocks: ['privacy'],
+  },
   intro: {
     blurb: 'A sandbox election you can play as a voter — then optionally attack.',
     title: 'SIV, hands-on',
@@ -69,20 +84,6 @@ export const STEP_META: Record<
     title: 'Invitation',
     unlocks: ['stuffing'],
   },
-  vote: {
-    blurb: 'Mark your ballot. Same point-and-click UX as a real SIV election.',
-    title: 'Mark your ballot',
-  },
-  encrypt: {
-    blurb: 'Your device seals the vote and generates a secret Verification # before anything leaves.',
-    title: 'Encrypt on-device',
-    unlocks: ['privacy'],
-  },
-  submit: {
-    blurb: 'The public board gets your ciphertext + auth — not your choices.',
-    title: 'Submit encrypted vote',
-    unlocks: ['open'],
-  },
   malware: {
     blurb: 'A second device independently decrypts what was sealed. Malware on Device 1 can’t fake Device 2.',
     title: 'Anti-malware: double-device check',
@@ -91,9 +92,10 @@ export const STEP_META: Record<
     blurb: 'Update the last digits of your Verification # after casting — stale screenshots stop matching.',
     title: 'Update your Verification #',
   },
-  coercion: {
-    blurb: 'Appear to comply with a buyer, then privately override at a polling station.',
-    title: 'Anti-coercion: private override',
+  submit: {
+    blurb: 'The public board gets your ciphertext + auth — not your choices.',
+    title: 'Submit encrypted vote',
+    unlocks: ['open'],
   },
   unlock: {
     blurb: 'Election closes. Privacy Protectors shuffle, then jointly unlock. Fast-forward for the demo.',
@@ -105,13 +107,8 @@ export const STEP_META: Record<
     title: 'Find your vote',
     unlocks: ['ground-truth', 'open'],
   },
-  audit: {
-    blurb: 'Every ciphertext traces to a registered token. Anyone can re-tally the unlocked votes.',
-    title: 'Auditor view',
-    unlocks: ['stuffing', 'open'],
-  },
-  done: {
-    blurb: 'You’ve walked the happy path and the hardcore defenses.',
-    title: 'That’s SIV',
+  vote: {
+    blurb: 'Mark your ballot. Same point-and-click UX as a real SIV election.',
+    title: 'Mark your ballot',
   },
 }
