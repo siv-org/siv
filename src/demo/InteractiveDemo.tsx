@@ -203,7 +203,7 @@ export function InteractiveDemo() {
                 {s.step === 'intro' ? (
                   <Image
                     alt="SIV"
-                    className="h-6 w-auto sm:h-7"
+                    className="w-auto h-6 sm:h-7"
                     height={introLogoHeight}
                     src="/logo.png"
                     width={Math.round(logoRatio * introLogoHeight)}
@@ -277,12 +277,12 @@ export function InteractiveDemo() {
                 ))}
               {s.step === 'coercion' &&
                 (s.choice && s.verification ? (
-                <Coercion
-                  activeVerification={activeVerification}
-                  buyerScreenshot={s.buyerScreenshot}
-                  choice={s.choice}
-                  honestChoice={s.honestChoice}
-                  onCastForBuyer={(coercedChoice) => {
+                  <Coercion
+                    activeVerification={activeVerification}
+                    buyerScreenshot={s.buyerScreenshot}
+                    choice={s.choice}
+                    honestChoice={s.honestChoice}
+                    onCastForBuyer={(coercedChoice) => {
                       const verification = s.verification || generateTrackingNum()
                       setS((prev) => ({
                         ...prev,
@@ -688,23 +688,23 @@ function Intro({ onStart }: { onStart: () => void }) {
   return (
     <div>
       <p className="text-[0.95rem] leading-relaxed text-h26-textSecondary">
-        Happy path first (~2 min): invite → vote → encrypt → submit → unlock → find your #. Then optional rooms for
-        malware, verification-number updates, coercion overrides, and audits — the defenses from the{' '}
-        <a
-          className="font-medium text-h26-green underline-offset-2 hover:underline"
-          href="https://blog.siv.org/2025/11/siv-in-one-poster"
-          rel="noreferrer"
-          target="_blank"
-        >
-          SIV poster
-        </a>
-        .
+        Most voters only ever see the happy path: get an invite → vote → submit → check results and find your own vote
+        in the list.
       </p>
-      <ul className="mt-5 space-y-2 text-[0.9rem] text-h26-textSecondary">
-        <li>· Simulated sandbox — no real election / no login</li>
-        <li>· Same mental model as production SIV</li>
-        <li>· Click poster items on the left to jump to a defense</li>
-      </ul>
+      <p className="mt-4 text-[0.95rem] leading-relaxed text-h26-textSecondary">
+        But SIV also has defenses for when things go wrong: malware changing your vote, someone pressuring or buying
+        your vote, or a result that needs end-to-end auditing.
+      </p>
+      <p className="mt-4 text-[0.95rem] leading-relaxed text-h26-textSecondary">
+        We design for the worst case: nation-states willing to spend military-sized budgets to sway high-stakes
+        elections. And we neither ask for nor assume trust in anyone: party insiders, election officials, software and
+        hardware vendors, voters, AI agents, or the SIV team itself.
+      </p>
+      {/* <ul className="mt-5 space-y-2 text-[0.9rem] text-h26-textSecondary">
+        <li>· This is a simulated sandbox — no real election / no login</li>
+
+        <li>· Click items on the left to jump to a defense</li>
+      </ul> */}
       <PrimaryButton className="mt-8" onClick={onStart}>
         Start as a voter
       </PrimaryButton>
