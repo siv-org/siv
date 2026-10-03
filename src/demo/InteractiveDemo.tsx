@@ -158,8 +158,8 @@ export function InteractiveDemo() {
     <NoSsr>
       <div className="demo">
         {/* Path + restart — full width above both columns */}
-        <div className="mb-5 flex items-center gap-3 sm:mb-6">
-          <div className="-mx-1 min-w-0 flex-1 overflow-x-auto px-1">
+        <div className="flex gap-3 items-center mb-5 sm:mb-6">
+          <div className="overflow-x-auto flex-1 px-1 -mx-1 min-w-0">
             <ol className="flex w-max gap-1.5">
               {pathSteps.map(([id, label]) => (
                 <li key={id}>
@@ -188,193 +188,197 @@ export function InteractiveDemo() {
         </div>
 
         <div className="grid gap-6 lg:grid-cols-[220px_1fr] lg:gap-8">
-        {/* Main stage first on phone */}
-        <section className="order-1 min-w-0 lg:order-2">
-          <header className="mb-5 sm:mb-6">
-            <p className="font-mono26 mb-2 text-[10px] uppercase tracking-[0.16em] text-h26-muted">Interactive demo</p>
-            <h1 className="font-serif26 text-[clamp(1.35rem,5vw,2.1rem)] font-normal tracking-tight text-h26-text">
-              {STEP_META[s.step].title}
-            </h1>
-            <p className="mt-2 max-w-xl text-[0.9rem] leading-relaxed text-h26-textSecondary sm:text-[0.95rem]">
-              {STEP_META[s.step].blurb}
-            </p>
-          </header>
+          {/* Main stage first on phone */}
+          <section className="order-1 min-w-0 lg:order-2">
+            <header className="mb-5 sm:mb-6">
+              <p className="font-mono26 mb-2 text-[10px] uppercase tracking-[0.16em] text-h26-muted">
+                Interactive demo
+              </p>
+              <h1 className="font-serif26 text-[clamp(1.35rem,5vw,2.1rem)] font-normal tracking-tight text-h26-text">
+                {STEP_META[s.step].title}
+              </h1>
+              <p className="mt-2 max-w-xl text-[0.9rem] leading-relaxed text-h26-textSecondary sm:text-[0.95rem]">
+                {STEP_META[s.step].blurb}
+              </p>
+            </header>
 
-          <div className="rounded-2xl bg-white p-4 shadow-[0_0_0_1px_rgba(0,0,0,0.06)] sm:p-8">
-            {s.step === 'intro' && <Intro onStart={start} />}
-            {s.step === 'invite' && <Invite auth={s.auth} onContinue={() => setS((prev) => go(prev, 'vote'))} />}
-            {s.step === 'vote' && <Vote choice={s.choice} onPick={sealVote} />}
-            {s.step === 'encrypt' && (
-              <Encrypt
-                choice={s.choice!}
-                onContinue={() => setS((prev) => go(prev, 'submit'))}
-                verification={s.verification!}
-              />
-            )}
-            {s.step === 'submit' && (
-              <Submit
-                boardVotes={boardVotes}
-                onAudit={() => setS((prev) => go(prev, 'audit'))}
-                onCoercion={() => setS((prev) => go(prev, 'coercion'))}
-                onMalware={() => setS((prev) => go(prev, 'malware'))}
-                onUnlock={runUnlock}
-              />
-            )}
-            {s.step === 'malware' &&
-              (s.choice && s.verification ? (
-                <Malware
-                  choice={s.choice}
-                  confirmed={s.malwareConfirmed}
-                  device1Tampered={s.device1Tampered}
-                  onConfirm={() => setS((prev) => markComplete({ ...prev, malwareConfirmed: true }, ['malware']))}
-                  onContinue={() => setS((prev) => go(markComplete(prev, ['malware']), 'strengthen'))}
-                  onSkip={() => setS((prev) => go(prev, 'coercion'))}
-                  onTamper={() => setS((prev) => ({ ...prev, device1Tampered: true, malwareConfirmed: false }))}
-                  verification={s.verification}
+            <div className="rounded-2xl bg-white p-4 shadow-[0_0_0_1px_rgba(0,0,0,0.06)] sm:p-8">
+              {s.step === 'intro' && <Intro onStart={start} />}
+              {s.step === 'invite' && <Invite auth={s.auth} onContinue={() => setS((prev) => go(prev, 'vote'))} />}
+              {s.step === 'vote' && <Vote choice={s.choice} onPick={sealVote} />}
+              {s.step === 'encrypt' && (
+                <Encrypt
+                  choice={s.choice!}
+                  onContinue={() => setS((prev) => go(prev, 'submit'))}
+                  verification={s.verification!}
                 />
-              ) : (
-                <NeedVote onStart={start} />
-              ))}
-            {s.step === 'strengthen' &&
-              (s.verification ? (
-                <Strengthen
-                  digits={s.digits}
-                  onChangeDigits={(digits) =>
-                    setS((prev) => ({ ...prev, digits: digits.replace(/\D/g, '').slice(0, 4) }))
-                  }
-                  onContinue={() => setS((prev) => go(prev, 'coercion'))}
-                  onSkip={() => setS((prev) => go(prev, 'coercion'))}
-                  onStrengthen={() => {
-                    if (!strengthenPreview) return
-                    setS((prev) => markComplete({ ...prev, strengthened: strengthenPreview }, ['malware']))
-                  }}
-                  original={s.verification}
-                  preview={strengthenPreview}
-                  strengthened={s.strengthened}
-                />
-              ) : (
-                <NeedVote onStart={start} />
-              ))}
-            {s.step === 'coercion' &&
-              (s.choice && s.verification ? (
-                <Coercion
-                  activeVerification={activeVerification}
-                  buyerScreenshot={s.buyerScreenshot}
-                  choice={s.choice}
-                  coercedChoice={s.coercedChoice}
-                  honestChoice={s.honestChoice}
-                  onCastForBuyer={(coercedChoice) => {
-                    const verification = s.verification || generateTrackingNum()
-                    setS((prev) => ({
-                      ...prev,
-                      buyerScreenshot: verification,
-                      choice: coercedChoice,
-                      coercedChoice,
-                      verification,
-                    }))
-                  }}
-                  onOverride={(honest) => {
-                    const newVerification = generateTrackingNum()
-                    setS((prev) =>
-                      markComplete(
-                        {
-                          ...prev,
-                          choice: honest,
-                          honestChoice: honest,
-                          overridden: true,
-                          strengthened: null,
-                          verification: newVerification,
-                        },
-                        ['coercion'],
-                      ),
-                    )
-                  }}
-                  onSkip={() => runUnlock()}
-                  onUnlock={runUnlock}
-                  overridden={s.overridden}
-                />
-              ) : (
-                <NeedVote onStart={start} />
-              ))}
-            {s.step === 'unlock' &&
-              (s.unlocked.length ? (
-                <Unlock onContinue={() => setS((prev) => go(prev, 'verify'))} unlocked={s.unlocked} />
-              ) : s.choice && s.verification ? (
-                <div>
-                  <p className="text-[0.85rem] text-h26-textSecondary">Ready when you are.</p>
-                  <PrimaryButton className="mt-4" onClick={runUnlock}>
-                    Fast-forward shuffle & unlock
-                  </PrimaryButton>
-                </div>
-              ) : (
-                <NeedVote onStart={start} />
-              ))}
-            {s.step === 'verify' &&
-              (s.unlocked.length && activeVerification ? (
-                <Verify
-                  activeVerification={activeVerification}
-                  buyerScreenshot={s.buyerScreenshot}
+              )}
+              {s.step === 'submit' && (
+                <Submit
+                  boardVotes={boardVotes}
                   onAudit={() => setS((prev) => go(prev, 'audit'))}
-                  onDone={() => setS((prev) => go(prev, 'done'))}
-                  overridden={s.overridden}
-                  search={s.search}
-                  searchHit={searchHit}
-                  setSearch={(search) => setS((prev) => ({ ...prev, search }))}
+                  onCoercion={() => setS((prev) => go(prev, 'coercion'))}
+                  onMalware={() => setS((prev) => go(prev, 'malware'))}
+                  onUnlock={runUnlock}
+                />
+              )}
+              {s.step === 'malware' &&
+                (s.choice && s.verification ? (
+                  <Malware
+                    choice={s.choice}
+                    confirmed={s.malwareConfirmed}
+                    device1Tampered={s.device1Tampered}
+                    onConfirm={() => setS((prev) => markComplete({ ...prev, malwareConfirmed: true }, ['malware']))}
+                    onContinue={() => setS((prev) => go(markComplete(prev, ['malware']), 'strengthen'))}
+                    onSkip={() => setS((prev) => go(prev, 'coercion'))}
+                    onTamper={() => setS((prev) => ({ ...prev, device1Tampered: true, malwareConfirmed: false }))}
+                    verification={s.verification}
+                  />
+                ) : (
+                  <NeedVote onStart={start} />
+                ))}
+              {s.step === 'strengthen' &&
+                (s.verification ? (
+                  <Strengthen
+                    digits={s.digits}
+                    onChangeDigits={(digits) =>
+                      setS((prev) => ({ ...prev, digits: digits.replace(/\D/g, '').slice(0, 4) }))
+                    }
+                    onContinue={() => setS((prev) => go(prev, 'coercion'))}
+                    onSkip={() => setS((prev) => go(prev, 'coercion'))}
+                    onStrengthen={() => {
+                      if (!strengthenPreview) return
+                      setS((prev) => markComplete({ ...prev, strengthened: strengthenPreview }, ['malware']))
+                    }}
+                    original={s.verification}
+                    preview={strengthenPreview}
+                    strengthened={s.strengthened}
+                  />
+                ) : (
+                  <NeedVote onStart={start} />
+                ))}
+              {s.step === 'coercion' &&
+                (s.choice && s.verification ? (
+                  <Coercion
+                    activeVerification={activeVerification}
+                    buyerScreenshot={s.buyerScreenshot}
+                    choice={s.choice}
+                    coercedChoice={s.coercedChoice}
+                    honestChoice={s.honestChoice}
+                    onCastForBuyer={(coercedChoice) => {
+                      const verification = s.verification || generateTrackingNum()
+                      setS((prev) => ({
+                        ...prev,
+                        buyerScreenshot: verification,
+                        choice: coercedChoice,
+                        coercedChoice,
+                        verification,
+                      }))
+                    }}
+                    onOverride={(honest) => {
+                      const newVerification = generateTrackingNum()
+                      setS((prev) =>
+                        markComplete(
+                          {
+                            ...prev,
+                            choice: honest,
+                            honestChoice: honest,
+                            overridden: true,
+                            strengthened: null,
+                            verification: newVerification,
+                          },
+                          ['coercion'],
+                        ),
+                      )
+                    }}
+                    onSkip={() => runUnlock()}
+                    onUnlock={runUnlock}
+                    overridden={s.overridden}
+                  />
+                ) : (
+                  <NeedVote onStart={start} />
+                ))}
+              {s.step === 'unlock' &&
+                (s.unlocked.length ? (
+                  <Unlock onContinue={() => setS((prev) => go(prev, 'verify'))} unlocked={s.unlocked} />
+                ) : s.choice && s.verification ? (
+                  <div>
+                    <p className="text-[0.85rem] text-h26-textSecondary">Ready when you are.</p>
+                    <PrimaryButton className="mt-4" onClick={runUnlock}>
+                      Fast-forward shuffle & unlock
+                    </PrimaryButton>
+                  </div>
+                ) : (
+                  <NeedVote onStart={start} />
+                ))}
+              {s.step === 'verify' &&
+                (s.unlocked.length && activeVerification ? (
+                  <Verify
+                    activeVerification={activeVerification}
+                    buyerScreenshot={s.buyerScreenshot}
+                    onAudit={() => setS((prev) => go(prev, 'audit'))}
+                    onDone={() => setS((prev) => go(prev, 'done'))}
+                    overridden={s.overridden}
+                    search={s.search}
+                    searchHit={searchHit}
+                    setSearch={(search) => setS((prev) => ({ ...prev, search }))}
+                    tallies={tallies}
+                    unlocked={s.unlocked}
+                  />
+                ) : (
+                  <NeedVote label="Vote and unlock first to verify." onStart={start} />
+                ))}
+              {s.step === 'audit' && (
+                <Audit
+                  boardVotes={boardVotes}
+                  onBack={() => setS((prev) => go(prev, s.unlocked.length ? 'verify' : 'submit'))}
+                  onDone={() => setS((prev) => go(prev, s.unlocked.length ? 'done' : 'submit'))}
                   tallies={tallies}
                   unlocked={s.unlocked}
                 />
-              ) : (
-                <NeedVote label="Vote and unlock first to verify." onStart={start} />
-              ))}
-            {s.step === 'audit' && (
-              <Audit
-                boardVotes={boardVotes}
-                onBack={() => setS((prev) => go(prev, s.unlocked.length ? 'verify' : 'submit'))}
-                onDone={() => setS((prev) => go(prev, s.unlocked.length ? 'done' : 'submit'))}
-                tallies={tallies}
-                unlocked={s.unlocked}
-              />
-            )}
-            {s.step === 'done' && <Done completed={s.completed} onRestart={restart} />}
-          </div>
-        </section>
+              )}
+              {s.step === 'done' && <Done completed={s.completed} onRestart={restart} />}
+            </div>
+          </section>
 
-        {/* Poster legend — below on phone, sidebar on desktop */}
-        <aside className="order-2 lg:order-1 lg:sticky lg:top-6 lg:self-start">
-          <p className="font-mono26 mb-3 text-[10px] uppercase tracking-[0.16em] text-h26-muted">Poster properties</p>
-          <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-1">
-            {POSTER_PROPERTIES.map((p) => {
-              const done = s.completed.has(p.id)
-              return (
-                <li key={p.id}>
-                  <button
-                    className={`w-full rounded-xl px-3 py-2.5 text-left transition-colors ${
-                      done
-                        ? 'bg-h26-green/[0.1] text-h26-text'
-                        : 'bg-black/[0.03] text-h26-textSecondary hover:bg-black/[0.05] hover:text-h26-text'
-                    }`}
-                    onClick={() => jumpToProperty(p.id)}
-                    type="button"
-                  >
-                    <div className="flex gap-2 items-start">
-                      <span
-                        className={`mt-0.5 inline-flex size-4 shrink-0 items-center justify-center rounded-full border text-[10px] ${
-                          done ? 'border-h26-green bg-h26-green text-white' : 'border-black/15 text-transparent'
-                        }`}
-                      >
-                        ✓
-                      </span>
-                      <div>
-                        <div className="text-[0.8rem] font-medium leading-snug">{p.label}</div>
-                        <div className="mt-0.5 text-[0.7rem] leading-snug opacity-70">{p.short}</div>
+          {/* Poster legend — below on phone, sidebar on desktop */}
+          <aside className="order-2 lg:order-1 lg:sticky lg:top-6 lg:self-start">
+            <p className="font-mono26 mb-3 text-[10px] uppercase tracking-[0.16em] text-h26-muted">
+              Advanced properties
+            </p>
+            <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-1">
+              {POSTER_PROPERTIES.map((p) => {
+                const done = s.completed.has(p.id)
+                return (
+                  <li key={p.id}>
+                    <button
+                      className={`w-full rounded-xl px-3 py-2.5 text-left transition-colors ${
+                        done
+                          ? 'bg-h26-green/[0.1] text-h26-text'
+                          : 'bg-black/[0.03] text-h26-textSecondary hover:bg-black/[0.05] hover:text-h26-text'
+                      }`}
+                      onClick={() => jumpToProperty(p.id)}
+                      type="button"
+                    >
+                      <div className="flex gap-2 items-start">
+                        <span
+                          className={`mt-0.5 inline-flex size-4 shrink-0 items-center justify-center rounded-full border text-[10px] ${
+                            done ? 'border-h26-green bg-h26-green text-white' : 'border-black/15 text-transparent'
+                          }`}
+                        >
+                          ✓
+                        </span>
+                        <div>
+                          <div className="text-[0.8rem] font-medium leading-snug">{p.label}</div>
+                          <div className="mt-0.5 text-[0.7rem] leading-snug opacity-70">{p.short}</div>
+                        </div>
                       </div>
-                    </div>
-                  </button>
-                </li>
-              )
-            })}
-          </ul>
-        </aside>
+                    </button>
+                  </li>
+                )
+              })}
+            </ul>
+          </aside>
         </div>
       </div>
     </NoSsr>
