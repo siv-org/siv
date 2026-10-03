@@ -1087,7 +1087,7 @@ function Vote({ choice, onPick }: { choice: null | string; onPick: (c: string) =
   const [picked, setPicked] = useState(choice)
   return (
     <div>
-      <p className="mb-4 rounded-lg bg-[#e6eafb] px-3 py-2 text-[0.9rem] font-semibold text-h26-text">
+      <p className="mb-4 rounded-lg bg-h26-green/[0.08] px-3 py-2 text-[0.9rem] font-semibold text-h26-text">
         Who should be the next Mayor?
       </p>
       <ul className="space-y-2">
