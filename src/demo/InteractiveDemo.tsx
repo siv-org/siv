@@ -707,13 +707,6 @@ function Intro({ onStart }: { onStart: () => void }) {
       <PrimaryButton className="mt-8" onClick={onStart}>
         Start as a voter
       </PrimaryButton>
-      <p className="mt-4 text-[0.75rem] text-h26-muted">
-        Prefer a video walkthrough?{' '}
-        <a className="text-h26-green no-underline underline-offset-2 hover:underline" href="/demo-wla">
-          Watch the video demo
-        </a>
-        .
-      </p>
     </div>
   )
 }
