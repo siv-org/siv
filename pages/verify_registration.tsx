@@ -30,7 +30,6 @@ const VerifyRegistrationPage = () => {
         const response = await api(`election/${election_id}/verify-link-auth-email-code`, {
           code,
           election_id,
-          email,
           invalid,
           link_auth,
         })

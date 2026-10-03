@@ -61,9 +61,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         recipient: email,
         subject: `Verify your email for ${election.election_title}`,
         text: `<h2 style="margin: 0;">Verify your email address</h2>
-      Someone submitted a vote in the Election <b><em>${
-        escapeHtml(election.election_title)
-      }</em></b> using the following information:
+      Someone submitted a vote in the Election <b><em>${escapeHtml(
+        election.election_title,
+      )}</em></b> using the following information:
 
       <b>First Name:</b> ${escapeHtml(first_name)}
       <b>Last Name:</b> ${escapeHtml(last_name)}
@@ -72,14 +72,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       If this was you, please confirm:
 
       ${button(
-        `${origin}/verify_registration?email=${encodeURIComponent(email)}&code=${verification_code}&election_id=${election_id}&link_auth=${link_auth}`,
+        `${origin}/verify_registration?email=${encodeURIComponent(
+          email,
+        )}&code=${verification_code}&election_id=${election_id}&link_auth=${link_auth}`,
         'Confirm this was me',
       )}
 
       <em style="font-size:11px; opacity: 0.6;">
-      Didn't submit this vote? <a href="${
-        origin
-      }/verify_registration?code=${verification_code}&election_id=${election_id}&link_auth=${link_auth}&invalid=true">Mark it as invalid.</a></em>`,
+      Didn't submit this vote? <a href="${origin}/verify_registration?code=${verification_code}&election_id=${election_id}&link_auth=${link_auth}&invalid=true">Mark it as invalid.</a></em>`,
       }),
 
     // Trigger admin's dashboard update

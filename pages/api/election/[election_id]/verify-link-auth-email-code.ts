@@ -4,7 +4,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { secretsMatch } from 'src/_shared/secretsMatch'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { code, election_id, email, invalid, link_auth } = req.body
+  const { code, election_id, invalid, link_auth } = req.body
   // Validate the request has required parameters
   if (!code || !link_auth || !election_id) return res.status(400).json({ error: 'Missing parameters.' })
 
@@ -19,12 +19,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     if (!voteDoc.exists) {
       await pushover(
         "Verify link-auth email, couldn't find auth token in 'pending' nor 'approved'",
-        `Email:${email}\n\nElection ID: ${election_id}\n\nAuth token: ${link_auth}`,
+        `Election ID: ${election_id}\n\nAuth token: ${link_auth}`,
       )
 
       return res.status(400).json({ error: 'Invalid verification code' })
     }
   }
+
+  const email = voteDoc.data()?.email || '?'
 
   // Check if the verification code is good
   if (!secretsMatch(voteDoc.data()?.verification_code, code)) {
