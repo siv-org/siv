@@ -1,14 +1,10 @@
-import Image from 'next/image'
 import { useMemo, useState } from 'react'
 import { NoSsr } from 'src/_shared/NoSsr'
 import { generateAuthToken } from 'src/crypto/generate-auth-tokens'
-import { logoRatio } from 'src/homepage2026/Nav'
 import { strengthenTracking } from 'src/vote/strengthen-tracking'
 import { generateTrackingNum } from 'src/vote/tracking-num'
 
 import { CANDIDATES, DemoStep, POSTER_PROPERTIES, STEP_META } from './demo-data'
-
-const introLogoHeight = 28
 
 type DemoState = {
   auth: string
@@ -200,17 +196,7 @@ export function InteractiveDemo() {
                 Interactive demo
               </p>
               <h1 className="font-serif26 text-[clamp(1.35rem,5vw,2.1rem)] font-normal tracking-tight text-h26-text">
-                {s.step === 'intro' ? (
-                  <Image
-                    alt="SIV"
-                    className="w-auto h-6 sm:h-7"
-                    height={introLogoHeight}
-                    src="/logo.png"
-                    width={Math.round(logoRatio * introLogoHeight)}
-                  />
-                ) : (
-                  STEP_META[s.step].title
-                )}
+                {STEP_META[s.step].title}
               </h1>
               <p className="mt-2 max-w-xl text-[0.9rem] leading-relaxed text-h26-textSecondary sm:text-[0.95rem]">
                 {STEP_META[s.step].blurb}
