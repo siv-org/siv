@@ -1,6 +1,6 @@
 import { Head } from '../Head'
-import { Footer } from '../homepage2026/Footer'
 import { h26fonts } from '../homepage2026/fonts'
+import { Footer } from '../homepage2026/Footer'
 import { Nav } from '../homepage2026/Nav'
 import { TailwindPreflight } from '../TailwindPreflight'
 import { useAnalytics } from '../useAnalytics'

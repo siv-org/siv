@@ -68,7 +68,9 @@ export function InteractiveDemo() {
       counts[c] = 0
     })
     s.unlocked.forEach((v) => {
-      counts[v.choice] = (counts[v.choice] || 0) + 1
+      splitChoices(v.choice).forEach((c) => {
+        counts[c] = (counts[c] || 0) + 1
+      })
     })
     return Object.entries(counts).sort((a, b) => b[1] - a[1])
   }, [s.unlocked])
@@ -461,8 +463,9 @@ function Coercion({
   onUnlock: () => void
   overridden: boolean
 }) {
-  const demanded = CANDIDATES.find((c) => c !== (honestChoice || choice)) || CANDIDATES[0]
-  const [honest, setHonest] = useState(honestChoice || choice || CANDIDATES[1])
+  const approved = new Set(splitChoices(honestChoice || choice || ''))
+  const demanded = CANDIDATES.find((c) => !approved.has(c)) || CANDIDATES[0]
+  const [honest, setHonest] = useState(() => new Set(splitChoices(honestChoice || choice || CANDIDATES[1])))
 
   return (
     <div>
@@ -508,25 +511,35 @@ function Coercion({
           {buyerScreenshot && !overridden && (
             <>
               <p className="mt-2 text-[0.85rem] text-h26-textSecondary">
-                At a polling station (separate channel), privately override with your honest choice:
+                At a polling station (separate channel), privately override with your honest approvals:
               </p>
               <ul className="mt-2 space-y-1">
                 {CANDIDATES.map((c) => (
                   <li key={c}>
                     <label className="flex cursor-pointer items-center gap-2 text-[0.85rem]">
                       <input
-                        checked={honest === c}
+                        checked={honest.has(c)}
                         className="accent-h26-green"
-                        name="honest"
-                        onChange={() => setHonest(c)}
-                        type="radio"
+                        onChange={() =>
+                          setHonest((prev) => {
+                            const next = new Set(prev)
+                            if (next.has(c)) next.delete(c)
+                            else next.add(c)
+                            return next
+                          })
+                        }
+                        type="checkbox"
                       />
                       {c}
                     </label>
                   </li>
                 ))}
               </ul>
-              <PrimaryButton className="mt-4" onClick={() => onOverride(honest)}>
+              <PrimaryButton
+                className="mt-4"
+                disabled={!honest.size}
+                onClick={() => onOverride(joinChoices([...honest]))}
+              >
                 Privately override + paper ballot
               </PrimaryButton>
             </>
@@ -623,7 +636,10 @@ function Encrypt({
 }) {
   return (
     <div className="space-y-4">
-      <Row label="Plaintext (on your device only)" value={`{ mayor: '${choice}', verification: '${verification}' }`} />
+      <Row
+        label="Plaintext (on your device only)"
+        value={`{ mayor: ${formatMayor(choice)}, verification: '${verification}' }`}
+      />
       <Row emphasize label="Verification #" mono value={verification} />
       <Row label="Ciphertext leaving the device" mono value={fakeCipher(verification + choice)} />
       <p className="text-[0.8rem] text-h26-textSecondary">
@@ -644,6 +660,12 @@ function fakeCipher(seed: string) {
     .join('')
     .slice(0, 24)
   return `{ encrypted: ${hex}…, lock: ${(hex.length * 7919).toString(16)}… }`
+}
+
+function formatMayor(choice: string) {
+  return `[${splitChoices(choice)
+    .map((c) => `'${c}'`)
+    .join(', ')}]`
 }
 
 function go(prev: DemoState, step: DemoStep): DemoState {
@@ -720,6 +742,10 @@ function Invite({ auth, onContinue }: { auth: string; onContinue: () => void }) 
   )
 }
 
+function joinChoices(choices: string[]) {
+  return [...choices].sort().join(', ')
+}
+
 function Malware({
   choice,
   confirmed,
@@ -739,7 +765,8 @@ function Malware({
   onTamper: () => void
   verification: string
 }) {
-  const device1Choice = device1Tampered ? CANDIDATES.find((c) => c !== choice) || CANDIDATES[0] : choice
+  const approved = splitChoices(choice)
+  const device1Choice = device1Tampered ? CANDIDATES.find((c) => !approved.includes(c)) || CANDIDATES[0] : choice
   const mismatch = device1Tampered
 
   return (
@@ -870,6 +897,10 @@ function SecondaryButton({
   )
 }
 
+function splitChoices(choice: string) {
+  return choice.split(', ').filter(Boolean)
+}
+
 function Strengthen({
   digits,
   onChangeDigits,
@@ -994,7 +1025,7 @@ function Unlock({ onContinue, unlocked }: { onContinue: () => void; unlocked: Un
       <div className="max-h-56 overflow-auto rounded-xl bg-h26-bg px-4 py-3 font-mono26 text-[0.72rem]">
         {unlocked.map((v) => (
           <div className={v.yours ? 'font-medium text-h26-green' : ''} key={v.verification}>
-            {`{ mayor: '${v.choice}', verification: '${v.verification}' }`}
+            {`{ mayor: ${formatMayor(v.choice)}, verification: '${v.verification}' }`}
             {v.yours ? '  ← yours' : ''}
           </div>
         ))}
@@ -1084,29 +1115,40 @@ function Verify({
 }
 
 function Vote({ choice, onPick }: { choice: null | string; onPick: (c: string) => void }) {
-  const [picked, setPicked] = useState(choice)
+  const [picked, setPicked] = useState(() => new Set(splitChoices(choice || '')))
   return (
     <div>
       <p className="mb-4 rounded-lg bg-h26-green/[0.08] px-3 py-2 text-[0.9rem] font-semibold text-h26-text">
         Who should be the next Mayor?
       </p>
+      <p className="mb-3 text-[0.85rem] italic text-h26-textSecondary">Vote for all the options you approve of:</p>
       <ul className="space-y-2">
         {CANDIDATES.map((c) => (
           <li key={c}>
             <label className="flex cursor-pointer items-center gap-3 rounded-lg px-2 py-2 hover:bg-black/[0.03]">
               <input
-                checked={picked === c}
+                checked={picked.has(c)}
                 className="size-4 accent-h26-green"
-                name="mayor"
-                onChange={() => setPicked(c)}
-                type="radio"
+                onChange={() =>
+                  setPicked((prev) => {
+                    const next = new Set(prev)
+                    if (next.has(c)) next.delete(c)
+                    else next.add(c)
+                    return next
+                  })
+                }
+                type="checkbox"
               />
               <span className="text-[0.95rem]">{c}</span>
             </label>
           </li>
         ))}
       </ul>
-      <PrimaryButton className="mt-6" disabled={!picked} onClick={() => picked && onPick(picked)}>
+      <PrimaryButton
+        className="mt-6"
+        disabled={!picked.size}
+        onClick={() => picked.size && onPick(joinChoices([...picked]))}
+      >
         Seal & encrypt vote
       </PrimaryButton>
     </div>

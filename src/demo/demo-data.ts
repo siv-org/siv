@@ -108,7 +108,7 @@ export const STEP_META: Record<DemoStep, { blurb: string; title: string; unlocks
     unlocks: ['ground-truth', 'open'],
   },
   vote: {
-    blurb: 'Mark your ballot. Same point-and-click UX as a real SIV election.',
+    blurb: 'Mark an approval ballot — vote for everyone you approve of.',
     title: 'Mark your ballot',
   },
 }
