@@ -99,7 +99,7 @@ function renderHtmlTable({
   title: string
   withoutAuth: number
 }) {
-  const thead = COLUMNS.map((col) => `<th>${escapeHtml(col)}</th>`).join('')
+  const thead = COLUMNS.map((col) => `<th>${escapeHtml(col.replaceAll('_', ' '))}</th>`).join('')
   const tbody = rows
     .map((row) => {
       const missing = !row.auth_added_at
@@ -121,8 +121,9 @@ function renderHtmlTable({
     .meta { color: #555; margin-bottom: 12px; }
     .meta a { color: #555; }
     table { border-collapse: collapse; width: max-content; max-width: 100%; }
-    th, td { border: 1px solid #ddd; padding: 4px 8px; vertical-align: top; white-space: nowrap; }
-    th { position: sticky; top: 0; background: #f4f4f4; text-align: left; font-weight: 600; }
+    th, td { border: 1px solid #ddd; padding: 4px 8px; vertical-align: top; }
+    td { white-space: nowrap; }
+    th { position: sticky; top: 0; background: #f4f4f4; text-align: left; font-weight: 600; white-space: normal; }
     tr.missing-auth { background: #fff3cd; }
     tr:hover { background: #eef6ff; }
     tr.missing-auth:hover { background: #ffe8a3; }
