@@ -40,6 +40,7 @@ const nextConfig = withMDX({
         permanent: true,
         source: '/view-browser-storage',
       },
+      { destination: 'https://11chooses.siv.org/plan', permanent: true, source: '/e26' },
     ]
   },
   transpilePackages: ['lodash-es'],
