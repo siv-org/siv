@@ -1,12 +1,13 @@
 import { useEffect } from 'react'
-import { pusher } from 'src/pusher-helper'
+import { getPusher } from 'src/pusher-helper'
 
 import { attemptInitLoginCode } from './attemptInitLoginCode'
 
 export const AdminRequestReceived = ({ email }: { email: string }) => {
   // Listen for 'approved'
   useEffect(() => {
-    if (!pusher) return alert('Missing pusher')
+    const pusher = getPusher()
+    if (!pusher) return
     const channel = pusher.subscribe(`admin-${email}`)
     channel.bind('approved', attemptInitLoginCode)
 

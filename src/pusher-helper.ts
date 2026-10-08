@@ -4,9 +4,14 @@ import useSWR, { mutate } from 'swr'
 
 /** Pusher counts each initialization — `new Pusher()` — as one connection.
 https://support.pusher.com/hc/en-us/articles/360019428173-How-are-connections-counted-
-Also important not to initialize on SSR, those connections are never dropped (bc window never closes) */
-export const pusher = typeof window !== 'undefined' ? new Pusher('9718ba0612df1a49e52b', { cluster: 'us3' }) : undefined
-// Pusher.logToConsole = true
+Lazy singleton: only connect on first subscribe, not merely by importing this module. */
+let client: Pusher | undefined
+export function getPusher() {
+  if (typeof window === 'undefined') return // Important not to initialize on SSR — those connections are never dropped (bc window never closes)
+  if (!client) client = new Pusher('9718ba0612df1a49e52b', { cluster: 'us3' })
+  // Pusher.logToConsole = true
+  return client
+}
 
 export const useData = (key: string, pusherChannel?: [string | undefined, string]) => {
   const [channelName, eventName] = pusherChannel || []
@@ -14,7 +19,8 @@ export const useData = (key: string, pusherChannel?: [string | undefined, string
   // If given pusher channel & event names, revalidate on activity
   useEffect(() => {
     if (channelName && eventName) {
-      if (!pusher) return alert('Pusher not initialized')
+      const pusher = getPusher()
+      if (!pusher) return
 
       // Subscribe to channel
       const channel = pusher.subscribe(channelName)

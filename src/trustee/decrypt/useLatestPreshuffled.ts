@@ -1,6 +1,6 @@
 import { TrusteesLatestPreshuffled } from 'pages/api/election/[election_id]/trustees/latest-preshuffled'
 import { useEffect } from 'react'
-import { pusher } from 'src/pusher-helper'
+import { getPusher } from 'src/pusher-helper'
 import useSWR from 'swr'
 
 import { CipherStrings } from '../../crypto/stringify-shuffle'
@@ -18,8 +18,9 @@ export function useLatestPreshuffled(election_id?: string) {
   useEffect(() => {
     if (!election_id || !mutate) return
 
-    const channel = pusher?.subscribe(`keygen-${election_id}`)
-    if (!channel) return
+    const pusher = getPusher()
+    if (!pusher) return
+    const channel = pusher.subscribe(`keygen-${election_id}`)
 
     const handleUpdate = (updateData: Record<string, Record<string, unknown> | string[]>) => {
       // Check if admin updated shuffled data (which means preshuffled was also created)
