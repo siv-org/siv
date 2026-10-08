@@ -1,31 +1,33 @@
-import { DecryptedVotes } from '../status/DecryptedVotes'
-import { Totals } from '../status/Totals'
-import { EncodedsTable } from './EncodedsTable'
-import { Partials } from './Partials'
-import { RecombinedTable } from './RecombinedTable'
+{/* 2021 WIP page towards explaining Universal Verification */}
+
+// import { DecryptedVotes } from '../status/DecryptedVotes'
+// import { Totals } from '../status/Totals'
+// import { EncodedsTable } from './EncodedsTable'
+// import { Partials } from './Partials'
+// import { RecombinedTable } from './RecombinedTable'
 
 This page lays out how anyone can confirm the complete accuracy of this <a href="https://siv.org" target="_blank">siv.org</a> Election.
 
-<Totals proofsPage />
+{/* <Totals proofsPage /> */}
 
 ## Working backwards from the Vote Totals...
 
 1. Vote totals are the sums of each unique option from the Decrypted Votes table.
 
-<DecryptedVotes proofsPage />
+{/* <DecryptedVotes proofsPage /> */}
 
 You can verify these numbers yourself by hand or spreadsheet.
 
 2. Combine the verification # and each vote column like this: [verification]:[vote].
 
-<RecombinedTable />
+{/* <RecombinedTable /> */}
 
 3. Encode the alphanumeric votes into integers.
 
-<EncodedsTable />
+{/* <EncodedsTable /> */}
 
 4. The decrypted votes are the Lagrangian Interpolations of the Partial Decryptions provided by the Trustees.
 
-<Partials />
+{/* <Partials /> */}
 
 5. Each Partial can be verified using their individual ZK Proofs, against the final shuffled list, and the trustee's public commitments.
