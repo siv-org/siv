@@ -10,36 +10,12 @@ const nextConfig = withMDX({
   images: { localPatterns: [{ pathname: '/_next/static/media/**' }, { pathname: '/logo.png' }] },
   async redirects() {
     return [
-      {
-        destination: 'https://docs.siv.org/research-in-progress/ukraine',
-        permanent: true,
-        source: '/ukraine',
-      },
-      {
-        destination: 'https://docs.siv.org/compare',
-        permanent: true,
-        source: '/compare',
-      },
-      {
-        destination: 'https://siv.org/election/1759241141808/vote?auth=link',
-        permanent: true,
-        source: '/evoteid',
-      },
-      {
-        destination: 'https://blog.siv.org/2025/08/overrides',
-        permanent: true,
-        source: '/overrides',
-      },
-      {
-        destination: '/browser-storage',
-        permanent: true,
-        source: '/show-browser-storage',
-      },
-      {
-        destination: '/browser-storage',
-        permanent: true,
-        source: '/view-browser-storage',
-      },
+      { destination: 'https://docs.siv.org/research-in-progress/ukraine', permanent: true, source: '/ukraine' },
+      { destination: 'https://docs.siv.org/compare', permanent: true, source: '/compare' },
+      { destination: 'https://siv.org/election/1759241141808/vote?auth=link', permanent: true, source: '/evoteid' },
+      { destination: 'https://blog.siv.org/2025/08/overrides', permanent: true, source: '/overrides' },
+      { destination: '/browser-storage', permanent: true, source: '/show-browser-storage' },
+      { destination: '/browser-storage', permanent: true, source: '/view-browser-storage' },
       { destination: 'https://11chooses.siv.org/plan', permanent: true, source: '/e26' },
     ]
   },
