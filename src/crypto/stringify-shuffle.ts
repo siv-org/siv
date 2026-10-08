@@ -3,6 +3,7 @@ import { mapValues } from 'lodash'
 import { AsyncReturnType } from './async-return-type'
 import { RP } from './curve'
 import { shuffleWithoutProof, shuffleWithProof } from './shuffle'
+import { SHUFFLE_PROOF_VERSION } from './shuffle-proof'
 
 export type CipherStrings = ReturnType<typeof stringifyShuffle>['shuffled'][0]
 export function destringifyShuffle({
@@ -10,6 +11,9 @@ export function destringifyShuffle({
   shuffled,
 }: ReturnType<typeof stringifyShuffle>): AsyncReturnType<typeof shuffleWithProof> {
   const p = proof
+  if (p.version !== SHUFFLE_PROOF_VERSION) {
+    throw new Error(`Unsupported shuffle proof version: ${p.version ?? 'missing'} (need ${SHUFFLE_PROOF_VERSION})`)
+  }
   const simple = p.simple_shuffle_proof
   return {
     proof: {
@@ -30,6 +34,7 @@ export function destringifyShuffle({
       },
       tau: BigInt(p.tau),
       Us: p.Us.map(RP.fromHex),
+      version: SHUFFLE_PROOF_VERSION,
       Ws: p.Ws.map(RP.fromHex),
     },
     shuffled: shuffled.map((r) => mapValues(r, RP.fromHex)),
@@ -64,6 +69,7 @@ export function stringifyShuffle({ proof, shuffled }: AsyncReturnType<typeof shu
       },
       tau: String(p.tau),
       Us: p.Us.map(String),
+      version: p.version,
       Ws: p.Ws.map(String),
     },
     shuffled: shuffled.map((r) => mapValues(r, String)),
