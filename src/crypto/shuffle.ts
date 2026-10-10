@@ -1,5 +1,6 @@
 /* eslint-disable no-redeclare */
 import { random_bigint, RP } from './curve'
+import { pick_random_bigint } from './pick-random-bigint'
 import { generate_shuffle_proof, Shuffle_Proof } from './shuffle-proof'
 
 export type Cipher = { encrypted: RP; lock: RP }
@@ -7,12 +8,13 @@ export type Cipher = { encrypted: RP; lock: RP }
 export type Public_Key = RP
 const G = RP.BASE
 
-/** Generates an array of all integers up to `size`, in a random order */
+/** Generates an array of all integers up to `size`, in a random order, using cryptographic randomness */
 export function build_permutation_array(size: number) {
   const array: number[] = []
   const options = [...new Array(size).keys()]
   while (options.length) {
-    const i = Math.floor(Math.random() * options.length)
+    // pick_random_bigint returns [1, max); shift to index [0, length)
+    const i = Number(pick_random_bigint(BigInt(options.length + 1))) - 1
     array.push(options.splice(i, 1)[0])
   }
   return array

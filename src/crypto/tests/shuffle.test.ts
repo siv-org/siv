@@ -6,7 +6,7 @@ import { pointToString, random_bigint, stringToPoint } from '../curve'
 import { decrypt } from '../decrypt'
 import { encrypt } from '../encrypt'
 import { generate_key_pair } from '../generate-key-pair'
-import { rename_to_c1_and_2, shuffleWithProof } from '../shuffle'
+import { build_permutation_array, rename_to_c1_and_2, shuffleWithProof } from '../shuffle'
 import { verify_shuffle_proof } from '../shuffle-proof'
 
 test('Can Verifiably Shuffle (permute & re-encrypt) a list of votes, with valid proof', async () => {
@@ -91,4 +91,18 @@ test('shuffle should not use Math.random', async () => {
   } finally {
     spy.mockRestore()
   }
+})
+
+test('build_permutation_array() is a permutation of 0..n-1', () => {
+  const n = 20
+  const p = build_permutation_array(n)
+  expect(p).toHaveLength(n)
+  expect(new Set(p).size).toBe(n)
+  expect([...p].sort((a, b) => a - b)).toEqual(range(n))
+})
+
+test('build_permutation_array() produces distinct permutations', () => {
+  // Collision odds for two uniform perms of n=20 is 1/20! ≈ 1 in 4e19
+  const n = 20
+  expect(build_permutation_array(n)).not.toEqual(build_permutation_array(n))
 })
