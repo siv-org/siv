@@ -1,5 +1,5 @@
 import bluebird from 'bluebird'
-import { expect, test } from 'bun:test'
+import { expect, spyOn, test } from 'bun:test'
 import { isEqual, range } from 'lodash'
 
 import { pointToString, random_bigint, stringToPoint } from '../curve'
@@ -77,4 +77,18 @@ test('Can Verifiably Shuffle (permute & re-encrypt) a list of votes, with valid 
   expect(num_passed, 'Shuffle proofs did not all verify').toBe(num_ran)
 
   // console.log({ num_passed })
+})
+
+test('shuffle should not use Math.random', async () => {
+  const { public_key } = generate_key_pair()
+  const inputs = range(5).map((i) => encrypt(public_key, random_bigint(), stringToPoint(`v${i}`)))
+
+  const spy = spyOn(Math, 'random').mockImplementation(() => {
+    throw new Error('Math.random is not strong enough for shuffle')
+  })
+  try {
+    await shuffleWithProof(public_key, inputs)
+  } finally {
+    spy.mockRestore()
+  }
 })
