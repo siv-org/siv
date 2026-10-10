@@ -1,7 +1,7 @@
 import bluebird from 'bluebird'
 import { expect, test } from 'bun:test'
 
-import { G, random_bigint, RP, stringToPoint } from '../curve'
+import { G, mod, random_bigint, RP, stringToPoint } from '../curve'
 import { generate_key_pair } from '../generate-key-pair'
 import { pick_random_bigint } from '../pick-random-bigint'
 import { rename_to_c1_and_2, shuffleWithProof } from '../shuffle'
@@ -104,6 +104,28 @@ test('rejects tampered outputs / inputs / H', async () => {
 
   // tampered H
   expect(await verify_shuffle_proof(inputs, outputs, { ...proof, H: public_key.multiply(two) })).toBe(false)
+})
+
+test('rejects Phi-preserving output swap', async () => {
+  /* Phi-preserving output swap — keeps Phi fixed under reused sigmas, so Lambda checks alone wouldn't catch it.
+  Must reject because outputs are bound into the Fiat–Shamir seed.
+    outputs'[0].c1 += σ₁·G
+    outputs'[1].c1 -= σ₀·G
+  */
+  const { public_key } = generate_key_pair()
+  const inputs = random_elgamal_pairs(3, public_key)
+  const { outputs, pi, reencrypts } = shuffle(inputs, public_key)
+  const proof = await generate_shuffle_proof(inputs, outputs, reencrypts, pi, public_key)
+  expect(await verify_shuffle_proof(inputs, outputs, proof)).toBe(true)
+
+  const [s0, s1] = proof.sigmas
+  const swapped = outputs.map((o, i) => {
+    if (i === 0) return { ...o, c1: o.c1.add(G.multiply(s1)) }
+    if (i === 1) return { ...o, c1: o.c1.add(G.multiply(mod(-s0))) }
+    return o
+  })
+
+  expect(await verify_shuffle_proof(inputs, swapped, proof)).toBe(false)
 })
 
 test('throws on missing or unsupported proof version', async () => {
