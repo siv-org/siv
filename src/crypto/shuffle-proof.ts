@@ -122,6 +122,19 @@ export async function verify_shuffle_proof(
   if (version !== SHUFFLE_PROOF_VERSION)
     throw new Error(`Unsupported shuffle proof version: ${version ?? 'missing'} (need ${SHUFFLE_PROOF_VERSION})`)
 
+  // Fail immediately if lengths don't match
+  const { length } = inputs
+  if (
+    outputs.length !== length ||
+    As.length !== length ||
+    Cs.length !== length ||
+    Us.length !== length ||
+    Ws.length !== length ||
+    Ds.length !== length ||
+    sigmas.length !== length
+  )
+    return false
+
   const log = debug ? console.log : () => {}
 
   // Recalculate Deterministic PRNG values

@@ -128,6 +128,28 @@ test('rejects Phi-preserving output swap', async () => {
   expect(await verify_shuffle_proof(inputs, swapped, proof)).toBe(false)
 })
 
+test('cleanly returns false on mismatched lengths, not throw', async () => {
+  const { public_key } = generate_key_pair()
+  const inputs = random_elgamal_pairs(3, public_key)
+  const { outputs, pi, reencrypts } = shuffle(inputs, public_key)
+  const proof = await generate_shuffle_proof(inputs, outputs, reencrypts, pi, public_key)
+
+  const cases: [string, Parameters<typeof verify_shuffle_proof>][] = [
+    ['inputs shorter', [inputs.slice(0, 2), outputs, proof]],
+    ['outputs shorter', [inputs, outputs.slice(0, 2), proof]],
+    ['As shorter', [inputs, outputs, { ...proof, As: proof.As.slice(0, 2) }]],
+    ['Cs shorter', [inputs, outputs, { ...proof, Cs: proof.Cs.slice(0, 2) }]],
+    ['Us shorter', [inputs, outputs, { ...proof, Us: proof.Us.slice(0, 2) }]],
+    ['Ws shorter', [inputs, outputs, { ...proof, Ws: proof.Ws.slice(0, 2) }]],
+    ['Ds shorter', [inputs, outputs, { ...proof, Ds: proof.Ds.slice(0, 2) }]],
+    ['sigmas shorter', [inputs, outputs, { ...proof, sigmas: proof.sigmas.slice(0, 2) }]],
+  ]
+
+  for (const [label, args] of cases) {
+    expect(await verify_shuffle_proof(...args), label).toBe(false)
+  }
+})
+
 test('throws on missing or unsupported proof version', async () => {
   const { public_key } = generate_key_pair()
   const votes = random_elgamal_pairs(2, public_key).map(({ c1, c2 }) => ({ encrypted: c2, lock: c1 }))
