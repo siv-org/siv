@@ -103,6 +103,7 @@ export const VotesToShuffle = ({
             rename_to_c1_and_2(inputs.map((c) => mapValues(c, RP.fromHex))),
             rename_to_c1_and_2(shuffledCol),
             proof,
+            RP.fromHex(threshold_public_key!),
           ).then((result) => {
             set_validated_proofs({ column, email, result, type: 'UPDATE' })
           })

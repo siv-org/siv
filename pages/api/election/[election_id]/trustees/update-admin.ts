@@ -84,7 +84,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         // const { shuffled: prevShuffle } = destringifyShuffle(trustees[trustee.index - 1].shuffled[column])
         // const { proof, shuffled: currShuffle } = destringifyShuffle(shuffled[column])
 
-        // return verify_shuffle_proof(rename_to_c1_and_2(prevShuffle), rename_to_c1_and_2(currShuffle), proof)
+        // return verify_shuffle_proof(rename_to_c1_and_2(prevShuffle), rename_to_c1_and_2(currShuffle), proof, election_public_key)
       })
 
       if (!checks.length || !checks.every((x) => x)) {

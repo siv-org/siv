@@ -61,7 +61,12 @@ test('Can Verifiably Shuffle (permute & re-encrypt) a list of votes, with valid 
       expect(decrypteds.some((decrypted, index) => decrypted !== plaintexts[index])).toBe(true)
 
       // Expect the proof to verify true
-      const good = await verify_shuffle_proof(rename_to_c1_and_2(encrypted_votes), rename_to_c1_and_2(shuffled), proof)
+      const good = await verify_shuffle_proof(
+        rename_to_c1_and_2(encrypted_votes),
+        rename_to_c1_and_2(shuffled),
+        proof,
+        public_key,
+      )
       num_ran += 1
       if (good) num_passed += 1
       // console.log({ good, num_passed, num_ran })

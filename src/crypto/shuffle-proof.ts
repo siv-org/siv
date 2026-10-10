@@ -117,10 +117,14 @@ export async function verify_shuffle_proof(
   inputs: SequencesOfPairs,
   outputs: SequencesOfPairs,
   { As, Cs, Ds, Gamma, H, Lambda1, Lambda2, sigmas, simple_shuffle_proof, tau, Us, version, Ws }: Shuffle_Proof,
+  election_public_key: RP,
   { debug } = { debug: false },
 ): Promise<boolean> {
   if (version !== SHUFFLE_PROOF_VERSION)
     throw new Error(`Unsupported shuffle proof version: ${version ?? 'missing'} (need ${SHUFFLE_PROOF_VERSION})`)
+
+  // Don't trust H from the proof — verify it against the election's public key
+  if (!H.equals(election_public_key)) return false
 
   // Fail immediately if lengths don't match
   const { length } = inputs

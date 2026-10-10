@@ -65,7 +65,7 @@ test('Can Verifiably Shuffle (permute & re-encrypt) a list of votes', async () =
 
       let good = false
       const proof = await generate_shuffle_proof(inputs, outputs, reencryption_array, pi, public_key)
-      good = await verify_shuffle_proof(inputs, outputs, proof)
+      good = await verify_shuffle_proof(inputs, outputs, proof, public_key)
 
       if (good) num_passed += 1
 
@@ -86,7 +86,7 @@ test('rejects tampered outputs / inputs / H', async () => {
   expect(proof.version).toBe(SHUFFLE_PROOF_VERSION)
 
   // valid proof
-  expect(await verify_shuffle_proof(inputs, outputs, proof)).toBe(true)
+  expect(await verify_shuffle_proof(inputs, outputs, proof, public_key)).toBe(true)
 
   // tampered outputs
   expect(
@@ -94,16 +94,35 @@ test('rejects tampered outputs / inputs / H', async () => {
       inputs,
       [{ ...outputs[0], c1: outputs[0].c1.multiply(two) }, ...outputs.slice(1)],
       proof,
+      public_key,
     ),
   ).toBe(false)
 
   // tampered inputs
   expect(
-    await verify_shuffle_proof([{ ...inputs[0], c1: inputs[0].c1.multiply(two) }, ...inputs.slice(1)], outputs, proof),
+    await verify_shuffle_proof(
+      [{ ...inputs[0], c1: inputs[0].c1.multiply(two) }, ...inputs.slice(1)],
+      outputs,
+      proof,
+      public_key,
+    ),
   ).toBe(false)
 
-  // tampered H
-  expect(await verify_shuffle_proof(inputs, outputs, { ...proof, H: public_key.multiply(two) })).toBe(false)
+  // tampered H (eg proof was bound to a different H)
+  const tampered_H = public_key.multiply(two)
+  expect(await verify_shuffle_proof(inputs, outputs, { ...proof, H: tampered_H }, tampered_H)).toBe(false)
+})
+
+test('rejects proof.H that does not match the election key', async () => {
+  const { public_key } = generate_key_pair()
+  const inputs = random_elgamal_pairs(2, public_key)
+  const { outputs, pi, reencrypts } = shuffle(inputs, public_key)
+  const proof = await generate_shuffle_proof(inputs, outputs, reencrypts, pi, public_key)
+
+  expect(await verify_shuffle_proof(inputs, outputs, proof, public_key)).toBe(true)
+  expect(await verify_shuffle_proof(inputs, outputs, { ...proof, H: public_key.multiply(BigInt(2)) }, public_key)).toBe(
+    false,
+  )
 })
 
 test('rejects Phi-preserving output swap', async () => {
@@ -116,7 +135,7 @@ test('rejects Phi-preserving output swap', async () => {
   const inputs = random_elgamal_pairs(3, public_key)
   const { outputs, pi, reencrypts } = shuffle(inputs, public_key)
   const proof = await generate_shuffle_proof(inputs, outputs, reencrypts, pi, public_key)
-  expect(await verify_shuffle_proof(inputs, outputs, proof)).toBe(true)
+  expect(await verify_shuffle_proof(inputs, outputs, proof, public_key)).toBe(true)
 
   const [s0, s1] = proof.sigmas
   const swapped = outputs.map((o, i) => {
@@ -125,7 +144,7 @@ test('rejects Phi-preserving output swap', async () => {
     return o
   })
 
-  expect(await verify_shuffle_proof(inputs, swapped, proof)).toBe(false)
+  expect(await verify_shuffle_proof(inputs, swapped, proof, public_key)).toBe(false)
 })
 
 test('cleanly returns false on mismatched lengths, not throw', async () => {
@@ -135,14 +154,14 @@ test('cleanly returns false on mismatched lengths, not throw', async () => {
   const proof = await generate_shuffle_proof(inputs, outputs, reencrypts, pi, public_key)
 
   const cases: [string, Parameters<typeof verify_shuffle_proof>][] = [
-    ['inputs shorter', [inputs.slice(0, 2), outputs, proof]],
-    ['outputs shorter', [inputs, outputs.slice(0, 2), proof]],
-    ['As shorter', [inputs, outputs, { ...proof, As: proof.As.slice(0, 2) }]],
-    ['Cs shorter', [inputs, outputs, { ...proof, Cs: proof.Cs.slice(0, 2) }]],
-    ['Us shorter', [inputs, outputs, { ...proof, Us: proof.Us.slice(0, 2) }]],
-    ['Ws shorter', [inputs, outputs, { ...proof, Ws: proof.Ws.slice(0, 2) }]],
-    ['Ds shorter', [inputs, outputs, { ...proof, Ds: proof.Ds.slice(0, 2) }]],
-    ['sigmas shorter', [inputs, outputs, { ...proof, sigmas: proof.sigmas.slice(0, 2) }]],
+    ['inputs shorter', [inputs.slice(0, 2), outputs, proof, public_key]],
+    ['outputs shorter', [inputs, outputs.slice(0, 2), proof, public_key]],
+    ['As shorter', [inputs, outputs, { ...proof, As: proof.As.slice(0, 2) }, public_key]],
+    ['Cs shorter', [inputs, outputs, { ...proof, Cs: proof.Cs.slice(0, 2) }, public_key]],
+    ['Us shorter', [inputs, outputs, { ...proof, Us: proof.Us.slice(0, 2) }, public_key]],
+    ['Ws shorter', [inputs, outputs, { ...proof, Ws: proof.Ws.slice(0, 2) }, public_key]],
+    ['Ds shorter', [inputs, outputs, { ...proof, Ds: proof.Ds.slice(0, 2) }, public_key]],
+    ['sigmas shorter', [inputs, outputs, { ...proof, sigmas: proof.sigmas.slice(0, 2) }, public_key]],
   ]
 
   for (const [label, args] of cases) {
@@ -162,10 +181,15 @@ test('throws on missing or unsupported proof version', async () => {
   expect(() => destringifyShuffle({ ...stored, proof: { ...stored.proof, version: 1 as never } })).toThrow(/version/)
 
   expect(
-    verify_shuffle_proof(rename_to_c1_and_2(votes), rename_to_c1_and_2(shuffled), {
-      ...proof,
-      version: undefined as never,
-    }),
+    verify_shuffle_proof(
+      rename_to_c1_and_2(votes),
+      rename_to_c1_and_2(shuffled),
+      {
+        ...proof,
+        version: undefined as never,
+      },
+      public_key,
+    ),
   ).rejects.toThrow(/version/)
 })
 
