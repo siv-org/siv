@@ -115,14 +115,13 @@ test('rejects tampered outputs / inputs / H', async () => {
 
 test('rejects proof.H that does not match the election key', async () => {
   const { public_key } = generate_key_pair()
+  const { public_key: attacker_H } = generate_key_pair()
   const inputs = random_elgamal_pairs(2, public_key)
-  const { outputs, pi, reencrypts } = shuffle(inputs, public_key)
-  const proof = await generate_shuffle_proof(inputs, outputs, reencrypts, pi, public_key)
+  const { outputs, pi, reencrypts } = shuffle(inputs, attacker_H)
+  const proof_from_attacker_H = await generate_shuffle_proof(inputs, outputs, reencrypts, pi, attacker_H)
 
-  expect(await verify_shuffle_proof(inputs, outputs, proof, public_key)).toBe(true)
-  expect(await verify_shuffle_proof(inputs, outputs, { ...proof, H: public_key.multiply(BigInt(2)) }, public_key)).toBe(
-    false,
-  )
+  expect(await verify_shuffle_proof(inputs, outputs, proof_from_attacker_H, attacker_H)).toBe(true)
+  expect(await verify_shuffle_proof(inputs, outputs, proof_from_attacker_H, public_key)).toBe(false) // Would verify if we trusted proof.H alone.
 })
 
 test('rejects Phi-preserving output swap', async () => {
