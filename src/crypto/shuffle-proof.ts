@@ -2,7 +2,9 @@ import { CURVE } from '@noble/ed25519'
 import { modPow } from 'bigint-mod-arith'
 
 import { bigint_from_seed } from './bigint-from-seed'
+import { bytesToHex } from './bytes-to-hex'
 import { G, invert, mod, random_bigint, RP, sum_bigints, sum_points } from './curve'
+import { sha256 } from './sha256'
 
 export const SHUFFLE_PROOF_VERSION = 2 as const
 
@@ -76,7 +78,7 @@ export async function generate_shuffle_proof(
   const Lambda2 = H.multiply(mod(tau_0 + sum)).add(product2)
 
   // Replace Verifier's rho randoms with deterministic PRNG
-  const prng = make_prng(inputs, outputs, H)
+  const prng = await make_prng(inputs, outputs, H)
   const rhos = await prng.rhos(As, Cs, Us, Ws, Gamma, Lambda1, Lambda2)
 
   const bs = rhos.map((rho, i) => mod(rho - us[i]))
@@ -123,7 +125,7 @@ export async function verify_shuffle_proof(
   const log = debug ? console.log : () => {}
 
   // Recalculate Deterministic PRNG values
-  const prng = make_prng(inputs, outputs, H)
+  const prng = await make_prng(inputs, outputs, H)
   const rhos = await prng.rhos(As, Cs, Us, Ws, Gamma, Lambda1, Lambda2)
   log(`rhos = ${rhos.join(', ')}`)
   const lambda = await prng.lambda(Ds)
@@ -190,6 +192,10 @@ export async function verify_shuffle_proof(
   return true
 }
 
+async function digest(s: string) {
+  return bytesToHex(new Uint8Array(await sha256(s)))
+}
+
 // based on http://www.cs.tau.ac.il/~fiat/crypt07/papers/neff.pdf
 // g - prime group generator
 // x - k-length array
@@ -203,7 +209,7 @@ async function generate_simple_shuffle_proof(
   xs: bigint[],
   ys: bigint[],
   gamma: bigint,
-  prng: ReturnType<typeof make_prng>,
+  prng: Awaited<ReturnType<typeof make_prng>>,
 ): Promise<Simple_Shuffle_Proof> {
   const k = xs.length
 
@@ -282,33 +288,37 @@ async function generate_simple_shuffle_proof(
 }
 
 /** Fiat–Shamir deterministic PRNG challenge integers.
-Bind H+inputs+outputs once, derive rho_i from seed||i,
-chain prior messages into lambda/t/c, distinct labels per challenge. */
-function make_prng(
+Bind H+inputs+outputs once, derive rho_i from digest||i,
+chain prior messages into lambda/t/c, distinct labels per challenge.
+Compress to a fixed-size digest after each step so hashing stays O(n), not O(n²). */
+async function make_prng(
   inputs: SequencesOfPairs,
   outputs: SequencesOfPairs,
   H: RP,
-): {
+): Promise<{
   c: (Thetas: RP[]) => Promise<bigint>
   lambda: (Ds: RP[]) => Promise<bigint>
   rhos: (As: RP[], Cs: RP[], Us: RP[], Ws: RP[], Gamma: RP, Lambda1: RP, Lambda2: RP) => Promise<bigint[]>
   t: (Xs: RP[], Ys: RP[]) => Promise<bigint>
-} {
+}> {
   const flat = (ps: ElGamalPair[]) => ps.flatMap(({ c1, c2 }) => [c1, c2])
-  let prior = [H, ...flat(inputs), ...flat(outputs)].join(',')
+  let prior = await digest([H, ...flat(inputs), ...flat(outputs)].join(','))
 
-  const challenge = (label: string, parts: RP[]) => {
-    prior = [label, prior, ...parts].join(',')
-    return bigint_from_seed(prior)
+  const challenge = async (label: string, parts: RP[]) => {
+    const d = await digest([label, prior, ...parts].join(','))
+    prior = d
+    return bigint_from_seed(d)
   }
 
   return {
     c: (Thetas) => challenge('shuffle_proof.c', Thetas),
     lambda: (Ds) => challenge('shuffle_proof.lambda', Ds),
     rhos: async (As, Cs, Us, Ws, Gamma, Lambda1, Lambda2) => {
-      const seed = ['shuffle_proof.rhos', prior, ...As, ...Cs, ...Us, ...Ws, Gamma, Lambda1, Lambda2].join(',')
-      prior = seed
-      return Promise.all(As.map((_, i) => bigint_from_seed(`${seed},${i}`)))
+      const d = await digest(
+        ['shuffle_proof.rhos', prior, ...As, ...Cs, ...Us, ...Ws, Gamma, Lambda1, Lambda2].join(','),
+      )
+      prior = d
+      return Promise.all(As.map((_, i) => bigint_from_seed(`${d},${i}`)))
     },
     t: (Xs, Ys) => challenge('shuffle_proof.t', [...Xs, ...Ys]),
   }
@@ -316,7 +326,7 @@ function make_prng(
 
 async function verify_simple_shuffle_proof(
   { alphas, Gamma, Thetas, Xs, Ys }: Simple_Shuffle_Proof,
-  prng: ReturnType<typeof make_prng>,
+  prng: Awaited<ReturnType<typeof make_prng>>,
 ) {
   // console.log('Beginning verify_simple_shuffle_proof...')
 
