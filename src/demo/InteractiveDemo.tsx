@@ -1479,7 +1479,7 @@ function Submit({
   verification: string
 }) {
   const [topic, setTopic] = useState<'board' | 'hood' | 'lose' | 'swap' | 'verification' | null>(null)
-  const [swapPhase, setSwapPhase] = useState<'idle' | 'infected' | 'caught'>('idle')
+  const [swapPhase, setSwapPhase] = useState<'caught' | 'idle' | 'infected'>('idle')
   const shownChoice = splitChoices(choice)[0] || CANDIDATES[0]
   const swappedChoice = CANDIDATES.find((c) => c !== shownChoice) || CANDIDATES[1]
   // After infection, ciphertext encodes the swapped choice until a real remediation path
