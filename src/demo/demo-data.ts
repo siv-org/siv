@@ -44,7 +44,6 @@ export type DemoStep =
   | 'audit'
   | 'coercion'
   | 'done'
-  | 'encrypt'
   | 'intro'
   | 'invite'
   | 'malware'
@@ -54,7 +53,7 @@ export type DemoStep =
   | 'verify'
   | 'vote'
 
-export const HAPPY_PATH: DemoStep[] = ['intro', 'invite', 'vote', 'encrypt', 'submit', 'unlock', 'verify', 'done']
+export const HAPPY_PATH: DemoStep[] = ['intro', 'invite', 'vote', 'submit', 'unlock', 'verify', 'done']
 
 export const STEP_META: Record<DemoStep, { blurb: string; title: string; unlocks?: PosterProperty['id'][] }> = {
   audit: {
@@ -69,11 +68,6 @@ export const STEP_META: Record<DemoStep, { blurb: string; title: string; unlocks
   done: {
     blurb: 'You’ve walked the happy path and the hardcore defenses.',
     title: 'That’s SIV',
-  },
-  encrypt: {
-    blurb: 'Your device seals the vote and generates a secret Verification # before anything leaves.',
-    title: 'Encrypt on-device',
-    unlocks: ['privacy'],
   },
   intro: {
     blurb: 'A sandbox SIV election you can experience as a voter, then optionally attack it.',
@@ -93,9 +87,9 @@ export const STEP_META: Record<DemoStep, { blurb: string; title: string; unlocks
     title: 'Update your Verification #',
   },
   submit: {
-    blurb: 'The public board gets your ciphertext + auth — not your choices.',
-    title: 'Submit encrypted vote',
-    unlocks: ['open'],
+    blurb: 'Your device keeps the Verification # and a sealed receipt of what left.',
+    title: 'Confirmation vote was submitted',
+    unlocks: ['open', 'privacy'],
   },
   unlock: {
     blurb: 'Election closes. Privacy Protectors shuffle, then jointly unlock. Fast-forward for the demo.',

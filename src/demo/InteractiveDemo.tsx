@@ -129,7 +129,7 @@ export function InteractiveDemo() {
           honestChoice: prev.honestChoice || choice,
           verification,
         },
-        'encrypt',
+        'submit',
       ),
     )
   }
@@ -164,8 +164,7 @@ export function InteractiveDemo() {
     ['intro', 'Start'],
     ['invite', 'Invite'],
     ['vote', 'Vote'],
-    ['encrypt', 'Encrypt'],
-    ['submit', 'Submit'],
+    ['submit', 'Submitted'],
     ['malware', 'Malware'],
     ['strengthen', 'Strengthen #'],
     ['coercion', 'Override'],
@@ -180,7 +179,7 @@ export function InteractiveDemo() {
       'ground-truth': s.unlocked.length ? 'verify' : 'unlock',
       malware: 'malware',
       open: s.unlocked.length ? 'audit' : 'submit',
-      privacy: s.verification ? 'encrypt' : 'vote',
+      privacy: s.verification ? 'submit' : 'vote',
       stuffing: s.unlocked.length ? 'audit' : 'invite',
     }
     const step = jump[id]
@@ -263,25 +262,21 @@ export function InteractiveDemo() {
               {s.step === 'intro' && <Intro onStart={start} />}
               {s.step === 'invite' && <Invite auth={s.auth} onContinue={() => setS((prev) => go(prev, 'vote'))} />}
               {s.step === 'vote' && <Vote onPick={sealVote} />}
-              {s.step === 'encrypt' &&
+              {s.step === 'submit' &&
                 (s.choice && s.verification ? (
-                  <Encrypt
+                  <Submit
+                    auth={s.auth}
+                    boardVotes={boardVotes}
                     choice={s.choice}
-                    onContinue={() => setS((prev) => go(prev, 'submit'))}
+                    onAudit={() => setS((prev) => go(prev, 'audit'))}
+                    onCoercion={() => setS((prev) => go(prev, 'coercion'))}
+                    onMalware={() => setS((prev) => go(prev, 'malware'))}
+                    onUnlock={runUnlock}
                     verification={s.verification}
                   />
                 ) : (
                   <NeedVote onStart={start} />
                 ))}
-              {s.step === 'submit' && (
-                <Submit
-                  boardVotes={boardVotes}
-                  onAudit={() => setS((prev) => go(prev, 'audit'))}
-                  onCoercion={() => setS((prev) => go(prev, 'coercion'))}
-                  onMalware={() => setS((prev) => go(prev, 'malware'))}
-                  onUnlock={runUnlock}
-                />
-              )}
               {s.step === 'malware' &&
                 (s.choice && s.verification ? (
                   <Malware
@@ -807,33 +802,6 @@ function Done({ completed, onRestart }: { completed: Set<string>; onRestart: () 
         <SecondaryButton onClick={() => (window.location.href = '/protocol')}>Illustrated protocol</SecondaryButton>
         <SecondaryButton onClick={() => (window.location.href = '/resources')}>Resources</SecondaryButton>
       </div>
-    </div>
-  )
-}
-
-function Encrypt({
-  choice,
-  onContinue,
-  verification,
-}: {
-  choice: string
-  onContinue: () => void
-  verification: string
-}) {
-  return (
-    <div className="space-y-4">
-      <Row
-        label="Plaintext (on your device only)"
-        value={`{ mayor: ${formatMayor(choice)}, verification: '${verification}' }`}
-      />
-      <Row emphasize label="Verification #" mono value={verification} />
-      <Row label="Ciphertext leaving the device" mono value={fakeCipher(verification + choice)} />
-      <p className="text-[0.8rem] text-h26-textSecondary">
-        Encryption acts like sealing a locked safe. The election admin can accept it without learning how you voted.
-      </p>
-      <PrimaryButton className="mt-2" onClick={onContinue}>
-        Submit encrypted vote
-      </PrimaryButton>
     </div>
   )
 }
@@ -1492,52 +1460,295 @@ function Strengthen({
 }
 
 function Submit({
+  auth,
   boardVotes,
+  choice,
   onAudit,
   onCoercion,
   onMalware,
   onUnlock,
+  verification,
 }: {
+  auth: string
   boardVotes: { auth: string; cipher: string; name: string; yours: boolean }[]
+  choice: string
   onAudit: () => void
   onCoercion: () => void
   onMalware: () => void
   onUnlock: () => void
+  verification: string
 }) {
+  const [topic, setTopic] = useState<'board' | 'hood' | 'lose' | 'swap' | 'verification' | null>(null)
+  const [swapPhase, setSwapPhase] = useState<'idle' | 'infected' | 'caught'>('idle')
+  const shownChoice = splitChoices(choice)[0] || CANDIDATES[0]
+  const swappedChoice = CANDIDATES.find((c) => c !== shownChoice) || CANDIDATES[1]
+  // After infection, ciphertext encodes the swapped choice until a real remediation path
+  const sealedChoice = swapPhase === 'idle' ? null : swappedChoice
+  const cipherSeed = verification + (sealedChoice || choice)
+
   return (
     <div>
-      <p className="mb-3 text-[0.85rem] font-medium text-h26-green">Accepted — on the public board</p>
-      <div className="overflow-x-auto rounded-xl border border-black/8">
-        <table className="w-full min-w-[480px] text-left text-[0.78rem]">
+      {/* Mirrors AuthenticatedContent + SubmittedScreen — title the voter actually sees */}
+      <h2 className="text-[1.35rem] font-normal tracking-tight text-h26-text sm:text-[1.5rem]">Vote Submitted.</h2>
+
+      <p className="mt-5 text-[0.9rem] leading-relaxed text-h26-textSecondary">
+        Once the election closes and votes are unlocked, you can find yours on the Election Status page using its{' '}
+        <em>Verification #</em>:
+      </p>
+
+      <div className="mt-4 overflow-x-auto rounded-xl border border-black/8">
+        <table className="w-full min-w-[280px] text-left text-[0.78rem]">
           <thead className="bg-black/[0.03] text-h26-muted">
             <tr>
-              <th className="px-3 py-2 font-medium">Voter / Auth</th>
-              <th className="px-3 py-2 font-medium">Encrypted vote</th>
+              <th className="px-3 py-2 font-medium">verification #</th>
+              <th className="px-3 py-2 font-medium">mayor</th>
             </tr>
           </thead>
           <tbody>
-            {boardVotes.map((v) => (
-              <tr className={v.yours ? 'bg-h26-green/[0.07]' : ''} key={v.auth}>
-                <td className="px-3 py-2">
-                  <div className="font-medium">{v.name}</div>
-                  <div className="font-mono26 text-[0.7rem] opacity-60">{v.auth}</div>
-                </td>
-                <td className="px-3 py-2 font-mono26 text-[0.7rem] text-h26-textSecondary">{v.cipher}</td>
-              </tr>
-            ))}
+            <tr className="bg-h26-green/[0.12]">
+              <td className="px-3 py-2.5 font-mono26 font-medium">{verification}</td>
+              <td className="px-3 py-2.5">{formatMayor(choice)}</td>
+            </tr>
           </tbody>
         </table>
       </div>
 
-      <p className="mt-5 text-[0.85rem] text-h26-textSecondary">
-        Happy path continues to unlock — or open a defense room first.
+      <p className="mt-3 text-[0.72rem] leading-relaxed text-h26-muted">
+        This secret <em>Verification #</em> is a random number, generated and encrypted on your own device.
+        <br />
+        No one else can possibly know it.
       </p>
 
-      <div className="flex flex-col gap-2 mt-4 sm:flex-row sm:flex-wrap">
+      <h3 className="mt-8 text-[0.95rem] font-medium text-h26-text">How your vote was submitted:</h3>
+      <p className="mt-2 text-[0.85rem] text-h26-textSecondary">
+        To protect your privacy, your vote was encrypted before submission:
+      </p>
+
+      <div className="mt-3 overflow-x-auto rounded-xl border border-black/8">
+        <table className="w-full min-w-[320px] text-left text-[0.78rem]">
+          <thead className="bg-black/[0.03] text-h26-muted">
+            <tr>
+              <th className="px-3 py-2 font-medium">auth</th>
+              <th className="px-3 py-2 font-medium">encrypted</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td className="px-3 py-2.5 font-mono26">{auth}</td>
+              <td className="px-3 py-2.5 font-mono26 text-[0.7rem] text-h26-textSecondary">
+                {fakeCipher(verification + choice)}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p className="mt-3 text-[0.72rem] text-h26-muted">
+        Its contents will only be unlocked after the election closes and all votes have been shuffled for safe
+        anonymization.
+      </p>
+
+      <div className="flex flex-col gap-2 mt-6 sm:flex-row sm:flex-wrap">
         <PrimaryButton onClick={onUnlock}>Close election & unlock</PrimaryButton>
         <SecondaryButton onClick={onMalware}>Try malware defense</SecondaryButton>
         <SecondaryButton onClick={onCoercion}>Try coercion override</SecondaryButton>
         <SecondaryButton onClick={onAudit}>Auditor view</SecondaryButton>
+      </div>
+
+      <div className="mt-8 border-t border-black/[0.07] pt-5">
+        <p className="font-mono26 text-[10px] uppercase tracking-[0.14em] text-h26-muted">
+          Explore this step · optional
+        </p>
+        <div className="grid gap-2 mt-3 sm:grid-cols-2">
+          {(
+            [
+              ['hood', 'What just happened?', 'Encrypt on-device, then submit'],
+              ['verification', 'What’s a Verification #?', 'Your private receipt for later'],
+              ['swap', 'UI said John — Bob was sealed?', 'Client-side swap attack'],
+              ['board', 'What’s on the public board?', 'Ciphertexts, not choices'],
+              ['lose', 'What if I lose my #?', 'Still recoverable'],
+            ] as const
+          ).map(([id, title, subtitle]) => {
+            const attack = id === 'swap'
+            const open = topic === id
+            return (
+              <button
+                aria-expanded={open}
+                className={`rounded-xl border px-4 py-3 text-left transition-colors ${
+                  open
+                    ? attack
+                      ? 'border-red-300 bg-red-50/60'
+                      : 'border-h26-green/40 bg-h26-green/[0.06]'
+                    : attack
+                      ? 'border-black/10 hover:border-red-200 hover:bg-red-50/30'
+                      : 'border-black/10 hover:border-h26-green/30 hover:bg-h26-green/[0.03]'
+                }`}
+                key={id}
+                onClick={() => {
+                  setTopic(open ? null : id)
+                  if (id === 'swap' && !open) setSwapPhase('idle')
+                }}
+                type="button"
+              >
+                <span className="block text-[0.82rem] font-medium text-h26-text">{title}</span>
+                <span className="mt-1 block text-[0.72rem] text-h26-textSecondary">{subtitle}</span>
+              </button>
+            )
+          })}
+        </div>
+
+        {topic === 'hood' && (
+          <div className="p-4 mt-3 space-y-3 rounded-xl bg-h26-bg">
+            <p className="text-[0.8rem] leading-relaxed text-h26-textSecondary">
+              Before anything left your device, it sealed your choices and minted a secret Verification # — like locking
+              a safe the election admin can accept without opening.
+            </p>
+            <Row
+              label="Plaintext (on your device only)"
+              value={`{ mayor: ${formatMayor(choice)}, verification: '${verification}' }`}
+            />
+            <Row emphasize label="Verification #" mono value={verification} />
+            <Row label="Ciphertext that left the device" mono value={fakeCipher(verification + choice)} />
+          </div>
+        )}
+
+        {topic === 'verification' && (
+          <div className="p-4 mt-3 rounded-xl bg-h26-bg">
+            <p className="text-[0.8rem] leading-relaxed text-h26-textSecondary">
+              Think of it as a secret lottery ticket printed on your device at cast time. After unlock, you search the
+              public list for{' '}
+              <span className="font-mono26 font-medium text-h26-text">{verification}</span> and confirm the choices
+              next to it match what you intended.
+            </p>
+            <ul className="mt-3 space-y-1.5">
+              {[
+                'Generated randomly on your device — not assigned by the server',
+                'Encrypted inside the same sealed vote, so it travels with your choices',
+                'Known only to you (and anyone you show it to)',
+                'Enough to find your row later without revealing who you are',
+              ].map((item) => (
+                <li className="flex gap-2 text-[0.78rem] text-h26-textSecondary" key={item}>
+                  <span className="mt-1.5 size-1 shrink-0 rounded-full bg-h26-green" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {topic === 'swap' && (
+          <div className="p-4 mt-3 rounded-xl bg-red-50/60">
+            <p className="text-[0.8rem] leading-relaxed text-h26-textSecondary">
+              Classic attack: malware (or a malicious app) shows you selecting{' '}
+              <b className="text-h26-text">{shownChoice}</b>, then seals{' '}
+              <b className="text-h26-text">{swappedChoice}</b> instead. The screen can lie — the ciphertext can’t
+              rewrite history once accepted.
+            </p>
+
+            <div className="grid gap-3 mt-4 sm:grid-cols-2">
+              <div className="px-3 py-3 bg-white rounded-lg border border-black/[0.07]">
+                <p className="font-mono26 text-[10px] uppercase tracking-[0.14em] text-h26-muted">What Device 1 shows</p>
+                <p className="mt-2 text-[0.85rem] font-medium text-h26-text">{shownChoice}</p>
+                <p className="mt-1 font-mono26 text-[0.7rem] text-h26-muted">{verification}</p>
+                <p className="mt-2 text-[0.7rem] text-h26-textSecondary">Looks fine. Always does.</p>
+              </div>
+              <div
+                className={`rounded-lg border px-3 py-3 ${
+                  sealedChoice ? 'border-red-300 bg-red-50' : 'border-black/[0.07] bg-white'
+                }`}
+              >
+                <p className="font-mono26 text-[10px] uppercase tracking-[0.14em] text-h26-muted">
+                  What actually sealed
+                </p>
+                <p className="mt-2 text-[0.85rem] font-medium text-h26-text">{sealedChoice || '???'}</p>
+                <p className="mt-1 font-mono26 text-[0.65rem] leading-snug text-h26-muted">{fakeCipher(cipherSeed)}</p>
+              </div>
+            </div>
+
+            {swapPhase === 'idle' && (
+              <SecondaryButton className="mt-4" onClick={() => setSwapPhase('infected')}>
+                Infect Device 1 — swap the seal
+              </SecondaryButton>
+            )}
+
+            {swapPhase === 'infected' && (
+              <div className="pl-3 mt-4 border-l-2 border-red-300">
+                <p className="text-[0.78rem] font-medium text-red-800">
+                  Device 1 still shows {shownChoice}. The board accepted a ciphertext for {swappedChoice}.
+                </p>
+                <p className="mt-2 text-[0.75rem] leading-relaxed text-h26-textSecondary">
+                  You catch this by checking on a <em>second</em> device (independent decrypt of what was sealed), or
+                  later by finding your Verification # in the unlocked tally. If it doesn’t match, you can raise it —
+                  with evidence.
+                </p>
+                <div className="flex flex-col gap-2 mt-3 sm:flex-row">
+                  <SecondaryButton onClick={onMalware}>Try the second-device check</SecondaryButton>
+                  <SecondaryButton onClick={() => setSwapPhase('caught')}>Skip ahead: unlock catches it</SecondaryButton>
+                </div>
+              </div>
+            )}
+
+            {swapPhase === 'caught' && (
+              <div className="px-3 py-3 mt-4 bg-white rounded-lg border border-h26-green/30">
+                <p className="text-[0.78rem] font-medium text-h26-green">Caught after unlock</p>
+                <p className="mt-2 text-[0.75rem] leading-relaxed text-h26-textSecondary">
+                  Searching <span className="font-mono26 text-h26-text">{verification}</span> would show{' '}
+                  <b>{swappedChoice}</b> — not what Device 1 displayed. Computers aren’t ground truth; your check is.
+                </p>
+              </div>
+            )}
+          </div>
+        )}
+
+        {topic === 'board' && (
+          <div className="p-4 mt-3 rounded-xl bg-h26-bg">
+            <p className="mb-3 text-[0.8rem] leading-relaxed text-h26-textSecondary">
+              Anyone can see accepted submissions: auth token + ciphertext. Choices stay sealed until shuffle & unlock.
+            </p>
+            <div className="overflow-x-auto rounded-xl border border-black/8 bg-white">
+              <table className="w-full min-w-[480px] text-left text-[0.78rem]">
+                <thead className="bg-black/[0.03] text-h26-muted">
+                  <tr>
+                    <th className="px-3 py-2 font-medium">Voter / Auth</th>
+                    <th className="px-3 py-2 font-medium">Encrypted vote</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {boardVotes.map((v) => (
+                    <tr className={v.yours ? 'bg-h26-green/[0.07]' : ''} key={v.auth}>
+                      <td className="px-3 py-2">
+                        <div className="font-medium">{v.name}</div>
+                        <div className="font-mono26 text-[0.7rem] opacity-60">{v.auth}</div>
+                      </td>
+                      <td className="px-3 py-2 font-mono26 text-[0.7rem] text-h26-textSecondary">{v.cipher}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+        {topic === 'lose' && (
+          <div className="p-4 mt-3 rounded-xl bg-h26-bg">
+            <p className="text-[0.8rem] leading-relaxed text-h26-textSecondary">
+              Your device keeps the Verification # in local browser storage for this election. Clearing site data can
+              lose it — same idea as losing a paper receipt.
+            </p>
+            <ul className="mt-3 space-y-1.5">
+              {[
+                'Write it down or screenshot this confirmation page',
+                'Email/SMS receipts (when enabled) can carry it',
+                'Election admins never have your # — they can’t look it up for you',
+              ].map((item) => (
+                <li className="flex gap-2 text-[0.78rem] text-h26-textSecondary" key={item}>
+                  <span className="mt-1.5 size-1 shrink-0 rounded-full bg-h26-green" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
     </div>
   )
