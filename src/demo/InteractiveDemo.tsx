@@ -1,11 +1,26 @@
 import { Mail } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { NoSsr } from 'src/_shared/NoSsr'
+import {
+  default_max_score,
+  default_min_score,
+  default_multiple_votes_allowed,
+} from 'src/admin/BallotDesign/Wizard'
 import { generateAuthToken } from 'src/crypto/generate-auth-tokens'
+import { defaultRankingsAllowed } from 'src/vote/Ballot'
+import { BudgetItem } from 'src/vote/BudgetItem'
+import { Item } from 'src/vote/Item'
+import { MultiVoteItem } from 'src/vote/MultiVoteItem'
+import { RankedChoiceItem } from 'src/vote/RankedChoiceItem'
+import { ScoreItem } from 'src/vote/ScoreItem'
+import { Item as BallotItem } from 'src/vote/storeElectionInfo'
 import { strengthenTracking } from 'src/vote/strengthen-tracking'
 import { generateTrackingNum } from 'src/vote/tracking-num'
+import { State as VoteState } from 'src/vote/vote-state'
 
 import { CANDIDATES, DemoStep, POSTER_PROPERTIES, STEP_META } from './demo-data'
+
+type BallotMethod = 'approval' | 'budget' | 'multi' | 'plurality' | 'ranked' | 'score'
 
 type DemoState = {
   auth: string
@@ -28,6 +43,19 @@ type DemoState = {
 }
 
 type UnlockedVote = { choice: string; verification: string; yours?: boolean }
+
+const BALLOT_METHODS: { id: BallotMethod; label: string }[] = [
+  { id: 'plurality', label: 'Plurality' },
+  { id: 'ranked', label: 'Ranked Choice' },
+  { id: 'approval', label: 'Approval' },
+  { id: 'multi', label: 'Choose up to X' },
+  { id: 'score', label: 'Score' },
+  { id: 'budget', label: 'Budget' },
+]
+
+const DEMO_BUDGET_AVAILABLE = 50
+
+const DEMO_BALLOT_OPTIONS = CANDIDATES.map((name) => ({ name }))
 
 const OTHER_VOTERS = [
   { auth: 'a1b2c3d4', name: 'Barton, Adam' },
@@ -237,7 +265,7 @@ export function InteractiveDemo() {
               )}
               {s.step === 'intro' && <Intro onStart={start} />}
               {s.step === 'invite' && <Invite auth={s.auth} onContinue={() => setS((prev) => go(prev, 'vote'))} />}
-              {s.step === 'vote' && <Vote choice={s.choice} onPick={sealVote} />}
+              {s.step === 'vote' && <Vote onPick={sealVote} />}
               {s.step === 'encrypt' &&
                 (s.choice && s.verification ? (
                   <Encrypt
@@ -475,6 +503,37 @@ function back(prev: DemoState): DemoState {
     history: prev.history.slice(0, -1),
     step: prev.history[prev.history.length - 1],
   }
+}
+
+function ballotDesignFor(method: BallotMethod): BallotItem {
+  const base = {
+    id: 'vote',
+    options: DEMO_BALLOT_OPTIONS,
+    title: 'Who should be the next Mayor?',
+    write_in_allowed: false,
+  }
+  if (method === 'approval') return { ...base, type: 'approval' }
+  if (method === 'multi')
+    return { ...base, multiple_votes_allowed: default_multiple_votes_allowed, type: 'multiple-votes-allowed' }
+  if (method === 'ranked')
+    return { ...base, multiple_votes_allowed: defaultRankingsAllowed, type: 'ranked-choice-irv' }
+  if (method === 'score')
+    return { ...base, max_score: default_max_score, min_score: default_min_score, type: 'score' }
+  if (method === 'budget') return { ...base, budget_available: DEMO_BUDGET_AVAILABLE, type: 'budget' }
+  return { ...base, type: 'choose-only-one' }
+}
+
+function choiceFromPlaintext(method: BallotMethod, plaintext: Record<string, string>) {
+  const filled = Object.entries(plaintext).filter(([, v]) => v && v !== 'BLANK')
+  if (!filled.length) return null
+  if (method === 'plurality') return plaintext.vote || null
+  if (method === 'approval' || method === 'multi') return joinChoices(filled.map(([, v]) => v).sort())
+  if (method === 'ranked')
+    return filled
+      .sort(([a], [b]) => a.localeCompare(b, undefined, { numeric: true }))
+      .map(([, v], i) => `${i + 1}. ${v}`)
+      .join(', ')
+  return filled.map(([k, v]) => `${k.replace(/^vote_/, '')}: ${v}`).join(', ')
 }
 
 function Coercion({
@@ -1527,41 +1586,85 @@ function visit(prev: DemoState, step: DemoStep): DemoState {
   return { ...prev, future: [], history: [...prev.history, prev.step], step }
 }
 
-function Vote({ choice, onPick }: { choice: null | string; onPick: (c: string) => void }) {
-  const [picked, setPicked] = useState(() => new Set(splitChoices(choice || '')))
+function Vote({ onPick }: { onPick: (c: string) => void }) {
+  const [method, setMethod] = useState<BallotMethod>('approval')
+  const [plaintext, setPlaintext] = useState<Record<string, string>>({})
+  const design = useMemo(() => ballotDesignFor(method), [method])
+  const state: VoteState = {
+    ballot_design: [design],
+    ballot_design_finalized: true,
+    encoded: {},
+    encrypted: {},
+    plaintext,
+    public_key: 'demo',
+    randomizer: {},
+  }
+  const dispatch = (payload: Record<string, string>) => setPlaintext((prev) => ({ ...prev, ...payload }))
+  const choice = choiceFromPlaintext(method, plaintext)
+
   return (
     <div>
-      <p className="mb-4 rounded-lg bg-h26-green/[0.08] px-3 py-2 text-[0.9rem] font-semibold text-h26-text">
-        Who should be the next Mayor?
-      </p>
-      <p className="mb-3 text-[0.85rem] italic text-h26-textSecondary">Vote for all the options you approve of:</p>
-      <ul className="space-y-2">
-        {CANDIDATES.map((c) => (
-          <li key={c}>
-            <label className="flex cursor-pointer items-center gap-3 rounded-lg px-2 py-2 hover:bg-black/[0.03]">
-              <input
-                checked={picked.has(c)}
-                className="size-4 accent-h26-green"
-                onChange={() =>
-                  setPicked((prev) => {
-                    const next = new Set(prev)
-                    if (next.has(c)) next.delete(c)
-                    else next.add(c)
-                    return next
-                  })
-                }
-                type="checkbox"
-              />
-              <span className="text-[0.95rem]">{c}</span>
-            </label>
-          </li>
-        ))}
-      </ul>
-      <PrimaryButton
-        className="mt-6"
-        disabled={!picked.size}
-        onClick={() => picked.size && onPick(joinChoices([...picked]))}
-      >
+      <div className="mb-4">
+        <p className="font-mono26 mb-2 text-[10px] uppercase tracking-[0.14em] text-h26-muted">
+          Voting method · try switching
+        </p>
+        <div className="flex flex-wrap gap-1.5">
+          {BALLOT_METHODS.map((m) => (
+            <button
+              aria-pressed={method === m.id}
+              className={`rounded-full border px-3 py-1.5 text-[0.72rem] transition-colors ${
+                method === m.id
+                  ? 'border-h26-green/40 bg-h26-green/[0.1] font-medium text-h26-green'
+                  : 'border-black/10 text-h26-textSecondary hover:border-h26-green/30 hover:text-h26-text'
+              }`}
+              key={m.id}
+              onClick={() => {
+                setMethod(m.id)
+                setPlaintext({})
+              }}
+              type="button"
+            >
+              {m.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Same type routing as src/vote/Ballot.tsx */}
+      {method === 'approval' && (
+        <MultiVoteItem
+          {...design}
+          dispatch={dispatch}
+          multiple_votes_allowed={DEMO_BALLOT_OPTIONS.length}
+          options={DEMO_BALLOT_OPTIONS}
+          state={state}
+        />
+      )}
+      {method === 'multi' && (
+        <MultiVoteItem
+          {...design}
+          dispatch={dispatch}
+          multiple_votes_allowed={default_multiple_votes_allowed}
+          options={DEMO_BALLOT_OPTIONS}
+          state={state}
+        />
+      )}
+      {method === 'plurality' && <Item {...design} dispatch={dispatch} options={DEMO_BALLOT_OPTIONS} state={state} />}
+      {method === 'ranked' && (
+        <RankedChoiceItem
+          {...design}
+          dispatch={dispatch}
+          options={DEMO_BALLOT_OPTIONS}
+          rankings_allowed={defaultRankingsAllowed}
+          state={state}
+        />
+      )}
+      {method === 'score' && <ScoreItem {...design} dispatch={dispatch} options={DEMO_BALLOT_OPTIONS} state={state} />}
+      {method === 'budget' && (
+        <BudgetItem {...design} dispatch={dispatch} options={DEMO_BALLOT_OPTIONS} state={state} />
+      )}
+
+      <PrimaryButton className="mt-2" disabled={!choice} onClick={() => choice && onPick(choice)}>
         Seal & encrypt vote
       </PrimaryButton>
     </div>
