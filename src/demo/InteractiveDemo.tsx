@@ -786,6 +786,18 @@ function Intro({ onStart }: { onStart: () => void }) {
 }
 
 function Invite({ auth, onContinue }: { auth: string; onContinue: () => void }) {
+  const [attack, setAttack] = useState<'lost' | 'used' | null>(null)
+  const [layers, setLayers] = useState(() => new Set<string>())
+  const [remediated, setRemediated] = useState(false)
+  const [replacementAuth] = useState(() => generateAuthToken().slice(0, 8))
+  const [topic, setTopic] = useState<'attack' | 'layers' | null>(null)
+  const authLayers = [
+    ['Drawn signature', 'Compare with the voter’s registration record'],
+    ['ID + selfie', 'Higher-assurance identity check'],
+    ['IP geolocation', 'Flag or limit unexpected locations'],
+    ['Time-based code', 'Require a second possession factor'],
+  ]
+
   return (
     <div>
       <div className="px-4 py-5 rounded-xl bg-h26-bg sm:px-6">
@@ -821,29 +833,154 @@ function Invite({ auth, onContinue }: { auth: string; onContinue: () => void }) 
         Open ballot
       </PrimaryButton>
 
-      <details className="mt-5 rounded-xl border border-black/[0.07] px-4 py-3 text-[0.8rem] text-h26-textSecondary">
-        <summary className="font-medium cursor-pointer text-h26-text">
-          How else can Auth Tokens be given to voters?
-        </summary>
-        <p className="mt-3 leading-relaxed">
-          Election administrators can use email, SMS, secure digital channels, postal mail, or in-person delivery. Extra
-          checks can include drawn signatures, ID photos, one-time passwords, geolocation, or cryptographic keys.
+      <div className="mt-6 border-t border-black/[0.07] pt-5">
+        <p className="font-mono26 text-[10px] uppercase tracking-[0.14em] text-h26-muted">
+          Explore this step · optional
         </p>
-        <p className="mt-3">
-          <a className="text-h26-green hover:underline" href="/protocol#1" target="_blank">
-            See the protocol
-          </a>
-          {' · '}
-          <a
-            className="text-h26-green hover:underline"
-            href="https://docs.siv.org/authentication"
-            rel="noreferrer"
-            target="_blank"
+        <div className="grid gap-2 mt-3 sm:grid-cols-2">
+          <button
+            aria-expanded={topic === 'layers'}
+            className={`rounded-xl border px-4 py-3 text-left transition-colors ${
+              topic === 'layers'
+                ? 'border-h26-green/40 bg-h26-green/[0.06]'
+                : 'border-black/10 hover:border-h26-green/30 hover:bg-h26-green/[0.03]'
+            }`}
+            onClick={() => setTopic(topic === 'layers' ? null : 'layers')}
+            type="button"
           >
-            Authentication details
-          </a>
-        </p>
-      </details>
+            <span className="block text-[0.82rem] font-medium text-h26-text">Why mail? Any other ways?</span>
+            <span className="mt-1 block text-[0.72rem] text-h26-textSecondary">
+              Compare delivery and identity checks
+            </span>
+          </button>
+          <button
+            aria-expanded={topic === 'attack'}
+            className={`rounded-xl border px-4 py-3 text-left transition-colors ${
+              topic === 'attack'
+                ? 'border-red-300 bg-red-50/60'
+                : 'border-black/10 hover:border-red-200 hover:bg-red-50/30'
+            }`}
+            onClick={() => setTopic(topic === 'attack' ? null : 'attack')}
+            type="button"
+          >
+            <span className="block text-[0.82rem] font-medium text-h26-text">What if the token is compromised?</span>
+            <span className="mt-1 block text-[0.72rem] text-h26-textSecondary">Test loss, theft, and remediation</span>
+          </button>
+        </div>
+
+        {topic === 'layers' && (
+          <div className="p-4 mt-3 rounded-xl bg-h26-bg">
+            <p className="text-[0.8rem] leading-relaxed text-h26-textSecondary">
+              Postal mail is familiar, tied to a registered address, and can match today’s paper process. Each
+              jurisdiction can layer stronger checks on top.
+            </p>
+            <p className="mt-4 text-[0.78rem] font-medium text-h26-text">Build an authentication policy:</p>
+            <div className="grid gap-2 mt-2 sm:grid-cols-2">
+              {authLayers.map(([label, description]) => (
+                <button
+                  aria-pressed={layers.has(label)}
+                  className={`rounded-lg border px-3 py-2 text-left transition-colors ${
+                    layers.has(label)
+                      ? 'border-h26-green/40 bg-white text-h26-text'
+                      : 'border-black/[0.07] bg-white/60 text-h26-textSecondary hover:border-h26-green/30'
+                  }`}
+                  key={label}
+                  onClick={() =>
+                    setLayers((prev) => {
+                      const next = new Set(prev)
+                      if (next.has(label)) next.delete(label)
+                      else next.add(label)
+                      return next
+                    })
+                  }
+                  type="button"
+                >
+                  <span className="block text-[0.76rem] font-medium">
+                    {layers.has(label) ? '✓ ' : '+ '}
+                    {label}
+                  </span>
+                  <span className="mt-0.5 block text-[0.68rem] opacity-70">{description}</span>
+                </button>
+              ))}
+            </div>
+            <p className="mt-3 text-[0.72rem] text-h26-textSecondary">
+              Policy: Postal invitation
+              {[...layers].map((layer) => ` + ${layer}`).join('')}
+            </p>
+            <p className="mt-3 text-[0.72rem]">
+              <a className="text-h26-green hover:underline" href="/protocol#1" target="_blank">
+                Protocol
+              </a>
+              {' · '}
+              <a
+                className="text-h26-green hover:underline"
+                href="https://docs.siv.org/authentication"
+                rel="noreferrer"
+                target="_blank"
+              >
+                Authentication details
+              </a>
+            </p>
+          </div>
+        )}
+
+        {topic === 'attack' && (
+          <div className="p-4 mt-3 rounded-xl bg-red-50/60">
+            <p className="text-[0.78rem] font-medium text-h26-text">Choose an attack:</p>
+            <div className="flex flex-wrap gap-2 mt-2">
+              {[
+                ['lost', 'Token lost or stolen'],
+                ['used', 'Someone voted first'],
+              ].map(([id, label]) => (
+                <button
+                  aria-pressed={attack === id}
+                  className={`rounded-full border px-3 py-2 text-[0.72rem] transition-colors ${
+                    attack === id
+                      ? 'border-red-300 bg-white font-medium text-red-800'
+                      : 'border-red-200/70 bg-white/60 text-h26-textSecondary hover:border-red-300'
+                  }`}
+                  key={id}
+                  onClick={() => {
+                    setAttack(id as 'lost' | 'used')
+                    setRemediated(false)
+                  }}
+                  type="button"
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+
+            {attack && !remediated && (
+              <div className="pl-3 mt-4 border-l-2 border-red-300">
+                <p className="text-[0.78rem] font-medium text-red-800">
+                  {attack === 'lost'
+                    ? 'Until it is revoked, whoever holds the token could try to vote.'
+                    : 'The one-use rule rejects your attempt because the token was already used.'}
+                </p>
+                <p className="mt-2 text-[0.75rem] leading-relaxed text-h26-textSecondary">
+                  The admin re-authenticates the voter, invalidates the old credential and any linked submission, then
+                  issues a replacement. Every change leaves an audit trail.
+                </p>
+                <SecondaryButton className="mt-3" onClick={() => setRemediated(true)}>
+                  Revoke + issue replacement
+                </SecondaryButton>
+              </div>
+            )}
+
+            {attack && remediated && (
+              <div className="px-3 py-3 mt-4 bg-white rounded-lg border border-h26-green/30">
+                <p className="text-[0.78rem] font-medium text-h26-green">Threat remediated</p>
+                <p className="mt-2 font-mono26 text-[0.72rem] text-h26-muted line-through">Old: {auth}</p>
+                <p className="mt-1 font-mono26 text-[0.78rem] text-h26-text">Replacement: {replacementAuth}</p>
+                <p className="mt-2 text-[0.7rem] text-h26-textSecondary">
+                  The old token is rejected; the voter can cast once with the replacement.
+                </p>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   )
 }
