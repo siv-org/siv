@@ -466,6 +466,16 @@ function Audit({
   )
 }
 
+function back(prev: DemoState): DemoState {
+  if (!prev.history.length) return prev
+  return {
+    ...prev,
+    future: [prev.step, ...prev.future],
+    history: prev.history.slice(0, -1),
+    step: prev.history[prev.history.length - 1],
+  }
+}
+
 function Coercion({
   activeVerification,
   buyerScreenshot,
@@ -692,13 +702,6 @@ function formatMayor(choice: string) {
     .join(', ')}]`
 }
 
-function back(prev: DemoState): DemoState {
-  if (!prev.history.length) return prev
-  const history = [...prev.history]
-  const step = history.pop()!
-  return { ...prev, future: [prev.step, ...prev.future], history, step }
-}
-
 function forward(prev: DemoState): DemoState {
   if (!prev.future.length) return prev
   const [step, ...future] = prev.future
@@ -729,11 +732,6 @@ function initState(): DemoState {
     unlocked: [],
     verification: null,
   }
-}
-
-function visit(prev: DemoState, step: DemoStep): DemoState {
-  if (prev.step === step) return prev
-  return { ...prev, future: [], history: [...prev.history, prev.step], step }
 }
 
 function Intro({ onStart }: { onStart: () => void }) {
@@ -1156,6 +1154,11 @@ function Verify({
       </div>
     </div>
   )
+}
+
+function visit(prev: DemoState, step: DemoStep): DemoState {
+  if (prev.step === step) return prev
+  return { ...prev, future: [], history: [...prev.history, prev.step], step }
 }
 
 function Vote({ choice, onPick }: { choice: null | string; onPick: (c: string) => void }) {
