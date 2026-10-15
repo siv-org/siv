@@ -14,6 +14,8 @@ type DemoState = {
   completed: Set<string>
   device1Tampered: boolean
   digits: string
+  future: DemoStep[]
+  history: DemoStep[]
   honestChoice: null | string
   malwareConfirmed: boolean
   overridden: boolean
@@ -88,6 +90,8 @@ export function InteractiveDemo() {
     )
 
   const restart = () => setS(initState())
+  const goBack = () => setS((prev) => back(prev))
+  const goForward = () => setS((prev) => forward(prev))
 
   const sealVote = (choice: string) => {
     const verification = generateTrackingNum()
@@ -154,7 +158,7 @@ export function InteractiveDemo() {
       stuffing: s.unlocked.length ? 'audit' : 'invite',
     }
     const step = jump[id]
-    if (step) setS((prev) => ({ ...prev, step }))
+    if (step) setS((prev) => visit(prev, step))
   }
 
   return (
@@ -172,7 +176,7 @@ export function InteractiveDemo() {
                         ? 'bg-h26-green/15 font-medium text-h26-green'
                         : 'bg-black/[0.04] text-h26-textSecondary hover:bg-black/[0.07] hover:text-h26-text'
                     }`}
-                    onClick={() => setS((prev) => ({ ...prev, step: id }))}
+                    onClick={() => setS((prev) => visit(prev, id))}
                     type="button"
                   >
                     {label}
@@ -206,6 +210,30 @@ export function InteractiveDemo() {
             </header>
 
             <div className="rounded-2xl bg-white p-4 shadow-[0_0_0_1px_rgba(0,0,0,0.06)] sm:p-8">
+              {(s.history.length > 0 || s.future.length > 0) && (
+                <div className="mb-5 flex gap-1.5">
+                  <button
+                    aria-label="Previous step"
+                    className="inline-flex size-8 items-center justify-center rounded-full border border-black/10 text-lg text-h26-textSecondary transition-colors hover:border-h26-green/40 hover:bg-h26-green/[0.06] hover:text-h26-green disabled:cursor-not-allowed disabled:opacity-25"
+                    disabled={!s.history.length}
+                    onClick={goBack}
+                    title="Previous step"
+                    type="button"
+                  >
+                    ‹
+                  </button>
+                  <button
+                    aria-label="Next step"
+                    className="inline-flex size-8 items-center justify-center rounded-full border border-black/10 text-lg text-h26-textSecondary transition-colors hover:border-h26-green/40 hover:bg-h26-green/[0.06] hover:text-h26-green disabled:cursor-not-allowed disabled:opacity-25"
+                    disabled={!s.future.length}
+                    onClick={goForward}
+                    title="Next step"
+                    type="button"
+                  >
+                    ›
+                  </button>
+                </div>
+              )}
               {s.step === 'intro' && <Intro onStart={start} />}
               {s.step === 'invite' && <Invite auth={s.auth} onContinue={() => setS((prev) => go(prev, 'vote'))} />}
               {s.step === 'vote' && <Vote choice={s.choice} onPick={sealVote} />}
@@ -336,7 +364,6 @@ export function InteractiveDemo() {
               {s.step === 'audit' && (
                 <Audit
                   boardVotes={boardVotes}
-                  onBack={() => setS((prev) => go(prev, s.unlocked.length ? 'verify' : 'submit'))}
                   onDone={() => setS((prev) => go(prev, s.unlocked.length ? 'done' : 'submit'))}
                   tallies={tallies}
                   unlocked={s.unlocked}
@@ -392,13 +419,11 @@ export function InteractiveDemo() {
 
 function Audit({
   boardVotes,
-  onBack,
   onDone,
   tallies,
   unlocked,
 }: {
   boardVotes: { auth: string; cipher: string; name: string; yours: boolean }[]
-  onBack: () => void
   onDone: () => void
   tallies: [string, number][]
   unlocked: UnlockedVote[]
@@ -435,7 +460,6 @@ function Audit({
         </p>
       </div>
       <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
-        <SecondaryButton onClick={onBack}>Back</SecondaryButton>
         <PrimaryButton onClick={onDone}>Continue</PrimaryButton>
       </div>
     </div>
@@ -668,8 +692,21 @@ function formatMayor(choice: string) {
     .join(', ')}]`
 }
 
+function back(prev: DemoState): DemoState {
+  if (!prev.history.length) return prev
+  const history = [...prev.history]
+  const step = history.pop()!
+  return { ...prev, future: [prev.step, ...prev.future], history, step }
+}
+
+function forward(prev: DemoState): DemoState {
+  if (!prev.future.length) return prev
+  const [step, ...future] = prev.future
+  return { ...prev, future, history: [...prev.history, prev.step], step }
+}
+
 function go(prev: DemoState, step: DemoStep): DemoState {
-  return markComplete({ ...prev, step }, STEP_META[step].unlocks)
+  return markComplete(visit(prev, step), STEP_META[step].unlocks)
 }
 
 function initState(): DemoState {
@@ -681,6 +718,8 @@ function initState(): DemoState {
     completed: new Set(),
     device1Tampered: false,
     digits: '',
+    future: [],
+    history: [],
     honestChoice: null,
     malwareConfirmed: false,
     overridden: false,
@@ -690,6 +729,11 @@ function initState(): DemoState {
     unlocked: [],
     verification: null,
   }
+}
+
+function visit(prev: DemoState, step: DemoStep): DemoState {
+  if (prev.step === step) return prev
+  return { ...prev, future: [], history: [...prev.history, prev.step], step }
 }
 
 function Intro({ onStart }: { onStart: () => void }) {
