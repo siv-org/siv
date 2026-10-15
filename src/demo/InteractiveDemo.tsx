@@ -1604,32 +1604,6 @@ function Vote({ onPick }: { onPick: (c: string) => void }) {
 
   return (
     <div>
-      <div className="mb-4">
-        <p className="font-mono26 mb-2 text-[10px] uppercase tracking-[0.14em] text-h26-muted">
-          Voting method · try switching
-        </p>
-        <div className="flex flex-wrap gap-1.5">
-          {BALLOT_METHODS.map((m) => (
-            <button
-              aria-pressed={method === m.id}
-              className={`rounded-full border px-3 py-1.5 text-[0.72rem] transition-colors ${
-                method === m.id
-                  ? 'border-h26-green/40 bg-h26-green/[0.1] font-medium text-h26-green'
-                  : 'border-black/10 text-h26-textSecondary hover:border-h26-green/30 hover:text-h26-text'
-              }`}
-              key={m.id}
-              onClick={() => {
-                setMethod(m.id)
-                setPlaintext({})
-              }}
-              type="button"
-            >
-              {m.label}
-            </button>
-          ))}
-        </div>
-      </div>
-
       {/* Same type routing as src/vote/Ballot.tsx */}
       {method === 'approval' && (
         <MultiVoteItem
@@ -1667,6 +1641,32 @@ function Vote({ onPick }: { onPick: (c: string) => void }) {
       <PrimaryButton className="mt-2" disabled={!choice} onClick={() => choice && onPick(choice)}>
         Seal & encrypt vote
       </PrimaryButton>
+
+      <div className="mt-6 border-t border-black/[0.07] pt-5">
+        <p className="font-mono26 text-[10px] uppercase tracking-[0.14em] text-h26-muted">
+          Try other voting methods · optional
+        </p>
+        <div className="mt-3 flex flex-wrap gap-1.5">
+          {BALLOT_METHODS.map((m) => (
+            <button
+              aria-pressed={method === m.id}
+              className={`rounded-full border px-3 py-1.5 text-[0.72rem] transition-colors ${
+                method === m.id
+                  ? 'border-h26-green/40 bg-h26-green/[0.1] font-medium text-h26-green'
+                  : 'border-black/10 text-h26-textSecondary hover:border-h26-green/30 hover:text-h26-text'
+              }`}
+              key={m.id}
+              onClick={() => {
+                setMethod(m.id)
+                setPlaintext({})
+              }}
+              type="button"
+            >
+              {m.label}
+            </button>
+          ))}
+        </div>
+      </div>
     </div>
   )
 }
