@@ -1,4 +1,4 @@
-import { Mail } from 'lucide-react'
+import { Mail, PenLine, Smartphone } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { NoSsr } from 'src/_shared/NoSsr'
 import { default_max_score, default_min_score, default_multiple_votes_allowed } from 'src/admin/BallotDesign/Wizard'
@@ -271,6 +271,7 @@ export function InteractiveDemo() {
                     onAudit={() => setS((prev) => go(prev, 'audit'))}
                     onCoercion={() => setS((prev) => go(prev, 'coercion'))}
                     onMalware={() => setS((prev) => go(prev, 'malware'))}
+                    onStrengthen={() => setS((prev) => go(prev, 'strengthen'))}
                     onUnlock={runUnlock}
                     verification={s.verification}
                   />
@@ -806,14 +807,42 @@ function Done({ completed, onRestart }: { completed: Set<string>; onRestart: () 
   )
 }
 
+function fakeCipherParts(seed: string) {
+  // ponytail: decorative ciphertext sized like Ristretto hex (~64 chars); real encrypt lives in /protocol + vote UI
+  const bytes = (salt: number) => {
+    let hex = ''
+    for (let i = 0; hex.length < 64; i++)
+      hex += ((seed.charCodeAt(i % seed.length) * (17 + i) * salt) & 0xff).toString(16).padStart(2, '0')
+    return hex.slice(0, 64)
+  }
+  return { encrypted: bytes(7919), lock: bytes(4999) }
+}
+
 function fakeCipher(seed: string) {
-  // ponytail: decorative ciphertext for the public board; real encrypt lives in /protocol + vote UI
-  const hex = seed
-    .split('')
-    .map((c) => (c.charCodeAt(0) * 17).toString(16).padStart(2, '0'))
-    .join('')
-    .slice(0, 24)
-  return `{ encrypted: ${hex}…, lock: ${(hex.length * 7919).toString(16)}… }`
+  const { encrypted, lock } = fakeCipherParts(seed)
+  return `{ encrypted: ${encrypted}, lock: ${lock} }`
+}
+
+function ExpandableHex({
+  expanded,
+  onToggle,
+  value,
+}: {
+  expanded: boolean
+  onToggle: () => void
+  value: string
+}) {
+  const short = `${value.slice(0, 12)}…`
+  return (
+    <button
+      className="max-w-full break-all text-left font-mono26 text-[0.7rem] text-h26-textSecondary underline-offset-2 hover:text-h26-text hover:underline"
+      onClick={onToggle}
+      title={expanded ? 'Click to truncate' : 'Click to show full'}
+      type="button"
+    >
+      {expanded ? value : short}
+    </button>
+  )
 }
 
 function formatMayor(choice: string) {
@@ -1466,6 +1495,7 @@ function Submit({
   onAudit,
   onCoercion,
   onMalware,
+  onStrengthen,
   onUnlock,
   verification,
 }: {
@@ -1475,80 +1505,172 @@ function Submit({
   onAudit: () => void
   onCoercion: () => void
   onMalware: () => void
+  onStrengthen: () => void
   onUnlock: () => void
   verification: string
 }) {
   const [topic, setTopic] = useState<'board' | 'lose' | 'swap' | 'verification' | null>(null)
   const [swapPhase, setSwapPhase] = useState<'caught' | 'idle' | 'infected'>('idle')
+  const [malwareOpen, setMalwareOpen] = useState(false)
+  const [showEncryptionDetails, setShowEncryptionDetails] = useState(false)
+  const [expandedHex, setExpandedHex] = useState<'encrypted' | 'lock' | null>(null)
   const shownChoice = splitChoices(choice)[0] || CANDIDATES[0]
   const swappedChoice = CANDIDATES.find((c) => c !== shownChoice) || CANDIDATES[1]
   // After infection, ciphertext encodes the swapped choice until a real remediation path
   const sealedChoice = swapPhase === 'idle' ? null : swappedChoice
   const cipherSeed = verification + (sealedChoice || choice)
+  const { encrypted, lock } = fakeCipherParts(verification + choice)
 
   return (
     <div>
-      {/* Mirrors AuthenticatedContent + SubmittedScreen — title the voter actually sees */}
-      <h2 className="text-[1.35rem] font-normal tracking-tight text-h26-text sm:text-[1.5rem]">Vote Submitted.</h2>
+      {/* Same content as SubmittedScreen, styled in demo green language; defense rooms stay separate steps */}
+      <h2 className="font-serif26 text-[1.5rem] font-normal tracking-tight text-h26-text sm:text-[1.7rem]">
+        Vote Submitted.
+      </h2>
 
-      <p className="mt-5 text-[0.9rem] leading-relaxed text-h26-textSecondary">
-        Once the election closes and votes are unlocked, you can find your vote on the Election Status page using its{' '}
-        <em>Verification #</em>:
-      </p>
+      <button
+        className="mt-4 inline-flex items-center gap-1.5 text-[0.85rem] font-medium text-h26-green underline-offset-2 hover:underline"
+        onClick={() => setTopic(topic === 'board' ? null : 'board')}
+        type="button"
+      >
+        Election Status page →
+      </button>
 
-      <div className="overflow-x-auto mt-4 rounded-xl border border-black/8">
-        <table className="w-full min-w-[280px] text-left text-[0.78rem]">
-          <thead className="bg-black/[0.03] text-h26-muted">
-            <tr>
-              <th className="px-3 py-2 font-medium">verification #</th>
-              <th className="px-3 py-2 font-medium">mayor</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr className="bg-h26-green/[0.12]">
-              <td className="px-3 py-2.5 font-mono26 font-medium">{verification}</td>
-              <td className="px-3 py-2.5">{formatMayor(choice)}</td>
-            </tr>
-          </tbody>
-        </table>
+      <div className="mt-6">
+        <p className="font-mono26 text-[10px] uppercase tracking-[0.14em] text-h26-muted">How to verify</p>
+        <p className="mt-2 text-[0.9rem] leading-relaxed text-h26-textSecondary">
+          Once the election closes and votes are unlocked, find yours on the Election Status page using its{' '}
+          <em>Verification #</em>:
+        </p>
+
+        <div className="mt-4 overflow-x-auto rounded-xl border border-black/[0.07]">
+          <table className="w-full min-w-[280px] text-left text-[0.78rem]">
+            <thead className="bg-black/[0.03] text-h26-muted">
+              <tr>
+                <th className="px-3 py-2 font-medium">verification #</th>
+                <th className="px-3 py-2 font-medium">mayor</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="bg-h26-green/[0.1]">
+                <td className="px-3 py-2.5 font-mono26 font-medium text-h26-green">{verification}</td>
+                <td className="px-3 py-2.5 text-h26-text">{formatMayor(choice)}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p className="mt-3 text-[0.72rem] leading-relaxed text-h26-muted">
+          This secret <em>Verification #</em> is a random number, generated and encrypted on your own device. No one
+          else can possibly know it.
+        </p>
       </div>
 
-      <p className="mt-3 text-[0.72rem] leading-relaxed text-h26-muted">
-        This secret <em>Verification #</em> is a random number, generated and encrypted on your own device.
-        <br />
-        No one else can possibly know it.
-      </p>
-
-      <h3 className="mt-8 text-[0.95rem] font-medium text-h26-text">How your vote was submitted:</h3>
-      <p className="mt-2 text-[0.85rem] text-h26-textSecondary">
-        To protect your privacy, your vote was encrypted before submission:
-      </p>
-
-      <div className="overflow-x-auto mt-3 rounded-xl border border-black/8">
-        <table className="w-full min-w-[320px] text-left text-[0.78rem]">
-          <thead className="bg-black/[0.03] text-h26-muted">
-            <tr>
-              <th className="px-3 py-2 font-medium">auth</th>
-              <th className="px-3 py-2 font-medium">encrypted</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td className="px-3 py-2.5 font-mono26">{auth}</td>
-              <td className="px-3 py-2.5 font-mono26 text-[0.7rem] text-h26-textSecondary">
-                {fakeCipher(verification + choice)}
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      <div className="mt-6 rounded-xl border border-black/[0.07] bg-h26-bg/60 px-4 py-4">
+        <button
+          className="flex w-full items-center justify-between gap-3 text-left"
+          onClick={() => setMalwareOpen((v) => !v)}
+          type="button"
+        >
+          <span>
+            <span className="block text-[0.85rem] font-medium text-h26-text">
+              Verify your vote wasn&apos;t changed by malware
+            </span>
+            <span className="mt-0.5 block text-[0.72rem] text-h26-textSecondary">
+              Second device check or update your Verification #
+            </span>
+          </span>
+          <span className="font-mono26 text-[0.75rem] text-h26-muted">{malwareOpen ? '−' : '+'}</span>
+        </button>
+        {malwareOpen && (
+          <div className="mt-3 grid gap-2 sm:grid-cols-2">
+            <button
+              className="flex items-center gap-2.5 rounded-xl border border-black/10 bg-white px-4 py-3 text-left transition-colors hover:border-h26-green/40 hover:bg-h26-green/[0.04]"
+              onClick={onMalware}
+              type="button"
+            >
+              <Smartphone className="size-4 shrink-0 text-h26-green" strokeWidth={1.75} />
+              <span>
+                <span className="block text-[0.8rem] font-medium text-h26-text">Check with another device</span>
+                <span className="mt-0.5 block text-[0.68rem] text-h26-textSecondary">Independent decrypt</span>
+              </span>
+            </button>
+            <button
+              className="flex items-center gap-2.5 rounded-xl border border-black/10 bg-white px-4 py-3 text-left transition-colors hover:border-h26-green/40 hover:bg-h26-green/[0.04]"
+              onClick={onStrengthen}
+              type="button"
+            >
+              <PenLine className="size-4 shrink-0 text-h26-green" strokeWidth={1.75} />
+              <span>
+                <span className="block text-[0.8rem] font-medium text-h26-text">Customize Verification #</span>
+                <span className="mt-0.5 block text-[0.68rem] text-h26-textSecondary">Update last 4 digits</span>
+              </span>
+            </button>
+          </div>
+        )}
       </div>
 
-      <p className="mt-3 text-[0.72rem] text-h26-muted">
-        Its contents will only be unlocked after the election closes and all votes have been shuffled for safe
-        anonymization.
-      </p>
+      <div className="mt-8">
+        <p className="font-mono26 text-[10px] uppercase tracking-[0.14em] text-h26-muted">How it was submitted</p>
+        <p className="mt-2 text-[0.9rem] text-h26-textSecondary">
+          Encrypted on your device before anything left — the admin can accept it without learning your choices.
+        </p>
 
-      <div className="flex flex-col gap-2 mt-6 sm:flex-row sm:flex-wrap">
+        <div className="mt-4 overflow-x-auto rounded-xl border border-black/[0.07]">
+          <table className="w-full min-w-[320px] text-left text-[0.78rem]">
+            <thead className="bg-black/[0.03] text-h26-muted">
+              <tr>
+                <th className="px-3 py-2 font-medium">auth</th>
+                <th className="px-3 py-2 font-medium">encrypted</th>
+                <th className="px-3 py-2 font-medium">lock</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td className="px-3 py-2.5 font-mono26">{auth}</td>
+                <td className="px-3 py-2.5">
+                  <ExpandableHex
+                    expanded={expandedHex === 'encrypted'}
+                    onToggle={() => setExpandedHex(expandedHex === 'encrypted' ? null : 'encrypted')}
+                    value={encrypted}
+                  />
+                </td>
+                <td className="px-3 py-2.5">
+                  <ExpandableHex
+                    expanded={expandedHex === 'lock'}
+                    onToggle={() => setExpandedHex(expandedHex === 'lock' ? null : 'lock')}
+                    value={lock}
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p className="mt-3 text-[0.72rem] text-h26-muted">
+          Contents unlock only after the election closes and votes are shuffled for anonymization.
+        </p>
+
+        <button
+          className="mt-3 text-[0.75rem] font-medium text-h26-green underline-offset-2 hover:underline"
+          onClick={() => setShowEncryptionDetails((v) => !v)}
+          type="button"
+        >
+          {showEncryptionDetails ? 'Hide' : 'Show'} encryption details
+        </button>
+
+        {showEncryptionDetails && (
+          <div className="mt-3 space-y-3 rounded-xl bg-h26-bg px-4 py-4">
+            <Row label="Election" value="City Mayoral Election" />
+            <Row label="Auth token" mono value={auth} />
+            <Row emphasize label="Verification #" mono value={verification} />
+            <Row label="Plaintext (device only)" value={`{ mayor: ${formatMayor(choice)} }`} />
+            <Row label="Ciphertext" mono value={fakeCipher(verification + choice)} />
+          </div>
+        )}
+      </div>
+
+      <div className="mt-8 flex flex-col gap-2 border-t border-black/[0.07] pt-5 sm:flex-row sm:flex-wrap">
         <PrimaryButton onClick={onUnlock}>Close election & unlock</PrimaryButton>
         <SecondaryButton onClick={onMalware}>Try malware defense</SecondaryButton>
         <SecondaryButton onClick={onCoercion}>Try coercion override</SecondaryButton>
