@@ -1,4 +1,5 @@
-import { useMemo, useState } from 'react'
+import { Mail } from 'lucide-react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { NoSsr } from 'src/_shared/NoSsr'
 import { generateAuthToken } from 'src/crypto/generate-auth-tokens'
 import { strengthenTracking } from 'src/vote/strengthen-tracking'
@@ -607,6 +608,28 @@ function Coercion({
   )
 }
 
+function DemoInviteQRCode({ auth }: { auth: string }) {
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    import('qr-code-styling').then(({ default: QRCodeStyling }) => {
+      if (!ref.current) return
+      const qrCode = new QRCodeStyling({
+        cornersSquareOptions: { color: '#000000', type: 'square' },
+        data: `${window.location.origin}/demo?auth=${auth}`,
+        dotsOptions: { type: 'classy-rounded' },
+        height: 128,
+        qrOptions: { errorCorrectionLevel: 'M' },
+        width: 128,
+      })
+      if (ref.current.firstChild) ref.current.removeChild(ref.current.firstChild)
+      qrCode.append(ref.current)
+    })
+  }, [auth])
+
+  return <div aria-label="QR code containing your voting link" className="size-32 shrink-0" ref={ref} />
+}
+
 function DeviceFrame({
   children,
   label,
@@ -766,20 +789,61 @@ function Invite({ auth, onContinue }: { auth: string; onContinue: () => void }) 
   return (
     <div>
       <div className="px-4 py-5 rounded-xl bg-h26-bg sm:px-6">
-        <p className="font-mono26 text-[10px] uppercase tracking-[0.14em] text-h26-muted">Email preview</p>
-        <p className="mt-3 text-[0.95rem] text-h26-text">
-          You’re invited to vote in <b>Demo City Mayoral Election</b>.
+        <p className="flex items-center gap-2 text-[10px] text-h26-muted">
+          <Mail aria-hidden className="size-5 shrink-0" strokeWidth={2.25} />
+          <span className="font-mono26 uppercase tracking-[0.14em]">
+            Vote Invitation: voter receives via postal mail
+          </span>
         </p>
-        <p className="mt-3 font-mono26 text-[0.85rem]">
-          Auth Token: <span className="font-medium text-h26-green">{auth}</span>
+        <p className="mt-3 text-[1rem] text-h26-text">
+          You’re invited to vote in <b>City Mayoral Election</b>.
         </p>
-        <p className="mt-2 text-[0.8rem] text-h26-textSecondary">
-          One token → one accepted submission. Revocable, re-issuable, auditable against the voter roll.
-        </p>
+        <p className="mt-3 text-[0.85rem] text-h26-textSecondary">This invitation is unique to you.</p>
+
+        <div className="mt-5 flex flex-col items-center gap-4 rounded-xl border border-black/[0.07] bg-white p-4 sm:flex-row sm:items-center sm:justify-center sm:gap-8">
+          <DemoInviteQRCode auth={auth} />
+          <div className="text-center sm:text-left">
+            <p className="text-[0.8rem] text-h26-textSecondary">Scan the QR code, or visit</p>
+            <button
+              className="mt-1 font-medium underline text-h26-green underline-offset-2"
+              onClick={onContinue}
+              type="button"
+            >
+              siv.org/demo
+            </button>
+            <p className="mt-4 text-[0.75rem] text-h26-textSecondary">and enter your Auth Token:</p>
+            <p className="mt-1 font-mono26 text-[1rem] font-medium tracking-[0.12em] text-h26-text">{auth}</p>
+          </div>
+        </div>
       </div>
-      <PrimaryButton className="mt-6" onClick={onContinue}>
+
+      <PrimaryButton className="mt-5" onClick={onContinue}>
         Open ballot
       </PrimaryButton>
+
+      <details className="mt-5 rounded-xl border border-black/[0.07] px-4 py-3 text-[0.8rem] text-h26-textSecondary">
+        <summary className="font-medium cursor-pointer text-h26-text">
+          How else can Auth Tokens be given to voters?
+        </summary>
+        <p className="mt-3 leading-relaxed">
+          Election administrators can use email, SMS, secure digital channels, postal mail, or in-person delivery. Extra
+          checks can include drawn signatures, ID photos, one-time passwords, geolocation, or cryptographic keys.
+        </p>
+        <p className="mt-3">
+          <a className="text-h26-green hover:underline" href="/protocol#1" target="_blank">
+            See the protocol
+          </a>
+          {' · '}
+          <a
+            className="text-h26-green hover:underline"
+            href="https://docs.siv.org/authentication"
+            rel="noreferrer"
+            target="_blank"
+          >
+            Authentication details
+          </a>
+        </p>
+      </details>
     </div>
   )
 }
