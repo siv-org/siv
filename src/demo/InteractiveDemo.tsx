@@ -790,7 +790,7 @@ function Invite({ auth, onContinue }: { auth: string; onContinue: () => void }) 
   const [layers, setLayers] = useState(() => new Set<string>())
   const [remediated, setRemediated] = useState(false)
   const [replacementAuth] = useState(() => generateAuthToken().slice(0, 8))
-  const [topic, setTopic] = useState<'attack' | 'layers' | null>(null)
+  const [topic, setTopic] = useState<'attack' | 'delivery' | 'layers' | null>(null)
   const authLayers = [
     ['Drawn signature', 'Compare with the voter’s registration record'],
     ['ID + selfie', 'Higher-assurance identity check'],
@@ -837,7 +837,20 @@ function Invite({ auth, onContinue }: { auth: string; onContinue: () => void }) 
         <p className="font-mono26 text-[10px] uppercase tracking-[0.14em] text-h26-muted">
           Explore this step · optional
         </p>
-        <div className="grid gap-2 mt-3 sm:grid-cols-2">
+        <div className="grid gap-2 mt-3 sm:grid-cols-3">
+          <button
+            aria-expanded={topic === 'delivery'}
+            className={`rounded-xl border px-4 py-3 text-left transition-colors ${
+              topic === 'delivery'
+                ? 'border-h26-green/40 bg-h26-green/[0.06]'
+                : 'border-black/10 hover:border-h26-green/30 hover:bg-h26-green/[0.03]'
+            }`}
+            onClick={() => setTopic(topic === 'delivery' ? null : 'delivery')}
+            type="button"
+          >
+            <span className="block text-[0.82rem] font-medium text-h26-text">Why mail? Any other ways?</span>
+            <span className="mt-1 block text-[0.72rem] text-h26-textSecondary">Compare delivery channels</span>
+          </button>
           <button
             aria-expanded={topic === 'layers'}
             className={`rounded-xl border px-4 py-3 text-left transition-colors ${
@@ -848,10 +861,8 @@ function Invite({ auth, onContinue }: { auth: string; onContinue: () => void }) 
             onClick={() => setTopic(topic === 'layers' ? null : 'layers')}
             type="button"
           >
-            <span className="block text-[0.82rem] font-medium text-h26-text">Why mail? Any other ways?</span>
-            <span className="mt-1 block text-[0.72rem] text-h26-textSecondary">
-              Compare delivery and identity checks
-            </span>
+            <span className="block text-[0.82rem] font-medium text-h26-text">Additional auth checks?</span>
+            <span className="mt-1 block text-[0.72rem] text-h26-textSecondary">Build a stronger policy</span>
           </button>
           <button
             aria-expanded={topic === 'attack'}
@@ -868,11 +879,36 @@ function Invite({ auth, onContinue }: { auth: string; onContinue: () => void }) 
           </button>
         </div>
 
+        {topic === 'delivery' && (
+          <div className="p-4 mt-3 rounded-xl bg-h26-bg">
+            <p className="text-[0.8rem] leading-relaxed text-h26-textSecondary">
+              Postal mail is familiar, tied to a registered address, and can match today’s paper process. It is one
+              delivery channel—not a requirement of SIV.
+            </p>
+            <p className="mt-4 text-[0.78rem] font-medium text-h26-text">Other ways to deliver an Auth Token:</p>
+            <div className="grid gap-2 mt-2 sm:grid-cols-3">
+              {[
+                ['Email or SMS', 'Fast and affordable when contact details are already verified'],
+                ['Secure digital channel', 'Use an existing government or organization account'],
+                ['In person', 'Useful for high-assurance or replacement credentials'],
+              ].map(([label, description]) => (
+                <div className="px-3 py-2 bg-white rounded-lg border border-black/[0.07]" key={label}>
+                  <p className="text-[0.76rem] font-medium text-h26-text">{label}</p>
+                  <p className="mt-0.5 text-[0.68rem] text-h26-textSecondary">{description}</p>
+                </div>
+              ))}
+            </div>
+            <p className="mt-3 text-[0.72rem] text-h26-textSecondary">
+              Jurisdictions can combine channels or choose different ones for different voters.
+            </p>
+          </div>
+        )}
+
         {topic === 'layers' && (
           <div className="p-4 mt-3 rounded-xl bg-h26-bg">
             <p className="text-[0.8rem] leading-relaxed text-h26-textSecondary">
-              Postal mail is familiar, tied to a registered address, and can match today’s paper process. Each
-              jurisdiction can layer stronger checks on top.
+              Delivery gets the credential to the voter. Additional checks can raise confidence that the intended
+              voter is the person using it.
             </p>
             <p className="mt-4 text-[0.78rem] font-medium text-h26-text">Build an authentication policy:</p>
             <div className="grid gap-2 mt-2 sm:grid-cols-2">
