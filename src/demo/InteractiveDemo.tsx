@@ -179,7 +179,7 @@ export function InteractiveDemo() {
       'ground-truth': s.unlocked.length ? 'verify' : 'unlock',
       malware: 'malware',
       open: s.unlocked.length ? 'audit' : 'submit',
-      privacy: s.verification ? 'submit' : 'vote',
+      privacy: 'vote',
       stuffing: s.unlocked.length ? 'audit' : 'invite',
     }
     const step = jump[id]
@@ -1478,7 +1478,7 @@ function Submit({
   onUnlock: () => void
   verification: string
 }) {
-  const [topic, setTopic] = useState<'board' | 'hood' | 'lose' | 'swap' | 'verification' | null>(null)
+  const [topic, setTopic] = useState<'board' | 'lose' | 'swap' | 'verification' | null>(null)
   const [swapPhase, setSwapPhase] = useState<'caught' | 'idle' | 'infected'>('idle')
   const shownChoice = splitChoices(choice)[0] || CANDIDATES[0]
   const swappedChoice = CANDIDATES.find((c) => c !== shownChoice) || CANDIDATES[1]
@@ -1562,7 +1562,6 @@ function Submit({
         <div className="grid gap-2 mt-3 sm:grid-cols-2">
           {(
             [
-              ['hood', 'What just happened?', 'Encrypt on-device, then submit'],
               ['verification', 'What’s a Verification #?', 'Your private receipt for later'],
               ['swap', 'UI said John — Bob was sealed?', 'Client-side swap attack'],
               ['board', 'What’s on the public board?', 'Ciphertexts, not choices'],
@@ -1596,21 +1595,6 @@ function Submit({
             )
           })}
         </div>
-
-        {topic === 'hood' && (
-          <div className="p-4 mt-3 space-y-3 rounded-xl bg-h26-bg">
-            <p className="text-[0.8rem] leading-relaxed text-h26-textSecondary">
-              Before anything left your device, it sealed your choices and minted a secret Verification # — like locking
-              a safe the election admin can accept without opening.
-            </p>
-            <Row
-              label="Plaintext (on your device only)"
-              value={`{ mayor: ${formatMayor(choice)}, verification: '${verification}' }`}
-            />
-            <Row emphasize label="Verification #" mono value={verification} />
-            <Row label="Ciphertext that left the device" mono value={fakeCipher(verification + choice)} />
-          </div>
-        )}
 
         {topic === 'verification' && (
           <div className="p-4 mt-3 rounded-xl bg-h26-bg">
@@ -1862,6 +1846,9 @@ function visit(prev: DemoState, step: DemoStep): DemoState {
 function Vote({ onPick }: { onPick: (c: string) => void }) {
   const [method, setMethod] = useState<BallotMethod>('approval')
   const [plaintext, setPlaintext] = useState<Record<string, string>>({})
+  const [showEncrypt, setShowEncrypt] = useState(false)
+  // Preview # for the under-the-hood panel — real # is minted at submit
+  const [previewVerification] = useState(() => generateTrackingNum())
   const design = useMemo(() => ballotDesignFor(method), [method])
   const state: VoteState = {
     ballot_design: [design],
@@ -1874,6 +1861,7 @@ function Vote({ onPick }: { onPick: (c: string) => void }) {
   }
   const dispatch = (payload: Record<string, string>) => setPlaintext((prev) => ({ ...prev, ...payload }))
   const choice = choiceFromPlaintext(method, plaintext)
+  const previewChoice = choice || CANDIDATES[0]
 
   return (
     <div>
@@ -1942,6 +1930,49 @@ function Vote({ onPick }: { onPick: (c: string) => void }) {
             </button>
           ))}
         </div>
+      </div>
+
+      <div className="mt-6 border-t border-black/[0.07] pt-5">
+        <p className="font-mono26 text-[10px] uppercase tracking-[0.14em] text-h26-muted">
+          Explore this step · optional
+        </p>
+        <button
+          aria-expanded={showEncrypt}
+          className={`mt-3 w-full rounded-xl border px-4 py-3 text-left transition-colors sm:max-w-sm ${
+            showEncrypt
+              ? 'border-h26-green/40 bg-h26-green/[0.06]'
+              : 'border-black/10 hover:border-h26-green/30 hover:bg-h26-green/[0.03]'
+          }`}
+          onClick={() => setShowEncrypt((v) => !v)}
+          type="button"
+        >
+          <span className="block text-[0.82rem] font-medium text-h26-text">On-device encryption</span>
+          <span className="mt-1 block text-[0.72rem] text-h26-textSecondary">
+            What happens when you submit
+          </span>
+        </button>
+
+        {showEncrypt && (
+          <div className="p-4 mt-3 space-y-3 rounded-xl bg-h26-bg">
+            <p className="text-[0.8rem] leading-relaxed text-h26-textSecondary">
+              Before anything leaves your device, it seals your choices and mints a secret Verification # — like locking
+              a safe the election admin can accept without opening.
+            </p>
+            <Row
+              label="Plaintext (on your device only)"
+              value={`{ mayor: ${formatMayor(previewChoice)}, verification: '${previewVerification}' }`}
+            />
+            <Row emphasize label="Verification #" mono value={previewVerification} />
+            <Row
+              label="Ciphertext that will leave the device"
+              mono
+              value={fakeCipher(previewVerification + previewChoice)}
+            />
+            {!choice && (
+              <p className="text-[0.72rem] text-h26-muted">Mark a choice above to preview with your selection.</p>
+            )}
+          </div>
+        )}
       </div>
     </div>
   )
