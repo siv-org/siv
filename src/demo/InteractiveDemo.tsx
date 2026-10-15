@@ -698,17 +698,15 @@ function DemoBudget({
       >
         Budget available: ${remaining.toLocaleString()} of ${budget.toLocaleString()}
       </div>
-      {remaining < 0 && (
-        <p className="mb-4 text-[0.75rem] font-medium text-red-700">You’ve exceeded the budget.</p>
-      )}
+      {remaining < 0 && <p className="mb-4 text-[0.75rem] font-medium text-red-700">You’ve exceeded the budget.</p>}
       <ul className="space-y-3">
         {DEMO_BUDGET_OPTIONS.map(({ name }) => {
           const raw = state.plaintext[`vote_${name}`]
           const digits = raw && raw !== 'BLANK' ? raw : ''
           return (
-            <li className="flex items-center justify-between gap-4" key={name}>
+            <li className="flex gap-4 justify-between items-center" key={name}>
               <span className="text-[0.95rem] font-medium text-h26-text">{name}</span>
-              <label className="relative block">
+              <label className="block relative">
                 <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[0.95rem] text-h26-muted">
                   $
                 </span>
@@ -1706,7 +1704,7 @@ function Vote({ onPick }: { onPick: (c: string) => void }) {
       </div>
 
       <PrimaryButton className="mt-2" disabled={!choice} onClick={() => choice && onPick(choice)}>
-        Seal & encrypt vote
+        Submit vote
       </PrimaryButton>
 
       <div className="mt-6 border-t border-black/[0.07] pt-5">
