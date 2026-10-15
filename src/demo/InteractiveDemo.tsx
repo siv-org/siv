@@ -4,7 +4,6 @@ import { NoSsr } from 'src/_shared/NoSsr'
 import { default_max_score, default_min_score, default_multiple_votes_allowed } from 'src/admin/BallotDesign/Wizard'
 import { generateAuthToken } from 'src/crypto/generate-auth-tokens'
 import { defaultRankingsAllowed } from 'src/vote/Ballot'
-import { BudgetItem } from 'src/vote/BudgetItem'
 import { Item } from 'src/vote/Item'
 import { MultiVoteItem } from 'src/vote/MultiVoteItem'
 import { RankedChoiceItem } from 'src/vote/RankedChoiceItem'
@@ -49,9 +48,11 @@ const BALLOT_METHODS: { id: BallotMethod; label: string }[] = [
   { id: 'budget', label: 'Budget' },
 ]
 
-const DEMO_BUDGET_AVAILABLE = 50
+const DEMO_BUDGET_AVAILABLE = 100_000
 
 const DEMO_BALLOT_OPTIONS = CANDIDATES.map((name) => ({ name }))
+
+const DEMO_BUDGET_OPTIONS = ['Proposal A', 'Proposal B', 'Proposal C', 'Proposal D'].map((name) => ({ name }))
 
 const OTHER_VOTERS = [
   { auth: 'a1b2c3d4', name: 'Barton, Adam' },
@@ -513,7 +514,14 @@ function ballotDesignFor(method: BallotMethod): BallotItem {
     return { ...base, multiple_votes_allowed: default_multiple_votes_allowed, type: 'multiple-votes-allowed' }
   if (method === 'ranked') return { ...base, multiple_votes_allowed: defaultRankingsAllowed, type: 'ranked-choice-irv' }
   if (method === 'score') return { ...base, max_score: default_max_score, min_score: default_min_score, type: 'score' }
-  if (method === 'budget') return { ...base, budget_available: DEMO_BUDGET_AVAILABLE, type: 'budget' }
+  if (method === 'budget')
+    return {
+      ...base,
+      budget_available: DEMO_BUDGET_AVAILABLE,
+      options: DEMO_BUDGET_OPTIONS,
+      title: 'How much should each proposal get?',
+      type: 'budget',
+    }
   return { ...base, type: 'choose-only-one' }
 }
 
@@ -657,6 +665,68 @@ function Coercion({
         {(overridden || buyerScreenshot) && <PrimaryButton onClick={onUnlock}>Close election & unlock</PrimaryButton>}
         <SecondaryButton onClick={onSkip}>Skip override — just unlock</SecondaryButton>
       </div>
+    </div>
+  )
+}
+
+function DemoBudget({
+  design,
+  dispatch,
+  state,
+}: {
+  design: BallotItem
+  dispatch: (payload: Record<string, string>) => void
+  state: VoteState
+}) {
+  const budget = design.budget_available || DEMO_BUDGET_AVAILABLE
+  const spent = DEMO_BUDGET_OPTIONS.reduce((sum, { name }) => {
+    const raw = state.plaintext[`vote_${name}`]
+    const n = raw && raw !== 'BLANK' ? Number(raw) : 0
+    return sum + (Number.isFinite(n) && n > 0 ? n : 0)
+  }, 0)
+  const remaining = budget - spent
+
+  return (
+    <div>
+      <p className="mb-3 text-[1rem] font-medium text-h26-text">{design.title}</p>
+      <div
+        className={`mb-5 inline-block rounded-full border px-3 py-1.5 text-[0.8rem] ${
+          remaining >= 0
+            ? 'border-h26-green/40 bg-h26-green/[0.06] text-h26-text'
+            : 'border-red-300 bg-red-50 text-red-800'
+        }`}
+      >
+        Budget available: ${remaining.toLocaleString()} of ${budget.toLocaleString()}
+      </div>
+      {remaining < 0 && (
+        <p className="mb-4 text-[0.75rem] font-medium text-red-700">You’ve exceeded the budget.</p>
+      )}
+      <ul className="space-y-3">
+        {DEMO_BUDGET_OPTIONS.map(({ name }) => {
+          const raw = state.plaintext[`vote_${name}`]
+          const digits = raw && raw !== 'BLANK' ? raw : ''
+          return (
+            <li className="flex items-center justify-between gap-4" key={name}>
+              <span className="text-[0.95rem] font-medium text-h26-text">{name}</span>
+              <label className="relative block">
+                <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[0.95rem] text-h26-muted">
+                  $
+                </span>
+                <input
+                  className="h-10 w-36 rounded-lg border border-black/15 bg-white py-2 pl-7 pr-3 text-right font-mono26 text-[0.9rem] tabular-nums text-h26-text outline-none transition-colors hover:border-h26-green/40 focus:border-h26-green/50"
+                  inputMode="numeric"
+                  onChange={(e) => {
+                    const next = e.target.value.replace(/\D/g, '')
+                    dispatch({ [`vote_${name}`]: next || 'BLANK' })
+                  }}
+                  placeholder="0"
+                  value={digits ? Number(digits).toLocaleString() : ''}
+                />
+              </label>
+            </li>
+          )
+        })}
+      </ul>
     </div>
   )
 }
@@ -1598,7 +1668,7 @@ function Vote({ onPick }: { onPick: (c: string) => void }) {
 
   return (
     <div>
-      {/* Demo-only spacing: production MultiVoteItem instruction is a bit tight in this shell */}
+      {/* Demo-only: production MultiVoteItem instruction is a bit tight in this shell */}
       <div className="[&_p.italic]:mb-2 [&_p.italic]:text-[0.95rem] [&_p.italic]:leading-relaxed [&_p.italic]:text-h26-textSecondary">
         {/* Same type routing as src/vote/Ballot.tsx */}
         {method === 'approval' && (
@@ -1632,9 +1702,7 @@ function Vote({ onPick }: { onPick: (c: string) => void }) {
         {method === 'score' && (
           <ScoreItem {...design} dispatch={dispatch} options={DEMO_BALLOT_OPTIONS} state={state} />
         )}
-        {method === 'budget' && (
-          <BudgetItem {...design} dispatch={dispatch} options={DEMO_BALLOT_OPTIONS} state={state} />
-        )}
+        {method === 'budget' && <DemoBudget design={design} dispatch={dispatch} state={state} />}
       </div>
 
       <PrimaryButton className="mt-2" disabled={!choice} onClick={() => choice && onPick(choice)}>
