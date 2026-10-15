@@ -616,7 +616,7 @@ function DemoInviteQRCode({ auth }: { auth: string }) {
       if (!ref.current) return
       const qrCode = new QRCodeStyling({
         cornersSquareOptions: { color: '#000000', type: 'square' },
-        data: `${window.location.origin}/demo?auth=${auth}`,
+        data: `https://www.local.gov/vote?auth=${auth}`,
         dotsOptions: { type: 'classy-rounded' },
         height: 128,
         qrOptions: { errorCorrectionLevel: 'M' },
@@ -627,7 +627,15 @@ function DemoInviteQRCode({ auth }: { auth: string }) {
     })
   }, [auth])
 
-  return <div aria-label="QR code containing your voting link" className="size-32 shrink-0" ref={ref} />
+  return (
+    <div className="flex max-w-[11rem] flex-col items-center gap-2">
+      <div aria-label="QR code containing your voting link" className="size-32 shrink-0" ref={ref} />
+      <p className="break-all text-center font-mono26 text-[0.62rem] leading-snug text-h26-muted">
+        local.gov/vote?auth=
+        <span className="rounded border border-[#e67e37] bg-[#e67e3744] px-0.5 text-h26-text">{auth}</span>
+      </p>
+    </div>
+  )
 }
 
 function DeviceFrame({
@@ -821,7 +829,7 @@ function Invite({ auth, onContinue }: { auth: string; onContinue: () => void }) 
               onClick={onContinue}
               type="button"
             >
-              siv.org/demo
+              local.gov/election
             </button>
             <p className="mt-4 text-[0.75rem] text-h26-textSecondary">and enter your Auth Token:</p>
             <p className="mt-1 font-mono26 text-[1rem] font-medium tracking-[0.12em] text-h26-text">{auth}</p>
@@ -907,8 +915,8 @@ function Invite({ auth, onContinue }: { auth: string; onContinue: () => void }) 
         {topic === 'layers' && (
           <div className="p-4 mt-3 rounded-xl bg-h26-bg">
             <p className="text-[0.8rem] leading-relaxed text-h26-textSecondary">
-              Delivery gets the credential to the voter. Additional checks can raise confidence that the intended
-              voter is the person using it.
+              Delivery gets the credential to the voter. Additional checks can raise confidence that the intended voter
+              is the person using it.
             </p>
             <p className="mt-4 text-[0.78rem] font-medium text-h26-text">Build an authentication policy:</p>
             <div className="grid gap-2 mt-2 sm:grid-cols-2">
