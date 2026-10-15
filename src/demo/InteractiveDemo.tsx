@@ -1492,11 +1492,11 @@ function Submit({
       <h2 className="text-[1.35rem] font-normal tracking-tight text-h26-text sm:text-[1.5rem]">Vote Submitted.</h2>
 
       <p className="mt-5 text-[0.9rem] leading-relaxed text-h26-textSecondary">
-        Once the election closes and votes are unlocked, you can find yours on the Election Status page using its{' '}
+        Once the election closes and votes are unlocked, you can find your vote on the Election Status page using its{' '}
         <em>Verification #</em>:
       </p>
 
-      <div className="mt-4 overflow-x-auto rounded-xl border border-black/8">
+      <div className="overflow-x-auto mt-4 rounded-xl border border-black/8">
         <table className="w-full min-w-[280px] text-left text-[0.78rem]">
           <thead className="bg-black/[0.03] text-h26-muted">
             <tr>
@@ -1524,7 +1524,7 @@ function Submit({
         To protect your privacy, your vote was encrypted before submission:
       </p>
 
-      <div className="mt-3 overflow-x-auto rounded-xl border border-black/8">
+      <div className="overflow-x-auto mt-3 rounded-xl border border-black/8">
         <table className="w-full min-w-[320px] text-left text-[0.78rem]">
           <thead className="bg-black/[0.03] text-h26-muted">
             <tr>
@@ -1579,8 +1579,8 @@ function Submit({
                       ? 'border-red-300 bg-red-50/60'
                       : 'border-h26-green/40 bg-h26-green/[0.06]'
                     : attack
-                      ? 'border-black/10 hover:border-red-200 hover:bg-red-50/30'
-                      : 'border-black/10 hover:border-h26-green/30 hover:bg-h26-green/[0.03]'
+                    ? 'border-black/10 hover:border-red-200 hover:bg-red-50/30'
+                    : 'border-black/10 hover:border-h26-green/30 hover:bg-h26-green/[0.03]'
                 }`}
                 key={id}
                 onClick={() => {
@@ -1600,9 +1600,8 @@ function Submit({
           <div className="p-4 mt-3 rounded-xl bg-h26-bg">
             <p className="text-[0.8rem] leading-relaxed text-h26-textSecondary">
               Think of it as a secret lottery ticket printed on your device at cast time. After unlock, you search the
-              public list for{' '}
-              <span className="font-mono26 font-medium text-h26-text">{verification}</span> and confirm the choices
-              next to it match what you intended.
+              public list for <span className="font-medium font-mono26 text-h26-text">{verification}</span> and confirm
+              the choices next to it match what you intended.
             </p>
             <ul className="mt-3 space-y-1.5">
               {[
@@ -1631,7 +1630,9 @@ function Submit({
 
             <div className="grid gap-3 mt-4 sm:grid-cols-2">
               <div className="px-3 py-3 bg-white rounded-lg border border-black/[0.07]">
-                <p className="font-mono26 text-[10px] uppercase tracking-[0.14em] text-h26-muted">What Device 1 shows</p>
+                <p className="font-mono26 text-[10px] uppercase tracking-[0.14em] text-h26-muted">
+                  What Device 1 shows
+                </p>
                 <p className="mt-2 text-[0.85rem] font-medium text-h26-text">{shownChoice}</p>
                 <p className="mt-1 font-mono26 text-[0.7rem] text-h26-muted">{verification}</p>
                 <p className="mt-2 text-[0.7rem] text-h26-textSecondary">Looks fine. Always does.</p>
@@ -1667,7 +1668,9 @@ function Submit({
                 </p>
                 <div className="flex flex-col gap-2 mt-3 sm:flex-row">
                   <SecondaryButton onClick={onMalware}>Try the second-device check</SecondaryButton>
-                  <SecondaryButton onClick={() => setSwapPhase('caught')}>Skip ahead: unlock catches it</SecondaryButton>
+                  <SecondaryButton onClick={() => setSwapPhase('caught')}>
+                    Skip ahead: unlock catches it
+                  </SecondaryButton>
                 </div>
               </div>
             )}
@@ -1689,7 +1692,7 @@ function Submit({
             <p className="mb-3 text-[0.8rem] leading-relaxed text-h26-textSecondary">
               Anyone can see accepted submissions: auth token + ciphertext. Choices stay sealed until shuffle & unlock.
             </p>
-            <div className="overflow-x-auto rounded-xl border border-black/8 bg-white">
+            <div className="overflow-x-auto bg-white rounded-xl border border-black/8">
               <table className="w-full min-w-[480px] text-left text-[0.78rem]">
                 <thead className="bg-black/[0.03] text-h26-muted">
                   <tr>
@@ -1947,9 +1950,7 @@ function Vote({ onPick }: { onPick: (c: string) => void }) {
           type="button"
         >
           <span className="block text-[0.82rem] font-medium text-h26-text">On-device encryption</span>
-          <span className="mt-1 block text-[0.72rem] text-h26-textSecondary">
-            What happens when you submit
-          </span>
+          <span className="mt-1 block text-[0.72rem] text-h26-textSecondary">What happens when you submit</span>
         </button>
 
         {showEncrypt && (
