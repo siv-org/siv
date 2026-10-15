@@ -1,11 +1,7 @@
 import { Mail } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { NoSsr } from 'src/_shared/NoSsr'
-import {
-  default_max_score,
-  default_min_score,
-  default_multiple_votes_allowed,
-} from 'src/admin/BallotDesign/Wizard'
+import { default_max_score, default_min_score, default_multiple_votes_allowed } from 'src/admin/BallotDesign/Wizard'
 import { generateAuthToken } from 'src/crypto/generate-auth-tokens'
 import { defaultRankingsAllowed } from 'src/vote/Ballot'
 import { BudgetItem } from 'src/vote/BudgetItem'
@@ -515,10 +511,8 @@ function ballotDesignFor(method: BallotMethod): BallotItem {
   if (method === 'approval') return { ...base, type: 'approval' }
   if (method === 'multi')
     return { ...base, multiple_votes_allowed: default_multiple_votes_allowed, type: 'multiple-votes-allowed' }
-  if (method === 'ranked')
-    return { ...base, multiple_votes_allowed: defaultRankingsAllowed, type: 'ranked-choice-irv' }
-  if (method === 'score')
-    return { ...base, max_score: default_max_score, min_score: default_min_score, type: 'score' }
+  if (method === 'ranked') return { ...base, multiple_votes_allowed: defaultRankingsAllowed, type: 'ranked-choice-irv' }
+  if (method === 'score') return { ...base, max_score: default_max_score, min_score: default_min_score, type: 'score' }
   if (method === 'budget') return { ...base, budget_available: DEMO_BUDGET_AVAILABLE, type: 'budget' }
   return { ...base, type: 'choose-only-one' }
 }
@@ -1604,39 +1598,44 @@ function Vote({ onPick }: { onPick: (c: string) => void }) {
 
   return (
     <div>
-      {/* Same type routing as src/vote/Ballot.tsx */}
-      {method === 'approval' && (
-        <MultiVoteItem
-          {...design}
-          dispatch={dispatch}
-          multiple_votes_allowed={DEMO_BALLOT_OPTIONS.length}
-          options={DEMO_BALLOT_OPTIONS}
-          state={state}
-        />
-      )}
-      {method === 'multi' && (
-        <MultiVoteItem
-          {...design}
-          dispatch={dispatch}
-          multiple_votes_allowed={default_multiple_votes_allowed}
-          options={DEMO_BALLOT_OPTIONS}
-          state={state}
-        />
-      )}
-      {method === 'plurality' && <Item {...design} dispatch={dispatch} options={DEMO_BALLOT_OPTIONS} state={state} />}
-      {method === 'ranked' && (
-        <RankedChoiceItem
-          {...design}
-          dispatch={dispatch}
-          options={DEMO_BALLOT_OPTIONS}
-          rankings_allowed={defaultRankingsAllowed}
-          state={state}
-        />
-      )}
-      {method === 'score' && <ScoreItem {...design} dispatch={dispatch} options={DEMO_BALLOT_OPTIONS} state={state} />}
-      {method === 'budget' && (
-        <BudgetItem {...design} dispatch={dispatch} options={DEMO_BALLOT_OPTIONS} state={state} />
-      )}
+      {/* Demo-only spacing: production MultiVoteItem instruction is a bit tight in this shell */}
+      <div className="[&_p.italic]:mb-2 [&_p.italic]:text-[0.95rem] [&_p.italic]:leading-relaxed [&_p.italic]:text-h26-textSecondary">
+        {/* Same type routing as src/vote/Ballot.tsx */}
+        {method === 'approval' && (
+          <MultiVoteItem
+            {...design}
+            dispatch={dispatch}
+            multiple_votes_allowed={DEMO_BALLOT_OPTIONS.length}
+            options={DEMO_BALLOT_OPTIONS}
+            state={state}
+          />
+        )}
+        {method === 'multi' && (
+          <MultiVoteItem
+            {...design}
+            dispatch={dispatch}
+            multiple_votes_allowed={default_multiple_votes_allowed}
+            options={DEMO_BALLOT_OPTIONS}
+            state={state}
+          />
+        )}
+        {method === 'plurality' && <Item {...design} dispatch={dispatch} options={DEMO_BALLOT_OPTIONS} state={state} />}
+        {method === 'ranked' && (
+          <RankedChoiceItem
+            {...design}
+            dispatch={dispatch}
+            options={DEMO_BALLOT_OPTIONS}
+            rankings_allowed={defaultRankingsAllowed}
+            state={state}
+          />
+        )}
+        {method === 'score' && (
+          <ScoreItem {...design} dispatch={dispatch} options={DEMO_BALLOT_OPTIONS} state={state} />
+        )}
+        {method === 'budget' && (
+          <BudgetItem {...design} dispatch={dispatch} options={DEMO_BALLOT_OPTIONS} state={state} />
+        )}
+      </div>
 
       <PrimaryButton className="mt-2" disabled={!choice} onClick={() => choice && onPick(choice)}>
         Seal & encrypt vote
