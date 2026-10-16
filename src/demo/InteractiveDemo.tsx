@@ -1,9 +1,18 @@
+import { keyBy, orderBy } from 'lodash-es'
 import { Mail, PenLine, Smartphone } from 'lucide-react'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { Fragment, useEffect, useMemo, useRef, useState } from 'react'
 import { NoSsr } from 'src/_shared/NoSsr'
 import { default_max_score, default_min_score, default_multiple_votes_allowed } from 'src/admin/BallotDesign/Wizard'
 import { generateAuthToken } from 'src/crypto/generate-auth-tokens'
+import { HowDoIVerify } from 'src/status/HowDoIVerify'
+import { HowSubmittedVotesWork } from 'src/status/HowSubmittedVotesWork'
+import { Animation } from 'src/status/Mixnet/Animation'
+import { RoundResults } from 'src/status/RoundResults'
+import { tallyVotes } from 'src/status/tally-votes'
+import { unTruncateSelection } from 'src/status/un-truncate-selection'
+import { range } from 'src/utils'
 import { defaultRankingsAllowed } from 'src/vote/Ballot'
+import { generateColumnNames } from 'src/vote/generateColumnNames'
 import { Item } from 'src/vote/Item'
 import { MultiVoteItem } from 'src/vote/MultiVoteItem'
 import { RankedChoiceItem } from 'src/vote/RankedChoiceItem'
@@ -95,10 +104,6 @@ export function InteractiveDemo() {
   const strengthenPreview =
     s.verification && s.digits.length === 4 ? strengthenTracking(s.verification, s.digits) : null
 
-  const searchHit =
-    s.search.trim().length >= 4 &&
-    s.unlocked.find((v) => v.verification.replace(/\D/g, '').includes(s.search.replace(/\D/g, '')))
-
   const tallies = useMemo(() => {
     const counts: Record<string, number> = {}
     CANDIDATES.forEach((c) => {
@@ -145,7 +150,12 @@ export function InteractiveDemo() {
 
   const buildUnlocked = (choice: string, verification: string, overridden: boolean): UnlockedVote[] => {
     const others: UnlockedVote[] = OTHER_VOTERS.map((_, i) => ({
-      choice: CANDIDATES[i % CANDIDATES.length],
+      // Approval: each other voter marks two or three candidates
+      choice: joinChoices([
+        CANDIDATES[i % CANDIDATES.length],
+        CANDIDATES[(i + 1) % CANDIDATES.length],
+        ...(i % 2 === 0 ? [CANDIDATES[(i + 2) % CANDIDATES.length]] : []),
+      ]),
       verification: generateTrackingNum(),
     }))
     // If overridden, the buyer's screenshot # is absent; honest vote is present under new #
@@ -163,16 +173,16 @@ export function InteractiveDemo() {
     setS((prev) => {
       const choice = prev.overridden ? prev.honestChoice || prev.choice : prev.choice
       const verification = prev.strengthened || prev.verification
-      if (!choice || !verification) return prev
+      if (!choice || !verification) return visit(prev, 'verify')
       const unlocked = buildUnlocked(choice, verification, prev.overridden)
-      return go({ ...prev, search: verification, unlocked }, 'unlock')
+      return go({ ...prev, search: verification, unlocked }, 'verify')
     })
   }
 
   const pathSteps: [DemoStep, string][] = [
     ['invite', 'Receive invite'],
     ['vote', 'Vote'],
-    ['submit', 'Verify results'],
+    ['verify', 'Verify results'],
   ]
 
   const jumpToProperty = (id: string) => {
@@ -207,7 +217,7 @@ export function InteractiveDemo() {
                         ? 'border border-h26-green font-medium text-h26-green'
                         : `border border-transparent hover:bg-h26-green/[0.06] hover:text-h26-green ${done ? 'text-h26-green' : 'text-h26-textSecondary'}`
                     }`}
-                    onClick={() => setS((prev) => visit(prev, id))}
+                    onClick={() => (id === 'verify' ? runUnlock() : setS((prev) => visit(prev, id)))}
                     type="button"
                   >
                     <span
@@ -286,11 +296,12 @@ export function InteractiveDemo() {
                     auth={s.auth}
                     boardVotes={boardVotes}
                     choice={s.choice}
-                    onAudit={() => setS((prev) => go(prev, 'audit'))}
                     onCoercion={() => setS((prev) => go(prev, 'coercion'))}
                     onMalware={() => setS((prev) => go(prev, 'malware'))}
+                    onSeeResults={() => setS((prev) => visit(prev, 'verify'))}
                     onStrengthen={() => setS((prev) => go(prev, 'strengthen'))}
                     onUnlock={runUnlock}
+                    published={!!s.unlocked.length}
                     verification={s.verification}
                   />
                 ) : (
@@ -387,19 +398,12 @@ export function InteractiveDemo() {
               {s.step === 'verify' &&
                 (s.unlocked.length && activeVerification ? (
                   <Verify
-                    activeVerification={activeVerification}
-                    buyerScreenshot={s.buyerScreenshot}
-                    onAudit={() => setS((prev) => go(prev, 'audit'))}
+                    boardVotes={boardVotes}
                     onDone={() => setS((prev) => go(prev, 'done'))}
-                    overridden={s.overridden}
-                    search={s.search}
-                    searchHit={searchHit}
-                    setSearch={(search) => setS((prev) => ({ ...prev, search }))}
-                    tallies={tallies}
                     unlocked={s.unlocked}
                   />
                 ) : (
-                  <NeedVote label="Vote and unlock first to verify." onStart={start} />
+                  <NeedVote label="Cast a vote first so there are results to check." onStart={start} />
                 ))}
               {s.step === 'audit' && (
                 <Audit
@@ -1366,7 +1370,8 @@ function NeedVote({ label, onStart }: { label?: string; onStart: () => void }) {
 function pathIndex(step: DemoStep): number {
   if (step === 'intro') return -1
   if (step === 'invite') return 0
-  if (step === 'vote') return 1
+  if (step === 'coercion' || step === 'malware' || step === 'strengthen' || step === 'submit' || step === 'vote')
+    return 1
   if (step === 'done') return 3
   return 2
 }
@@ -1556,21 +1561,23 @@ function Submit({
   auth,
   boardVotes,
   choice,
-  onAudit,
   onCoercion,
   onMalware,
+  onSeeResults,
   onStrengthen,
   onUnlock,
+  published,
   verification,
 }: {
   auth: string
   boardVotes: { auth: string; cipher: string; encrypted: string; lock: string; name: string; yours: boolean }[]
   choice: string
-  onAudit: () => void
   onCoercion: () => void
   onMalware: () => void
+  onSeeResults: () => void
   onStrengthen: () => void
   onUnlock: () => void
+  published: boolean
   verification: string
 }) {
   const [topic, setTopic] = useState<'board' | 'lose' | 'swap' | 'verification' | null>(null)
@@ -1595,13 +1602,13 @@ function Submit({
 
       <button
         className="mt-4 inline-flex items-center gap-1.5 text-[0.85rem] font-medium text-h26-green underline-offset-2 hover:underline"
-        onClick={() => setShowStatus((v) => !v)}
+        onClick={() => (published ? onSeeResults() : setShowStatus((v) => !v))}
         type="button"
       >
-        {showStatus ? 'Hide' : 'See'} Election Status page →
+        {published || !showStatus ? 'See' : 'Hide'} Election Status page →
       </button>
 
-      {showStatus && (
+      {!published && showStatus && (
         <div className="mt-4 rounded-xl border border-black/[0.07] bg-white px-4 py-5 shadow-[0_0_0_1px_rgba(0,0,0,0.03)] sm:px-5">
           <p className="font-mono26 text-[10px] uppercase tracking-[0.14em] text-h26-muted">Election Status</p>
           <h3 className="mt-1 text-[1.05rem] font-medium text-h26-text">All Submitted Votes</h3>
@@ -1750,10 +1757,9 @@ function Submit({
       </div>
 
       <div className="mt-8 flex flex-col gap-2 border-t border-black/[0.07] pt-5 sm:flex-row sm:flex-wrap">
-        <PrimaryButton onClick={onUnlock}>Close election & unlock</PrimaryButton>
+        <PrimaryButton onClick={onUnlock}>Close election & announce results</PrimaryButton>
         <SecondaryButton onClick={onMalware}>Try malware defense</SecondaryButton>
         <SecondaryButton onClick={onCoercion}>Try coercion override</SecondaryButton>
-        <SecondaryButton onClick={onAudit}>Auditor view</SecondaryButton>
       </div>
 
       <div className="mt-8 border-t border-black/[0.07] pt-5">
@@ -1896,7 +1902,7 @@ function Submit({
             <PublicBoardTable votes={boardVotes} />
             <button
               className="mt-3 text-[0.75rem] font-medium text-h26-green underline-offset-2 hover:underline"
-              onClick={() => setShowStatus(true)}
+              onClick={() => (published ? onSeeResults() : setShowStatus(true))}
               type="button"
             >
               See full Election Status view ↑
@@ -1953,78 +1959,227 @@ function Unlock({ onContinue, unlocked }: { onContinue: () => void; unlocked: Un
 }
 
 function Verify({
-  activeVerification,
-  buyerScreenshot,
-  onAudit,
+  boardVotes,
   onDone,
-  overridden,
-  search,
-  searchHit,
-  setSearch,
-  tallies,
   unlocked,
 }: {
-  activeVerification: string
-  buyerScreenshot: null | string
-  onAudit: () => void
+  boardVotes: { auth: string; cipher: string; name: string; yours: boolean }[]
   onDone: () => void
-  overridden: boolean
-  search: string
-  searchHit: false | undefined | UnlockedVote
-  setSearch: (s: string) => void
-  tallies: [string, number][]
   unlocked: UnlockedVote[]
 }) {
+  const [topic, setTopic] = useState<null | string>(null)
+  const [showEncrypted, setShowEncrypted] = useState(false)
+  const design = ballotDesignFor('approval')
+  const votes = unlocked.map((v) => {
+    const row: Record<string, string> = { tracking: v.verification }
+    splitChoices(v.choice).forEach((name, i) => {
+      row[`vote_${i + 1}`] = name
+    })
+    return row
+  })
+  const ballot_design = [design]
+  const { columns } = generateColumnNames({ ballot_design })
+  const { ordered, tallies: itemTallies } = tallyVotes(keyBy(ballot_design, 'id'), votes)
+  const sorted = orderBy(votes, 'tracking')
+
   return (
     <div>
-      <label className="block text-[0.8rem] font-medium">
-        Search unlocked votes
-        <input
-          className="block px-3 py-2 mt-1 w-full max-w-sm rounded-lg border border-black/15 font-mono26"
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder="Verification #"
-          value={search}
-        />
-      </label>
-
-      {searchHit ? (
-        <div className="mt-4 rounded-xl bg-h26-green/[0.1] px-4 py-3">
-          <p className="text-[0.85rem] font-medium text-h26-green">Found — counted as intended</p>
-          <p className="mt-1 font-mono26 text-[0.8rem]">
-            {searchHit.verification} → {searchHit.choice}
+      {/* Same pieces as Election Status: totals, decrypted table, mixnet. Shell is demo-only. */}
+      <div className="-mx-4 bg-[hsl(0,0%,95%)] px-4 py-5 sm:-mx-8 sm:px-8">
+        <div className="flex gap-3 justify-between items-baseline">
+          <h2 className="m-0 text-2xl font-semibold text-black">Election Status</h2>
+          <p className="m-0 text-sm text-black/70">
+            ID: <b>demo</b>
           </p>
         </div>
-      ) : search.trim().length >= 4 ? (
-        <p className="mt-4 text-[0.85rem] text-red-700">No match in unlocked list.</p>
-      ) : null}
+        <h3 className="mt-3 mb-4 text-lg font-semibold text-black">City Mayoral Election</h3>
 
-      {overridden && buyerScreenshot && (
-        <div className="mt-4 rounded-xl bg-red-50 px-4 py-3 text-[0.8rem]">
-          <p className="font-medium text-red-800">Buyer’s screenshot: {buyerScreenshot}</p>
-          <p className="mt-1 text-red-800/80">
-            {unlocked.some((v) => v.verification === buyerScreenshot)
-              ? 'Still present (unexpected in this demo)'
-              : 'Not in the unlocked tally — coercion failed for the buyer.'}
-          </p>
-          <p className="mt-1 text-h26-textSecondary">Your real #: {activeVerification}</p>
+        <div className="p-4 bg-white rounded-lg shadow-[0px_1px_2px_hsl(0_0%_50%/_0.333),0px_3px_4px_hsl(0_0%_50%/_0.333),0px_4px_6px_hsl(0_0%_50%/_0.333)]">
+          <h3 className="mt-0">Vote Totals:</h3>
+          <h4>{design.title}</h4>
+          <RoundResults
+            ballot_design={ballot_design}
+            id="vote"
+            ordered={ordered.vote}
+            tallies={itemTallies.vote}
+            totalVotes={votes.length}
+          />
         </div>
-      )}
 
-      <div className="mt-6">
-        <p className="text-[0.8rem] font-medium">Anyone can re-tally:</p>
-        <ul className="mt-2 space-y-1 text-[0.85rem]">
-          {tallies.map(([name, n]) => (
-            <li key={name}>
-              {name}: <b>{n}</b>
-            </li>
-          ))}
-        </ul>
+        <div className="mt-4 bg-white p-4 rounded-lg shadow-[0_2px_2px_hsla(0,0%,50%,0.333),0_4px_4px_hsla(0,0%,50%,0.333),0_6px_6px_hsla(0,0%,50%,0.333)]">
+          <h3 className="mt-0 mb-1.5">Decrypted Votes</h3>
+          <p className="mt-0 text-[13px] italic opacity-70">Anonymized for vote secrecy.</p>
+          <HowDoIVerify />
+          <table className="block overflow-auto border-collapse [&_tr>*]:[border:1px_solid_#ccc] [&_tr>*]:px-2.5 [&_tr>*]:py-[3px] pb-2">
+            <thead>
+              <tr className="text-[11px]">
+                <th></th>
+                <th style={{ backgroundColor: 'rgba(10, 232, 10, 0.24)' }}>verification #</th>
+                {columns.map((c) => (
+                  <th key={c}>{c}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {sorted.map((vote, voteIndex) => (
+                <tr key={vote.tracking}>
+                  <td>{voteIndex + 1}.</td>
+                  <td>{vote.tracking?.padStart(14, '0')}</td>
+                  {columns.map((c) => (
+                    <td className="text-center" key={c}>
+                      {unTruncateSelection(vote[c], ballot_design, c)}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <p className="mt-8 text-xs opacity-70">
+          <button onClick={() => setShowEncrypted((v) => !v)} type="button">
+            {showEncrypted ? '[-] Hide' : '[+] Show'} Encrypted Submissions
+          </button>
+        </p>
+
+        {showEncrypted && (
+          <>
+            <section className="p-4 mt-4 mb-8 bg-white rounded-lg shadow-[0px_2px_2px_hsl(0_0%_50%_/_0.333),0px_4px_4px_hsl(0_0%_50%_/_0.333),0px_6px_6px_hsl(0_0%_50%_/_0.333)]">
+              <h3 className="m-0 mb-[5px]">Anonymization Mixnet</h3>
+              <p className="mt-0 text-[13px] italic opacity-70">
+                This animation illustrates how the encrypted votes were anonymized by the Election&apos;s Privacy
+                Protectors before being unlocked.
+              </p>
+              <Animation observers={range(1, 6).map((i) => `Privacy Protector #${i}`)} />
+            </section>
+
+            <section className="p-4 mb-8 bg-white rounded-lg shadow-[0px_2px_2px_hsl(0_0%_50%_/_0.333),0px_4px_4px_hsl(0_0%_50%_/_0.333),0px_6px_6px_hsl(0_0%_50%_/_0.333)]">
+              <h3 className="mt-0 mb-1">All Submitted Votes</h3>
+              <p className="mt-0 text-sm italic opacity-70">
+                Ordered oldest to newest. These are the encrypted votes submitted by each authenticated voter.
+              </p>
+              <HowSubmittedVotesWork />
+              <table className="block pb-2.5 mt-8 overflow-auto border-collapse [&_tr>*]:[border:1px_solid_#ccc] [&_tr>*]:px-2.5 [&_tr>*]:py-[3px] [&_tr>*]:max-w-[227px]">
+                <thead className="text-[11px]">
+                  <tr>
+                    <td rowSpan={2} />
+                    <th rowSpan={2}>auth</th>
+                    {columns.map((c) => (
+                      <th colSpan={2} key={c}>
+                        {c}
+                      </th>
+                    ))}
+                  </tr>
+                  <tr>
+                    {columns.map((c) => (
+                      <Fragment key={c}>
+                        <th>encrypted</th>
+                        <th>lock</th>
+                      </Fragment>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {boardVotes.map((v, index) => (
+                    <tr key={v.auth}>
+                      <td>{index + 1}.</td>
+                      <td>{v.auth}</td>
+                      {columns.map((c) => {
+                        const parts = fakeCipherParts(`${v.auth}:${c}`)
+                        return (
+                          <Fragment key={c}>
+                            <td className="font-mono text-[10px]">{parts.encrypted}</td>
+                            <td className="font-mono text-[10px]">{parts.lock}</td>
+                          </Fragment>
+                        )
+                      })}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </section>
+          </>
+        )}
       </div>
 
-      <div className="flex flex-col gap-2 mt-5 sm:flex-row sm:flex-wrap">
-        <PrimaryButton onClick={onDone}>Finish</PrimaryButton>
-        <SecondaryButton onClick={onAudit}>Auditor view</SecondaryButton>
+      <div className="mt-8 border-t border-black/[0.07] pt-5">
+        <p className="font-mono26 text-[10px] uppercase tracking-[0.14em] text-h26-muted">
+          Explore this step · optional
+        </p>
+        <div className="grid gap-2 mt-3 sm:grid-cols-2">
+          {(
+            [
+              ['count', 'Could the tally be wrong?', 'Anyone can re-add the published votes'],
+              ['yours', 'Was my vote changed or dropped?', 'Match the # from your submitted page'],
+              ['roll', 'Were extra votes stuffed in?', 'Each row ties to a registered token'],
+              ['others', 'Did other voters check?', 'A spot check of the roll'],
+              ['software', 'Do we have to trust the software?', 'The published list is the record'],
+            ] as const
+          ).map(([id, title, subtitle]) => {
+            const open = topic === id
+            return (
+              <button
+                aria-expanded={open}
+                className={`rounded-xl border px-4 py-3 text-left transition-colors ${
+                  open
+                    ? 'border-h26-green/40 bg-h26-green/[0.06]'
+                    : 'border-black/10 hover:border-h26-green/30 hover:bg-h26-green/[0.03]'
+                }`}
+                key={id}
+                onClick={() => setTopic(open ? null : id)}
+                type="button"
+              >
+                <span className="block text-[0.82rem] font-medium text-h26-text">{title}</span>
+                <span className="mt-1 block text-[0.72rem] text-h26-textSecondary">{subtitle}</span>
+              </button>
+            )
+          })}
+        </div>
+
+        {topic === 'count' && (
+          <div className="p-4 mt-3 rounded-xl bg-h26-bg">
+            <p className="text-[0.8rem] leading-relaxed text-h26-textSecondary">
+              The totals above are just addition. Every device that opens this page can add the decrypted votes again.
+              A wrong total doesn&apos;t survive that.
+            </p>
+          </div>
+        )}
+        {topic === 'yours' && (
+          <div className="p-4 mt-3 rounded-xl bg-h26-bg">
+            <p className="text-[0.8rem] leading-relaxed text-h26-textSecondary">
+              Go back to Vote Submitted. Your verification # is there, on your device — this page doesn&apos;t look it
+              up for you. Find that same number in the decrypted votes table and see the choices beside it.
+            </p>
+          </div>
+        )}
+        {topic === 'roll' && (
+          <div className="p-4 mt-3 rounded-xl bg-h26-bg">
+            <p className="text-[0.8rem] leading-relaxed text-h26-textSecondary">
+              {boardVotes.length} submissions, each accepted against one registered auth token. A stuffed ballot would
+              need a token that was never issued.
+            </p>
+          </div>
+        )}
+        {topic === 'others' && (
+          <div className="p-4 mt-3 rounded-xl bg-h26-bg">
+            <p className="text-[0.8rem] leading-relaxed text-h26-textSecondary">
+              Sampled 2 of {OTHER_VOTERS.length + 1} voters from the roll — both confirmed they cast (scripted for
+              demo). Anyone else can do the same check you can.
+            </p>
+          </div>
+        )}
+        {topic === 'software' && (
+          <div className="p-4 mt-3 rounded-xl bg-h26-bg">
+            <p className="text-[0.8rem] leading-relaxed text-h26-textSecondary">
+              The published list is the record. You check it yourself. The computers aren&apos;t the ground truth.
+            </p>
+          </div>
+        )}
       </div>
+
+      <PrimaryButton className="mt-6" onClick={onDone}>
+        Finish
+      </PrimaryButton>
     </div>
   )
 }

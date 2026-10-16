@@ -97,9 +97,9 @@ export const STEP_META: Record<DemoStep, { blurb: string; title: string; unlocks
     unlocks: ['privacy', 'ground-truth'],
   },
   verify: {
-    blurb: 'Search the unlocked list for your Verification #. Computers aren’t the ground truth — you are.',
-    title: 'Find your vote',
-    unlocks: ['ground-truth', 'open'],
+    blurb: 'Results are published. This is the appeal period: check the tally, your own vote, and the roll.',
+    title: 'Results',
+    unlocks: ['ground-truth', 'open', 'stuffing'],
   },
   vote: {
     blurb: '',
