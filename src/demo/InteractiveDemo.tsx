@@ -1363,6 +1363,14 @@ function NeedVote({ label, onStart }: { label?: string; onStart: () => void }) {
   )
 }
 
+function pathIndex(step: DemoStep): number {
+  if (step === 'intro') return -1
+  if (step === 'invite') return 0
+  if (step === 'vote') return 1
+  if (step === 'done') return 3
+  return 2
+}
+
 function PrimaryButton({
   children,
   className = '',
@@ -2019,14 +2027,6 @@ function Verify({
       </div>
     </div>
   )
-}
-
-function pathIndex(step: DemoStep): number {
-  if (step === 'intro') return -1
-  if (step === 'invite') return 0
-  if (step === 'vote') return 1
-  if (step === 'done') return 3
-  return 2
 }
 
 function visit(prev: DemoState, step: DemoStep): DemoState {
