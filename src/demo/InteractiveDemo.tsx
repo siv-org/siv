@@ -833,7 +833,7 @@ function ExpandableHex({ expanded, onToggle, value }: { expanded: boolean; onTog
   const short = `${value.slice(0, 12)}…`
   return (
     <button
-      className="max-w-full break-all text-left font-mono26 text-[0.7rem] text-h26-textSecondary underline-offset-2 hover:text-h26-text hover:underline"
+      className="block max-w-full whitespace-normal break-all text-left font-mono26 text-[0.7rem] text-h26-textSecondary underline-offset-2 hover:text-h26-text hover:underline"
       onClick={onToggle}
       title={expanded ? 'Click to truncate' : 'Click to show full'}
       type="button"
@@ -1404,6 +1404,7 @@ function PublicBoardTable({
 }: {
   votes: { auth: string; encrypted: string; lock: string; name: string; yours: boolean }[]
 }) {
+  const [openHex, setOpenHex] = useState<null | string>(null)
   // Mirrors src/status/AcceptedVotes columns; demo-green highlight for yours
   return (
     <div className="mt-4 overflow-x-auto rounded-xl border border-black/[0.07]">
@@ -1431,12 +1432,18 @@ function PublicBoardTable({
                 {v.auth}
                 {v.yours ? <span className="ml-1.5 text-[0.68rem] font-medium text-h26-green">← you</span> : null}
               </td>
-              <td className="max-w-[140px] truncate px-3 py-2 font-mono26 text-[0.65rem] text-h26-textSecondary" title={v.encrypted}>
-                {v.encrypted.slice(0, 16)}…
-              </td>
-              <td className="max-w-[140px] truncate px-3 py-2 font-mono26 text-[0.65rem] text-h26-textSecondary" title={v.lock}>
-                {v.lock.slice(0, 16)}…
-              </td>
+              {(['encrypted', 'lock'] as const).map((kind) => {
+                const id = `${v.auth}:${kind}`
+                return (
+                  <td className="max-w-[180px] px-3 py-2 align-top" key={id}>
+                    <ExpandableHex
+                      expanded={openHex === id}
+                      onToggle={() => setOpenHex(openHex === id ? null : id)}
+                      value={v[kind]}
+                    />
+                  </td>
+                )
+              })}
             </tr>
           ))}
         </tbody>
@@ -1969,6 +1976,7 @@ function Verify({
 }) {
   const [topic, setTopic] = useState<null | string>(null)
   const [showEncrypted, setShowEncrypted] = useState(false)
+  const [openHex, setOpenHex] = useState<null | string>(null)
   const design = ballotDesignFor('approval')
   const votes = unlocked.map((v) => {
     const row: Record<string, string> = { tracking: v.verification }
@@ -2086,10 +2094,22 @@ function Verify({
                       <td>{v.auth}</td>
                       {columns.map((c) => {
                         const parts = fakeCipherParts(`${v.auth}:${c}`)
+                        const cell = (kind: 'encrypted' | 'lock', value: string) => {
+                          const id = `${v.auth}:${c}:${kind}`
+                          return (
+                            <td className="align-top" key={id}>
+                              <ExpandableHex
+                                expanded={openHex === id}
+                                onToggle={() => setOpenHex(openHex === id ? null : id)}
+                                value={value}
+                              />
+                            </td>
+                          )
+                        }
                         return (
                           <Fragment key={c}>
-                            <td className="font-mono text-[10px]">{parts.encrypted}</td>
-                            <td className="font-mono text-[10px]">{parts.lock}</td>
+                            {cell('encrypted', parts.encrypted)}
+                            {cell('lock', parts.lock)}
                           </Fragment>
                         )
                       })}
