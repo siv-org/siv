@@ -74,8 +74,9 @@ export function markComplete(prev: DemoState, ids: string[] = []): DemoState {
 export function pathIndex(step: DemoStep): number {
   if (step === 'intro') return -1
   if (step === 'invite') return 0
-  if (step === 'coercion' || step === 'malware' || step === 'strengthen' || step === 'submit' || step === 'vote')
-    return 1
+  if (step === 'vote') return 1
+  // Submitted, but results aren't open yet — past vote, not yet on verify
+  if (step === 'coercion' || step === 'malware' || step === 'strengthen' || step === 'submit') return 1.5
   if (step === 'done') return 3
   return 2
 }

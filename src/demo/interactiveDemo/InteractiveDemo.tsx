@@ -1,3 +1,4 @@
+import { Play, RotateCcw } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { NoSsr } from 'src/_shared/NoSsr'
 import { generateAuthToken } from 'src/crypto/generate-auth-tokens'
@@ -125,10 +126,13 @@ export function InteractiveDemo() {
     })
   }
 
-  const pathSteps: [DemoStep, string][] = [
-    ['invite', 'Receive invite'],
-    ['vote', 'Vote'],
-    ['verify', 'Verify results'],
+  const at = pathIndex(s.step)
+  const rail: { label: string; mark?: 'play' | 'restart'; n?: number; onClick: () => void }[] = [
+    { label: 'Start demo', mark: 'play', onClick: () => setS((prev) => visit(prev, 'intro')) },
+    { label: 'Receive invite', n: 1, onClick: () => setS((prev) => visit(prev, 'invite')) },
+    { label: 'Vote', n: 2, onClick: () => setS((prev) => visit(prev, 'vote')) },
+    { label: 'Verify results', n: 3, onClick: runUnlock },
+    { label: 'Restart', mark: 'restart', onClick: restart },
   ]
 
   const jumpToProperty = (id: string) => {
@@ -147,51 +151,69 @@ export function InteractiveDemo() {
   return (
     <NoSsr>
       <div className="demo">
-        {/* Path + restart — timeline of the voter flow */}
-        <div className="flex gap-3 items-center mb-5 sm:mb-6">
-          <ol className="flex flex-1 items-center min-w-0">
-            {pathSteps.map(([id, label], i) => {
-              const at = pathIndex(s.step)
-              const current = at === i
-              const done = at > i
-              return (
-                <li className={`flex items-center ${i < pathSteps.length - 1 ? 'flex-1' : 'shrink-0'}`} key={id}>
-                  <button
-                    aria-current={current ? 'step' : undefined}
-                    className={`flex items-center gap-1.5 whitespace-nowrap rounded-full px-2.5 py-1 text-[0.72rem] transition-colors ${
-                      current
-                        ? 'border border-h26-green font-medium text-h26-green'
-                        : `border border-transparent hover:bg-h26-green/[0.06] hover:text-h26-green ${done ? 'text-h26-green' : 'text-h26-textSecondary'}`
+        {/* Path — start and restart bookend steps 1–3 */}
+        <ol className="mb-8 flex w-full">
+          {rail.map(({ label, mark, n, onClick }, i) => {
+            const slot = (n ?? 1) - 1
+            const done = !mark && at > slot
+            const current = !mark && at === slot
+            return (
+              <li className="relative flex min-w-0 flex-1 flex-col items-center" key={label}>
+                {i < rail.length - 1 && (
+                  <span
+                    aria-hidden
+                    className={`absolute left-1/2 top-[13.5px] h-px w-full ${
+                      at >= i ? 'bg-h26-green/60' : 'bg-black/10'
                     }`}
-                    onClick={() => (id === 'verify' ? runUnlock() : setS((prev) => visit(prev, id)))}
-                    type="button"
+                  />
+                )}
+                <button
+                  aria-current={current || (i === 0 && s.step === 'intro') ? 'step' : undefined}
+                  className="relative z-10 flex w-full flex-col items-center gap-2 bg-transparent px-0.5"
+                  onClick={onClick}
+                  type="button"
+                >
+                  <span
+                    className={`box-border flex size-7 items-center justify-center rounded-full ${
+                      done
+                        ? 'bg-h26-green text-white'
+                        : current
+                        ? 'border-2 border-h26-green bg-h26-bg'
+                        : 'border border-black/15 bg-h26-bg'
+                    }`}
                   >
-                    <span
-                      className={`size-2 shrink-0 rounded-full ${
-                        current
-                          ? 'border border-h26-green bg-white'
-                          : done
-                            ? 'bg-h26-green'
-                            : 'border border-black/20 bg-white'
-                      }`}
-                    />
+                    {mark === 'play' ? (
+                      <Play aria-hidden className="ml-px size-3 text-black/45" strokeWidth={2.25} />
+                    ) : mark === 'restart' ? (
+                      <RotateCcw aria-hidden className="size-3.5 text-black/45" strokeWidth={2} />
+                    ) : (
+                      <span
+                        className={`text-[0.7rem] font-medium ${
+                          done ? 'text-white' : current ? 'text-h26-green' : 'text-black/35'
+                        }`}
+                      >
+                        {n}
+                      </span>
+                    )}
+                  </span>
+                  <span
+                    className={`text-center text-[0.7rem] leading-tight sm:text-[0.8rem] ${
+                      mark
+                        ? 'text-h26-muted'
+                        : current
+                        ? 'font-medium text-h26-text'
+                        : done
+                        ? 'text-h26-text'
+                        : 'text-h26-muted'
+                    }`}
+                  >
                     {label}
-                  </button>
-                  {i < pathSteps.length - 1 && (
-                    <span className={`mx-1.5 h-px min-w-[10px] flex-1 ${done ? 'bg-h26-green/40' : 'bg-black/10'}`} />
-                  )}
-                </li>
-              )
-            })}
-          </ol>
-          <button
-            className="shrink-0 whitespace-nowrap text-[0.75rem] text-h26-muted underline-offset-2 hover:text-h26-text hover:underline"
-            onClick={restart}
-            type="button"
-          >
-            Restart
-          </button>
-        </div>
+                  </span>
+                </button>
+              </li>
+            )
+          })}
+        </ol>
 
         <div className="grid gap-6 lg:grid-cols-[220px_1fr] lg:gap-8">
           {/* Main stage first on phone */}
