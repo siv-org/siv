@@ -807,15 +807,7 @@ function Done({ completed, onRestart }: { completed: Set<string>; onRestart: () 
   )
 }
 
-function ExpandableHex({
-  expanded,
-  onToggle,
-  value,
-}: {
-  expanded: boolean
-  onToggle: () => void
-  value: string
-}) {
+function ExpandableHex({ expanded, onToggle, value }: { expanded: boolean; onToggle: () => void; value: string }) {
   const short = `${value.slice(0, 12)}…`
   return (
     <button
@@ -1539,7 +1531,7 @@ function Submit({
       <div className="mt-6">
         <p className="font-mono26 text-[10px] uppercase tracking-[0.14em] text-h26-muted">How to verify</p>
         <p className="mt-2 text-[0.9rem] leading-relaxed text-h26-textSecondary">
-          Once the election closes and votes are unlocked, find yours on the Election Status page using its{' '}
+          Once the election closes and votes are published, find your vote on the Election Status page using its{' '}
           <em>Verification #</em>:
         </p>
 
@@ -1568,7 +1560,7 @@ function Submit({
 
       <div className="mt-6 rounded-xl border border-black/[0.07] bg-h26-bg/60 px-4 py-4">
         <button
-          className="flex w-full items-center justify-between gap-3 text-left"
+          className="flex gap-3 justify-between items-center w-full text-left"
           onClick={() => setMalwareOpen((v) => !v)}
           type="button"
         >
@@ -1583,7 +1575,7 @@ function Submit({
           <span className="font-mono26 text-[0.75rem] text-h26-muted">{malwareOpen ? '−' : '+'}</span>
         </button>
         {malwareOpen && (
-          <div className="mt-3 grid gap-2 sm:grid-cols-2">
+          <div className="grid gap-2 mt-3 sm:grid-cols-2">
             <button
               className="flex items-center gap-2.5 rounded-xl border border-black/10 bg-white px-4 py-3 text-left transition-colors hover:border-h26-green/40 hover:bg-h26-green/[0.04]"
               onClick={onMalware}
@@ -1660,7 +1652,7 @@ function Submit({
         </button>
 
         {showEncryptionDetails && (
-          <div className="mt-3 space-y-3 rounded-xl bg-h26-bg px-4 py-4">
+          <div className="px-4 py-4 mt-3 space-y-3 rounded-xl bg-h26-bg">
             <Row label="Election" value="City Mayoral Election" />
             <Row label="Auth token" mono value={auth} />
             <Row emphasize label="Verification #" mono value={verification} />
