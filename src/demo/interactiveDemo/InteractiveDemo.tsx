@@ -6,7 +6,7 @@ import { strengthenTracking } from 'src/vote/strengthen-tracking'
 import { generateTrackingNum } from 'src/vote/tracking-num'
 
 import { CANDIDATES, DemoStep, OTHER_VOTERS, POSTER_PROPERTIES, STEP_META } from './content'
-import { back, DemoState, forward, go, initState, markComplete, pathIndex, UnlockedVote, visit } from './demoState'
+import { achievedIds, back, DemoState, forward, go, initState, markComplete, pathIndex, UnlockedVote, visit } from './demoState'
 import { fakeCipher, fakeCipherParts } from './shared/ciphertext'
 import { joinChoices, splitChoices } from './shared/formatChoice'
 import { NeedVote } from './shared/NeedVote'
@@ -127,6 +127,7 @@ export function InteractiveDemo() {
   }
 
   const at = pathIndex(s.step)
+  const achieved = new Set(achievedIds(s.step, s.history))
   const rail: { label: string; mark?: 'play' | 'restart'; n?: number; onClick: () => void }[] = [
     { label: 'Start demo', mark: 'play', onClick: () => setS((prev) => visit(prev, 'intro')) },
     { label: 'Receive invite', n: 1, onClick: () => setS((prev) => visit(prev, 'invite')) },
@@ -141,7 +142,7 @@ export function InteractiveDemo() {
       'ground-truth': s.unlocked.length ? 'verify' : 'unlock',
       malware: 'malware',
       open: s.unlocked.length ? 'audit' : 'submit',
-      privacy: 'vote',
+      privacy: s.unlocked.length ? 'unlock' : 'submit',
       stuffing: s.unlocked.length ? 'audit' : 'invite',
     }
     const step = jump[id]
@@ -398,7 +399,7 @@ export function InteractiveDemo() {
             </p>
             <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-1">
               {POSTER_PROPERTIES.map((p) => {
-                const done = s.completed.has(p.id)
+                const done = achieved.has(p.id)
                 return (
                   <li key={p.id}>
                     <button

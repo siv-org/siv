@@ -11,11 +11,12 @@ export type PosterProperty = {
   short: string
 }
 
+// Order is the walkthrough: invite, then submit, then unlock, then the optional defenses
 export const POSTER_PROPERTIES: PosterProperty[] = [
   {
-    id: 'malware',
-    label: "Malware can't secretly change votes",
-    short: 'Second-device check + updateable verification #',
+    id: 'stuffing',
+    label: 'Duplicate voting & ballot stuffing',
+    short: 'One auth token → one accepted ciphertext',
   },
   {
     id: 'privacy',
@@ -23,14 +24,9 @@ export const POSTER_PROPERTIES: PosterProperty[] = [
     short: 'Encrypted votes; mixnet breaks identity↔content link',
   },
   {
-    id: 'stuffing',
-    label: 'Duplicate voting & ballot stuffing',
-    short: 'One auth token → one accepted ciphertext',
-  },
-  {
-    id: 'coercion',
-    label: 'Coercion & vote selling',
-    short: 'Verifiable Private Overrides',
+    id: 'open',
+    label: 'Closed systems requiring blind trust',
+    short: 'Public board + anyone can re-tally',
   },
   {
     id: 'ground-truth',
@@ -38,9 +34,14 @@ export const POSTER_PROPERTIES: PosterProperty[] = [
     short: 'Find your verification # in the unlocked tally',
   },
   {
-    id: 'open',
-    label: 'Closed systems requiring blind trust',
-    short: 'Public board + anyone can re-tally',
+    id: 'malware',
+    label: "Malware can't secretly change votes",
+    short: 'Second-device check + updateable verification #',
+  },
+  {
+    id: 'coercion',
+    label: 'Coercion & vote selling',
+    short: 'Verifiable Private Overrides',
   },
 ]
 
@@ -70,6 +71,7 @@ export const STEP_META: Record<DemoStep, { blurb: string; title: string; unlocks
   coercion: {
     blurb: 'Appear to comply with a buyer, then privately override at a polling station.',
     title: 'Anti-coercion: private override',
+    unlocks: ['coercion'],
   },
   done: {
     blurb: 'You’ve walked the happy path and the hardcore defenses.',
@@ -87,10 +89,12 @@ export const STEP_META: Record<DemoStep, { blurb: string; title: string; unlocks
   malware: {
     blurb: 'A second device independently decrypts what was sealed. Malware on Device 1 can’t fake Device 2.',
     title: 'Anti-malware: double-device check',
+    unlocks: ['malware'],
   },
   strengthen: {
     blurb: 'Update the last digits of your Verification # after casting — stale screenshots stop matching.',
     title: 'Update your Verification #',
+    unlocks: ['malware'],
   },
   submit: {
     blurb: 'Your device keeps the Verification # and a sealed receipt of what left.',
