@@ -4,7 +4,7 @@ import { Footer } from '../homepage2026/Footer'
 import { Nav } from '../homepage2026/Nav'
 import { TailwindPreflight } from '../TailwindPreflight'
 import { useAnalytics } from '../useAnalytics'
-import { InteractiveDemo } from './InteractiveDemo'
+import { InteractiveDemo } from './interactiveDemo/InteractiveDemo'
 
 export const DemoPage = (): JSX.Element => {
   useAnalytics()
