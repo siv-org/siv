@@ -170,16 +170,9 @@ export function InteractiveDemo() {
   }
 
   const pathSteps: [DemoStep, string][] = [
-    ['intro', 'Start'],
-    ['invite', 'Invite'],
+    ['invite', 'Receive invite'],
     ['vote', 'Vote'],
-    ['submit', 'Submitted'],
-    ['malware', 'Malware'],
-    ['strengthen', 'Strengthen #'],
-    ['coercion', 'Override'],
-    ['unlock', 'Unlock'],
-    ['verify', 'Verify'],
-    ['audit', 'Audit'],
+    ['submit', 'Verify results'],
   ]
 
   const jumpToProperty = (id: string) => {
@@ -198,27 +191,43 @@ export function InteractiveDemo() {
   return (
     <NoSsr>
       <div className="demo">
-        {/* Path + restart — full width above both columns */}
+        {/* Path + restart — timeline of the voter flow */}
         <div className="flex gap-3 items-center mb-5 sm:mb-6">
-          <div className="overflow-x-auto flex-1 px-1 -mx-1 min-w-0">
-            <ol className="flex w-max gap-1.5">
-              {pathSteps.map(([id, label]) => (
-                <li key={id}>
+          <ol className="flex flex-1 items-center min-w-0">
+            {pathSteps.map(([id, label], i) => {
+              const at = pathIndex(s.step)
+              const current = at === i
+              const done = at > i
+              return (
+                <li className={`flex items-center ${i < pathSteps.length - 1 ? 'flex-1' : 'shrink-0'}`} key={id}>
                   <button
-                    className={`whitespace-nowrap rounded-full px-3 py-1.5 text-[0.72rem] transition-colors ${
-                      s.step === id
-                        ? 'bg-h26-green/15 font-medium text-h26-green'
-                        : 'bg-black/[0.04] text-h26-textSecondary hover:bg-black/[0.07] hover:text-h26-text'
+                    aria-current={current ? 'step' : undefined}
+                    className={`flex items-center gap-1.5 whitespace-nowrap rounded-full px-2.5 py-1 text-[0.72rem] transition-colors ${
+                      current
+                        ? 'border border-h26-green font-medium text-h26-green'
+                        : `border border-transparent hover:bg-h26-green/[0.06] hover:text-h26-green ${done ? 'text-h26-green' : 'text-h26-textSecondary'}`
                     }`}
                     onClick={() => setS((prev) => visit(prev, id))}
                     type="button"
                   >
+                    <span
+                      className={`size-2 shrink-0 rounded-full ${
+                        current
+                          ? 'border border-h26-green bg-white'
+                          : done
+                            ? 'bg-h26-green'
+                            : 'border border-black/20 bg-white'
+                      }`}
+                    />
                     {label}
                   </button>
+                  {i < pathSteps.length - 1 && (
+                    <span className={`mx-1.5 h-px min-w-[10px] flex-1 ${done ? 'bg-h26-green/40' : 'bg-black/10'}`} />
+                  )}
                 </li>
-              ))}
-            </ol>
-          </div>
+              )
+            })}
+          </ol>
           <button
             className="shrink-0 whitespace-nowrap text-[0.75rem] text-h26-muted underline-offset-2 hover:text-h26-text hover:underline"
             onClick={restart}
@@ -2010,6 +2019,14 @@ function Verify({
       </div>
     </div>
   )
+}
+
+function pathIndex(step: DemoStep): number {
+  if (step === 'intro') return -1
+  if (step === 'invite') return 0
+  if (step === 'vote') return 1
+  if (step === 'done') return 3
+  return 2
 }
 
 function visit(prev: DemoState, step: DemoStep): DemoState {
