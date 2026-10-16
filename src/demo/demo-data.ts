@@ -8,7 +8,7 @@ export type PosterProperty = {
 export const POSTER_PROPERTIES: PosterProperty[] = [
   {
     id: 'malware',
-    label: 'Malware on voter devices',
+    label: "Malware can't secretly change votes",
     short: 'Second-device check + updateable verification #',
   },
   {
