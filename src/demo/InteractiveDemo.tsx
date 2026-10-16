@@ -59,6 +59,12 @@ const OTHER_VOTERS = [
   { auth: 'e5f6g7h8', name: 'Green, Elissa' },
   { auth: 'i9j0k1l2', name: 'Hauck, Erik' },
   { auth: 'm3n4o5p6', name: 'Schuster, Brad' },
+  { auth: 'q7r8s9t0', name: 'Chen, Maya' },
+  { auth: 'u1v2w3x4', name: 'Diaz, Luis' },
+  { auth: 'y5z6a7b8', name: 'Nguyen, Kim' },
+  { auth: 'c9d0e1f2', name: 'Patel, Riya' },
+  { auth: 'g3h4i5j6', name: 'Okafor, Tunde' },
+  { auth: 'k7l8m9n0', name: 'Rossi, Elena' },
 ]
 
 export function InteractiveDemo() {
@@ -67,18 +73,21 @@ export function InteractiveDemo() {
   const activeVerification = s.strengthened || s.verification
   const boardVotes = useMemo(() => {
     if (!s.verification || !s.choice) return []
+    const yours = fakeCipherParts(s.verification + s.choice)
     return [
       ...OTHER_VOTERS.map((v) => ({
         auth: v.auth,
         cipher: fakeCipher(v.auth + v.name),
         name: v.name,
         yours: false,
+        ...fakeCipherParts(v.auth + v.name),
       })),
       {
         auth: s.auth || 'you····',
         cipher: fakeCipher(s.verification + s.choice),
         name: 'You',
         yours: true,
+        ...yours,
       },
     ]
   }, [s.auth, s.choice, s.verification])
@@ -1345,6 +1354,52 @@ function NeedVote({ label, onStart }: { label?: string; onStart: () => void }) {
   )
 }
 
+function PublicBoardTable({
+  votes,
+}: {
+  votes: { auth: string; encrypted: string; lock: string; name: string; yours: boolean }[]
+}) {
+  // Mirrors src/status/AcceptedVotes columns; demo-green highlight for yours
+  return (
+    <div className="mt-4 overflow-x-auto rounded-xl border border-black/[0.07]">
+      <table className="w-full min-w-[520px] border-collapse text-left text-[0.78rem]">
+        <thead className="bg-black/[0.03] text-h26-muted">
+          <tr>
+            <th className="px-3 py-2 font-medium" rowSpan={2} />
+            <th className="px-3 py-2 font-medium" rowSpan={2}>
+              auth
+            </th>
+            <th className="px-3 py-2 text-center font-medium" colSpan={2}>
+              mayor
+            </th>
+          </tr>
+          <tr>
+            <th className="px-3 py-1.5 font-medium">encrypted</th>
+            <th className="px-3 py-1.5 font-medium">lock</th>
+          </tr>
+        </thead>
+        <tbody>
+          {votes.map((v, i) => (
+            <tr className={v.yours ? 'bg-h26-green/[0.1]' : ''} key={v.auth}>
+              <td className="px-3 py-2 text-h26-muted">{i + 1}.</td>
+              <td className="px-3 py-2 font-mono26">
+                {v.auth}
+                {v.yours ? <span className="ml-1.5 text-[0.68rem] font-medium text-h26-green">← you</span> : null}
+              </td>
+              <td className="max-w-[140px] truncate px-3 py-2 font-mono26 text-[0.65rem] text-h26-textSecondary" title={v.encrypted}>
+                {v.encrypted.slice(0, 16)}…
+              </td>
+              <td className="max-w-[140px] truncate px-3 py-2 font-mono26 text-[0.65rem] text-h26-textSecondary" title={v.lock}>
+                {v.lock.slice(0, 16)}…
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
 function PrimaryButton({
   children,
   className = '',
@@ -1492,7 +1547,7 @@ function Submit({
   verification,
 }: {
   auth: string
-  boardVotes: { auth: string; cipher: string; name: string; yours: boolean }[]
+  boardVotes: { auth: string; cipher: string; encrypted: string; lock: string; name: string; yours: boolean }[]
   choice: string
   onAudit: () => void
   onCoercion: () => void
@@ -1503,6 +1558,7 @@ function Submit({
 }) {
   const [topic, setTopic] = useState<'board' | 'lose' | 'swap' | 'verification' | null>(null)
   const [swapPhase, setSwapPhase] = useState<'caught' | 'idle' | 'infected'>('idle')
+  const [showStatus, setShowStatus] = useState(false)
   const [malwareOpen, setMalwareOpen] = useState(false)
   const [showEncryptionDetails, setShowEncryptionDetails] = useState(false)
   const [expandedHex, setExpandedHex] = useState<'encrypted' | 'lock' | null>(null)
@@ -1522,11 +1578,25 @@ function Submit({
 
       <button
         className="mt-4 inline-flex items-center gap-1.5 text-[0.85rem] font-medium text-h26-green underline-offset-2 hover:underline"
-        onClick={() => setTopic(topic === 'board' ? null : 'board')}
+        onClick={() => setShowStatus((v) => !v)}
         type="button"
       >
-        Election Status page →
+        {showStatus ? 'Hide' : 'See'} Election Status page →
       </button>
+
+      {showStatus && (
+        <div className="mt-4 rounded-xl border border-black/[0.07] bg-white px-4 py-5 shadow-[0_0_0_1px_rgba(0,0,0,0.03)] sm:px-5">
+          <p className="font-mono26 text-[10px] uppercase tracking-[0.14em] text-h26-muted">Election Status</p>
+          <h3 className="mt-1 text-[1.05rem] font-medium text-h26-text">All Submitted Votes</h3>
+          <p className="mt-1 text-[0.8rem] italic text-h26-textSecondary">
+            Ordered oldest to newest. When the election closes, these votes will be shuffled and then unlocked.
+          </p>
+          <p className="mt-2 text-[0.75rem] text-h26-muted">
+            {boardVotes.length} encrypted submissions · yours highlighted
+          </p>
+          <PublicBoardTable votes={boardVotes} />
+        </div>
+      )}
 
       <div className="mt-6">
         <p className="font-mono26 text-[10px] uppercase tracking-[0.14em] text-h26-muted">How to verify</p>
@@ -1804,29 +1874,16 @@ function Submit({
         {topic === 'board' && (
           <div className="p-4 mt-3 rounded-xl bg-h26-bg">
             <p className="mb-3 text-[0.8rem] leading-relaxed text-h26-textSecondary">
-              Anyone can see accepted submissions: auth token + ciphertext. Choices stay sealed until shuffle & unlock.
+              Same public board as Election Status: auth + encrypted + lock. Choices stay sealed until shuffle & unlock.
             </p>
-            <div className="overflow-x-auto bg-white rounded-xl border border-black/8">
-              <table className="w-full min-w-[480px] text-left text-[0.78rem]">
-                <thead className="bg-black/[0.03] text-h26-muted">
-                  <tr>
-                    <th className="px-3 py-2 font-medium">Voter / Auth</th>
-                    <th className="px-3 py-2 font-medium">Encrypted vote</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {boardVotes.map((v) => (
-                    <tr className={v.yours ? 'bg-h26-green/[0.07]' : ''} key={v.auth}>
-                      <td className="px-3 py-2">
-                        <div className="font-medium">{v.name}</div>
-                        <div className="font-mono26 text-[0.7rem] opacity-60">{v.auth}</div>
-                      </td>
-                      <td className="px-3 py-2 font-mono26 text-[0.7rem] text-h26-textSecondary">{v.cipher}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            <PublicBoardTable votes={boardVotes} />
+            <button
+              className="mt-3 text-[0.75rem] font-medium text-h26-green underline-offset-2 hover:underline"
+              onClick={() => setShowStatus(true)}
+              type="button"
+            >
+              See full Election Status view ↑
+            </button>
           </div>
         )}
 
