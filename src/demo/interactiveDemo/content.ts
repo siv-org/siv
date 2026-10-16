@@ -76,8 +76,8 @@ export const STEP_META: Record<DemoStep, { blurb: string; title: string; unlocks
     title: 'That’s SIV',
   },
   intro: {
-    blurb: 'A sandbox SIV election you can experience as a voter, then optionally attack it.',
-    title: 'Who should be the next mayor?',
+    blurb: 'Experience SIV from multiple perspectives: voter, attacker, auditor, & admin',
+    title: 'How to run a provably free & fair digital election',
   },
   invite: {
     blurb: 'Your election admin sent a one-time Auth Token. Only registered voters get one.',

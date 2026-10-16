@@ -152,13 +152,13 @@ export function InteractiveDemo() {
     <NoSsr>
       <div className="demo">
         {/* Path — start and restart bookend steps 1–3 */}
-        <ol className="mb-8 flex w-full">
+        <ol className="flex mb-8 w-full">
           {rail.map(({ label, mark, n, onClick }, i) => {
             const slot = (n ?? 1) - 1
             const done = !mark && at > slot
             const current = !mark && at === slot
             return (
-              <li className="relative flex min-w-0 flex-1 flex-col items-center" key={label}>
+              <li className="flex relative flex-col flex-1 items-center min-w-0" key={label}>
                 {i < rail.length - 1 && (
                   <span
                     aria-hidden
@@ -176,7 +176,7 @@ export function InteractiveDemo() {
                   <span
                     className={`box-border flex size-7 items-center justify-center rounded-full ${
                       done
-                        ? 'bg-h26-green text-white'
+                        ? 'text-white bg-h26-green'
                         : current
                         ? 'border-2 border-h26-green bg-h26-bg'
                         : 'border border-black/15 bg-h26-bg'
@@ -220,9 +220,15 @@ export function InteractiveDemo() {
           <section className="order-1 min-w-0 lg:order-2">
             <header className="mb-5 sm:mb-6">
               <p className="font-mono26 mb-2 text-[10px] uppercase tracking-[0.16em] text-h26-muted">
-                Interactive demo
+                SIV Interactive Demo
               </p>
-              <h1 className="font-serif26 text-[clamp(1.35rem,5vw,2.1rem)] font-normal tracking-tight text-h26-text">
+              <h1
+                className={`font-serif26 font-normal tracking-tight text-h26-text ${
+                  s.step === 'intro'
+                    ? 'text-[clamp(1.15rem,2.4vw,1.45rem)] leading-snug'
+                    : 'text-[clamp(1.35rem,5vw,2.1rem)]'
+                }`}
+              >
                 {STEP_META[s.step].title}
               </h1>
               <p className="mt-2 max-w-xl text-[0.9rem] leading-relaxed text-h26-textSecondary sm:text-[0.95rem]">
