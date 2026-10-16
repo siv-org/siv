@@ -420,7 +420,7 @@ export function InteractiveDemo() {
           {/* Poster legend — below on phone, sidebar on desktop */}
           <aside className="order-2 lg:order-1 lg:sticky lg:top-6 lg:self-start">
             <p className="font-mono26 mb-3 text-[10px] uppercase tracking-[0.16em] text-h26-muted">
-              Advanced properties
+              Achieved properties
             </p>
             <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-1">
               {POSTER_PROPERTIES.map((p) => {
