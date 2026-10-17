@@ -135,16 +135,16 @@ export const DEMO_BALLOT_OPTIONS = CANDIDATES.map((name) => ({ name }))
 export const DEMO_BUDGET_OPTIONS = ['Proposal A', 'Proposal B', 'Proposal C', 'Proposal D'].map((name) => ({ name }))
 
 export const OTHER_VOTERS = [
-  { auth: 'a1b2c3d4', name: 'Barton, Adam' },
-  { auth: 'e5f6g7h8', name: 'Green, Elissa' },
-  { auth: 'i9j0k1l2', name: 'Hauck, Erik' },
-  { auth: 'm3n4o5p6', name: 'Schuster, Brad' },
-  { auth: 'q7r8s9t0', name: 'Chen, Maya' },
-  { auth: 'u1v2w3x4', name: 'Diaz, Luis' },
-  { auth: 'y5z6a7b8', name: 'Nguyen, Kim' },
-  { auth: 'c9d0e1f2', name: 'Patel, Riya' },
-  { auth: 'g3h4i5j6', name: 'Okafor, Tunde' },
-  { auth: 'k7l8m9n0', name: 'Rossi, Elena' },
+  { auth: 'a1b2c3d4e5', name: 'Barton, Adam' },
+  { auth: 'e5f6071829', name: 'Green, Elissa' },
+  { auth: '1901a1b2c3', name: 'Hauck, Erik' },
+  { auth: '3d4e5f6071', name: 'Schuster, Brad' },
+  { auth: '7a8b9c0d1e', name: 'Chen, Maya' },
+  { auth: '1f2a3b4c5d', name: 'Diaz, Luis' },
+  { auth: '6e7f8091a2', name: 'Nguyen, Kim' },
+  { auth: 'b3c4d5e6f7', name: 'Patel, Riya' },
+  { auth: '2031a2b3c4', name: 'Okafor, Tunde' },
+  { auth: '5d6e7f8091', name: 'Rossi, Elena' },
 ]
 
 export function ballotDesignFor(method: BallotMethod): BallotItem {

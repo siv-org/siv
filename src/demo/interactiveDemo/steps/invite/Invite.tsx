@@ -10,7 +10,7 @@ export function Invite({ auth, onContinue }: { auth: string; onContinue: () => v
   const [attack, setAttack] = useState<'lost' | 'used' | null>(null)
   const [layers, setLayers] = useState(() => new Set<string>())
   const [remediated, setRemediated] = useState(false)
-  const [replacementAuth] = useState(() => generateAuthToken().slice(0, 8))
+  const [replacementAuth] = useState(() => generateAuthToken())
   const [stuffing, setStuffing] = useState<'guess' | 'reuse' | 'roll' | null>(null)
   const [topic, setTopic] = useState<'attack' | 'delivery' | 'layers' | 'stuffing' | 'token' | null>(null)
   const authLayers = [

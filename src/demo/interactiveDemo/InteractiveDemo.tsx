@@ -69,7 +69,7 @@ export function InteractiveDemo() {
       go(
         {
           ...initState(),
-          auth: generateAuthToken().slice(0, 8),
+          auth: generateAuthToken(),
           completed: new Set(),
         },
         'invite',
