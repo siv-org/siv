@@ -73,17 +73,17 @@ export function markComplete(prev: DemoState, ids: string[] = []): DemoState {
 
 // Where the step sits in the walkthrough. Branches share a spot after submit.
 const FLOW_AT: Record<DemoStep, number> = {
+  audit: 5,
+  coercion: 3.5,
+  done: 6,
   intro: 0,
   invite: 1,
-  vote: 2,
-  submit: 3,
-  coercion: 3.5,
   malware: 3.5,
   strengthen: 3.5,
+  submit: 3,
   unlock: 4,
-  audit: 5,
   verify: 5,
-  done: 6,
+  vote: 2,
 }
 
 // Checks from this step and any earlier step still behind you. Going back drops the one you left.
