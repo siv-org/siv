@@ -11,7 +11,7 @@ export function Intro({ onStart }: { onStart: () => void }) {
         check the outcome, and verify their own vote was correctly tallied.
       </p>
       <p className="mt-4 text-[0.95rem] leading-relaxed text-h26-textSecondary">
-        Behind that simplicity are safeguards against malware secretly changing votes, coercion or vote selling, with
+        Behind that simplicity are safeguards against malware secretly changing votes, coercion or vote selling, and
         results that can be independently audited.
       </p>
       <p className="mt-4 text-[0.95rem] leading-relaxed text-h26-textSecondary">
