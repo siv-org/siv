@@ -82,7 +82,7 @@ export const STEP_META: Record<DemoStep, { blurb: string; title: string; unlocks
     title: 'How to run a provably free & fair digital election',
   },
   invite: {
-    blurb: 'Your election admin sent a one-time Auth Token. Only registered voters get one.',
+    blurb: 'Your election admin sent a one-time Auth Token. Each registered voter gets one.',
     title: 'Invitation',
     unlocks: ['stuffing'],
   },
