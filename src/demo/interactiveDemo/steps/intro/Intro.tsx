@@ -11,12 +11,12 @@ export function Intro({ onStart }: { onStart: () => void }) {
         check the outcome, and verify their own vote was correctly tallied.
       </p>
       <p className="mt-4 text-[0.95rem] leading-relaxed text-h26-textSecondary">
-        Behind that simplicity are safeguards against malware secretly changing votes, coercion or vote selling, and
-        results that can be independently audited.
+        Behind that simplicity are strong safeguards: protection against malware secretly changing votes, defenses
+        against coercion and vote selling, and results that can be independently audit.
       </p>
       <p className="mt-4 text-[0.95rem] leading-relaxed text-h26-textSecondary">
-        We design for the strongest adversaries, without requiring trust in technology providers, election officials, or
-        SIV itself.
+        The SIV Protocol is designed to withstand the strongest adversaries, without requiring anyone to trust the
+        technology providers (including us), election officials, or the servers running the vote.
       </p>
       {/* <ul className="mt-5 space-y-2 text-[0.9rem] text-h26-textSecondary">
         <li>· This is a simulated sandbox — no real election / no login</li>
