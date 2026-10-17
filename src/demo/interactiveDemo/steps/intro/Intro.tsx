@@ -1,21 +1,18 @@
-import { BadgeCheck, LockKeyhole, UserCheck } from 'lucide-react'
+import { LockKeyhole, UserCheck, Vote } from 'lucide-react'
 
 import { PrimaryButton } from '../../shared/PrimaryButton'
 
 const PILLARS = [
   { icon: UserCheck, label: 'One Person, One Vote' },
   { icon: LockKeyhole, label: 'Private Voting' },
-  { icon: BadgeCheck, label: 'Verifiable Results' },
+  { icon: Vote, label: 'Verifiable Results' },
 ]
 
 export function Intro({ onStart }: { onStart: () => void }) {
   return (
     <div>
       <section aria-labelledby="election-pillars">
-        <p
-          className="font-mono26 text-[10px] uppercase tracking-[0.14em] text-h26-muted"
-          id="election-pillars"
-        >
+        <p className="font-mono26 text-[10px] uppercase tracking-[0.14em] text-h26-muted" id="election-pillars">
           Pillars of a secure election
         </p>
         <ol className="mt-3 grid grid-cols-3 divide-x divide-black/[0.07] overflow-hidden rounded-xl border border-black/[0.07] bg-h26-bg">
@@ -29,10 +26,8 @@ export function Intro({ onStart }: { onStart: () => void }) {
           ))}
         </ol>
       </section>
-      <p className="mt-6 text-[0.95rem] font-medium leading-relaxed text-h26-text">
-        Built for the highest-stakes elections.
-      </p>
-      <p className="mt-4 text-[0.95rem] leading-relaxed text-h26-textSecondary">
+
+      <p className="mt-6 text-[0.95rem] leading-relaxed text-h26-textSecondary">
         Most voters experience a simple process: get an invite, vote, and submit. Once results are published, they can
         check the outcome, and verify their own vote was correctly tallied.
       </p>
