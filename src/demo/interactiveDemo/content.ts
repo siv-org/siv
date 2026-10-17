@@ -79,7 +79,7 @@ export const STEP_META: Record<DemoStep, { blurb: string; title: string; unlocks
   },
   intro: {
     blurb: 'Experience SIV from multiple perspectives: voter, attacker, auditor, & admin',
-    title: 'How to run a provably free & fair digital election',
+    title: 'Demonstration: a provably free & fair digital election',
   },
   invite: {
     blurb: 'Your election admin sent a one-time Auth Token. Each registered voter gets one.',
