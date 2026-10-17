@@ -5,8 +5,8 @@ import { generateAuthToken } from 'src/crypto/generate-auth-tokens'
 import { strengthenTracking } from 'src/vote/strengthen-tracking'
 import { generateTrackingNum } from 'src/vote/tracking-num'
 
-import { CANDIDATES, DemoStep, OTHER_VOTERS, POSTER_PROPERTIES, STEP_META } from './content'
-import { achievedIds, back, DemoState, forward, go, initState, markComplete, pathIndex, UnlockedVote, visit } from './demoState'
+import { CANDIDATES, DemoStep, OTHER_VOTERS, STEP_META } from './content'
+import { back, DemoState, forward, go, initState, markComplete, pathIndex, UnlockedVote, visit } from './demoState'
 import { fakeCipher, fakeCipherParts } from './shared/ciphertext'
 import { joinChoices, splitChoices } from './shared/formatChoice'
 import { NeedVote } from './shared/NeedVote'
@@ -122,12 +122,11 @@ export function InteractiveDemo() {
       const verification = prev.strengthened || prev.verification
       if (!choice || !verification) return visit(prev, 'verify')
       const unlocked = buildUnlocked(choice, verification, prev.overridden)
-      return go({ ...prev, search: verification, unlocked }, 'verify')
+      return go(markComplete({ ...prev, search: verification, unlocked }, ['privacy']), 'verify')
     })
   }
 
   const at = pathIndex(s.step)
-  const achieved = new Set(achievedIds(s.step, s.history))
   const rail: { label: string; mark?: 'play' | 'restart'; n?: number; onClick: () => void }[] = [
     { label: 'Start demo', mark: 'play', onClick: () => setS((prev) => visit(prev, 'intro')) },
     { label: 'Receive invite', n: 1, onClick: () => setS((prev) => visit(prev, 'invite')) },
@@ -216,9 +215,8 @@ export function InteractiveDemo() {
           })}
         </ol>
 
-        <div className="grid gap-6 lg:grid-cols-[220px_1fr] lg:gap-8">
-          {/* Main stage first on phone */}
-          <section className="order-1 min-w-0 lg:order-2">
+        <div className="mx-auto max-w-4xl">
+          <section className="min-w-0">
             <header className="mb-5 sm:mb-6">
               <p className="font-mono26 mb-2 text-[10px] uppercase tracking-[0.16em] text-h26-muted">
                 SIV Interactive Demo
@@ -263,7 +261,8 @@ export function InteractiveDemo() {
                 </div>
               )}
               {s.step === 'intro' && <Intro onStart={start} />}
-              {s.step === 'invite' && <Invite auth={s.auth} onContinue={() => setS((prev) => go(prev, 'vote'))} />}
+              {s.step === 'invite' &&
+                <Invite auth={s.auth} onContinue={() => setS((prev) => go(markComplete(prev, ['stuffing']), 'vote'))} />}
               {s.step === 'vote' && <Vote onPick={sealVote} />}
               {s.step === 'submit' &&
                 (s.choice && s.verification ? (
@@ -374,7 +373,7 @@ export function InteractiveDemo() {
                 (s.unlocked.length && activeVerification ? (
                   <Verify
                     boardVotes={boardVotes}
-                    onDone={() => setS((prev) => go(prev, 'done'))}
+                    onDone={() => setS((prev) => go(markComplete(prev, ['ground-truth', 'open', 'stuffing']), 'done'))}
                     unlocked={s.unlocked}
                   />
                 ) : (
@@ -388,48 +387,9 @@ export function InteractiveDemo() {
                   unlocked={s.unlocked}
                 />
               )}
-              {s.step === 'done' && <Done completed={s.completed} onRestart={restart} />}
+              {s.step === 'done' && <Done completed={s.completed} onRestart={restart} onReview={jumpToProperty} />}
             </div>
           </section>
-
-          {/* Poster legend — below on phone, sidebar on desktop */}
-          <aside className="order-2 lg:order-1 lg:sticky lg:top-6 lg:self-start">
-            <p className="font-mono26 mb-3 text-[10px] uppercase tracking-[0.16em] text-h26-muted">
-              Achieved properties
-            </p>
-            <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-1">
-              {POSTER_PROPERTIES.map((p) => {
-                const done = achieved.has(p.id)
-                return (
-                  <li key={p.id}>
-                    <button
-                      className={`w-full rounded-xl px-3 py-2.5 text-left transition-colors ${
-                        done
-                          ? 'bg-h26-green/[0.1] text-h26-text'
-                          : 'bg-black/[0.03] text-h26-textSecondary hover:bg-black/[0.05] hover:text-h26-text'
-                      }`}
-                      onClick={() => jumpToProperty(p.id)}
-                      type="button"
-                    >
-                      <div className="flex gap-2 items-start">
-                        <span
-                          className={`mt-0.5 inline-flex size-4 shrink-0 items-center justify-center rounded-full border text-[10px] ${
-                            done ? 'border-h26-green bg-h26-green text-white' : 'border-black/15 text-transparent'
-                          }`}
-                        >
-                          ✓
-                        </span>
-                        <div>
-                          <div className="text-[0.8rem] font-medium leading-snug">{p.label}</div>
-                          <div className="mt-0.5 text-[0.7rem] leading-snug opacity-70">{p.short}</div>
-                        </div>
-                      </div>
-                    </button>
-                  </li>
-                )
-              })}
-            </ul>
-          </aside>
         </div>
       </div>
     </NoSsr>

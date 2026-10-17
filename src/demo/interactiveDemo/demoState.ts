@@ -1,4 +1,4 @@
-import { DemoStep, STEP_META } from './content'
+import { DemoStep } from './content'
 
 export type DemoState = {
   auth: string
@@ -39,7 +39,7 @@ export function forward(prev: DemoState): DemoState {
 }
 
 export function go(prev: DemoState, step: DemoStep): DemoState {
-  return markComplete(visit(prev, step), STEP_META[step].unlocks)
+  return visit(prev, step)
 }
 
 export function initState(): DemoState {
@@ -69,31 +69,6 @@ export function markComplete(prev: DemoState, ids: string[] = []): DemoState {
   const completed = new Set(prev.completed)
   ids.forEach((id) => completed.add(id))
   return { ...prev, completed }
-}
-
-// Where the step sits in the walkthrough. Branches share a spot after submit.
-const FLOW_AT: Record<DemoStep, number> = {
-  audit: 5,
-  coercion: 3.5,
-  done: 6,
-  intro: 0,
-  invite: 1,
-  malware: 3.5,
-  strengthen: 3.5,
-  submit: 3,
-  unlock: 4,
-  verify: 5,
-  vote: 2,
-}
-
-// Checks from this step and any earlier step still behind you. Going back drops the one you left.
-export function achievedIds(step: DemoStep, history: DemoStep[]): string[] {
-  const at = FLOW_AT[step]
-  const ids = new Set<string>(STEP_META[step].unlocks ?? [])
-  history.forEach((prev) => {
-    if (FLOW_AT[prev] <= at) STEP_META[prev].unlocks?.forEach((id) => ids.add(id))
-  })
-  return [...ids]
 }
 
 export function pathIndex(step: DemoStep): number {
