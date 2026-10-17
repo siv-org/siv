@@ -230,7 +230,7 @@ export function InteractiveDemo() {
               >
                 {STEP_META[s.step].title}
               </h1>
-              <p className="mt-2 max-w-xl text-[0.9rem] leading-relaxed text-h26-textSecondary sm:text-[0.95rem]">
+              <p className="mt-2 text-[0.9rem] leading-relaxed text-h26-textSecondary sm:text-[0.95rem]">
                 {STEP_META[s.step].blurb}
               </p>
             </header>
