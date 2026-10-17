@@ -22,7 +22,7 @@ export function InviteQRCode({ auth }: { auth: string }) {
   return (
     <div className="flex max-w-[11rem] flex-col items-center gap-2">
       <div aria-label="QR code containing your voting link" className="size-32 shrink-0" ref={ref} />
-      <p className="break-all text-center font-mono26 text-[0.62rem] leading-snug text-h26-muted">
+      <p className="whitespace-nowrap text-center font-mono26 text-[0.5rem] leading-snug text-h26-muted">
         local.gov/vote?auth=
         <span className="rounded border border-[#e67e37] bg-[#e67e3744] px-0.5 text-h26-text">{auth}</span>
       </p>
