@@ -1,4 +1,4 @@
-import { Play, RotateCcw } from 'lucide-react'
+import { Play } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { NoSsr } from 'src/_shared/NoSsr'
 import { generateAuthToken } from 'src/crypto/generate-auth-tokens'
@@ -127,12 +127,11 @@ export function InteractiveDemo() {
   }
 
   const at = pathIndex(s.step)
-  const rail: { label: string; mark?: 'play' | 'restart'; n?: number; onClick: () => void }[] = [
-    { label: 'Start demo', mark: 'play', onClick: () => setS((prev) => visit(prev, 'intro')) },
+  const rail: { label: string; mark?: 'play'; n?: number; onClick: () => void }[] = [
+    { label: 'Start demo', mark: 'play', onClick: restart },
     { label: 'Receive invite', n: 1, onClick: () => setS((prev) => visit(prev, 'invite')) },
     { label: 'Vote', n: 2, onClick: () => setS((prev) => visit(prev, 'vote')) },
     { label: 'Verify results', n: 3, onClick: runUnlock },
-    { label: 'Restart', mark: 'restart', onClick: restart },
   ]
 
   const jumpToProperty = (id: string) => {
@@ -151,7 +150,7 @@ export function InteractiveDemo() {
   return (
     <NoSsr>
       <div className="demo">
-        {/* Path — start and restart bookend steps 1–3 */}
+        {/* Path — start, then steps 1–3 */}
         <ol className="flex mb-8 w-full">
           {rail.map(({ label, mark, n, onClick }, i) => {
             const slot = (n ?? 1) - 1
@@ -184,8 +183,6 @@ export function InteractiveDemo() {
                   >
                     {mark === 'play' ? (
                       <Play aria-hidden className="ml-px size-3 text-black/45" strokeWidth={2.25} />
-                    ) : mark === 'restart' ? (
-                      <RotateCcw aria-hidden className="size-3.5 text-black/45" strokeWidth={2} />
                     ) : (
                       <span
                         className={`text-[0.7rem] font-medium ${
