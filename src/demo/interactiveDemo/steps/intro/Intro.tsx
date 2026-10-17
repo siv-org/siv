@@ -33,7 +33,7 @@ export function Intro({ onStart }: { onStart: () => void }) {
       </p>
       <p className="mt-4 text-[0.95rem] leading-relaxed text-h26-textSecondary">
         Behind that simplicity are strong safeguards: protection against malware secretly changing votes, defenses
-        against coercion and vote selling, and results that can be independently audit.
+        against coercion and vote selling, and results that can be independently audited.
       </p>
       <p className="mt-4 text-[0.95rem] leading-relaxed text-h26-textSecondary">
         The SIV Protocol is designed to withstand the strongest adversaries, without requiring anyone to trust the
