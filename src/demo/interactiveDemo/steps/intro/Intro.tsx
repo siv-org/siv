@@ -37,8 +37,8 @@ export function Intro({ onStart }: { onStart: () => void }) {
         the servers running the vote.
       </p>
       <p className="mt-4 text-[0.95rem] leading-relaxed text-h26-textSecondary">
-        Those safeguards extend to threats beyond the election servers: malware secretly changing votes, coercion, and
-        vote selling. Explore the demo to see how these protections work.
+        Those safeguards extend to threats beyond the election servers: fake voters, malware secretly changing votes,
+        coercion, and vote selling. Explore the demo to see how these protections work.
       </p>
       {/* <ul className="mt-5 space-y-2 text-[0.9rem] text-h26-textSecondary">
         <li>· This is a simulated sandbox — no real election / no login</li>
