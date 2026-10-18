@@ -168,12 +168,12 @@ export function InteractiveDemo() {
                 )}
                 <button
                   aria-current={current ? 'step' : undefined}
-                  className="group/rail-step relative z-10 flex w-full flex-col items-center gap-2 bg-transparent px-0.5"
+                  className="group/rail-step relative z-10 flex w-full touch-manipulation flex-col items-center gap-2 bg-transparent px-0.5"
                   onClick={onClick}
                   type="button"
                 >
                   <span
-                    className={`box-border flex size-7 items-center justify-center rounded-full transition-colors group-hover/rail-step:border-h26-green/70 ${
+                    className={`box-border flex size-7 items-center justify-center rounded-full ring-h26-green/15 transition-shadow group-hover/rail-step:border-h26-green/70 group-active/rail-step:border-h26-green group-active/rail-step:ring-4 ${
                       done
                         ? 'text-white bg-h26-green'
                         : current
@@ -184,7 +184,7 @@ export function InteractiveDemo() {
                     {mark === 'play' ? (
                       <Play
                         aria-hidden
-                        className={`ml-px size-3 transition-colors group-hover/rail-step:text-h26-green ${
+                        className={`ml-px size-3 transition-colors group-hover/rail-step:text-h26-green group-active/rail-step:text-h26-green ${
                           current ? 'text-h26-green' : 'text-black/45'
                         }`}
                         strokeWidth={2.25}
@@ -194,7 +194,9 @@ export function InteractiveDemo() {
                         className={`text-[0.7rem] font-medium transition-colors ${
                           done
                             ? 'text-white'
-                            : `group-hover/rail-step:text-h26-green ${current ? 'text-h26-green' : 'text-black/35'}`
+                            : `group-hover/rail-step:text-h26-green group-active/rail-step:text-h26-green ${
+                                current ? 'text-h26-green' : 'text-black/35'
+                              }`
                         }`}
                       >
                         {n}
@@ -202,7 +204,7 @@ export function InteractiveDemo() {
                     )}
                   </span>
                   <span
-                    className={`text-center text-[0.7rem] leading-tight transition-colors group-hover/rail-step:text-h26-green sm:text-[0.8rem] ${
+                    className={`text-center text-[0.7rem] leading-tight transition-colors group-hover/rail-step:text-h26-green group-active/rail-step:text-h26-green sm:text-[0.8rem] ${
                       current ? 'font-medium text-h26-text' : done ? 'text-h26-text' : 'text-h26-muted'
                     }`}
                   >
