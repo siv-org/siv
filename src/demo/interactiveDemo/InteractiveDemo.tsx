@@ -155,7 +155,7 @@ export function InteractiveDemo() {
           {rail.map(({ label, mark, n, onClick }, i) => {
             const slot = (n ?? 1) - 1
             const done = !mark && at > slot
-            const current = !mark && at === slot
+            const current = mark ? s.step === 'intro' : at === slot
             return (
               <li className="flex relative flex-col flex-1 items-center min-w-0" key={label}>
                 {i < rail.length - 1 && (
@@ -167,7 +167,7 @@ export function InteractiveDemo() {
                   />
                 )}
                 <button
-                  aria-current={current || (i === 0 && s.step === 'intro') ? 'step' : undefined}
+                  aria-current={current ? 'step' : undefined}
                   className="group/rail-step relative z-10 flex w-full flex-col items-center gap-2 bg-transparent px-0.5"
                   onClick={onClick}
                   type="button"
@@ -184,7 +184,9 @@ export function InteractiveDemo() {
                     {mark === 'play' ? (
                       <Play
                         aria-hidden
-                        className="ml-px size-3 text-black/45 transition-colors group-hover/rail-step:text-h26-green"
+                        className={`ml-px size-3 transition-colors group-hover/rail-step:text-h26-green ${
+                          current ? 'text-h26-green' : 'text-black/45'
+                        }`}
                         strokeWidth={2.25}
                       />
                     ) : (
@@ -201,13 +203,7 @@ export function InteractiveDemo() {
                   </span>
                   <span
                     className={`text-center text-[0.7rem] leading-tight transition-colors group-hover/rail-step:text-h26-green sm:text-[0.8rem] ${
-                      mark
-                        ? 'text-h26-muted'
-                        : current
-                        ? 'font-medium text-h26-text'
-                        : done
-                        ? 'text-h26-text'
-                        : 'text-h26-muted'
+                      current ? 'font-medium text-h26-text' : done ? 'text-h26-text' : 'text-h26-muted'
                     }`}
                   >
                     {label}
