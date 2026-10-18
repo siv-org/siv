@@ -168,12 +168,12 @@ export function InteractiveDemo() {
                 )}
                 <button
                   aria-current={current || (i === 0 && s.step === 'intro') ? 'step' : undefined}
-                  className="relative z-10 flex w-full flex-col items-center gap-2 bg-transparent px-0.5"
+                  className="group/rail-step relative z-10 flex w-full flex-col items-center gap-2 bg-transparent px-0.5"
                   onClick={onClick}
                   type="button"
                 >
                   <span
-                    className={`box-border flex size-7 items-center justify-center rounded-full ${
+                    className={`box-border flex size-7 items-center justify-center rounded-full transition-colors group-hover/rail-step:border-h26-green/70 ${
                       done
                         ? 'text-white bg-h26-green'
                         : current
@@ -182,11 +182,17 @@ export function InteractiveDemo() {
                     }`}
                   >
                     {mark === 'play' ? (
-                      <Play aria-hidden className="ml-px size-3 text-black/45" strokeWidth={2.25} />
+                      <Play
+                        aria-hidden
+                        className="ml-px size-3 text-black/45 transition-colors group-hover/rail-step:text-h26-green"
+                        strokeWidth={2.25}
+                      />
                     ) : (
                       <span
-                        className={`text-[0.7rem] font-medium ${
-                          done ? 'text-white' : current ? 'text-h26-green' : 'text-black/35'
+                        className={`text-[0.7rem] font-medium transition-colors ${
+                          done
+                            ? 'text-white'
+                            : `group-hover/rail-step:text-h26-green ${current ? 'text-h26-green' : 'text-black/35'}`
                         }`}
                       >
                         {n}
@@ -194,7 +200,7 @@ export function InteractiveDemo() {
                     )}
                   </span>
                   <span
-                    className={`text-center text-[0.7rem] leading-tight sm:text-[0.8rem] ${
+                    className={`text-center text-[0.7rem] leading-tight transition-colors group-hover/rail-step:text-h26-green sm:text-[0.8rem] ${
                       mark
                         ? 'text-h26-muted'
                         : current
@@ -258,8 +264,9 @@ export function InteractiveDemo() {
                 </div>
               )}
               {s.step === 'intro' && <Intro onStart={start} />}
-              {s.step === 'invite' &&
-                <Invite auth={s.auth} onContinue={() => setS((prev) => go(markComplete(prev, ['stuffing']), 'vote'))} />}
+              {s.step === 'invite' && (
+                <Invite auth={s.auth} onContinue={() => setS((prev) => go(markComplete(prev, ['stuffing']), 'vote'))} />
+              )}
               {s.step === 'vote' && <Vote onPick={sealVote} />}
               {s.step === 'submit' &&
                 (s.choice && s.verification ? (
