@@ -44,9 +44,11 @@ export function Intro({ onStart }: { onStart: () => void }) {
 
         <li>· Click items on the left to jump to a defense</li>
       </ul> */}
-      <PrimaryButton className="mt-8" onClick={onStart}>
-        Start as a voter
-      </PrimaryButton>
+      <div className="mt-8 flex justify-end">
+        <PrimaryButton className="!w-auto" onClick={onStart}>
+          Start as a voter
+        </PrimaryButton>
+      </div>
     </div>
   )
 }
