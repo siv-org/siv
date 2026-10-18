@@ -28,8 +28,8 @@ export function Intro({ onStart }: { onStart: () => void }) {
       </section>
 
       <p className="mt-6 text-[0.95rem] leading-relaxed text-h26-textSecondary">
-        Most voters experience a simple process: get an invite, vote, and submit. Once results are published, they can
-        check the outcome, and verify their own vote was correctly tallied.
+        Most voters experience a simple process: get an invite and vote. Once results are published, they can check the
+        outcome, and verify their own vote was correctly tallied.
       </p>
       <p className="mt-4 text-[0.95rem] leading-relaxed text-h26-textSecondary">
         Behind that simplicity are strong safeguards: protection against malware secretly changing votes, defenses
@@ -44,7 +44,7 @@ export function Intro({ onStart }: { onStart: () => void }) {
 
         <li>· Click items on the left to jump to a defense</li>
       </ul> */}
-      <div className="mt-8 flex justify-end">
+      <div className="flex justify-end mt-8">
         <PrimaryButton className="!w-auto" onClick={onStart}>
           Start as a voter
         </PrimaryButton>
