@@ -205,7 +205,7 @@ export function InteractiveDemo() {
                   </span>
                   <span
                     className={`text-center text-[0.7rem] leading-tight transition-colors group-hover/rail-step:text-h26-green group-active/rail-step:text-h26-green sm:text-[0.8rem] ${
-                      current ? 'font-medium text-h26-text' : done ? 'text-h26-text' : 'text-h26-muted'
+                      current ? 'font-normal text-h26-textSecondary' : done ? 'text-h26-text' : 'text-h26-muted'
                     }`}
                   >
                     {label}
