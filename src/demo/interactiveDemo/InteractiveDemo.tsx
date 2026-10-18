@@ -219,9 +219,11 @@ export function InteractiveDemo() {
         <div className="mx-auto max-w-4xl">
           <section className="min-w-0">
             <header className="mb-5 sm:mb-6">
-              <p className="font-mono26 mb-2 text-[10px] uppercase tracking-[0.16em] text-h26-muted">
-                SIV Interactive Demo
-              </p>
+              {s.step !== 'intro' && (
+                <p className="font-mono26 mb-2 text-[10px] uppercase tracking-[0.16em] text-h26-muted">
+                  SIV Interactive Demo
+                </p>
+              )}
               <h1
                 className={`font-serif26 font-normal tracking-tight text-h26-text ${
                   s.step === 'intro'
