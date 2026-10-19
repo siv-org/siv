@@ -4,9 +4,32 @@ import useSWR, { mutate } from 'swr'
 
 /** Pusher counts each initialization — `new Pusher()` — as one connection.
 https://support.pusher.com/hc/en-us/articles/360019428173-How-are-connections-counted-
-Also important not to initialize on SSR, those connections are never dropped (bc window never closes) */
-export const pusher = typeof window !== 'undefined' ? new Pusher('9718ba0612df1a49e52b', { cluster: 'us3' }) : undefined
-// Pusher.logToConsole = true
+Lazy singleton: only connect on first subscribe, not merely by importing this module. */
+let client: Pusher | undefined
+export function getPusher() {
+  if (typeof window === 'undefined') return // Important not to initialize on SSR — those connections are never dropped (bc window never closes)
+  if (!client) {
+    const created = new Pusher('9718ba0612df1a49e52b', { cluster: 'us3' })
+    // Pusher.logToConsole = true
+
+    // Temp diagnostics added 10/17/26. Consider removing after 14 days.
+    // Once per tab: which page opened this connection (see /api/pusher-connect-log)
+    const onConnected = () => {
+      created.connection.unbind('connected', onConnected)
+      const path = window.location.pathname + window.location.search
+      console.log('📡 Pusher connect beacon:', path)
+      fetch('/api/pusher-connect-log', {
+        body: JSON.stringify({ path }),
+        headers: { 'Content-Type': 'application/json' },
+        keepalive: true,
+        method: 'POST',
+      }).catch(() => {})
+    }
+    created.connection.bind('connected', onConnected)
+    client = created
+  }
+  return client
+}
 
 export const useData = (key: string, pusherChannel?: [string | undefined, string]) => {
   const [channelName, eventName] = pusherChannel || []
@@ -14,7 +37,8 @@ export const useData = (key: string, pusherChannel?: [string | undefined, string
   // If given pusher channel & event names, revalidate on activity
   useEffect(() => {
     if (channelName && eventName) {
-      if (!pusher) return alert('Pusher not initialized')
+      const pusher = getPusher()
+      if (!pusher) return
 
       // Subscribe to channel
       const channel = pusher.subscribe(channelName)

@@ -9,7 +9,7 @@ import { tallyVotes } from './tally-votes'
 import { useDecryptedVotes } from './use-decrypted-votes'
 import { useElectionInfo } from './use-election-info'
 
-export const Totals = ({ proofsPage }: { proofsPage?: boolean }): JSX.Element => {
+export const Totals = (): JSX.Element => {
   const { ballot_design, last_decrypted_at, paper_totals, paper_votes } = useElectionInfo()
   const votes = useDecryptedVotes()
 
@@ -21,13 +21,10 @@ export const Totals = ({ proofsPage }: { proofsPage?: boolean }): JSX.Element =>
 
   return (
     <>
-      <div
-        className={`p-4 bg-white rounded-lg ${custom_box_shadow}`}
-        style={{ display: proofsPage ? 'inline-block' : undefined }}
-      >
+      <div className={`p-4 bg-white rounded-lg ${custom_box_shadow}`}>
         <div className="flex justify-between items-baseline">
           <h3 className="mt-0">{paper_totals ? 'Digital' : ''} Vote Totals:</h3>
-          {last_decrypted_at && !proofsPage && (
+          {last_decrypted_at && (
             <span className="text-[11px] opacity-50 text-right italic">
               Last updated: <TimeAgo datetime={last_decrypted_at} opts={{ minInterval: 60 }} />
             </span>

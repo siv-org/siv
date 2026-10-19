@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { pusher } from 'src/pusher-helper'
+import { getPusher } from 'src/pusher-helper'
 
 import { getLatestFromServer } from './get-latest-from-server'
 import { revalidateKeygenAttempt } from './keygen/useKeygenAttempt'
@@ -7,7 +7,8 @@ import { StateAndDispatch } from './trustee-state'
 
 export function initPusher({ dispatch, state }: StateAndDispatch) {
   function subscribe() {
-    if (!pusher) return alert('Pusher not initialized')
+    const pusher = getPusher()
+    if (!pusher) return
 
     const channel = pusher.subscribe(`keygen-${state.election_id}`)
     channel.bind('update', (data: unknown) => {

@@ -1,6 +1,6 @@
 import { TrusteesLatestShuffles } from 'pages/api/election/[election_id]/trustees/latest-shuffles'
 import { useEffect } from 'react'
-import { pusher } from 'src/pusher-helper'
+import { getPusher } from 'src/pusher-helper'
 import useSWR from 'swr'
 
 import { Shuffled } from '../trustee-state'
@@ -18,8 +18,9 @@ export function useLatestShuffles(election_id?: string) {
   useEffect(() => {
     if (!election_id || !mutate) return
 
-    const channel = pusher?.subscribe(`keygen-${election_id}`)
-    if (!channel) return
+    const pusher = getPusher()
+    if (!pusher) return
+    const channel = pusher.subscribe(`keygen-${election_id}`)
 
     const handleUpdate = (data: Record<string, Record<string, unknown> | string[]>) => {
       // Check if any trustee updated their shuffled data

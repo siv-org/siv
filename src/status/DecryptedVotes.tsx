@@ -8,7 +8,7 @@ import { unTruncateSelection } from './un-truncate-selection'
 import { useDecryptedVotes } from './use-decrypted-votes'
 import { useElectionInfo } from './use-election-info'
 
-export const DecryptedVotes = ({ proofsPage }: { proofsPage?: boolean }): JSX.Element => {
+export const DecryptedVotes = (): JSX.Element => {
   const votes = useDecryptedVotes()
   const { ballot_design } = useElectionInfo()
 
@@ -21,13 +21,9 @@ export const DecryptedVotes = ({ proofsPage }: { proofsPage?: boolean }): JSX.El
 
   return (
     <div className="bg-white p-4 rounded-lg shadow-[0_2px_2px_hsla(0,0%,50%,0.333),0_4px_4px_hsla(0,0%,50%,0.333),0_6px_6px_hsla(0,0%,50%,0.333)]">
-      {!proofsPage && (
-        <>
-          <h3 className="mt-0 mb-1.5">Decrypted Votes</h3>
-          <p className="mt-0 text-[13px] italic opacity-70">Anonymized for vote secrecy.</p>
-          <HowDoIVerify />
-        </>
-      )}
+      <h3 className="mt-0 mb-1.5">Decrypted Votes</h3>
+      <p className="mt-0 text-[13px] italic opacity-70">Anonymized for vote secrecy.</p>
+      <HowDoIVerify />
       <table className="block overflow-auto border-collapse [&_tr>*]:[border:1px_solid_#ccc] [&_tr>*]:px-2.5 [&_tr>*]:py-[3px] pb-2">
         <thead>
           <tr className="text-[11px]">

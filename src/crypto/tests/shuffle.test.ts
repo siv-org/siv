@@ -1,12 +1,12 @@
 import bluebird from 'bluebird'
-import { expect, test } from 'bun:test'
+import { expect, spyOn, test } from 'bun:test'
 import { isEqual, range } from 'lodash'
 
 import { pointToString, random_bigint, stringToPoint } from '../curve'
 import { decrypt } from '../decrypt'
 import { encrypt } from '../encrypt'
 import { generate_key_pair } from '../generate-key-pair'
-import { rename_to_c1_and_2, shuffleWithProof } from '../shuffle'
+import { build_permutation_array, rename_to_c1_and_2, shuffleWithProof } from '../shuffle'
 import { verify_shuffle_proof } from '../shuffle-proof'
 
 test('Can Verifiably Shuffle (permute & re-encrypt) a list of votes, with valid proof', async () => {
@@ -61,7 +61,12 @@ test('Can Verifiably Shuffle (permute & re-encrypt) a list of votes, with valid 
       expect(decrypteds.some((decrypted, index) => decrypted !== plaintexts[index])).toBe(true)
 
       // Expect the proof to verify true
-      const good = await verify_shuffle_proof(rename_to_c1_and_2(encrypted_votes), rename_to_c1_and_2(shuffled), proof)
+      const good = await verify_shuffle_proof(
+        rename_to_c1_and_2(encrypted_votes),
+        rename_to_c1_and_2(shuffled),
+        proof,
+        public_key,
+      )
       num_ran += 1
       if (good) num_passed += 1
       // console.log({ good, num_passed, num_ran })
@@ -72,4 +77,32 @@ test('Can Verifiably Shuffle (permute & re-encrypt) a list of votes, with valid 
   expect(num_passed, 'Shuffle proofs did not all verify').toBe(num_ran)
 
   // console.log({ num_passed })
+})
+
+test('shuffle should not use Math.random', async () => {
+  const { public_key } = generate_key_pair()
+  const inputs = range(5).map((i) => encrypt(public_key, random_bigint(), stringToPoint(`v${i}`)))
+
+  const spy = spyOn(Math, 'random').mockImplementation(() => {
+    throw new Error('Math.random is not strong enough for shuffle')
+  })
+  try {
+    await shuffleWithProof(public_key, inputs)
+  } finally {
+    spy.mockRestore()
+  }
+})
+
+test('build_permutation_array() is a permutation of 0..n-1', () => {
+  const n = 20
+  const p = build_permutation_array(n)
+  expect(p).toHaveLength(n)
+  expect(new Set(p).size).toBe(n)
+  expect([...p].sort((a, b) => a - b)).toEqual(range(n))
+})
+
+test('build_permutation_array() produces distinct permutations', () => {
+  // Collision odds for two uniform perms of n=20 is 1/20! ≈ 1 in 4e19
+  const n = 20
+  expect(build_permutation_array(n)).not.toEqual(build_permutation_array(n))
 })

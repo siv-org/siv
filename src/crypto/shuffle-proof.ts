@@ -2,7 +2,11 @@ import { CURVE } from '@noble/ed25519'
 import { modPow } from 'bigint-mod-arith'
 
 import { bigint_from_seed } from './bigint-from-seed'
+import { bytesToHex } from './bytes-to-hex'
 import { G, invert, mod, random_bigint, RP, sum_bigints, sum_points } from './curve'
+import { sha256 } from './sha256'
+
+export const SHUFFLE_PROOF_VERSION = 2 as const
 
 export type SequencesOfPairs = ElGamalPair[]
 
@@ -18,6 +22,7 @@ export type Shuffle_Proof = {
   simple_shuffle_proof: Simple_Shuffle_Proof
   tau: bigint
   Us: RP[]
+  version: typeof SHUFFLE_PROOF_VERSION
   Ws: RP[]
 }
 
@@ -73,7 +78,7 @@ export async function generate_shuffle_proof(
   const Lambda2 = H.multiply(mod(tau_0 + sum)).add(product2)
 
   // Replace Verifier's rho randoms with deterministic PRNG
-  // using all the public values calculated so far
+  const prng = await make_prng(inputs, outputs, H)
   const rhos = await prng.rhos(As, Cs, Us, Ws, Gamma, Lambda1, Lambda2)
 
   const bs = rhos.map((rho, i) => mod(rho - us[i]))
@@ -89,7 +94,7 @@ export async function generate_shuffle_proof(
 
   const tau = mod(sum_bigints(bs.map((b, i) => b * reencrypts[i])) - tau_0)
 
-  const simple_shuffle_proof = await generate_simple_shuffle_proof(rs, ss, gamma)
+  const simple_shuffle_proof = await generate_simple_shuffle_proof(rs, ss, gamma, prng)
 
   return {
     As,
@@ -103,6 +108,7 @@ export async function generate_shuffle_proof(
     simple_shuffle_proof,
     tau,
     Us,
+    version: SHUFFLE_PROOF_VERSION,
     Ws,
   }
 }
@@ -110,12 +116,33 @@ export async function generate_shuffle_proof(
 export async function verify_shuffle_proof(
   inputs: SequencesOfPairs,
   outputs: SequencesOfPairs,
-  { As, Cs, Ds, Gamma, H, Lambda1, Lambda2, sigmas, simple_shuffle_proof, tau, Us, Ws }: Shuffle_Proof,
+  { As, Cs, Ds, Gamma, H, Lambda1, Lambda2, sigmas, simple_shuffle_proof, tau, Us, version, Ws }: Shuffle_Proof,
+  election_public_key: RP,
   { debug } = { debug: false },
 ): Promise<boolean> {
+  if (version !== SHUFFLE_PROOF_VERSION)
+    throw new Error(`Unsupported shuffle proof version: ${version ?? 'missing'} (need ${SHUFFLE_PROOF_VERSION})`)
+
+  // Don't trust H from the proof — verify it against the election's public key
+  if (!H.equals(election_public_key)) return false
+
+  // Fail immediately if lengths don't match
+  const { length } = inputs
+  if (
+    outputs.length !== length ||
+    As.length !== length ||
+    Cs.length !== length ||
+    Us.length !== length ||
+    Ws.length !== length ||
+    Ds.length !== length ||
+    sigmas.length !== length
+  )
+    return false
+
   const log = debug ? console.log : () => {}
 
   // Recalculate Deterministic PRNG values
+  const prng = await make_prng(inputs, outputs, H)
   const rhos = await prng.rhos(As, Cs, Us, Ws, Gamma, Lambda1, Lambda2)
   log(`rhos = ${rhos.join(', ')}`)
   const lambda = await prng.lambda(Ds)
@@ -137,7 +164,7 @@ export async function verify_shuffle_proof(
   if (!Ss.every((S, i) => S.equals(simple_shuffle_proof.Ys[i]))) return false
   log('all simple_shuffle_proof values match')
 
-  if (!(await verify_simple_shuffle_proof(simple_shuffle_proof))) return false
+  if (!(await verify_simple_shuffle_proof(simple_shuffle_proof, prng))) return false
   log('simple_shuffle_proof is valid')
 
   const Phi1 = outputs.reduce(
@@ -182,6 +209,10 @@ export async function verify_shuffle_proof(
   return true
 }
 
+async function digest(s: string) {
+  return bytesToHex(new Uint8Array(await sha256(s)))
+}
+
 // based on http://www.cs.tau.ac.il/~fiat/crypt07/papers/neff.pdf
 // g - prime group generator
 // x - k-length array
@@ -191,7 +222,12 @@ export async function verify_shuffle_proof(
 // X[i] = g.modPow(x[i], p)
 // Y[i] = g.modPow(y[i], p)
 // Y[i] = X[pi[i]]^gamma
-async function generate_simple_shuffle_proof(xs: bigint[], ys: bigint[], gamma: bigint): Promise<Simple_Shuffle_Proof> {
+async function generate_simple_shuffle_proof(
+  xs: bigint[],
+  ys: bigint[],
+  gamma: bigint,
+  prng: Awaited<ReturnType<typeof make_prng>>,
+): Promise<Simple_Shuffle_Proof> {
   const k = xs.length
 
   const Xs = xs.map((x) => G.multiply(x))
@@ -268,7 +304,47 @@ async function generate_simple_shuffle_proof(xs: bigint[], ys: bigint[], gamma: 
   }
 }
 
-async function verify_simple_shuffle_proof({ alphas, Gamma, Thetas, Xs, Ys }: Simple_Shuffle_Proof) {
+/** Fiat–Shamir deterministic PRNG challenge integers.
+Bind H+inputs+outputs once, derive rho_i from digest||i,
+chain prior messages into lambda/t/c, distinct labels per challenge.
+Compress to a fixed-size digest after each step so hashing stays O(n), not O(n²). */
+async function make_prng(
+  inputs: SequencesOfPairs,
+  outputs: SequencesOfPairs,
+  H: RP,
+): Promise<{
+  c: (Thetas: RP[]) => Promise<bigint>
+  lambda: (Ds: RP[]) => Promise<bigint>
+  rhos: (As: RP[], Cs: RP[], Us: RP[], Ws: RP[], Gamma: RP, Lambda1: RP, Lambda2: RP) => Promise<bigint[]>
+  t: (Xs: RP[], Ys: RP[]) => Promise<bigint>
+}> {
+  const flat = (ps: ElGamalPair[]) => ps.flatMap(({ c1, c2 }) => [c1, c2])
+  let prior = await digest([H, ...flat(inputs), ...flat(outputs)].join(','))
+
+  const challenge = async (label: string, parts: RP[]) => {
+    const d = await digest([label, prior, ...parts].join(','))
+    prior = d
+    return bigint_from_seed(d)
+  }
+
+  return {
+    c: (Thetas) => challenge('shuffle_proof.c', Thetas),
+    lambda: (Ds) => challenge('shuffle_proof.lambda', Ds),
+    rhos: async (As, Cs, Us, Ws, Gamma, Lambda1, Lambda2) => {
+      const d = await digest(
+        ['shuffle_proof.rhos', prior, ...As, ...Cs, ...Us, ...Ws, Gamma, Lambda1, Lambda2].join(','),
+      )
+      prior = d
+      return Promise.all(As.map((_, i) => bigint_from_seed(`${d},${i}`)))
+    },
+    t: (Xs, Ys) => challenge('shuffle_proof.t', [...Xs, ...Ys]),
+  }
+}
+
+async function verify_simple_shuffle_proof(
+  { alphas, Gamma, Thetas, Xs, Ys }: Simple_Shuffle_Proof,
+  prng: Awaited<ReturnType<typeof make_prng>>,
+) {
   // console.log('Beginning verify_simple_shuffle_proof...')
 
   const k = Xs.length
@@ -313,14 +389,4 @@ async function verify_simple_shuffle_proof({ alphas, Gamma, Thetas, Xs, Ys }: Si
   // console.log('Simple shuffle proof passed')
 
   return true
-}
-
-// Fiat-Shamir deterministic PRNG challenge integers
-const hash = (args: RP[]) => bigint_from_seed(['shuffle_proof', ...args].join(','))
-const prng = {
-  c: (Thetas: RP[]) => hash(Thetas),
-  lambda: (Ds: RP[]) => hash(Ds),
-  rhos: (As: RP[], Cs: RP[], Us: RP[], Ws: RP[], Gamma: RP, Lambda1: RP, Lambda2: RP) =>
-    Promise.all(As.map((_, i) => hash([As[i], Cs[i], Us[i], Ws[i], Gamma, Lambda1, Lambda2]))),
-  t: (Xs: RP[], Ys: RP[]) => hash([...Xs, ...Ys]),
 }
