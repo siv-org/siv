@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { CANDIDATES } from '../../content'
 import { fakeCipher, fakeCipherParts } from '../../shared/ciphertext'
 import { ExpandableHex } from '../../shared/ExpandableHex'
+import { ExploreStep, ExploreTopic } from '../../shared/ExploreStep'
 import { formatMayor, splitChoices } from '../../shared/formatChoice'
 import { LabeledRow } from '../../shared/LabeledRow'
 import { PrimaryButton } from '../../shared/PrimaryButton'
@@ -215,10 +216,7 @@ export function Submit({
         <SecondaryButton onClick={onCoercion}>Try coercion override</SecondaryButton>
       </div>
 
-      <div className="mt-8 border-t border-black/[0.07] pt-5">
-        <p className="font-mono26 text-[10px] uppercase tracking-[0.14em] text-h26-muted">
-          Explore this step · optional
-        </p>
+      <ExploreStep className="mt-8">
         <div className="grid gap-2 mt-3 sm:grid-cols-2">
           {(
             [
@@ -231,27 +229,17 @@ export function Submit({
             const attack = id === 'swap'
             const open = topic === id
             return (
-              <button
-                aria-expanded={open}
-                className={`rounded-xl border px-4 py-3 text-left transition-colors ${
-                  open
-                    ? attack
-                      ? 'border-red-300 bg-red-50/60'
-                      : 'border-h26-green/40 bg-h26-green/[0.06]'
-                    : attack
-                    ? 'border-black/10 hover:border-red-200 hover:bg-red-50/30'
-                    : 'border-black/10 hover:border-h26-green/30 hover:bg-h26-green/[0.03]'
-                }`}
+              <ExploreTopic
+                attack={attack}
                 key={id}
                 onClick={() => {
                   setTopic(open ? null : id)
                   if (id === 'swap' && !open) setSwapPhase('idle')
                 }}
-                type="button"
-              >
-                <span className="block text-[0.82rem] font-medium text-h26-text">{title}</span>
-                <span className="mt-1 block text-[0.72rem] text-h26-textSecondary">{subtitle}</span>
-              </button>
+                open={open}
+                subtitle={subtitle}
+                title={title}
+              />
             )
           })}
         </div>
@@ -383,7 +371,7 @@ export function Submit({
             </ul>
           </div>
         )}
-      </div>
+      </ExploreStep>
     </div>
   )
 }

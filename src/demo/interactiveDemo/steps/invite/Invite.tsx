@@ -2,6 +2,7 @@ import { Mail } from 'lucide-react'
 import { useState } from 'react'
 import { generateAuthToken } from 'src/crypto/generate-auth-tokens'
 
+import { ExploreStep, ExploreTopic } from '../../shared/ExploreStep'
 import { PrimaryButton } from '../../shared/PrimaryButton'
 import { SecondaryButton } from '../../shared/SecondaryButton'
 import { InviteQRCode } from './InviteQRCode'
@@ -34,9 +35,7 @@ export function Invite({ auth, onContinue }: { auth: string; onContinue: () => v
       <div className="px-4 py-5 rounded-xl bg-h26-bg sm:px-6">
         <p className="flex items-center gap-2 text-[10px] text-h26-green">
           <Mail aria-hidden className="size-5 shrink-0" strokeWidth={1.5} />
-          <span className="font-mono26 uppercase tracking-[0.14em]">
-            Vote Invitation Sent via Postal Mail
-          </span>
+          <span className="font-mono26 uppercase tracking-[0.14em]">Vote Invitation Sent via Postal Mail</span>
         </p>
         <p className="mt-5 text-[1rem] text-h26-text">
           You’re invited to vote in <b>City Mayoral Election</b>.
@@ -64,80 +63,40 @@ export function Invite({ auth, onContinue }: { auth: string; onContinue: () => v
         Open ballot
       </PrimaryButton>
 
-      <div className="mt-6 border-t border-black/[0.07] pt-5">
-        <p className="font-mono26 text-[10px] uppercase tracking-[0.14em] text-h26-muted">
-          Explore this step · optional
-        </p>
+      <ExploreStep>
         <div className="grid gap-2 mt-3 sm:grid-cols-2">
-          <button
-            aria-expanded={topic === 'token'}
-            className={`rounded-xl border px-4 py-3 text-left transition-colors ${
-              topic === 'token'
-                ? 'border-h26-green/40 bg-h26-green/[0.06]'
-                : 'border-black/10 hover:border-h26-green/30 hover:bg-h26-green/[0.03]'
-            }`}
+          <ExploreTopic
             onClick={() => setTopic(topic === 'token' ? null : 'token')}
-            type="button"
-          >
-            <span className="block text-[0.82rem] font-medium text-h26-text">What is the Auth Token?</span>
-            <span className="mt-1 block text-[0.72rem] text-h26-textSecondary">Key properties</span>
-          </button>
-          <button
-            aria-expanded={topic === 'delivery'}
-            className={`rounded-xl border px-4 py-3 text-left transition-colors ${
-              topic === 'delivery'
-                ? 'border-h26-green/40 bg-h26-green/[0.06]'
-                : 'border-black/10 hover:border-h26-green/30 hover:bg-h26-green/[0.03]'
-            }`}
+            open={topic === 'token'}
+            subtitle="Key properties"
+            title="What is the Auth Token?"
+          />
+          <ExploreTopic
             onClick={() => setTopic(topic === 'delivery' ? null : 'delivery')}
-            type="button"
-          >
-            <span className="block text-[0.82rem] font-medium text-h26-text">Why mail? Any other ways?</span>
-            <span className="mt-1 block text-[0.72rem] text-h26-textSecondary">Compare delivery channels</span>
-          </button>
-          <button
-            aria-expanded={topic === 'layers'}
-            className={`rounded-xl border px-4 py-3 text-left transition-colors ${
-              topic === 'layers'
-                ? 'border-h26-green/40 bg-h26-green/[0.06]'
-                : 'border-black/10 hover:border-h26-green/30 hover:bg-h26-green/[0.03]'
-            }`}
+            open={topic === 'delivery'}
+            subtitle="Compare delivery channels"
+            title="Why mail? Any other ways?"
+          />
+          <ExploreTopic
             onClick={() => setTopic(topic === 'layers' ? null : 'layers')}
-            type="button"
-          >
-            <span className="block text-[0.82rem] font-medium text-h26-text">Additional auth checks?</span>
-            <span className="mt-1 block text-[0.72rem] text-h26-textSecondary">Build a stronger policy</span>
-          </button>
-          <button
-            aria-expanded={topic === 'attack'}
-            className={`rounded-xl border px-4 py-3 text-left transition-colors ${
-              topic === 'attack'
-                ? 'border-red-300 bg-red-50/60'
-                : 'border-black/10 hover:border-red-200 hover:bg-red-50/30'
-            }`}
+            open={topic === 'layers'}
+            subtitle="Build a stronger policy"
+            title="Additional auth checks?"
+          />
+          <ExploreTopic
+            attack
             onClick={() => setTopic(topic === 'attack' ? null : 'attack')}
-            type="button"
-          >
-            <span className="block text-[0.82rem] font-medium text-h26-text">What if the token is compromised?</span>
-            <span className="mt-1 block text-[0.72rem] text-h26-textSecondary">Test loss, theft, and remediation</span>
-          </button>
-          <button
-            aria-expanded={topic === 'stuffing'}
-            className={`rounded-xl border px-4 py-3 text-left transition-colors ${
-              topic === 'stuffing'
-                ? 'border-red-300 bg-red-50/60'
-                : 'border-black/10 hover:border-red-200 hover:bg-red-50/30'
-            }`}
+            open={topic === 'attack'}
+            subtitle="Test loss, theft, and remediation"
+            title="What if the token is compromised?"
+          />
+          <ExploreTopic
+            attack
             onClick={() => setTopic(topic === 'stuffing' ? null : 'stuffing')}
-            type="button"
-          >
-            <span className="block text-[0.82rem] font-medium text-h26-text">
-              What if fake voters and votes are added?
-            </span>
-            <span className="mt-1 block text-[0.72rem] text-h26-textSecondary">
-              Ballot stuffing & voter-roll attacks
-            </span>
-          </button>
+            open={topic === 'stuffing'}
+            subtitle="Ballot stuffing & voter-roll attacks"
+            title="What if fake voters and votes are added?"
+          />
         </div>
 
         {topic === 'token' && (
@@ -358,7 +317,7 @@ export function Invite({ auth, onContinue }: { auth: string; onContinue: () => v
             </p>
           </div>
         )}
-      </div>
+      </ExploreStep>
     </div>
   )
 }

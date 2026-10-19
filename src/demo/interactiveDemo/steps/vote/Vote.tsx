@@ -17,6 +17,7 @@ import {
   DEMO_BALLOT_OPTIONS,
 } from '../../content'
 import { fakeCipher } from '../../shared/ciphertext'
+import { ExploreStep, ExploreTopic } from '../../shared/ExploreStep'
 import { formatMayor } from '../../shared/formatChoice'
 import { LabeledRow } from '../../shared/LabeledRow'
 import { PrimaryButton } from '../../shared/PrimaryButton'
@@ -86,9 +87,7 @@ export function Vote({ onPick }: { onPick: (c: string) => void }) {
       </PrimaryButton>
 
       <div className="mt-6 border-t border-black/[0.07] pt-5">
-        <p className="font-mono26 text-[10px] uppercase tracking-[0.14em] text-h26-muted">
-          Try other voting methods · optional
-        </p>
+        <p className="font-mono26 text-[10px] uppercase tracking-[0.14em] text-h26-muted">Try other voting methods</p>
         <div className="mt-3 flex flex-wrap gap-1.5">
           {BALLOT_METHODS.map((m) => (
             <button
@@ -111,23 +110,14 @@ export function Vote({ onPick }: { onPick: (c: string) => void }) {
         </div>
       </div>
 
-      <div className="mt-6 border-t border-black/[0.07] pt-5">
-        <p className="font-mono26 text-[10px] uppercase tracking-[0.14em] text-h26-muted">
-          Explore this step · optional
-        </p>
-        <button
-          aria-expanded={showEncrypt}
-          className={`mt-3 w-full rounded-xl border px-4 py-3 text-left transition-colors sm:max-w-sm ${
-            showEncrypt
-              ? 'border-h26-green/40 bg-h26-green/[0.06]'
-              : 'border-black/10 hover:border-h26-green/30 hover:bg-h26-green/[0.03]'
-          }`}
+      <ExploreStep>
+        <ExploreTopic
+          className="mt-3 w-full sm:max-w-sm"
           onClick={() => setShowEncrypt((v) => !v)}
-          type="button"
-        >
-          <span className="block text-[0.82rem] font-medium text-h26-text">On-device encryption</span>
-          <span className="mt-1 block text-[0.72rem] text-h26-textSecondary">What happens when you submit</span>
-        </button>
+          open={showEncrypt}
+          subtitle="What happens when you submit"
+          title="On-device encryption"
+        />
 
         {showEncrypt && (
           <div className="p-4 mt-3 space-y-3 rounded-xl bg-h26-bg">
@@ -150,7 +140,7 @@ export function Vote({ onPick }: { onPick: (c: string) => void }) {
             )}
           </div>
         )}
-      </div>
+      </ExploreStep>
     </div>
   )
 }

@@ -13,6 +13,7 @@ import { ballotDesignFor, OTHER_VOTERS } from '../../content'
 import { UnlockedVote } from '../../demoState'
 import { fakeCipherParts } from '../../shared/ciphertext'
 import { ExpandableHex } from '../../shared/ExpandableHex'
+import { ExploreStep, ExploreTopic } from '../../shared/ExploreStep'
 import { splitChoices } from '../../shared/formatChoice'
 import { PrimaryButton } from '../../shared/PrimaryButton'
 
@@ -173,10 +174,7 @@ export function Verify({
         )}
       </div>
 
-      <div className="mt-8 border-t border-black/[0.07] pt-5">
-        <p className="font-mono26 text-[10px] uppercase tracking-[0.14em] text-h26-muted">
-          Explore this step · optional
-        </p>
+      <ExploreStep className="mt-8">
         <div className="grid gap-2 mt-3 sm:grid-cols-2">
           {(
             [
@@ -189,20 +187,13 @@ export function Verify({
           ).map(([id, title, subtitle]) => {
             const open = topic === id
             return (
-              <button
-                aria-expanded={open}
-                className={`rounded-xl border px-4 py-3 text-left transition-colors ${
-                  open
-                    ? 'border-h26-green/40 bg-h26-green/[0.06]'
-                    : 'border-black/10 hover:border-h26-green/30 hover:bg-h26-green/[0.03]'
-                }`}
+              <ExploreTopic
                 key={id}
                 onClick={() => setTopic(open ? null : id)}
-                type="button"
-              >
-                <span className="block text-[0.82rem] font-medium text-h26-text">{title}</span>
-                <span className="mt-1 block text-[0.72rem] text-h26-textSecondary">{subtitle}</span>
-              </button>
+                open={open}
+                subtitle={subtitle}
+                title={title}
+              />
             )
           })}
         </div>
@@ -210,8 +201,8 @@ export function Verify({
         {topic === 'count' && (
           <div className="p-4 mt-3 rounded-xl bg-h26-bg">
             <p className="text-[0.8rem] leading-relaxed text-h26-textSecondary">
-              The totals above are just addition. Every device that opens this page can add the decrypted votes again.
-              A wrong total doesn&apos;t survive that.
+              The totals above are just addition. Every device that opens this page can add the decrypted votes again. A
+              wrong total doesn&apos;t survive that.
             </p>
           </div>
         )}
@@ -246,7 +237,7 @@ export function Verify({
             </p>
           </div>
         )}
-      </div>
+      </ExploreStep>
 
       <PrimaryButton className="mt-6" onClick={onDone}>
         Finish
