@@ -221,7 +221,7 @@ export function InteractiveDemo() {
             <header className="mb-5 sm:mb-6">
               {s.step !== 'intro' && (
                 <p className="font-mono26 mb-2 text-[10px] uppercase tracking-[0.16em] text-h26-muted">
-                  SIV Interactive Demo
+                  Interactive Demo
                 </p>
               )}
               <h1
