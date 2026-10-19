@@ -18,7 +18,7 @@ export function Audit({
       <div>
         <p className="text-[0.85rem] font-medium">1. Voter roll ↔ accepted ciphertexts</p>
         <p className="mt-1 text-[0.8rem] text-h26-textSecondary">
-          {boardVotes.length} encrypted submissions, each tied to a registered auth token. No anonymous stuffing.
+          {boardVotes.length} encrypted submissions, each tied to a registered Voter Code. No anonymous stuffing.
         </p>
       </div>
       <div>

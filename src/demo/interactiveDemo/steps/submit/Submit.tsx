@@ -202,7 +202,7 @@ export function Submit({
         {showEncryptionDetails && (
           <div className="px-4 py-4 mt-3 space-y-3 rounded-xl bg-h26-bg">
             <LabeledRow label="Election" value="City Mayoral Election" />
-            <LabeledRow label="Auth token" mono value={auth} />
+            <LabeledRow label="Voter Code" mono value={auth} />
             <LabeledRow emphasize label="Verification #" mono value={verification} />
             <LabeledRow label="Plaintext (device only)" value={`{ mayor: ${formatMayor(choice)} }`} />
             <LabeledRow label="Ciphertext" mono value={fakeCipher(verification + choice)} />

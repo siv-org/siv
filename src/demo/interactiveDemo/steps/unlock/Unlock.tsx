@@ -6,7 +6,7 @@ export function Unlock({ onContinue, unlocked }: { onContinue: () => void; unloc
   return (
     <div>
       <ol className="mb-5 space-y-2 text-[0.85rem] text-h26-textSecondary">
-        <li>✓ Auth tokens stripped</li>
+        <li>✓ Voter Codes stripped</li>
         <li>✓ Privacy Protectors shuffle + re-encrypt (mixnet)</li>
         <li>✓ Threshold unlock — vote contents public, identities unlinked</li>
       </ol>

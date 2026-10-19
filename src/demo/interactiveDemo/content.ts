@@ -16,7 +16,7 @@ export const POSTER_PROPERTIES: PosterProperty[] = [
   {
     id: 'stuffing',
     label: 'Duplicate voting & ballot stuffing',
-    short: 'One auth token → one accepted ciphertext',
+    short: 'One Voter Code → one accepted ciphertext',
   },
   {
     id: 'privacy',
@@ -64,7 +64,7 @@ export const HAPPY_PATH: DemoStep[] = ['intro', 'invite', 'vote', 'submit', 'unl
 
 export const STEP_META: Record<DemoStep, { blurb: string; title: string; unlocks?: PosterProperty['id'][] }> = {
   audit: {
-    blurb: 'Every ciphertext traces to a registered token. Anyone can re-tally the unlocked votes.',
+    blurb: 'Every ciphertext traces to a registered Voter Code. Anyone can re-tally the unlocked votes.',
     title: 'Auditor view',
     unlocks: ['stuffing', 'open'],
   },
@@ -82,7 +82,7 @@ export const STEP_META: Record<DemoStep, { blurb: string; title: string; unlocks
     title: 'SIV Interactive Demo',
   },
   invite: {
-    blurb: 'Your election admin sent a one-time Auth Token. Each registered voter gets one.',
+    blurb: 'Your election admin sent a one-time Voter Code. Each registered voter gets one.',
     title: 'Invitation',
     unlocks: ['stuffing'],
   },

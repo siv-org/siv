@@ -180,7 +180,7 @@ export function Verify({
             [
               ['count', 'Could the tally be wrong?', 'Anyone can re-add the published votes'],
               ['yours', 'Was my vote changed or dropped?', 'Match the # from your submitted page'],
-              ['roll', 'Were extra votes stuffed in?', 'Each row ties to a registered token'],
+              ['roll', 'Were extra votes stuffed in?', 'Each row ties to a registered Voter Code'],
               ['others', 'Did other voters check?', 'A spot check of the roll'],
               ['software', 'Do we have to trust the software?', 'The published list is the record'],
             ] as const
@@ -217,8 +217,8 @@ export function Verify({
         {topic === 'roll' && (
           <div className="p-4 mt-3 rounded-xl bg-h26-bg">
             <p className="text-[0.8rem] leading-relaxed text-h26-textSecondary">
-              {boardVotes.length} submissions, each accepted against one registered auth token. A stuffed ballot would
-              need a token that was never issued.
+              {boardVotes.length} submissions, each accepted against one registered Voter Code. A stuffed ballot would
+              need a Voter Code that was never issued.
             </p>
           </div>
         )}
