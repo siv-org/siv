@@ -8,7 +8,11 @@ Lazy singleton: only connect on first subscribe, not merely by importing this mo
 let client: Pusher | undefined
 export function getPusher() {
   if (typeof window === 'undefined') return // Important not to initialize on SSR — those connections are never dropped (bc window never closes)
+
   if (!client) {
+    // Skip pusher for self-identified bots & headless browsers
+    if (navigator?.webdriver || /bot|crawler|spider|headless/i.test(navigator?.userAgent || '')) return
+
     const created = new Pusher('9718ba0612df1a49e52b', { cluster: 'us3' })
     // Pusher.logToConsole = true
 
