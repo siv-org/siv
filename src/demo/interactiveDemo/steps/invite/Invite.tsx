@@ -38,10 +38,10 @@ export function Invite({ auth, onContinue }: { auth: string; onContinue: () => v
             Vote Invitation Sent via Postal Mail
           </span>
         </p>
-        <p className="mt-3 text-[1rem] text-h26-text">
+        <p className="mt-5 text-[1rem] text-h26-text">
           You’re invited to vote in <b>City Mayoral Election</b>.
         </p>
-        <p className="mt-3 text-[0.85rem] text-h26-textSecondary">This invitation is unique to you.</p>
+        <p className="mt-1 text-[0.85rem] text-h26-textSecondary">This invitation is unique to you.</p>
 
         <div className="mt-5 flex flex-col items-center gap-4 rounded-xl border border-black/[0.07] bg-white p-4 sm:flex-row sm:items-center sm:justify-center sm:gap-8">
           <InviteQRCode auth={auth} />
@@ -54,7 +54,7 @@ export function Invite({ auth, onContinue }: { auth: string; onContinue: () => v
             >
               local.gov/election
             </button>
-            <p className="mt-4 text-[0.75rem] text-h26-textSecondary">and enter your Auth Token:</p>
+            <p className="mt-3 text-[0.75rem] text-h26-textSecondary">and enter your Auth Token:</p>
             <p className="mt-1 font-mono26 text-[1rem] font-medium tracking-[0.12em] text-h26-text">{auth}</p>
           </div>
         </div>
