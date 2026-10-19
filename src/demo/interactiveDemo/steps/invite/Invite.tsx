@@ -69,7 +69,7 @@ export function Invite({ auth, onContinue }: { auth: string; onContinue: () => v
             onClick={() => setTopic(topic === 'token' ? null : 'token')}
             open={topic === 'token'}
             subtitle="Your unique, one-use voting credential"
-            title="What is my Voter Code?"
+            title="What is a Voter Code?"
           />
           <ExploreTopic
             onClick={() => setTopic(topic === 'delivery' ? null : 'delivery')}
