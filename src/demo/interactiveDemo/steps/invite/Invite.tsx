@@ -101,15 +101,19 @@ export function Invite({ auth, onContinue }: { auth: string; onContinue: () => v
         {topic === 'delivery' && (
           <div className="p-4 mt-3 rounded-xl bg-h26-bg">
             <p className="text-[0.8rem] leading-relaxed text-h26-textSecondary">
-              Postal mail is familiar, tied to a registered address, and can match today’s paper process. It is one
-              delivery channel—not a requirement of SIV.
+              Postal mail lets SIV follow familiar US vote-by-mail procedures for delivering voter credentials, while
+              the ballot is returned online. Election administrators can choose other methods to meet their election’s
+              requirements.
             </p>
-            <p className="mt-4 text-[0.78rem] font-medium text-h26-text">Other ways to deliver a Voter Code:</p>
+            <p className="mt-4 text-[0.78rem] font-medium text-h26-text">Other delivery and authentication options:</p>
             <div className="grid gap-2 mt-2 sm:grid-cols-3">
               {[
-                ['Email or SMS', 'Fast and affordable when contact details are already verified'],
-                ['Secure digital channel', 'Use an existing government or organization account'],
-                ['In person', 'Useful for high-assurance or replacement credentials'],
+                [
+                  'Digital Government Credentials',
+                  'Authenticate voters using pre-distributed public/private key pairs: digital IDs.',
+                ],
+                ['Email', 'Send each voter their unique Voter Code link by email: fast, simple, & affordable.'],
+                ['In person', 'Give each eligible voter their code in person. E.g. for in-person conventions.'],
               ].map(([label, description]) => (
                 <div className="px-3 py-2 bg-white rounded-lg border border-black/[0.07]" key={label}>
                   <p className="text-[0.76rem] font-medium text-h26-text">{label}</p>
@@ -118,7 +122,8 @@ export function Invite({ auth, onContinue }: { auth: string; onContinue: () => v
               ))}
             </div>
             <p className="mt-3 text-[0.72rem] text-h26-textSecondary">
-              Jurisdictions can combine channels or choose different ones for different voters.
+              Election administrators can combine these methods with additional identity checks to meet their
+              jurisdiction’s requirements.
             </p>
           </div>
         )}
