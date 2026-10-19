@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { CANDIDATES } from '../../content'
 import { fakeCipher, fakeCipherParts } from '../../shared/ciphertext'
 import { ExpandableHex } from '../../shared/ExpandableHex'
-import { ExploreStep, ExploreTopic } from '../../shared/ExploreStep'
+import { ExploreSection, ExploreTopic } from '../../shared/ExploreSection'
 import { formatMayor, splitChoices } from '../../shared/formatChoice'
 import { LabeledRow } from '../../shared/LabeledRow'
 import { PrimaryButton } from '../../shared/PrimaryButton'
@@ -216,7 +216,7 @@ export function Submit({
         <SecondaryButton onClick={onCoercion}>Try coercion override</SecondaryButton>
       </div>
 
-      <ExploreStep className="mt-8">
+      <ExploreSection className="mt-8">
         <div className="grid gap-2 mt-3 sm:grid-cols-2">
           {(
             [
@@ -371,7 +371,7 @@ export function Submit({
             </ul>
           </div>
         )}
-      </ExploreStep>
+      </ExploreSection>
     </div>
   )
 }

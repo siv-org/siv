@@ -1,4 +1,13 @@
-export function ExploreStep({ children, className = 'mt-6' }: { children: React.ReactNode; className?: string }) {
+export function ExploreGroup({ children, title }: { children: React.ReactNode; title: string }) {
+  return (
+    <section aria-label={title} className="mt-6">
+      <h3 className="font-mono26 text-[10px] uppercase tracking-[0.14em] text-h26-muted">{title}</h3>
+      {children}
+    </section>
+  )
+}
+
+export function ExploreSection({ children, className = 'mt-6' }: { children: React.ReactNode; className?: string }) {
   return (
     <div className={`border-t border-black/[0.07] pt-5 ${className}`}>
       <p className="font-mono26 text-[10px] uppercase tracking-[0.14em] text-h26-muted">Explore this step</p>

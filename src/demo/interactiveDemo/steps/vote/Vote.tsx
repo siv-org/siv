@@ -17,7 +17,7 @@ import {
   DEMO_BALLOT_OPTIONS,
 } from '../../content'
 import { fakeCipher } from '../../shared/ciphertext'
-import { ExploreStep, ExploreTopic } from '../../shared/ExploreStep'
+import { ExploreSection, ExploreTopic } from '../../shared/ExploreSection'
 import { formatMayor } from '../../shared/formatChoice'
 import { LabeledRow } from '../../shared/LabeledRow'
 import { PrimaryButton } from '../../shared/PrimaryButton'
@@ -110,7 +110,7 @@ export function Vote({ onPick }: { onPick: (c: string) => void }) {
         </div>
       </div>
 
-      <ExploreStep>
+      <ExploreSection>
         <ExploreTopic
           className="mt-3 w-full sm:max-w-sm"
           onClick={() => setShowEncrypt((v) => !v)}
@@ -140,7 +140,7 @@ export function Vote({ onPick }: { onPick: (c: string) => void }) {
             )}
           </div>
         )}
-      </ExploreStep>
+      </ExploreSection>
     </div>
   )
 }

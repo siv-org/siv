@@ -13,7 +13,7 @@ import { ballotDesignFor, OTHER_VOTERS } from '../../content'
 import { UnlockedVote } from '../../demoState'
 import { fakeCipherParts } from '../../shared/ciphertext'
 import { ExpandableHex } from '../../shared/ExpandableHex'
-import { ExploreStep, ExploreTopic } from '../../shared/ExploreStep'
+import { ExploreSection, ExploreTopic } from '../../shared/ExploreSection'
 import { splitChoices } from '../../shared/formatChoice'
 import { PrimaryButton } from '../../shared/PrimaryButton'
 
@@ -174,7 +174,7 @@ export function Verify({
         )}
       </div>
 
-      <ExploreStep className="mt-8">
+      <ExploreSection className="mt-8">
         <div className="grid gap-2 mt-3 sm:grid-cols-2">
           {(
             [
@@ -237,7 +237,7 @@ export function Verify({
             </p>
           </div>
         )}
-      </ExploreStep>
+      </ExploreSection>
 
       <PrimaryButton className="mt-6" onClick={onDone}>
         Finish

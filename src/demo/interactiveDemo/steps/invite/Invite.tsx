@@ -2,7 +2,7 @@ import { Mail } from 'lucide-react'
 import { useState } from 'react'
 import { generateAuthToken } from 'src/crypto/generate-auth-tokens'
 
-import { ExploreStep, ExploreTopic } from '../../shared/ExploreStep'
+import { ExploreGroup, ExploreSection, ExploreTopic } from '../../shared/ExploreSection'
 import { PrimaryButton } from '../../shared/PrimaryButton'
 import { SecondaryButton } from '../../shared/SecondaryButton'
 import { InviteQRCode } from './InviteQRCode'
@@ -63,39 +63,19 @@ export function Invite({ auth, onContinue }: { auth: string; onContinue: () => v
         Open ballot
       </PrimaryButton>
 
-      <ExploreStep>
+      <ExploreSection>
         <div className="grid gap-2 mt-3 sm:grid-cols-2">
           <ExploreTopic
             onClick={() => setTopic(topic === 'token' ? null : 'token')}
             open={topic === 'token'}
-            subtitle="Key properties"
-            title="What is the Auth Token?"
+            subtitle="Your unique, one-use voting credential"
+            title="What is my Auth Token?"
           />
           <ExploreTopic
             onClick={() => setTopic(topic === 'delivery' ? null : 'delivery')}
             open={topic === 'delivery'}
-            subtitle="Compare delivery channels"
-            title="Why mail? Any other ways?"
-          />
-          <ExploreTopic
-            onClick={() => setTopic(topic === 'layers' ? null : 'layers')}
-            open={topic === 'layers'}
-            subtitle="Build a stronger policy"
-            title="Additional auth checks?"
-          />
-          <ExploreTopic
-            attack
-            onClick={() => setTopic(topic === 'attack' ? null : 'attack')}
-            open={topic === 'attack'}
-            subtitle="Test loss, theft, and remediation"
-            title="What if the token is compromised?"
-          />
-          <ExploreTopic
-            attack
-            onClick={() => setTopic(topic === 'stuffing' ? null : 'stuffing')}
-            open={topic === 'stuffing'}
-            subtitle="Ballot stuffing & voter-roll attacks"
-            title="What if fake voters and votes are added?"
+            subtitle="How invitations reach eligible voters"
+            title="Why postal mail?"
           />
         </div>
 
@@ -147,177 +127,210 @@ export function Invite({ auth, onContinue }: { auth: string; onContinue: () => v
           </div>
         )}
 
-        {topic === 'layers' && (
-          <div className="p-4 mt-3 rounded-xl bg-h26-bg">
-            <p className="text-[0.8rem] leading-relaxed text-h26-textSecondary">
-              Delivery gets the credential to the voter. Additional checks can raise confidence that the intended voter
-              is the person using it.
-            </p>
-            <p className="mt-4 text-[0.78rem] font-medium text-h26-text">Build an authentication policy:</p>
-            <div className="grid gap-2 mt-2 sm:grid-cols-2">
-              {authLayers.map(([label, description]) => (
-                <button
-                  aria-pressed={layers.has(label)}
-                  className={`rounded-lg border px-3 py-2 text-left transition-colors ${
-                    layers.has(label)
-                      ? 'border-h26-green/40 bg-white text-h26-text'
-                      : 'border-black/[0.07] bg-white/60 text-h26-textSecondary hover:border-h26-green/30'
-                  }`}
-                  key={label}
-                  onClick={() =>
-                    setLayers((prev) => {
-                      const next = new Set(prev)
-                      if (next.has(label)) next.delete(label)
-                      else next.add(label)
-                      return next
-                    })
-                  }
-                  type="button"
+        <ExploreGroup title="Safeguards">
+          <div className="grid gap-2 mt-3 sm:grid-cols-2">
+            <ExploreTopic
+              onClick={() => setTopic(topic === 'layers' ? null : 'layers')}
+              open={topic === 'layers'}
+              subtitle="Add identity checks to your authentication policy"
+              title="How can voter identity be checked?"
+            />
+            <ExploreTopic
+              onClick={() => setTopic(topic === 'attack' ? null : 'attack')}
+              open={topic === 'attack'}
+              subtitle="See how revocation and replacement work"
+              title="What if my token is lost or stolen?"
+            />
+            <ExploreTopic
+              onClick={() => setTopic(topic === 'stuffing' ? null : 'stuffing')}
+              open={topic === 'stuffing'}
+              subtitle="Explore token checks and voter-roll audits"
+              title="Could someone submit extra votes?"
+            />
+          </div>
+
+          {topic === 'layers' && (
+            <div className="p-4 mt-3 rounded-xl bg-h26-bg">
+              <p className="text-[0.8rem] leading-relaxed text-h26-textSecondary">
+                Delivery gets the credential to the voter. Additional checks can raise confidence that the intended
+                voter is the person using it.
+              </p>
+              <p className="mt-4 text-[0.78rem] font-medium text-h26-text">Build an authentication policy:</p>
+              <div className="grid gap-2 mt-2 sm:grid-cols-2">
+                {authLayers.map(([label, description]) => (
+                  <button
+                    aria-pressed={layers.has(label)}
+                    className={`rounded-lg border px-3 py-2 text-left transition-colors ${
+                      layers.has(label)
+                        ? 'border-h26-green/40 bg-white text-h26-text'
+                        : 'border-black/[0.07] bg-white/60 text-h26-textSecondary hover:border-h26-green/30'
+                    }`}
+                    key={label}
+                    onClick={() =>
+                      setLayers((prev) => {
+                        const next = new Set(prev)
+                        if (next.has(label)) next.delete(label)
+                        else next.add(label)
+                        return next
+                      })
+                    }
+                    type="button"
+                  >
+                    <span className="block text-[0.76rem] font-medium">
+                      {layers.has(label) ? '✓ ' : '+ '}
+                      {label}
+                    </span>
+                    <span className="mt-0.5 block text-[0.68rem] opacity-70">{description}</span>
+                  </button>
+                ))}
+              </div>
+              <p className="mt-3 text-[0.72rem] text-h26-textSecondary">
+                Policy: Postal invitation
+                {[...layers].map((layer) => ` + ${layer}`).join('')}
+              </p>
+              <p className="mt-3 text-[0.72rem]">
+                <a className="text-h26-green hover:underline" href="/protocol#1" target="_blank">
+                  Protocol
+                </a>
+                {' · '}
+                <a
+                  className="text-h26-green hover:underline"
+                  href="https://docs.siv.org/authentication"
+                  rel="noreferrer"
+                  target="_blank"
                 >
-                  <span className="block text-[0.76rem] font-medium">
-                    {layers.has(label) ? '✓ ' : '+ '}
+                  Authentication details
+                </a>
+              </p>
+            </div>
+          )}
+
+          {topic === 'attack' && (
+            <div className="p-4 mt-3 rounded-xl bg-h26-bg">
+              <p className="text-[0.78rem] font-medium text-h26-text">Replace a compromised credential</p>
+              <p className="mt-2 text-[0.75rem] leading-relaxed text-h26-textSecondary">
+                An election administrator can revoke a token and issue a replacement after re-authenticating the voter.
+                Try a scenario to see the steps.
+              </p>
+              <p className="mt-4 text-[0.75rem] font-medium text-h26-text">Try a scenario</p>
+              <div className="flex flex-wrap gap-2 mt-2">
+                {[
+                  ['lost', 'Token lost or stolen'],
+                  ['used', 'Someone voted first'],
+                ].map(([id, label]) => (
+                  <button
+                    aria-pressed={attack === id}
+                    className={`rounded-full border px-3 py-2 text-[0.72rem] transition-colors ${
+                      attack === id
+                        ? 'border-h26-green/40 bg-white font-medium text-h26-green'
+                        : 'border-black/10 bg-white/60 text-h26-textSecondary hover:border-h26-green/30'
+                    }`}
+                    key={id}
+                    onClick={() => {
+                      setAttack(id as 'lost' | 'used')
+                      setRemediated(false)
+                    }}
+                    type="button"
+                  >
                     {label}
-                  </span>
-                  <span className="mt-0.5 block text-[0.68rem] opacity-70">{description}</span>
-                </button>
-              ))}
-            </div>
-            <p className="mt-3 text-[0.72rem] text-h26-textSecondary">
-              Policy: Postal invitation
-              {[...layers].map((layer) => ` + ${layer}`).join('')}
-            </p>
-            <p className="mt-3 text-[0.72rem]">
-              <a className="text-h26-green hover:underline" href="/protocol#1" target="_blank">
-                Protocol
-              </a>
-              {' · '}
-              <a
-                className="text-h26-green hover:underline"
-                href="https://docs.siv.org/authentication"
-                rel="noreferrer"
-                target="_blank"
-              >
-                Authentication details
-              </a>
-            </p>
-          </div>
-        )}
-
-        {topic === 'attack' && (
-          <div className="p-4 mt-3 rounded-xl bg-red-50/60">
-            <p className="text-[0.78rem] font-medium text-h26-text">Choose an attack:</p>
-            <div className="flex flex-wrap gap-2 mt-2">
-              {[
-                ['lost', 'Token lost or stolen'],
-                ['used', 'Someone voted first'],
-              ].map(([id, label]) => (
-                <button
-                  aria-pressed={attack === id}
-                  className={`rounded-full border px-3 py-2 text-[0.72rem] transition-colors ${
-                    attack === id
-                      ? 'border-red-300 bg-white font-medium text-red-800'
-                      : 'border-red-200/70 bg-white/60 text-h26-textSecondary hover:border-red-300'
-                  }`}
-                  key={id}
-                  onClick={() => {
-                    setAttack(id as 'lost' | 'used')
-                    setRemediated(false)
-                  }}
-                  type="button"
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
-
-            {attack && !remediated && (
-              <div className="pl-3 mt-4 border-l-2 border-red-300">
-                <p className="text-[0.78rem] font-medium text-red-800">
-                  {attack === 'lost'
-                    ? 'Until it is revoked, whoever holds the token could try to vote.'
-                    : 'The one-use rule rejects your attempt because the token was already used.'}
-                </p>
-                <p className="mt-2 text-[0.75rem] leading-relaxed text-h26-textSecondary">
-                  The admin re-authenticates the voter, invalidates the old credential and any linked submission, then
-                  issues a replacement. Every change leaves an audit trail.
-                </p>
-                <SecondaryButton className="mt-3" onClick={() => setRemediated(true)}>
-                  Revoke + issue replacement
-                </SecondaryButton>
+                  </button>
+                ))}
               </div>
-            )}
 
-            {attack && remediated && (
-              <div className="px-3 py-3 mt-4 bg-white rounded-lg border border-h26-green/30">
-                <p className="text-[0.78rem] font-medium text-h26-green">Threat remediated</p>
-                <p className="mt-2 font-mono26 text-[0.72rem] text-h26-muted line-through">Old: {auth}</p>
-                <p className="mt-1 font-mono26 text-[0.78rem] text-h26-text">Replacement: {replacementAuth}</p>
-                <p className="mt-2 text-[0.7rem] text-h26-textSecondary">
-                  The old token is rejected; the voter can cast once with the replacement.
-                </p>
-              </div>
-            )}
-          </div>
-        )}
+              {attack && !remediated && (
+                <div className="pl-3 mt-4 border-l-2 border-red-300">
+                  <p className="text-[0.78rem] font-medium text-red-800">
+                    {attack === 'lost'
+                      ? 'Until it is revoked, whoever holds the token could try to vote.'
+                      : 'The one-use rule rejects your attempt because the token was already used.'}
+                  </p>
+                  <p className="mt-2 text-[0.75rem] leading-relaxed text-h26-textSecondary">
+                    The admin re-authenticates the voter, invalidates the old credential and any linked submission, then
+                    issues a replacement. Every change leaves an audit trail.
+                  </p>
+                  <SecondaryButton className="mt-3" onClick={() => setRemediated(true)}>
+                    Revoke + issue replacement
+                  </SecondaryButton>
+                </div>
+              )}
 
-        {topic === 'stuffing' && (
-          <div className="p-4 mt-3 rounded-xl bg-red-50/60">
-            <p className="text-[0.78rem] font-medium text-h26-text">Choose an attack:</p>
-            <div className="flex flex-wrap gap-2 mt-2">
-              {[
-                ['roll', 'Fake voters on the roll'],
-                ['guess', 'Invented Auth Tokens'],
-                ['reuse', 'Extra submissions'],
-              ].map(([id, label]) => (
-                <button
-                  aria-pressed={stuffing === id}
-                  className={`rounded-full border px-3 py-2 text-[0.72rem] transition-colors ${
-                    stuffing === id
-                      ? 'border-red-300 bg-white font-medium text-red-800'
-                      : 'border-red-200/70 bg-white/60 text-h26-textSecondary hover:border-red-300'
-                  }`}
-                  key={id}
-                  onClick={() => setStuffing(id as 'guess' | 'reuse' | 'roll')}
-                  type="button"
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
-
-            {stuffing && (
-              <div className="pl-3 mt-4 border-l-2 border-red-300">
-                <p className="text-[0.78rem] font-medium text-red-800">
-                  {stuffing === 'roll' && 'Padding the voter roll with fake people.'}
-                  {stuffing === 'guess' && 'Trying to invent Auth Tokens that were never issued.'}
-                  {stuffing === 'reuse' && 'Submitting without a token, or reusing one already accepted.'}
-                </p>
-                <p className="mt-2 text-[0.75rem] leading-relaxed text-h26-textSecondary">
-                  {stuffing === 'roll' &&
-                    'Eligibility is still a voter-roll problem — same as paper. The roll can be audited. SIV does not invent who is allowed to vote; it binds each accepted ciphertext to a registered token.'}
-                  {stuffing === 'guess' &&
-                    'Tokens are generated by the election admin and infeasible to guess. Submissions with unknown tokens are rejected.'}
-                  {stuffing === 'reuse' &&
-                    'One Auth Token → one accepted ciphertext. A second use is rejected, and every accepted submission is visible on the public board for audit.'}
-                </p>
-                <div className="px-3 py-3 mt-3 bg-white rounded-lg border border-h26-green/30">
-                  <p className="text-[0.78rem] font-medium text-h26-green">
-                    {stuffing === 'roll' && 'Defense: audit the voter roll'}
-                    {stuffing === 'guess' && 'Defense: only issued tokens are accepted'}
-                    {stuffing === 'reuse' && 'Defense: one token, one accepted vote'}
+              {attack && remediated && (
+                <div className="px-3 py-3 mt-4 bg-white rounded-lg border border-h26-green/30">
+                  <p className="text-[0.78rem] font-medium text-h26-green">Replacement issued</p>
+                  <p className="mt-2 font-mono26 text-[0.72rem] text-h26-muted line-through">Old: {auth}</p>
+                  <p className="mt-1 font-mono26 text-[0.78rem] text-h26-text">Replacement: {replacementAuth}</p>
+                  <p className="mt-2 text-[0.7rem] text-h26-textSecondary">
+                    The old token is rejected; the voter can cast once with the replacement.
                   </p>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
+          )}
 
-            <p className="mt-3 text-[0.72rem]">
-              <a className="text-h26-green hover:underline" href="/faq#1p1v" target="_blank">
-                How does SIV ensure One Vote per Person?
-              </a>
-            </p>
-          </div>
-        )}
-      </ExploreStep>
+          {topic === 'stuffing' && (
+            <div className="p-4 mt-3 rounded-xl bg-h26-bg">
+              <p className="text-[0.78rem] font-medium text-h26-text">One issued token, one accepted vote</p>
+              <p className="mt-2 text-[0.75rem] leading-relaxed text-h26-textSecondary">
+                Token checks reject unknown or reused credentials. Checking that registered voters are eligible still
+                requires voter-roll audits. Explore what each safeguard addresses.
+              </p>
+              <p className="mt-4 text-[0.75rem] font-medium text-h26-text">Try a scenario</p>
+              <div className="flex flex-wrap gap-2 mt-2">
+                {[
+                  ['roll', 'Fake voters on the roll'],
+                  ['guess', 'Invented Auth Tokens'],
+                  ['reuse', 'Extra submissions'],
+                ].map(([id, label]) => (
+                  <button
+                    aria-pressed={stuffing === id}
+                    className={`rounded-full border px-3 py-2 text-[0.72rem] transition-colors ${
+                      stuffing === id
+                        ? 'border-h26-green/40 bg-white font-medium text-h26-green'
+                        : 'border-black/10 bg-white/60 text-h26-textSecondary hover:border-h26-green/30'
+                    }`}
+                    key={id}
+                    onClick={() => setStuffing(id as 'guess' | 'reuse' | 'roll')}
+                    type="button"
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+
+              {stuffing && (
+                <div className="pl-3 mt-4 border-l-2 border-red-300">
+                  <p className="text-[0.78rem] font-medium text-red-800">
+                    {stuffing === 'roll' && 'Padding the voter roll with fake people.'}
+                    {stuffing === 'guess' && 'Trying to invent Auth Tokens that were never issued.'}
+                    {stuffing === 'reuse' && 'Submitting without a token, or reusing one already accepted.'}
+                  </p>
+                  <p className="mt-2 text-[0.75rem] leading-relaxed text-h26-textSecondary">
+                    {stuffing === 'roll' &&
+                      'Eligibility is still a voter-roll problem — same as paper. The roll can be audited. SIV does not invent who is allowed to vote; it binds each accepted ciphertext to a registered token.'}
+                    {stuffing === 'guess' &&
+                      'Tokens are generated by the election admin and infeasible to guess. Submissions with unknown tokens are rejected.'}
+                    {stuffing === 'reuse' &&
+                      'One Auth Token → one accepted ciphertext. A second use is rejected, and every accepted submission is visible on the public board for audit.'}
+                  </p>
+                  <div className="px-3 py-3 mt-3 bg-white rounded-lg border border-h26-green/30">
+                    <p className="text-[0.78rem] font-medium text-h26-green">
+                      {stuffing === 'roll' && 'Defense: audit the voter roll'}
+                      {stuffing === 'guess' && 'Defense: only issued tokens are accepted'}
+                      {stuffing === 'reuse' && 'Defense: one token, one accepted vote'}
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              <p className="mt-3 text-[0.72rem]">
+                <a className="text-h26-green hover:underline" href="/faq#1p1v" target="_blank">
+                  How does SIV ensure One Vote per Person?
+                </a>
+              </p>
+            </div>
+          )}
+        </ExploreGroup>
+      </ExploreSection>
     </div>
   )
 }
