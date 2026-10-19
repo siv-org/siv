@@ -82,8 +82,9 @@ export function Invite({ auth, onContinue }: { auth: string; onContinue: () => v
         {topic === 'token' && (
           <div className="p-4 mt-3 rounded-xl bg-h26-bg">
             <p className="text-[0.8rem] leading-relaxed text-h26-textSecondary">
-              The invitation’s job is to get each voter their Voter Code — the one-time credential that lets them cast.
-              Yours in this demo: <span className="font-medium font-mono26 text-h26-text">{auth}</span>
+              Each eligible voter receives a unique Voter Code from their election administrator. This code lets them
+              submit one vote in the election. Your demo Voter Code:{' '}
+              <span className="font-medium font-mono26 text-h26-text">{auth}</span>
             </p>
             <p className="mt-4 text-[0.78rem] font-medium text-h26-text">Key Properties of Voter Codes</p>
             <ul className="mt-2 space-y-1.5">
@@ -94,11 +95,6 @@ export function Invite({ auth, onContinue }: { auth: string; onContinue: () => v
                 </li>
               ))}
             </ul>
-            <p className="mt-3 text-[0.72rem]">
-              <a className="text-h26-green hover:underline" href="/faq#1p1v" target="_blank">
-                How does SIV ensure One Vote per Person?
-              </a>
-            </p>
           </div>
         )}
 
@@ -321,12 +317,6 @@ export function Invite({ auth, onContinue }: { auth: string; onContinue: () => v
                   </div>
                 </div>
               )}
-
-              <p className="mt-3 text-[0.72rem]">
-                <a className="text-h26-green hover:underline" href="/faq#1p1v" target="_blank">
-                  How does SIV ensure One Vote per Person?
-                </a>
-              </p>
             </div>
           )}
         </ExploreGroup>
