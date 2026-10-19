@@ -32,10 +32,10 @@ export function Invite({ auth, onContinue }: { auth: string; onContinue: () => v
   return (
     <div>
       <div className="px-4 py-5 rounded-xl bg-h26-bg sm:px-6">
-        <p className="flex items-center gap-2 text-[10px] text-h26-muted">
-          <Mail aria-hidden className="size-5 shrink-0" strokeWidth={2.25} />
+        <p className="flex items-center gap-2 text-[10px] text-h26-green">
+          <Mail aria-hidden className="size-5 shrink-0" strokeWidth={1.5} />
           <span className="font-mono26 uppercase tracking-[0.14em]">
-            Vote Invitation: voter receives via postal mail
+            Vote Invitation Sent via Postal Mail
           </span>
         </p>
         <p className="mt-3 text-[1rem] text-h26-text">
