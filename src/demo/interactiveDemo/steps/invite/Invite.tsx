@@ -134,13 +134,18 @@ export function Invite({ auth, onContinue }: { auth: string; onContinue: () => v
           <ExploreTopic
             onClick={() => setTopic(topic === 'layers' ? null : 'layers')}
             open={topic === 'layers'}
-            subtitle="Choose the checks voters must complete"
+            subtitle="Add checks alongside delivery of the Voter Code"
             title="Can we do additional identity checks?"
           />
           {topic === 'layers' && (
             <div className="p-4 rounded-xl bg-h26-bg sm:col-span-2">
               <p className="text-[0.8rem] leading-relaxed text-h26-textSecondary">
-                Based on election requirements, the authentication process ca be customized:
+                Each voter needs their Voter Code to cast a vote. How that code reaches them is the first identity
+                check—for example, sending it by postal mail to the address on their voter registration record.
+              </p>
+              <p className="mt-3 text-[0.8rem] leading-relaxed text-h26-textSecondary">
+                Election admins can then require additional checks, such as social security number, or drawn signatures
+                that match the voter record.
               </p>
               <p className="mt-4 text-[0.78rem] font-medium text-h26-text">Choose additional checks</p>
               <div className="grid gap-2 mt-2 sm:grid-cols-2">
