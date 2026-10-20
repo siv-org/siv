@@ -62,9 +62,9 @@ export function Invite({ auth, onContinue }: { auth: string; onContinue: () => v
         </div>
       </div>
 
-      <PrimaryButton className="mt-5" onClick={onContinue}>
-        Open ballot
-      </PrimaryButton>
+      <div className="flex justify-end mt-5">
+        <PrimaryButton onClick={onContinue}>Open ballot</PrimaryButton>
+      </div>
 
       <ExploreSection>
         <div className="grid grid-flow-row-dense gap-2 mt-3 sm:grid-cols-2">
