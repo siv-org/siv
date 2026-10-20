@@ -7,13 +7,15 @@ import { PrimaryButton } from '../../shared/PrimaryButton'
 import { SecondaryButton } from '../../shared/SecondaryButton'
 import { InviteQRCode } from './InviteQRCode'
 
+type ExploreTopicId = 'attack' | 'delivery' | 'layers' | 'paper' | 'stuffing' | 'token'
+
 export function Invite({ auth, onContinue }: { auth: string; onContinue: () => void }) {
   const [attack, setAttack] = useState<'lost' | 'used' | null>(null)
   const [layers, setLayers] = useState(() => new Set<string>())
   const [remediated, setRemediated] = useState(false)
   const [replacementAuth] = useState(() => generateAuthToken())
   const [stuffing, setStuffing] = useState<'guess' | 'reuse' | 'roll' | null>(null)
-  const [topic, setTopic] = useState<'attack' | 'delivery' | 'layers' | 'stuffing' | 'token' | null>(null)
+  const [topic, setTopic] = useState<ExploreTopicId | null>(null)
   const authLayers = [
     ['Signature', 'Compare a signature drawn on screen with the signature on file.'],
     ['Photo ID + selfie', 'Compare the voter’s selfie with the photo on their government ID.'],
@@ -184,6 +186,25 @@ export function Invite({ auth, onContinue }: { auth: string; onContinue: () => v
                 Each check has trade-offs in accessibility, or protection against impersonation. Knowing an ID number or
                 receiving a phone code does not, by itself, prove 100% who someone is. Confirming voters&apos;
                 identities depends on accurate registration records and voter-roll audits.
+              </p>
+            </div>
+          )}
+          <ExploreTopic
+            onClick={() => setTopic(topic === 'paper' ? null : 'paper')}
+            open={topic === 'paper'}
+            subtitle="SIV works alongside in-person voting or vote by mail"
+            title="Digital voting as an additional option"
+          />
+          {topic === 'paper' && (
+            <div className="p-4 rounded-xl bg-h26-bg sm:col-span-2">
+              <p className="text-[0.8rem] leading-relaxed text-h26-textSecondary">
+                SIV can be offered as an additional option alongside in-person voting and vote by mail. Voters who
+                prefer paper can keep using it.
+              </p>
+              <p className="mt-3 text-[0.8rem] leading-relaxed text-h26-textSecondary">
+                Election administrators coordinate participation records across voting methods so each voter has only
+                one ballot counted. If a voter’s ballot is recorded through another method, their Voter Code is
+                invalidated to prevent an additional digital vote through SIV.
               </p>
             </div>
           )}
