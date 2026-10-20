@@ -15,10 +15,13 @@ export function Invite({ auth, onContinue }: { auth: string; onContinue: () => v
   const [stuffing, setStuffing] = useState<'guess' | 'reuse' | 'roll' | null>(null)
   const [topic, setTopic] = useState<'attack' | 'delivery' | 'layers' | 'stuffing' | 'token' | null>(null)
   const authLayers = [
-    ['Drawn signature', 'Compare with the voter’s registration record'],
-    ['ID + selfie', 'Higher-assurance identity check'],
-    ['IP geolocation', 'Flag or limit unexpected locations'],
-    ['Time-based code', 'Require a second possession factor'],
+    ['Signature', 'Compare a signature drawn on screen with the signature on file.'],
+    ['Photo ID + selfie', 'Compare the voter’s selfie with the photo on their government ID.'],
+    ['SSN / government ID number', 'Check an identification number against the voter’s registration record.'],
+    ['Text message code', 'Send a one-time code to the voter’s registered phone number.'],
+    ['Authenticator app code', 'Ask for a time-based code from an authenticator app set up in advance.'],
+    ['Digital ID', 'Verify a digital signature using the voter’s registered public key.'],
+    ['IP location', 'Flag unexpected connection locations for review.'],
   ]
   const voterCodeProperties = [
     'required to vote',
@@ -131,16 +134,15 @@ export function Invite({ auth, onContinue }: { auth: string; onContinue: () => v
           <ExploreTopic
             onClick={() => setTopic(topic === 'layers' ? null : 'layers')}
             open={topic === 'layers'}
-            subtitle="Add identity checks to your authentication policy"
+            subtitle="Choose the checks voters must complete"
             title="Can we do additional identity checks?"
           />
           {topic === 'layers' && (
             <div className="p-4 rounded-xl bg-h26-bg sm:col-span-2">
               <p className="text-[0.8rem] leading-relaxed text-h26-textSecondary">
-                Delivery gets the credential to the voter. Additional checks can raise confidence that the intended
-                voter is the person using it.
+                Based on election requirements, the authentication process ca be customized:
               </p>
-              <p className="mt-4 text-[0.78rem] font-medium text-h26-text">Build an authentication policy:</p>
+              <p className="mt-4 text-[0.78rem] font-medium text-h26-text">Choose additional checks</p>
               <div className="grid gap-2 mt-2 sm:grid-cols-2">
                 {authLayers.map(([label, description]) => (
                   <button
@@ -169,23 +171,13 @@ export function Invite({ auth, onContinue }: { auth: string; onContinue: () => v
                   </button>
                 ))}
               </div>
-              <p className="mt-3 text-[0.72rem] text-h26-textSecondary">
-                Policy: Postal invitation
-                {[...layers].map((layer) => ` + ${layer}`).join('')}
-              </p>
-              <p className="mt-3 text-[0.72rem]">
-                <a className="text-h26-green hover:underline" href="/protocol#1" target="_blank">
-                  Protocol
-                </a>
-                {' · '}
-                <a
-                  className="text-h26-green hover:underline"
-                  href="https://docs.siv.org/authentication"
-                  rel="noreferrer"
-                  target="_blank"
-                >
-                  Authentication details
-                </a>
+              {layers.size > 0 && (
+                <p className="mt-3 text-[0.72rem] text-h26-textSecondary">Selected checks: {[...layers].join(' + ')}</p>
+              )}
+              <p className="mt-3 text-[0.72rem] leading-relaxed text-h26-textSecondary">
+                Each check has trade-offs in accessibility, or protection against impersonation. Knowing an ID number or
+                receiving a phone code does not, by itself, prove 100% who someone is. Confirming voters&apos;
+                identities depends on accurate registration records and voter-roll audits.
               </p>
             </div>
           )}
