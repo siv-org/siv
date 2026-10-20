@@ -185,7 +185,7 @@ export function Verify({
               ['software', 'Do we have to trust the software?', 'The published list is the record'],
               [
                 'roll',
-                'What prevents votes for fake or nonparticipating voters? [draft tbd]',
+                'What prevents votes for fake or nonparticipating voters?',
                 'Audit eligibility, participation, and one counted ballot per voter',
               ],
             ] as const
@@ -238,40 +238,40 @@ export function Verify({
         {topic === 'roll' && (
           <div className="p-4 mt-3 rounded-xl bg-h26-bg">
             <p className="text-[0.8rem] leading-relaxed text-h26-textSecondary">
-              [draft tbd] The demo shows {boardVotes.length} submissions associated with registered Voter Codes. A valid
-              code alone does not establish that the registered person was eligible or actually cast the ballot. Someone
-              could misuse an issued code, or a fake registration could receive a valid code.
+              The demo shows {boardVotes.length} submissions associated with registered Voter Codes. A valid code alone
+              does not establish that the registered person was eligible or actually cast the ballot. Someone could
+              misuse an issued code, or a fake registration could receive a valid code.
             </p>
             <ul className="mt-3 space-y-2 text-[0.8rem] leading-relaxed text-h26-textSecondary">
               <li>
-                [draft tbd] Eligibility: check the voter roll against registration evidence and investigate fake,
-                duplicate, or improperly removed entries.
+                Eligibility: check the voter roll against registration evidence and investigate fake, duplicate, or
+                improperly removed entries.
               </li>
               <li>
-                [draft tbd] Participation: check whether voters associated with recorded submissions actually
-                participated. The authentication docs describe contacting a random sample and using device-held
-                cryptographic evidence to support those checks without revealing ballot choices.
+                Participation: check whether voters associated with recorded submissions actually participated. The
+                authentication docs describe contacting a random sample and using device-held cryptographic evidence to
+                support those checks without revealing ballot choices.
               </li>
               <li>
-                [draft tbd] Uniqueness: reconcile issued, used, revoked, and replacement credentials with participation
-                records from digital, in-person, and mail voting. Check that each voter has only one ballot counted.
+                Uniqueness: reconcile issued, used, revoked, and replacement credentials with participation records from
+                digital, in-person, and mail voting. Check that each voter has only one ballot counted.
               </li>
             </ul>
             <p className="mt-3 text-[0.8rem] leading-relaxed text-h26-textSecondary">
-              [draft tbd] The original voter-to-code-to-encrypted-submission record supports these audits. The shuffle
-              separates identities from the final published choices. Access to authentication records follows the
-              election’s rules; those records are not automatically public. A published tally alone does not establish
-              the accuracy of the voter roll or rule out impersonation.
+              The original voter-to-code-to-encrypted-submission record supports these audits. The shuffle separates
+              identities from the final published choices. Access to authentication records follows the election’s
+              rules; those records are not automatically public. A published tally alone does not establish the accuracy
+              of the voter roll or rule out impersonation.
             </p>
             <p className="mt-3 text-[0.8rem] leading-relaxed text-h26-textSecondary">
-              [draft tbd] These checks need independent evidence, defined procedures, and oversight of administrator
-              actions, including revocations. The scripted spot check in this demo illustrates participation checking;
-              it is not a complete audit or evidence that a real election met a statistical risk limit.
+              These checks need independent evidence, defined procedures, and oversight of administrator actions,
+              including revocations. The scripted spot check in this demo illustrates participation checking; it is not
+              a complete audit or evidence that a real election met a statistical risk limit.
             </p>
             <p className="mt-3 text-[0.8rem] leading-relaxed text-h26-textSecondary">
-              [draft tbd] An attacker could manipulate registrations or redirect invitations. An insider who knows
-              issued codes could also try to vote for people who have not participated. Checks for unknown or reused
-              codes address different threats from audits of eligibility and actual participation.
+              An attacker could manipulate registrations or redirect invitations. An insider who knows issued codes
+              could also try to vote for people who have not participated. Checks for unknown or reused codes address
+              different threats from audits of eligibility and actual participation.
             </p>
             <p className="mt-4 text-[0.75rem] font-medium text-h26-text">Try a scenario</p>
             <div className="flex flex-wrap gap-2 mt-2">
