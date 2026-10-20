@@ -64,131 +64,132 @@ export function Invite({ auth, onContinue }: { auth: string; onContinue: () => v
       </PrimaryButton>
 
       <ExploreSection>
-        <div className="grid gap-2 mt-3 sm:grid-cols-2">
+        <div className="grid grid-flow-row-dense gap-2 mt-3 sm:grid-cols-2">
           <ExploreTopic
             onClick={() => setTopic(topic === 'token' ? null : 'token')}
             open={topic === 'token'}
             subtitle="One vote credential per eligible vote"
             title="What is a Voter Code?"
           />
+          {topic === 'token' && (
+            <div className="p-4 rounded-xl bg-h26-bg sm:col-span-2">
+              <p className="text-[0.8rem] leading-relaxed text-h26-textSecondary">
+                Each eligible voter receives a unique Voter Code from their election administrator. This code lets them
+                submit one vote in the election. Your demo Voter Code:{' '}
+                <span className="font-medium font-mono26 text-h26-text">{auth}</span>
+              </p>
+              <p className="mt-4 text-[0.78rem] font-medium text-h26-text">Key Properties of Voter Codes</p>
+              <ul className="mt-2 space-y-1.5">
+                {voterCodeProperties.map((item) => (
+                  <li className="flex gap-2 text-[0.78rem] text-h26-textSecondary" key={item}>
+                    <span className="mt-1.5 size-1 shrink-0 rounded-full bg-h26-green" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
           <ExploreTopic
             onClick={() => setTopic(topic === 'delivery' ? null : 'delivery')}
             open={topic === 'delivery'}
             subtitle="How invitations reach eligible voters"
             title="Why postal mail?"
           />
+          {topic === 'delivery' && (
+            <div className="p-4 rounded-xl bg-h26-bg sm:col-span-2">
+              <p className="text-[0.8rem] leading-relaxed text-h26-textSecondary">
+                Postal mail lets SIV follow familiar US vote-by-mail procedures for delivering voter credentials, while
+                the ballot is returned online. Election administrators can choose other methods to meet their election’s
+                requirements.
+              </p>
+              <p className="mt-4 text-[0.78rem] font-medium text-h26-text">
+                Other delivery and authentication options:
+              </p>
+              <div className="grid gap-2 mt-2 sm:grid-cols-3">
+                {[
+                  [
+                    'Digital Government Credentials',
+                    'Authenticate voters using pre-distributed public/private key pairs: digital IDs.',
+                  ],
+                  ['Email', 'Send each voter their unique Voter Code link by email: fast, simple, & affordable.'],
+                  ['In person', 'Give each eligible voter their code in person. E.g. for in-person conventions.'],
+                ].map(([label, description]) => (
+                  <div className="px-3 py-2 bg-white rounded-lg border border-black/[0.07]" key={label}>
+                    <p className="text-[0.76rem] font-medium text-h26-text">{label}</p>
+                    <p className="mt-0.5 text-[0.68rem] text-h26-textSecondary">{description}</p>
+                  </div>
+                ))}
+              </div>
+              <p className="mt-3 text-[0.72rem] text-h26-textSecondary">
+                Election administrators can combine these methods with additional identity checks to meet their
+                jurisdiction’s requirements.
+              </p>
+            </div>
+          )}
+
           <ExploreTopic
             onClick={() => setTopic(topic === 'layers' ? null : 'layers')}
             open={topic === 'layers'}
             subtitle="Add identity checks to your authentication policy"
             title="Can we do additional identity checks?"
           />
-        </div>
-
-        {topic === 'token' && (
-          <div className="p-4 mt-3 rounded-xl bg-h26-bg">
-            <p className="text-[0.8rem] leading-relaxed text-h26-textSecondary">
-              Each eligible voter receives a unique Voter Code from their election administrator. This code lets them
-              submit one vote in the election. Your demo Voter Code:{' '}
-              <span className="font-medium font-mono26 text-h26-text">{auth}</span>
-            </p>
-            <p className="mt-4 text-[0.78rem] font-medium text-h26-text">Key Properties of Voter Codes</p>
-            <ul className="mt-2 space-y-1.5">
-              {voterCodeProperties.map((item) => (
-                <li className="flex gap-2 text-[0.78rem] text-h26-textSecondary" key={item}>
-                  <span className="mt-1.5 size-1 shrink-0 rounded-full bg-h26-green" />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-
-        {topic === 'delivery' && (
-          <div className="p-4 mt-3 rounded-xl bg-h26-bg">
-            <p className="text-[0.8rem] leading-relaxed text-h26-textSecondary">
-              Postal mail lets SIV follow familiar US vote-by-mail procedures for delivering voter credentials, while
-              the ballot is returned online. Election administrators can choose other methods to meet their election’s
-              requirements.
-            </p>
-            <p className="mt-4 text-[0.78rem] font-medium text-h26-text">Other delivery and authentication options:</p>
-            <div className="grid gap-2 mt-2 sm:grid-cols-3">
-              {[
-                [
-                  'Digital Government Credentials',
-                  'Authenticate voters using pre-distributed public/private key pairs: digital IDs.',
-                ],
-                ['Email', 'Send each voter their unique Voter Code link by email: fast, simple, & affordable.'],
-                ['In person', 'Give each eligible voter their code in person. E.g. for in-person conventions.'],
-              ].map(([label, description]) => (
-                <div className="px-3 py-2 bg-white rounded-lg border border-black/[0.07]" key={label}>
-                  <p className="text-[0.76rem] font-medium text-h26-text">{label}</p>
-                  <p className="mt-0.5 text-[0.68rem] text-h26-textSecondary">{description}</p>
-                </div>
-              ))}
-            </div>
-            <p className="mt-3 text-[0.72rem] text-h26-textSecondary">
-              Election administrators can combine these methods with additional identity checks to meet their
-              jurisdiction’s requirements.
-            </p>
-          </div>
-        )}
-
-        {topic === 'layers' && (
-          <div className="p-4 mt-3 rounded-xl bg-h26-bg">
-            <p className="text-[0.8rem] leading-relaxed text-h26-textSecondary">
-              Delivery gets the credential to the voter. Additional checks can raise confidence that the intended voter
-              is the person using it.
-            </p>
-            <p className="mt-4 text-[0.78rem] font-medium text-h26-text">Build an authentication policy:</p>
-            <div className="grid gap-2 mt-2 sm:grid-cols-2">
-              {authLayers.map(([label, description]) => (
-                <button
-                  aria-pressed={layers.has(label)}
-                  className={`rounded-lg border px-3 py-2 text-left transition-colors ${
-                    layers.has(label)
-                      ? 'border-h26-green/40 bg-white text-h26-text'
-                      : 'border-black/[0.07] bg-white/60 text-h26-textSecondary hover:border-h26-green/30'
-                  }`}
-                  key={label}
-                  onClick={() =>
-                    setLayers((prev) => {
-                      const next = new Set(prev)
-                      if (next.has(label)) next.delete(label)
-                      else next.add(label)
-                      return next
-                    })
-                  }
-                  type="button"
+          {topic === 'layers' && (
+            <div className="p-4 rounded-xl bg-h26-bg sm:col-span-2">
+              <p className="text-[0.8rem] leading-relaxed text-h26-textSecondary">
+                Delivery gets the credential to the voter. Additional checks can raise confidence that the intended
+                voter is the person using it.
+              </p>
+              <p className="mt-4 text-[0.78rem] font-medium text-h26-text">Build an authentication policy:</p>
+              <div className="grid gap-2 mt-2 sm:grid-cols-2">
+                {authLayers.map(([label, description]) => (
+                  <button
+                    aria-pressed={layers.has(label)}
+                    className={`rounded-lg border px-3 py-2 text-left transition-colors ${
+                      layers.has(label)
+                        ? 'border-h26-green/40 bg-white text-h26-text'
+                        : 'border-black/[0.07] bg-white/60 text-h26-textSecondary hover:border-h26-green/30'
+                    }`}
+                    key={label}
+                    onClick={() =>
+                      setLayers((prev) => {
+                        const next = new Set(prev)
+                        if (next.has(label)) next.delete(label)
+                        else next.add(label)
+                        return next
+                      })
+                    }
+                    type="button"
+                  >
+                    <span className="block text-[0.76rem] font-medium">
+                      {layers.has(label) ? '✓ ' : '+ '}
+                      {label}
+                    </span>
+                    <span className="mt-0.5 block text-[0.68rem] opacity-70">{description}</span>
+                  </button>
+                ))}
+              </div>
+              <p className="mt-3 text-[0.72rem] text-h26-textSecondary">
+                Policy: Postal invitation
+                {[...layers].map((layer) => ` + ${layer}`).join('')}
+              </p>
+              <p className="mt-3 text-[0.72rem]">
+                <a className="text-h26-green hover:underline" href="/protocol#1" target="_blank">
+                  Protocol
+                </a>
+                {' · '}
+                <a
+                  className="text-h26-green hover:underline"
+                  href="https://docs.siv.org/authentication"
+                  rel="noreferrer"
+                  target="_blank"
                 >
-                  <span className="block text-[0.76rem] font-medium">
-                    {layers.has(label) ? '✓ ' : '+ '}
-                    {label}
-                  </span>
-                  <span className="mt-0.5 block text-[0.68rem] opacity-70">{description}</span>
-                </button>
-              ))}
+                  Authentication details
+                </a>
+              </p>
             </div>
-            <p className="mt-3 text-[0.72rem] text-h26-textSecondary">
-              Policy: Postal invitation
-              {[...layers].map((layer) => ` + ${layer}`).join('')}
-            </p>
-            <p className="mt-3 text-[0.72rem]">
-              <a className="text-h26-green hover:underline" href="/protocol#1" target="_blank">
-                Protocol
-              </a>
-              {' · '}
-              <a
-                className="text-h26-green hover:underline"
-                href="https://docs.siv.org/authentication"
-                rel="noreferrer"
-                target="_blank"
-              >
-                Authentication details
-              </a>
-            </p>
-          </div>
-        )}
+          )}
+        </div>
 
         <ExploreGroup title="Safeguards">
           <div className="grid gap-2 mt-3 sm:grid-cols-2">
