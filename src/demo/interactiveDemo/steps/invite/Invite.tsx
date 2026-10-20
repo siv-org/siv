@@ -99,8 +99,8 @@ export function Invite({ auth, onContinue }: { auth: string; onContinue: () => v
           <ExploreTopic
             onClick={() => setTopic(topic === 'delivery' ? null : 'delivery')}
             open={topic === 'delivery'}
-            subtitle="How invitations reach eligible voters"
-            title="Why postal mail?"
+            subtitle="Methods to receive Voter Codes"
+            title="Why deliver Voter Codes via Postal Mail?"
           />
           {topic === 'delivery' && (
             <div className="p-4 rounded-xl bg-h26-bg sm:col-span-2">
