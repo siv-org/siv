@@ -7,14 +7,22 @@ import { PrimaryButton } from '../../shared/PrimaryButton'
 import { SecondaryButton } from '../../shared/SecondaryButton'
 import { InviteQRCode } from './InviteQRCode'
 
-type ExploreTopicId = 'attack' | 'delivery' | 'layers' | 'paper' | 'stuffing' | 'token'
+type ExploreTopicId =
+  | 'access'
+  | 'attack'
+  | 'bruteForce'
+  | 'delivery'
+  | 'identity'
+  | 'layers'
+  | 'paper'
+  | 'recovery'
+  | 'token'
 
 export function Invite({ auth, onContinue }: { auth: string; onContinue: () => void }) {
   const [attack, setAttack] = useState<'lost' | 'used' | null>(null)
   const [layers, setLayers] = useState(() => new Set<string>())
   const [remediated, setRemediated] = useState(false)
   const [replacementAuth] = useState(() => generateAuthToken())
-  const [stuffing, setStuffing] = useState<'guess' | 'reuse' | 'roll' | null>(null)
   const [topic, setTopic] = useState<ExploreTopicId | null>(null)
   const authLayers = [
     ['Signature', 'Compare a signature drawn on screen with the signature on file.'],
@@ -211,139 +219,167 @@ export function Invite({ auth, onContinue }: { auth: string; onContinue: () => v
         </div>
 
         <ExploreGroup title="Safeguards">
-          <div className="grid gap-2 mt-3 sm:grid-cols-2">
+          <div className="grid grid-flow-row-dense gap-2 mt-3 sm:grid-cols-2">
             <ExploreTopic
               onClick={() => setTopic(topic === 'attack' ? null : 'attack')}
               open={topic === 'attack'}
-              subtitle="See how revocation and replacement work"
-              title="What if my Voter Code is lost or stolen?"
+              subtitle="Stolen invitations, compromised accounts, and unauthorized use"
+              title="What if someone else uses my Voter Code?"
             />
-            <ExploreTopic
-              onClick={() => setTopic(topic === 'stuffing' ? null : 'stuffing')}
-              open={topic === 'stuffing'}
-              subtitle="Explore Voter Code checks and voter-roll audits"
-              title="Could someone submit extra votes?"
-            />
-          </div>
-
-          {topic === 'attack' && (
-            <div className="p-4 mt-3 rounded-xl bg-h26-bg">
-              <p className="text-[0.78rem] font-medium text-h26-text">Replace a compromised credential</p>
-              <p className="mt-2 text-[0.75rem] leading-relaxed text-h26-textSecondary">
-                An election administrator can revoke a Voter Code and issue a replacement after re-authenticating the
-                voter. Try a scenario to see the steps.
-              </p>
-              <p className="mt-4 text-[0.75rem] font-medium text-h26-text">Try a scenario</p>
-              <div className="flex flex-wrap gap-2 mt-2">
-                {[
-                  ['lost', 'Voter Code lost or stolen'],
-                  ['used', 'Someone voted first'],
-                ].map(([id, label]) => (
-                  <button
-                    aria-pressed={attack === id}
-                    className={`rounded-full border px-3 py-2 text-[0.72rem] transition-colors ${
-                      attack === id
-                        ? 'border-h26-green/40 bg-white font-medium text-h26-green'
-                        : 'border-black/10 bg-white/60 text-h26-textSecondary hover:border-h26-green/30'
-                    }`}
-                    key={id}
-                    onClick={() => {
-                      setAttack(id as 'lost' | 'used')
-                      setRemediated(false)
-                    }}
-                    type="button"
-                  >
-                    {label}
-                  </button>
-                ))}
-              </div>
-
-              {attack && !remediated && (
-                <div className="pl-3 mt-4 border-l-2 border-red-300">
-                  <p className="text-[0.78rem] font-medium text-red-800">
-                    {attack === 'lost'
-                      ? 'Until it is revoked, whoever holds the Voter Code could try to vote.'
-                      : 'The one-use rule rejects your attempt because the Voter Code was already used.'}
-                  </p>
-                  <p className="mt-2 text-[0.75rem] leading-relaxed text-h26-textSecondary">
-                    The admin re-authenticates the voter, invalidates the old credential and any linked submission, then
-                    issues a replacement. Every change leaves an audit trail.
-                  </p>
-                  <SecondaryButton className="mt-3" onClick={() => setRemediated(true)}>
-                    Revoke + issue replacement
-                  </SecondaryButton>
+            {topic === 'attack' && (
+              <div className="p-4 rounded-xl bg-h26-bg sm:col-span-2">
+                <p className="text-[0.78rem] font-medium text-h26-text">Replace a compromised credential</p>
+                <p className="mt-2 text-[0.75rem] leading-relaxed text-h26-textSecondary">
+                  An election administrator can revoke a Voter Code and issue a replacement after re-authenticating the
+                  voter. Try a scenario to see the steps.
+                </p>
+                <p className="mt-3 text-[0.75rem] leading-relaxed text-h26-textSecondary">
+                  A code could be taken from an invitation, a compromised email account, or an infected device.
+                  Additional identity checks can make the code alone insufficient to vote. The protocol also includes an
+                  acceptance confirmation, which can alert a voter to a submission they did not make.
+                </p>
+                <p className="mt-3 text-[0.75rem] leading-relaxed text-h26-textSecondary">
+                  If you receive an unexpected confirmation or find your code already used, contact the election office
+                  through a known official channel. The administrator can investigate and follow the documented
+                  revocation and replacement process. This demo does not send confirmation messages.
+                </p>
+                <p className="mt-4 text-[0.75rem] font-medium text-h26-text">Try a scenario</p>
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {[
+                    ['lost', 'Voter Code lost or stolen'],
+                    ['used', 'Someone voted first'],
+                  ].map(([id, label]) => (
+                    <button
+                      aria-pressed={attack === id}
+                      className={`rounded-full border px-3 py-2 text-[0.72rem] transition-colors ${
+                        attack === id
+                          ? 'border-h26-green/40 bg-white font-medium text-h26-green'
+                          : 'border-black/10 bg-white/60 text-h26-textSecondary hover:border-h26-green/30'
+                      }`}
+                      key={id}
+                      onClick={() => {
+                        setAttack(id as 'lost' | 'used')
+                        setRemediated(false)
+                      }}
+                      type="button"
+                    >
+                      {label}
+                    </button>
+                  ))}
                 </div>
-              )}
 
-              {attack && remediated && (
-                <div className="px-3 py-3 mt-4 bg-white rounded-lg border border-h26-green/30">
-                  <p className="text-[0.78rem] font-medium text-h26-green">Replacement issued</p>
-                  <p className="mt-2 font-mono26 text-[0.72rem] text-h26-muted line-through">Old: {auth}</p>
-                  <p className="mt-1 font-mono26 text-[0.78rem] text-h26-text">Replacement: {replacementAuth}</p>
-                  <p className="mt-2 text-[0.7rem] text-h26-textSecondary">
-                    The old Voter Code is rejected; the voter can cast once with the replacement.
-                  </p>
-                </div>
-              )}
-            </div>
-          )}
+                {attack && !remediated && (
+                  <div className="pl-3 mt-4 border-l-2 border-red-300">
+                    <p className="text-[0.78rem] font-medium text-red-800">
+                      {attack === 'lost'
+                        ? 'Until it is revoked, whoever holds the Voter Code could try to vote.'
+                        : 'The one-use rule rejects your attempt because the Voter Code was already used.'}
+                    </p>
+                    <p className="mt-2 text-[0.75rem] leading-relaxed text-h26-textSecondary">
+                      The admin re-authenticates the voter, invalidates the old credential and any linked submission,
+                      then issues a replacement. Every change leaves an audit trail.
+                    </p>
+                    <SecondaryButton className="mt-3" onClick={() => setRemediated(true)}>
+                      Revoke + issue replacement
+                    </SecondaryButton>
+                  </div>
+                )}
 
-          {topic === 'stuffing' && (
-            <div className="p-4 mt-3 rounded-xl bg-h26-bg">
-              <p className="text-[0.78rem] font-medium text-h26-text">One issued Voter Code, one accepted vote</p>
-              <p className="mt-2 text-[0.75rem] leading-relaxed text-h26-textSecondary">
-                Voter Code checks reject unknown or reused credentials. Checking that registered voters are eligible
-                still requires voter-roll audits. Explore what each safeguard addresses.
-              </p>
-              <p className="mt-4 text-[0.75rem] font-medium text-h26-text">Try a scenario</p>
-              <div className="flex flex-wrap gap-2 mt-2">
-                {[
-                  ['roll', 'Fake voters on the roll'],
-                  ['guess', 'Invented Voter Codes'],
-                  ['reuse', 'Extra submissions'],
-                ].map(([id, label]) => (
-                  <button
-                    aria-pressed={stuffing === id}
-                    className={`rounded-full border px-3 py-2 text-[0.72rem] transition-colors ${
-                      stuffing === id
-                        ? 'border-h26-green/40 bg-white font-medium text-h26-green'
-                        : 'border-black/10 bg-white/60 text-h26-textSecondary hover:border-h26-green/30'
-                    }`}
-                    key={id}
-                    onClick={() => setStuffing(id as 'guess' | 'reuse' | 'roll')}
-                    type="button"
-                  >
-                    {label}
-                  </button>
-                ))}
-              </div>
-
-              {stuffing && (
-                <div className="pl-3 mt-4 border-l-2 border-red-300">
-                  <p className="text-[0.78rem] font-medium text-red-800">
-                    {stuffing === 'roll' && 'Padding the voter roll with fake people.'}
-                    {stuffing === 'guess' && 'Trying to invent Voter Codes that were never issued.'}
-                    {stuffing === 'reuse' && 'Submitting without a Voter Code, or reusing one already accepted.'}
-                  </p>
-                  <p className="mt-2 text-[0.75rem] leading-relaxed text-h26-textSecondary">
-                    {stuffing === 'roll' &&
-                      'Eligibility is still a voter-roll problem — same as paper. The roll can be audited. SIV does not invent who is allowed to vote; it binds each accepted ciphertext to a registered Voter Code.'}
-                    {stuffing === 'guess' &&
-                      'Voter Codes are generated by the election admin and infeasible to guess. Submissions with unknown Voter Codes are rejected.'}
-                    {stuffing === 'reuse' &&
-                      'One Voter Code → one accepted ciphertext. A second use is rejected, and every accepted submission is visible on the public board for audit.'}
-                  </p>
-                  <div className="px-3 py-3 mt-3 bg-white rounded-lg border border-h26-green/30">
-                    <p className="text-[0.78rem] font-medium text-h26-green">
-                      {stuffing === 'roll' && 'Defense: audit the voter roll'}
-                      {stuffing === 'guess' && 'Defense: only issued Voter Codes are accepted'}
-                      {stuffing === 'reuse' && 'Defense: one Voter Code, one accepted vote'}
+                {attack && remediated && (
+                  <div className="px-3 py-3 mt-4 bg-white rounded-lg border border-h26-green/30">
+                    <p className="text-[0.78rem] font-medium text-h26-green">Replacement issued</p>
+                    <p className="mt-2 font-mono26 text-[0.72rem] text-h26-muted line-through">Old: {auth}</p>
+                    <p className="mt-1 font-mono26 text-[0.78rem] text-h26-text">Replacement: {replacementAuth}</p>
+                    <p className="mt-2 text-[0.7rem] text-h26-textSecondary">
+                      The old Voter Code is rejected; the voter can cast once with the replacement.
                     </p>
                   </div>
-                </div>
-              )}
-            </div>
-          )}
+                )}
+              </div>
+            )}
+
+            <ExploreTopic
+              onClick={() => setTopic(topic === 'recovery' ? null : 'recovery')}
+              open={topic === 'recovery'}
+              subtitle="Lost invitations, identity checks, and auditable corrections"
+              title="What if my invitation is missing or I need a replacement?"
+            />
+            {topic === 'recovery' && (
+              <div className="p-4 rounded-xl bg-h26-bg sm:col-span-2">
+                <p className="text-[0.8rem] leading-relaxed text-h26-textSecondary">
+                  An invitation can be lost, delayed, discarded, or sent to an outdated address. This can prevent a
+                  voter from participating even if nobody uses the code. Contact the election office through a known
+                  official channel to check your registration details and request help.
+                </p>
+                <p className="mt-3 text-[0.8rem] leading-relaxed text-h26-textSecondary">
+                  Before issuing a replacement, the administrator must re-check the voter’s identity. Someone pretending
+                  to be the voter could otherwise use the recovery process to take over their credentials. The old code
+                  must be invalidated so it cannot be used alongside the replacement.
+                </p>
+                <p className="mt-3 text-[0.8rem] leading-relaxed text-h26-textSecondary">
+                  If a submitted ballot needs correction, the documented process calls for a written request from the
+                  voter and a visible record of invalidation. A linked encrypted submission can be invalidated before a
+                  replacement is accepted. Correction procedures and deadlines depend on the election’s rules.
+                </p>
+                <p className="mt-3 text-[0.8rem] leading-relaxed text-h26-textSecondary">
+                  The authentication docs describe revocation after tallying, while the remediation page treats problems
+                  discovered after close separately. Post-close handling needs review; this example does not promise
+                  that a voter can cast a replacement at any time.
+                </p>
+                <p className="mt-3 text-[0.8rem] leading-relaxed text-h26-textSecondary">
+                  Audit records must also expose unauthorized revocations or replacements. An administrator’s ability to
+                  revoke a code is a power that needs oversight, not proof that every revocation is justified.
+                </p>
+              </div>
+            )}
+
+            <ExploreTopic
+              onClick={() => setTopic(topic === 'access' ? null : 'access')}
+              open={topic === 'access'}
+              subtitle="Delivery failures, changed records, and service disruption"
+              title="What if someone blocks invitations or access to voting?"
+            />
+            {topic === 'access' && (
+              <div className="p-4 rounded-xl bg-h26-bg sm:col-span-2">
+                <p className="text-[0.8rem] leading-relaxed text-h26-textSecondary">
+                  An attacker does not need to cast a fraudulent vote to affect participation. Withholding invitations,
+                  changing registered contact details, or disrupting the voting website or its authentication services
+                  can prevent eligible people from voting.
+                </p>
+                <p className="mt-3 text-[0.8rem] leading-relaxed text-h26-textSecondary">
+                  Election administration needs ways to detect delivery failures, review registration changes, restore
+                  service, and help affected voters before deadlines. In-person and mail options can provide
+                  alternatives when available; neither a replacement code nor an accurate tally alone proves that
+                  everyone had an opportunity to vote.
+                </p>
+              </div>
+            )}
+            <ExploreTopic
+              onClick={() => setTopic(topic === 'bruteForce' ? null : 'bruteForce')}
+              open={topic === 'bruteForce'}
+              subtitle="Random codes, rate limits, and monitoring"
+              title="Could someone brute-force Voter Codes?"
+            />
+            {topic === 'bruteForce' && (
+              <div className="p-4 rounded-xl bg-h26-bg sm:col-span-2">
+                <p className="text-[0.8rem] leading-relaxed text-h26-textSecondary">
+                  Brute-forcing means trying many possible codes until one works. Voter Codes are generated using
+                  cryptographically secure randomness. The 10-character hexadecimal format has over a trillion possible
+                  values, so knowing one voter’s code does not let someone predict another’s.
+                </p>
+                <p className="mt-3 text-[0.8rem] leading-relaxed text-h26-textSecondary">
+                  A large code space is only part of the protection. Online guessing also needs rate limits and
+                  monitoring to restrict repeated attempts, including attempts spread across many IP addresses. The
+                  number of valid codes in an election also affects the chance that a random guess matches one.
+                </p>
+                <p className="mt-3 text-[0.8rem] leading-relaxed text-h26-textSecondary">
+                  Unknown, revoked, and already-used codes are rejected. Additional identity checks can require more
+                  than a valid code before accepting a vote. Participation audits provide a separate way to investigate
+                  whether the intended voters actually cast the recorded ballots.
+                </p>
+              </div>
+            )}
+          </div>
         </ExploreGroup>
       </ExploreSection>
     </div>
