@@ -26,6 +26,7 @@ export function Verify({
   onDone: () => void
   unlocked: UnlockedVote[]
 }) {
+  const [stuffing, setStuffing] = useState<'guess' | 'reuse' | 'roll' | null>(null)
   const [topic, setTopic] = useState<null | string>(null)
   const [showEncrypted, setShowEncrypted] = useState(false)
   const [openHex, setOpenHex] = useState<null | string>(null)
@@ -180,9 +181,13 @@ export function Verify({
             [
               ['count', 'Could the tally be wrong?', 'Anyone can re-add the published votes'],
               ['yours', 'Was my vote changed or dropped?', 'Match the # from your submitted page'],
-              ['roll', 'Were extra votes stuffed in?', 'Each row ties to a registered Voter Code'],
               ['others', 'Did other voters check?', 'A spot check of the roll'],
               ['software', 'Do we have to trust the software?', 'The published list is the record'],
+              [
+                'roll',
+                'What prevents votes for fake or nonparticipating voters? [draft tbd]',
+                'Audit eligibility, participation, and one counted ballot per voter',
+              ],
             ] as const
           ).map(([id, title, subtitle]) => {
             const open = topic === id
@@ -214,14 +219,6 @@ export function Verify({
             </p>
           </div>
         )}
-        {topic === 'roll' && (
-          <div className="p-4 mt-3 rounded-xl bg-h26-bg">
-            <p className="text-[0.8rem] leading-relaxed text-h26-textSecondary">
-              {boardVotes.length} submissions, each accepted against one registered Voter Code. A stuffed ballot would
-              need a Voter Code that was never issued.
-            </p>
-          </div>
-        )}
         {topic === 'others' && (
           <div className="p-4 mt-3 rounded-xl bg-h26-bg">
             <p className="text-[0.8rem] leading-relaxed text-h26-textSecondary">
@@ -235,6 +232,94 @@ export function Verify({
             <p className="text-[0.8rem] leading-relaxed text-h26-textSecondary">
               The published list is the record. You check it yourself. The computers aren&apos;t the ground truth.
             </p>
+          </div>
+        )}
+
+        {topic === 'roll' && (
+          <div className="p-4 mt-3 rounded-xl bg-h26-bg">
+            <p className="text-[0.8rem] leading-relaxed text-h26-textSecondary">
+              [draft tbd] The demo shows {boardVotes.length} submissions associated with registered Voter Codes. A valid
+              code alone does not establish that the registered person was eligible or actually cast the ballot. Someone
+              could misuse an issued code, or a fake registration could receive a valid code.
+            </p>
+            <ul className="mt-3 space-y-2 text-[0.8rem] leading-relaxed text-h26-textSecondary">
+              <li>
+                [draft tbd] Eligibility: check the voter roll against registration evidence and investigate fake,
+                duplicate, or improperly removed entries.
+              </li>
+              <li>
+                [draft tbd] Participation: check whether voters associated with recorded submissions actually
+                participated. The authentication docs describe contacting a random sample and using device-held
+                cryptographic evidence to support those checks without revealing ballot choices.
+              </li>
+              <li>
+                [draft tbd] Uniqueness: reconcile issued, used, revoked, and replacement credentials with participation
+                records from digital, in-person, and mail voting. Check that each voter has only one ballot counted.
+              </li>
+            </ul>
+            <p className="mt-3 text-[0.8rem] leading-relaxed text-h26-textSecondary">
+              [draft tbd] The original voter-to-code-to-encrypted-submission record supports these audits. The shuffle
+              separates identities from the final published choices. Access to authentication records follows the
+              election’s rules; those records are not automatically public. A published tally alone does not establish
+              the accuracy of the voter roll or rule out impersonation.
+            </p>
+            <p className="mt-3 text-[0.8rem] leading-relaxed text-h26-textSecondary">
+              [draft tbd] These checks need independent evidence, defined procedures, and oversight of administrator
+              actions, including revocations. The scripted spot check in this demo illustrates participation checking;
+              it is not a complete audit or evidence that a real election met a statistical risk limit.
+            </p>
+            <p className="mt-3 text-[0.8rem] leading-relaxed text-h26-textSecondary">
+              [draft tbd] An attacker could manipulate registrations or redirect invitations. An insider who knows
+              issued codes could also try to vote for people who have not participated. Checks for unknown or reused
+              codes address different threats from audits of eligibility and actual participation.
+            </p>
+            <p className="mt-4 text-[0.75rem] font-medium text-h26-text">Try a scenario</p>
+            <div className="flex flex-wrap gap-2 mt-2">
+              {[
+                ['roll', 'Fake voters on the roll'],
+                ['guess', 'Invented Voter Codes'],
+                ['reuse', 'Extra submissions'],
+              ].map(([id, label]) => (
+                <button
+                  aria-pressed={stuffing === id}
+                  className={`rounded-full border px-3 py-2 text-[0.72rem] transition-colors ${
+                    stuffing === id
+                      ? 'border-h26-green/40 bg-white font-medium text-h26-green'
+                      : 'border-black/10 bg-white/60 text-h26-textSecondary hover:border-h26-green/30'
+                  }`}
+                  key={id}
+                  onClick={() => setStuffing(id as 'guess' | 'reuse' | 'roll')}
+                  type="button"
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+
+            {stuffing && (
+              <div className="pl-3 mt-4 border-l-2 border-red-300">
+                <p className="text-[0.78rem] font-medium text-red-800">
+                  {stuffing === 'roll' && 'Padding the voter roll with fake people.'}
+                  {stuffing === 'guess' && 'Trying to invent Voter Codes that were never issued.'}
+                  {stuffing === 'reuse' && 'Submitting without a Voter Code, or reusing one already accepted.'}
+                </p>
+                <p className="mt-2 text-[0.75rem] leading-relaxed text-h26-textSecondary">
+                  {stuffing === 'roll' &&
+                    'Eligibility is still a voter-roll problem — same as paper. The roll can be audited. SIV does not invent who is allowed to vote; it binds each accepted ciphertext to a registered Voter Code.'}
+                  {stuffing === 'guess' &&
+                    'Voter Codes are generated by the election admin and infeasible to guess. Submissions with unknown Voter Codes are rejected.'}
+                  {stuffing === 'reuse' &&
+                    'One Voter Code → one accepted ciphertext. A second use is rejected, and every accepted submission is visible on the public board for audit.'}
+                </p>
+                <div className="px-3 py-3 mt-3 bg-white rounded-lg border border-h26-green/30">
+                  <p className="text-[0.78rem] font-medium text-h26-green">
+                    {stuffing === 'roll' && 'Defense: audit the voter roll'}
+                    {stuffing === 'guess' && 'Defense: only issued Voter Codes are accepted'}
+                    {stuffing === 'reuse' && 'Defense: one Voter Code, one accepted vote'}
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
         )}
       </ExploreSection>
