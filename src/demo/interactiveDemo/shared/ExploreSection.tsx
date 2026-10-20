@@ -1,4 +1,7 @@
 export function ExploreGroup({ children, title }: { children: React.ReactNode; title: string }) {
+  // Temporarily hide Safeguards sections while retaining their content and interactions.
+  if (title === 'Safeguards') return null
+
   return (
     <section aria-label={title} className="mt-6">
       <h3 className="font-mono26 text-[10px] uppercase tracking-[0.14em] text-h26-muted">{title}</h3>
