@@ -45,48 +45,50 @@ export function Vote({ onPick }: { onPick: (c: string) => void }) {
 
   return (
     <div>
-      {/* Demo-only: production MultiVoteItem instruction is a bit tight in this shell */}
-      <div className="[&_p.italic]:mb-2 [&_p.italic]:text-[0.95rem] [&_p.italic]:leading-relaxed [&_p.italic]:text-h26-textSecondary">
-        {/* Same type routing as src/vote/Ballot.tsx */}
-        {method === 'approval' && (
-          <MultiVoteItem
-            {...design}
-            dispatch={dispatch}
-            multiple_votes_allowed={DEMO_BALLOT_OPTIONS.length}
-            options={DEMO_BALLOT_OPTIONS}
-            state={state}
-          />
-        )}
-        {method === 'multi' && (
-          <MultiVoteItem
-            {...design}
-            dispatch={dispatch}
-            multiple_votes_allowed={default_multiple_votes_allowed}
-            options={DEMO_BALLOT_OPTIONS}
-            state={state}
-          />
-        )}
-        {method === 'plurality' && <Item {...design} dispatch={dispatch} options={DEMO_BALLOT_OPTIONS} state={state} />}
-        {method === 'ranked' && (
-          <RankedChoiceItem
-            {...design}
-            dispatch={dispatch}
-            options={DEMO_BALLOT_OPTIONS}
-            rankings_allowed={defaultRankingsAllowed}
-            state={state}
-          />
-        )}
-        {method === 'score' && (
-          <ScoreItem {...design} dispatch={dispatch} options={DEMO_BALLOT_OPTIONS} state={state} />
-        )}
-        {method === 'budget' && <BudgetBallot design={design} dispatch={dispatch} state={state} />}
+      <div className="rounded-2xl bg-white p-4 shadow-[0_0_0_1px_rgba(0,0,0,0.06)] sm:p-8">
+        {/* Demo-only: production MultiVoteItem instruction is a bit tight in this shell */}
+        <div className="[&_p.italic]:mb-2 [&_p.italic]:text-[0.95rem] [&_p.italic]:leading-relaxed [&_p.italic]:text-h26-textSecondary">
+          {/* Same type routing as src/vote/Ballot.tsx */}
+          {method === 'approval' && (
+            <MultiVoteItem
+              {...design}
+              dispatch={dispatch}
+              multiple_votes_allowed={DEMO_BALLOT_OPTIONS.length}
+              options={DEMO_BALLOT_OPTIONS}
+              state={state}
+            />
+          )}
+          {method === 'multi' && (
+            <MultiVoteItem
+              {...design}
+              dispatch={dispatch}
+              multiple_votes_allowed={default_multiple_votes_allowed}
+              options={DEMO_BALLOT_OPTIONS}
+              state={state}
+            />
+          )}
+          {method === 'plurality' && <Item {...design} dispatch={dispatch} options={DEMO_BALLOT_OPTIONS} state={state} />}
+          {method === 'ranked' && (
+            <RankedChoiceItem
+              {...design}
+              dispatch={dispatch}
+              options={DEMO_BALLOT_OPTIONS}
+              rankings_allowed={defaultRankingsAllowed}
+              state={state}
+            />
+          )}
+          {method === 'score' && (
+            <ScoreItem {...design} dispatch={dispatch} options={DEMO_BALLOT_OPTIONS} state={state} />
+          )}
+          {method === 'budget' && <BudgetBallot design={design} dispatch={dispatch} state={state} />}
+        </div>
+
+        <PrimaryButton className="mt-2" disabled={!choice} onClick={() => choice && onPick(choice)}>
+          Submit vote
+        </PrimaryButton>
       </div>
 
-      <PrimaryButton className="mt-2" disabled={!choice} onClick={() => choice && onPick(choice)}>
-        Submit vote
-      </PrimaryButton>
-
-      <div className="mt-6 border-t border-black/[0.07] pt-5">
+      <div className="mt-6 px-4 sm:px-8">
         <p className="font-mono26 text-[10px] uppercase tracking-[0.14em] text-h26-muted">Try other voting methods</p>
         <div className="mt-3 flex flex-wrap gap-1.5">
           {BALLOT_METHODS.map((m) => (

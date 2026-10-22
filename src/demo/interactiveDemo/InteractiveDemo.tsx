@@ -237,9 +237,13 @@ export function InteractiveDemo() {
             </header>
 
             <div
-              className={`p-4 sm:p-8 ${
-                s.step === 'invite' ? '' : 'rounded-2xl bg-white shadow-[0_0_0_1px_rgba(0,0,0,0.06)]'
-              }`}
+              className={
+                s.step === 'vote'
+                  ? ''
+                  : `p-4 sm:p-8 ${
+                      s.step === 'invite' ? '' : 'rounded-2xl bg-white shadow-[0_0_0_1px_rgba(0,0,0,0.06)]'
+                    }`
+              }
             >
               {s.step === 'intro' && <Intro onStart={start} />}
               {s.step === 'invite' && (
