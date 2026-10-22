@@ -110,37 +110,39 @@ export function Vote({ onPick }: { onPick: (c: string) => void }) {
         </div>
       </div>
 
-      <ExploreSection>
-        <ExploreTopic
-          className="mt-3 w-full sm:max-w-sm"
-          onClick={() => setShowEncrypt((v) => !v)}
-          open={showEncrypt}
-          subtitle="What happens when you submit"
-          title="On-device encryption"
-        />
+      <div hidden>
+        <ExploreSection>
+          <ExploreTopic
+            className="mt-3 w-full sm:max-w-sm"
+            onClick={() => setShowEncrypt((v) => !v)}
+            open={showEncrypt}
+            subtitle="What happens when you submit"
+            title="On-device encryption"
+          />
 
-        {showEncrypt && (
-          <div className="p-4 mt-3 space-y-3 rounded-xl bg-h26-bg">
-            <p className="text-[0.8rem] leading-relaxed text-h26-textSecondary">
-              Before anything leaves your device, it seals your choices and mints a secret Verification # — like locking
-              a safe the election admin can accept without opening.
-            </p>
-            <LabeledRow
-              label="Plaintext (on your device only)"
-              value={`{ mayor: ${formatMayor(previewChoice)}, verification: '${previewVerification}' }`}
-            />
-            <LabeledRow emphasize label="Verification #" mono value={previewVerification} />
-            <LabeledRow
-              label="Ciphertext that will leave the device"
-              mono
-              value={fakeCipher(previewVerification + previewChoice)}
-            />
-            {!choice && (
-              <p className="text-[0.72rem] text-h26-muted">Mark a choice above to preview with your selection.</p>
-            )}
-          </div>
-        )}
-      </ExploreSection>
+          {showEncrypt && (
+            <div className="p-4 mt-3 space-y-3 rounded-xl bg-h26-bg">
+              <p className="text-[0.8rem] leading-relaxed text-h26-textSecondary">
+                Before anything leaves your device, it seals your choices and mints a secret Verification # — like locking
+                a safe the election admin can accept without opening.
+              </p>
+              <LabeledRow
+                label="Plaintext (on your device only)"
+                value={`{ mayor: ${formatMayor(previewChoice)}, verification: '${previewVerification}' }`}
+              />
+              <LabeledRow emphasize label="Verification #" mono value={previewVerification} />
+              <LabeledRow
+                label="Ciphertext that will leave the device"
+                mono
+                value={fakeCipher(previewVerification + previewChoice)}
+              />
+              {!choice && (
+                <p className="text-[0.72rem] text-h26-muted">Mark a choice above to preview with your selection.</p>
+              )}
+            </div>
+          )}
+        </ExploreSection>
+      </div>
     </div>
   )
 }
