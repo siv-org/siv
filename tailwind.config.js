@@ -12,14 +12,14 @@ module.exports = {
       },
       colors: {
         h26: {
-          bg: '#fafaf9',
+          bg: 'rgb(var(--h26-bg, 250 250 249) / <alpha-value>)',
           blue: '#1e3a5f',
-          border: 'rgba(0,0,0,0.06)',
-          green: '#1a6b4a',
-          greenHover: '#155a3e',
-          muted: '#999999',
-          text: '#1a1a1a',
-          textSecondary: '#6b6b6b',
+          border: 'rgb(var(--h26-border, 0 0 0) / 0.06)',
+          green: 'rgb(var(--h26-green, 26 107 74) / <alpha-value>)',
+          greenHover: 'rgb(var(--h26-green-hover, 21 90 62) / <alpha-value>)',
+          muted: 'rgb(var(--h26-muted, 153 153 153) / <alpha-value>)',
+          text: 'rgb(var(--h26-text, 26 26 26) / <alpha-value>)',
+          textSecondary: 'rgb(var(--h26-text-secondary, 107 107 107) / <alpha-value>)',
         },
       },
       fontFamily: {
