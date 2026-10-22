@@ -238,7 +238,11 @@ export function InteractiveDemo() {
               </p>
             </header>
 
-            <div className="rounded-2xl bg-white p-4 shadow-[0_0_0_1px_rgba(0,0,0,0.06)] sm:p-8">
+            <div
+              className={`p-4 sm:p-8 ${
+                s.step === 'invite' ? '' : 'rounded-2xl bg-white shadow-[0_0_0_1px_rgba(0,0,0,0.06)]'
+              }`}
+            >
               {(s.history.length > 0 || s.future.length > 0) && (
                 <div className="mb-5 flex gap-1.5">
                   <button

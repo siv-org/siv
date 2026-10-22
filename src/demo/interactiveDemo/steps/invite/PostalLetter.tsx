@@ -4,10 +4,10 @@ import { InviteQRCode } from './InviteQRCode'
 
 export function PostalLetter({ auth, onContinue }: { auth: string; onContinue: () => void }) {
   return (
-    <div className="bg-[#f0f3eb]/60 p-3 sm:p-6">
+    <div className="p-3 sm:p-6">
       <section
         aria-label="Envelope addressed to Alice Jones"
-        className="mx-auto mb-6 flex aspect-[3/2] min-h-[280px] max-w-[640px] flex-col justify-between border border-[#20392e]/20 bg-white p-4 text-h26-text shadow-[0_2px_8px_rgba(32,57,46,0.08)] sm:p-5"
+        className="mx-auto mb-6 flex aspect-[3/2] min-h-[280px] max-w-[540px] flex-col justify-between border border-[#20392e]/20 bg-white p-4 text-h26-text shadow-[0_2px_8px_rgba(32,57,46,0.08)] sm:p-5"
       >
         <div className="flex items-start justify-between gap-4">
           <div className="text-[10px] leading-relaxed sm:text-[0.75rem]">
@@ -44,7 +44,7 @@ export function PostalLetter({ auth, onContinue }: { auth: string; onContinue: (
       </section>
       <article
         aria-label="Personal invitation to the City Mayoral Election"
-        className="mx-auto max-w-[640px] border border-[#20392e]/20 bg-white px-5 py-7 shadow-[0_2px_8px_rgba(32,57,46,0.08)] sm:px-10 sm:py-9"
+        className="mx-auto max-w-[480px] border border-[#20392e]/20 bg-white px-5 py-7 shadow-[0_2px_8px_rgba(32,57,46,0.08)] sm:px-10 sm:py-9"
       >
         <header className="flex items-start justify-between gap-4 border-b border-[#20392e]/15 pb-5">
           <div>
@@ -59,7 +59,7 @@ export function PostalLetter({ auth, onContinue }: { auth: string; onContinue: (
         </header>
 
         <p className="font-mono26 mt-7 text-[9px] uppercase tracking-[0.16em] text-h26-green">Invitation to vote</p>
-        <h2 className="font-serif26 mt-2 text-[1.4rem] font-normal leading-snug text-h26-text sm:text-[1.7rem]">
+        <h2 className="font-serif26 mt-2 text-[clamp(0.65rem,3vw,1.1rem)] font-normal leading-snug text-h26-text whitespace-nowrap">
           You’re invited to have your say.
         </h2>
 
