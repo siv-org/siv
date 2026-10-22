@@ -1,11 +1,10 @@
-import { Mail } from 'lucide-react'
 import { useState } from 'react'
 import { generateAuthToken } from 'src/crypto/generate-auth-tokens'
 
 import { ExploreGroup, ExploreSection, ExploreTopic } from '../../shared/ExploreSection'
 import { PrimaryButton } from '../../shared/PrimaryButton'
 import { SecondaryButton } from '../../shared/SecondaryButton'
-import { InviteQRCode } from './InviteQRCode'
+import { PostalLetter } from './PostalLetter'
 
 type ExploreTopicId =
   | 'access'
@@ -46,32 +45,7 @@ export function Invite({ auth, onContinue }: { auth: string; onContinue: () => v
 
   return (
     <div>
-      <div className="px-4 py-5 rounded-xl bg-h26-bg sm:px-6">
-        <p className="flex items-center gap-2 text-[10px] text-h26-green">
-          <Mail aria-hidden className="size-5 shrink-0" strokeWidth={1.5} />
-          <span className="font-mono26 uppercase tracking-[0.14em]">Vote Invitation Sent via Postal Mail</span>
-        </p>
-        <p className="mt-5 text-[1rem] text-h26-text">
-          You’re invited to vote in <b>City Mayoral Election</b>.
-        </p>
-        <p className="mt-1 text-[0.85rem] text-h26-textSecondary">This invitation is unique to you.</p>
-
-        <div className="mt-5 flex flex-col items-center gap-4 rounded-xl border border-black/[0.07] bg-white p-4 sm:flex-row sm:items-center sm:justify-center sm:gap-8">
-          <InviteQRCode auth={auth} />
-          <div className="text-center sm:text-left">
-            <p className="text-[0.8rem] text-h26-textSecondary">Scan the QR code, or visit</p>
-            <button
-              className="mt-1 font-medium underline text-h26-green underline-offset-2"
-              onClick={onContinue}
-              type="button"
-            >
-              local.gov/election
-            </button>
-            <p className="mt-3 text-[0.75rem] text-h26-textSecondary">and enter your Voter Code:</p>
-            <p className="mt-1 font-mono26 text-[1rem] font-medium tracking-[0.12em] text-h26-text">{auth}</p>
-          </div>
-        </div>
-      </div>
+      <PostalLetter auth={auth} onContinue={onContinue} />
 
       <div className="flex justify-end mt-5">
         <PrimaryButton onClick={onContinue}>Open ballot</PrimaryButton>
