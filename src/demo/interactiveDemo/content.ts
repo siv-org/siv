@@ -120,7 +120,7 @@ export const STEP_META: Record<DemoStep, { blurb: string; title: string; unlocks
 export type BallotMethod = 'approval' | 'budget' | 'multi' | 'plurality' | 'ranked' | 'score'
 
 export const BALLOT_METHODS: { id: BallotMethod; label: string }[] = [
-  { id: 'plurality', label: 'Plurality' },
+  { id: 'plurality', label: 'Choose Only One' },
   { id: 'ranked', label: 'Ranked Choice' },
   { id: 'approval', label: 'Approval' },
   { id: 'multi', label: 'Choose up to X' },

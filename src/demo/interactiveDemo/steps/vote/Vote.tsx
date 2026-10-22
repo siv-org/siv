@@ -24,7 +24,7 @@ import { PrimaryButton } from '../../shared/PrimaryButton'
 import { BudgetBallot } from './BudgetBallot'
 
 export function Vote({ onPick }: { onPick: (c: string) => void }) {
-  const [method, setMethod] = useState<BallotMethod>('approval')
+  const [method, setMethod] = useState<BallotMethod>('plurality')
   const [plaintext, setPlaintext] = useState<Record<string, string>>({})
   const [showEncrypt, setShowEncrypt] = useState(false)
   // Preview # for the under-the-hood panel — real # is minted at submit
