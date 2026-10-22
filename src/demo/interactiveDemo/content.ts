@@ -82,7 +82,7 @@ export const STEP_META: Record<DemoStep, { blurb: string; title: string; unlocks
     title: 'SIV Interactive Demo',
   },
   invite: {
-    blurb: 'Your election admin sent you a one-time Voter Code. Each registered voter gets one.',
+    blurb: 'Your election admin sent you a one-time Voter Code via postal mail. Each registered voter gets one.',
     title: 'Invitation',
     unlocks: ['stuffing'],
   },

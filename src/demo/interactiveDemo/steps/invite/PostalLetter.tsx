@@ -5,10 +5,6 @@ import { InviteQRCode } from './InviteQRCode'
 export function PostalLetter({ auth, onContinue }: { auth: string; onContinue: () => void }) {
   return (
     <div className="bg-[#f0f3eb]/60 p-3 sm:p-6">
-      <p className="mb-4 flex items-center justify-center gap-2 text-[10px] text-h26-textSecondary">
-        <Mail aria-hidden className="size-5 shrink-0" strokeWidth={1.5} />
-        <span className="font-mono26 uppercase tracking-[0.14em]">Vote Invitation Sent via Postal Mail</span>
-      </p>
       <section
         aria-label="Envelope addressed to Alice Jones"
         className="mx-auto mb-6 flex aspect-[3/2] min-h-[280px] max-w-[640px] flex-col justify-between border border-[#20392e]/20 bg-white p-4 text-h26-text shadow-[0_2px_8px_rgba(32,57,46,0.08)] sm:p-5"
@@ -23,9 +19,8 @@ export function PostalLetter({ auth, onContinue }: { auth: string; onContinue: (
             aria-hidden
             className="flex h-16 w-14 shrink-0 border-[3px] border-dotted border-[#20392e]/60 p-1 sm:h-20 sm:w-[4.5rem]"
           >
-            <div className="flex w-full flex-col items-center justify-center gap-1 border border-[#20392e]/30">
+            <div className="flex w-full items-center justify-center border border-[#20392e]/30">
               <Mail className="size-5 text-h26-muted" strokeWidth={1} />
-              <span className="font-mono26 text-[7px] tracking-[0.12em] text-h26-muted">DEMO MAIL</span>
             </div>
           </div>
         </div>
