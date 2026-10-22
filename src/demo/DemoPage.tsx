@@ -21,7 +21,7 @@ export const DemoPage = (): JSX.Element => {
       <TailwindPreflight />
       <style jsx>{`
         .demo-page {
-          --h26-bg: 245 245 239;
+          --h26-bg: 250 250 249;
           --h26-border: 32 57 46;
           --h26-green: 33 92 66;
           --h26-green-hover: 22 62 45;

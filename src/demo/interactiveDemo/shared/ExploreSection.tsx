@@ -13,7 +13,6 @@ export function ExploreGroup({ children, title }: { children: React.ReactNode; t
 export function ExploreSection({ children, className = 'mt-6' }: { children: React.ReactNode; className?: string }) {
   return (
     <div className={`border-t border-black/[0.07] pt-5 ${className}`}>
-      <p className="font-mono26 text-[10px] uppercase tracking-[0.14em] text-h26-muted">Explore this step</p>
       {children}
     </div>
   )
