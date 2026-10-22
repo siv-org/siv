@@ -6,7 +6,7 @@ import { strengthenTracking } from 'src/vote/strengthen-tracking'
 import { generateTrackingNum } from 'src/vote/tracking-num'
 
 import { CANDIDATES, DemoStep, OTHER_VOTERS, STEP_META } from './content'
-import { back, DemoState, forward, go, initState, markComplete, pathIndex, UnlockedVote, visit } from './demoState'
+import { DemoState, go, initState, markComplete, pathIndex, UnlockedVote, visit } from './demoState'
 import { fakeCipher, fakeCipherParts } from './shared/ciphertext'
 import { joinChoices, splitChoices } from './shared/formatChoice'
 import { NeedVote } from './shared/NeedVote'
@@ -77,8 +77,6 @@ export function InteractiveDemo() {
     )
 
   const restart = () => setS(initState())
-  const goBack = () => setS((prev) => back(prev))
-  const goForward = () => setS((prev) => forward(prev))
 
   const sealVote = (choice: string) => {
     const verification = generateTrackingNum()
@@ -243,30 +241,6 @@ export function InteractiveDemo() {
                 s.step === 'invite' ? '' : 'rounded-2xl bg-white shadow-[0_0_0_1px_rgba(0,0,0,0.06)]'
               }`}
             >
-              {(s.history.length > 0 || s.future.length > 0) && (
-                <div className="mb-5 flex gap-1.5">
-                  <button
-                    aria-label="Previous step"
-                    className="inline-flex size-8 items-center justify-center rounded-full border border-black/10 text-lg text-h26-textSecondary transition-colors hover:border-h26-green/40 hover:bg-h26-green/[0.06] hover:text-h26-green disabled:cursor-not-allowed disabled:opacity-25"
-                    disabled={!s.history.length}
-                    onClick={goBack}
-                    title="Previous step"
-                    type="button"
-                  >
-                    ‹
-                  </button>
-                  <button
-                    aria-label="Next step"
-                    className="inline-flex size-8 items-center justify-center rounded-full border border-black/10 text-lg text-h26-textSecondary transition-colors hover:border-h26-green/40 hover:bg-h26-green/[0.06] hover:text-h26-green disabled:cursor-not-allowed disabled:opacity-25"
-                    disabled={!s.future.length}
-                    onClick={goForward}
-                    title="Next step"
-                    type="button"
-                  >
-                    ›
-                  </button>
-                </div>
-              )}
               {s.step === 'intro' && <Intro onStart={start} />}
               {s.step === 'invite' && (
                 <Invite auth={s.auth} onContinue={() => setS((prev) => go(markComplete(prev, ['stuffing']), 'vote'))} />
