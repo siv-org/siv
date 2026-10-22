@@ -52,7 +52,7 @@ export function Intro({ onStart }: { onStart: () => void }) {
       </ul> */}
       <div className="flex justify-end mt-8">
         <PrimaryButton className="!w-auto" onClick={onStart}>
-          Start as a voter
+          Start
         </PrimaryButton>
       </div>
     </div>
