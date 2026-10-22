@@ -15,12 +15,17 @@ export function Intro({ onStart }: { onStart: () => void }) {
         <p className="font-mono26 text-[10px] uppercase tracking-[0.14em] text-h26-muted" id="election-pillars">
           Pillars of a secure election
         </p>
-        <ol className="mt-3 grid grid-cols-3 divide-x divide-black/[0.07] overflow-hidden rounded-xl border border-black/[0.07] bg-h26-bg">
+        <ol className="mt-5 grid grid-cols-3 divide-x divide-[#20392e]/10">
           {PILLARS.map(({ icon: Icon, label }) => (
-            <li className="px-3 py-3.5 sm:px-4" key={label}>
-              <span className="flex items-center gap-2 text-[0.75rem] font-medium leading-snug text-h26-text sm:text-[0.85rem]">
-                <Icon aria-hidden className="size-4 shrink-0 text-h26-green sm:size-[1.125rem]" strokeWidth={1.75} />
-                <span>{label}</span>
+            <li
+              className="flex flex-col gap-3 px-3 py-1 first:pl-0 last:pr-0 sm:flex-row sm:items-center sm:px-5"
+              key={label}
+            >
+              <span className="flex size-9 shrink-0 items-center justify-center rounded-md bg-[#f0f3eb]">
+                <Icon aria-hidden className="size-[1.125rem] text-h26-green" strokeWidth={1.5} />
+              </span>
+              <span className="text-[0.75rem] font-medium leading-snug text-h26-text sm:text-[0.85rem]">
+                {label}
               </span>
             </li>
           ))}
