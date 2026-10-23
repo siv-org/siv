@@ -84,7 +84,7 @@ export function Invite({ auth, onContinue }: { auth: string; onContinue: () => v
                 Each voter needs their Voter Code to cast a vote. How that code reaches them is the first identity
                 check. For example, sending it by postal mail to the address on their voter registration record.
               </p>
-              <p className="mt-4 text-[0.8rem] leading-relaxed text-h26-textSecondary">
+              <p className="mt-4 text-[0.8rem] font-semibold leading-relaxed text-h26-textSecondary">
                 Election admins can then require additional checks:
               </p>
               <div className="grid gap-2 mt-2 sm:grid-cols-2">
