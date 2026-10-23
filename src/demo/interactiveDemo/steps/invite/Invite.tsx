@@ -28,7 +28,9 @@ export function Invite({ auth, onContinue }: { auth: string; onContinue: () => v
       <PostalLetter auth={auth} onContinue={onContinue} />
 
       <div className="flex justify-end mt-5">
-        <PrimaryButton onClick={onContinue}>Open ballot</PrimaryButton>
+        <PrimaryButton disabled={!auth} onClick={onContinue}>
+          Open ballot
+        </PrimaryButton>
       </div>
 
       <ExploreSection>
