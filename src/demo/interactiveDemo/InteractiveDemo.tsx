@@ -18,6 +18,8 @@ export function InteractiveDemo() {
   const [height, setHeight] = useState(780)
   const [resultsVersion, setResultsVersion] = useState(0)
   const frame = useRef<HTMLIFrameElement>(null)
+  const page = useRef<HTMLDivElement>(null)
+  const previousStep = useRef(step)
   const requestInFlight = useRef(false)
   const [restored, setRestored] = useState(false)
   const stage = step === 'intro' ? -1 : step === 'invite' ? 0 : step === 'results' ? 2 : 1
@@ -50,6 +52,13 @@ export function InteractiveDemo() {
       /* Storage may be unavailable. */
     }
   }, [restored, session, step])
+
+  // Changing steps does not load a new page, so the browser needs to be scrolled to the top manually.
+  useEffect(() => {
+    if (previousStep.current === step) return
+    previousStep.current = step
+    page.current?.scrollIntoView({ block: 'start' })
+  }, [step])
 
   useEffect(() => {
     const listen = (event: MessageEvent) => {
@@ -128,7 +137,7 @@ export function InteractiveDemo() {
   const voteUrl = session ? `/election/${electionId}/vote?auth=${session.auth}&demo=1` : ''
 
   return (
-    <div aria-busy={busy}>
+    <div aria-busy={busy} ref={page}>
       <ol className="flex mb-8 w-full">
         {['Start demo', 'Receive invite', 'Vote', 'Verify results'].map((label, index) => {
           const active = index === stage + 1
