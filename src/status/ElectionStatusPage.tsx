@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router'
 import { useReducer } from 'react'
 
+import { sharedDemoMethod } from '../demo/interactiveDemo/content'
 import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
 import { Footer } from '../vote/Footer'
@@ -34,7 +35,7 @@ export const ElectionStatusPage = ({
           <div className="title-line">
             <h1>Election Status</h1>
             <p>
-              ID: <b>{election_id}</b>
+              ID: <b>{sharedDemoMethod(election_id) ? 'Demo' : election_id}</b>
             </p>
           </div>
 
