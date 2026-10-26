@@ -5,14 +5,14 @@ import { BALLOT_METHODS, BallotMethod, sharedDemoElectionId } from './content'
 import { PrimaryButton } from './shared/PrimaryButton'
 import { Intro } from './steps/intro/Intro'
 import { Invite } from './steps/invite/Invite'
+import { isStep, Step, useDemoNavigation } from './useDemoNavigation'
 
 type Session = { auth: string; method: BallotMethod }
-type Step = 'intro' | 'invite' | 'results' | 'submitted' | 'vote'
 
 export function InteractiveDemo() {
+  const { isReady, setStep, step, urlStep } = useDemoNavigation()
   const [session, setSession] = useState<null | Session>(null)
   const electionId = session ? sharedDemoElectionId(session.method) : ''
-  const [step, setStep] = useState<Step>('intro')
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
   const [height, setHeight] = useState(780)
@@ -26,22 +26,25 @@ export function InteractiveDemo() {
 
   // Retain this tab's capability across refreshes; private ballot selections stay inside the voter page.
   useEffect(() => {
+    if (!isReady || restored) return
+    let restoredStep: Step = 'intro'
     try {
       const saved = JSON.parse(sessionStorage.getItem('siv-shared-backend-demo') || 'null')
       if (
         saved?.session &&
         /^[a-f0-9]{10}$/.test(saved.session.auth) &&
-        ['invite', 'results', 'submitted', 'vote'].includes(saved.step) &&
+        isStep(saved.step) &&
         BALLOT_METHODS.some(({ id }) => id === saved.session.method)
       ) {
         setSession({ auth: saved.session.auth, method: saved.session.method })
-        setStep(saved.step)
+        restoredStep = urlStep || saved.step
       }
     } catch {
       /* Storage may be unavailable; the current in-memory session still works. */
     }
+    setStep(restoredStep, 'replace')
     setRestored(true)
-  }, [])
+  }, [isReady, restored, setStep, urlStep])
 
   useEffect(() => {
     if (!restored) return
@@ -67,15 +70,16 @@ export function InteractiveDemo() {
       if (message?.channel !== 'siv-backend-demo' || message.election_id !== electionId) return
       if (message.type === 'resize' && Number.isFinite(message.height))
         setHeight(Math.max(350, Math.min(6000, message.height)))
-      if (message.type === 'submitted') setStep((current) => (current === 'vote' ? 'submitted' : current))
+      if (message.type === 'submitted' && step === 'vote') setStep('submitted', 'replace')
     }
     window.addEventListener('message', listen)
     return () => window.removeEventListener('message', listen)
-  }, [electionId])
+  }, [electionId, setStep, step])
 
   async function register(method: BallotMethod = 'plurality', destination: Step = 'invite') {
     if (requestInFlight.current) return
     requestInFlight.current = true
+    const sourceUrl = window.location.href
     setBusy(true)
     setError('')
     if (destination === 'invite') setStep('invite')
@@ -92,7 +96,7 @@ export function InteractiveDemo() {
       const data = await response.json()
       setSession({ auth: data.auth, method })
       setHeight(780)
-      setStep(destination)
+      if (destination !== 'invite' && window.location.href === sourceUrl) setStep(destination)
     } catch (error) {
       setError(error instanceof Error ? error.message : 'Could not start the demo.')
     } finally {
@@ -104,6 +108,7 @@ export function InteractiveDemo() {
   async function openResults() {
     if (!session || requestInFlight.current) return
     requestInFlight.current = true
+    const sourceUrl = window.location.href
     setBusy(true)
     setError('')
     try {
@@ -115,7 +120,7 @@ export function InteractiveDemo() {
         throw new Error(data?.error || 'Could not refresh election results. Please try again.')
       }
       setResultsVersion((version) => version + 1)
-      setStep('results')
+      if (window.location.href === sourceUrl) setStep('results')
     } catch (error) {
       setError(error instanceof Error ? error.message : 'Could not open demo results.')
     } finally {
@@ -151,7 +156,6 @@ export function InteractiveDemo() {
                 onClick={() => {
                   setError('')
                   if (index === 0) {
-                    setSession(null)
                     setStep('intro')
                   } else if (index === 1) setStep('invite')
                   else if (index === 2) setStep(step === 'results' || step === 'submitted' ? 'submitted' : 'vote')
@@ -182,7 +186,9 @@ export function InteractiveDemo() {
           {title && (
             <h1
               className={`font-serif26 font-normal tracking-tight text-h26-text ${
-                step === 'intro' ? 'text-[clamp(1.15rem,2.4vw,1.45rem)] leading-snug' : 'text-[clamp(1.35rem,5vw,2.1rem)]'
+                step === 'intro'
+                  ? 'text-[clamp(1.15rem,2.4vw,1.45rem)] leading-snug'
+                  : 'text-[clamp(1.35rem,5vw,2.1rem)]'
               }`}
             >
               {title}
@@ -267,7 +273,6 @@ export function InteractiveDemo() {
               <PrimaryButton
                 disabled={busy}
                 onClick={() => {
-                  setSession(null)
                   setStep('intro')
                 }}
               >
