@@ -10,7 +10,7 @@ export const DemoPage = (): JSX.Element => {
   useAnalytics()
   return (
     <div className={`demo-page overflow-x-hidden min-h-screen antialiased ${h26fonts} bg-h26-bg text-h26-text`}>
-      <Head title="SIV Interactive Demo" />
+      <Head title="SIV Demo" />
       <div className="relative z-10">
         <Nav fixed={false} />
         <main className="mx-auto max-w-[1100px] px-4 pb-16 pt-[100px] sm:px-7 sm:pb-20 sm:pt-[120px]">

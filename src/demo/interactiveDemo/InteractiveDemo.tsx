@@ -126,7 +126,7 @@ export function InteractiveDemo() {
 
   const title =
     step === 'intro'
-      ? 'SIV Interactive Demo'
+      ? 'SIV Demo'
       : step === 'invite'
       ? 'Invitation'
       : step === 'results'
