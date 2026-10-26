@@ -27,3 +27,51 @@ describe('Demo browser navigation', () => {
     cy.contains('h1', 'Mark your ballot').should('be.visible')
   })
 })
+
+// The real voter page reports submission through the same frame message used here.
+describe('Verify Results layout', () => {
+  it('keeps both pages in step 3 and goes directly back to the ballot', () => {
+    cy.viewport(1280, 900)
+    cy.intercept('POST', '/api/demo/mint-auth-token', { auth: 'abcdef1234' })
+    cy.intercept('POST', '/api/demo/demo-shared-v2-plurality/unlock-results', {}).as('results')
+    cy.intercept('GET', '/election/demo-shared-v2-plurality', '<html><body><h1>Election Results</h1></body></html>')
+    cy.intercept(
+      'GET',
+      '/election/demo-shared-v2-plurality/vote?*',
+      `
+      <html><body><h1>Demo ballot</h1><button onclick="window.parent.postMessage({channel:'siv-backend-demo',election_id:'demo-shared-v2-plurality',type:'submitted'},window.location.origin)">Submit demo vote</button></body></html>
+    `,
+    )
+    cy.visit('/demo', { onBeforeLoad: (win) => win.sessionStorage.clear() })
+    cy.contains('button', /^Start$/).click()
+    cy.contains('button', 'Open ballot').click()
+    cy.get('iframe[title="SIV voter interface"]')
+      .its('0.contentDocument.body')
+      .should('not.be.empty')
+      .then((body) => {
+        cy.wrap(body).contains('button', 'Submit demo vote').click()
+      })
+    cy.location('search').should('eq', '?verify-results')
+    cy.contains('button', 'Verify results').should('have.attr', 'aria-current', 'step')
+    cy.contains('h2', 'Your submitted vote').should('be.visible')
+    cy.get('iframe[title="SIV election results"]').should('not.exist')
+    cy.contains('button', /^View Results$/).click()
+    cy.wait('@results')
+    cy.get('iframe[title="SIV voter interface"]').should('be.visible')
+    cy.get('iframe[title="SIV election results"]').should('be.visible')
+    cy.location('search').should('eq', '?verify-results')
+    cy.go('back')
+    cy.location('search').should('eq', '?vote')
+    cy.get('iframe[title="SIV voter interface"]').should('have.attr', 'src').and('include', 'view=ballot')
+    cy.go('forward')
+    cy.location('search').should('eq', '?verify-results')
+    cy.viewport(390, 844)
+    cy.reload()
+    cy.contains('button', 'View Results ↓').click()
+    cy.wait('@results')
+    cy.contains('h2', 'Election results').should('be.visible')
+    cy.contains('button', 'Back to your vote ↑').click()
+    cy.contains('h2', 'Your submitted vote').should('be.visible')
+    cy.location('search').should('eq', '?verify-results')
+  })
+})
