@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import { useCallback } from 'react'
 
-const STEPS = ['intro', 'invite', 'results', 'submitted', 'vote'] as const
+const STEPS = ['intro', 'invite', 'results', 'vote'] as const
 export type Step = (typeof STEPS)[number]
 
 // Accept only known steps when restoring a saved demo.
@@ -11,7 +11,10 @@ export function useDemoNavigation() {
   const router = useRouter()
 
   // Read the step from the URL, including when Back or Forward changes it.
-  const urlStep = 'vote-submitted' in router.query ? 'submitted' : STEPS.find((name) => name in router.query)
+  const urlStep =
+    'verify-results' in router.query || 'vote-submitted' in router.query
+      ? 'results'
+      : STEPS.find((name) => name in router.query)
   const step = urlStep || 'intro'
 
   const setStep = useCallback(
@@ -22,9 +25,10 @@ export function useDemoNavigation() {
       const query = new URLSearchParams(window.location.search)
       STEPS.forEach((name) => query.delete(name))
       query.delete('vote-submitted')
+      query.delete('verify-results')
       query.delete('step')
       const otherParams = query.toString()
-      const url = `${router.pathname}?${next === 'submitted' ? 'vote-submitted' : next}${
+      const url = `${router.pathname}?${next === 'results' ? 'verify-results' : next}${
         otherParams ? `&${otherParams}` : ''
       }`
 
