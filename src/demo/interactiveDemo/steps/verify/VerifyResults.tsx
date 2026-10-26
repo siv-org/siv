@@ -33,18 +33,17 @@ export function VerifyResults({
 
   return (
     <>
-      <div className="mb-5 lg:hidden">
-        <PrimaryButton disabled={busy} onClick={() => (resultsVersion ? scrollTo(results.current) : onOpenResults())}>
-          {busy ? 'Opening results…' : 'View Results ↓'}
-        </PrimaryButton>
-      </div>
       <div className="grid gap-6 lg:grid-cols-2 lg:items-start">
         <section className="min-w-0 scroll-mt-6" ref={vote}>
-          <h2 className="mb-3 font-serif26 text-xl">Your submitted vote</h2>
+          <h2 className="mb-3 font-serif26 text-xl">
+            <span className="lg:hidden">1. </span>Your submitted vote<span className="lg:hidden">:</span>
+          </h2>
           <div className="overflow-hidden rounded-2xl border border-black/10 bg-white">{receipt}</div>
         </section>
         <section className="min-w-0 scroll-mt-6" ref={results}>
-          <h2 className="mb-3 font-serif26 text-xl">Election results</h2>
+          <h2 className="mb-3 font-serif26 text-xl">
+            <span className="lg:hidden">2. </span>Election results<span className="lg:hidden">:</span>
+          </h2>
           {resultsVersion ? (
             <iframe
               className="block h-[1000px] w-full rounded-2xl border border-black/10 bg-white"
