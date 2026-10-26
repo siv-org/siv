@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import { useEffect, useRef } from 'react'
 import { secretsMatch } from 'src/_shared/secretsMatch'
 import { generateVoterKeypair } from 'src/crypto/voter-key'
+import { sharedDemoMethod } from 'src/demo/interactiveDemo/content'
 
 import { GlobalCSS } from '../GlobalCSS'
 import { CustomAuthFlow, hasCustomAuthFlow } from './auth/11choosesAuth/CustomAuthFlow'
@@ -21,6 +22,8 @@ export const AuthenticatedContent = ({ auth, election_id }: { auth: string; elec
   // Initialize local vote state on client
   const [state, dispatch] = useVoteState(`voter-${election_id}-${auth}`)
   const router = useRouter()
+  // Back in the demo shows the submitted ballot without allowing another submission.
+  const reviewBallot = sharedDemoMethod(election_id) && router.query.view === 'ballot' && !!state.submitted_at
   const link_auth_query = router.query.link_auth
   const wasAlreadySubmittedOnPageLoad = useRef(!!state.submitted_at && !!state.link_auth).current
 
@@ -61,8 +64,16 @@ export const AuthenticatedContent = ({ auth, election_id }: { auth: string; elec
 
   return (
     <>
-      <DemoEmbedBridge {...{ election_id, submitted: !!state.submitted_at }} />
-      {state.submitted_at ? (
+      <DemoEmbedBridge {...{ election_id, submitted: !!state.submitted_at && !reviewBallot }} />
+      {reviewBallot ? (
+        <>
+          <h1>Your submitted ballot</h1>
+          <p>Your vote has been submitted. Return to Verify Results to check it.</p>
+          <fieldset className="m-0 border-0 p-0" disabled>
+            <Ballot dispatch={() => {}} {...{ election_id, state }} />
+          </fieldset>
+        </>
+      ) : state.submitted_at ? (
         hasCustomAuthFlow(election_id) ? (
           <CustomAuthFlow {...{ auth, election_id }} />
         ) : state.esignature_requested && !state.esigned_at ? (
