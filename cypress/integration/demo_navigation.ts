@@ -67,7 +67,7 @@ describe('Verify Results layout', () => {
     cy.location('search').should('eq', '?verify-results')
     cy.viewport(390, 844)
     cy.reload()
-    cy.contains('button', 'View Results ↓').click()
+    cy.contains('button', /^View Results$/).click()
     cy.wait('@results')
     cy.contains('h2', 'Election results').should('be.visible')
     cy.contains('button', 'Back to your vote ↑').click()
