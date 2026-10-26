@@ -5,9 +5,10 @@ import { BALLOT_METHODS, BallotMethod, sharedDemoElectionId } from './content'
 import { PrimaryButton } from './shared/PrimaryButton'
 import { Intro } from './steps/intro/Intro'
 import { Invite } from './steps/invite/Invite'
+import { VerifyResults } from './steps/verify/VerifyResults'
 import { isStep, Step, useDemoNavigation } from './useDemoNavigation'
 
-type Session = { auth: string; method: BallotMethod }
+type Session = { auth: string; method: BallotMethod; submitted?: boolean }
 
 export function InteractiveDemo() {
   const { isReady, setStep, step, urlStep } = useDemoNavigation()
@@ -33,11 +34,14 @@ export function InteractiveDemo() {
       if (
         saved?.session &&
         /^[a-f0-9]{10}$/.test(saved.session.auth) &&
-        isStep(saved.step) &&
         BALLOT_METHODS.some(({ id }) => id === saved.session.method)
       ) {
-        setSession({ auth: saved.session.auth, method: saved.session.method })
-        restoredStep = urlStep || saved.step
+        setSession({
+          auth: saved.session.auth,
+          method: saved.session.method,
+          submitted: saved.session.submitted || saved.step === 'submitted' || saved.step === 'results',
+        })
+        restoredStep = urlStep || (saved.step === 'submitted' ? 'results' : isStep(saved.step) ? saved.step : 'intro')
       }
     } catch {
       /* Storage may be unavailable; the current in-memory session still works. */
@@ -70,11 +74,14 @@ export function InteractiveDemo() {
       if (message?.channel !== 'siv-backend-demo' || message.election_id !== electionId) return
       if (message.type === 'resize' && Number.isFinite(message.height))
         setHeight(Math.max(350, Math.min(6000, message.height)))
-      if (message.type === 'submitted' && step === 'vote') setStep('submitted', 'replace')
+      if (message.type === 'submitted' && step === 'vote' && !session?.submitted) {
+        setSession((current) => current && { ...current, submitted: true })
+        setStep('results')
+      }
     }
     window.addEventListener('message', listen)
     return () => window.removeEventListener('message', listen)
-  }, [electionId, setStep, step])
+  }, [electionId, session?.submitted, setStep, step])
 
   async function register(method: BallotMethod = 'plurality', destination: Step = 'invite') {
     if (requestInFlight.current) return
@@ -95,6 +102,7 @@ export function InteractiveDemo() {
       }
       const data = await response.json()
       setSession({ auth: data.auth, method })
+      setResultsVersion(0)
       setHeight(780)
       if (destination !== 'invite' && window.location.href === sourceUrl) setStep(destination)
     } catch (error) {
@@ -119,8 +127,7 @@ export function InteractiveDemo() {
         const data = await response.json().catch(() => null)
         throw new Error(data?.error || 'Could not refresh election results. Please try again.')
       }
-      setResultsVersion((version) => version + 1)
-      if (window.location.href === sourceUrl) setStep('results')
+      if (window.location.href === sourceUrl) setResultsVersion((version) => version + 1)
     } catch (error) {
       setError(error instanceof Error ? error.message : 'Could not open demo results.')
     } finally {
@@ -135,11 +142,27 @@ export function InteractiveDemo() {
       : step === 'invite'
       ? 'Invitation'
       : step === 'results'
-      ? 'Results'
+      ? 'Verify Results'
       : step === 'vote'
-      ? 'Mark your ballot'
+      ? session?.submitted
+        ? 'Your submitted ballot'
+        : 'Mark your ballot'
       : null
-  const voteUrl = session ? `/election/${electionId}/vote?auth=${session.auth}&demo=1` : ''
+  const voteUrl = session
+    ? `/election/${electionId}/vote?auth=${session.auth}&demo=1${
+        step === 'vote' && session.submitted ? '&view=ballot' : ''
+      }`
+    : ''
+  const voterPage = (
+    <iframe
+      className="block w-full border-0"
+      height={height}
+      key={voteUrl}
+      ref={frame}
+      src={voteUrl}
+      title="SIV voter interface"
+    />
+  )
 
   return (
     <div aria-busy={busy} ref={page}>
@@ -152,13 +175,13 @@ export function InteractiveDemo() {
               <button
                 aria-current={active ? 'step' : undefined}
                 className="flex relative flex-col gap-2 items-center"
-                disabled={busy || (index > 0 && !session) || (index === 3 && step !== 'results')}
+                disabled={busy || (index > 0 && !session) || (index === 3 && !session?.submitted)}
                 onClick={() => {
                   setError('')
                   if (index === 0) {
                     setStep('intro')
                   } else if (index === 1) setStep('invite')
-                  else if (index === 2) setStep(step === 'results' || step === 'submitted' ? 'submitted' : 'vote')
+                  else if (index === 2) setStep('vote')
                   else setStep('results')
                 }}
                 type="button"
@@ -178,7 +201,7 @@ export function InteractiveDemo() {
           )
         })}
       </ol>
-      <div className="mx-auto max-w-4xl">
+      <div className={`mx-auto ${step === 'results' ? '' : 'max-w-4xl'}`}>
         <header className="mb-5 sm:mb-6">
           {step !== 'intro' && (
             <p className="font-mono26 mb-2 text-[10px] uppercase tracking-[0.16em] text-h26-muted">Interactive Demo</p>
@@ -205,6 +228,16 @@ export function InteractiveDemo() {
             </p>
           )}
         </header>
+        {error && (
+          <div className="mb-4" role="alert">
+            <p className="text-sm text-red-700">{error}</p>
+            {step === 'invite' && !session && (
+              <PrimaryButton className="mt-3" onClick={() => register()}>
+                Try again
+              </PrimaryButton>
+            )}
+          </div>
+        )}
         {step === 'intro' && (
           <div className="rounded-2xl bg-white p-4 shadow-[0_0_0_1px_rgba(0,0,0,0.06)] sm:p-8">
             <Intro onStart={() => register()} />
@@ -215,18 +248,9 @@ export function InteractiveDemo() {
             <Invite auth={session?.auth || ''} onContinue={() => session && setStep('vote')} />
           </div>
         )}
-        {(step === 'vote' || step === 'submitted') && session && (
+        {step === 'vote' && session && (
           <>
-            <div className="overflow-hidden rounded-2xl border border-black/[0.06] bg-white">
-              <iframe
-                className="block w-full border-0"
-                height={height}
-                key={electionId}
-                ref={frame}
-                src={voteUrl}
-                title="SIV voter interface"
-              />
-            </div>
+            <div className="overflow-hidden rounded-2xl border border-black/[0.06] bg-white">{voterPage}</div>
             {step === 'vote' && (
               <div className="px-4 mt-6 sm:px-8">
                 <p className="font-mono26 text-[10px] uppercase tracking-[0.14em] text-h26-muted">
@@ -252,49 +276,22 @@ export function InteractiveDemo() {
                 </div>
               </div>
             )}
-            {step === 'submitted' && (
-              <div className="flex justify-end mt-6">
-                <PrimaryButton disabled={busy} onClick={openResults}>
-                  {busy ? 'Opening results…' : 'View results'}
-                </PrimaryButton>
-              </div>
-            )}
           </>
         )}
         {step === 'results' && session && (
-          <>
-            <iframe
-              className="block h-[1000px] w-full rounded-2xl border border-black/10 bg-white"
-              key={`${electionId}-${resultsVersion}`}
-              src={`/election/${electionId}`}
-              title="SIV election results"
-            />
-            <div className="flex flex-wrap gap-3 justify-end mt-6">
-              <PrimaryButton
-                disabled={busy}
-                onClick={() => {
-                  setStep('intro')
-                }}
-              >
-                Start again
-              </PrimaryButton>
-            </div>
-          </>
+          <VerifyResults
+            busy={busy}
+            electionId={electionId}
+            onOpenResults={openResults}
+            onRestart={() => setStep('intro')}
+            receipt={voterPage}
+            resultsVersion={resultsVersion}
+          />
         )}
         {busy && step !== 'invite' && (
           <p className="mt-4 text-sm text-h26-textSecondary" role="status">
             Please wait…
           </p>
-        )}
-        {error && (
-          <div className="mt-4" role="alert">
-            <p className="text-sm text-red-700">{error}</p>
-            {step === 'invite' && !session && (
-              <PrimaryButton className="mt-3" onClick={() => register()}>
-                Try again
-              </PrimaryButton>
-            )}
-          </div>
         )}
       </div>
     </div>
