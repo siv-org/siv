@@ -131,9 +131,9 @@ export function InteractiveDemo() {
       ? 'Invitation'
       : step === 'results'
       ? 'Results'
-      : step === 'submitted'
-      ? 'Vote submitted'
-      : 'Mark your ballot'
+      : step === 'vote'
+      ? 'Mark your ballot'
+      : null
   const voteUrl = session ? `/election/${electionId}/vote?auth=${session.auth}&demo=1` : ''
 
   return (
@@ -179,13 +179,15 @@ export function InteractiveDemo() {
           {step !== 'intro' && (
             <p className="font-mono26 mb-2 text-[10px] uppercase tracking-[0.16em] text-h26-muted">Interactive Demo</p>
           )}
-          <h1
-            className={`font-serif26 font-normal tracking-tight text-h26-text ${
-              step === 'intro' ? 'text-[clamp(1.15rem,2.4vw,1.45rem)] leading-snug' : 'text-[clamp(1.35rem,5vw,2.1rem)]'
-            }`}
-          >
-            {title}
-          </h1>
+          {title && (
+            <h1
+              className={`font-serif26 font-normal tracking-tight text-h26-text ${
+                step === 'intro' ? 'text-[clamp(1.15rem,2.4vw,1.45rem)] leading-snug' : 'text-[clamp(1.35rem,5vw,2.1rem)]'
+              }`}
+            >
+              {title}
+            </h1>
+          )}
           {step === 'intro' && (
             <p className="mt-2 text-[0.9rem] leading-relaxed text-h26-textSecondary sm:text-[0.95rem]">
               Experience the Secure Internet Voting Protocol as a voter, &amp; explore how it handles attacks.
