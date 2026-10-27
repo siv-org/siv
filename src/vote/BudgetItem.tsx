@@ -157,19 +157,14 @@ export const BudgetItem = ({
                       className="pr-2 pl-6 w-32 h-10 text-lg text-right bg-white rounded border-2 border-gray-300 border-solid appearance-none cursor-pointer hover:border-blue-600"
                       inputMode="decimal"
                       onChange={(event) => {
-                        const update: Record<string, string> = {}
                         const input = event.currentTarget
                         const beforeCursor = input.value
                           .slice(0, input.selectionStart ?? input.value.length)
                           .replace(/,/g, '').length
                         const change = input.value.replace(/,/g, '')
-                        const key = `${id}_${val}`
-                        update[key] = `${change}`
 
                         // Are they deselecting their existing selection?
-                        if (!change) update[key] = 'BLANK'
-
-                        dispatch(update)
+                        dispatch({ [`${id}_${val}`]: change || 'BLANK' })
                         // Keep the cursor beside the same digits when grouping commas change.
                         requestAnimationFrame(() => {
                           let position = 0

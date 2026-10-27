@@ -23,7 +23,7 @@ export function InteractiveDemo() {
   const previousStep = useRef(step)
   const requestInFlight = useRef(false)
   const [restored, setRestored] = useState(false)
-  const stage = step === 'intro' ? -1 : step === 'invite' ? 0 : step === 'results' ? 2 : 1
+  const stage = ['intro', 'invite', 'vote', 'results'].indexOf(step)
 
   // Retain this tab's capability across refreshes; private ballot selections stay inside the voter page.
   useEffect(() => {
@@ -143,11 +143,9 @@ export function InteractiveDemo() {
       ? 'Invitation'
       : step === 'results'
       ? 'Verify Results'
-      : step === 'vote'
-      ? session?.submitted
-        ? 'Your submitted ballot'
-        : 'Mark your ballot'
-      : null
+      : session?.submitted
+      ? 'Your submitted ballot'
+      : 'Mark your ballot'
   const voteUrl = session
     ? `/election/${electionId}/vote?auth=${session.auth}&demo=1${
         step === 'vote' && session.submitted ? '&view=ballot' : ''
@@ -168,8 +166,8 @@ export function InteractiveDemo() {
     <div aria-busy={busy} ref={page}>
       <ol className="flex mb-8 w-full">
         {['Start demo', 'Receive invite', 'Vote', 'Verify results'].map((label, index) => {
-          const active = index === stage + 1
-          const completed = index < stage + 1
+          const active = index === stage
+          const completed = index < stage
           return (
             <li className="flex relative flex-col flex-1 items-center min-w-0" key={label}>
               {index < 3 && (
@@ -184,9 +182,8 @@ export function InteractiveDemo() {
                 disabled={busy || (index > 0 && !session) || (index === 3 && !session?.submitted)}
                 onClick={() => {
                   setError('')
-                  if (index === 0) {
-                    setStep('intro')
-                  } else if (index === 1) setStep('invite')
+                  if (index === 0) setStep('intro')
+                  else if (index === 1) setStep('invite')
                   else if (index === 2) setStep('vote')
                   else setStep('results')
                 }}
@@ -215,17 +212,13 @@ export function InteractiveDemo() {
       </ol>
       <div className={`mx-auto ${step === 'results' ? '' : 'max-w-4xl'}`}>
         <header className="mb-5 sm:mb-6">
-          {title && (
-            <h1
-              className={`font-serif26 font-normal tracking-tight text-h26-text ${
-                step === 'intro'
-                  ? 'text-[clamp(1.15rem,2.4vw,1.45rem)] leading-snug'
-                  : 'text-[clamp(1.35rem,5vw,2.1rem)]'
-              }`}
-            >
-              {title}
-            </h1>
-          )}
+          <h1
+            className={`font-serif26 font-normal tracking-tight text-h26-text ${
+              step === 'intro' ? 'text-[clamp(1.15rem,2.4vw,1.45rem)] leading-snug' : 'text-[clamp(1.35rem,5vw,2.1rem)]'
+            }`}
+          >
+            {title}
+          </h1>
           {step === 'intro' && (
             <p className="mt-2 text-[0.9rem] leading-relaxed text-h26-textSecondary sm:text-[0.95rem]">
               Experience the Secure Internet Voting Protocol as a voter, &amp; explore how it handles attacks.
@@ -266,31 +259,29 @@ export function InteractiveDemo() {
         {step === 'vote' && session && (
           <>
             <div className="overflow-hidden rounded-2xl border border-black/[0.06] bg-white">{voterPage}</div>
-            {step === 'vote' && (
-              <div className="px-4 mt-6 sm:px-8">
-                <p className="font-mono26 text-[10px] uppercase tracking-[0.14em] text-h26-muted">
-                  Try other voting methods
-                </p>
-                <div className="mt-3 flex flex-wrap gap-1.5">
-                  {BALLOT_METHODS.map(({ id, label }) => (
-                    <button
-                      aria-pressed={session.method === id}
-                      className={`rounded-full border px-3 py-1.5 text-[0.72rem] ${
-                        session.method === id
-                          ? 'border-h26-green/40 bg-h26-green/[0.1] font-medium text-h26-green'
-                          : 'border-black/10 text-h26-textSecondary'
-                      }`}
-                      disabled={busy}
-                      key={id}
-                      onClick={() => id !== session.method && register(id, 'vote')}
-                      type="button"
-                    >
-                      {label}
-                    </button>
-                  ))}
-                </div>
+            <div className="px-4 mt-6 sm:px-8">
+              <p className="font-mono26 text-[10px] uppercase tracking-[0.14em] text-h26-muted">
+                Try other voting methods
+              </p>
+              <div className="mt-3 flex flex-wrap gap-1.5">
+                {BALLOT_METHODS.map(({ id, label }) => (
+                  <button
+                    aria-pressed={session.method === id}
+                    className={`rounded-full border px-3 py-1.5 text-[0.72rem] ${
+                      session.method === id
+                        ? 'border-h26-green/40 bg-h26-green/[0.1] font-medium text-h26-green'
+                        : 'border-black/10 text-h26-textSecondary'
+                    }`}
+                    disabled={busy}
+                    key={id}
+                    onClick={() => id !== session.method && register(id, 'vote')}
+                    type="button"
+                  >
+                    {label}
+                  </button>
+                ))}
               </div>
-            )}
+            </div>
           </>
         )}
         {step === 'results' && session && (

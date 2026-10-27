@@ -86,3 +86,33 @@ describe('Verify Results layout', () => {
     }
   })
 })
+
+describe('Demo budget ballot', () => {
+  it('formats amounts while editing and stores comma-free values', () => {
+    cy.intercept('GET', '/api/election/demo-shared-v4-budget/info', {
+      ballot_design: [
+        {
+          budget_available: 100000,
+          id: 'vote',
+          options: [{ name: 'Proposal A' }],
+          title: 'Community budget',
+          type: 'budget',
+          write_in_allowed: false,
+        },
+      ],
+      ballot_design_finalized: true,
+      threshold_public_key: 'e2f2ae0a6abc4e71a884a961c500515f58e30b6aa582dd8db6a65945e08d2d76',
+    })
+    cy.visit('/election/demo-shared-v4-budget/vote?auth=abcdef1234&demo=1', {
+      onBeforeLoad: (win) => win.localStorage.clear(),
+    })
+    cy.get('[aria-label="Amount for Proposal A"]').as('amount')
+    cy.get('@amount').type('12345.67').should('have.value', '12,345.67')
+    cy.contains('Budget Available: $87,654.33 of $100,000').should('be.visible')
+    cy.get('@amount').type('{home}{rightArrow}9').should('have.value', '192,345.67')
+    cy.get('@amount').should(($input) => expect(($input[0] as HTMLInputElement).selectionStart).to.eq(2))
+    cy.get('@amount').clear().should('have.value', '')
+    cy.contains('Budget Available: $100,000 of $100,000').should('be.visible')
+    cy.contains('This vote is powered by').should('not.exist')
+  })
+})

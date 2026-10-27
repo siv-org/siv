@@ -36,8 +36,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const fingerprint = createHash('sha256')
     .update(JSON.stringify(votes.docs.map((doc) => doc.data().encrypted_vote)))
     .digest('hex')
-  const changed = data.demo_results_fingerprint !== fingerprint
-  if (changed) {
+  if (data.demo_results_fingerprint !== fingerprint) {
     // Unlock votes again
     const { columns } = generateColumnNames({ ballot_design: JSON.parse(data.ballot_design) })
     const decrypted = await unlockDemoBallots(
