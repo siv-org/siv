@@ -88,7 +88,7 @@ beforeAll(async () => {
   creation = await import('./create-elections')
   createDemoElection = creation.createDemoElection
 })
-function cast(election_id: string, auth: string, tracking: string, choice = 'Mark Leno') {
+function cast(election_id: string, auth: string, tracking: string, choice = 'Jordan Park') {
   const election = records.get(`elections/${election_id}`)
   const cipher = encrypt(
     RP.fromHex(String(election?.threshold_public_key)),
@@ -179,6 +179,22 @@ describe('SIV demo using shared backend', () => {
     expect(records.get(`elections/${first.election_id}`)?.secret).toBeUndefined()
     expect(records.get(`elections/${first.election_id}`)?.private_keyshare).toBeUndefined()
     expect(records.get(`elections/${first.election_id}`)?.t).toBe(1)
+  })
+
+  test('new mayoral elections use fictional candidates, party subtitles, and randomized order', async () => {
+    for (const { id } of BALLOT_METHODS.filter(({ id }) => id !== 'budget')) {
+      await createDemoElection(id)
+      const election = records.get(`elections/${sharedDemoElectionId(id)}`)
+      expect(election?.election_title).toBe('City Mayoral Election')
+      const [design] = JSON.parse(String(election?.ballot_design))
+      expect(design.randomize_order).toBe(true)
+      expect(design.options).toEqual([
+        { name: 'Sam Navarro', sub: 'Silver Party' },
+        { name: 'Alex Okafor', sub: 'Gold Party' },
+        { name: 'Jordan Park', sub: 'Violet Party' },
+        { name: 'Casey Dubois', sub: 'Teal Party' },
+      ])
+    }
   })
 
   test('different ballot methods have different shared elections', async () => {
@@ -278,13 +294,13 @@ describe('SIV demo using shared backend', () => {
     cast(first.election_id, first.auth, '1234-1234-1234')
     expect((await refresh(first.election_id)).status).toBe(200)
     let election = records.get(`elections/${first.election_id}`)
-    expect(election?.decrypted).toContainEqual({ tracking: '1234-1234-1234', vote: 'Mark Leno' })
+    expect(election?.decrypted).toContainEqual({ tracking: '1234-1234-1234', vote: 'Jordan Park' })
     expect(election?.decrypted).toHaveLength(25)
     const second = await register()
-    cast(second.election_id, second.auth, '5678-5678-5678', 'Jane Kim')
+    cast(second.election_id, second.auth, '5678-5678-5678', 'Casey Dubois')
     expect((await refresh(second.election_id)).status).toBe(200)
     election = records.get(`elections/${second.election_id}`)
-    expect(election?.decrypted).toContainEqual({ tracking: '5678-5678-5678', vote: 'Jane Kim' })
+    expect(election?.decrypted).toContainEqual({ tracking: '5678-5678-5678', vote: 'Casey Dubois' })
     expect(election?.decrypted).toHaveLength(26)
     expect(election?.stop_accepting_votes).toBe(false)
   })
@@ -293,12 +309,12 @@ describe('SIV demo using shared backend', () => {
     const visitor = await register()
     cast(visitor.election_id, visitor.auth, '1234-1234-1234')
     await refresh(visitor.election_id)
-    cast(visitor.election_id, visitor.auth, '5678-5678-5678', 'Jane Kim')
+    cast(visitor.election_id, visitor.auth, '5678-5678-5678', 'Casey Dubois')
     const path = `elections/${visitor.election_id}`
     records.set(path, { ...records.get(path), num_votes: 25 })
     expect((await refresh(visitor.election_id)).status).toBe(200)
-    expect(records.get(path)?.decrypted).toContainEqual({ tracking: '5678-5678-5678', vote: 'Jane Kim' })
-    expect(records.get(path)?.decrypted).not.toContainEqual({ tracking: '1234-1234-1234', vote: 'Mark Leno' })
+    expect(records.get(path)?.decrypted).toContainEqual({ tracking: '5678-5678-5678', vote: 'Casey Dubois' })
+    expect(records.get(path)?.decrypted).not.toContainEqual({ tracking: '1234-1234-1234', vote: 'Jordan Park' })
     expect(records.get(path)?.decrypted).toHaveLength(25)
   })
 
@@ -307,7 +323,7 @@ describe('SIV demo using shared backend', () => {
     cast(visitor.election_id, visitor.auth, '123-1234-1234')
     expect((await refresh(visitor.election_id)).status).toBe(200)
     const path = `elections/${visitor.election_id}`
-    expect(records.get(path)?.decrypted).toContainEqual({ tracking: '0123-1234-1234', vote: 'Mark Leno' })
+    expect(records.get(path)?.decrypted).toContainEqual({ tracking: '0123-1234-1234', vote: 'Jordan Park' })
     cast(visitor.election_id, visitor.auth, '123-1234-1234', 'BLANK')
     expect((await refresh(visitor.election_id)).status).toBe(200)
     expect(records.get(path)?.decrypted).toHaveLength(24)
@@ -335,7 +351,7 @@ describe('SIV demo using shared backend', () => {
     const olderRefresh = refresh(first.election_id)
     await paused.promise
     const second = await register()
-    cast(second.election_id, second.auth, '5678-5678-5678', 'Jane Kim')
+    cast(second.election_id, second.auth, '5678-5678-5678', 'Casey Dubois')
     expect((await refresh(second.election_id)).status).toBe(200)
     const path = `elections/${first.election_id}`
     expect(records.get(path)?.decrypted).toHaveLength(25)
@@ -344,7 +360,7 @@ describe('SIV demo using shared backend', () => {
     expect(records.get(path)?.decrypted).toHaveLength(24)
     expect(records.has(`${path}/votes/${second.auth}`)).toBe(true)
     expect((await refresh(first.election_id)).status).toBe(200)
-    expect(records.get(path)?.decrypted).toContainEqual({ tracking: '5678-5678-5678', vote: 'Jane Kim' })
+    expect(records.get(path)?.decrypted).toContainEqual({ tracking: '5678-5678-5678', vote: 'Casey Dubois' })
   })
 
   test('never unlocks ordinary or old per-visitor elections', async () => {

@@ -30,7 +30,7 @@ export async function createDemoElection(method: BallotMethod) {
       created_at: new Date(),
       creator: 'siv-backend-demo',
       election_manager: 'SIV Demo',
-      election_title: method === 'budget' ? 'Community Budget · Demo' : 'City Mayoral Election · Demo',
+      election_title: method === 'budget' ? 'Community Budget · Demo' : 'City Mayoral Election',
       is_demo: true,
       num_invalidated_votes: 0,
       num_pending_votes: 0,

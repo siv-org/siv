@@ -2,7 +2,7 @@
 describe('Demo browser navigation', () => {
   it('keeps the URL, Back, Forward, and refresh in sync with the current step', () => {
     cy.intercept('POST', '/api/demo/mint-auth-token', { auth: 'abcdef1234' }).as('register')
-    cy.intercept('GET', '/election/demo-shared-v2-plurality/vote?*', '<html><body>Demo ballot</body></html>')
+    cy.intercept('GET', '/election/demo-shared-v4-plurality/vote?*', '<html><body>Demo ballot</body></html>')
     cy.visit('/demo', { onBeforeLoad: (win) => win.sessionStorage.clear() })
     cy.contains('button', /^Start$/).click()
     cy.wait('@register')
@@ -33,13 +33,13 @@ describe('Verify Results layout', () => {
   it('keeps both pages in step 3 and goes directly back to the ballot', () => {
     cy.viewport(1280, 900)
     cy.intercept('POST', '/api/demo/mint-auth-token', { auth: 'abcdef1234' })
-    cy.intercept('POST', '/api/demo/demo-shared-v2-plurality/unlock-results', {}).as('results')
-    cy.intercept('GET', '/election/demo-shared-v2-plurality', '<html><body><h1>Election Results</h1></body></html>')
+    cy.intercept('POST', '/api/demo/demo-shared-v4-plurality/unlock-results', {}).as('results')
+    cy.intercept('GET', '/election/demo-shared-v4-plurality', '<html><body><h1>Election Results</h1></body></html>')
     cy.intercept(
       'GET',
-      '/election/demo-shared-v2-plurality/vote?*',
+      '/election/demo-shared-v4-plurality/vote?*',
       `
-      <html><body><h1>Demo ballot</h1><button onclick="window.parent.postMessage({channel:'siv-backend-demo',election_id:'demo-shared-v2-plurality',type:'submitted'},window.location.origin)">Submit demo vote</button></body></html>
+      <html><body><h1>Demo ballot</h1><button onclick="window.parent.postMessage({channel:'siv-backend-demo',election_id:'demo-shared-v4-plurality',type:'submitted'},window.location.origin)">Submit demo vote</button></body></html>
     `,
     )
     cy.visit('/demo', { onBeforeLoad: (win) => win.sessionStorage.clear() })

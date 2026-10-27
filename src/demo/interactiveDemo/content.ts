@@ -45,7 +45,7 @@ export const POSTER_PROPERTIES: PosterProperty[] = [
   },
 ]
 
-export const CANDIDATES = ['Angela Alioto', 'London Breed', 'Mark Leno', 'Jane Kim'] as const
+export const CANDIDATES = ['Sam Navarro', 'Alex Okafor', 'Jordan Park', 'Casey Dubois'] as const
 
 export type DemoStep =
   | 'audit'
@@ -129,13 +129,16 @@ export const BALLOT_METHODS: { id: BallotMethod; label: string }[] = [
 ]
 
 // ponytail: Fixed IDs encode version and method; no duplicate metadata on election records.
-export const sharedDemoElectionId = (method: BallotMethod) => `demo-shared-v2-${method}`
+export const sharedDemoElectionId = (method: BallotMethod) => `demo-shared-v4-${method}`
 export const sharedDemoMethod = (electionId: string) =>
   BALLOT_METHODS.find(({ id }) => sharedDemoElectionId(id) === electionId)?.id
 
 export const DEMO_BUDGET_AVAILABLE = 100_000
 
-export const DEMO_BALLOT_OPTIONS = CANDIDATES.map((name) => ({ name }))
+export const DEMO_BALLOT_OPTIONS = CANDIDATES.map((name, index) => ({
+  name,
+  sub: ['Silver Party', 'Gold Party', 'Violet Party', 'Teal Party'][index],
+}))
 
 export const DEMO_BUDGET_OPTIONS = ['Proposal A', 'Proposal B', 'Proposal C', 'Proposal D'].map((name) => ({ name }))
 
@@ -156,6 +159,7 @@ export function ballotDesignFor(method: BallotMethod): BallotItem {
   const base = {
     id: 'vote',
     options: DEMO_BALLOT_OPTIONS,
+    randomize_order: method !== 'budget',
     title: 'Who should be the next Mayor?',
     write_in_allowed: false,
   }

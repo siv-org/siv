@@ -3,7 +3,7 @@
 `/demo` uses the normal SIV voter and results pages in every environment.
 
 Each voting method has one shared election, with a deterministic
-`demo-shared-v2-{method}` ID and `is_demo: true` marker, known to both client and server.
+`demo-shared-v4-{method}` ID and `is_demo: true` marker, known to both client and server.
 Version and voting method are encoded in the ID rather than duplicated in document fields.
 Create the shared elections explicitly against the intended database before using the demo:
 
