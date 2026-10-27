@@ -45,11 +45,6 @@ export function Intro({ onStart }: { onStart: () => void }) {
         Those safeguards extend to even more advanced threats: fake voters, malware secretly changing votes, coercion,
         and vote selling. Explore the demo to see how these protections work.
       </p>
-      {/* <ul className="mt-5 space-y-2 text-[0.9rem] text-h26-textSecondary">
-        <li>· This is a simulated sandbox — no real election / no login</li>
-
-        <li>· Click items on the left to jump to a defense</li>
-      </ul> */}
       <div className="flex justify-end mt-8">
         <PrimaryButton className="!w-auto" onClick={onStart}>
           Start
