@@ -87,7 +87,7 @@ export const BudgetItem = ({
               remaining >= 0 ? 'border-green-600' : 'border-red-600'
             } border-solid rounded`}
           >
-            Budget Available: ${remaining} of ${budget_available}
+            Budget Available: ${remaining.toLocaleString('en-US')} of ${budget_available.toLocaleString('en-US')}
           </div>
           {remaining < 0 && <div className="px-1 pt-1 font-semibold text-red-500">You{"'"}ve exceeded the budget.</div>}
         </div>
@@ -153,7 +153,9 @@ export const BudgetItem = ({
                   <td className="relative ml-2">
                     <div className="absolute pt-1.5 text-xl left-2 opacity-50">$</div>
                     <input
-                      className="w-20 h-10 px-1 text-lg text-right bg-white border-2 border-gray-300 border-solid rounded appearance-none cursor-pointer hover:border-blue-600"
+                      aria-label={`Amount for ${name}`}
+                      className="w-32 h-10 pl-6 pr-2 text-lg text-right bg-white border-2 border-gray-300 border-solid rounded appearance-none cursor-pointer hover:border-blue-600"
+                      inputMode="decimal"
                       onChange={(event) => {
                         const update: Record<string, string> = {}
 
@@ -165,15 +167,29 @@ export const BudgetItem = ({
                         if (!change) update[key] = 'BLANK'
 
                         dispatch(update)
+                        // Keep the cursor beside the same digits when grouping commas change.
+                        requestAnimationFrame(() => {
+                          let position = 0
+                          let characters = 0
+                          while (position < input.value.length && characters < beforeCursor) {
+                            if (input.value[position] !== ',') characters++
+                            position++
+                          }
+                          input.setSelectionRange(position, position)
+                        })
                       }}
-                      value={current === 'BLANK' ? '' : current}
+                      value={
+                        current === 'BLANK'
+                          ? ''
+                          : current.replace(/^-?\d+/, (integer) => integer.replace(/\B(?=(\d{3})+(?!\d))/g, ',')) // adds commas every 3 digits
+                      }
                     />
                   </td>
                 </tr>
 
                 {showToggleable2 && toggleable_2 && (
                   <tr className="!pb-10">
-                    <td className="px-2 pt-2 pb-4 text-xs border border-solid rounded border-black/30" colSpan={2}>
+                    <td className="px-2 pt-2 pb-4 text-xs rounded border border-solid border-black/30" colSpan={2}>
                       {toggleable_2.type && (
                         <div>
                           Type:{' '}
@@ -199,7 +215,7 @@ export const BudgetItem = ({
                         )}
                         {toggleable_2.dislike && (
                           <div className="mt-1 whitespace-break-spaces">
-                            <div className="font-semibold ">Against:</div>
+                            <div className="font-semibold">Against:</div>
                             {toggleable_2.dislike}
                           </div>
                         )}
