@@ -35,13 +35,13 @@ export function VerifyResults({
     <>
       <div className="grid gap-6 lg:grid-cols-2 lg:items-start">
         <section className="min-w-0 scroll-mt-6" ref={vote}>
-          <h2 className="mb-3 font-serif26 text-xl">
+          <h2 className="mb-3 text-xl font-serif26">
             <span className="lg:hidden">1. </span>Your submitted vote<span className="lg:hidden">:</span>
           </h2>
-          <div className="overflow-hidden rounded-2xl border border-black/10 bg-white">{receipt}</div>
+          <div className="overflow-hidden bg-white rounded-2xl border border-black/10">{receipt}</div>
         </section>
         <section className="min-w-0 scroll-mt-6" ref={results}>
-          <h2 className="mb-3 font-serif26 text-xl">
+          <h2 className="mb-3 text-xl font-serif26">
             <span className="lg:hidden">2. </span>Election results<span className="lg:hidden">:</span>
           </h2>
           {resultsVersion ? (
@@ -52,10 +52,10 @@ export function VerifyResults({
               title="SIV election results"
             />
           ) : (
-            <div className="rounded-2xl border border-h26-green/20 bg-white p-6 sm:p-8">
+            <div className="p-6 bg-white rounded-2xl border border-h26-green/20 sm:p-8">
               <p className="mb-6 text-sm leading-relaxed text-h26-textSecondary">
-                Your vote is submitted. Open the results to find your Verification # in the published votes and compare
-                it with your receipt.
+                Typically, results are not published until the end of the election, but for this demo, you can open them
+                now.
               </p>
               <PrimaryButton disabled={busy} onClick={onOpenResults}>
                 {busy ? 'Opening results…' : 'View Results'}
@@ -67,7 +67,7 @@ export function VerifyResults({
           </div>
         </section>
       </div>
-      <div className="mt-6 flex justify-end">
+      <div className="flex justify-end mt-6">
         <SecondaryButton onClick={onRestart}>Start again</SecondaryButton>
       </div>
     </>
