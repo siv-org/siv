@@ -98,7 +98,7 @@ export const BudgetItem = ({
             <div className="flex justify-between py-1.5">
               {toggleable_label && (
                 <div
-                  className="inline-block px-2 border border-solid rounded-lg cursor-pointer border-black/20"
+                  className="inline-block px-2 rounded-lg border border-solid cursor-pointer border-black/20"
                   onClick={() => {
                     const currentTopItem = findCurrentTopItemInView()
                     setShowToggleables(!showToggleables)
@@ -112,7 +112,7 @@ export const BudgetItem = ({
 
               {toggleable_2_label && (
                 <div
-                  className="inline-block px-2 pb-3 border border-solid rounded-lg cursor-pointer sm:ml-3 border-black/20"
+                  className="inline-block px-2 pb-3 rounded-lg border border-solid cursor-pointer sm:ml-3 border-black/20"
                   onClick={() => {
                     const currentTopItem = findCurrentTopItemInView()
                     setShowToggleable2(!showToggleable2)
@@ -154,12 +154,15 @@ export const BudgetItem = ({
                     <div className="absolute pt-1.5 text-xl left-2 opacity-50">$</div>
                     <input
                       aria-label={`Amount for ${name}`}
-                      className="w-32 h-10 pl-6 pr-2 text-lg text-right bg-white border-2 border-gray-300 border-solid rounded appearance-none cursor-pointer hover:border-blue-600"
+                      className="pr-2 pl-6 w-32 h-10 text-lg text-right bg-white rounded border-2 border-gray-300 border-solid appearance-none cursor-pointer hover:border-blue-600"
                       inputMode="decimal"
                       onChange={(event) => {
                         const update: Record<string, string> = {}
-
-                        const change = event.target.value
+                        const input = event.currentTarget
+                        const beforeCursor = input.value
+                          .slice(0, input.selectionStart ?? input.value.length)
+                          .replace(/,/g, '').length
+                        const change = input.value.replace(/,/g, '')
                         const key = `${id}_${val}`
                         update[key] = `${change}`
 
