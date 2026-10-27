@@ -224,7 +224,14 @@ export function InteractiveDemo() {
           )}
           {step === 'invite' && (
             <p className="mt-2 text-[0.9rem] leading-relaxed text-h26-textSecondary sm:text-[0.95rem]">
-              Your election admin sent you a one-time Voter Code via postal mail. Each registered voter gets one.
+              To enforce One Person/One Vote, election administrators send each eligible voter a unique, one-time Voter
+              Code.{' '}
+              <br className="hidden sm:block" />
+              There are several ways to deliver these codes, see below.
+              <br />
+              <br />
+              For this demo, we’ll use a postal invitation, a familiar option for government elections that already
+              offer vote-by-mail.
             </p>
           )}
         </header>
