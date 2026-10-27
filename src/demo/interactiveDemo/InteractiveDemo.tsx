@@ -169,9 +169,15 @@ export function InteractiveDemo() {
       <ol className="flex mb-8 w-full">
         {['Start demo', 'Receive invite', 'Vote', 'Verify results'].map((label, index) => {
           const active = index === stage + 1
+          const completed = index < stage + 1
           return (
             <li className="flex relative flex-col flex-1 items-center min-w-0" key={label}>
-              {index < 3 && <span aria-hidden className="absolute left-1/2 top-3.5 h-px w-full bg-black/10" />}
+              {index < 3 && (
+                <span
+                  aria-hidden
+                  className={`absolute left-1/2 top-3.5 h-px w-full ${completed ? 'bg-[#b7cdbd]' : 'bg-black/10'}`}
+                />
+              )}
               <button
                 aria-current={active ? 'step' : undefined}
                 className="flex relative flex-col gap-2 items-center"
@@ -187,13 +193,19 @@ export function InteractiveDemo() {
                 type="button"
               >
                 <span
-                  className={`flex size-7 items-center justify-center rounded-full border bg-h26-bg text-xs ${
-                    active ? 'border-h26-green text-h26-green' : 'border-black/15 text-h26-muted'
+                  className={`flex size-7 items-center justify-center rounded-full border text-xs ${
+                    completed || active
+                      ? 'border-[#b7cdbd] bg-[#e6efe8] text-h26-green'
+                      : 'border-black/15 bg-h26-bg text-h26-muted'
                   }`}
                 >
                   {index === 0 ? <Play size={12} /> : index}
                 </span>
-                <span className={`text-[0.7rem] sm:text-[0.8rem] ${active ? 'text-h26-text' : 'text-h26-muted'}`}>
+                <span
+                  className={`text-[0.7rem] sm:text-[0.8rem] ${
+                    active || completed ? 'text-h26-text' : 'text-h26-muted'
+                  }`}
+                >
                   {label}
                 </span>
               </button>
@@ -225,8 +237,7 @@ export function InteractiveDemo() {
           {step === 'invite' && (
             <p className="mt-2 text-[0.9rem] leading-relaxed text-h26-textSecondary sm:text-[0.95rem]">
               To enforce One Person/One Vote, election administrators send each eligible voter a unique, one-time Voter
-              Code.{' '}
-              <br className="hidden sm:block" />
+              Code. <br className="hidden sm:block" />
               There are several ways to deliver these codes, see below.
               <br />
               <br />
