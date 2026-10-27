@@ -79,7 +79,7 @@ export const STEP_META: Record<DemoStep, { blurb: string; title: string; unlocks
   },
   intro: {
     blurb: 'Experience the Secure Internet Voting Protocol as a voter, & explore how it handles attacks.',
-    title: 'SIV Interactive Demo',
+    title: 'SIV Demo',
   },
   invite: {
     blurb: 'Your election admin sent you a one-time Voter Code via postal mail. Each registered voter gets one.',

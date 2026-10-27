@@ -215,9 +215,6 @@ export function InteractiveDemo() {
       </ol>
       <div className={`mx-auto ${step === 'results' ? '' : 'max-w-4xl'}`}>
         <header className="mb-5 sm:mb-6">
-          {step !== 'intro' && (
-            <p className="font-mono26 mb-2 text-[10px] uppercase tracking-[0.16em] text-h26-muted">Interactive Demo</p>
-          )}
           {title && (
             <h1
               className={`font-serif26 font-normal tracking-tight text-h26-text ${
