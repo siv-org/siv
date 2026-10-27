@@ -99,7 +99,10 @@ export function InteractiveDemo() {
     const sourceUrl = window.location.href
     setBusy(true)
     setError('')
-    if (destination === 'invite') setStep('invite')
+    if (destination === 'invite') {
+      setSession(null)
+      setStep('invite')
+    }
     try {
       const response = await fetch('/api/demo/mint-auth-token', {
         body: JSON.stringify({ method }),

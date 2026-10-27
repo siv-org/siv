@@ -161,3 +161,53 @@ describe('Scanned demo invitation', () => {
     }
   })
 })
+
+// A replacement invitation must never expose the previous session while registration is pending or failed.
+describe('Restart registration', () => {
+  it('clears the old voter code and only enables the ballot after a successful retry', () => {
+    cy.intercept('GET', '/election/demo-shared-v4-plurality/vote?*', '<html><body>Submitted ballot</body></html>')
+    cy.visit('/demo?verify-results', {
+      onBeforeLoad: (win) =>
+        win.sessionStorage.setItem(
+          'siv-shared-backend-demo-v5',
+          JSON.stringify({
+            session: { auth: 'abcdef1234', method: 'plurality', submitted: true },
+            step: 'results',
+          }),
+        ),
+    })
+    cy.contains('button', 'Start again').click()
+    cy.intercept('POST', '/api/demo/mint-auth-token', {
+      delay: 1500,
+      statusCode: 503,
+      body: { error: 'Registration unavailable' },
+    }).as('failedRegistration')
+    cy.contains('button', /^Start$/).click()
+
+    // While waiting, neither the old code nor its QR link is available.
+    cy.contains('h1', 'Invitation').should('be.visible')
+    cy.contains('abcdef1234').should('not.exist')
+    cy.get('[aria-label="Open demo ballot from QR code"]').should('not.exist')
+    cy.contains('button', 'Open ballot').should('be.disabled')
+    cy.wait('@failedRegistration')
+    cy.contains('Registration unavailable').should('be.visible')
+    cy.contains('button', 'Open ballot').should('be.disabled')
+    cy.contains('abcdef1234').should('not.exist')
+
+    // A successful retry exposes only the replacement invitation.
+    cy.intercept('POST', '/api/demo/mint-auth-token', { auth: '123456abcd' }).as('retryRegistration')
+    cy.contains('button', 'Try again').click()
+    cy.wait('@retryRegistration')
+    cy.get('[aria-label="Open demo ballot from QR code"]').should(
+      'have.attr',
+      'href',
+      '/demo?vote&auth=123456abcd&method=plurality',
+    )
+    cy.contains('button', 'Open ballot').should('be.enabled').click()
+    cy.get('iframe[title="SIV voter interface"]').should(
+      'have.attr',
+      'src',
+      '/election/demo-shared-v4-plurality/vote?auth=123456abcd&demo=1',
+    )
+  })
+})
