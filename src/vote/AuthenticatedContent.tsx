@@ -7,6 +7,7 @@ import { generateVoterKeypair } from 'src/crypto/voter-key'
 import { GlobalCSS } from '../GlobalCSS'
 import { CustomAuthFlow, hasCustomAuthFlow } from './auth/11choosesAuth/CustomAuthFlow'
 import { Ballot } from './Ballot'
+import { DemoEmbedBridge } from './DemoEmbedBridge'
 import { ESignScreen } from './esign/ESignScreen'
 import { Instructions } from './Instructions'
 import { PrivacyProtectorsStatements } from './PrivacyProtectorsStatements'
@@ -60,6 +61,7 @@ export const AuthenticatedContent = ({ auth, election_id }: { auth: string; elec
 
   return (
     <>
+      <DemoEmbedBridge {...{ election_id, submitted: !!state.submitted_at }} />
       {state.submitted_at ? (
         hasCustomAuthFlow(election_id) ? (
           <CustomAuthFlow {...{ auth, election_id }} />

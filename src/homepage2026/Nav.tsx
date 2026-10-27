@@ -12,12 +12,14 @@ const NAV_LINKS: { cta?: boolean; text: string; url: string }[] = [
 export const logoRatio = 50 / 23
 const logoHeight = 18
 
-export function Nav() {
+export function Nav({ fixed = true }: { fixed?: boolean } = {}) {
   const router = useRouter()
   const isLoginPage = router.pathname === '/login' || router.pathname === '/enter-login-code'
 
   return (
-    <nav className="fixed left-1/2 top-4 z-[100] flex -translate-x-1/2 items-center gap-4 sm:gap-9 rounded-full border border-h26-border bg-white/70 px-4 sm:px-6 py-2.5 shadow-sm backdrop-blur-[24px]">
+    <nav
+      className={`${fixed ? 'fixed' : 'absolute'} left-1/2 top-4 z-[100] flex -translate-x-1/2 items-center gap-4 sm:gap-9 rounded-full border border-h26-border bg-white/70 px-4 sm:px-6 py-2.5 shadow-sm backdrop-blur-[24px]`}
+    >
       {/* Logo */}
       <Link
         aria-label="Go to homepage"

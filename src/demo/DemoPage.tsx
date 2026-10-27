@@ -1,58 +1,24 @@
-import { GlobalCSS } from '../GlobalCSS'
 import { Head } from '../Head'
-import { Footer } from '../homepage/Footer'
-import { HeaderBar } from '../homepage/HeaderBar'
+import { h26fonts } from '../homepage2026/fonts'
+import { Footer } from '../homepage2026/Footer'
+import { Nav } from '../homepage2026/Nav'
+import { TailwindPreflight } from '../TailwindPreflight'
 import { useAnalytics } from '../useAnalytics'
+import { InteractiveDemo } from './interactiveDemo/InteractiveDemo'
 
 export const DemoPage = (): JSX.Element => {
   useAnalytics()
   return (
-    <>
+    <div className={`overflow-x-hidden min-h-screen antialiased ${h26fonts} bg-h26-bg text-h26-text`}>
       <Head title="SIV Demo" />
-
-      <div className="page">
-        <HeaderBar />
-        <main>
-          <div className="video-container">
-            <iframe
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              className="video"
-              frameBorder="0"
-              src="https://www.youtube-nocookie.com/embed/PzUU_rcLurQ?modestbranding=1"
-              title="SIV Demo video"
-            ></iframe>
-          </div>
+      <div className="relative z-10">
+        <Nav fixed={false} />
+        <main className="mx-auto max-w-[1100px] px-4 pb-16 pt-[100px] sm:px-7 sm:pb-20 sm:pt-[120px]">
+          <InteractiveDemo />
         </main>
         <Footer />
       </div>
-      <style jsx>{`
-        .page {
-          width: 100%;
-          overflow-x: hidden;
-          padding: 1rem 2rem;
-          padding-top: 0 !important;
-        }
-        main {
-          max-width: 1050px;
-          width: 100%;
-          margin: 6rem auto 10rem;
-        }
-        .video-container {
-          position: relative;
-          width: 100%;
-          height: 0;
-          padding-bottom: 56.25%;
-        }
-        .video {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-        }
-      `}</style>
-      <GlobalCSS />
-    </>
+      <TailwindPreflight />
+    </div>
   )
 }
