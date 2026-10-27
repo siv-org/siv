@@ -30,7 +30,7 @@ export function InteractiveDemo() {
     if (!isReady || restored) return
     let restoredStep: Step = 'intro'
     try {
-      const saved = JSON.parse(sessionStorage.getItem('siv-shared-backend-demo-v4') || 'null')
+      const saved = JSON.parse(sessionStorage.getItem('siv-shared-backend-demo-v5') || 'null')
       if (
         saved?.session &&
         /^[a-f0-9]{10}$/.test(saved.session.auth) &&
@@ -53,8 +53,8 @@ export function InteractiveDemo() {
   useEffect(() => {
     if (!restored) return
     try {
-      if (session) sessionStorage.setItem('siv-shared-backend-demo-v4', JSON.stringify({ session, step }))
-      else sessionStorage.removeItem('siv-shared-backend-demo-v4')
+      if (session) sessionStorage.setItem('siv-shared-backend-demo-v5', JSON.stringify({ session, step }))
+      else sessionStorage.removeItem('siv-shared-backend-demo-v5')
     } catch {
       /* Storage may be unavailable. */
     }

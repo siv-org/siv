@@ -411,7 +411,11 @@ describe('backend demo ballots using production decryption', () => {
       rows.forEach((row) => {
         expect(Object.keys(row).every((key) => key === 'tracking' || columns.includes(key))).toBe(true)
         for (const column of columns) {
-          if (id === 'score' || id === 'budget') expect(Number(row[column])).toBeGreaterThanOrEqual(0)
+          if (id === 'score') {
+            expect(Number.isInteger(Number(row[column]))).toBe(true)
+            expect(Number(row[column])).toBeGreaterThanOrEqual(Number(design.min_score))
+            expect(Number(row[column])).toBeLessThanOrEqual(Number(design.max_score))
+          } else if (id === 'budget') expect(Number(row[column])).toBeGreaterThanOrEqual(0)
           else if (row[column] !== undefined) expect(design.options.map((option) => option.name)).toContain(row[column])
         }
         if (id === 'budget') expect(columns.reduce((sum, column) => sum + Number(row[column]), 0)).toBe(100_000)

@@ -79,7 +79,7 @@ export function makeDemoBallots(method: BallotMethod) {
         const name = design.options[(favorite + position) % design.options.length].name
         const selection =
           method === 'score'
-            ? String(position === favorite ? 5 : 0)
+            ? String(position === favorite ? design.max_score : 0)
             : method === 'budget'
             ? String(position === favorite ? 100_000 : 0)
             : method === 'plurality' || method === 'ranked' || position < 2

@@ -16,7 +16,7 @@ export const BALLOT_METHODS: { id: BallotMethod; label: string }[] = [
 ]
 
 // ponytail: Fixed IDs encode version and method; no duplicate metadata on election records.
-export const sharedDemoElectionId = (method: BallotMethod) => `demo-shared-v4-${method}`
+export const sharedDemoElectionId = (method: BallotMethod) => `demo-shared-v${method === 'score' ? 5 : 4}-${method}`
 export const sharedDemoMethod = (electionId: string) =>
   BALLOT_METHODS.find(({ id }) => sharedDemoElectionId(id) === electionId)?.id
 
