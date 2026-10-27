@@ -27,6 +27,9 @@ export function useDemoNavigation() {
       query.delete('vote-submitted')
       query.delete('verify-results')
       query.delete('step')
+      // Consume scanned credentials once; the restored session retains them.
+      query.delete('auth')
+      query.delete('method')
       const otherParams = query.toString()
       const url = `${router.pathname}?${next === 'results' ? 'verify-results' : next}${
         otherParams ? `&${otherParams}` : ''

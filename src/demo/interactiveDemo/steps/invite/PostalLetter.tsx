@@ -2,7 +2,15 @@ import { Mail, Vote } from 'lucide-react'
 
 import { InviteQRCode } from './InviteQRCode'
 
-export function PostalLetter({ auth, onContinue }: { auth: string; onContinue: () => void }) {
+export function PostalLetter({
+  auth,
+  onContinue,
+  voteLink,
+}: {
+  auth: string
+  onContinue: () => void
+  voteLink: string
+}) {
   return (
     <div className="p-3 sm:p-6">
       <section
@@ -15,10 +23,7 @@ export function PostalLetter({ auth, onContinue }: { auth: string; onContinue: (
             <p>100 Civic Center Drive</p>
             <p>Sample City, ST 12345</p>
           </div>
-          <div
-            aria-hidden
-            className="flex h-14 w-12 shrink-0 border-[3px] border-dotted border-[#20392e]/60 p-1"
-          >
+          <div aria-hidden className="flex h-14 w-12 shrink-0 border-[3px] border-dotted border-[#20392e]/60 p-1">
             <div className="flex w-full items-center justify-center border border-[#20392e]/30">
               <Mail className="size-5 text-h26-muted" strokeWidth={1} />
             </div>
@@ -83,7 +88,7 @@ export function PostalLetter({ auth, onContinue }: { auth: string; onContinue: (
             Your personal voting details
           </p>
           <div className="mt-4 flex flex-col items-center gap-5 sm:flex-row sm:justify-center sm:gap-5">
-            <InviteQRCode auth={auth} />
+            {voteLink && <InviteQRCode auth={auth} voteLink={voteLink} />}
             <div className="text-center sm:text-left">
               <p className="text-[0.8rem] text-h26-textSecondary">Scan the QR code, or visit</p>
               <button

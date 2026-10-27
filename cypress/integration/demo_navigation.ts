@@ -106,3 +106,58 @@ describe('Verify Results layout', () => {
     }
   })
 })
+
+// Following the QR destination on a fresh device must retain the invitation's voter code.
+describe('Scanned demo invitation', () => {
+  it('opens the matching ballot without an existing session and survives refresh', () => {
+    cy.intercept('POST', '/api/demo/mint-auth-token', { auth: 'abcdef1234' }).as('register')
+    cy.intercept('GET', '/election/demo-shared-v4-plurality/vote?*', '<html><body>Demo ballot</body></html>')
+    cy.visit('/demo', { onBeforeLoad: (win) => win.sessionStorage.clear() })
+    cy.contains('button', /^Start$/).click()
+    cy.wait('@register')
+    cy.get('[aria-label="Open demo ballot from QR code"]')
+      .should('have.attr', 'href', '/demo?vote&auth=abcdef1234&method=plurality')
+      .invoke('attr', 'href')
+      .then((href) => {
+        cy.visit(String(href), { onBeforeLoad: (win) => win.sessionStorage.clear() })
+      })
+    cy.contains('h1', 'Mark your ballot').should('be.visible')
+    cy.location('search').should('eq', '?vote')
+    cy.get('iframe[title="SIV voter interface"]').should(
+      'have.attr',
+      'src',
+      '/election/demo-shared-v4-plurality/vote?auth=abcdef1234&demo=1',
+    )
+    cy.reload()
+    cy.contains('h1', 'Mark your ballot').should('be.visible')
+    cy.get('iframe[title="SIV voter interface"]').should(
+      'have.attr',
+      'src',
+      '/election/demo-shared-v4-plurality/vote?auth=abcdef1234&demo=1',
+    )
+  })
+
+  it('uses the scanned method instead of an older saved session and rejects invalid invitations', () => {
+    cy.intercept('GET', '/election/demo-shared-v5-score/vote?*', '<html><body>Score ballot</body></html>')
+    cy.visit('/demo?vote&auth=123456abcd&method=score', {
+      onBeforeLoad: (win) =>
+        win.sessionStorage.setItem(
+          'siv-shared-backend-demo-v5',
+          JSON.stringify({
+            session: { auth: 'abcdef1234', method: 'plurality' },
+            step: 'invite',
+          }),
+        ),
+    })
+    cy.get('iframe[title="SIV voter interface"]').should(
+      'have.attr',
+      'src',
+      '/election/demo-shared-v5-score/vote?auth=123456abcd&demo=1',
+    )
+    for (const query of ['auth=invalid&method=score', 'auth=123456abcd&method=unknown']) {
+      cy.visit(`/demo?vote&${query}`, { onBeforeLoad: (win) => win.sessionStorage.clear() })
+      cy.contains('h1', 'SIV Demo').should('be.visible')
+      cy.get('iframe[title="SIV voter interface"]').should('not.exist')
+    }
+  })
+})

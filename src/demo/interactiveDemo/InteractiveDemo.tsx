@@ -29,6 +29,16 @@ export function InteractiveDemo() {
   useEffect(() => {
     if (!isReady || restored) return
     let restoredStep: Step = 'intro'
+    const query = new URLSearchParams(window.location.search)
+    const auth = query.get('auth') || ''
+    const method = BALLOT_METHODS.find(({ id }) => id === query.get('method'))?.id
+    // A scanned invitation carries the session to a different device.
+    if (urlStep === 'vote' && /^[a-f0-9]{10}$/.test(auth) && method) {
+      setSession({ auth, method })
+      setStep('vote', 'replace')
+      setRestored(true)
+      return
+    }
     try {
       const saved = JSON.parse(sessionStorage.getItem('siv-shared-backend-demo-v5') || 'null')
       if (
@@ -253,7 +263,11 @@ export function InteractiveDemo() {
         )}
         {step === 'invite' && (
           <div className="p-4 sm:p-8">
-            <Invite auth={session?.auth || ''} onContinue={() => session && setStep('vote')} />
+            <Invite
+              auth={session?.auth || ''}
+              onContinue={() => session && setStep('vote')}
+              voteLink={session ? `/demo?vote&auth=${session.auth}&method=${session.method}` : ''}
+            />
           </div>
         )}
         {step === 'vote' && session && (

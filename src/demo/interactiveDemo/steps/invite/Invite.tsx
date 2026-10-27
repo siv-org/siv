@@ -8,7 +8,7 @@ import { PostalLetter } from './PostalLetter'
 
 type ExploreTopicId = 'access' | 'attack' | 'bruteForce' | 'delivery' | 'identity' | 'recovery'
 
-export function Invite({ auth, onContinue }: { auth: string; onContinue: () => void }) {
+export function Invite({ auth, onContinue, voteLink }: { auth: string; onContinue: () => void; voteLink: string }) {
   const [attack, setAttack] = useState<'lost' | 'used' | null>(null)
   const [layers, setLayers] = useState(() => new Set<string>())
   const [remediated, setRemediated] = useState(false)
@@ -25,7 +25,7 @@ export function Invite({ auth, onContinue }: { auth: string; onContinue: () => v
 
   return (
     <div>
-      <PostalLetter auth={auth} onContinue={onContinue} />
+      <PostalLetter auth={auth} onContinue={onContinue} voteLink={voteLink} />
 
       <div className="flex justify-end mt-5">
         <PrimaryButton disabled={!auth} onClick={onContinue}>
