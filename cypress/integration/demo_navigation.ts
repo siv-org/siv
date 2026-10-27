@@ -70,6 +70,7 @@ describe('Verify Results layout', () => {
     cy.location('search').should('eq', '?verify-results')
     cy.contains('button', 'Verify results').should('have.attr', 'aria-current', 'step')
     cy.contains('h2', 'Your submitted vote').should('be.visible')
+    cy.contains('button', 'Start new ballot (demo-only)').should('not.exist')
     cy.get('iframe[title="SIV election results"]').should('not.exist')
 
     // Results open on demand, alongside the submitted-vote receipt, within the same step.
@@ -80,10 +81,14 @@ describe('Verify Results layout', () => {
     cy.get('iframe[title="SIV election results"]').should('be.visible')
     cy.location('search').should('eq', '?verify-results')
 
-    // Back shows the submitted ballot in review mode; Forward returns to results.
+    // Back uses the same voter receipt URL; Forward returns to results.
     cy.go('back')
     cy.location('search').should('eq', '?vote')
-    cy.get('iframe[title="SIV voter interface"]').should('have.attr', 'src').and('include', 'view=ballot')
+    cy.get('iframe[title="SIV voter interface"]').should(
+      'have.attr',
+      'src',
+      '/election/demo-shared-v4-plurality/vote?auth=abcdef1234&demo=1',
+    )
     cy.go('forward')
     cy.location('search').should('eq', '?verify-results')
 
@@ -209,5 +214,39 @@ describe('Restart registration', () => {
       'src',
       '/election/demo-shared-v4-plurality/vote?auth=123456abcd&demo=1',
     )
+  })
+})
+
+// Starting a new ballot creates a fresh demo voter, preserving the receipt if registration fails.
+describe('New demo ballot', () => {
+  it('starts a fresh ballot from Vote and allows retry after failure', () => {
+    cy.intercept('GET', '/election/demo-shared-v5-score/vote?*', '<html><body>Voter page</body></html>')
+    cy.visit('/demo?vote', {
+      onBeforeLoad: (win) =>
+        win.sessionStorage.setItem(
+          'siv-shared-backend-demo-v5',
+          JSON.stringify({ session: { auth: 'abcdef1234', method: 'score', submitted: true }, step: 'vote' }),
+        ),
+    })
+    cy.intercept('POST', '/api/demo/mint-auth-token', {
+      body: { error: 'Registration unavailable' },
+      statusCode: 503,
+    })
+    cy.contains('button', 'Start new ballot (demo-only)').click()
+    cy.contains('Registration unavailable').should('be.visible')
+    cy.get('iframe[title="SIV voter interface"]').should('have.attr', 'src').and('include', 'auth=abcdef1234')
+
+    cy.intercept('POST', '/api/demo/mint-auth-token', { body: { auth: '123456abcd' }, delay: 300 }).as('recast')
+    cy.contains('button', 'Start new ballot (demo-only)').click().should('be.disabled')
+    cy.wait('@recast').its('request.body').should('deep.equal', { method: 'score' })
+    cy.location('search').should('eq', '?vote')
+    cy.contains('h1', 'Mark your ballot').should('be.visible')
+    cy.get('iframe[title="SIV voter interface"]').should(
+      'have.attr',
+      'src',
+      '/election/demo-shared-v5-score/vote?auth=123456abcd&demo=1',
+    )
+    cy.contains('button', 'Verify results').should('be.disabled')
+    cy.contains('button', 'Start new ballot (demo-only)').should('not.exist')
   })
 })

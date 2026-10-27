@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 
 import { BALLOT_METHODS, BallotMethod, sharedDemoElectionId } from './content'
 import { PrimaryButton } from './shared/PrimaryButton'
+import { StartNewBallotBtn } from './StartNewBallotBtn'
 import { Intro } from './steps/intro/Intro'
 import { Invite } from './steps/invite/Invite'
 import { VerifyResults } from './steps/verify/VerifyResults'
@@ -157,13 +158,9 @@ export function InteractiveDemo() {
       : step === 'results'
       ? 'Verify Results'
       : session?.submitted
-      ? 'Your submitted ballot'
+      ? 'You already cast a vote.'
       : 'Mark your ballot'
-  const voteUrl = session
-    ? `/election/${electionId}/vote?auth=${session.auth}&demo=1${
-        step === 'vote' && session.submitted ? '&view=ballot' : ''
-      }`
-    : ''
+  const voteUrl = session ? `/election/${electionId}/vote?auth=${session.auth}&demo=1` : ''
   const voterPage = (
     <iframe
       className="block w-full border-0"
@@ -225,13 +222,22 @@ export function InteractiveDemo() {
       </ol>
       <div className={`mx-auto ${step === 'results' ? '' : 'max-w-4xl'}`}>
         <header className="mb-5 sm:mb-6">
-          <h1
-            className={`font-serif26 font-normal tracking-tight text-h26-text ${
-              step === 'intro' ? 'text-[clamp(1.15rem,2.4vw,1.45rem)] leading-snug' : 'text-[clamp(1.35rem,5vw,2.1rem)]'
-            }`}
-          >
-            {title}
-          </h1>
+          {/* Align the heading and optional action; wrap on narrow screens. */}
+          <div className="flex flex-wrap items-baseline gap-x-1 gap-y-0 sm:gap-y-3">
+            <h1
+              className={`font-serif26 font-normal tracking-tight text-h26-text ${
+                step === 'intro'
+                  ? 'text-[clamp(1.15rem,2.4vw,1.45rem)] leading-snug'
+                  : 'text-[clamp(1.35rem,5vw,2.1rem)]'
+              }`}
+            >
+              {title}
+            </h1>
+            {/* After submission, let demo voters start a fresh ballot with a new voter code. */}
+            {step === 'vote' && session?.submitted && (
+              <StartNewBallotBtn disabled={busy} onClick={() => register(session.method, 'vote')} />
+            )}
+          </div>
           {step === 'intro' && (
             <p className="mt-2 text-[0.9rem] leading-relaxed text-h26-textSecondary sm:text-[0.95rem]">
               Experience the Secure Internet Voting Protocol as a voter, &amp; explore how it handles attacks.
