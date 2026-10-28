@@ -1,5 +1,6 @@
 import Firebase from 'firebase-admin'
 import Mailgun, { AttachmentParams } from 'mailgun-js'
+import { buildEmailHtml } from 'src/_shared/invitationEmail'
 
 const {
   FIREBASE_CLIENT_EMAIL,
@@ -83,20 +84,7 @@ export const sendEmail = ({
       attachment: !attachment ? undefined : new mailgun.Attachment(attachment),
       bcc,
       from: `${from || 'SIV Admin'} <${fromEmail || 'election@siv.org'}>`,
-      html: `<body style="background-color: #f5f5f5; padding: 2em 0.5em;">
-    <table align="center" style="text-align: left; max-width: 600px; background-color: white;">
-        <tr>
-          <td align="center" style="text-align:center; background: linear-gradient(90deg, #010b26 0%, #072054 100%);">
-          ${preheader ? buildPreheader(preheader) : ''}
-            <span style="font-size: 17px; font-weight: 700; color: white; line-height: 50px; text-decoration: none;">
-              ${custom_email_headerbar || 'SIV.org'}
-            </span>
-          </td>
-        </tr>
-        <tr style="display: block; margin: 30px;">
-          ${text.replace(/\n/g, '<br />')}
-        </tr>
-      </table></body>`,
+      html: buildEmailHtml({ custom_email_headerbar, preheader, text }),
       'o:tag': tag,
       subject,
       to: recipient,
@@ -108,9 +96,6 @@ export const sendEmail = ({
       throw error
     })
 }
-
-const buildPreheader = (preheader: string) =>
-  `<div style="display:none!important;visibility:hidden!important;mso-hide:all!important;font-size:1px;overflow:hidden!important;display:none!important;">${preheader}</div>`
 
 /** Helper function to use Pushover (admin push notifs) */
 export const pushover = (title: string, message: string) =>
