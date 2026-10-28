@@ -245,8 +245,8 @@ export function InteractiveDemo() {
           )}
           {step === 'invite' && (
             <p className="mt-2 text-[0.9rem] leading-relaxed text-h26-textSecondary sm:text-[0.95rem]">
-              Each eligible voter is pre-assigned a unique Voter Code to access their ballot. Election administrators choose
-              how voters gain access and which identity checks are required.
+              Each eligible voter is pre-assigned a unique, one-time Voter Code to access their ballot. Election
+              administrators choose how voters gain access and which identity checks are required.
             </p>
           )}
         </header>
