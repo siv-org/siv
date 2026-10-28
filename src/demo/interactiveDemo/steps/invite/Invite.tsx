@@ -24,7 +24,8 @@ import { TextMessageVerification } from './TextMessageVerification'
 
 const options = [
   {
-    description: 'A personal letter with your Voter Code and a QR link to your ballot.',
+    description:
+      'For elections that already offer vote-by-mail, administrators can include a unique Voter Code with each mailed ballot, giving voters an additional option to cast their ballot online through SIV.',
     icon: Mail,
     id: 'post',
     label: 'Postal mail',
