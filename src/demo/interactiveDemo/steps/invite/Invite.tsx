@@ -32,7 +32,8 @@ const options = [
     preview: PostalLetter,
   },
   {
-    description: 'Your personal ballot link arrives at your registered email address.',
+    description:
+      'If administrators already have voters’ email addresses, they can email each voter a personal link to access their ballot.',
     icon: Send,
     id: 'email',
     label: 'Email',
