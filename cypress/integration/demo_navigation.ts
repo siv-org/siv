@@ -120,6 +120,7 @@ describe('Scanned demo invitation', () => {
     cy.visit('/demo', { onBeforeLoad: (win) => win.sessionStorage.clear() })
     cy.contains('button', /^Start$/).click()
     cy.wait('@register')
+    cy.contains('button', 'Postal mail').click()
     cy.get('[aria-label="Open demo ballot from QR code"]')
       .should('have.attr', 'href', '/demo?vote&auth=abcdef1234&method=plurality')
       .invoke('attr', 'href')
@@ -183,9 +184,9 @@ describe('Restart registration', () => {
     })
     cy.contains('button', 'Start again').click()
     cy.intercept('POST', '/api/demo/mint-auth-token', {
+      body: { error: 'Registration unavailable' },
       delay: 1500,
       statusCode: 503,
-      body: { error: 'Registration unavailable' },
     }).as('failedRegistration')
     cy.contains('button', /^Start$/).click()
 
@@ -203,6 +204,7 @@ describe('Restart registration', () => {
     cy.intercept('POST', '/api/demo/mint-auth-token', { auth: '123456abcd' }).as('retryRegistration')
     cy.contains('button', 'Try again').click()
     cy.wait('@retryRegistration')
+    cy.contains('button', 'Postal mail').click()
     cy.get('[aria-label="Open demo ballot from QR code"]').should(
       'have.attr',
       'href',
@@ -248,5 +250,62 @@ describe('New demo ballot', () => {
     )
     cy.contains('button', 'Verify results').should('be.disabled')
     cy.contains('button', 'Start new ballot (demo-only)').should('not.exist')
+  })
+})
+
+describe('Invitation method previews', () => {
+  it('starts unselected, previews every method, and preserves ballot access on mobile', () => {
+    cy.intercept('POST', '/api/demo/mint-auth-token', { auth: 'abcdef1234' }).as('register')
+    cy.intercept('GET', '/election/demo-shared-v4-plurality/vote?*', '<html><body>Demo ballot</body></html>')
+    cy.visit('/demo', { onBeforeLoad: (win) => win.sessionStorage.clear() })
+    cy.contains('button', /^Start$/).click()
+    cy.wait('@register')
+    cy.get('[aria-controls="invitation-preview"]').should('have.length', 9)
+    cy.contains('button', 'Authenticator app code').should('not.exist')
+    cy.get('[aria-controls="invitation-preview"][aria-pressed="true"]').should('not.exist')
+    cy.get('#invitation-preview').should('not.exist')
+    cy.contains('button', /^Email$/).click()
+    cy.get('#invitation-preview').then(($preview) => {
+      cy.contains('button', 'In person').then(($nextRow) => {
+        expect($preview[0].getBoundingClientRect().bottom).to.be.at.most($nextRow[0].getBoundingClientRect().top)
+      })
+    })
+    cy.contains('button', /^Email$/)
+      .click()
+      .should('have.attr', 'aria-expanded', 'false')
+    cy.get('#invitation-preview').should('not.exist')
+    cy.get('[aria-controls="invitation-preview"]').each(($button) => {
+      const label = $button.text().trim()
+      cy.wrap($button).click().should('have.attr', 'aria-pressed', 'true')
+      cy.get('#invitation-preview').should('have.attr', 'aria-label', `${label} example`)
+      cy.get('[aria-controls="invitation-preview"][aria-pressed="true"]').should('have.length', 1)
+    })
+    cy.viewport(390, 844)
+    cy.contains('button', /^Email$/).click()
+    cy.get('#invitation-preview').then(($preview) => {
+      cy.contains('button', /^Text message$/).then(($nextRow) => {
+        expect($preview[0].getBoundingClientRect().bottom).to.be.at.most($nextRow[0].getBoundingClientRect().top)
+      })
+    })
+    cy.get('iframe[title="SIV invitation email"]')
+      .its('0.contentDocument.body')
+      .should('contain', 'Vote Invitation: City Mayoral Election')
+    cy.document().then((doc) => expect(doc.documentElement.scrollWidth).to.be.at.most(390))
+    cy.contains('button', 'Signature verification').click()
+    cy.get('iframe[title="SIV signature screen"]')
+      .its('0.contentDocument.body')
+      .should('contain', 'Add Your Signature')
+      .then(cy.wrap)
+      .find('a')
+      .contains('Submit')
+      .should('have.class', 'disabled')
+    cy.contains('button', /^Email$/).click()
+    cy.get('iframe[title="SIV invitation email"]')
+      .its('0.contentDocument.body')
+      .should('contain', 'Vote Invitation')
+      .then(cy.wrap)
+      .find('a')
+      .click()
+    cy.location('search').should('eq', '?vote')
   })
 })
