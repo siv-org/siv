@@ -25,7 +25,7 @@ export function OtherMethods() {
     <div className="px-6 py-7 sm:px-8 sm:py-8">
       <h3 className="font-serif26 text-xl text-h26-text">Provisional ballot process</h3>
 
-      {/* Find the voter record before completing an additional identity check. */}
+      {/* Provisional ballot process - Find your voter record layout */}
       <ol className="mt-6 space-y-7">
         <li className="flex gap-3">
           <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-h26-green/[0.08] text-xs text-h26-green">
@@ -44,7 +44,7 @@ export function OtherMethods() {
           </span>
           <div className="min-w-0 flex-1">
             <h4 className="text-[0.85rem] font-medium text-h26-text">Complete one additional identity check</h4>
-            {/* These are alternatives, not three required steps. */}
+            {/* Additional checks layout */}
             <div className="mt-4 grid gap-5 sm:grid-cols-3 sm:gap-6">
               {checks.map(({ description, icon: Icon, title }) => (
                 <div key={title}>
