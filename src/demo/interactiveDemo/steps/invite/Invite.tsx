@@ -79,7 +79,7 @@ const options = [
     preview: PhotoIDSelfie,
   },
   {
-    description: 'Your signature is checked against the signature on your voter registration record.',
+    description: 'Your drawn signature is compared with the one on your voter registration record.',
     icon: PenLine,
     id: 'signature',
     label: 'Drawn Signature',
