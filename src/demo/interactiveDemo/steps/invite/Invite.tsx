@@ -1,6 +1,8 @@
 import {
   ArrowRight,
   Camera,
+  ChevronRight,
+  Ellipsis,
   IdCard,
   KeyRound,
   Mail,
@@ -84,7 +86,7 @@ const options = [
     preview: SignatureVerification,
   },
   {
-    icon: ShieldCheck,
+    icon: Ellipsis,
     id: 'other',
     label: 'Other Methods',
     preview: OtherMethods,
@@ -160,6 +162,26 @@ export function Invite({
       <p className="mt-3 text-[0.75rem] leading-relaxed text-h26-muted">
         Methods can be combined to meet your election’s requirements.
       </p>
+      {/* Auditability note shared by all authentication methods. */}
+      <details className="group mt-6 border-t border-black/[0.07] pt-5">
+        <summary className="flex cursor-pointer list-none items-center gap-3 rounded-sm text-[0.85rem] font-medium text-h26-text focus-visible:outline focus-visible:outline-2 focus-visible:outline-h26-green [&::-webkit-details-marker]:hidden">
+          <ShieldCheck aria-hidden className="size-5 shrink-0 text-h26-green" strokeWidth={1.5} />
+          Preserving Full Auditability
+          <ChevronRight
+            aria-hidden
+            className="size-4 text-h26-muted transition-transform group-open:rotate-90"
+          />
+        </summary>
+        <div className="ml-8">
+          <p className="mt-2 text-[0.78rem] leading-relaxed text-h26-textSecondary">
+            To protect against ballot stuffing and other fraud:
+          </p>
+          <p className="mt-2 text-[0.78rem] leading-relaxed text-h26-textSecondary">
+            No matter which method an election uses, SIV Authentication is designed so that every vote&apos;s
+            eligibility can still be justified via auditing, even after results are announced.
+          </p>
+        </div>
+      </details>
       <div className="mt-6 flex justify-end border-t border-black/[0.07] pt-5">
         <PrimaryButton disabled={!auth} onClick={onContinue}>
           Open ballot <ArrowRight aria-hidden className="ml-2 size-4" />
