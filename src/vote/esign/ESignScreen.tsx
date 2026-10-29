@@ -46,11 +46,17 @@ export const ESignScreen = ({
         </Head>
       )}
 
-      <section>
-        <h1>Add Your Signature</h1>
-        <p>The election manager has requested your esignature. Please sign your name in the box below.</p>
-        <SignaturePad redrawOnResize ref={signaturePad} />
-        <div className="buttons">
+      <section className="mx-auto w-full max-w-[750px] p-4 text-sm leading-[1.43] tracking-[0.01071em] text-[#222] font-sans">
+        <h1 className="mx-0 mb-2 mt-[0.67em] text-[1.375rem] font-bold">Add Your Signature</h1>
+        <p className="m-0 mb-[1em]">
+          The election manager has requested your esignature. Please sign your name in the box below.
+        </p>
+        <SignaturePad
+          canvasProps={{ className: 'h-[200px] border border-solid border-black' }}
+          redrawOnResize
+          ref={signaturePad}
+        />
+        <div className="mt-2.5 flex justify-between">
           <OnClickButton
             onClick={() => {
               signaturePad.current?.clear()
@@ -97,46 +103,6 @@ export const ESignScreen = ({
           </OnClickButton>
         </div>
       </section>
-
-      <style jsx>{`
-        section :global(canvas) {
-          border: 1px solid black;
-          height: 200px;
-        }
-
-        section {
-          color: #222;
-          font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans,
-            Droid Sans, Helvetica Neue, sans-serif;
-          font-size: 0.875rem;
-          letter-spacing: 0.01071em;
-          line-height: 1.43;
-          max-width: 750px;
-          width: 100%;
-          margin: 0 auto;
-          padding: 1rem;
-        }
-
-        h1 {
-          font-size: 1.375rem;
-          font-weight: bold;
-          margin: 0.67em 0 0.5rem;
-        }
-
-        p {
-          margin: 0 0 1em;
-        }
-
-        .buttons {
-          display: flex;
-          justify-content: space-between;
-          margin-top: 10px;
-        }
-
-        button {
-          font-size: 13px;
-        }
-      `}</style>
     </>
   )
 }
