@@ -12,7 +12,7 @@ export function PostalLetter({
   voteLink: string
 }) {
   return (
-    <div className="p-3 sm:p-6">
+    <div className="px-3 pb-3 pt-8 sm:px-6 sm:pb-6 sm:pt-10">
       <section
         aria-label="Envelope addressed to Alice Jones"
         className="mx-auto mb-6 flex min-h-[260px] max-w-[540px] flex-col justify-between border border-[#20392e]/20 bg-white p-4 text-h26-text shadow-[0_2px_8px_rgba(32,57,46,0.08)] sm:aspect-[23/10] sm:min-h-0 sm:p-5 sm:pb-3"

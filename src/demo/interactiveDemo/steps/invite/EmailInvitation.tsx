@@ -33,7 +33,7 @@ export function EmailInvitation({ auth, onContinue, voteLink }: { auth: string; 
 
   if (!html) return <p className="p-6 text-sm text-h26-muted">Preparing your invitation…</p>
   return (
-    <div className="bg-[#eef2f7] p-3 sm:p-5">
+    <div className="bg-[#eef2f7] px-3 pb-3 pt-8 sm:px-5 sm:pb-5 sm:pt-10">
       <div className="overflow-hidden rounded-xl border border-black/[0.09] bg-white shadow-sm">
         <div className="px-4 py-5 sm:px-5">
           <div className="mb-5 flex flex-wrap items-center gap-2">

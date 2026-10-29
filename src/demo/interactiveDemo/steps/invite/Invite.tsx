@@ -149,11 +149,11 @@ export function Invite({
             }
           >
             {option.description && (
-              <div className="border-b border-black/[0.06] px-5 py-4 sm:px-6">
-                <p className="font-mono26 text-[9px] uppercase tracking-[0.15em] text-h26-muted">
-                  {selected === 'email' || selected === 'signature' ? 'SIV interface' : 'Illustrative example'}
-                </p>
-                <p className="mt-1 text-[0.78rem] leading-relaxed text-h26-textSecondary">{option.description}</p>
+              <div className="relative border-b border-black/[0.06] px-5 pb-8 pt-4 sm:px-6">
+                <p className="text-[0.78rem] leading-relaxed text-h26-textSecondary">{option.description}</p>
+                <span className="absolute bottom-0 left-1/2 z-10 -translate-x-1/2 translate-y-1/2 rounded-full border border-black/10 bg-h26-bg px-3 py-0.5 text-[11px] font-medium tracking-wide text-h26-textSecondary">
+                  Example
+                </span>
               </div>
             )}
             {Preview && (
