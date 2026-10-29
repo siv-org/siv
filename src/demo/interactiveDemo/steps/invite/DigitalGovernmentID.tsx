@@ -1,7 +1,7 @@
 import { Fingerprint } from 'lucide-react'
 
-import { IdentityCheckPreview } from './IdentityCheckPreview'
+import { IdentityCheckCardDesign } from './IdentityCheckCardDesign'
 
 export function DigitalGovernmentID() {
-  return <IdentityCheckPreview caption="Sign in with your supported digital ID" icon={Fingerprint} />
+  return <IdentityCheckCardDesign caption="Sign in with your supported digital ID" icon={Fingerprint} />
 }
