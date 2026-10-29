@@ -37,7 +37,8 @@ const options = [
     preview: TextMessage,
   },
   {
-    description: 'Receive your personal Voter Code after an eligibility check in person.',
+    description:
+      'At conventions or other in-person events, eligible voters can receive a unique QR code at check-in and scan it to access their ballot when voting opens.',
     icon: UserRound,
     id: 'person',
     label: 'In person',

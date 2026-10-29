@@ -1,6 +1,14 @@
 import { useEffect, useRef } from 'react'
 
-export function InviteQRCode({ auth, voteLink }: { auth: string; voteLink: string }) {
+export function InviteQRCode({
+  auth,
+  showLink = true,
+  voteLink,
+}: {
+  auth: string
+  showLink?: boolean
+  voteLink: string
+}) {
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -24,10 +32,12 @@ export function InviteQRCode({ auth, voteLink }: { auth: string; voteLink: strin
       <a aria-label="Open demo ballot from QR code" href={voteLink}>
         <div aria-label="QR code containing your voting link" className="size-32 shrink-0" ref={ref} />
       </a>
-      <p className="whitespace-nowrap text-center font-mono26 text-[0.6rem] leading-snug text-h26-muted sm:text-[0.62rem]">
-        local.gov/vote?auth=
-        {auth}
-      </p>
+      {showLink && (
+        <p className="whitespace-nowrap text-center font-mono26 text-[0.6rem] leading-snug text-h26-muted sm:text-[0.62rem]">
+          local.gov/vote?auth=
+          {auth}
+        </p>
+      )}
     </div>
   )
 }
