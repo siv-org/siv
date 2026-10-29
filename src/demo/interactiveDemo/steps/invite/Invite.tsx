@@ -1,4 +1,4 @@
-import { ArrowRight, CreditCard, Fingerprint, Mail, MessageSquare, PenLine, Send, UserRound } from 'lucide-react'
+import { ArrowRight, CreditCard, IdCard, Mail, MessageSquare, PenLine, Send, UserRound } from 'lucide-react'
 import { CSSProperties, useState } from 'react'
 
 import { PrimaryButton } from '../../shared/PrimaryButton'
@@ -46,7 +46,7 @@ const options = [
   },
   {
     description: 'Sign in through a supported government identity service to access your assigned ballot.',
-    icon: Fingerprint,
+    icon: IdCard,
     id: 'digital',
     label: 'Digital government ID',
     preview: DigitalGovernmentID,
