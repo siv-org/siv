@@ -171,10 +171,13 @@ export function Invite({ auth, onContinue, voteLink }: { auth: string; onContinu
       </div>
       {/* Auditability note shared by all authentication methods. */}
       <details className="group mt-6 border-t border-black/[0.07] pt-5">
-        <summary className="flex cursor-pointer list-none items-center gap-3 rounded-sm text-[0.85rem] font-medium text-h26-text focus-visible:outline focus-visible:outline-2 focus-visible:outline-h26-green [&::-webkit-details-marker]:hidden">
+        <summary className="group/summary flex cursor-pointer list-none items-center gap-3 rounded-sm text-[0.85rem] font-medium text-h26-text focus-visible:outline focus-visible:outline-2 focus-visible:outline-h26-green [&::-webkit-details-marker]:hidden">
           <ShieldCheck aria-hidden className="size-5 shrink-0 text-h26-green" strokeWidth={1.5} />
           Preserving Full Auditability
-          <ChevronRight aria-hidden className="size-4 text-h26-muted transition-transform group-open:rotate-90" />
+          <ChevronRight
+            aria-hidden
+            className="size-4 text-h26-muted transition-transform duration-200 ease-out group-open:rotate-90 motion-safe:group-hover/summary:translate-x-1 motion-reduce:transition-none"
+          />
         </summary>
         <div className="ml-8">
           <p className="mt-2 text-[0.78rem] leading-relaxed text-h26-textSecondary">
