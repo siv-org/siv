@@ -342,7 +342,7 @@ describe('Invitation method previews', () => {
     cy.get('#invitation-preview').should('contain', 'Text Message · Today 9:00 AM')
     cy.get('#invitation-preview a').should('have.attr', 'href').and('contain', 'auth=abcdef1234')
     cy.document().then((doc) => expect(doc.documentElement.scrollWidth).to.be.at.most(390))
-    cy.contains('button', 'Signature Verification').click()
+    cy.contains('button', 'Drawn Signature').click()
     cy.get('iframe[title="SIV signature screen"]')
       .its('0.contentDocument.body')
       .should('contain', 'Add Your Signature')

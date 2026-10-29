@@ -82,7 +82,7 @@ const options = [
     description: 'Your signature is checked against the signature on your voter registration record.',
     icon: PenLine,
     id: 'signature',
-    label: 'Signature Verification',
+    label: 'Drawn Signature',
     preview: SignatureVerification,
   },
   {
