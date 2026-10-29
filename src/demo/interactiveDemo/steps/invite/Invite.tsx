@@ -52,7 +52,7 @@ const options = [
   },
   {
     description:
-      'For in-person voting events such as conventions, eligible voters can be given a unique QR code at check-in, and then later scan it to access their ballot.',
+      'For in-person voting events such as conventions, eligible voters can be given a printed-out unique QR code at check-in, and then later scan it to access their ballot.',
     icon: UserRound,
     id: 'person',
     label: 'In Person',

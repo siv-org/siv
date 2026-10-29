@@ -13,8 +13,7 @@ const checks = [
     title: 'SMS Verification',
   },
   {
-    description:
-      'Voters use their phone’s NFC reader to verify the chip in a valid passport. This is a low-cost, privacy-preserving method.',
+    description: 'Voters use their phone’s NFC reader to verify the chip in a valid passport.',
     icon: Globe,
     title: 'Passport Scan',
   },
