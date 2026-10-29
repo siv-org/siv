@@ -2,7 +2,7 @@ import { ArrowRight, IdCard, Landmark } from 'lucide-react'
 
 import { PrimaryButton } from '../../shared/PrimaryButton'
 
-export function DigitalGovernmentID({ auth, onContinue }: { auth: string; onContinue: () => void }) {
+export function DigitalID({ auth, onContinue }: { auth: string; onContinue: () => void }) {
   // Simulate returning from successful provider sign-in; no credentials or identity service are used here.
   // ponytail: illustrative checks only; real credential flows require provider integrations.
   return (

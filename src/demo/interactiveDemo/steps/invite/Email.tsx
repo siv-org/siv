@@ -2,7 +2,7 @@ import { Mail, Reply, Star } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { buildEmailHtml, buildInvitationBody, buildSubject } from 'src/_shared/invitationEmail'
 
-export function EmailInvitation({ auth, onContinue, voteLink }: { auth: string; onContinue: () => void; voteLink: string }) {
+export function Email({ auth, onContinue, voteLink }: { auth: string; onContinue: () => void; voteLink: string }) {
   const [html, setHtml] = useState('')
   useEffect(() => {
     let current = true

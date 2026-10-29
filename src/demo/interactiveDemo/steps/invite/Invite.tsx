@@ -15,14 +15,14 @@ import {
 import { CSSProperties, useState } from 'react'
 
 import { PrimaryButton } from '../../shared/PrimaryButton'
-import { DigitalGovernmentID } from './DigitalGovernmentID'
-import { EmailInvitation } from './EmailInvitation'
-import { ExistingCredentials } from './ExistingCredentials'
-import { InPersonInvitation } from './InPersonInvitation'
+import { DigitalID } from './DigitalID'
+import { DrawnSignature } from './DrawnSignature'
+import { Email } from './Email'
+import { ExistingLoginCredentials } from './ExistingLoginCredentials'
+import { InPerson } from './InPerson'
 import { OtherMethods } from './OtherMethods'
 import { PhotoIDSelfie } from './PhotoIDSelfie'
-import { PostalLetter } from './PostalLetter'
-import { SignatureVerification } from './SignatureVerification'
+import { PostalMail } from './PostalMail'
 import { TextMessage } from './TextMessage'
 
 const options = [
@@ -32,7 +32,7 @@ const options = [
     icon: Mail,
     id: 'post',
     label: 'Postal Mail',
-    preview: PostalLetter,
+    preview: PostalMail,
   },
   {
     description:
@@ -40,7 +40,7 @@ const options = [
     icon: Send,
     id: 'email',
     label: 'Email',
-    preview: EmailInvitation,
+    preview: Email,
   },
   {
     description:
@@ -56,7 +56,7 @@ const options = [
     icon: UserRound,
     id: 'person',
     label: 'In Person',
-    preview: InPersonInvitation,
+    preview: InPerson,
   },
   {
     description:
@@ -64,13 +64,13 @@ const options = [
     icon: IdCard,
     id: 'digital',
     label: 'Digital ID',
-    preview: DigitalGovernmentID,
+    preview: DigitalID,
   },
   {
     icon: KeyRound,
     id: 'login',
     label: 'Existing Login Credentials',
-    preview: ExistingCredentials,
+    preview: ExistingLoginCredentials,
   },
   {
     icon: Camera,
@@ -83,7 +83,7 @@ const options = [
     icon: PenLine,
     id: 'signature',
     label: 'Drawn Signature',
-    preview: SignatureVerification,
+    preview: DrawnSignature,
   },
   {
     icon: Ellipsis,

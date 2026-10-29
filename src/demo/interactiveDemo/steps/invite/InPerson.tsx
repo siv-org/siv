@@ -1,6 +1,6 @@
 import { InviteQRCode } from './InviteQRCode'
 
-export function InPersonInvitation({
+export function InPerson({
   auth,
   voteLink,
   voterNumber,

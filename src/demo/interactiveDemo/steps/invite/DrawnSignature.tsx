@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 
-export function SignatureVerification({ onClose }: { onClose: () => void }) {
+export function DrawnSignature({ onClose }: { onClose: () => void }) {
   const frame = useRef<HTMLIFrameElement>(null)
 
   useEffect(() => {

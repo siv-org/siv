@@ -2,7 +2,7 @@ import { Mail, Vote } from 'lucide-react'
 
 import { InviteQRCode } from './InviteQRCode'
 
-export function PostalLetter({
+export function PostalMail({
   auth,
   onContinue,
   voteLink,
