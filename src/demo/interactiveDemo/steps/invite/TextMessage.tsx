@@ -1,5 +1,4 @@
 import { Landmark } from 'lucide-react'
-import { buildSubject } from 'src/_shared/invitationEmail'
 
 export function TextMessage({ auth, onContinue, voteLink }: { auth: string; onContinue: () => void; voteLink: string }) {
   return (
@@ -14,8 +13,7 @@ export function TextMessage({ auth, onContinue, voteLink }: { auth: string; onCo
         <div className="px-4 pb-10 pt-5 text-[14px] leading-snug text-[#1c1c1e]">
           <p className="mb-2 text-center text-[10px] font-medium text-[#86868b]">Text Message · Today 9:00 AM</p>
           <div className="relative isolate mr-3 space-y-3 rounded-[18px] bg-[#e9e9eb] px-3 py-2.5 before:absolute before:bottom-0 before:-left-[7px] before:-z-10 before:h-5 before:w-5 before:rounded-br-[16px] before:bg-[#e9e9eb] after:absolute after:bottom-0 after:-left-[26px] after:-z-10 after:h-5 after:w-[26px] after:rounded-br-[10px] after:bg-white">
-            <p>{buildSubject('City Mayoral Election')}</p>
-            <p>Click here to securely cast your vote:</p>
+            <p>Access your ballot for the Citywide Election:</p>
             {voteLink ? (
               <a
                 className="block break-all text-[#007aff] underline"
@@ -30,7 +28,6 @@ export function TextMessage({ auth, onContinue, voteLink }: { auth: string; onCo
             ) : (
               <p className="text-[#86868b]">Preparing your invitation…</p>
             )}
-            <p>This link is unique for you.</p>
           </div>
         </div>
       </div>
