@@ -1,9 +1,10 @@
-import { ArrowRight, IdCard, Mail, MessageSquare, PenLine, Send, UserRound } from 'lucide-react'
+import { ArrowRight, IdCard, KeyRound, Mail, MessageSquare, PenLine, Send, UserRound } from 'lucide-react'
 import { CSSProperties, useState } from 'react'
 
 import { PrimaryButton } from '../../shared/PrimaryButton'
 import { DigitalGovernmentID } from './DigitalGovernmentID'
 import { EmailInvitation } from './EmailInvitation'
+import { ExistingCredentials } from './ExistingCredentials'
 import { InPersonInvitation } from './InPersonInvitation'
 import { PhotoIDSelfie } from './PhotoIDSelfie'
 import { PostalLetter } from './PostalLetter'
@@ -50,6 +51,12 @@ const options = [
     id: 'digital',
     label: 'Digital ID',
     preview: DigitalGovernmentID,
+  },
+  {
+    icon: KeyRound,
+    id: 'login',
+    label: 'Existing Login credentials',
+    preview: ExistingCredentials,
   },
   {
     description: 'An identity-verification process compares your government-issued photo ID and selfie.',
@@ -119,12 +126,14 @@ export function Invite({
               } as CSSProperties
             }
           >
-            <div className="border-b border-black/[0.06] px-5 py-4 sm:px-6">
-              <p className="font-mono26 text-[9px] uppercase tracking-[0.15em] text-h26-muted">
-                {selected === 'email' || selected === 'signature' ? 'SIV interface' : 'Illustrative example'}
-              </p>
-              <p className="mt-1 text-[0.78rem] leading-relaxed text-h26-textSecondary">{option.description}</p>
-            </div>
+            {option.description && (
+              <div className="border-b border-black/[0.06] px-5 py-4 sm:px-6">
+                <p className="font-mono26 text-[9px] uppercase tracking-[0.15em] text-h26-muted">
+                  {selected === 'email' || selected === 'signature' ? 'SIV interface' : 'Illustrative example'}
+                </p>
+                <p className="mt-1 text-[0.78rem] leading-relaxed text-h26-textSecondary">{option.description}</p>
+              </div>
+            )}
             {Preview && (
               <Preview auth={auth} onContinue={onContinue} voteLink={auth ? voteLink : ''} voterNumber={voterNumber} />
             )}
