@@ -1,7 +1,7 @@
 import * as Sentry from '@sentry/browser'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { Dispatch, useRef, useState } from 'react'
+import { Dispatch, useEffect, useRef, useState } from 'react'
 import SignaturePad from 'react-signature-pad-wrapper'
 import { encodeEsignaturePayload, signReplacement } from 'src/crypto/voter-key'
 
@@ -10,26 +10,34 @@ import { api } from '../../api-helper'
 import { GlobalCSS } from '../../GlobalCSS'
 import { State } from '../vote-state'
 
-type Pad = {
-  clear: () => void
-  toDataURL: () => string
-}
-
 export const ESignScreen = ({
   auth,
   dispatch,
   election_id,
+  onSubmit,
   state,
 }: {
   auth?: string
   dispatch: Dispatch<Record<string, string>>
   election_id?: string
+  onSubmit?: () => void
   state: State
 }): JSX.Element => {
-  const signaturePad = useRef<Pad>(null)
+  const signaturePad = useRef<SignaturePad>(null)
   const [buttonText, setButtonText] = useState('Submit')
+  const [hasSignature, setHasSignature] = useState(false)
   const router = useRouter()
   const privkey = state.voter_privkey
+
+  // Custom submission uses the pad’s own state; the default signed submission flow is unchanged.
+  useEffect(() => {
+    const pad = signaturePad.current
+    if (!onSubmit || !pad) return
+    const updateSignature = () => setHasSignature(!pad.isEmpty())
+    pad.instance.addEventListener('endStroke', updateSignature)
+    updateSignature()
+    return () => pad.instance.removeEventListener('endStroke', updateSignature)
+  }, [onSubmit])
 
   return (
     <>
@@ -43,14 +51,20 @@ export const ESignScreen = ({
         <SignaturePad redrawOnResize ref={signaturePad} />
         <div className="buttons">
           <OnClickButton
-            onClick={() => signaturePad.current?.clear() || setButtonText('Submit')}
+            onClick={() => {
+              signaturePad.current?.clear()
+              setHasSignature(false)
+              setButtonText('Submit')
+            }}
             style={{ marginLeft: 0 }}
           >
             Clear
           </OnClickButton>
           <OnClickButton
-            disabled={!privkey}
+            disabled={onSubmit ? !hasSignature : !privkey}
             onClick={async () => {
+              // An explicit override replaces submission entirely, so previews never call the API.
+              if (onSubmit) return onSubmit()
               setButtonText('Submitting...')
               const esignature = signaturePad.current?.toDataURL()
               // console.log('esignature:', esignature)

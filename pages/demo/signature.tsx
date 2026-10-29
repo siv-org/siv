@@ -1,6 +1,12 @@
 import { ESignScreen } from 'src/vote/esign/ESignScreen'
 
-// No voter credentials: real submission stays disabled; the invitation preview makes Submit close the example.
+// The explicit override closes the example without submitting a signature or requiring voter credentials.
 export default function SignaturePreview() {
-  return <ESignScreen dispatch={() => {}} state={{ encoded: {}, encrypted: {}, plaintext: {}, randomizer: {} }} />
+  return (
+    <ESignScreen
+      dispatch={() => {}}
+      onSubmit={() => window.parent.postMessage({ type: 'siv-demo-signature-complete' }, window.location.origin)}
+      state={{ encoded: {}, encrypted: {}, plaintext: {}, randomizer: {} }}
+    />
+  )
 }
