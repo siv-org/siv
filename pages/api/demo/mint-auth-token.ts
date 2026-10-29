@@ -1,4 +1,5 @@
 import { firebase } from 'api/_services'
+import Firebase from 'firebase-admin'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { generateAuthToken } from 'src/crypto/generate-auth-tokens'
 import { BALLOT_METHODS, sharedDemoElectionId } from 'src/demo/interactiveDemo/content'
@@ -18,8 +19,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const election = db.collection('elections').doc(sharedDemoElectionId(method))
   const auth = generateAuthToken()
   const registered: boolean = await db.runTransaction(async (transaction) => {
-    // Use a transaction to avoid num_voters getting out-of-sync from auth token collisions
-
+    // Keep the voter count and new voter record in sync if creation fails.
     // Lookup the election
     const data = (await transaction.get(election)).data()
 
@@ -30,7 +30,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     // create() rejects the transaction on a code collision, from duplicate doc.IDs
     transaction.create(election.collection('voters').doc(auth), { auth_token: auth, created_at: new Date() })
 
-    transaction.update(election, { num_voters: (Number(data.num_voters) || 0) + 1 })
+    transaction.update(election, { num_voters: Firebase.firestore.FieldValue.increment(1) })
 
     return true // Success
   })

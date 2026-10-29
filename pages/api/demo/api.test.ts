@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import { afterAll, beforeAll, beforeEach, describe, expect, mock, test } from 'bun:test'
+import Firebase from 'firebase-admin'
 import { random_bigint, RP, stringToPoint } from 'src/crypto/curve'
 import { encrypt } from 'src/crypto/encrypt'
 import { BALLOT_METHODS, BallotMethod, sharedDemoElectionId } from 'src/demo/interactiveDemo/content'
@@ -63,6 +64,11 @@ const db = {
         },
         get: (doc) => doc.get(),
         update: (doc, data) => {
+          // ponytail: Only model the increment(1) transform used by demo registration.
+          if (data.num_voters instanceof Firebase.firestore.FieldValue) {
+            expect(data.num_voters.isEqual(Firebase.firestore.FieldValue.increment(1))).toBe(true)
+            data = { ...data, num_voters: Number(records.get(doc.path)?.num_voters ?? 0) + 1 }
+          }
           records.set(doc.path, { ...records.get(doc.path), ...data })
         },
       }),

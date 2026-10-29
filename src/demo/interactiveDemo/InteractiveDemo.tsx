@@ -154,7 +154,7 @@ export function InteractiveDemo() {
     step === 'intro'
       ? 'SIV Demo'
       : step === 'invite'
-      ? 'Invitation'
+      ? 'Get Your Ballot'
       : step === 'results'
       ? 'Verify Results'
       : session?.submitted
@@ -223,14 +223,8 @@ export function InteractiveDemo() {
       <div className={`mx-auto ${step === 'results' ? '' : 'max-w-4xl'}`}>
         <header className="mb-5 sm:mb-6">
           {/* Align the heading and optional action; wrap on narrow screens. */}
-          <div className="flex flex-wrap items-baseline gap-x-1 gap-y-0 sm:gap-y-3">
-            <h1
-              className={`font-serif26 font-normal tracking-tight text-h26-text ${
-                step === 'intro'
-                  ? 'text-[clamp(1.15rem,2.4vw,1.45rem)] leading-snug'
-                  : 'text-[clamp(1.35rem,5vw,2.1rem)]'
-              }`}
-            >
+          <div className="flex flex-wrap gap-y-0 gap-x-1 items-baseline sm:gap-y-3">
+            <h1 className="font-serif26 text-[clamp(1.25rem,4vw,1.75rem)] font-normal leading-snug tracking-tight text-h26-text">
               {title}
             </h1>
             {/* After submission, let demo voters start a fresh ballot with a new voter code. */}
@@ -245,13 +239,8 @@ export function InteractiveDemo() {
           )}
           {step === 'invite' && (
             <p className="mt-2 text-[0.9rem] leading-relaxed text-h26-textSecondary sm:text-[0.95rem]">
-              To enforce One Person/One Vote, election administrators send each eligible voter a unique, one-time Voter
-              Code. <br className="hidden sm:block" />
-              There are several ways to deliver these codes, see below.
-              <br />
-              <br />
-              For this demo, we’ll use a postal invitation, a familiar option for government elections that already
-              offer vote-by-mail.
+              Each eligible voter is pre-assigned a unique, one-time Voter Code to access their ballot. Election
+              administrators choose how voters gain access and which identity checks are required.
             </p>
           )}
         </header>

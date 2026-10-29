@@ -1,56 +1,77 @@
 import * as Sentry from '@sentry/browser'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { Dispatch, useRef, useState } from 'react'
+import { Dispatch, useEffect, useRef, useState } from 'react'
 import SignaturePad from 'react-signature-pad-wrapper'
 import { encodeEsignaturePayload, signReplacement } from 'src/crypto/voter-key'
 
 import { OnClickButton } from '../../_shared/Button'
 import { api } from '../../api-helper'
-import { GlobalCSS } from '../../GlobalCSS'
 import { State } from '../vote-state'
-
-type Pad = {
-  clear: () => void
-  toDataURL: () => string
-}
 
 export const ESignScreen = ({
   auth,
   dispatch,
   election_id,
+  onSubmit,
   state,
 }: {
   auth?: string
   dispatch: Dispatch<Record<string, string>>
   election_id?: string
+  onSubmit?: () => void
   state: State
 }): JSX.Element => {
-  const signaturePad = useRef<Pad>(null)
+  const signaturePad = useRef<SignaturePad>(null)
   const [buttonText, setButtonText] = useState('Submit')
+  const [hasSignature, setHasSignature] = useState(false)
   const router = useRouter()
   const privkey = state.voter_privkey
 
+  // Custom submission uses the pad’s own state; the default signed submission flow is unchanged.
+  useEffect(() => {
+    const pad = signaturePad.current
+    if (!onSubmit || !pad) return
+    const updateSignature = () => setHasSignature(!pad.isEmpty())
+    pad.instance.addEventListener('endStroke', updateSignature)
+    updateSignature()
+    return () => pad.instance.removeEventListener('endStroke', updateSignature)
+  }, [onSubmit])
+
   return (
     <>
-      <Head>
-        <title key="title">SIV: Add Your Signature</title>
-      </Head>
+      {!onSubmit && (
+        <Head>
+          <title key="title">SIV: Add Your Signature</title>
+        </Head>
+      )}
 
-      <main>
-        <h1>Add Your Signature</h1>
-        <p>The election manager has requested your esignature. Please sign your name in the box below.</p>
-        <SignaturePad redrawOnResize ref={signaturePad} />
-        <div className="buttons">
+      <section className="mx-auto w-full max-w-[750px] p-4 text-sm leading-[1.43] tracking-[0.01071em] text-[#222] font-sans">
+        <h1 className="mx-0 mb-2 mt-[0.67em] text-[1.375rem] font-bold">Add Your Signature</h1>
+        <p className="m-0 mb-[1em]">
+          The election manager has requested your esignature. Please sign your name in the box below.
+        </p>
+        <SignaturePad
+          canvasProps={{ className: 'h-[200px] border border-solid border-black' }}
+          redrawOnResize
+          ref={signaturePad}
+        />
+        <div className="mt-2.5 flex justify-between">
           <OnClickButton
-            onClick={() => signaturePad.current?.clear() || setButtonText('Submit')}
+            onClick={() => {
+              signaturePad.current?.clear()
+              setHasSignature(false)
+              setButtonText('Submit')
+            }}
             style={{ marginLeft: 0 }}
           >
             Clear
           </OnClickButton>
           <OnClickButton
-            disabled={!privkey}
+            disabled={onSubmit ? !hasSignature : !privkey}
             onClick={async () => {
+              // An explicit override replaces submission entirely, so previews never call the API.
+              if (onSubmit) return onSubmit()
               setButtonText('Submitting...')
               const esignature = signaturePad.current?.toDataURL()
               // console.log('esignature:', esignature)
@@ -81,33 +102,7 @@ export const ESignScreen = ({
             {buttonText}
           </OnClickButton>
         </div>
-      </main>
-
-      <style global jsx>{`
-        canvas {
-          border: 1px solid black;
-          height: 200px;
-        }
-      `}</style>
-      <style jsx>{`
-        main {
-          max-width: 750px;
-          width: 100%;
-          margin: 0 auto;
-          padding: 1rem;
-        }
-
-        .buttons {
-          display: flex;
-          justify-content: space-between;
-          margin-top: 10px;
-        }
-
-        button {
-          font-size: 13px;
-        }
-      `}</style>
-      <GlobalCSS />
+      </section>
     </>
   )
 }

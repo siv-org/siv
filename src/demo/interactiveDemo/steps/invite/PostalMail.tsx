@@ -2,7 +2,7 @@ import { Mail, Vote } from 'lucide-react'
 
 import { InviteQRCode } from './InviteQRCode'
 
-export function PostalLetter({
+export function PostalMail({
   auth,
   onContinue,
   voteLink,
@@ -12,14 +12,14 @@ export function PostalLetter({
   voteLink: string
 }) {
   return (
-    <div className="p-3 sm:p-6">
+    <div className="px-3 pb-3 pt-8 sm:px-6 sm:pb-6 sm:pt-10">
       <section
         aria-label="Envelope addressed to Alice Jones"
         className="mx-auto mb-6 flex min-h-[260px] max-w-[540px] flex-col justify-between border border-[#20392e]/20 bg-white p-4 text-h26-text shadow-[0_2px_8px_rgba(32,57,46,0.08)] sm:aspect-[23/10] sm:min-h-0 sm:p-5 sm:pb-3"
       >
         <div className="flex items-start justify-between gap-4">
           <div className="text-[10px] leading-relaxed sm:text-[11px]">
-            <p className="font-medium">Office of Elections</p>
+            <p className="font-medium">Department of Elections</p>
             <p>100 Civic Center Drive</p>
             <p>Sample City, ST 12345</p>
           </div>
@@ -52,7 +52,7 @@ export function PostalLetter({
       >
         <header className="flex items-start justify-between gap-4 border-b border-[#20392e]/15 pb-4">
           <div>
-            <p className="text-[0.85rem] font-semibold text-h26-text">Office of Elections</p>
+            <p className="text-[0.85rem] font-semibold text-h26-text">Department of Elections</p>
             <p className="mt-1 text-[0.7rem] text-h26-textSecondary">City Mayoral Election</p>
           </div>
           <p className="font-mono26 text-right text-[9px] uppercase leading-relaxed tracking-[0.1em] text-h26-muted">
@@ -63,9 +63,6 @@ export function PostalLetter({
         </header>
 
         <p className="font-mono26 mt-5 text-[9px] uppercase tracking-[0.16em] text-h26-green">Invitation to vote</p>
-        <h2 className="font-serif26 mt-2 text-[clamp(0.65rem,3vw,1.1rem)] font-normal leading-snug text-h26-text whitespace-nowrap">
-          You’re invited to have your say.
-        </h2>
 
         <div className="mt-5 space-y-3 text-[0.8rem] leading-relaxed text-h26-text">
           <p>Dear Alice,</p>
@@ -84,7 +81,7 @@ export function PostalLetter({
         </div>
 
         <div className="mt-5 border-t border-dashed border-[#20392e]/25 pt-5">
-          <p className="font-mono26 text-center text-[9px] uppercase tracking-[0.14em] text-h26-textSecondary">
+          <p className="font-mono26 text-center text-[11px] uppercase tracking-[0.06em] text-h26-textSecondary">
             Your personal voting details
           </p>
           <div className="mt-4 flex flex-col items-center gap-5 sm:flex-row sm:justify-center sm:gap-5">
