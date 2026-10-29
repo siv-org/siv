@@ -1,4 +1,4 @@
-import { ArrowRight, IdCard, KeyRound, Mail, MessageSquare, PenLine, Send, UserRound } from 'lucide-react'
+import { ArrowRight, Camera, IdCard, KeyRound, Mail, MessageSquare, PenLine, Send, UserRound } from 'lucide-react'
 import { CSSProperties, useState } from 'react'
 
 import { PrimaryButton } from '../../shared/PrimaryButton'
@@ -60,7 +60,7 @@ const options = [
   },
   {
     description: 'An identity-verification process compares your government-issued photo ID and selfie.',
-    icon: UserRound,
+    icon: Camera,
     id: 'photo',
     label: 'Photo ID + Selfie',
     preview: PhotoIDSelfie,
