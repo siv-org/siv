@@ -159,7 +159,7 @@ export function InteractiveDemo() {
     step === 'intro'
       ? 'SIV Demo'
       : step === 'invite'
-      ? 'Invitation'
+      ? 'Voter Invitation'
       : step === 'results'
       ? 'Verify Results'
       : session?.submitted
