@@ -298,12 +298,14 @@ export function InteractiveDemo() {
         )}
         {step === 'results' && session && (
           <VerifyResults
+            auth={session.auth}
             busy={busy}
             electionId={electionId}
             onOpenResults={openResults}
             onRestart={() => setStep('intro')}
             receipt={voterPage}
             resultsVersion={resultsVersion}
+            voteUrl={voteUrl}
           />
         )}
         {busy && step !== 'invite' && (
