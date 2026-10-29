@@ -45,7 +45,7 @@ export function EmailInvitation({ onContinue, voteLink }: { onContinue: () => vo
             </div>
             <div className="min-w-0 flex-1">
               <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
-                <p className="text-[0.8rem] font-semibold text-h26-text">Office of Elections</p>
+                <p className="text-[0.8rem] font-semibold text-h26-text">Department of Elections</p>
                 <div className="flex items-center gap-2 text-h26-muted">
                   <span className="text-[0.65rem]">9:00 AM</span>
                   <Star aria-hidden className="size-3.5" />

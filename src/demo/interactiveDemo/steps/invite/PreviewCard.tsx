@@ -23,7 +23,7 @@ export function PreviewCard({
           <Icon aria-hidden className="size-5 text-h26-green" strokeWidth={1.5} />
           <div>
             <p className="text-[0.8rem] font-medium text-h26-text">
-              {identity ? 'Voter identity check' : 'Office of Elections'}
+              {identity ? 'Voter identity check' : 'Department of Elections'}
             </p>
             <p className="mt-0.5 text-[0.65rem] text-h26-muted">City Mayoral Election</p>
           </div>

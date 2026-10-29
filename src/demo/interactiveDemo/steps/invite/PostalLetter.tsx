@@ -19,7 +19,7 @@ export function PostalLetter({
       >
         <div className="flex items-start justify-between gap-4">
           <div className="text-[10px] leading-relaxed sm:text-[11px]">
-            <p className="font-medium">Office of Elections</p>
+            <p className="font-medium">Department of Elections</p>
             <p>100 Civic Center Drive</p>
             <p>Sample City, ST 12345</p>
           </div>
@@ -52,7 +52,7 @@ export function PostalLetter({
       >
         <header className="flex items-start justify-between gap-4 border-b border-[#20392e]/15 pb-4">
           <div>
-            <p className="text-[0.85rem] font-semibold text-h26-text">Office of Elections</p>
+            <p className="text-[0.85rem] font-semibold text-h26-text">Department of Elections</p>
             <p className="mt-1 text-[0.7rem] text-h26-textSecondary">City Mayoral Election</p>
           </div>
           <p className="font-mono26 text-right text-[9px] uppercase leading-relaxed tracking-[0.1em] text-h26-muted">
