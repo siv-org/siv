@@ -254,20 +254,25 @@ describe('New demo ballot', () => {
 })
 
 describe('Invitation method previews', () => {
-  it('opens the demo ballot after simulated digital ID confirmation', () => {
-    cy.intercept('POST', '/api/demo/mint-auth-token', { auth: 'abcdef1234' }).as('register')
-    cy.intercept('GET', '/election/demo-shared-v4-plurality/vote?*', '<html><body>Demo ballot</body></html>')
-    cy.visit('/demo', { onBeforeLoad: (win) => win.sessionStorage.clear() })
-    cy.contains('button', /^Start$/).click()
-    cy.wait('@register')
-    cy.contains('button', 'Digital ID').click()
-    cy.on('window:confirm', (message) => {
-      expect(message).to.eq("For this demo, we'll take you right to the ballot.")
-      return true
+  for (const [method, continueLabel] of [
+    ['Digital ID', 'Continue with eID'],
+    ['Existing Login Credentials', 'Sign in with your existing account'],
+  ]) {
+    it(`opens the demo ballot after simulated ${method} confirmation`, () => {
+      cy.intercept('POST', '/api/demo/mint-auth-token', { auth: 'abcdef1234' }).as('register')
+      cy.intercept('GET', '/election/demo-shared-v4-plurality/vote?*', '<html><body>Demo ballot</body></html>')
+      cy.visit('/demo', { onBeforeLoad: (win) => win.sessionStorage.clear() })
+      cy.contains('button', /^Start$/).click()
+      cy.wait('@register')
+      cy.contains('button', method).click()
+      cy.on('window:confirm', (message) => {
+        expect(message).to.eq("For this demo, we'll take you right to the ballot.")
+        return true
+      })
+      cy.contains('button', continueLabel).click()
+      cy.location('search').should('eq', '?vote')
     })
-    cy.contains('button', 'Continue with eID').click()
-    cy.location('search').should('eq', '?vote')
-  })
+  }
 
   it('closes the signature preview without submitting and preserves the drawing', () => {
     const submissions = cy.spy().as('signatureSubmissions')
