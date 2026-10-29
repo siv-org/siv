@@ -63,9 +63,6 @@ export function PostalMail({
         </header>
 
         <p className="font-mono26 mt-5 text-[9px] uppercase tracking-[0.16em] text-h26-green">Invitation to vote</p>
-        <h2 className="font-serif26 mt-2 text-[clamp(0.65rem,3vw,1.1rem)] font-normal leading-snug text-h26-text whitespace-nowrap">
-          You’re invited to have your say.
-        </h2>
 
         <div className="mt-5 space-y-3 text-[0.8rem] leading-relaxed text-h26-text">
           <p>Dear Alice,</p>
@@ -84,7 +81,7 @@ export function PostalMail({
         </div>
 
         <div className="mt-5 border-t border-dashed border-[#20392e]/25 pt-5">
-          <p className="font-mono26 text-center text-[9px] uppercase tracking-[0.14em] text-h26-textSecondary">
+          <p className="font-mono26 text-center text-[11px] uppercase tracking-[0.06em] text-h26-textSecondary">
             Your personal voting details
           </p>
           <div className="mt-4 flex flex-col items-center gap-5 sm:flex-row sm:justify-center sm:gap-5">
