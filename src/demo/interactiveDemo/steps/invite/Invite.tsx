@@ -1,8 +1,7 @@
-import { ArrowRight, CreditCard, IdCard, Mail, MessageSquare, PenLine, Send, UserRound } from 'lucide-react'
+import { ArrowRight, IdCard, Mail, MessageSquare, PenLine, Send, UserRound } from 'lucide-react'
 import { CSSProperties, useState } from 'react'
 
 import { PrimaryButton } from '../../shared/PrimaryButton'
-import { CommonAccessCard } from './CommonAccessCard'
 import { DigitalGovernmentID } from './DigitalGovernmentID'
 import { EmailInvitation } from './EmailInvitation'
 import { InPersonInvitation } from './InPersonInvitation'
@@ -45,18 +44,12 @@ const options = [
     preview: InPersonInvitation,
   },
   {
-    description: 'Sign in through a supported government identity service to access your assigned ballot.',
+    description:
+      'If voters have already been issued digital IDs, such as US Military CACs or European Smart IDs, these can be used to sign-in.',
     icon: IdCard,
     id: 'digital',
-    label: 'Digital government ID',
+    label: 'Digital ID',
     preview: DigitalGovernmentID,
-  },
-  {
-    description: 'Authenticate with your CAC through a supported integration to access your assigned ballot.',
-    icon: CreditCard,
-    id: 'cac',
-    label: 'Common Access Card',
-    preview: CommonAccessCard,
   },
   {
     description: 'An identity-verification process compares your government-issued photo ID and selfie.',
