@@ -59,7 +59,6 @@ const options = [
     preview: ExistingCredentials,
   },
   {
-    description: 'An identity-verification process compares your government-issued photo ID and selfie.',
     icon: Camera,
     id: 'photo',
     label: 'Photo ID + Selfie',
