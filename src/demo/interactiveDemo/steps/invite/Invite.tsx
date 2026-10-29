@@ -35,6 +35,20 @@ const options = [
     preview: PostalMail,
   },
   {
+    icon: Camera,
+    id: 'photo',
+    label: 'Photo ID + Selfie',
+    preview: PhotoIDSelfie,
+  },
+  {
+    description:
+      'For in-person voting events such as conventions, eligible voters can be given a printed-out unique QR code at check-in, and then later scan it to access their ballot.',
+    icon: UserRound,
+    id: 'person',
+    label: 'In Person',
+    preview: InPerson,
+  },
+  {
     description:
       'If administrators already have voters’ email addresses, they can email each voter a personal link to access their ballot.',
     icon: Send,
@@ -51,12 +65,11 @@ const options = [
     preview: TextMessage,
   },
   {
-    description:
-      'For in-person voting events such as conventions, eligible voters can be given a printed-out unique QR code at check-in, and then later scan it to access their ballot.',
-    icon: UserRound,
-    id: 'person',
-    label: 'In Person',
-    preview: InPerson,
+    description: 'Your drawn signature is compared with the one on your voter registration record.',
+    icon: PenLine,
+    id: 'signature',
+    label: 'Drawn Signature',
+    preview: DrawnSignature,
   },
   {
     description:
@@ -71,19 +84,6 @@ const options = [
     id: 'login',
     label: 'Existing Login Credentials',
     preview: ExistingLoginCredentials,
-  },
-  {
-    icon: Camera,
-    id: 'photo',
-    label: 'Photo ID + Selfie',
-    preview: PhotoIDSelfie,
-  },
-  {
-    description: 'Your drawn signature is compared with the one on your voter registration record.',
-    icon: PenLine,
-    id: 'signature',
-    label: 'Drawn Signature',
-    preview: DrawnSignature,
   },
   {
     icon: Ellipsis,

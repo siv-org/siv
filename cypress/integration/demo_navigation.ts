@@ -354,7 +354,7 @@ describe('Invitation method previews', () => {
     cy.get('#invitation-preview').should('not.exist')
     cy.contains('button', /^Email$/).click()
     cy.get('#invitation-preview').then(($preview) => {
-      cy.contains('button', 'In Person').then(($nextRow) => {
+      cy.contains('button', 'Digital ID').then(($nextRow) => {
         expect($preview[0].getBoundingClientRect().bottom).to.be.at.most($nextRow[0].getBoundingClientRect().top)
       })
     })
