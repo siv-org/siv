@@ -1,4 +1,4 @@
-import { UserRound } from 'lucide-react'
+import { Landmark } from 'lucide-react'
 import { buildSubject } from 'src/_shared/invitationEmail'
 
 export function TextMessage({ onContinue, voteLink }: { onContinue: () => void; voteLink: string }) {
@@ -7,7 +7,7 @@ export function TextMessage({ onContinue, voteLink }: { onContinue: () => void; 
       <div className="mx-auto max-w-[360px] overflow-hidden rounded-[28px] border border-black/[0.08] bg-white shadow-sm">
         <div className="flex flex-col items-center gap-1.5 border-b border-black/[0.06] bg-[#f9f9fb] px-4 py-4">
           <div className="flex size-10 items-center justify-center rounded-full bg-[#9398a2] text-white">
-            <UserRound aria-hidden className="size-6" strokeWidth={1.5} />
+            <Landmark aria-hidden className="size-6" strokeWidth={1.5} />
           </div>
           <p className="text-xs font-medium text-[#1c1c1e]">Department of Elections</p>
         </div>
