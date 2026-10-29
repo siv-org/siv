@@ -1,14 +1,4 @@
-import {
-  ArrowRight,
-  CreditCard,
-  Fingerprint,
-  Mail,
-  MessageSquare,
-  PenLine,
-  Send,
-  Smartphone,
-  UserRound,
-} from 'lucide-react'
+import { ArrowRight, CreditCard, Fingerprint, Mail, MessageSquare, PenLine, Send, UserRound } from 'lucide-react'
 import { CSSProperties, useState } from 'react'
 
 import { PrimaryButton } from '../../shared/PrimaryButton'
@@ -19,8 +9,7 @@ import { InPersonInvitation } from './InPersonInvitation'
 import { PhotoIDSelfie } from './PhotoIDSelfie'
 import { PostalLetter } from './PostalLetter'
 import { SignatureVerification } from './SignatureVerification'
-import { TextInvitation } from './TextInvitation'
-import { TextMessageVerification } from './TextMessageVerification'
+import { TextMessage } from './TextMessage'
 
 const options = [
   {
@@ -40,11 +29,12 @@ const options = [
     preview: EmailInvitation,
   },
   {
-    description: 'Your personal ballot link arrives at your registered phone number.',
+    description:
+      'If administrators already have voters’ mobile phone numbers, they can text each voter a personal link to access their ballot.',
     icon: MessageSquare,
     id: 'sms',
     label: 'Text message',
-    preview: TextInvitation,
+    preview: TextMessage,
   },
   {
     description: 'Receive your personal Voter Code after an eligibility check in person.',
@@ -80,13 +70,6 @@ const options = [
     id: 'signature',
     label: 'Signature verification',
     preview: SignatureVerification,
-  },
-  {
-    description: 'Confirm access with a one-time code sent to your registered phone number.',
-    icon: Smartphone,
-    id: 'sms-check',
-    label: 'Text message verification code',
-    preview: TextMessageVerification,
   },
 ]
 
