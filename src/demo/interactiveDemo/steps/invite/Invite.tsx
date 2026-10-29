@@ -111,6 +111,9 @@ export function Invite({
 
   return (
     <div>
+      <p className="mb-3 text-[0.75rem] font-medium tracking-wide text-h26-textSecondary">
+        Options, can be combined:
+      </p>
       <div aria-label="Ways to access your ballot" className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3">
         {options.map(({ icon: OptionIcon, id, label }, index) => (
           <button
@@ -159,9 +162,6 @@ export function Invite({
           </section>
         )}
       </div>
-      <p className="mt-3 text-[0.75rem] leading-relaxed text-h26-muted">
-        Methods can be combined to meet your election’s requirements.
-      </p>
       {/* Auditability note shared by all authentication methods. */}
       <details className="group mt-6 border-t border-black/[0.07] pt-5">
         <summary className="flex cursor-pointer list-none items-center gap-3 rounded-sm text-[0.85rem] font-medium text-h26-text focus-visible:outline focus-visible:outline-2 focus-visible:outline-h26-green [&::-webkit-details-marker]:hidden">
