@@ -105,15 +105,13 @@ export function Invite({
   voterNumber?: number
 }) {
   const [selected, setSelected] = useState<null | string>(null)
+  // Keep the signature iframe mounted after opening so closing it preserves the drawing.
+  const [signatureOpened, setSignatureOpened] = useState(false)
   const selectedIndex = options.findIndex(({ id }) => id === selected)
-  const option = options[selectedIndex]
-  const Preview = option?.preview
 
   return (
     <div>
-      <p className="mb-3 text-[0.75rem] font-medium tracking-wide text-h26-textSecondary">
-        Options, can be combined:
-      </p>
+      <p className="mb-3 text-[0.75rem] font-medium tracking-wide text-h26-textSecondary">Options, can be combined:</p>
       <div aria-label="Ways to access your ballot" className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3">
         {options.map(({ icon: OptionIcon, id, label }, index) => (
           <button
@@ -126,7 +124,10 @@ export function Invite({
                 : 'border-black/[0.08] bg-white/70 text-h26-textSecondary hover:border-h26-green/25 hover:bg-white'
             }`}
             key={id}
-            onClick={() => setSelected(selected === id ? null : id)}
+            onClick={() => {
+              if (id === 'signature') setSignatureOpened(true)
+              setSelected(selected === id ? null : id)
+            }}
             style={{ order: index * 2 }}
             type="button"
           >
@@ -134,43 +135,53 @@ export function Invite({
             <span>{label}</span>
           </button>
         ))}
-        {option && (
-          <section
-            aria-label={`${option.label} example`}
-            aria-live="polite"
-            className="col-span-full min-w-0 overflow-hidden rounded-2xl border border-black/[0.06] bg-white/60 order-[var(--preview-order)] sm:order-[var(--preview-order-sm)]"
-            id="invitation-preview"
-            // Match the grid breakpoint to position the preview below its selected row.
-            style={
-              {
-                '--preview-order': Math.floor(selectedIndex / 2) * 4 + 3,
-                '--preview-order-sm': Math.floor(selectedIndex / 3) * 6 + 5,
-              } as CSSProperties
-            }
-          >
-            {option.description && (
-              <div className="relative border-b border-black/[0.06] px-5 pb-8 pt-4 sm:px-6">
-                <p className="text-[0.78rem] leading-relaxed text-h26-textSecondary">{option.description}</p>
-                <span className="absolute bottom-0 left-1/2 z-10 -translate-x-1/2 translate-y-1/2 rounded-full border border-black/10 bg-h26-bg px-3 py-0.5 text-[11px] font-medium tracking-wide text-h26-textSecondary">
-                  Example
-                </span>
-              </div>
-            )}
-            {Preview && (
-              <Preview auth={auth} onContinue={onContinue} voteLink={auth ? voteLink : ''} voterNumber={voterNumber} />
-            )}
-          </section>
-        )}
+        {options
+          .filter(({ id }) => id === selected || (id === 'signature' && signatureOpened))
+          .map((option) => {
+            const Preview = option.preview
+            return (
+              <section
+                aria-label={`${option.label} example`}
+                aria-live="polite"
+                className="col-span-full min-w-0 overflow-hidden rounded-2xl border border-black/[0.06] bg-white/60 order-[var(--preview-order)] sm:order-[var(--preview-order-sm)]"
+                hidden={option.id !== selected}
+                id={option.id === selected ? 'invitation-preview' : undefined}
+                key={option.id}
+                // Match the grid breakpoint to position the preview below its selected row.
+                style={
+                  {
+                    '--preview-order': Math.floor(selectedIndex / 2) * 4 + 3,
+                    '--preview-order-sm': Math.floor(selectedIndex / 3) * 6 + 5,
+                  } as CSSProperties
+                }
+              >
+                {option.description && (
+                  <div className="relative border-b border-black/[0.06] px-5 pb-8 pt-4 sm:px-6">
+                    <p className="text-[0.78rem] leading-relaxed text-h26-textSecondary">{option.description}</p>
+                    <span className="absolute bottom-0 left-1/2 z-10 -translate-x-1/2 translate-y-1/2 rounded-full border border-black/10 bg-h26-bg px-3 py-0.5 text-[11px] font-medium tracking-wide text-h26-textSecondary">
+                      Example
+                    </span>
+                  </div>
+                )}
+                {Preview && (
+                  <Preview
+                    auth={auth}
+                    onClose={() => setSelected(null)}
+                    onContinue={onContinue}
+                    voteLink={auth ? voteLink : ''}
+                    voterNumber={voterNumber}
+                  />
+                )}
+              </section>
+            )
+          })}
       </div>
       {/* Auditability note shared by all authentication methods. */}
       <details className="group mt-6 border-t border-black/[0.07] pt-5">
         <summary className="flex cursor-pointer list-none items-center gap-3 rounded-sm text-[0.85rem] font-medium text-h26-text focus-visible:outline focus-visible:outline-2 focus-visible:outline-h26-green [&::-webkit-details-marker]:hidden">
           <ShieldCheck aria-hidden className="size-5 shrink-0 text-h26-green" strokeWidth={1.5} />
           Preserving Full Auditability
-          <ChevronRight
-            aria-hidden
-            className="size-4 text-h26-muted transition-transform group-open:rotate-90"
-          />
+          <ChevronRight aria-hidden className="size-4 text-h26-muted transition-transform group-open:rotate-90" />
         </summary>
         <div className="ml-8">
           <p className="mt-2 text-[0.78rem] leading-relaxed text-h26-textSecondary">
