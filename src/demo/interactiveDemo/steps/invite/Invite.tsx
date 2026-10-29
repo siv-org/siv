@@ -95,7 +95,7 @@ const options = [
 
 export function Invite({ auth, onContinue, voteLink }: { auth: string; onContinue: () => void; voteLink: string }) {
   const [selected, setSelected] = useState<null | string>(null)
-  // Keep the signature iframe mounted after opening so closing it preserves the drawing.
+  // Keep the signature preview mounted after opening so closing it preserves the drawing.
   const [signatureOpened, setSignatureOpened] = useState(false)
   const selectedIndex = options.findIndex(({ id }) => id === selected)
 

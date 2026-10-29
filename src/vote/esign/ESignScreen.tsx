@@ -7,7 +7,6 @@ import { encodeEsignaturePayload, signReplacement } from 'src/crypto/voter-key'
 
 import { OnClickButton } from '../../_shared/Button'
 import { api } from '../../api-helper'
-import { GlobalCSS } from '../../GlobalCSS'
 import { State } from '../vote-state'
 
 export const ESignScreen = ({
@@ -41,11 +40,13 @@ export const ESignScreen = ({
 
   return (
     <>
-      <Head>
-        <title key="title">SIV: Add Your Signature</title>
-      </Head>
+      {!onSubmit && (
+        <Head>
+          <title key="title">SIV: Add Your Signature</title>
+        </Head>
+      )}
 
-      <main>
+      <section>
         <h1>Add Your Signature</h1>
         <p>The election manager has requested your esignature. Please sign your name in the box below.</p>
         <SignaturePad redrawOnResize ref={signaturePad} />
@@ -95,20 +96,35 @@ export const ESignScreen = ({
             {buttonText}
           </OnClickButton>
         </div>
-      </main>
+      </section>
 
-      <style global jsx>{`
-        canvas {
+      <style jsx>{`
+        section :global(canvas) {
           border: 1px solid black;
           height: 200px;
         }
-      `}</style>
-      <style jsx>{`
-        main {
+
+        section {
+          color: #222;
+          font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans,
+            Droid Sans, Helvetica Neue, sans-serif;
+          font-size: 0.875rem;
+          letter-spacing: 0.01071em;
+          line-height: 1.43;
           max-width: 750px;
           width: 100%;
           margin: 0 auto;
           padding: 1rem;
+        }
+
+        h1 {
+          font-size: 1.375rem;
+          font-weight: bold;
+          margin: 0.67em 0 0.5rem;
+        }
+
+        p {
+          margin: 0 0 1em;
         }
 
         .buttons {
@@ -121,7 +137,6 @@ export const ESignScreen = ({
           font-size: 13px;
         }
       `}</style>
-      <GlobalCSS />
     </>
   )
 }
