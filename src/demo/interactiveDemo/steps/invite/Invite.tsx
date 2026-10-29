@@ -155,9 +155,15 @@ export function Invite({
                   } as CSSProperties
                 }
               >
-                {option.description && (
-                  <div className="relative border-b border-black/[0.06] px-5 pb-8 pt-4 sm:px-6">
-                    <p className="text-[0.78rem] leading-relaxed text-h26-textSecondary">{option.description}</p>
+                {(option.description || option.id === 'photo') && (
+                  <div
+                    className={`relative border-b border-black/[0.06] px-5 sm:px-6 ${
+                      option.description ? 'pb-8 pt-4' : 'pt-6'
+                    }`}
+                  >
+                    {option.description && (
+                      <p className="text-[0.78rem] leading-relaxed text-h26-textSecondary">{option.description}</p>
+                    )}
                     <span className="absolute bottom-0 left-1/2 z-10 -translate-x-1/2 translate-y-1/2 rounded-full border border-black/10 bg-h26-bg px-3 py-0.5 text-[11px] font-medium tracking-wide text-h26-textSecondary">
                       Example
                     </span>
