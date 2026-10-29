@@ -1,7 +1,7 @@
 import { Landmark } from 'lucide-react'
 import { buildSubject } from 'src/_shared/invitationEmail'
 
-export function TextMessage({ onContinue, voteLink }: { onContinue: () => void; voteLink: string }) {
+export function TextMessage({ auth, onContinue, voteLink }: { auth: string; onContinue: () => void; voteLink: string }) {
   return (
     <div className="bg-[#f3f5f8] px-4 py-8 sm:py-10">
       <div className="mx-auto max-w-[360px] overflow-hidden rounded-[28px] border border-black/[0.08] bg-white shadow-sm">
@@ -25,7 +25,7 @@ export function TextMessage({ onContinue, voteLink }: { onContinue: () => void; 
                   onContinue()
                 }}
               >
-                {new URL(voteLink, window.location.origin).href}
+                local.gov/vote?auth={auth}
               </a>
             ) : (
               <p className="text-[#86868b]">Preparing your invitation…</p>
