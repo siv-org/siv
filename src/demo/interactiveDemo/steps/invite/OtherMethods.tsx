@@ -67,7 +67,7 @@ export function OtherMethods() {
           Add your own method
         </p>
         <p className="mt-1 text-[0.8rem] leading-relaxed text-h26-textSecondary">
-          SIV can be adapted to work with your election’s authentication flow.
+          SIV can be adapted to work with your election’s authentication needs.
         </p>
       </div>
     </div>
