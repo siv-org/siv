@@ -43,7 +43,7 @@ export function VerifyResults({
           <div className="flex flex-wrap gap-y-1 gap-x-4 justify-between items-center px-4 py-3 border-b border-black/10 bg-h26-bg">
             <h2 className="flex gap-2 items-center m-0 text-sm font-medium leading-6 text-h26-text">
               <LockKeyhole aria-hidden="true" className="shrink-0 text-h26-green" size={16} strokeWidth={1.5} />
-              Private to you
+              Private to voter
             </h2>
             <a
               className="inline-block text-xs leading-6 underline break-all text-h26-green decoration-h26-green/30 underline-offset-4 hover:decoration-h26-green"
