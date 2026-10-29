@@ -169,15 +169,13 @@ export function Invite({
                     </span>
                   </div>
                 )}
-                {Preview && (
-                  <Preview
-                    auth={auth}
-                    onClose={() => setSelected(null)}
-                    onContinue={onContinue}
-                    voteLink={auth ? voteLink : ''}
-                    voterNumber={voterNumber}
-                  />
-                )}
+                <Preview
+                  auth={auth}
+                  onClose={() => setSelected(null)}
+                  onContinue={onContinue}
+                  voteLink={auth ? voteLink : ''}
+                  voterNumber={voterNumber}
+                />
               </section>
             )
           })}
