@@ -1,4 +1,15 @@
-import { ArrowRight, Camera, IdCard, KeyRound, Mail, MessageSquare, PenLine, Send, UserRound } from 'lucide-react'
+import {
+  ArrowRight,
+  Camera,
+  IdCard,
+  KeyRound,
+  Mail,
+  MessageSquare,
+  PenLine,
+  Send,
+  ShieldCheck,
+  UserRound,
+} from 'lucide-react'
 import { CSSProperties, useState } from 'react'
 
 import { PrimaryButton } from '../../shared/PrimaryButton'
@@ -6,6 +17,7 @@ import { DigitalGovernmentID } from './DigitalGovernmentID'
 import { EmailInvitation } from './EmailInvitation'
 import { ExistingCredentials } from './ExistingCredentials'
 import { InPersonInvitation } from './InPersonInvitation'
+import { OtherMethods } from './OtherMethods'
 import { PhotoIDSelfie } from './PhotoIDSelfie'
 import { PostalLetter } from './PostalLetter'
 import { SignatureVerification } from './SignatureVerification'
@@ -70,6 +82,12 @@ const options = [
     id: 'signature',
     label: 'Signature Verification',
     preview: SignatureVerification,
+  },
+  {
+    icon: ShieldCheck,
+    id: 'other',
+    label: 'Other Methods',
+    preview: OtherMethods,
   },
 ]
 
