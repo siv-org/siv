@@ -17,7 +17,7 @@ const options = [
       'For elections that already offer vote-by-mail, administrators can include a unique Voter Code with each mailed ballot, giving voters an additional option to cast their ballot online through SIV.',
     icon: Mail,
     id: 'post',
-    label: 'Postal mail',
+    label: 'Postal Mail',
     preview: PostalLetter,
   },
   {
@@ -33,7 +33,7 @@ const options = [
       'If administrators already have voters’ mobile phone numbers, they can text each voter a personal link to access their ballot.',
     icon: MessageSquare,
     id: 'sms',
-    label: 'Text message',
+    label: 'Text Message',
     preview: TextMessage,
   },
   {
@@ -41,7 +41,7 @@ const options = [
       'For in-person voting events such as conventions, eligible voters can be given a unique QR code at check-in, and then later scan it to access their ballot.',
     icon: UserRound,
     id: 'person',
-    label: 'In person',
+    label: 'In Person',
     preview: InPersonInvitation,
   },
   {
@@ -55,21 +55,21 @@ const options = [
   {
     icon: KeyRound,
     id: 'login',
-    label: 'Existing Login credentials',
+    label: 'Existing Login Credentials',
     preview: ExistingCredentials,
   },
   {
     description: 'An identity-verification process compares your government-issued photo ID and selfie.',
     icon: UserRound,
     id: 'photo',
-    label: 'Photo ID + selfie',
+    label: 'Photo ID + Selfie',
     preview: PhotoIDSelfie,
   },
   {
     description: 'Your signature is checked against the signature on your voter registration record.',
     icon: PenLine,
     id: 'signature',
-    label: 'Signature verification',
+    label: 'Signature Verification',
     preview: SignatureVerification,
   },
 ]

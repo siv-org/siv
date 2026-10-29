@@ -120,7 +120,7 @@ describe('Scanned demo invitation', () => {
     cy.visit('/demo', { onBeforeLoad: (win) => win.sessionStorage.clear() })
     cy.contains('button', /^Start$/).click()
     cy.wait('@register')
-    cy.contains('button', 'Postal mail').click()
+    cy.contains('button', 'Postal Mail').click()
     cy.get('[aria-label="Open demo ballot from QR code"]')
       .should('have.attr', 'href', '/demo?vote&auth=abcdef1234&method=plurality')
       .invoke('attr', 'href')
@@ -204,7 +204,7 @@ describe('Restart registration', () => {
     cy.intercept('POST', '/api/demo/mint-auth-token', { auth: '123456abcd' }).as('retryRegistration')
     cy.contains('button', 'Try again').click()
     cy.wait('@retryRegistration')
-    cy.contains('button', 'Postal mail').click()
+    cy.contains('button', 'Postal Mail').click()
     cy.get('[aria-label="Open demo ballot from QR code"]').should(
       'have.attr',
       'href',
@@ -274,10 +274,10 @@ describe('Invitation method previews', () => {
     cy.visit('/demo', { onBeforeLoad: (win) => win.sessionStorage.clear() })
     cy.contains('button', /^Start$/).click()
     cy.wait('@register')
-    cy.contains('button', 'In person').click()
+    cy.contains('button', 'In Person').click()
     cy.get('[aria-label="Voter registration number"]').should('have.text', '42')
     cy.reload()
-    cy.contains('button', 'In person').click()
+    cy.contains('button', 'In Person').click()
     cy.get('[aria-label="Voter registration number"]').should('have.text', '42')
     cy.window().then((win) => {
       const key = 'siv-shared-backend-demo-v5'
@@ -286,7 +286,7 @@ describe('Invitation method previews', () => {
       win.sessionStorage.setItem(key, JSON.stringify(saved))
     })
     cy.reload()
-    cy.contains('button', 'In person').click()
+    cy.contains('button', 'In Person').click()
     cy.get('[aria-label="Voter registration number"]').should('not.exist')
   })
 
@@ -297,7 +297,7 @@ describe('Invitation method previews', () => {
     cy.contains('button', /^Start$/).click()
     cy.wait('@register')
     cy.get('[aria-controls="invitation-preview"]').should('have.length', 8)
-    cy.contains('button', 'Existing Login credentials').should('be.visible')
+    cy.contains('button', 'Existing Login Credentials').should('be.visible')
     cy.contains('button', 'Common Access Card').should('not.exist')
     cy.contains('button', 'Text message verification code').should('not.exist')
     cy.contains('button', 'Authenticator app code').should('not.exist')
@@ -305,7 +305,7 @@ describe('Invitation method previews', () => {
     cy.get('#invitation-preview').should('not.exist')
     cy.contains('button', /^Email$/).click()
     cy.get('#invitation-preview').then(($preview) => {
-      cy.contains('button', 'In person').then(($nextRow) => {
+      cy.contains('button', 'In Person').then(($nextRow) => {
         expect($preview[0].getBoundingClientRect().bottom).to.be.at.most($nextRow[0].getBoundingClientRect().top)
       })
     })
@@ -322,7 +322,7 @@ describe('Invitation method previews', () => {
     cy.viewport(390, 844)
     cy.contains('button', /^Email$/).click()
     cy.get('#invitation-preview').then(($preview) => {
-      cy.contains('button', /^Text message$/).then(($nextRow) => {
+      cy.contains('button', /^Text Message$/).then(($nextRow) => {
         expect($preview[0].getBoundingClientRect().bottom).to.be.at.most($nextRow[0].getBoundingClientRect().top)
       })
     })
@@ -330,11 +330,11 @@ describe('Invitation method previews', () => {
       .its('0.contentDocument.body')
       .should('contain', 'Vote Invitation: City Mayoral Election')
     cy.document().then((doc) => expect(doc.documentElement.scrollWidth).to.be.at.most(390))
-    cy.contains('button', /^Text message$/).click()
+    cy.contains('button', /^Text Message$/).click()
     cy.get('#invitation-preview').should('contain', 'Text Message · Today 9:00 AM')
     cy.get('#invitation-preview a').should('have.attr', 'href').and('contain', 'auth=abcdef1234')
     cy.document().then((doc) => expect(doc.documentElement.scrollWidth).to.be.at.most(390))
-    cy.contains('button', 'Signature verification').click()
+    cy.contains('button', 'Signature Verification').click()
     cy.get('iframe[title="SIV signature screen"]')
       .its('0.contentDocument.body')
       .should('contain', 'Add Your Signature')
