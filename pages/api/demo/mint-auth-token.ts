@@ -1,4 +1,5 @@
 import { firebase } from 'api/_services'
+import Firebase from 'firebase-admin'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { generateAuthToken } from 'src/crypto/generate-auth-tokens'
 import { BALLOT_METHODS, sharedDemoElectionId } from 'src/demo/interactiveDemo/content'
@@ -17,33 +18,24 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const db = firebase.firestore()
   const election = db.collection('elections').doc(sharedDemoElectionId(method))
   const auth = generateAuthToken()
-  const voterNumber = await db.runTransaction(async (transaction) => {
-    // Use a transaction to avoid num_voters getting out-of-sync from auth token collisions
-
+  const registered: boolean = await db.runTransaction(async (transaction) => {
+    // Keep the voter count and new voter record in sync if creation fails.
     // Lookup the election
     const data = (await transaction.get(election)).data()
 
     // Verify it's a demo, that is still open.
-    if (data?.is_demo !== true || data.stop_accepting_votes) return null
-
-    // Assign a stable registration number within this demo election, not a count of votes cast.
-    // Keep it in the transaction so simultaneous registrations receive different numbers.
-    const voterNumber = (Number(data.num_voters) || 0) + 1
+    if (data?.is_demo !== true || data.stop_accepting_votes) return false
 
     // Save the new auth token.
     // create() rejects the transaction on a code collision, from duplicate doc.IDs
-    transaction.create(election.collection('voters').doc(auth), {
-      auth_token: auth,
-      created_at: new Date(),
-      voterNumber,
-    })
+    transaction.create(election.collection('voters').doc(auth), { auth_token: auth, created_at: new Date() })
 
-    transaction.update(election, { num_voters: voterNumber })
+    transaction.update(election, { num_voters: Firebase.firestore.FieldValue.increment(1) })
 
-    return voterNumber // Success
+    return true // Success
   })
-  if (voterNumber === null) return res.status(503).json({ error: 'The demo election is not available.' })
+  if (!registered) return res.status(503).json({ error: 'The demo election is not available.' })
 
-  // Return the new auth token and its registration number
-  return res.status(201).json({ auth, voterNumber })
+  // Return the new auth token
+  return res.status(201).json({ auth })
 }

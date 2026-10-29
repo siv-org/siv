@@ -269,27 +269,6 @@ describe('Invitation method previews', () => {
     cy.location('search').should('eq', '?vote')
   })
 
-  it('keeps the assigned registration number after refresh and hides it for older sessions', () => {
-    cy.intercept('POST', '/api/demo/mint-auth-token', { auth: 'abcdef1234', voterNumber: 42 }).as('register')
-    cy.visit('/demo', { onBeforeLoad: (win) => win.sessionStorage.clear() })
-    cy.contains('button', /^Start$/).click()
-    cy.wait('@register')
-    cy.contains('button', 'In Person').click()
-    cy.get('[aria-label="Voter registration number"]').should('have.text', '42')
-    cy.reload()
-    cy.contains('button', 'In Person').click()
-    cy.get('[aria-label="Voter registration number"]').should('have.text', '42')
-    cy.window().then((win) => {
-      const key = 'siv-shared-backend-demo-v5'
-      const saved = JSON.parse(win.sessionStorage.getItem(key)!)
-      delete saved.session.voterNumber
-      win.sessionStorage.setItem(key, JSON.stringify(saved))
-    })
-    cy.reload()
-    cy.contains('button', 'In Person').click()
-    cy.get('[aria-label="Voter registration number"]').should('not.exist')
-  })
-
   it('closes the signature preview without submitting and preserves the drawing', () => {
     const submissions = cy.spy().as('signatureSubmissions')
     cy.intercept('POST', '/api/submit-esignature', (request) => {

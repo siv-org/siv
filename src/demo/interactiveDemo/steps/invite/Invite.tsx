@@ -93,17 +93,7 @@ const options = [
   },
 ]
 
-export function Invite({
-  auth,
-  onContinue,
-  voteLink,
-  voterNumber,
-}: {
-  auth: string
-  onContinue: () => void
-  voteLink: string
-  voterNumber?: number
-}) {
+export function Invite({ auth, onContinue, voteLink }: { auth: string; onContinue: () => void; voteLink: string }) {
   const [selected, setSelected] = useState<null | string>(null)
   // Keep the signature iframe mounted after opening so closing it preserves the drawing.
   const [signatureOpened, setSignatureOpened] = useState(false)
@@ -174,7 +164,6 @@ export function Invite({
                   onClose={() => setSelected(null)}
                   onContinue={onContinue}
                   voteLink={auth ? voteLink : ''}
-                  voterNumber={voterNumber}
                 />
               </section>
             )
