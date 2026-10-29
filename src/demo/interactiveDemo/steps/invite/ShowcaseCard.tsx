@@ -1,4 +1,4 @@
-import { LucideIcon, ShieldCheck } from 'lucide-react'
+import { Landmark, LucideIcon, ShieldCheck } from 'lucide-react'
 
 export function ShowcaseCard({ caption, icon: Icon }: { caption: string; icon: LucideIcon }) {
   // ponytail: illustrative checks only; real credential flows require provider integrations.
@@ -6,14 +6,14 @@ export function ShowcaseCard({ caption, icon: Icon }: { caption: string; icon: L
     <div className="px-4 py-8 sm:px-8 sm:py-10">
       <div className="mx-auto max-w-[380px] overflow-hidden rounded-xl border border-black/[0.08] bg-white shadow-sm">
         <div className="flex items-center gap-3 border-b border-black/[0.06] px-5 py-4">
-          <Icon aria-hidden className="size-5 text-h26-green" strokeWidth={1.5} />
+          <Landmark aria-hidden className="size-5 shrink-0 text-h26-green" strokeWidth={1.5} />
           <div>
-            <p className="text-[0.8rem] font-medium text-h26-text">Voter identity check</p>
-            <p className="mt-0.5 text-[0.65rem] text-h26-muted">City Mayoral Election</p>
+            <p className="text-[0.8rem] font-medium text-h26-text">Department of Elections</p>
+            <p className="mt-0.5 text-[0.65rem] text-h26-muted">City Mayoral Elections</p>
           </div>
         </div>
         <div className="p-5 sm:p-6">
-          <h3 className="font-serif26 text-xl text-h26-text">Confirm it’s you.</h3>
+          <h3 className="font-serif26 text-xl text-h26-text">Confirm your identity.</h3>
           <div className="my-5 rounded-xl bg-h26-bg p-4 text-center">
             <Icon aria-hidden className="mx-auto size-10 text-h26-green" strokeWidth={1} />
             <p className="mt-3 text-[0.72rem] text-h26-textSecondary">{caption}</p>
@@ -27,10 +27,6 @@ export function ShowcaseCard({ caption, icon: Icon }: { caption: string; icon: L
           </div>
         </div>
       </div>
-      <p className="mx-auto mt-5 max-w-[360px] text-center text-[0.7rem] leading-relaxed text-h26-muted">
-        Example flow. Availability depends on the election’s setup and required integrations. No identity information is
-        collected in this demo.
-      </p>
     </div>
   )
 }
