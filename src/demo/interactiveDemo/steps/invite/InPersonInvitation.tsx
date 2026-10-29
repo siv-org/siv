@@ -7,7 +7,7 @@ export function InPersonInvitation({ auth, voteLink }: { auth: string; voteLink:
         {voteLink && (
           <div className="flex flex-col items-center text-center">
             <span className="text-sm opacity-50">{auth}</span>
-            <InviteQRCode auth={auth} showLink={false} voteLink={voteLink} />
+            <InviteQRCode auth={auth} showLink={false} showVoteLogo size={152} voteLink={voteLink} />
           </div>
         )}
       </div>
