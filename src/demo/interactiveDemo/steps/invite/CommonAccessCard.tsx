@@ -1,7 +1,7 @@
 import { CreditCard } from 'lucide-react'
 
-import { IdentityCheckCardDesign } from './IdentityCheckCardDesign'
+import { ShowcaseCard } from './ShowcaseCard'
 
 export function CommonAccessCard() {
-  return <IdentityCheckCardDesign caption="Card + reader + PIN" icon={CreditCard} />
+  return <ShowcaseCard caption="Card + reader + PIN" icon={CreditCard} />
 }

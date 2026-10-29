@@ -1,7 +1,7 @@
 import { UserRound } from 'lucide-react'
 
-import { IdentityCheckCardDesign } from './IdentityCheckCardDesign'
+import { ShowcaseCard } from './ShowcaseCard'
 
 export function PhotoIDSelfie() {
-  return <IdentityCheckCardDesign caption="Government-issued ID + selfie" icon={UserRound} />
+  return <ShowcaseCard caption="Government-issued ID + selfie" icon={UserRound} />
 }
