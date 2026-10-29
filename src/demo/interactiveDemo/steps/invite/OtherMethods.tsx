@@ -2,12 +2,6 @@ import { Globe, MessageSquare, Plus, Video } from 'lucide-react'
 
 const checks = [
   {
-    description:
-      'Voters use their phone’s NFC reader to verify the chip in a valid passport. This is a low-cost, privacy-preserving method.',
-    icon: Globe,
-    title: 'Passport Scan',
-  },
-  {
     description: 'Voters show their photo ID to an election worker during a Zoom video call.',
     icon: Video,
     title: 'Virtual Polling Station',
@@ -17,6 +11,12 @@ const checks = [
       'Voters verify a non-VoIP phone number by text message. Its Caller ID name must match their voter record.',
     icon: MessageSquare,
     title: 'SMS Verification',
+  },
+  {
+    description:
+      'Voters use their phone’s NFC reader to verify the chip in a valid passport. This is a low-cost, privacy-preserving method.',
+    icon: Globe,
+    title: 'Passport Scan',
   },
 ]
 
