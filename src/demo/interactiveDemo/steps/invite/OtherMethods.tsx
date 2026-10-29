@@ -1,16 +1,16 @@
-import { MessageSquare, Plus, ScanLine, Video } from 'lucide-react'
+import { Globe, MessageSquare, Plus, Video } from 'lucide-react'
 
 const checks = [
   {
     description:
       'Voters use their phone’s NFC reader to verify the chip in a valid passport. This is a low-cost, privacy-preserving method.',
-    icon: ScanLine,
+    icon: Globe,
     title: 'Passport Scan',
   },
   {
     description: 'Voters show their photo ID to an election worker during a Zoom video call.',
     icon: Video,
-    title: 'Virtual Poll',
+    title: 'Virtual Polling Station',
   },
   {
     description:
@@ -48,8 +48,10 @@ export function OtherMethods() {
             <div className="mt-4 grid gap-5 sm:grid-cols-3 sm:gap-6">
               {checks.map(({ description, icon: Icon, title }) => (
                 <div key={title}>
-                  <Icon aria-hidden className="mb-2 size-5 text-h26-green" strokeWidth={1.5} />
-                  <h5 className="text-[0.8rem] font-medium text-h26-text">{title}</h5>
+                  <h5 className="flex items-center gap-2 text-[0.8rem] font-medium text-h26-text sm:block">
+                    <Icon aria-hidden className="size-5 shrink-0 text-h26-green sm:mb-2" strokeWidth={1.5} />
+                    {title}
+                  </h5>
                   <p className="mt-1 text-[0.75rem] leading-relaxed text-h26-textSecondary">{description}</p>
                 </div>
               ))}

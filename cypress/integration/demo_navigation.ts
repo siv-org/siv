@@ -301,7 +301,7 @@ describe('Invitation method previews', () => {
     cy.get('#invitation-preview').within(() => {
       cy.contains('Provisional ballot process').should('be.visible')
       cy.contains('Passport Scan').should('be.visible')
-      cy.contains('Virtual Poll').should('be.visible')
+      cy.contains('Virtual Polling Station').should('be.visible')
       cy.contains('SMS Verification').should('be.visible')
     })
     cy.contains('button', 'Other Methods').click()
