@@ -74,7 +74,17 @@ const options = [
   },
 ]
 
-export function Invite({ auth, onContinue, voteLink }: { auth: string; onContinue: () => void; voteLink: string }) {
+export function Invite({
+  auth,
+  onContinue,
+  voteLink,
+  voterNumber,
+}: {
+  auth: string
+  onContinue: () => void
+  voteLink: string
+  voterNumber?: number
+}) {
   const [selected, setSelected] = useState<null | string>(null)
   const selectedIndex = options.findIndex(({ id }) => id === selected)
   const option = options[selectedIndex]
@@ -122,7 +132,9 @@ export function Invite({ auth, onContinue, voteLink }: { auth: string; onContinu
               </p>
               <p className="mt-1 text-[0.78rem] leading-relaxed text-h26-textSecondary">{option.description}</p>
             </div>
-            {Preview && <Preview auth={auth} onContinue={onContinue} voteLink={auth ? voteLink : ''} />}
+            {Preview && (
+              <Preview auth={auth} onContinue={onContinue} voteLink={auth ? voteLink : ''} voterNumber={voterNumber} />
+            )}
           </section>
         )}
       </div>

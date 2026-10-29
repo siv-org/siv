@@ -9,7 +9,7 @@ import { Invite } from './steps/invite/Invite'
 import { VerifyResults } from './steps/verify/VerifyResults'
 import { isStep, Step, useDemoNavigation } from './useDemoNavigation'
 
-type Session = { auth: string; method: BallotMethod; submitted?: boolean }
+type Session = { auth: string; method: BallotMethod; submitted?: boolean; voterNumber?: number }
 
 export function InteractiveDemo() {
   const { isReady, setStep, step, urlStep } = useDemoNavigation()
@@ -51,6 +51,11 @@ export function InteractiveDemo() {
           auth: saved.session.auth,
           method: saved.session.method,
           submitted: saved.session.submitted || saved.step === 'submitted' || saved.step === 'results',
+          // Older sessions have no registration number; leave it hidden rather than inventing one.
+          voterNumber:
+            Number.isSafeInteger(saved.session.voterNumber) && saved.session.voterNumber > 0
+              ? saved.session.voterNumber
+              : undefined,
         })
         restoredStep = urlStep || (saved.step === 'submitted' ? 'results' : isStep(saved.step) ? saved.step : 'intro')
       }
@@ -115,7 +120,7 @@ export function InteractiveDemo() {
         throw new Error(data?.error || 'Could not start the demo. Please try again.')
       }
       const data = await response.json()
-      setSession({ auth: data.auth, method })
+      setSession({ auth: data.auth, method, voterNumber: data.voterNumber })
       setResultsVersion(0)
       setHeight(780)
       if (destination !== 'invite' && window.location.href === sourceUrl) setStep(destination)
@@ -271,6 +276,7 @@ export function InteractiveDemo() {
               auth={session?.auth || ''}
               onContinue={() => session && setStep('vote')}
               voteLink={session ? `/demo?vote&auth=${session.auth}&method=${session.method}` : ''}
+              voterNumber={session?.voterNumber}
             />
           </div>
         )}
