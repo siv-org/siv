@@ -2,7 +2,7 @@ import { Mail, Reply, Star } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { buildEmailHtml, buildInvitationBody, buildSubject } from 'src/_shared/invitationEmail'
 
-export function EmailInvitation({ onContinue, voteLink }: { onContinue: () => void; voteLink: string }) {
+export function EmailInvitation({ auth, onContinue, voteLink }: { auth: string; onContinue: () => void; voteLink: string }) {
   const [html, setHtml] = useState('')
   useEffect(() => {
     let current = true
@@ -11,19 +11,25 @@ export function EmailInvitation({ onContinue, voteLink }: { onContinue: () => vo
       const link = new URL(voteLink, window.location.origin).href
       buildInvitationBody({ link, subject_line: buildSubject('City Mayoral Election') }).then((text) => {
         // ponytail: repair the legacy table row only for browser display; remove when the shared template uses a cell.
-        if (current)
-          setHtml(
-            buildEmailHtml({ preheader: `Click here to securely cast your vote: ${link}`, text }).replace(
-              /<tr style="display: block; margin: 30px;">([\s\S]*?)<\/tr>/,
-              '<tr><td style="padding: 30px;">$1</td></tr>',
-            ),
-          )
+        const doc = new DOMParser().parseFromString(
+          buildEmailHtml({ preheader: `Click here to securely cast your vote: ${link}`, text }).replace(
+            /<tr style="display: block; margin: 30px;">([\s\S]*?)<\/tr>/,
+            '<tr><td style="padding: 30px;">$1</td></tr>',
+          ),
+          'text/html',
+        )
+        // Set navigation before rendering so the ballot can never open inside the email preview.
+        doc.querySelectorAll('a').forEach((ballotLink) => {
+          ballotLink.textContent = `local.gov/vote?auth=${auth}`
+          ballotLink.target = '_top'
+        })
+        if (current) setHtml(doc.body.outerHTML)
       })
     }
     return () => {
       current = false
     }
-  }, [voteLink])
+  }, [auth, voteLink])
 
   if (!html) return <p className="p-6 text-sm text-h26-muted">Preparing your invitation…</p>
   return (
@@ -65,12 +71,13 @@ export function EmailInvitation({ onContinue, voteLink }: { onContinue: () => vo
               const doc = frame.contentDocument
               if (!doc) return
               frame.style.height = `${Math.max(360, doc.documentElement.scrollHeight)}px`
+              // Keep normal clicks in the demo flow; the link's native target also prevents nested navigation.
               doc.querySelector('a')?.addEventListener('click', (event) => {
                 event.preventDefault()
                 onContinue()
               })
             }}
-            sandbox="allow-same-origin"
+            sandbox="allow-same-origin allow-top-navigation-by-user-activation"
             // Email clients supply their own default font; keep that context outside the shared message template.
             srcDoc={`<!doctype html><html><head><style>body { font-family: Arial, sans-serif; }</style></head>${html}</html>`}
             title="SIV invitation email"
