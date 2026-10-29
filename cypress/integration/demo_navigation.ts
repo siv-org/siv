@@ -69,7 +69,7 @@ describe('Verify Results layout', () => {
       })
     cy.location('search').should('eq', '?verify-results')
     cy.contains('button', 'Verify results').should('have.attr', 'aria-current', 'step')
-    cy.contains('h2', 'Your submitted vote').should('be.visible')
+    cy.contains('h2', 'Private to voter').should('be.visible')
     cy.contains('button', 'Start new ballot (demo-only)').should('not.exist')
     cy.get('iframe[title="SIV election results"]').should('not.exist')
 
@@ -97,9 +97,9 @@ describe('Verify Results layout', () => {
     cy.reload()
     cy.contains('button', /^View Results$/).click()
     cy.wait('@results')
-    cy.contains('h2', 'Election results').should('be.visible')
+    cy.contains('h2', 'Public to everyone').should('be.visible')
     cy.contains('button', 'Back to your vote ↑').click()
-    cy.contains('h2', 'Your submitted vote').should('be.visible')
+    cy.contains('h2', 'Private to voter').should('be.visible')
     cy.location('search').should('eq', '?verify-results')
 
     // Restart must clear the later progress circles, even after results were opened.
