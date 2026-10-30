@@ -20,6 +20,7 @@ export function InteractiveDemo() {
   const [height, setHeight] = useState(780)
   const [resultsVersion, setResultsVersion] = useState(0)
   const frame = useRef<HTMLIFrameElement>(null)
+  const frameObserver = useRef<null | ResizeObserver>(null)
   const page = useRef<HTMLDivElement>(null)
   const previousStep = useRef(step)
   const requestInFlight = useRef(false)
@@ -83,8 +84,6 @@ export function InteractiveDemo() {
       if (event.origin !== window.location.origin || event.source !== frame.current?.contentWindow) return
       const message = event.data
       if (message?.channel !== 'siv-backend-demo' || message.election_id !== electionId) return
-      if (message.type === 'resize' && Number.isFinite(message.height))
-        setHeight(Math.max(350, Math.min(6000, message.height)))
       if (message.type === 'submitted' && step === 'vote' && !session?.submitted) {
         setSession((current) => current && { ...current, submitted: true })
         setStep('results')
@@ -93,6 +92,9 @@ export function InteractiveDemo() {
     window.addEventListener('message', listen)
     return () => window.removeEventListener('message', listen)
   }, [electionId, session?.submitted, setStep, step])
+
+  // onLoad replaces observers between ballots; unmount releases the final iframe document.
+  useEffect(() => () => frameObserver.current?.disconnect(), [])
 
   async function register(method: BallotMethod = 'plurality', destination: Step = 'invite') {
     if (requestInFlight.current) return
@@ -166,6 +168,20 @@ export function InteractiveDemo() {
       className="block w-full border-0"
       height={height}
       key={voteUrl}
+      onLoad={({ currentTarget }) => {
+        frameObserver.current?.disconnect()
+        const main = currentTarget.contentDocument?.querySelector('main')
+        if (!main) return
+        // Remove the ballot's viewport minimum so resizing cannot feed back into its own height.
+        main.style.minHeight = '0'
+        // Measure in the parent: height updates must not depend on iframe message timing.
+        const resize = () => setHeight(Math.max(main.scrollHeight, Math.ceil(main.getBoundingClientRect().height)) + 16)
+        frameObserver.current = new ResizeObserver(resize)
+        frameObserver.current.observe(main)
+        // The receipt wrapper can grow without changing the flex container's border box.
+        for (const child of main.children) frameObserver.current.observe(child)
+        resize()
+      }}
       ref={frame}
       src={voteUrl}
       title="SIV voter interface"
