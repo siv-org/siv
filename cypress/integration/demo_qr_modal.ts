@@ -1,7 +1,7 @@
 /* global cy, expect, it */
 // Run with: npm run e2e -- --browser electron --spec cypress/integration/demo_qr_modal.ts
 it(
-  'keeps the embedded receipt height stable and opens its QR over the visible page',
+  'keeps the embedded receipt height stable and its enlarged QR inside the voter window',
   { waitForAnimations: false },
   () => {
     cy.viewport(1280, 800)
@@ -42,16 +42,30 @@ it(
         cy.wrap(body).contains('button', 'Check with another device').click()
         cy.wrap(body).contains('Tap for fullscreen').click()
       })
-    cy.get('[role="dialog"]')
+    cy.get('[role="dialog"]').should('not.exist')
+    cy.get('@receipt')
+      .its('0.contentDocument.body')
+      .find('[role="dialog"]')
       .should('be.visible')
       .then(($dialog) => {
         const rect = $dialog[0].getBoundingClientRect()
         expect(rect.top).to.equal(0)
-        expect(rect.height).to.equal(800)
+        const win = $dialog[0].ownerDocument.defaultView
+        expect(rect.width).to.equal(win.innerWidth)
+        expect(rect.height).to.equal(win.innerHeight)
       })
-    cy.get('[role="dialog"] canvas').should('have.attr', 'width', '400')
-    cy.get('button[aria-label="Close modal"]').click()
-    cy.get('[role="dialog"]').should('not.exist')
+    cy.get('@receipt').its('0.contentDocument.body').find('[role="dialog"] canvas').should('be.visible')
+    cy.get('@receipt').should(($frame) => {
+      const frame = $frame[0] as HTMLIFrameElement
+      const qr = frame.contentDocument.querySelector('[role="dialog"] canvas').getBoundingClientRect()
+      const bounds = frame.getBoundingClientRect()
+      expect(bounds.top + qr.top).to.be.at.least(0)
+      expect(bounds.top + qr.bottom).to.be.at.most(800)
+      expect(qr.left).to.be.at.least(0)
+      expect(qr.right).to.be.at.most(bounds.width)
+    })
+    cy.get('@receipt').its('0.contentDocument.body').find('button[aria-label="Close modal"]').click()
+    cy.get('@receipt').its('0.contentDocument.body').find('[role="dialog"]').should('not.exist')
     cy.get('@receipt').then(($frame) => {
       const frame = $frame[0] as HTMLIFrameElement
       // The receipt must fit its contents without creating an inner scrollbar.
