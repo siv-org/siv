@@ -11,17 +11,17 @@ export type VoteTimestamps = {
 }
 
 export const voteTimestampsTooltip = ({
-  added_at,
-  auth_added_at,
+  // added_at,
+  // auth_added_at,
   created_at,
-  verified_email_at,
-  was_manually_approved,
-}: VoteTimestamps): ReactNode => {
+}: // verified_email_at,
+// was_manually_approved,
+VoteTimestamps): ReactNode => {
   const rows = [
     ['Voted', created_at],
-    ['Auth info', auth_added_at],
-    ['Email verified', verified_email_at],
-    [was_manually_approved ? 'Approved' : 'Added', added_at],
+    // ['Auth info', auth_added_at],
+    // ['Email verified', verified_email_at],
+    // [was_manually_approved ? 'Approved' : 'Added', added_at],
   ]
     .filter((row): row is [string, string] => !!row[1])
     .sort(([, a], [, b]) => +new Date(a) - +new Date(b))

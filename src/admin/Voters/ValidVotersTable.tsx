@@ -146,7 +146,7 @@ export const ValidVotersTable = ({
                   />
 
                   <Tooltip placement="top" tooltip={timestampsTooltip}>
-                    <td className="cursor-help">{displayIndex + 1}</td>
+                    <td className={`${timestampsTooltip ? 'cursor-help' : ''}`}>{displayIndex + 1}</td>
                   </Tooltip>
                   {shouldShowRegistrationColumns && (
                     <>
