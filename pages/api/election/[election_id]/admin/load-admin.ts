@@ -30,12 +30,14 @@ export type AdminData = {
 
 export type PendingVote = {
   additionalAuthInfo?: Record<string, string>
-  created_at: Date
+  auth_added_at?: string
+  created_at: string
   email?: string
   first_name?: string
   is_email_verified: boolean
   last_name?: string
   link_auth: string
+  verified_email_at?: string
 }
 
 export type ReviewLog = { review: 'approve' | 'reject' }
@@ -234,25 +236,39 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }, [])
 
   // Build pending votes
+  const toIso = (t?: { _seconds: number }) => (t ? new Date(t._seconds * 1000).toISOString() : undefined)
   const pending_votes: PendingVote[] = (await loadPendingVotes).docs.map((doc) => {
-    const { additionalAuthInfo, created_at, email, first_name, is_email_verified, last_name, link_auth } =
-      doc.data() as {
-        additionalAuthInfo?: Record<string, string>
-        created_at: { _seconds: number }
-        email?: string
-        first_name?: string
-        is_email_verified: boolean
-        last_name?: string
-        link_auth: string
-      }
-    return {
+    const {
       additionalAuthInfo,
-      created_at: new Date(created_at._seconds * 1000),
+      auth_added_at,
+      created_at,
       email,
       first_name,
       is_email_verified,
       last_name,
       link_auth,
+      verified_email_at,
+    } = doc.data() as {
+      additionalAuthInfo?: Record<string, string>
+      auth_added_at?: { _seconds: number }
+      created_at: { _seconds: number }
+      email?: string
+      first_name?: string
+      is_email_verified: boolean
+      last_name?: string
+      link_auth: string
+      verified_email_at?: { _seconds: number }
+    }
+    return {
+      additionalAuthInfo,
+      auth_added_at: toIso(auth_added_at),
+      created_at: new Date(created_at._seconds * 1000).toISOString(),
+      email,
+      first_name,
+      is_email_verified,
+      last_name,
+      link_auth,
+      verified_email_at: toIso(verified_email_at),
     }
   })
 

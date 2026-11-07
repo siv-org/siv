@@ -1,12 +1,15 @@
 import { CheckOutlined, LoadingOutlined } from '@ant-design/icons'
-import { useReducer, useState } from 'react'
+import { Fragment, useReducer, useState } from 'react'
 import { OnClickButton } from 'src/_shared/Button'
 import { api } from 'src/api-helper'
 
 import { revalidate, useStored } from '../useStored'
 import { CheckboxCell, CheckboxHeaderCell, hoverable } from './CheckboxCell'
 import { mask } from './mask-token'
+import { Tooltip } from './Tooltip'
 import { use_multi_select } from './use-multi-select'
+
+const fmt = (iso: string) => new Date(iso).toLocaleString()
 
 export const VotesAwaitingApprovalTable = () => {
   const { election_id, pending_votes, voter_applications_allowed } = useStored()
@@ -91,22 +94,63 @@ export const VotesAwaitingApprovalTable = () => {
         </thead>
         <tbody className="[&_td]:whitespace-nowrap bg-white">
           {votes_shown.map(
-            ({ additionalAuthInfo, email, first_name, is_email_verified, last_name, link_auth }, index) => (
-              <tr className={`${checked[index] && 'bg-[#f1f1f1]'}`} key={link_auth}>
-                <CheckboxCell {...{ checked, index, last_selected, pressing_shift, set_checked, set_last_selected }} />
-                <td>{index + 1}</td>
-                <td>{first_name}</td>
-                <td>{last_name}</td>
-                <td>{email}</td>
-                <td className="text-center">{is_email_verified ? '✓' : ''}</td>
-                {[...additionalAuthInfoFields].map((field) => (
-                  <td className="text-center" key={field}>
-                    {additionalAuthInfo?.[field]}
-                  </td>
-                ))}
-                <td className="font-mono text-[12px]">{mask_tokens ? mask(link_auth) : link_auth}</td>
-              </tr>
-            ),
+            (
+              {
+                additionalAuthInfo,
+                auth_added_at,
+                created_at,
+                email,
+                first_name,
+                is_email_verified,
+                last_name,
+                link_auth,
+                verified_email_at,
+              },
+              index,
+            ) => {
+              const timestampsTooltip = (
+                <div className="grid grid-cols-[auto_auto] gap-x-3 gap-y-0.5 items-baseline whitespace-nowrap">
+                  {[
+                    ['Voted', created_at],
+                    ['Auth info', auth_added_at],
+                    ['Email verified', verified_email_at],
+                  ]
+                    .filter((row): row is [string, string] => !!row[1])
+                    .map(([label, iso]) => (
+                      <Fragment key={label}>
+                        <span className="text-[11px] font-semibold opacity-70">{label}</span>
+                        <span className="text-[13px]">{fmt(iso)}</span>
+                      </Fragment>
+                    ))}
+                </div>
+              )
+              return (
+                <tr className={`${checked[index] && 'bg-[#f1f1f1]'}`} key={link_auth}>
+                  <CheckboxCell
+                    {...{ checked, index, last_selected, pressing_shift, set_checked, set_last_selected }}
+                  />
+                  <Tooltip placement="top" tooltip={timestampsTooltip}>
+                    <td className="cursor-help">{index + 1}</td>
+                  </Tooltip>
+                  <td>{first_name}</td>
+                  <td>{last_name}</td>
+                  <td>{email}</td>
+                  {is_email_verified ? (
+                    <Tooltip placement="top" tooltip={timestampsTooltip}>
+                      <td className="text-center cursor-help">✓</td>
+                    </Tooltip>
+                  ) : (
+                    <td className="text-center" />
+                  )}
+                  {[...additionalAuthInfoFields].map((field) => (
+                    <td className="text-center" key={field}>
+                      {additionalAuthInfo?.[field]}
+                    </td>
+                  ))}
+                  <td className="font-mono text-[12px]">{mask_tokens ? mask(link_auth) : link_auth}</td>
+                </tr>
+              )
+            },
           )}
         </tbody>
       </table>
