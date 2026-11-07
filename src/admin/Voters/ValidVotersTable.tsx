@@ -129,6 +129,7 @@ export const ValidVotersTable = ({
                 auth_added_at,
                 created_at,
                 verified_email_at,
+                was_manually_approved: email.endsWith('.approved'),
               })
               return (
                 <tr className={`${checked[validIndex] && 'bg-[#f1f1f1]'}`} key={email}>
