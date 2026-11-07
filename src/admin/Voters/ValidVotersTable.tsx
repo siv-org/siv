@@ -9,8 +9,10 @@ import { DeliveriesAndFailures } from './DeliveriesAndFailures'
 import { mask } from './mask-token'
 import { QueuedCell } from './QueuedCell'
 import { getStatus, Signature } from './Signature'
+import { Tooltip } from './Tooltip'
 import { use_multi_select } from './use-multi-select'
 import { useVoterInvites } from './useVoterInvites'
+import { voteTimestampsTooltip } from './VoteTimestampsTooltip'
 
 export const ValidVotersTable = ({
   checked,
@@ -103,7 +105,10 @@ export const ValidVotersTable = ({
           {(showAll ? shown_voters : onThisPage).map(
             (
               {
+                added_at,
+                auth_added_at,
                 auth_token,
+                created_at,
                 display_name,
                 email,
                 esignature,
@@ -115,75 +120,92 @@ export const ValidVotersTable = ({
                 last_name,
                 mailgun_events,
                 validIndex,
+                verified_email_at,
               },
               displayIndex,
-            ) => (
-              <tr className={`${checked[validIndex] && 'bg-[#f1f1f1]'}`} key={email}>
-                <CheckboxCell
-                  {...{
-                    checked,
-                    index: validIndex,
-                    last_selected,
-                    pressing_shift,
-                    set_checked,
-                    set_last_selected,
-                    visible_indices,
-                  }}
-                />
+            ) => {
+              const timestampsTooltip = voteTimestampsTooltip({
+                added_at,
+                auth_added_at,
+                created_at,
+                verified_email_at,
+              })
+              return (
+                <tr className={`${checked[validIndex] && 'bg-[#f1f1f1]'}`} key={email}>
+                  <CheckboxCell
+                    {...{
+                      checked,
+                      index: validIndex,
+                      last_selected,
+                      pressing_shift,
+                      set_checked,
+                      set_last_selected,
+                      visible_indices,
+                    }}
+                  />
 
-                <td>{displayIndex + 1}</td>
-                {shouldShowRegistrationColumns && (
-                  <>
-                    <td>{first_name}</td>
-                    <td>{last_name}</td>
-                  </>
-                )}
-                {shouldShowDisplayNameColumn && <td>{display_name}</td>}
+                  <Tooltip placement="top" tooltip={timestampsTooltip}>
+                    <td className="cursor-help">{displayIndex + 1}</td>
+                  </Tooltip>
+                  {shouldShowRegistrationColumns && (
+                    <>
+                      <td>{first_name}</td>
+                      <td>{last_name}</td>
+                    </>
+                  )}
+                  {shouldShowDisplayNameColumn && <td>{display_name}</td>}
 
-                <td>
-                  <span className="flex justify-between group">
-                    <span>{email}</span>
-                    {/* Edit email btn */}
-                    <span
-                      className="group-hover:opacity-50 opacity-0 cursor-pointer hover:!opacity-100"
-                      onClick={async () => {
-                        const new_email = prompt('Edit email?', email)
+                  <td>
+                    <span className="flex justify-between group">
+                      <span>{email}</span>
+                      {/* Edit email btn */}
+                      <span
+                        className="group-hover:opacity-50 opacity-0 cursor-pointer hover:!opacity-100"
+                        onClick={async () => {
+                          const new_email = prompt('Edit email?', email)
 
-                        if (!new_email || new_email === email) return
+                          if (!new_email || new_email === email) return
 
-                        if (!validateEmail(new_email)) return alert(`Invalid email: '${new_email}'`)
+                          if (!validateEmail(new_email)) return alert(`Invalid email: '${new_email}'`)
 
-                        // Store new email in API
-                        const response = await api(`election/${election_id}/admin/edit-voter-email`, {
-                          new_email,
-                          old_email: email,
-                        })
+                          // Store new email in API
+                          const response = await api(`election/${election_id}/admin/edit-voter-email`, {
+                            new_email,
+                            old_email: email,
+                          })
 
-                        if (response.status === 201) {
-                          revalidate(election_id)
-                        } else {
-                          console.error(response.json())
-                          // throw await response.json()
-                        }
-                      }}
-                    >
-                      &nbsp;
-                      <EditOutlined />
+                          if (response.status === 201) {
+                            revalidate(election_id)
+                          } else {
+                            console.error(response.json())
+                            // throw await response.json()
+                          }
+                        }}
+                      >
+                        &nbsp;
+                        <EditOutlined />
+                      </span>
                     </span>
-                  </span>
-                </td>
-                {shouldShowRegistrationColumns && <td className="text-center">{is_email_verified ? '✓' : ''}</td>}
-                <td className="font-mono text-[12px]">{mask_tokens ? mask(auth_token) : auth_token}</td>
+                  </td>
+                  {shouldShowRegistrationColumns && <td className="text-center">{is_email_verified ? '✓' : ''}</td>}
+                  <td className="font-mono text-[12px]">{mask_tokens ? mask(auth_token) : auth_token}</td>
 
-                <QueuedCell {...{ invite_queued }} />
-                <DeliveriesAndFailures {...mailgun_events} deliveries={voterInvites[email]} />
+                  <QueuedCell {...{ invite_queued }} />
+                  <DeliveriesAndFailures {...mailgun_events} deliveries={voterInvites[email]} />
 
-                <td className="font-bold text-center">{has_voted ? '✓' : ''}</td>
+                  {has_voted ? (
+                    <Tooltip placement="top" tooltip={timestampsTooltip}>
+                      <td className="font-bold text-center cursor-help">✓</td>
+                    </Tooltip>
+                  ) : (
+                    <td className="font-bold text-center" />
+                  )}
 
-                {esignature_requested &&
-                  (has_voted ? <Signature {...{ election_id, email, esignature, esignature_review }} /> : <td />)}
-              </tr>
-            ),
+                  {esignature_requested &&
+                    (has_voted ? <Signature {...{ election_id, email, esignature, esignature_review }} /> : <td />)}
+                </tr>
+              )
+            },
           )}
         </tbody>
       </table>

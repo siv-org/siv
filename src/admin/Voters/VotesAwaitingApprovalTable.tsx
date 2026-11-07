@@ -1,5 +1,5 @@
 import { CheckOutlined, LoadingOutlined } from '@ant-design/icons'
-import { Fragment, useReducer, useState } from 'react'
+import { useReducer, useState } from 'react'
 import { OnClickButton } from 'src/_shared/Button'
 import { api } from 'src/api-helper'
 
@@ -8,8 +8,7 @@ import { CheckboxCell, CheckboxHeaderCell, hoverable } from './CheckboxCell'
 import { mask } from './mask-token'
 import { Tooltip } from './Tooltip'
 import { use_multi_select } from './use-multi-select'
-
-const fmt = (iso: string) => new Date(iso).toLocaleString()
+import { voteTimestampsTooltip } from './VoteTimestampsTooltip'
 
 export const VotesAwaitingApprovalTable = () => {
   const { election_id, pending_votes, voter_applications_allowed } = useStored()
@@ -108,22 +107,11 @@ export const VotesAwaitingApprovalTable = () => {
               },
               index,
             ) => {
-              const timestampsTooltip = (
-                <div className="grid grid-cols-[auto_auto] gap-x-3 gap-y-0.5 items-baseline whitespace-nowrap">
-                  {[
-                    ['Voted', created_at],
-                    ['Auth info', auth_added_at],
-                    ['Email verified', verified_email_at],
-                  ]
-                    .filter((row): row is [string, string] => !!row[1])
-                    .map(([label, iso]) => (
-                      <Fragment key={label}>
-                        <span className="text-[11px] font-semibold opacity-70">{label}</span>
-                        <span className="text-[13px]">{fmt(iso)}</span>
-                      </Fragment>
-                    ))}
-                </div>
-              )
+              const timestampsTooltip = voteTimestampsTooltip({
+                auth_added_at,
+                created_at,
+                verified_email_at,
+              })
               return (
                 <tr className={`${checked[index] && 'bg-[#f1f1f1]'}`} key={link_auth}>
                   <CheckboxCell

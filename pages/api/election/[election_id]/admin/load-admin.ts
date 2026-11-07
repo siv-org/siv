@@ -51,7 +51,10 @@ export type Trustee = {
 }
 
 export type Voter = {
+  added_at?: string
+  auth_added_at?: string
   auth_token: string
+  created_at?: string
   display_name?: string
   email: string
   esignature?: string
@@ -64,6 +67,7 @@ export type Voter = {
   is_email_verified?: boolean
   last_name: string
   mailgun_events: { accepted?: MgEvent[]; delivered?: MgEvent[]; failed?: MgEvent[] }
+  verified_email_at?: string
 }
 
 type MgEvent = Record<string, unknown>
@@ -159,10 +163,31 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }, [])
 
   // Gather who's voted already
+  const toIso = (t?: { _seconds: number }) => (t ? new Date(t._seconds * 1000).toISOString() : undefined)
   const voteDocs = (await loadVotes).docs
-  const votesByAuth: Record<string, [boolean, string?]> = voteDocs.reduce((acc, doc) => {
-    const data = doc.data()
-    return { ...acc, [data.auth]: [true, data.esignature] }
+  type VoteInfo = {
+    auth_added_at?: string
+    created_at?: string
+    esignature?: string
+    verified_email_at?: string
+  }
+  const votesByAuth: Record<string, VoteInfo> = voteDocs.reduce((acc, doc) => {
+    const data = doc.data() as {
+      auth: string
+      auth_added_at?: { _seconds: number }
+      created_at?: { _seconds: number }
+      esignature?: string
+      verified_email_at?: { _seconds: number }
+    }
+    return {
+      ...acc,
+      [data.auth]: {
+        auth_added_at: toIso(data.auth_added_at),
+        created_at: toIso(data.created_at),
+        esignature: data.esignature,
+        verified_email_at: toIso(data.verified_email_at),
+      },
+    }
   }, {})
 
   // Strengthened counts from vote docs (accepted + pending)
@@ -186,6 +211,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Build voters objects
   const voters: Voter[] = (await loadVoters).docs.reduce((acc: Voter[], doc) => {
     const {
+      added_at,
       additionalAuthInfo,
       auth_token,
       display_name,
@@ -201,6 +227,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     } = {
       ...doc.data(),
     } as {
+      added_at?: { _seconds: number }
       additionalAuthInfo?: Record<string, string>
       auth_token: string
       display_name?: string
@@ -214,29 +241,33 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       last_name: string
       mailgun_events: { accepted: MgEvent[]; delivered: MgEvent[] }
     }
+    const vote = votesByAuth[auth_token]
     return [
       ...acc,
       {
+        added_at: toIso(added_at),
         additionalAuthInfo,
+        auth_added_at: vote?.auth_added_at,
         auth_token,
+        created_at: vote?.created_at,
         display_name,
         email,
-        esignature: (votesByAuth[auth_token] || [])[1],
+        esignature: vote?.esignature,
         esignature_review,
         first_name,
-        has_voted: !!votesByAuth[auth_token] || !!invalidatedVotesByAuth[auth_token],
+        has_voted: !!vote || !!invalidatedVotesByAuth[auth_token],
         index,
         invalidated: invalidated_at ? true : undefined,
         invite_queued,
         is_email_verified,
         last_name,
         mailgun_events,
+        verified_email_at: vote?.verified_email_at,
       },
     ]
   }, [])
 
   // Build pending votes
-  const toIso = (t?: { _seconds: number }) => (t ? new Date(t._seconds * 1000).toISOString() : undefined)
   const pending_votes: PendingVote[] = (await loadPendingVotes).docs.map((doc) => {
     const {
       additionalAuthInfo,
