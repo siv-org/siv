@@ -20,7 +20,9 @@ export const voteTimestampsTooltip = ({
     ['Auth info', auth_added_at],
     ['Email verified', verified_email_at],
     ['Added', added_at],
-  ].filter((row): row is [string, string] => !!row[1])
+  ]
+    .filter((row): row is [string, string] => !!row[1])
+    .sort(([, a], [, b]) => +new Date(a) - +new Date(b))
 
   if (!rows.length) return null
 
