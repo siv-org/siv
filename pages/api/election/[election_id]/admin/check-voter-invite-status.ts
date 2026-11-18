@@ -38,6 +38,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   let num_events = 0
+  const known_missing = new Set<string>()
 
   // Tail through the events until we're out
   let mgEventsList = await getMgEvents()
@@ -50,10 +51,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
           // Skip replies to us
           if (to === 'election@siv.org') return
+          if (known_missing.has(to)) return // Skip known missing
 
           const voterDoc = electionDoc.collection('voters').doc(to)
           // Confirm voterDoc exists
-          if (!(await voterDoc.get()).exists) return console.log(`No voter doc for ${to}`)
+          if (!(await voterDoc.get()).exists) {
+            known_missing.add(to)
+            return console.log(`No voter doc for ${to}`)
+          }
 
           num_events++
           // Store new items on voters' docs
