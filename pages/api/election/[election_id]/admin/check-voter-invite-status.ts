@@ -16,17 +16,22 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   const electionDoc = firebase.firestore().collection('elections').doc(election_id)
 
-  // Get election title and created_at
-  const { created_at, election_title } = (await electionDoc.get()).data() as {
+  // Get election title, created_at, and catch-up cursor
+  const { created_at, election_title, mailgun_voter_events_checked_through } = (await electionDoc.get()).data() as {
     created_at: { _seconds: number }
     election_title?: string
+    mailgun_voter_events_checked_through?: number
   }
+
+  // Resume after the last page we fully processed
+  const begin = mailgun_voter_events_checked_through || created_at._seconds
+  let checked_through = begin
 
   // Find one page of mailgun events for this election
   function getMgEvents(next?: string) {
     return mailgun.get(next || '/siv.org/events', {
       ascending: 'yes',
-      begin: new Date(created_at._seconds * 1000).toUTCString(),
+      begin: new Date(begin * 1000).toUTCString(),
       limit: 300,
       subject: buildSubject(election_title),
     })
@@ -40,7 +45,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     await bluebird
       .map(
         mgEventsList.items,
-        async (item: { event: string; message: { headers: { to: string } } }) => {
+        async (item: { event: string; message: { headers: { to: string } }; timestamp: number }) => {
           const to = item.message.headers.to
 
           // Skip replies to us
@@ -60,6 +65,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         console.log(error)
         await pushover('Mailgun check-voter-invite-status error', error)
       })
+
+    // Advance cursor after each page so a mid-scan timeout still makes progress next poll
+    const page_through = Math.max(...mgEventsList.items.map((item: { timestamp: number }) => item.timestamp))
+    if (page_through > checked_through) {
+      checked_through = page_through
+      await electionDoc.update({ mailgun_voter_events_checked_through: checked_through })
+    }
+
     mgEventsList = await getMgEvents(mgEventsList.paging.next.split('https://api.mailgun.net/v3')[1])
   }
 
