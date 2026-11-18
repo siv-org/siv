@@ -25,7 +25,12 @@ export const use_latest_mailgun_events = (
     if (election_manager === 'SIV End2End Tester') return
 
     if (pending_invites && election_id) {
+      let in_flight = false
       const interval = setInterval(() => {
+        // Avoid stacking checks while a slow/timeout request is still open
+        if (in_flight) return
+        in_flight = true
+
         console.log('Checking pending invites...')
         api(`election/${election_id}/admin/check-voter-invite-status`)
           .then((response) => response.json())
@@ -34,6 +39,9 @@ export const use_latest_mailgun_events = (
               revalidate(election_id)
               last_num_events_ref.current = num_events
             }
+          })
+          .finally(() => {
+            in_flight = false
           })
       }, 1000)
       return () => clearInterval(interval)
