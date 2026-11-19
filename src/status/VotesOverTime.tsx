@@ -41,15 +41,15 @@ export function VotesOverTime({ submitted_at }: { submitted_at: string[] }) {
     <div className="mt-8">
       <h3 className="mb-6 text-xl font-semibold">Votes over time</h3>
 
-      <div className="p-3 bg-white border rounded-lg shadow-sm sm:p-6 border-slate-200">
-        <div className="flex flex-col items-center justify-between gap-2 mb-4 sm:flex-row">
-          <div className="flex items-center gap-2 text-sm">
+      <div className="p-3 bg-white rounded-lg border shadow-sm sm:p-6 border-slate-200">
+        <div className="flex flex-col gap-2 justify-between items-center mb-4 sm:flex-row">
+          <div className="flex gap-2 items-center text-sm">
             <div className="w-4 h-4 bg-blue-500 rounded" />
             <span className="text-slate-600">Total Votes</span>
           </div>
 
           <div
-            className="flex items-center gap-2 p-2 border rounded-md cursor-pointer hover:bg-slate-100 border-slate-300"
+            className="flex gap-2 items-center p-2 rounded-md border cursor-pointer hover:bg-slate-100 border-slate-300"
             onClick={() => setCumulative(!cumulative)}
           >
             <input checked={cumulative} readOnly type="checkbox" />
@@ -58,8 +58,7 @@ export function VotesOverTime({ submitted_at }: { submitted_at: string[] }) {
 
           <div
             className={`flex items-center gap-2 p-2 transition-opacity duration-500 opacity-0 ${
-              cumulative ? 'cursor-default' : '!opacity-100 hover:bg-slate-100 rounded-md'
-            }`}
+              cumulative ? 'cursor-default' : '!opacity-100 hover:bg-slate-100 rounded-md'}`}
           >
             Resolution:
             <select disabled={cumulative} onChange={(e) => setResolution(Number(e.target.value))} value={resolution}>
@@ -86,14 +85,11 @@ export function VotesOverTime({ submitted_at }: { submitted_at: string[] }) {
               stroke="#64748b"
               style={{ fontSize: '12px' }}
               tickFormatter={formatDate}
-              ticks={(() => {
-                if (chartData.length === 0) return []
-                const min = chartData[0].timestamp
-                const max = chartData[chartData.length - 1].timestamp
-                const tickCount = 7
-                const tickInterval = (max - min) / (tickCount - 1)
-                return Array.from({ length: tickCount }, (_, i) => Math.round(min + i * tickInterval))
-              })()}
+              ticks={
+                chartData.length === 0
+                  ? []
+                  : dayTicks(chartData[0].timestamp, chartData[chartData.length - 1].timestamp)
+              }
               type="number"
             />
             <YAxis
@@ -107,11 +103,11 @@ export function VotesOverTime({ submitted_at }: { submitted_at: string[] }) {
                 if (!active || !payload?.length) return null
                 const data = payload[0].payload as ChartDataPoint
                 return (
-                  <div className="p-4 bg-white border rounded-lg shadow-lg border-slate-200">
+                  <div className="p-4 bg-white rounded-lg border shadow-lg border-slate-200">
                     <div className="mb-2 text-sm font-semibold text-slate-900">
                       {formatTooltipDate(data.timestamp, resolutionToUse)}
                     </div>
-                    <div className="flex justify-between gap-4 text-xs">
+                    <div className="flex gap-4 justify-between text-xs">
                       <span className="text-slate-600">Total Votes:</span>
                       <span className="font-semibold text-blue-600">{data.total}</span>
                     </div>
@@ -133,6 +129,22 @@ export function VotesOverTime({ submitted_at }: { submitted_at: string[] }) {
       </div>
     </div>
   )
+}
+
+/** One tick per calendar day (max 7), so date labels don't repeat. */
+function dayTicks(min: number, max: number): number[] {
+  const ticks: number[] = []
+  const cursor = new Date(min)
+  cursor.setHours(0, 0, 0, 0)
+  if (cursor.getTime() < min) cursor.setDate(cursor.getDate() + 1)
+  while (cursor.getTime() <= max) {
+    ticks.push(cursor.getTime())
+    cursor.setDate(cursor.getDate() + 1)
+  }
+  if (!ticks.length) return [min]
+  if (ticks.length <= 7) return ticks
+  const step = Math.ceil(ticks.length / 7)
+  return ticks.filter((_, i) => i % step === 0)
 }
 
 function getChartData(submitted_at: string[], cumulative: boolean, resolution: number): ChartDataPoint[] {
