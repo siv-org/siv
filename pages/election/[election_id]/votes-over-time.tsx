@@ -28,7 +28,6 @@ export default function VotesOverTimePage() {
       <Head dropPrefix title={data?.election_title ? `Votes over time: ${data.election_title}` : 'Votes over time'} />
       <main className="min-h-screen px-4 py-10 bg-slate-50">
         <div className="max-w-4xl mx-auto">
-          <p className="mb-2 text-sm tracking-wide uppercase text-slate-500">Private demo</p>
           <h1 className="mt-0 mb-1 text-3xl font-bold text-slate-900">Votes over time</h1>
           {data?.election_title && (
             <h2 className="mt-0 mb-1 text-xl font-medium text-slate-700">{data.election_title}</h2>
