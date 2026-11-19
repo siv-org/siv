@@ -15,8 +15,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const submitted_at = votes.docs
     .map((doc) => {
       const created_at = doc.data().created_at as
-        | { _seconds?: number; seconds?: number; toMillis?: () => number }
         | undefined
+        | { _seconds?: number; seconds?: number; toMillis?: () => number }
       const ms = created_at?.toMillis?.() ?? (created_at?._seconds ?? created_at?.seconds ?? 0) * 1000
       return ms ? new Date(ms).toISOString() : null
     })

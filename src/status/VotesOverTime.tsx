@@ -5,14 +5,14 @@ type ChartDataPoint = { timestamp: number; total: number }
 
 const formatDate = (timestamp: number) =>
   new Date(timestamp)
-    .toLocaleDateString('en-US', { weekday: 'short', month: 'numeric', day: 'numeric' })
+    .toLocaleDateString('en-US', { day: 'numeric', month: 'numeric', weekday: 'short' })
     .replace(',', '')
 
 const formatTooltipDate = (timestamp: number, resolutionMinutes: number) => {
   const startDate = new Date(timestamp)
   const endDate = new Date(timestamp + resolutionMinutes * 60 * 1000)
   const startFormatted = startDate
-    .toLocaleString('en-US', { weekday: 'short', month: 'numeric', day: 'numeric', hour: 'numeric' })
+    .toLocaleString('en-US', { day: 'numeric', hour: 'numeric', month: 'numeric', weekday: 'short' })
     .replace(' AM', 'a')
     .replace(' PM', 'p')
     .replaceAll(',', '')
