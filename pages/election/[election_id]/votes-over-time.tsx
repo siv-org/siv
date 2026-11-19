@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import useSWR from 'swr'
 
 import { Head } from '../../../src/Head'
+import { TailwindPreflight } from '../../../src/TailwindPreflight'
 import { VotesOverTime } from '../../../src/status/VotesOverTime'
 
 type VotesOverTimeResponse = {
@@ -53,6 +54,7 @@ export default function VotesOverTimePage() {
           )}
         </div>
       </main>
+      <TailwindPreflight />
     </>
   )
 }
