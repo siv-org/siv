@@ -41,7 +41,7 @@ export function VotesOverTime({ submitted_at }: { submitted_at: string[] }) {
     <div className="mt-8">
       <h3 className="mb-6 text-xl font-semibold">Votes over time</h3>
 
-      <div className="p-6 bg-white border rounded-lg shadow-sm border-slate-200">
+      <div className="p-3 bg-white border rounded-lg shadow-sm sm:p-6 border-slate-200">
         <div className="flex flex-col items-center justify-between gap-2 mb-4 sm:flex-row">
           <div className="flex items-center gap-2 text-sm">
             <div className="w-4 h-4 bg-blue-500 rounded" />
@@ -72,7 +72,7 @@ export function VotesOverTime({ submitted_at }: { submitted_at: string[] }) {
         </div>
 
         <ResponsiveContainer height={400} width="100%">
-          <AreaChart data={chartData} margin={{ bottom: 0, left: 0, right: 30, top: 10 }}>
+          <AreaChart data={chartData} margin={{ bottom: 0, left: -10, right: 8, top: 10 }}>
             <defs>
               <linearGradient id="colorTotal" x1="0" x2="0" y1="0" y2="1">
                 <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3} />
@@ -96,7 +96,12 @@ export function VotesOverTime({ submitted_at }: { submitted_at: string[] }) {
               })()}
               type="number"
             />
-            <YAxis stroke="#64748b" style={{ fontSize: '12px' }} tickFormatter={(value) => value.toString()} />
+            <YAxis
+              stroke="#64748b"
+              style={{ fontSize: '12px' }}
+              tickFormatter={(value) => value.toString()}
+              width={36}
+            />
             <Tooltip
               content={({ active, payload }) => {
                 if (!active || !payload?.length) return null
