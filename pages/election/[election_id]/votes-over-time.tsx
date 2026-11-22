@@ -4,18 +4,21 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import useSWR from 'swr'
 
+import type { VoteTimeBucket } from '../../api/election/[election_id]/votes-over-time'
+
 import { Head } from '../../../src/Head'
 import { VotesOverTime } from '../../../src/status/VotesOverTime'
 import { TailwindPreflight } from '../../../src/TailwindPreflight'
 
 type VotesOverTimeResponse = {
+  buckets: VoteTimeBucket[]
   election_title: null | string
-  submitted_at: string[]
+  totals: { accepted: number; pending: number }
 }
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
-/** Unlisted demo page — not linked from status yet. */
+/** Unlisted for now — not linked from status yet. */
 export default function VotesOverTimePage({ election_title }: { election_title?: null | string }) {
   const { election_id } = useRouter().query as { election_id?: string }
   const { data, error } = useSWR<VotesOverTimeResponse>(
@@ -26,6 +29,7 @@ export default function VotesOverTimePage({ election_title }: { election_title?:
   useEffect(() => setReady(true), [])
 
   const title = data?.election_title ?? election_title
+  const totalVotes = data ? data.totals.accepted + data.totals.pending : undefined
 
   return (
     <>
@@ -37,10 +41,10 @@ export default function VotesOverTimePage({ election_title }: { election_title?:
           {election_id && (
             <p className="mt-0 text-sm text-slate-500">
               Election ID: <b>{election_id}</b>
-              {data?.submitted_at && (
+              {totalVotes != null && (
                 <>
                   {' '}
-                  · {data.submitted_at.length} vote{data.submitted_at.length === 1 ? '' : 's'}
+                  · {totalVotes} vote{totalVotes === 1 ? '' : 's'}
                 </>
               )}
             </p>
@@ -51,7 +55,7 @@ export default function VotesOverTimePage({ election_title }: { election_title?:
           ) : error || !data ? (
             <p className="mt-10 text-red-600">Failed to load vote times.</p>
           ) : (
-            <VotesOverTime submitted_at={data.submitted_at} />
+            <VotesOverTime buckets={data.buckets} />
           )}
         </div>
       </main>

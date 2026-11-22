@@ -9,7 +9,12 @@ import { firebase, pushover } from '../../_services'
 import { isPackedByCursor, type TimestampLike } from './is-packed-by-cursor'
 
 type EncryptedVote = Record<string, CipherStrings>
-type PendingVoteSummary = EncryptedVote & { auth: 'pending'; link_auth?: string }
+type PendingVoteSummary = EncryptedVote & {
+  auth: 'pending'
+  created_at?: number
+  link_auth?: string
+  strengthened_at?: number
+}
 type RootMeta = {
   currentPageNum: number
   lastPackedCreatedAt: firestore.Timestamp | null
@@ -21,7 +26,7 @@ type RootMeta = {
   revision?: number
   updatedAt: firestore.Timestamp
 }
-type VoteSummary = EncryptedVote & { auth: string }
+type VoteSummary = EncryptedVote & { auth: string; created_at?: number; strengthened_at?: number }
 
 const seconds = 1000
 const PACK_THROTTLE_MS = 5 * seconds
@@ -113,15 +118,35 @@ const makeEtag = ({
   return createHash('sha1').update(seed).digest('hex').slice(0, 12)
 }
 
+const fieldMs = (doc: firestore.QueryDocumentSnapshot, field: string) => {
+  const t = doc.get(field) as Date | undefined | { toMillis?: () => number }
+  if (t instanceof Date) return t.getTime()
+  return t?.toMillis?.() ?? undefined
+}
+
+const packedTimestamps = (doc: firestore.QueryDocumentSnapshot) => ({
+  created_at: fieldMs(doc, 'created_at'),
+  ...(fieldMs(doc, 'strengthened_at') != null && { strengthened_at: fieldMs(doc, 'strengthened_at') }),
+})
+
 const mapVoteDoc = (doc: firestore.QueryDocumentSnapshot) => {
   const { auth, encrypted_vote } = doc.data()
-  return { auth, ...encrypted_vote } as VoteSummary
+  return { auth, ...encrypted_vote, ...packedTimestamps(doc) } as VoteSummary
 }
 
 const mapPendingVoteDoc = (doc: firestore.QueryDocumentSnapshot) => {
   const { encrypted_vote, link_auth } = doc.data()
-  return { auth: 'pending', ...encrypted_vote, link_auth } as PendingVoteSummary
+  return { auth: 'pending', ...encrypted_vote, ...packedTimestamps(doc), link_auth } as PendingVoteSummary
 }
+
+// Strip exact times for public endpoint
+const stripPackedTimestamps = <T extends { created_at?: number; strengthened_at?: number }>({
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- intentionally stripped
+  created_at: _created_at,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- intentionally stripped
+  strengthened_at: _strengthened_at,
+  ...rest
+}: T) => rest
 
 const makePageId = (num: number) => String(num).padStart(6, '0')
 
@@ -328,12 +353,14 @@ export async function invalidateCachedVote(
     created_at,
     encrypted_vote,
     pending = false,
+    strengthened_at,
     vote_doc_id,
   }: {
     auth: string
     created_at?: TimestampLike
     encrypted_vote: EncryptedVote
     pending?: boolean
+    strengthened_at?: number
     vote_doc_id: string
   },
 ): Promise<'patched' | 'reset' | 'skipped'> {
@@ -374,14 +401,26 @@ export async function invalidateCachedVote(
         if (pending || !secretsMatch(v.auth, auth)) return v
         changed = true
         found = true
-        return { auth: v.auth, ...encrypted_vote } as VoteSummary
+        // Keep first-submit created_at, + strengthened_at
+        return {
+          auth: v.auth,
+          ...encrypted_vote,
+          created_at: v.created_at,
+          strengthened_at,
+        } as VoteSummary
       })
       // Search pending_votes for match on link_auth
       const nextPending = pendingVotes.map((pv) => {
         if (!pending || !secretsMatch(pv.link_auth, auth)) return pv
         changed = true
         found = true
-        return { auth: 'pending' as const, ...encrypted_vote, link_auth: pv.link_auth }
+        return {
+          auth: 'pending' as const,
+          ...encrypted_vote,
+          created_at: pv.created_at,
+          link_auth: pv.link_auth,
+          strengthened_at,
+        }
       })
 
       // No matches found, continue onto next page
@@ -697,15 +736,16 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         .map(([label, n]) => pushover('cache-accepted auth dupe:', `[${election_id}] ${label}: ${n}`)),
     )
 
-  // 9) Strip out pendings' link_auth before serving
+  // 9) Strip out pendings' link_auth + exact timestamps before serving
   const cleanedPending = deduplicatedPending.map((pv) => {
     delete pv.link_auth
-    return pv
+    return stripPackedTimestamps(pv)
   })
+  const cleanedVotes = votes.map(stripPackedTimestamps)
 
   // Warn if votes missing
   const expectedTotal = observedVotes + observedPending - invalidatedAuths.size
-  const served = votes.length + cleanedPending.length
+  const served = cleanedVotes.length + cleanedPending.length
   if (served < expectedTotal)
     await pushover('cache-accepted mismatch:', `[${election_id}] expected: ${expectedTotal} served: ${served}`)
 
@@ -734,7 +774,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       didPack,
       ops: { deletes, reads, writes },
     },
-    results: [...votes, ...cleanedPending],
+    results: [...cleanedVotes, ...cleanedPending],
   })
 }
 
@@ -744,6 +784,7 @@ Goal:
 - Serve all votes (accepted + pending) with low Firestore read costs.
 - Maintain a cached, paged copy under elections/{id}/votes-cached/root/pages/{000001..}
 - Only do heavy packing work occasionally (throttled) and under a lease.
+- Pack exact created_at (+ strengthened_at when present) for server projections; strip before public respond.
 
 Data model:
 - root doc: cursor + bookkeeping

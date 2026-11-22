@@ -1,3 +1,5 @@
+import type { VoteTimeBucket } from 'pages/api/election/[election_id]/votes-over-time'
+
 import { useMemo, useState } from 'react'
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 
@@ -27,14 +29,15 @@ const formatTooltipDate = (timestamp: number, resolutionMinutes: number) => {
   return `${datePart} ${startTime}-${endTime}`
 }
 
-export function VotesOverTime({ submitted_at }: { submitted_at: string[] }) {
+/** buckets are hour-resolution from the API (accepted + pending = all submitted). */
+export function VotesOverTime({ buckets }: { buckets: VoteTimeBucket[] }) {
   const [cumulative, setCumulative] = useState(true)
   const [resolution, setResolution] = useState(60 * 3)
   const resolutionToUse = cumulative ? 60 : resolution
 
   const chartData = useMemo(
-    () => getChartData(submitted_at, cumulative, resolutionToUse),
-    [submitted_at, cumulative, resolutionToUse],
+    () => getChartData(buckets, cumulative, resolutionToUse),
+    [buckets, cumulative, resolutionToUse],
   )
 
   return (
@@ -147,29 +150,25 @@ function dayTicks(min: number, max: number): number[] {
   return ticks.filter((_, i) => i % step === 0)
 }
 
-function getChartData(submitted_at: string[], cumulative: boolean, resolution: number): ChartDataPoint[] {
-  const votes = submitted_at
-    .map((iso) => {
-      const timestamp = new Date(iso)
-      return isNaN(timestamp.getTime()) ? null : timestamp
-    })
-    .filter((v): v is Date => !!v)
+function getChartData(hourBuckets: VoteTimeBucket[], cumulative: boolean, resolution: number): ChartDataPoint[] {
+  const daily = 60 * 24
+  const merged = new Map<number, number>()
 
-  const buckets = new Map<number, number>()
-  votes.forEach((timestamp) => {
-    const daily = 60 * 24
+  for (const { accepted, pending, t } of hourBuckets) {
+    const count = accepted + pending // all submitted for now
     let bucketStart: number
     if (resolution === daily) {
-      bucketStart = new Date(timestamp.getFullYear(), timestamp.getMonth(), timestamp.getDate(), 0, 0, 1).getTime()
+      const d = new Date(t)
+      bucketStart = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 1).getTime()
     } else {
       const resMs = resolution * 60 * 1000
-      bucketStart = Math.floor(timestamp.getTime() / resMs) * resMs
+      bucketStart = Math.floor(t / resMs) * resMs
     }
-    buckets.set(bucketStart, (buckets.get(bucketStart) || 0) + 1)
-  })
+    merged.set(bucketStart, (merged.get(bucketStart) || 0) + count)
+  }
 
   let running = 0
-  return Array.from(buckets.entries())
+  return Array.from(merged.entries())
     .sort(([a], [b]) => a - b)
     .map(([timestamp, count]) => {
       if (!cumulative) running = 0

@@ -66,6 +66,7 @@ export default withApiErrorLogs(async (req: NextApiRequest, res: NextApiResponse
       created_at: vote.created_at,
       encrypted_vote,
       pending,
+      strengthened_at: replaced_at.getTime(),
       vote_doc_id: voteDoc.id,
     }),
   ])
