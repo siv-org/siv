@@ -134,6 +134,16 @@ export function VotesOverTime({ buckets }: { buckets: VoteTimeBucket[] }) {
   )
 }
 
+function bucketStartFor(t: number, resolution: number) {
+  const daily = 60 * 24
+  if (resolution === daily) {
+    const d = new Date(t)
+    return new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 1).getTime()
+  }
+  const resMs = resolution * 60 * 1000
+  return Math.floor(t / resMs) * resMs
+}
+
 /** One tick per calendar day (max 7), so date labels don't repeat. */
 function dayTicks(min: number, max: number): number[] {
   const ticks: number[] = []
@@ -156,23 +166,37 @@ function getChartData(hourBuckets: VoteTimeBucket[], cumulative: boolean, resolu
 
   for (const { accepted, pending, t } of hourBuckets) {
     const count = accepted + pending // all submitted for now
-    let bucketStart: number
-    if (resolution === daily) {
-      const d = new Date(t)
-      bucketStart = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 1).getTime()
-    } else {
-      const resMs = resolution * 60 * 1000
-      bucketStart = Math.floor(t / resMs) * resMs
-    }
+    const bucketStart = bucketStartFor(t, resolution)
     merged.set(bucketStart, (merged.get(bucketStart) || 0) + count)
   }
 
+  if (!merged.size) return []
+
+  // Fill empty buckets so non-cumulative mode drops to 0 between bursts (don't skip gaps)
+  const starts = [...merged.keys()].sort((a, b) => a - b)
+  const [min, max] = [starts[0], starts[starts.length - 1]]
+  const points: ChartDataPoint[] = []
   let running = 0
-  return Array.from(merged.entries())
-    .sort(([a], [b]) => a - b)
-    .map(([timestamp, count]) => {
+
+  if (resolution === daily) {
+    const cursor = new Date(min)
+    while (cursor.getTime() <= max) {
+      const timestamp = bucketStartFor(cursor.getTime(), resolution)
+      const count = merged.get(timestamp) || 0
       if (!cumulative) running = 0
       running += count
-      return { timestamp, total: running }
-    })
+      points.push({ timestamp, total: running })
+      cursor.setDate(cursor.getDate() + 1)
+    }
+  } else {
+    const stepMs = resolution * 60 * 1000
+    for (let timestamp = min; timestamp <= max; timestamp += stepMs) {
+      const count = merged.get(timestamp) || 0
+      if (!cumulative) running = 0
+      running += count
+      points.push({ timestamp, total: running })
+    }
+  }
+
+  return points
 }
