@@ -86,6 +86,14 @@ const helpers = {
   waitForThrottle: () => new Promise((resolve) => setTimeout(resolve, 6000)), // PACK_THROTTLE_MS (5s) + 1s buffer
 }
 
+/** Public /cache-accepted should not expose exact timestamps. */
+const expectNoExactTimestamps = (results: Array<Record<string, unknown>>) => {
+  for (const row of results) {
+    expect(row).not.toHaveProperty('created_at')
+    expect(row).not.toHaveProperty('strengthened_at')
+  }
+}
+
 // Test 1: Concurrent Packing
 test('Concurrent Packing - still give correct results', async () => {
   const electionId = `test-concurrent-${Date.now()}`
@@ -142,6 +150,7 @@ test('Concurrent Packing - still give correct results', async () => {
       expect(auths.length).toBe(2)
       expect(auths).toContain('a1b2c3d4e5')
       expect(auths).toContain('b1c2d3e4f5')
+      expectNoExactTimestamps(results)
     }
   } finally {
     await helpers.cleanupTestElection(electionId)
@@ -228,6 +237,7 @@ test('Strengthened vote - packed ciphertext is replaced in cache-accepted', asyn
     }
     const before = packedBody.results.find((r) => secretsMatch(r.auth, auth))
     expect(before?.mayor).toEqual(original.mayor)
+    expectNoExactTimestamps(packedBody.results)
 
     const strengthen = await helpers.strengthenTestVote({
       auth,
@@ -243,6 +253,7 @@ test('Strengthened vote - packed ciphertext is replaced in cache-accepted', asyn
     const vote = afterBody.results.find((r) => secretsMatch(r.auth, auth))
     expect(vote?.mayor).toEqual(strengthened.mayor)
     expect(afterBody.results).toHaveLength(1)
+    expectNoExactTimestamps(afterBody.results)
   } finally {
     await helpers.cleanupTestElection(electionId)
   }
