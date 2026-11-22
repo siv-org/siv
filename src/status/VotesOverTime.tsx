@@ -42,8 +42,6 @@ export function VotesOverTime({ buckets }: { buckets: VoteTimeBucket[] }) {
 
   return (
     <div className="mt-8">
-      <h3 className="mb-6 text-xl font-semibold">Votes over time</h3>
-
       <div className="p-3 bg-white rounded-lg border shadow-sm sm:p-6 border-slate-200">
         <div className="flex flex-col gap-2 justify-between items-center mb-4 sm:flex-row">
           <div className="flex gap-2 items-center text-sm">
