@@ -54,14 +54,16 @@ function getEntry(key: string): Entry {
   return entry
 }
 
-function startPolling(
-  key: Parameters<typeof useSWR>[0],
-  entry: Entry,
-  baseDelaySeconds: number,
-) {
-  // Run the exponential-backoff loop: mutate → schedule next
-  function tick() {
-    mutate(key)
+function startPolling(key: Parameters<typeof useSWR>[0], entry: Entry, baseDelaySeconds: number) {
+  // Run the exponential-backoff loop: mutate → schedule next after it finishes
+  async function tick() {
+    try {
+      await mutate(key)
+    } catch {
+      // Keep polling after failures
+    }
+
+    if (entry.count === 0) return // Page unmounted during the await — don't schedule another poll
     entry.retries += 1
     entry.timerId = setTimeout(tick, baseDelaySeconds * 1000 * 2 ** entry.retries)
   }
