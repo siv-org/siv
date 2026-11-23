@@ -1,6 +1,7 @@
 import { Voter } from 'pages/api/election/[election_id]/admin/load-admin'
 import { useEffect, useRef } from 'react'
 import { api } from 'src/api-helper'
+import { useSWRExponentialBackoff } from 'src/status/useSWRExponentialBackoff'
 
 import { revalidate } from '../useStored'
 
@@ -21,30 +22,22 @@ export const use_latest_mailgun_events = (
   )
   const pending_invites = num_invited && num_invited.queued > num_invited.delivered + num_invited.failed
   const last_num_events_ref = useRef(0)
+
+  const should_poll = !!(pending_invites && election_id && election_manager !== 'SIV End2End Tester')
+  const key = should_poll ? `election/${election_id}/admin/check-voter-invite-status` : null
+  const { data } = useSWRExponentialBackoff(key, check_invite_status, 1) as {
+    data?: { num_events: number }
+  }
+
   useEffect(() => {
-    if (election_manager === 'SIV End2End Tester') return
+    if (!election_id || data?.num_events === undefined) return
+    if (data.num_events === last_num_events_ref.current) return
+    revalidate(election_id)
+    last_num_events_ref.current = data.num_events
+  }, [data?.num_events, election_id])
+}
 
-    if (pending_invites && election_id) {
-      let in_flight = false
-      const interval = setInterval(() => {
-        // Avoid stacking checks while a slow/timeout request is still open
-        if (in_flight) return
-        in_flight = true
-
-        console.log('Checking pending invites...')
-        api(`election/${election_id}/admin/check-voter-invite-status`)
-          .then((response) => response.json())
-          .then(({ num_events }: { num_events: number }) => {
-            if (num_events !== last_num_events_ref.current) {
-              revalidate(election_id)
-              last_num_events_ref.current = num_events
-            }
-          })
-          .finally(() => {
-            in_flight = false
-          })
-      }, 1000)
-      return () => clearInterval(interval)
-    }
-  }, [pending_invites, election_id, election_manager])
+const check_invite_status = (route: string) => {
+  console.log('Checking pending invites...')
+  return api(route).then((r) => r.json())
 }
