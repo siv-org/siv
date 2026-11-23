@@ -62,7 +62,12 @@ export function VotesOverTime({ buckets }: { buckets: VoteTimeBucket[] }) {
               cumulative ? 'cursor-default' : '!opacity-100 hover:bg-slate-100 rounded-md'}`}
           >
             Resolution:
-            <select disabled={cumulative} onChange={(e) => setResolution(Number(e.target.value))} value={resolution}>
+            <select
+              className="px-2.5 py-1 rounded-md"
+              disabled={cumulative}
+              onChange={(e) => setResolution(Number(e.target.value))}
+              value={resolution}
+            >
               <option value={60}>1 hour</option>
               <option value={60 * 3}>3 hours</option>
               <option value={60 * 8}>8 hours</option>
