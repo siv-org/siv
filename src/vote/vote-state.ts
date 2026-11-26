@@ -62,7 +62,21 @@ export function reducer(prev: State, payload: Map) {
     }
   }
 
-  // Special handler for other state updates
+  // Public key just arrived (e.g. Privacy Protectors finalized since last visit)
+  if (payload.public_key && !prev.public_key) {
+    const next = { ...prev, ...payload }
+    // Encrypt any waiting plaintext
+    if (
+      Object.keys(next.plaintext).length &&
+      !Object.keys(next.encrypted).length // skip if ciphertext already exists
+    ) {
+      if (!next.tracking) next.tracking = generateTrackingNum()
+      return { ...next, ...encryptSelections(next.plaintext, next.tracking, payload.public_key) }
+    }
+    return next
+  }
+
+  // Special handler for other election-info state updates
   // that don't require encryption
   if (
     payload.ballot_design ||
@@ -88,8 +102,8 @@ export function reducer(prev: State, payload: Map) {
     }
   })
 
-  // Stop if no public key
-  if (Object.keys(newState.plaintext) && !prev.public_key) return prev
+  // Preview before Privacy Protectors finalized: keep plaintext, skip encryption
+  if (!prev.public_key) return newState
 
   // Generate Verification number if needed
   if (!newState.tracking) newState.tracking = generateTrackingNum()

@@ -28,6 +28,24 @@ describe('vote-state reducer', () => {
     expect(state.randomizer.mayor).toBeTruthy()
   })
 
+  test('stores plaintext without encrypting when there is no public key', () => {
+    const state = reducer(blank(), { mayor: 'Alice' })
+
+    expect(state.plaintext.mayor).toBe('Alice')
+    expect(state.encrypted).toEqual({})
+    expect(state.tracking).toBeUndefined()
+  })
+
+  test('encrypts pending plaintext when public key arrives', () => {
+    const pending = reducer(blank(), { mayor: 'Alice' })
+    expect(pending.plaintext.mayor).toBe('Alice')
+    expect(pending.encrypted).toEqual({})
+
+    const ready = reducer(pending, { public_key: pub })
+    expect(ready.plaintext.mayor).toBe('Alice')
+    expect(decryptSelection(ready, 'mayor')).toBe(`${ready.tracking}:Alice`)
+  })
+
   test('customizing tracking re-encrypts under the new number without changing selections', () => {
     const voted = reducer({ ...blank(), public_key: pub, tracking: '1111-1111-1111' }, { mayor: 'Alice' })
     const customized = reducer(voted, { tracking: '1111-1111-2345' })
